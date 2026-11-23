@@ -36,21 +36,24 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   raises a dungeon; and the evidence pinned in a C# test (`RaidPeriodSizes.Raise.EvidenceTest`, checked by
   `UT_RaidPeriodSizes`). No boss is touched, and no flood guard moves. [docs/RAID-SIZES.md](docs/RAID-SIZES.md),
   "Raising a period size". **Tests only.**
-- **The Green Knight: back to 40, and a new tactic, tag and burn (#412; tests only).** The owner withdrew his raise to 80
-  (2026-11-22, "option 1"). His script grows a tree at every raider within 4,000 of him every 25-35 s; a tree takes one
-  raider near it, silences a caster or healer it hits, and turns to the most threat, half of every heal on its victim
-  included, counted less far from it (a third at 1,500). A new positional model (`UT_RaidSim122GreenKnight`, Python
-  mirror) gives the trees those rules. In it the 1.2 catalog and 1.2.1's stack and peel lose every attempt at every size
-  40-80. Tag and burn (`EpicEncounterTactics.GreenKnight.cs`):
-  - casters and archers without an area spell stand 4,600 from him, past the trees' reach ("gk-out");
-  - the healers stand together 850 from him away from his target, heal his target first under 98%, and leave a raider a
-    tree hits until it is under half ("gk-heal-spot"; `SignalPatient`, `BotBrain.CheckHeals`);
-  - the area casters stand 500 away with two melee of their party and burn only trees a fighter has tagged, and only
-    while their spell would not pull them ("gk-burn");
-  - the melee tag every tree near them, a healer's or caster's first, to 240 threat, go back to him, and finish the
-    burned ones on themselves under half ("gk-tag", "gk-peel", "gk-finish"); `EPIC_GK_TREES` now counts the held trees.
-  Wins of 32 at 80 a second on a tree, buffed / unbuffed raid: 17 / 0 at 40, 30 / 0 at 48, 32 / 0 at 56-64, 32 / 12 at
-  72, 32 / 23 at 80. The old rules: 0 of 32 at 40-80. His trees stay capped at 70 a wave; no boss changed. **Tests only.**
+- **The Green Knight: back to 40; tag and burn reworked so every raider fights (#412; tests only; not yet won at 40).**
+  The owner withdrew his raise to 80 (2026-11-22, "option 1"). The first 1.2.2 tactic sent the casters and archers
+  without an area spell 4,600 out, where nothing they cast reached him, and its model left his walks out (owner and
+  audits, 2026-11-23). Now every raider fights from where it reaches (`EpicEncounterTactics.GreenKnight.cs`):
+  - healers 650 from him away from his tank, in the melee's peel reach and clear of Might of the Forest; the four
+    nearest his target heal it first; a raider a tree hits waits for a heal until under 35% ("gk-heal-spot");
+  - area casters 700 out with one melee guard, burning tagged trees ("gk-burn"); casters and archers without an area
+    spell 1,300 out, shooting the tagged trees they won't pull, else him ("gk-shot"); Theurgists 850 out, their
+    elementals on the trees hitting healers and casters ("gk-summon");
+  - owners of lasting pets 4,600 out, where no tree grows at them, their pets on the trees, else him (a new `PetOn`
+    stand-off keeps the pet fighting; "gk-pet");
+  - the melee tag every tree, healers' first, and go back to him; Paladins, Friars and Wardens fight in melee;
+  - spots are laid out once along the line away from his tank, kept while he walks or fights a healer he picked,
+    snapped to the navmesh and checked for line of sight; once a raider is at its spot it gets no new spot;
+  - while he walks to one of his four points the raid holds its ground and keeps on the trees: he comes back to his tank.
+  Model (`UT_RaidSim122GreenKnight`, his walks, the bots' own buffs, loss = no raider left): wins of 32 at 40 / 48 / 56 /
+  80, buffed 0 / 5 / 26 / 32, unbuffed 0 / 0 / 1 / 28; the old rules 0 of 32 at every size to 104. Every raider
+  contributes. **Tests only.**
 - **Real boss stats in the raid sims** (`UT_RaidRealStats122`; docs/RAID-SIZES.md, "Real stats"). The sims' assumed hits
   are replaced by the public OpenDAoC database's templates, the scripts and the server's damage formulas (templates'
   STR / QUI / INT are auto-set to 30 + (level - 1) unless a script sets them; epic bosses deal 2.25 times). The Green
@@ -129,6 +132,17 @@ audit (owner, 2026-11-23, "Revert all three"): every raid keeps its period size.
   routing fixes: good answers from 314 to 359 of 453 (69.3% to 79.2%), wrong 9 to 0, off-topic 25 to 13, silence where an
   answer was due 92 to 70, clunky 21 to 16; where to level 45 of 45, trainers 29 of 29; the holdout from 40 to 49 of 60.
   `bench_ratchet.json` tightened to these counts. `UT_ChatShapes122`. **Tests only.**
+- **Chat polish: replies stitched together read as one line** (fixes F8-F10 of the audit). A lore line that opens with
+  its own question ("who is eraliwyr? ...") answers only that question, and without its opening (`LoreChat.FitAnswer`).
+  No laugh is tacked onto a "dunno", a warning, a death, a raid line or a lore line (`AutonomousBotVoiceCorpus.IsSerious`,
+  kind `lore`). A tidy writer capitalizes the world's names ("The armsman trainer in Camelot", `AutonomousChatNames`, ported
+  to `voice_style.py`). 99 fluff and non-answer reply lines were deleted, 38 rewritten and 26 written to carry a fact (`{zone}`,
+  `{level}`, `{class}`) or a real pointer (reply lines 1,239 to 1,166; fluff 65 to 0; non-answers 73 to 5, the short honest
+  "not sure" set kept for tells). A property test (`UT_ChatStitching`) runs every
+  stitched fragment through every style and the scorer's CLUNKY checks (`ChatClunky`, kept equal to `chat_scorers.py` by
+  `clunky_cases.json`). Bench on top of the routing and shapes fixes: good answers 359 to 361 of 453,
+  clunky 16 to 0, padded 8 to 4, non-answers 1 to 0, fluff 2 to 1, silence unchanged at 70; the holdout 49 to 50 of 60,
+  clunky 3 to 0. `bench_ratchet.json` tightened to these counts. **Tests only.**
 - **The knowledge holes (audit F2, C8):** bots now answer where the realm sells potions (nobody does: alchemists make
   them), dyes, poison, spellcraft gems, crafting tools and materials, bags (there are none: the bank), where to sell loot
   and where the Realm Exchange is; who sells horse tickets; how to get into Darkness Falls (each realm's home entrance and

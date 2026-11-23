@@ -108,6 +108,14 @@ class Clunky(unittest.TestCase):
         self.assertIn('contradicts_itself', self.codes('yes, its open. no, its not'))
         self.assertIn('tense', self.codes('did you went there'))
 
+    def test_shared_cases(self):
+        # tests/clunky_cases.json is also run through the C# port of clunky_issues (UT_ChatStitching), so the server's stitching
+        # property test checks what this scorer checks.
+        cases = json.loads((HERE / 'clunky_cases.json').read_text(encoding='utf-8'))
+        self.assertGreater(len(cases), 40)
+        for text, codes in cases:
+            self.assertEqual(sorted({c for c, _ in cs.clunky_issues(text)}), codes, text)
+
 
 class Flags(unittest.TestCase):
     def test_echo(self):

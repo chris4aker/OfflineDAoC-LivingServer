@@ -5,7 +5,10 @@ reference: when Style changes, change this file the same way. Both run the cases
 (tests/test_chat_rules.py here, UT_ChatAuditVoice.TheStyleCasesMatchThePythonPort in the server tests). The typing habits (AutonomousChatIdiolect)
 are not ported; they never capitalise, stop or add a laugh to a line that already has one.
 """
+import functools
+import json
 import re
+from pathlib import Path
 
 MAX_LENGTH = 160  # AutonomousBotVoiceCorpus.MaxLength
 
@@ -18,7 +21,7 @@ CHAT_TOKENS = {
     'wts', 'wtb', 'wtt', 'lf', 'lf1m', 'lf2m', 'lf3m', 'lf4m', 'pc', 'sm', 'zerk', 'any1', 'ne1', 'gtg', 'bbl', 'bio', 'rdy',
     'plz', 'pls',
 }
-NO_EMOTE_KINDS = {'spam', 'alarm', 'rez_ask', 'death', 'news', 'combat', 'roleplay', 'beggar'}
+NO_EMOTE_KINDS = {'spam', 'alarm', 'rez_ask', 'death', 'news', 'combat', 'roleplay', 'beggar', 'lore'}
 FUNCTIONAL_RE = re.compile(r"(?<![a-z0-9])(wts|wtb|wtt|lfg|lfm|lf|lf[1-7]m|pc|pst|inc|/send|/tell|/t|/gu|cc'?d|oom|rdy|bio)(?![a-z0-9])",
                            re.IGNORECASE)
 LAUGH_RE = re.compile(r'(?<![a-z])(lol|lmao|rofl|haha+|hehe+|heh|ha|hah)(?![a-z])|[:;]-?[)(PpDdOo/\\|]|\^\^|<g>', re.IGNORECASE)
@@ -40,8 +43,140 @@ def is_shouted(text):
     return letters >= 6 and upper >= letters * 0.6
 
 
+# Chat audit 1.2.2 (C10, fix F9): AutonomousBotVoiceCorpus.SeriousWords and AsksAndAnswers.
+SERIOUS_RE = re.compile(
+    r"(?<![a-z])(dunno|idk|not sure|no idea|no clue|beats me|ask around|dont craft|wish i knew|who knows|hard to say|cant say|can't say|couldnt tell|couldn't tell|"
+    r"dont know|don't know|cant heal|cant rez|no rez|careful|watch out|watch ur back|watch your back|beware|stay away|dont go alone|"
+    r"don't go alone|full raid|needs a raid|need a raid|bring a raid|wipe|wipes|wiped|died|dead|die|dies|death|deadly|dangerous|"
+    r"cant go|can't go|trust nothing|careless|raid|rip|sorry for your loss)(?![a-z])", re.IGNORECASE)
+ASKS_AND_ANSWERS_RE = re.compile(r'^[^?]{2,60}\?\s+\S+\s+\S+\s+\S')
+
+
+ASKS_ONLY_RE = re.compile(
+    r"^\W*(whats|what's|what s|what is|who is|whos|who's|who holds|where is|wheres|where's|where s|is the|is it|how do|how is|why is)\b[^?]{0,48}\?\W*$",
+    re.IGNORECASE)
+
+
+def is_serious(text):
+    """A line no laugh is tacked onto: a "dunno", a warning, a death, an answer that says the question back first, or a
+    question that opens with a question word ("where's ur body?")."""
+    return bool(text) and bool(SERIOUS_RE.search(text) or ASKS_AND_ANSWERS_RE.search(text) or ASKS_ONLY_RE.search(text))
+
+
 def takes_emote(kind, text):
-    return kind not in NO_EMOTE_KINDS and not is_functional(text) and not has_laugh(text) and not is_shouted(text)
+    return kind not in NO_EMOTE_KINDS and not is_functional(text) and not has_laugh(text) and not is_shouted(text) and not is_serious(text)
+
+
+# ---- names (chat audit 1.2.2, C11, fix F10): AutonomousChatNames --------------------------------------------------------------
+
+ROOT = Path(__file__).resolve().parents[2]
+SMALL = {'of', 'the', 'na', 'an', 'a', 'and', 'in', 'on', 'at'}
+PLACE_STOP = {'barrows', 'coruscating', 'hills', 'plains', 'marsh', 'wall', 'hall', 'keep', 'mine', 'mines', 'tomb', 'cave', 'caves',
+              'forest', 'lair', 'den', 'gate', 'city'}
+COMMON_WORDS = set('''
+air alchemist ambassador ancient annihilator apprentice archivist archwizard bane bartender black blight blue bound brave broodmother burr
+cabalist cackler captain chamberlain champion chancellor chief chieftain chosen clan cluster conqueror conservator cook corrupt council
+courier crafter crypt dagger den destroyer director dreaded duke earl earth elder emperor empowered energy enlightened eye eyed eyes fairy
+faerie fanged fester field fire flame forgotten frat gatekeeper geomancer giant glacier glimmer gnat grand grant green grim gruff grunge
+guard guardian hand heavy herald high hills hope host household i inquisitors isolationist fate's king's marshal's mutilators icelord
+jailer king knight knights lad lady lair lairmaster leader lecherous legendary legion lich lieutenant lieutenants lord lords magister mark
+marquis marsh marshal masher master matriarch matron maw mechanism melancholic metal mighty mistress monger mouth necromantic oak old
+organic overman overseer pain pathfinder patrol pet priestess primal prince princess protector prototype provisioner purity queen quiet
+ranger reckoner red revenant rob rose runes ruthless sacristan saffron scratch seer sergeant shade shaman silencer silver sister skeletal
+smasher soul spectral spirit spiritmaster sporite stripe summoned summoner supply table thane throttler tine touched tower traitor treefall
+tusker twirl undead underviewer ursine viewer warlord water weaponmaster webweaver wight winter wizard wraith wrath wretch
+'''.split())
+BOSS_ALLOW = {'legion', 'green knight'}
+NAME_SHAPE_RE = re.compile(r"^[A-Za-z' ]+$")
+TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z']*")
+
+
+def title(phrase):
+    words = (phrase or '').split()
+    return ' '.join(w if i and w in SMALL else w[0].upper() + w[1:] for i, w in enumerate(words))
+
+
+def _strip_the(phrase):
+    return phrase[4:] if phrase.lower().startswith('the ') else phrase
+
+
+def build_names(places, locations, bosses):
+    """AutonomousChatNames.Build: places are dicts of places.json; locations and bosses are (name, aliases) pairs of the bible."""
+    names = {}
+
+    def add(cased):
+        cased = re.sub(r'\s+', ' ', _strip_the((cased or '').strip()))
+        if len(cased) < 4 or not NAME_SHAPE_RE.match(cased):
+            return
+        names.setdefault(cased.lower(), cased)
+    for realm in ('Albion', 'Midgard', 'Hibernia', 'Avalon'):
+        add(realm)
+    for name, _aliases in locations:
+        add(name)
+    for place in places:
+        for phrase in [place['key']] + list(place.get('aliases') or []):
+            plain = _strip_the((phrase or '').strip().lower())
+            if ' ' not in plain and plain in PLACE_STOP:
+                continue
+            add(title(plain))
+    for name, aliases in bosses:
+        for phrase in [name] + [a for a in aliases or [] if not a.lower().startswith('the ')]:
+            plain = _strip_the((phrase or '').strip())
+            lower = plain.lower()
+            if lower in BOSS_ALLOW or any(w not in SMALL and w not in COMMON_WORDS for w in lower.split()):
+                add(plain if any(c.isupper() for c in plain) else title(plain))
+    return names
+
+
+@functools.lru_cache(maxsize=1)
+def proper_names():
+    """The world's names from the repository's data (places.json and the lore bible), as the server builds them."""
+    auto = ROOT / 'source/server/GameServer/bots/autonomous'
+    places = json.loads((auto / 'data/chat/places.json').read_text(encoding='utf-8'))['places']
+
+    def read(folder):
+        out = []
+        for path in sorted((auto / 'data/lore' / folder).glob('*.json')):
+            d = json.loads(path.read_text(encoding='utf-8'))
+            out.append((d.get('name', ''), d.get('aliases') or []))
+        return out
+    return build_names(places, read('locations'), read('bosses'))
+
+
+def capitalize_names(text, names=None):
+    """AutonomousChatNames.Capitalize: every name in its capitals, the longest first; a typed capital is kept."""
+    names = proper_names() if names is None else names
+    if not text or not names:
+        return text
+    longest = max(k.count(' ') + 1 for k in names)
+    tokens = list(TOKEN_RE.finditer(text))
+    out, written, i = [], 0, 0
+    while i < len(tokens):
+        cased, taken = None, 0
+        for n in range(min(longest, len(tokens) - i), 0, -1):
+            if any(tokens[k + 1].start() != tokens[k].end() + 1 or text[tokens[k].end()] != ' ' for k in range(i, i + n - 1)):
+                continue
+            phrase = ' '.join(tokens[k].group(0).lower() for k in range(i, i + n))
+            if phrase in names:
+                cased, taken = names[phrase], n
+                break
+            if phrase.endswith("'s") and phrase[:-2] in names:
+                cased, taken = names[phrase[:-2]] + "'s", n
+                break
+        if cased is None:
+            i += 1
+            continue
+        words = cased.split(' ')
+        out.append(text[written:tokens[i].start()])
+        said = []
+        for k in range(taken):
+            typed, word = tokens[i + k].group(0), words[k]
+            said.append(word[0].upper() + word[1:] if typed[0].isupper() else word)
+        out.append(' '.join(said))
+        written = tokens[i + taken - 1].end()
+        i += taken
+    out.append(text[written:])
+    return ''.join(out)
 
 
 def is_comma_list(text):
@@ -98,9 +233,13 @@ def style(text, voice, rng, kind=None, emote=None):
     may = takes_emote(kind, text)
     draw = (rng.random() < voice.get('emote_chance', 0)) if emote is None else emote
     if may and voice.get('emotes') and voice.get('emote_chance') and draw:
+        if result.endswith('.') and not result.endswith('..'):
+            result = result[:-1]
         result += ' ' + rng.choice(voice['emotes'])
     if voice.get('capitalize') and result and not chat_token:
         result = result[0].upper() + result[1:]
+    if voice.get('capitalize') and not chat_token:
+        result = capitalize_names(result)
     if voice.get('capitalize_sentences') and not chat_token:
         result = SENTENCE_START_RE.sub(lambda m: m.group(0) if m.group(2) in CHAT_TOKENS and m.group(2) not in SENTENCE_WORDS else m.group(1) + m.group(2)[0].upper() + m.group(2)[1:], result)
     if voice.get('end_period') and result and not chat_token and len(result.split()) > 3:

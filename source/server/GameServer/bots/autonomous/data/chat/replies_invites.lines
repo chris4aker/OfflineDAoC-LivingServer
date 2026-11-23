@@ -204,25 +204,14 @@ already have one, gl though
 @answers ask
 @who *
 no idea sorry
-hm, no clue there
 not sure
 dunno
-beats me
 no clue
-i was wondering that too
-hmm not sure
-someone said something about that earlier
 cant help there sorry
-no idea, i just got here
 @answers ask_know
-pretty sure yes but dont quote me
-i think so?
 @answers ask
 couldnt say
-not a clue honestly
-wish i knew
 @answers ask,ask_where,ask_advice
-ask around maybe
 @answers ask,ask_advice
 maybe ask a trainer
 @answers ask,ask_where
@@ -234,8 +223,7 @@ try asking a guard
 @who *
 follow the road
 the guards can point you there
-ask a guard, they know the way
-no idea where that is
+the guards at the gate know the way
 near {zone} i think
 take the horse from {capital}
 the stable master can get you most of the way
@@ -244,8 +232,7 @@ north of town, keep going
 i got lost there too
 somewhere past {camp}
 a guard can point you, i think
-cant remember the way sorry
-out the gate, then ask a guard
+out the gate, then the guards point the way
 same area as {camp} i think
 long way from here, bring a friend
 @who Explorer
@@ -274,7 +261,7 @@ patience mostly
 good luck with that one
 @answers ask_advice,ask_opinion
 @intent classtalk
-depends on what you want
+worth it if you like how it plays
 @intent
 @who Leveler
 whatever gets the most xp per hour
@@ -285,17 +272,12 @@ lots of practice and lots of coin
 @kind reply
 @answers ask_opinion
 @who *
-depends
 imo yes
 imo no
 worth it imo
 not worth it
-yes, do it
-i would
 i wouldnt
-hard to say
 eh, either way
-go for it
 personal taste really
 honestly both are fine
 i liked it
@@ -329,7 +311,6 @@ might be free soon
 pass, sorry
 count me out this time
 nope, sorry
-depends, what for?
 @needs at_camp
 cant leave the camp right now
 @needs traveling

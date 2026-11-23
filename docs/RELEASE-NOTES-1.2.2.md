@@ -64,16 +64,18 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
 ### The Green Knight: a new plan against his trees
 
 A tree grows at every raider near him, keeps growing every half minute, and stops a healer or caster it hits from
-casting. A heal on someone a tree is hitting draws the tree onto the healer. The bots now:
-- **send the casters and archers who can't hit a group of trees out of reach**, where no tree grows at them;
-- **keep the healers together, away from him and his strike around his target**. They heal his target first, and
-  leave someone a tree is hitting until they are under half;
-- **have the melee mark every tree near them**, a healer's or caster's tree first, then go back to him and finish the
-  trees on them once those are half dead;
-- **keep the casters with area spells close, guarded by two melee of their group**. They burn the marked trees, but
-  only while their spells won't draw the trees onto themselves.
+casting. A heal on someone a tree is hitting draws the tree onto the healer. Now every raider fights from where its
+spells, arrows and heals reach:
+- **The healers stand together away from him**, out of his strike around his tank and close enough for the melee to
+  pull trees off them. Four of them keep his target up first.
+- **The melee mark every tree near them**, healers' and casters' first, then go back to him.
+- **Area casters burn the marked trees**, guarded by a melee of their group. Other casters and archers shoot the marked
+  trees they can safely take, and him otherwise. Theurgists send their elementals at the trees on the healers and
+  casters.
+- **Necromancers, Cabalists and other pet owners stand back** where no tree grows at them, and send their pets in.
+- **When he walks off to heal, the raid holds its ground** and finishes the trees until he comes back.
 
-His trees still stop at 70 a wave.
+His trees still stop at 70 a wave. He is still the hardest fight for a raid of 40, and we're still working on him.
 
 ### Good to know
 
@@ -119,8 +121,10 @@ His trees still stop at 70 a wave.
   the realm tells you; ask where to level and you hear a real zone for your level; ask where a class trains and you hear
   the right trainer, or that it's another realm's class; a question nobody can answer is left alone instead of drawing a
   "dunno".
-- **Bots know the realm better:** ask in /faction where to buy dyes, how to get into Darkness Falls or how to fix your
-  NPC faction, and a bot names who and where.
+- **Smoother bot answers:** a bot no longer laughs after "dunno" or a warning, answers a lore question without asking
+  it back first, and a bot that writes neatly writes "Camelot" and "Tir na Nog" with their capitals.
+- **Bots know the realm better:** ask in /faction where to buy dyes or poison, how to reach the frontier or Darkness
+  Falls, who teaches a craft or how to fix your NPC faction, and a bot names who and where.
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
 - **A fallen bot that leaves is gone from your screen.** When a dead bot logs out or leaves for another region, its
   body no longer stays lying where it fell.

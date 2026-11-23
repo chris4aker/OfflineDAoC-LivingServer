@@ -13,7 +13,7 @@ if __name__ == "__main__":
     rules = [int(x) for x in sys.argv[2].split(",")]
     dpss = [float(x) for x in sys.argv[3].split(",")]
     seeds = int(sys.argv[4])
-    cases = sys.argv[5].split(",") if len(sys.argv) > 5 else ["high", "low"]
+    cases = sys.argv[5].split(",") if len(sys.argv) > 5 else ["unbuffed", "buffed"]
     jobs = [(s, r, n, d, c) for r in rules for n in sizes for d in dpss for c in cases for s in range(seeds)]
     with Pool(2) as p:
         res = p.map(job, jobs, chunksize=4)

@@ -83,7 +83,7 @@ public static class LoreLegends
         VC.Line[] pool = LinesFor(corpus, subject == "atlantis" ? AtlantisTopic : BelowTopic, realm);
         if (pool.Length == 0)
             return false;
-        answer = pool[(random ?? Random.Shared).Next(pool.Length)].Text;
+        answer = LoreChat.Said(pool[(random ?? Random.Shared).Next(pool.Length)].Text);
         return answer.Length > 0;
     }
 

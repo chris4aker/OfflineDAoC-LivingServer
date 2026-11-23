@@ -1,0 +1,286 @@
+[
+ [
+  "the the trainer is there",
+  [
+   "doubled_word"
+  ]
+ ],
+ [
+  "ha ha",
+  []
+ ],
+ [
+  "a armsman trainer",
+  [
+   "a_an"
+  ]
+ ],
+ [
+  "an sword for you",
+  [
+   "a_an"
+  ]
+ ],
+ [
+  "an 8 pack",
+  []
+ ],
+ [
+  "a hour ago",
+  [
+   "a_an"
+  ]
+ ],
+ [
+  "an rvr guild",
+  []
+ ],
+ [
+  "a unique drop",
+  []
+ ],
+ [
+  "1 levels to go",
+  [
+   "number_agreement"
+  ]
+ ],
+ [
+  "three level left",
+  [
+   "number_agreement"
+  ]
+ ],
+ [
+  "say {player} hi",
+  [
+   "unfilled_slot"
+  ]
+ ],
+ [
+  "null",
+  [
+   "unfilled_slot"
+  ]
+ ],
+ [
+  "go to the keep and",
+  [
+   "dangling_connector"
+  ]
+ ],
+ [
+  "meet me at the,",
+  [
+   "dangling_connector"
+  ]
+ ],
+ [
+  "heal and, buff",
+  [
+   "dangling_connector"
+  ]
+ ],
+ [
+  "hey , there",
+  [
+   "punctuation"
+  ]
+ ],
+ [
+  "wait,, what",
+  [
+   "punctuation"
+  ]
+ ],
+ [
+  "bring a group to the keep then bring a group to the keep",
+  [
+   "repeated_clause"
+  ]
+ ],
+ [
+  "yes its open. no, its closed.",
+  [
+   "contradicts_itself"
+  ]
+ ],
+ [
+  "did you went there",
+  [
+   "tense"
+  ]
+ ],
+ [
+  "not sure tbh haha",
+  [
+   "tacked_laugh"
+  ]
+ ],
+ [
+  "no clue, sry haha",
+  [
+   "tacked_laugh"
+  ]
+ ],
+ [
+  "good luck out there. :)",
+  [
+   "tacked_laugh"
+  ]
+ ],
+ [
+  "thats a full raid, dont go alone :)",
+  [
+   "tacked_laugh"
+  ]
+ ],
+ [
+  "bog of cullen? take a horse from a stable master :P",
+  [
+   "tacked_laugh"
+  ]
+ ],
+ [
+  "nice one lol",
+  []
+ ],
+ [
+  "long walk back to the camp heh",
+  []
+ ],
+ [
+  "who is eraliwyr? the alchemist for viraniels plague",
+  [
+   "own_question"
+  ]
+ ],
+ [
+  "spindelhalla? spider dungeon",
+  []
+ ],
+ [
+  "The armsman trainer in camelot",
+  [
+   "case_mix"
+  ]
+ ],
+ [
+  "The armsman trainer in Camelot.",
+  []
+ ],
+ [
+  "the trainer in camelot",
+  []
+ ],
+ [
+  "Saw lady nimue in camelot hills once",
+  [
+   "case_mix"
+  ]
+ ],
+ [
+  "Wynn, the trainer is in Camelot.",
+  []
+ ],
+ [
+  "had a pull, the trainer is in camelot",
+  []
+ ],
+ [
+  "sorry, was fighting. the trainer is in camelot",
+  []
+ ],
+ [
+  "dunno",
+  []
+ ],
+ [
+  "hmm dunno :P",
+  [
+   "tacked_laugh"
+  ]
+ ],
+ [
+  "rip lol",
+  []
+ ],
+ [
+  "4 v 1, dead lol",
+  [
+   "tacked_laugh"
+  ]
+ ],
+ [
+  "whats in the cursed forest? juggernaut and more",
+  [
+   "own_question"
+  ]
+ ],
+ [
+  "is the lair hard? the trash is fine",
+  [
+   "own_question"
+  ]
+ ],
+ [
+  "ty ty",
+  []
+ ],
+ [
+  "lol lol",
+  []
+ ],
+ [
+  "a eldritch",
+  [
+   "a_an"
+  ]
+ ],
+ [
+  "an eldritch",
+  []
+ ],
+ [
+  "a one-handed sword",
+  []
+ ],
+ [
+  "an uber drop",
+  []
+ ],
+ [
+  "no rez on a armsman",
+  [
+   "a_an"
+  ]
+ ],
+ [
+  "no rez on an armsman",
+  []
+ ],
+ [
+  "its in Connacht",
+  []
+ ],
+ [
+  "",
+  []
+ ],
+ [
+  "The Bog of Cullen is south.",
+  []
+ ],
+ [
+  "Three princes sit under legion",
+  [
+   "case_mix"
+  ]
+ ],
+ [
+  "Krondon? Ogre hall under avalon.",
+  [
+   "case_mix"
+  ]
+ ]
+]
