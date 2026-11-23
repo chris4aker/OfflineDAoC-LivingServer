@@ -25,7 +25,41 @@ otherwise.
   answer a line said to the bot that doesn't laugh itself, and the short answer for a tell ends on "ya", "k", "oh ok", "ah
   ok" or "gotcha" instead of "heh" or "lol"; "im a cleric" and "im 5" get "nice" or "cool". `UT_TellMeetup123`. **Tests
   only.**
+- **"Where is that?" in a bot-led group gets where it is** (the owner's game on 1.2.2, 2026-11-23: the leader's "welcome!
+  meet up at Humberton Castle", the player's "where is that", a groupmate's "not sure tbh", then "where is Humberton
+  Castle" and another's "Dumbledork, stablemaster is your friend, saves a lot of running"). Three causes:
+  - The leader's welcome went out through `Speak` and was never noted in the group's conversation, so "where is that" had
+    nothing to complete. Now the place in a leader's welcome, meet-up reminder or raid welcome is the place in play
+    (`ChatConversations.NotePlace`), the leader has the floor, and "where is that" completes to "where is Humberton Castle".
+  - The knowledge lookup's places come from zones, NPCs and mobs, not towns, so Humberton Castle was unknown. A town of
+    the world (a named circle of town size in the Area table: Humberton Castle, Cotswold Village, Haggerfel, Ardee...) is
+    now answered from the world, before the lore and the advice lines (`AutonomousChatKnowledge.TryAnswerTown`): its zone,
+    and from the asker the way and roughly how far ("Humberton Castle is in Black Mtns. South, head west"); a stable master
+    only when a route of the asker's realm ends there. Only a line that just asks the way counts ("where can i buy dyes in
+    mularn" keeps its own answer). "where?" after a bot's line that names a town answers the same.
+  - The group's "dunno" rescue answered a question of where; it never does now, in any channel
+    (`AutonomousChatReplyBudget.RescuesWithDunno(channel, message)`). The remembered travel lines "stablemaster is your
+    friend" and "not sure {player}, someone else might know" are gone: advice in place of an answer.
+  - The bot that named the place answers first (`AutonomousBotGroupChatter.AnswererFirst`).
+  - The chat bench asks seven town questions (`/group` and `/faction`), and its `/group` path now runs the knowledge
+    lookup first, as the live path does. `UT_PartyWhere123`. **Tests only.**
 
+- **"where do I choose advanced class" gets an answer** (the owner's game on 1.2.2: a level 5 Albion caster asked it in
+  /faction and nobody answered). `AutonomousChatClassChoice`, from the server's class tree (classic and Shrouded Isles
+  classes only): at 5 the character picks its class from that class's trainer, in the capital; the asker's own base class
+  gives its options ("for elementalist thats wizard or theurgist"), a named class gets its trainer, a class of another base
+  or realm is said as such, and a promoted character is told it already chose. Before the lore and the guide in the
+  knowledge lookup. The bench asks seven class questions. **Tests only.**
+- **No "dunno" from a bot to another bot** (the owner's game: "puny skeletons drop anything good?" drew "dunno havent camped
+  them"). A field thread's answer that says it doesn't know ("dunno", "idk", "no idea", "never camped it") is left unsaid;
+  with nothing else to say the bot stays quiet (`AutonomousChatFieldTalk.IsNonAnswer`). **Tests only.**
+- **Group talk stays in the group** (the owner's game: "nobody has died yet, lets keep it that way" and "nice pulls everyone,
+  thats how it should be" in /faction, one answered "heh"). The /faction opener's filter now leaves out the group-talk
+  topic and any line for a bot in a group that speaks to its listeners ("sorry all, my bad")
+  (`AutonomousChatFiller.SaidToTheGroup`). They still go to /say for a bot group near a player. `UT_FactionChat123`.
+  **Tests only.**
+- Not changed: "www.g0ldbucket.c0m" is the gold spammer of Server life (`bot_living_characters`, on by default since 1.2):
+  a made-up site spelled with zeros, banned a few minutes later.
 
 **The server**
 - **No endurance regeneration at all** (a r/daoc report on 1.2.1, 0.37b: sitting alone in Camelot with Tireless and a

@@ -31,8 +31,20 @@ public static class AutonomousChatFiller
     {
         bool crafted = faction && random.NextDouble() < CraftedShare;
         bool musing = faction && random.NextDouble() < MusingShare;
-        return line => AmbientFits(line, crafted, musing);
+        return line => AmbientFits(line, crafted, musing) && !(faction && SaidToTheGroup(line));
     }
+
+    private static readonly System.Text.RegularExpressions.Regex AddressesListeners = new(
+        @"\b(everyone|all|guys|lets|you all|yall|ur|you)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+    /// <summary>
+    /// A line said to the bot's own group, never to the realm (1.2.3, the owner's game on 1.2.2: "nobody has died yet, lets keep it
+    /// that way" and "nice pulls everyone, thats how it should be" came out in /faction): the group-talk topic, and any line for a
+    /// bot in a group that speaks to its listeners ("sorry all, my bad"). Pure.
+    /// </summary>
+    public static bool SaidToTheGroup(VC.Line line) =>
+        line != null && (line.Topic == "group" ||
+                         line.Needs != null && line.Needs.Contains("in_group", StringComparer.Ordinal) && AddressesListeners.IsMatch(line.Text ?? string.Empty));
 
     private static bool AmbientFits(VC.Line line, bool crafted, bool musing)
     {

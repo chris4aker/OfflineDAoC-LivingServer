@@ -116,8 +116,10 @@ not bad {player}, still grinding away
 @intent travel
 @needs knows_player
 @who *
-{player}, stablemaster is your friend, saves a lot of running
-not sure {player}, someone else might know
+# 1.2.3: no advice in place of an answer (a stable tip to "where is Humberton Castle"). A remembered player
+# gets a question back; where a place is comes from the knowledge lookup.
+{player}, where u headed?
+where to {player}?
 @kind reply
 @topic player
 @intent help

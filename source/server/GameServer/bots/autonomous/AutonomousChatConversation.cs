@@ -143,6 +143,18 @@ public sealed class ChatConversations
         }
     }
 
+    /// <summary>
+    /// The place in play in a channel's conversation, set by name (1.2.3: a bot-led group's "welcome! meet up at Humberton
+    /// Castle" names a town the places catalog doesn't hold, so "where is that" had nothing to complete and drew "not sure tbh").
+    /// </summary>
+    public void NotePlace(string player, string channel, string place, long now)
+    {
+        if (string.IsNullOrEmpty(player) || string.IsNullOrEmpty(channel) || string.IsNullOrWhiteSpace(place))
+            return;
+        lock (_byKey)
+            Get(ChannelKey(player, channel), now, true).Place = place.Trim();
+    }
+
     private static void Add(Conversation c, Turn turn)
     {
         c.Turns.Add(turn);

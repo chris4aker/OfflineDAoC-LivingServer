@@ -259,9 +259,13 @@ public static class AutonomousBotGroupChatter
         // "eithne what spec r u": the name says who it is for (the holdout check).
         if (named.Length > 0 && AutonomousChatThreads.WithoutName(message, named[0].Name) is { Length: > 0 } unnamed)
             message = unnamed;
-        if (AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge))
+        // 1.2.3 (owner's game): "where is that" right after the leader's "meet up at Humberton Castle" is completed from the
+        // group's conversation before the knowledge lookup sees it ("where is Humberton Castle"), and the bot that named the
+        // place answers it.
+        string resolved = ResolvedInGroup(player, group, message, out long floorBot);
+        if (AutonomousChatKnowledge.TryAnswer(player, resolved, out string knowledge))
         {
-            GameBot answerer = pool[0];
+            GameBot answerer = AnswererFirst(pool, floorBot, bot => bot.DatabaseID)[0];
             AutonomousLivingServer.Later(answerer, AutonomousBotChatCoordinator.ReplyDelayMs(knowledge, 0, Random.Shared),
                 () => answerer.Group == group && answerer.IsAlive, () => Send(answerer, AutonomousBotVoices.StyleFor(answerer, knowledge), "", player.Name));
             return;
@@ -332,6 +336,37 @@ public static class AutonomousBotGroupChatter
     /// line keeps the whole pool. Pure.</summary>
     public static T[] CongratulatedOnly<T>(eAutonomousChatIntent intent, T[] pool, Func<T, bool> justLeveled) =>
         intent == eAutonomousChatIntent.Congrats ? pool.Where(justLeveled).ToArray() : pool;
+
+    /// <summary>
+    /// The player's /group line completed from the group's conversation ("where is that" after the leader's "meet up at Humberton
+    /// Castle" -> "where is Humberton Castle"), and the bot that has the floor there (0: none).
+    /// </summary>
+    private static string ResolvedInGroup(GamePlayer player, Group group, string message, out long floorBot)
+    {
+        floorBot = 0;
+        if (player == null || group == null)
+            return message;
+        string key = AutonomousChatThreads.GroupChannel(group);
+        long now = GameLoop.GameLoopTime;
+        floorBot = ChatConversations.Live.FloorHolder(player.Name, key, now);
+        return ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, key, now));
+    }
+
+    /// <summary>The pool with the bot that has the floor (the leader that named the place) first, when it is in it. Pure.</summary>
+    public static T[] AnswererFirst<T>(T[] pool, long floorBot, Func<T, long> idOf)
+    {
+        if (pool == null || pool.Length < 2 || floorBot <= 0)
+            return pool;
+        int at = Array.FindIndex(pool, bot => bot != null && idOf(bot) == floorBot);
+        if (at <= 0)
+            return pool;
+        var ordered = new T[pool.Length];
+        ordered[0] = pool[at];
+        for (int i = 0, j = 1; i < pool.Length; i++)
+            if (i != at)
+                ordered[j++] = pool[i];
+        return ordered;
+    }
 
     /// <summary>A bot's line in /group. The talking update: remembered in the group's thread (with what it invites, and the
     /// player it answered), so "why?", "ty" and answers to its questions follow on as in /faction.</summary>
