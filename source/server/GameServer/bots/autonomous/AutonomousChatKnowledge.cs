@@ -476,7 +476,9 @@ public static class AutonomousChatKnowledge
     /// </summary>
     public static string GenericTrainerAnswer(eRealm realm, string className, Random random, bool own = true)
     {
-        string cap = AutonomousChatFieldTalk.CapitalWord(realm), cls = string.IsNullOrWhiteSpace(className) ? "class" : className.Trim().ToLowerInvariant();
+        // The capital as its name is written ("Camelot", "Tir na Nog"): a voice that capitalizes the line keeps it whole (C11).
+        string cap = AutonomousBotVoices.CapitalOf(realm) ?? AutonomousChatFieldTalk.CapitalWord(realm);
+        string cls = string.IsNullOrWhiteSpace(className) ? "class" : className.Trim().ToLowerInvariant();
         if (own)
             return random.Next(3) switch
             {

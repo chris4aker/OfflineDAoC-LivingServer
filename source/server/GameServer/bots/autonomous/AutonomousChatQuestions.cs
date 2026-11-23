@@ -399,6 +399,9 @@ public static class AutonomousChatQuestions
                 {
                     string targets = AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant());
                     string at = string.IsNullOrEmpty(bot.Zone) ? null : bot.Zone;
+                    // "lyonesse lurkers in Lyonesse": the zone's name keeps its capitals inside the monster's (C11).
+                    if (at != null)
+                        targets = Regex.Replace(targets, $@"\b{Regex.Escape(at.ToLowerInvariant())}\b", at);
                     if (bot.GroupSize > 1)
                         return at == null ? $"grouped, killing {targets}" : random.Next(2) == 0 ? $"grouped in {at}, on {targets}" : $"killing {targets} in {at} with a group";
                     return at == null ? $"killing {targets}"

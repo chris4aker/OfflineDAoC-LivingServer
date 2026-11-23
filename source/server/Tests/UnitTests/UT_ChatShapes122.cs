@@ -133,23 +133,23 @@ public class UT_ChatShapes122
                 eRealm realm = AutonomousChatGear.RealmOf(cls);
                 string own = Knowledge.GenericTrainerAnswer(realm, cls, random, own: true);
                 Assert.That(own, Does.Not.Match(@"\bspells?\b"), own);
-                Assert.That(own, Does.Contain(cls.ToLowerInvariant()).And.Contain(Field.CapitalWord(realm)));
+                Assert.That(own, Does.Contain(cls.ToLowerInvariant()).And.Contain(AutonomousBotVoices.CapitalOf(realm)));
                 string other = Knowledge.GenericTrainerAnswer(realm, cls, random, own: false);
                 Assert.That(other, Does.Not.Match(@"\b(your|ur)\b|\bspells?\b"), other);
-                Assert.That(other, Does.Contain(Field.CapitalWord(realm)));
+                Assert.That(other, Does.Contain(AutonomousBotVoices.CapitalOf(realm)));
             }
             // "who trains minstrels?" from a sorcerer: the minstrel trainer, not "your minstrel trainer".
             string minstrel = Knowledge.TrainerAnswerFor(eRealm.Albion, "Minstrel", "Sorcerer", random);
             Assert.That(minstrel, Does.Not.Match(@"\b(your|ur)\b"), minstrel);
-            Assert.That(minstrel, Does.Contain("camelot"));
+            Assert.That(minstrel, Does.Contain("Camelot"));
             // "where is the armsman trainer?" from an armsman: his own.
             Assert.That(Knowledge.TrainerAnswerFor(eRealm.Albion, "Armsman", "Armsman", random), Does.Contain("armsman").And.Not.Match(@"\bspells?\b"));
             // "where is the blademaster trainer?" in Albion: a Hibernian class, said as such.
             string bm = Knowledge.TrainerAnswerFor(eRealm.Albion, "Blademaster", "Wizard", random);
             Assert.That(bm, Does.Contain("hib"), bm);
-            Assert.That(bm, Does.Not.Contain("camelot"));
+            Assert.That(bm, Does.Not.Contain("camelot").IgnoreCase);
             Assert.That(Knowledge.TrainerAnswerFor(eRealm.Hibernia, "Skald", "Ranger", random), Does.Contain("mid"));
-            Assert.That(Knowledge.TrainerAnswerFor(eRealm.Midgard, null, "Healer", random), Does.Contain("healer").And.Contain("jordheim"));
+            Assert.That(Knowledge.TrainerAnswerFor(eRealm.Midgard, null, "Healer", random), Does.Contain("healer").And.Contain("Jordheim"));
         }
         Assert.That(Knowledge.TrainerAnswerFor(eRealm.Albion, null, null, new Random(1)), Is.Null);
     }

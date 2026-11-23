@@ -67,6 +67,14 @@ public static class AutonomousChatLiveAnswers
             .Select(p => p.Zones.FirstOrDefault() ?? p.Key).FirstOrDefault();
     }
 
+    /// <summary>Whether a dungeon's monsters (places.json "levels") are within four levels of <paramref name="level"/>; a dungeon
+    /// the place data has no levels for fits. Pure.</summary>
+    public static bool DungeonFits(string dungeon, int level, IEnumerable<AutonomousChatPlaces.Place> places = null)
+    {
+        AutonomousChatPlaces.Place place = AutonomousChatQuestions.PlaceNamed(dungeon, places ?? AutonomousChatPlaces.All);
+        return place?.Levels is not { Length: 2 } l || level >= l[0] - 4 && level <= l[1] + 4;
+    }
+
     /// <summary>
     /// The where-to-level answer: <paramref name="zone"/> and <paramref name="dungeon"/> (either may be null), said as people camping
     /// there now only when <paramref name="busy"/> (bots of the level are). A realm other than the asker's is a realm's own zones,
@@ -74,6 +82,10 @@ public static class AutonomousChatLiveAnswers
     /// </summary>
     public static string HuntText(eRealm realm, int level, string zone, string dungeon, bool busy, Random random)
     {
+        // A dungeon whose monsters (places.json, from the world data) are far from the level is left out: "Varulvhamn" at 27
+        // (its monsters are 37-42) read as wrong.
+        if (dungeon != null && !DungeonFits(dungeon, level))
+            dungeon = null;
         if (zone != null && dungeon != null && !zone.Contains(dungeon, StringComparison.OrdinalIgnoreCase))
             return busy
                 ? random.Next(3) switch

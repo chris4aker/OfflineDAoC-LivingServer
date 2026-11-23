@@ -117,8 +117,10 @@ His trees still stop at 70 a wave.
 
 ### Also in 1.2.2
 
-- **Straighter answers in /faction:** ask where to level at your level and the realm names a real zone for it; ask where a
-  class trains and you hear the right trainer, or that it is another realm's class; ask a bot what it is up to and it tells you.
+- **Straighter answers in /faction:** ask what level a place is, who holds Darkness Falls or how long the epic takes, and
+  the realm tells you; ask where to level and you hear a real zone for your level; ask where a class trains and you hear
+  the right trainer, or that it's another realm's class; a question nobody can answer is left alone instead of drawing a
+  "dunno".
 - **The launcher shows your Living Server version:** "LIVING SERVER 1.2.2" where it used to say "VERSION 0.37".
 - **GM `/jump` and bots:** jumping a dead bot tells you why it stays put (its body stays where it fell: raise it there
   first), and a gamebot you jump sets off again from where it lands.
