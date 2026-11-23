@@ -41,8 +41,9 @@ namespace DOL.GS
             public Vector3 At => new(Raider.X, Raider.Y, Raider.Z);
             /// <summary>The raider is the one the target fights, or in its party.</summary>
             public bool Holds => EpicEncounterTactics.Holds(Raider, Target);
-            /// <summary>The raider fights from range (caster, archer) or heals.</summary>
-            public bool AtRange => CanShootFlyers || ClassId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)ClassId);
+            /// <summary>The raider fights from range: a caster, an archer or a healer that stands back (<see cref="FightsFromRange"/>;
+            /// the Paladin, Friar and Warden fight in melee and heal from there).</summary>
+            public bool AtRange => FightsFromRange(CanShootFlyers, ClassId);
             /// <summary>The living NPC of this class near the target (the target itself when it is one), or null.</summary>
             public GameNPC Find(string type) => FindNear(Target, Live, type);
             /// <summary>Every living NPC of this class near the target, nearest the raider first.</summary>

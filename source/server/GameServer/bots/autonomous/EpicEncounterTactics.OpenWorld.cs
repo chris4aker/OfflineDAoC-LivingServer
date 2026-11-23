@@ -70,7 +70,7 @@ namespace DOL.GS
 
         private static Advice? GlacierGiantHealers(RuleContext c)
         {
-            if (!c.Target.InCombat || c.Holds || c.ClassId <= 0 || !BotPartyRoles.IsHealingClass((eCharacterClass)c.ClassId) ||
+            if (!c.Target.InCombat || c.Holds || !IsRangedHealerClass(c.ClassId) ||
                 c.Target.TargetObject is not GameLiving tank || tank == c.Raider)
                 return null;
             return GlacierHealerSpot(c.At, PosOf(c.Target), PosOf(tank), c.Raider.ObjectID) is Vector3 spot

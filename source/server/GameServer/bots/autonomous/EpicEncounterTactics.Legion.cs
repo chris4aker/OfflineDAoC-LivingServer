@@ -158,7 +158,7 @@ namespace DOL.GS
             if (his == c.Raider)
                 return LegionHoldAdvice(c.At, boss, SpawnOf(legion), IsTankLiving(c.Raider)) is Advice hold
                     ? hold with { Target = legion } : null;
-            bool healer = c.ClassId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)c.ClassId);
+            bool healer = IsRangedHealerClass(c.ClassId);
             GameNPC[] souls = LiveRangedAdds(legion, c.Live);
             if (souls.Length > 0)
             {
@@ -169,7 +169,7 @@ namespace DOL.GS
                 // Casters and archers: the catalog's ranged-add rule takes them onto the souls.
                 if (c.AtRange && !healer) return null;
             }
-            // (A paladin heals but tanks: it stays in melee.)
+            // (A paladin, friar or warden heals but fights in melee: AtRange is false for it, it stays on him.)
             if (c.AtRange && !IsTankLiving(c.Raider) && LegionRangedAdvice(c.At, boss, LegionRaidSide, c.Raider.ObjectID) is Advice line)
                 return line with { Target = legion };
             return null;

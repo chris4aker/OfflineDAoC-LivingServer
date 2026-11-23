@@ -284,8 +284,7 @@ namespace DOL.GS
         private static Advice? SacristanAmbush(RuleContext c)
         {
             if (!EpicEncounterMechanics.AllowSacristanPatrol) return null;
-            bool atRange = c.CanShootFlyers || c.ClassId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)c.ClassId);
-            return SacristanAdvice(At(c.Raider), c.Target, c.PartyIndex, atRange);
+            return SacristanAdvice(At(c.Raider), c.Target, c.PartyIndex, c.AtRange);
         }
 
         public static Advice SacristanAdvice(Vector3 raider, GameNPC sacristan, int partyIndex, bool atRange) =>

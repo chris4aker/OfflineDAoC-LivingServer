@@ -68,8 +68,23 @@ namespace DOL.GS
         private static bool RuleOn(string switchName, string boss) =>
             string.IsNullOrEmpty(switchName) || EpicEncounterMechanics.On(switchName, boss);
 
-        private static bool AtRange(bool canShootFlyers, int classId) =>
-            canShootFlyers || classId > 0 && BotPartyRoles.IsHealingClass((eCharacterClass)classId);
+        private static bool AtRange(bool canShootFlyers, int classId) => FightsFromRange(canShootFlyers, classId);
+
+        /// <summary>
+        /// The one test every raid rule uses for where a raider stands (Living Server 1.2.2, raid tactic audit finding 3): it
+        /// fights from range when it is an offensive caster or a dedicated archer (<paramref name="canShootFlyers"/>) or a healer
+        /// that stands back (<see cref="BotPartyRoles.IsRangedHealer"/>: Cleric, Druid, Healer, Shaman). The Paladin, Friar and
+        /// Warden heal but fight in melee (<see cref="BotPartyRoles.IsMeleeHybridHealer"/>): a rule that sent them to a heal
+        /// spot or a ranged line moved them out every turn while their melee chase walked them back in, so they neither
+        /// swung nor held. Rules that only choose a target (healers keep off the add parties) may still ask
+        /// <see cref="BotPartyRoles.IsHealingClass"/>: a melee hybrid heals its party too.
+        /// </summary>
+        public static bool FightsFromRange(bool canShootFlyers, int classId) =>
+            canShootFlyers || IsRangedHealerClass(classId);
+
+        /// <summary>The class (by id; 0: none) is a healer that stands back (<see cref="BotPartyRoles.IsRangedHealer"/>).</summary>
+        public static bool IsRangedHealerClass(int classId) =>
+            classId > 0 && BotPartyRoles.IsRangedHealer((eCharacterClass)classId);
 
         /// <summary>Some wave-2 rule may apply to this raider and target (TryHandle asks it before skipping a target with no
         /// catalog row: a dragon's add while the dragon stares at someone).</summary>
