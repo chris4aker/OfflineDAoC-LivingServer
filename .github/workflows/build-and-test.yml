@@ -162,6 +162,20 @@ jobs:
           path: chat-audit/
           if-no-files-found: warn
 
+      # Realism audit 1.2.3 (report only, draft PR, never merged): UT_EveningTranscripts' rows, printed to the log.
+      - name: Print the evening transcripts (audit, report only)
+        if: always()
+        shell: bash
+        run: |
+          rows=$(find . -path '*evening-transcripts*' -name 'evenings.tsv' | head -n 1 || true)
+          if [ -z "$rows" ]; then
+            echo "::warning title=Evening transcripts::no evenings.tsv found"
+            dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "FullyQualifiedName~UT_EveningTranscripts" 2>&1 | tail -n 60 || true
+            exit 0
+          fi
+          wc -l "$rows"
+          sed 's/^/EVENING_ROW\t/' "$rows"
+
       # 1.2.2 chat audit (docs/bot-voices/CHAT-AUDIT-1.2.2.md): the player questions of tools/bot-voices/eval/player_questions.json
       # answered through the server's own reply path (UT_ChatQuestionBench runs AutonomousChatReplyPath) and scored. Since the 1.2.2
       # fixes it is a ratchet: the build fails when the good share falls or a bad category grows past bench_ratchet.json's caps.
