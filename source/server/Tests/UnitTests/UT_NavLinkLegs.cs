@@ -66,7 +66,7 @@ public class UT_NavLinkLegs
         Assert.Multiple(() =>
         {
             Assert.That(zones, Has.Length.EqualTo(103));
-            Assert.That(df, Is.EqualTo(proofs.RootElement.GetProperty("navSha256").GetString()).IgnoreCase);
+            Assert.That(df, Is.EqualTo(proofs.RootElement.GetProperty("NavSha256").GetString()).IgnoreCase);
             Assert.That(StuckProne(), Has.Count.EqualTo(1262));
         });
     }
