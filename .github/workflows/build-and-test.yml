@@ -161,6 +161,27 @@ jobs:
           path: chat-audit/
           if-no-files-found: warn
 
+      # 1.2.2 chat audit (docs/bot-voices/CHAT-AUDIT-1.2.2.md): the player questions of tools/bot-voices/eval/player_questions.json
+      # answered through the real reply path (UT_ChatQuestionBench) and scored (score_bench.py), and the written lines scanned
+      # for fluff and clunky patterns. Report only for now; it becomes a ratchet after the fixes.
+      - name: Score the chat question bench (report only)
+        if: always()
+        shell: bash
+        run: |
+          replies=$(find . -path '*chat-bench*' -name 'bench-replies.json' | head -n 1 || true)
+          mkdir -p chat-bench
+          if [ -z "$replies" ]; then echo "::warning title=Chat question bench::no bench-replies.json found"; exit 0; fi
+          cp "$replies" chat-bench/
+          python tools/bot-voices/eval/score_bench.py bench "$replies" --github --json chat-bench/bench-score.json --md chat-bench/bench-score.md || echo "::warning title=Chat question bench::the scorer failed"
+          python tools/bot-voices/eval/score_bench.py lines --json chat-bench/lines-scan.json || echo "::warning title=Chat line scan::the scan failed"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chat-bench
+          path: chat-bench/
+          if-no-files-found: warn
+
       # The launcher ships in the build too (its Living Server tab, from 1.1.2 its update check, from 1.2 Host for Friends
       # and Join Friend, from 1.2 also Crafting 2.0's economy page, bot purge and level-50 kit). Their own tests must pass;
       # the rest of the launcher tests run in the informational launcher job below.
