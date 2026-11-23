@@ -442,7 +442,8 @@ namespace DOL.GS.Tests
                                 foreach (Match m in Regex.Matches(piece, @"[.!?] ([A-Z][a-z']*)"))
                                     // Chat audit 1.2.2 (F10): a tidy writer capitalizes the world's names ("Avalon").
                                     if (m.Groups[1].Value != "I" && !m.Groups[1].Value.StartsWith("I'", StringComparison.Ordinal) &&
-                                        !AutonomousChatNames.Names.Values.Any(name => name.Split(' ')[0] == m.Groups[1].Value))
+                                        !AutonomousChatNames.Names.Values.Any(name => name.Split(' ')[0] == (m.Groups[1].Value.EndsWith("'s", StringComparison.Ordinal)
+                                            ? m.Groups[1].Value[..^2] : m.Groups[1].Value)))
                                         Assert.That(filled, Does.Contain(m.Groups[1].Value), "a capital the scene didn't write: " + where);
                                 // 1.2 chat audit (CORPUS-B1-028): a terse writer types no stop, but a sentence break stays a comma
                                 // ("i do both, zerg when i want points", not "i do both zerg when...").
