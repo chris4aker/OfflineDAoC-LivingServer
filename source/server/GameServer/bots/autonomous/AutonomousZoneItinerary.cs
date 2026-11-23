@@ -400,6 +400,26 @@ namespace DOL.GS
             // chain (seam file area ids; several separate real networks share some borders).
             SeamStep[][] areas = SeamAreas(topology, edge, nav);
             List<AutonomousZoneBoundaryRouting.Step> fallbackSeams = null;
+            var reaches = new Dictionary<int, bool>();
+            var reachesMain = new Dictionary<int, bool?>();
+            bool Continues(int outsideArea) => reaches.TryGetValue(outsideArea, out bool cached) ? cached
+                : reaches[outsideArea] = ChainContinues(topology, route, outsideArea);
+            bool? ReachesMain(int outsideArea) => reachesMain.TryGetValue(outsideArea, out bool? cached) ? cached
+                : reachesMain[outsideArea] = ChainReachesMain(topology, route, outsideArea);
+            // True when a listed crossing of this border leads, area by area along the chain, to the destination zone's
+            // main ground. Then no crossing whose far side never gets there is taken, listed or sampled (#421). Not on the
+            // last border (the walk on to the goal itself is proved there), and not for a goal whose nearest road anchor
+            // stands on other ground of its zone (a camp on a ledge): its way may be one of those crossings.
+            bool mainListed = false;
+            int? goalGround = Contains(edge.To, goal) ? null : AutonomousZoneRoads.AreaAt(route[^1], goal);
+            if (areas != null && !Contains(edge.To, goal) &&
+                (goalGround == null || goalGround == AutonomousZoneSeams.MainArea(topology.RegionId, route[^1].ID)))
+                foreach (SeamStep[] group in areas)
+                {
+                    foreach (SeamStep s in group)
+                        if (Continues(s.OutsideArea) && ReachesMain(s.OutsideArea) == true) { mainListed = true; break; }
+                    if (mainListed) break;
+                }
             if (areas != null)
             {
                 // At most two per near-side area, best area first: crossings of one area share the
@@ -407,16 +427,21 @@ namespace DOL.GS
                 // Salisbury Plains toward Black Mtns South) cannot use up every candidate. Groups
                 // are cached per border; only the two best of each are picked here (no sorting of
                 // every listed point: it was a top allocator).
-                var reaches = new Dictionary<int, bool>();
-                var reachesMain = new Dictionary<int, bool?>();
+                // A crossing onto ground that only continues to a dead end is left out of its group's two whenever the
+                // border lists one onto ground that reaches the destination's main ground. The check used to look at each
+                // group's best crossing only: Valley of Bri Leith's main ground (206) meets both the Lough Derg ridge
+                // (200, a strip along the Connacht border that joins nothing but the Valley, its shelf and a Connacht
+                // ledge) at y 486,624-488,352 and Lough Derg's main ground from y 488,480. Toward Connacht the ridge
+                // crossings are the nearer, so both picks were ridge crossings, no pick reached the main ground and
+                // nothing was left out: the bot stepped onto the ridge at 384960,486688, the ridge sent it back into the
+                // Valley at the same spot, and so on (#421: AUTONOMOUS_ZONE_SEAM_CYCLE there and at 385088,483424).
                 var picks = new List<(float Score, SeamStep First, SeamStep? Second)>();
                 foreach (SeamStep[] group in areas)
                 {
                     SeamStep? best = null, next = null; float bestScore = float.MaxValue, nextScore = float.MaxValue;
                     foreach (SeamStep s in group)
                     {
-                        if (!(reaches.TryGetValue(s.OutsideArea, out bool known) ? known
-                                : reaches[s.OutsideArea] = ChainContinues(topology, route, s.OutsideArea))) continue;
+                        if (!Continues(s.OutsideArea) || mainListed && ReachesMain(s.OutsideArea) == false) continue;
                         float score = Vector3.DistanceSquared(start, s.Step.Inside) + Vector3.DistanceSquared(s.Step.Outside, goal);
                         if (score < bestScore) { next = best; nextScore = bestScore; best = s; bestScore = score; }
                         else if (score < nextScore) { next = s; nextScore = score; }
@@ -426,11 +451,8 @@ namespace DOL.GS
                 // Prefer crossings whose ground reaches the destination zone's main area when any does:
                 // ridge networks touch several borders yet never reach the camps (run 15: 102 failures on
                 // the East Svealand plateau above Vale of Mularn).
-                foreach (var pick in picks)
-                    if (!reachesMain.ContainsKey(pick.First.OutsideArea))
-                        reachesMain[pick.First.OutsideArea] = ChainReachesMain(topology, route, pick.First.OutsideArea);
-                if (picks.Any(pick => reachesMain[pick.First.OutsideArea] == true))
-                    picks.RemoveAll(pick => reachesMain[pick.First.OutsideArea] == false);
+                if (picks.Any(pick => ReachesMain(pick.First.OutsideArea) == true))
+                    picks.RemoveAll(pick => ReachesMain(pick.First.OutsideArea) == false);
                 picks.Sort((a, b) => a.Score.CompareTo(b.Score));
                 foreach (var pick in picks)
                 {
@@ -445,11 +467,7 @@ namespace DOL.GS
                     var extra = new List<(float Score, SeamStep Step)>();
                     foreach (SeamStep[] group in pairs)
                     {
-                        if (group.Length == 0 || !(reaches.TryGetValue(group[0].OutsideArea, out bool known) ? known
-                                : reaches[group[0].OutsideArea] = ChainContinues(topology, route, group[0].OutsideArea))) continue;
-                        if (!reachesMain.TryGetValue(group[0].OutsideArea, out bool? main))
-                            reachesMain[group[0].OutsideArea] = main = ChainReachesMain(topology, route, group[0].OutsideArea);
-                        if (main == false) continue;
+                        if (group.Length == 0 || !Continues(group[0].OutsideArea) || ReachesMain(group[0].OutsideArea) == false) continue;
                         SeamStep? best = null, next = null; float bestScore = float.MaxValue, nextScore = float.MaxValue;
                         foreach (SeamStep s in group)
                         {
@@ -483,9 +501,16 @@ namespace DOL.GS
                 // spot: none means it is not on real ground, and passing through, its ground must
                 // continue along the zone chain. Checked first: data lookups, no corridor proofs.
                 int? area = listed ? null : SeamAreaAt(topology, edge, candidate);
-                if (area == NoSeamArea || area is int known && !Contains(edge.To, goal) && !ChainContinues(topology, route, known))
+                if (area == NoSeamArea || area is int known && !Contains(edge.To, goal) && !Continues(known))
                 {
                     _probeTrace?.Add($"  {edge.From.ID}>{edge.To.ID} sample {candidate.Outside} not on continuing ground");
+                    continue;
+                }
+                // The same for a sampled crossing: onto the Connacht ledge from the Lough Derg ridge (#421), not while the
+                // border lists a way onto ground that reaches the destination's main ground.
+                if (area is int dead && mainListed && !Contains(edge.To, goal) && ReachesMain(dead) == false)
+                {
+                    _probeTrace?.Add($"  {edge.From.ID}>{edge.To.ID} sample {candidate.Outside} on ground that never reaches the main ground");
                     continue;
                 }
                 // Only crossings the seam file lists (proven real ground) may use the zone road graph.
