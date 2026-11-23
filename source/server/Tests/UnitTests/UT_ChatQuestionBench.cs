@@ -22,9 +22,9 @@ namespace DOL.GS.Tests
     /// 1.2.2 (F0): no mirror. The routing is AutonomousChatReplyPath's and AutonomousChatKnowledge.TryAnswer(KnowledgePorts)'s, the
     /// functions the coordinator calls; only the ports (the responder, its corpus picks, the stub world) are the bench's.
     ///
-    /// Report-only (the owner's 1.2.2 ask, 2026-11-22: "reduce or eliminate general fluff and non answers"): it writes every
-    /// answer to CHAT_BENCH_OUT (else chat-bench/bench-replies.json in the test folder) and fails only when it can't answer.
-    /// tools/bot-voices/eval/score_bench.py scores the file in CI. After the fixes it becomes a ratchet.
+    /// It writes every answer to CHAT_BENCH_OUT (else chat-bench/bench-replies.json in the test folder), and the holdout set's to
+    /// CHAT_BENCH_HOLDOUT_OUT (bench-holdout.json); it fails only when it can't answer. tools/bot-voices/eval/score_bench.py ratchet
+    /// scores them in CI and fails the build when the good share falls or a bad category grows past bench_ratchet.json (1.2.2 fixes).
     /// </summary>
     [TestFixture]
     public class UT_ChatQuestionBench
