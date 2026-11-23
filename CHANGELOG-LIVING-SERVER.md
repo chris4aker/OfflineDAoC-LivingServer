@@ -93,6 +93,15 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   - **Spindler:** archers with a short bow, crossbow or thrown weapon take a post on the 750 ring, in reach of her.
   - **Dragons:** the dragon return wave no longer runs for open-world raids (it measured them to the realm's dragon lair).
 
+**Chat**
+- **The /faction answer audit** (owner, 2026-11-22: "smooth clunkiness, errors, or disjointed phrasing", "reduce or
+  eliminate general fluff and non answers"). A bench of 453 player questions (`tools/bot-voices/eval/player_questions.json`)
+  goes through the reply path in CI (`UT_ChatQuestionBench`) and is scored by `score_bench.py`: 60.5% good answers, 16%
+  silence, 15% off-topic, 6% "dunno", 1.5% wrong, 9.5% clunky. The root causes (lore answering level questions before
+  the world facts, the where-to-level phrasings missed, the knowledge holes, the "dunno" rescue) and the ranked fixes are
+  in [docs/bot-voices/CHAT-AUDIT-1.2.2.md](docs/bot-voices/CHAT-AUDIT-1.2.2.md). No reply changes yet; the bench is
+  report-only until the fixes land. **Tests only.**
+
 **RvR**
 - **Keep and tower lords are fought in formation** (owner: "add the rule about standing behind melee"). Inside a lord's
   reach (1.2.1, #416: 350 in a keep, 250 in a tower) tanks and melee fight him at melee range; casters and archers stand

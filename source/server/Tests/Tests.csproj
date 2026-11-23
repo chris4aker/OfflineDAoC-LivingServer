@@ -54,6 +54,8 @@
       <!-- The talking update audit: 320 realistic player lines with what a sensible reply would be (UT_TalkingAudit). -->
       <EmbeddedResource Include="UnitTests\Data\chat_audit_player_lines.json" />
       <EmbeddedResource Include="UnitTests\Data\chat_audit_holdout_lines.json" />
+      <!-- The 1.2.2 chat audit's question bench (UT_ChatQuestionBench; tools/bot-voices/eval/make_player_questions.py writes it). -->
+      <EmbeddedResource Include="..\..\..\tools\bot-voices\eval\player_questions.json" LogicalName="DOL.GS.Tests.player_questions.json" />
       <!-- The real Krondon navmesh around Scurceol Hyrde's four orbs (UT_ScurceolOrbStandProbe.RecordFixture, UT_ScurceolOrbStands). -->
       <EmbeddedResource Include="UnitTests\Data\krondon_scurceol_mesh.txt.gz" />
       <!-- The economy rehearsal's fixtures (Tests/Rehearsal: recipes.json from export_recipe_fixture.py, calibration.json from M0). -->
