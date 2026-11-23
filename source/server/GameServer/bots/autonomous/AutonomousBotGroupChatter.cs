@@ -262,8 +262,8 @@ public static class AutonomousBotGroupChatter
         // 1.2.3 (owner's game): "where is that" right after the leader's "meet up at Humberton Castle" is completed from the
         // group's conversation before the knowledge lookup sees it ("where is Humberton Castle"), and the bot that named the
         // place answers it.
-        string asked = ResolvedInGroup(player, group, message, out long floorBot);
-        if (AutonomousChatKnowledge.TryAnswer(player, asked, out string knowledge))
+        string resolved = ResolvedInGroup(player, group, message, out long floorBot);
+        if (AutonomousChatKnowledge.TryAnswer(player, resolved, out string knowledge))
         {
             GameBot answerer = AnswererFirst(pool, floorBot, bot => bot.DatabaseID)[0];
             AutonomousLivingServer.Later(answerer, AutonomousBotChatCoordinator.ReplyDelayMs(knowledge, 0, Random.Shared),
