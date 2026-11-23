@@ -95,7 +95,11 @@ log. Player notes: [docs/RELEASE-NOTES-1.2.2.md](docs/RELEASE-NOTES-1.2.2.md).
   spells", and another realm's class as such ("thats a hib class"); "mercenaries", "armsmen", "heroes" are read as classes.
   A known class's spec and weapon advice is its own lines only (no "whatever ur spec is"). "what are you up to?" said to a
   bot is answered from its hunt, "got any pots?" from its backpack, and a short known fact (eight words or fewer) as the
-  first answer to a question types at 1.5x the bot's speed. `UT_ChatShapes122`. **Tests only.**
+  first answer to a question types at 1.5x the bot's speed. Trainer answers name the capital as written ("Camelot"), and a
+  dungeon whose monsters are far from the level is left out of a where-to-level answer (`DungeonFits`). Bench on top of the
+  routing fixes: good answers from 314 to 359 of 453 (69.3% to 79.2%), wrong 9 to 0, off-topic 25 to 13, silence where an
+  answer was due 92 to 70, clunky 21 to 16; where to level 45 of 45, trainers 29 of 29; the holdout from 40 to 49 of 60.
+  `bench_ratchet.json` tightened to these counts. `UT_ChatShapes122`. **Tests only.**
 
 **Launcher, GM tools and tests**
 - **The launcher shows the Living Server version.** The label under the title reads "LIVING SERVER 1.2.2" and the window

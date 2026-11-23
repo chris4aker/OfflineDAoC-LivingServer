@@ -1,31 +1,31 @@
 {
  "note": "The chat bench ratchet (score_bench.py ratchet): the good share may only rise and no capped count may grow. Tighten it with score_bench.py ratchet REPLIES --write after a fix; never loosen it to pass.",
- "ok_share": 0.6932,
- "ok": 314,
+ "ok_share": 0.7925,
+ "ok": 359,
  "total": 453,
  "counts": {
-  "WRONG": 9,
-  "NON_ANSWER": 3,
-  "OFF_TOPIC": 25,
+  "WRONG": 0,
+  "NON_ANSWER": 1,
+  "OFF_TOPIC": 13,
   "FLUFF": 2,
-  "SILENT": 92,
+  "SILENT": 70,
   "STUB": 8,
-  "CLUNKY": 21,
+  "CLUNKY": 16,
   "ECHO": 0,
   "PADDED": 8
  },
  "holdout": {
-  "ok": 40,
+  "ok": 49,
   "total": 60,
-  "ok_share": 0.6667,
+  "ok_share": 0.8167,
   "counts": {
-   "WRONG": 3,
+   "WRONG": 0,
    "NON_ANSWER": 0,
    "OFF_TOPIC": 1,
    "FLUFF": 0,
-   "SILENT": 16,
+   "SILENT": 10,
    "STUB": 0,
-   "CLUNKY": 5,
+   "CLUNKY": 3,
    "ECHO": 0,
    "PADDED": 3
   }
