@@ -1155,9 +1155,7 @@ public static class AutonomousChatFieldTalk
         options.Add((() => Help(f, random), 2.2));
         options.Add((() => Social(f, random), 1.2));
         if (f.Bubbles > 0 && f.Level < 50)
-            options.Add((() => Make(random, "social", null, null, null,
-                new V($"{f.Bubbles} bubbles to {f.Level + 1}", "bubbles"), new V($"{f.Bubbles} bubs to go", "bubbles"),
-                new V($"almost {f.Level + 1}", "almost"), new V($"{f.Bubbles} bubbles til {f.Level + 1} ugh", "bubbles")), 0.6));
+            options.Add((() => Make(random, "social", null, null, null, LevelProgress(f)), 0.6));
         double total = options.Sum(o => o.Weight), draw = random.NextDouble() * total;
         foreach ((Func<Said> make, double weight) in options)
         {
@@ -1300,6 +1298,45 @@ public static class AutonomousChatFieldTalk
             _ => said,
         };
     }
+
+    /// <summary>
+    /// A bot's word on its own level, as an opener (1.2.3, the owner's game on 1.2.2: a bare "almost 6" in /faction read as an
+    /// answer to nothing): every way says what it counts ("bubs", "to 6", "ding"), and "almost" only with three bubbles or fewer
+    /// to go. Pure.
+    /// </summary>
+    private static V[] LevelProgress(Facts f)
+    {
+        int next = f.Level + 1;
+        var ways = new List<V>
+        {
+            new($"{f.Bubbles} bubbles to {next}", "bubbles"), new($"{f.Bubbles} bubs to {next}", "bubbles"),
+            new($"{f.Bubbles} bubbles til {next} ugh", "bubbles"),
+        };
+        if (f.Bubbles <= 3)
+            ways.Add(new($"almost {next}, {f.Bubbles} {(f.Bubbles == 1 ? "bub" : "bubs")} left", "almost"));
+        return ways.ToArray();
+    }
+
+    /// <summary>The most words an answer may have and still need its asker named once other lines came between (1.2.3).</summary>
+    public const int NameApartMaxWords = 5;
+
+    /// <summary>
+    /// A short thread answer with two or more lines between it and its question names the asker (1.2.3, the owner's game on
+    /// 1.2.2: "not atm sry" landed under a /trade post and read as its answer): "Zhoxum, not atm sry". A longer answer, one that
+    /// already names the asker, or one right under its question is said as it is. Pure.
+    /// </summary>
+    public static string NamedWhenApart(string answer, string asker, int linesBetween)
+    {
+        if (string.IsNullOrWhiteSpace(answer) || string.IsNullOrWhiteSpace(asker) || linesBetween < 2)
+            return answer;
+        if (answer.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > NameApartMaxWords ||
+            answer.Contains(asker, StringComparison.OrdinalIgnoreCase))
+            return answer;
+        return asker + ", " + answer;
+    }
+
+    /// <summary>The texts of <see cref="LevelProgress"/> (tests). Pure.</summary>
+    public static string[] LevelProgressTexts(Facts f) => LevelProgress(f).Select(way => way.Text).ToArray();
 
     private static Said AskXp(Facts f, Random random)
     {

@@ -60,6 +60,22 @@ otherwise.
   **Tests only.**
 - Not changed: "www.g0ldbucket.c0m" is the gold spammer of Server life (`bot_living_characters`, on by default since 1.2):
   a made-up site spelled with zeros, banned a few minutes later.
+- **/faction reads as one conversation** (the owner's game on 1.2.2, 2026-11-23: "[Trade] Aldae: any1 selling studded legs",
+  then Zhoxum's "not atm sry", "this group is solid, glad i stuck around lol" and "camelot hills camp for 4? heh", Eadric's
+  "almost 6", Roseiselle's "nothing humbles you like dying to something green heh"). `UT_FactionPolish123`. **Tests only.**
+  - "not atm sry" was no /trade answer: it is one of the written answers to a bot's own "anyone near {zone}?", whose question
+    had scrolled up. A short thread answer (five words or fewer) with two or more lines of the realm's /faction, /trade or
+    /lfg between it and its question now names the asker ("Spellslinger92, not atm sry"; `AutonomousChatFieldTalk.NamedWhenApart`).
+    /trade answers already go only to /trade (`ScheduleMarketReply`).
+  - "this group is solid, glad i stuck around" is a group-topic line, which #467's `SaidToTheGroup` already keeps out of
+    /faction; a test pins every corpus line of it.
+  - No question ends on a laugh: the style's emote and the "lol" typing habit pass over a line ending in "?"
+    (`AutonomousBotVoiceCorpus.EndsAsQuestion`), and a line about dying ("dying", "humbles") counts as serious like a death.
+    Mirrored in `tools/bot-voices/voice_style.py`.
+  - A bot that said one of the channel's last four lines (within two minutes) starts nothing new; it may still answer and go
+    on with a thread, and lines to the player and realm events still go (`AutonomousChatExchange.JustSpoke`, held "hog").
+  - "almost 6" was a bot's own level opener. Every level opener now says what it counts ("2 bubs to 6"), and "almost 6, 2
+    bubs left" only with three bubbles or fewer (`AutonomousChatFieldTalk.LevelProgress`).
 
 **The server**
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after

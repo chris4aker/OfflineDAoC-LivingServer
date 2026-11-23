@@ -60,7 +60,7 @@ public static class AutonomousChatExchange
     /// AutonomousChatBudget.OpenerFitsPace: "pace"); a line that goes on with an exchange is never held by the pace.
     /// </summary>
     public static string SinkHold(Source source, bool sceneRunning, bool fits, long now, long lastLineAt, long sceneEndedAt,
-        bool openerFitsPace = true)
+        bool openerFitsPace = true, bool speakerJustSpoke = false)
     {
         if (ExemptFromCeiling(source))
             return null;
@@ -73,6 +73,10 @@ public static class AutonomousChatExchange
         {
             if (!openerFitsPace)
                 return "pace";
+            // 1.2.3 (the owner's game on 1.2.2: Zhoxum had 3 of 9 lines): a bot that said one of the channel's last lines starts
+            // nothing new; it may still answer and go on with a thread.
+            if (speakerJustSpoke)
+                return "hog";
             long spacing = now - sceneEndedAt < ResumeAfterSceneMs ? ResumeSpacingMs : OpenerSpacingMs;
             if (now - lastLineAt < spacing)
                 return "spacing";
@@ -231,6 +235,29 @@ public static class AutonomousChatExchange
     }
 
     /// <summary>A line was said in the channel (by a bot or a player): counted, and remembered by speaker.</summary>
+    /// <summary>How many of a lane's last lines make a speaker's next opener wait (1.2.3, <see cref="SinkHold"/>: "hog").</summary>
+    public const int SpeakerShareWindow = 4;
+
+    /// <summary>Lines older than this don't count for <see cref="SpeakerShareWindow"/>: a quiet channel lets anyone start.</summary>
+    public const long SpeakerShareQuietMs = 120_000;
+
+    /// <summary>
+    /// Whether a speaker said one of the lane's last <paramref name="window"/> lines, the lane's last line being under
+    /// <see cref="SpeakerShareQuietMs"/> old (1.2.3). Pure.
+    /// </summary>
+    public static bool JustSpoke(long laneSeq, long speakerSeq, int window, long now, long lastLineAt) =>
+        speakerSeq > 0 && laneSeq - speakerSeq < window && now - lastLineAt < SpeakerShareQuietMs;
+
+    /// <summary><see cref="JustSpoke(long, long, int, long, long)"/> for a live lane.</summary>
+    public static bool JustSpoke(string key, string speaker, long now)
+    {
+        if (string.IsNullOrEmpty(speaker))
+            return false;
+        Lane lane = LaneOf(key);
+        lock (lane)
+            return JustSpoke(lane.Seq, lane.LastSeqBy.TryGetValue(speaker, out long by) ? by : 0, SpeakerShareWindow, now, lane.LastAt);
+    }
+
     public static void NoteLine(string key, string speaker, long now)
     {
         Lane lane = LaneOf(key);
