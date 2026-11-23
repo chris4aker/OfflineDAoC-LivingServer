@@ -337,8 +337,8 @@ namespace DOL.GS.Tests
             {
                 // SchedulePlayerReplies: the knowledge lookup, the help call, the plan, the bot's first answer.
                 bool helpCall = AutonomousBotChatCoordinator.IsHelpCall(message, shape);
-                string knowledge = !AutonomousChatReplyPath.IsShortTalk(message, intent) && !helpCall ? Knowledge(run, message) : null;
                 bool directed = named;
+                string knowledge = AutonomousChatReplyPath.KnowledgeFirst(message, intent, helpCall, directed) ? Knowledge(run, message) : null;
                 // "anyone in camelot?" is answered by bots that are there: the bench's responder is in its own zone only.
                 if (shape == "ask_inplace" && knowledge == null)
                     return Done(run, "none not_there (no bot is there)", null, 0, "silent", 0);
