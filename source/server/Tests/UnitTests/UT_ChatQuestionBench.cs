@@ -431,6 +431,240 @@ namespace DOL.GS.Tests
             return answers;
         }
 
+        // ------------------------------------------------- audit 1.2.3 (report only): the same questions in every channel
+
+        /// <summary>The channels of the audit's side-by-side run. "faction", "say", "group" and "tell" are the bench's own paths.</summary>
+        private static readonly string[] AuditChannels =
+            ["faction", "say", "group", "group_named", "tell", "guild", "guild_named", "advice", "broadcast", "chatgroup", "companion_say", "trade"];
+
+        private static readonly DateTime AuditEpoch = new(2026, 11, 22, 20, 0, 0, DateTimeKind.Utc);
+
+        /// <summary>
+        /// One question as the channel's own handler answers it (audit 1.2.3, report only; the handlers need live bots, so each is
+        /// read off the code): /gu is AutonomousBotGuildSocial.OnPlayerGuildChat, /advice OnPlayerAdvice, /b and /c
+        /// OnPlayerOpenChannel, a hired companion in /say CompanionChat165.ReplyTo, /trade OnPlayerTradePost's gate.
+        /// </summary>
+        private static Answer AnswerAs(Run run, string channel)
+        {
+            Question q = run.Q;
+            if (channel is "faction" or "say" or "group" or "tell")
+            {
+                run.Q = q with { Channel = channel, To = null };
+                return AnswerOne(run);
+            }
+            string message = q.Text.Trim();
+            eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
+            string shape = AutonomousChatShortTalk.QuestionShape(message);
+            using AutonomousChatFiller.ReplyScope fillerScope = AutonomousChatFiller.Replying(message, channel + ":" + run.Realm,
+                (long)(run.Now - AuditEpoch).TotalMilliseconds);
+            AutonomousChatReplyPath.Ports ports = PortsOf(run);
+            AutonomousBotChatCoordinator.ReplyChoice choice;
+            switch (channel)
+            {
+                case "group_named":
+                {
+                    string known = Knowledge(run, message);
+                    choice = known != null ? new AutonomousBotChatCoordinator.ReplyChoice(Style(run, known), "knowledge")
+                        : AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, true, "group"), message, true, "group");
+                    break;
+                }
+                case "guild":
+                case "guild_named":
+                {
+                    bool named = channel == "guild_named";
+                    if (shape == "ack")
+                        return AuditDone(run, "none ack", null);
+                    if (shape == "ask_inplace")
+                        return AuditDone(run, "none not_there (no guildmate is there)", null);
+                    if (!named && AutonomousChatScreen.OtherAddressee(message, null) != null)
+                        return AuditDone(run, "none other", null);
+                    string known = Knowledge(run, message);
+                    if (known != null)
+                    {
+                        choice = new AutonomousBotChatCoordinator.ReplyChoice(Style(run, known), "knowledge");
+                        break;
+                    }
+                    AutonomousBotGuildChatLines.ReplyKind kind = AutonomousBotGuildChatLines.Classify(message, intent);
+                    int count = named && kind != AutonomousBotGuildChatLines.ReplyKind.None ? 1
+                        : AutonomousBotGuildSocial.ResponderCount(kind, 5, run.Rng.NextDouble());
+                    if (count == 0)
+                        return AuditDone(run, "none guild kind " + kind, null);
+                    choice = AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, true, "guild"), message, named, "guild");
+                    break;
+                }
+                case "advice":
+                {
+                    string known = Knowledge(run, message);
+                    choice = known != null ? new AutonomousBotChatCoordinator.ReplyChoice(Style(run, known), "knowledge")
+                        : VoicedOf(run, ports, message, false, "advice");
+                    if (string.IsNullOrWhiteSpace(choice.Text) || AutonomousChatReplyFit.Of(choice.Route, message) < AutonomousChatReplyFit.Specific ||
+                        AutonomousChatReplyBudget.IsBrushOff(choice.Text))
+                        return AuditDone(run, "silent advice (" + choice.Route + ")", null);
+                    break;
+                }
+                case "broadcast":
+                case "chatgroup":
+                {
+                    if (!AutonomousBotChatCoordinator.NeedsAnswer(message))
+                        return AuditDone(run, "none open (asks nothing)", null);
+                    if (AutonomousChatScreen.OtherAddressee(message, null) != null)
+                        return AuditDone(run, "none other", null);
+                    if (AutonomousBotChatCoordinator.AsksToJoinGroup(message) || AutonomousBotChatCoordinator.BroadcastsLfg(message))
+                    {
+                        run.Stub = true;
+                        choice = new AutonomousBotChatCoordinator.ReplyChoice(
+                            Style(run, AutonomousBotChatCoordinator.LevelGapReply(run.Me.Level, q.Level, run.Rng) ?? "[world: join reply]"), "join");
+                        break;
+                    }
+                    string known = Knowledge(run, message);
+                    choice = known != null ? new AutonomousBotChatCoordinator.ReplyChoice(Style(run, known), "knowledge")
+                        : AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, false, channel), message, false, channel);
+                    break;
+                }
+                case "companion_say":
+                    // A hired companion named in /say (or holding the floor): CompanionChat165.Reply's last step, by intent alone.
+                    choice = new AutonomousBotChatCoordinator.ReplyChoice(Style(run, CompanionChat165.ReplyTo(intent, "Wynn", run.Rng, false)),
+                        "companion intent " + AutonomousBotVoices.IntentName(intent));
+                    break;
+                case "trade":
+                {
+                    AutonomousChatMarket.Post post = AutonomousChatMarket.PostOf(message);
+                    if (post is not (AutonomousChatMarket.Post.Wts or AutonomousChatMarket.Post.Wtb))
+                        return AuditDone(run, "none trade (not a wts or wtb post)", null);
+                    run.Stub = true;
+                    choice = new AutonomousBotChatCoordinator.ReplyChoice("[world: a market reply at its share]", "market " + post);
+                    break;
+                }
+                default:
+                    return AuditDone(run, "none channel", null);
+            }
+            return AuditDone(run, choice.Route, choice.Text);
+        }
+
+        private static Answer AuditDone(Run run, string route, string text)
+        {
+            string outcome = text == null ? "silent"
+                : route.StartsWith("rescue (", StringComparison.Ordinal) ? "rescue"
+                : route.StartsWith("short (", StringComparison.Ordinal) ? "short"
+                : route.StartsWith("ack (", StringComparison.Ordinal) ? "ack"
+                : "answer";
+            return new Answer(run.Q.Id, route, text, run.Stub || text != null && text.StartsWith("[world", StringComparison.Ordinal),
+                AutonomousChatReplyFit.Of(route, run.Q.Text), outcome, text == null ? 0 : 1, 0, false);
+        }
+
+        private static Run AuditRun(Bench bench, Question q, VC.RecentLines recent, DateTime now)
+        {
+            Responder me = bench.Responders[q.Realm];
+            int seed = q.Text.Aggregate(17, (h, c) => unchecked(h * 31 + c));
+            return new Run
+            {
+                Q = q, Me = me, Facts = FactsOf(me, q.Realm), Realm = q.Realm, Rng = new Random(seed), Corpus = AutonomousBotVoices.Corpus, Recent = recent,
+                Now = now, World = bench.World, Towns = bench.Towns,
+            };
+        }
+
+        private static string AuditPath(string file)
+        {
+            string path = Path.Combine(TestContext.CurrentContext.WorkDirectory, "chat-bench", file);
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            return path;
+        }
+
+        /// <summary>
+        /// Audit 1.2.3, report only: every /faction question of the bench asked in every channel (the same words, the same seed, a
+        /// fresh channel each), written one JSON row a line to chat-bench/channel-rows.jsonl (CI prints them as CHAT_CHANNEL_ROW).
+        /// </summary>
+        [Test]
+        public void Audit_TheSameQuestionsInEveryChannel()
+        {
+            Bench bench = Load();
+            Question[] questions = bench.Questions.Where(q => q.Channel == "faction" && string.IsNullOrEmpty(q.To)).ToArray();
+            var rows = new List<string>();
+            foreach (string channel in AuditChannels)
+            {
+                var recent = new VC.RecentLines();
+                DateTime now = AuditEpoch;
+                foreach (Question q in questions)
+                {
+                    Run run = AuditRun(bench, q, recent, now);
+                    now = now.AddMinutes(3);
+                    Answer a = AnswerAs(run, channel);
+                    rows.Add(JsonSerializer.Serialize(new { ch = channel, id = q.Id, route = a.Route, reply = a.Reply, stub = a.Stub, outcome = a.Outcome }));
+                }
+            }
+            File.WriteAllLines(AuditPath("channel-rows.jsonl"), rows);
+            Assert.That(rows.Count, Is.EqualTo(questions.Length * AuditChannels.Length));
+        }
+
+        /// <summary>
+        /// Audit 1.2.3, report only: follow-ups that lean on the line before ("how do i get there", "what lvl is it", "where is
+        /// he"). For each phrasing: what the thread path reads it as (AutonomousChatThreads.FollowUpWord), what the conversation
+        /// memory completes it to (ChatConversations.Resolve, after the player named a place, an item or a class), and what
+        /// /faction, /group and a tell then answer. Rows go to chat-bench/context-rows.jsonl (CHAT_CONTEXT_ROW in CI).
+        /// </summary>
+        [Test]
+        public void Audit_FollowUpsThatLeanOnTheLineBefore()
+        {
+            Bench bench = Load();
+            (string Setup, string[] FollowUps)[] sets =
+            [
+                ("anyone been to the barrows?",
+                new[]
+                {
+                    "how do i get there", "how do i get there?", "how do you get there from camelot?", "where is that", "where is that?", "wheres that",
+                    "where's that at?", "where is it", "and where is that", "ty, where is it", "never heard of it, where?", "where?", "where exactly",
+                    "is it far?", "how far is it", "how far is that?", "which way?", "what lvl is it?", "what level is that?", "what lvl do i need for it",
+                    "is it any good?", "is it good xp?", "any good?", "whats there?", "what's in there?", "what drops there?", "is it hard?",
+                    "can i solo it?", "can i solo there?", "anyone there now?", "is that a dungeon?", "what zone is that in?", "ok how do i find it",
+                    "is there a group going there?", "whats the best way there",
+                }),
+                ("wtb a studded helm",
+                new[]
+                {
+                    "how much for it?", "how much for one?", "how much?", "what stats on it?", "who sells them?", "where do i get one?", "can u make one?",
+                    "who makes those?",
+                }),
+                ("thinking of rolling a minstrel",
+                new[]
+                {
+                    "are they good solo?", "what spec for one?", "who trains them?", "what armor do they wear?", "what race is best for one?",
+                }),
+                ("who is the green knight?",
+                new[]
+                {
+                    "where is he?", "where does he spawn?", "what lvl is he?", "what does he drop?", "can we kill him?", "how many to kill him?",
+                }),
+            ];
+            var rows = new List<string>();
+            var recent = new VC.RecentLines();
+            DateTime now = AuditEpoch;
+            foreach ((string setup, string[] followUps) in sets)
+                foreach (string followUp in followUps)
+                {
+                    var conversations = new ChatConversations();
+                    conversations.NotePlayer("Wynn", "faction:Albion", setup, 1_000);
+                    ChatConversations.Conversation held = conversations.In("Wynn", "faction:Albion", 2_000);
+                    string resolved = ChatConversations.Resolve(followUp, held);
+                    string word = AutonomousChatThreads.FollowUpWord(followUp);
+                    var replies = new Dictionary<string, string>(StringComparer.Ordinal);
+                    foreach (string channel in new[] { "faction", "group", "tell" })
+                    {
+                        var q = new Question("ctx", resolved, channel, eRealm.Albion, "Armsman", 24, "context", null);
+                        Run run = AuditRun(bench, q, recent, now);
+                        now = now.AddMinutes(3);
+                        Answer a = AnswerAs(run, channel);
+                        replies[channel] = (a.Reply ?? "(nothing)") + "  <" + a.Route + ">";
+                    }
+                    rows.Add(JsonSerializer.Serialize(new
+                    {
+                        setup, said = followUp, word, place = held?.Place, item = held?.Item, cls = held?.ClassName,
+                        resolved = resolved == followUp ? null : resolved, faction = replies["faction"], group = replies["group"], tell = replies["tell"],
+                    }));
+                }
+            File.WriteAllLines(AuditPath("context-rows.jsonl"), rows);
+            Assert.That(rows, Is.Not.Empty);
+        }
+
         // ------------------------------------------------------------------------------------------------------------ tests
 
         [Test]
