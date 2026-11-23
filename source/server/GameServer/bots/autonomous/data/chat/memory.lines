@@ -116,7 +116,7 @@ not bad {player}, still grinding away
 @intent travel
 @needs knows_player
 @who *
-# 1.2.3: no advice in place of an answer ("stablemaster is your friend" to "where is Humberton Castle"). A remembered player
+# 1.2.3: no advice in place of an answer (a stable tip to "where is Humberton Castle"). A remembered player
 # gets a question back; where a place is comes from the knowledge lookup.
 {player}, where u headed?
 where to {player}?

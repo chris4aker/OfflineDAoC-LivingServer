@@ -135,10 +135,9 @@ public static class AutonomousChatClassChoice
         }
         if (mine != null && IsBase(mine) && Bases[mine].Realm == realm)
         {
-            string soon = level >= PromotionLevel ? "ur high enough, go now" : $"at {PromotionLevel}";
-            return Pick($"{soon}: talk to the trainer of the class u want in {cap}. for {Word(mine)} thats {Options(mine)}",
-                $"in {cap}, at the trainer of the one u want ({Options(mine)}), {soon}",
-                $"{Options(mine)}, their trainers are in {cap}. {soon}");
+            bool now = level >= PromotionLevel;
+            return Pick($"{(now ? "u can pick now" : $"at {PromotionLevel}")}, talk to the trainer of the class u want in {cap}. for {Word(mine)} thats {Options(mine)}",
+                $"{Options(mine)}, their trainers are in {cap} and u {(now ? "can pick now" : $"pick at {PromotionLevel}")}");
         }
         if (mine != null && BaseOf(mine) != null && !IsBase(mine))
             return Pick($"u already picked, ur {A(mine.ToLowerInvariant())}. its done once at {PromotionLevel} at the class trainer",

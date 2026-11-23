@@ -305,7 +305,9 @@ public static class AutonomousChatFieldTalk
 
     /// <summary>Whether a line is a question that has answers, so it should get one (1.1.3, after RC5). Pure.</summary>
     public static bool WantsAnswer(Said said) => said?.Answers is { Length: > 0 } && said.Kind != "social" &&
-                                                 (said.Asks || said.Text?.TrimEnd().EndsWith('?') == true);
+                                                 (said.Asks || said.Text?.TrimEnd().EndsWith('?') == true) &&
+                                                 // 1.2.3: a question whose every answer is a "dunno" has none a bot would say.
+                                                 !said.Answers.All(IsNonAnswer);
 
     /// <summary>Whether a class fills a group role ("tank", "healer", "cc", "puller", "dps", "class:Druid"). Pure.</summary>
     public static bool Fills(string className, string role, bool isHealer = false)
