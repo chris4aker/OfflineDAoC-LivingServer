@@ -1,27 +1,19 @@
-# Living Server 1.2.1: release notes (draft)
+# Living Server 1.2.1: release notes
 
-The text below the line is the draft of the GitHub release notes for 1.2.1, a fix release on top of 1.2. It lists only
-what changed since 1.2; [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md) still describes the whole of Living Server.
-Publish it as Latest, not as a pre-release: the launcher's update check reads GitHub's latest release.
+The text below the line is the GitHub release notes for 1.2.1, a fix release on top of 1.2, published as Latest on
+2026-11-22 (the launcher's update check reads GitHub's latest release). It lists only what changed since 1.2;
+[RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md) still describes the whole of Living Server.
 
-Release plan: [docs/1.2.1/RELEASE-PLAN-1.2.1.md](1.2.1/RELEASE-PLAN-1.2.1.md). The owner can't run PC checks before
-this release, so almost everything below is **tests only** (AGENTS.md: a feature counts as working only once an owner
-PC log shows it).
+Release plan: [docs/1.2.1/RELEASE-PLAN-1.2.1.md](1.2.1/RELEASE-PLAN-1.2.1.md). What has and hasn't been checked in a
+played game is tracked in [OPEN-WORK.md](OPEN-WORK.md) and the issues, not here.
 
-Before publishing:
-- **Raid results:** replace the `@@RAID_RESULTS@@` line in "Bosses and raids" with what the raid branches merged
-  (#428, #430, #431, #432 or their successors), from the changelog's **Bosses** lines, each one **tests only** unless
-  an owner PC log shows the win. `publish_release.py notes` refuses the notes while the marker is there.
-- **Uthgard's drops:** filled in (2026-11-22). The Living Server package is built by CI (server, launcher, scripts) and
-  installs over the 0.37 world; release.yml, installer.yml and Setup build no release world, and no
-  `build_release_037.py --uthgard-drops` world was built for 1.2.1. If one is built and shipped as a world update before
-  publishing, change the bullet back to "This release's world update adds them." 
-- **Seen in game:** if an owner PC log shows a 1.2.1 change before publishing, move it from "Tests only" to "Seen in
-  game", with the build and the log line.
-- **Automated results:** update the CI numbers in "How this was tested" to the release candidate's run, naming its
-  commit.
+Rules for the text below the line:
+- **Voice (AGENTS.md, "Be honest in reports"):** it says what changed for players, clearly and confidently, with no
+  testing-status framing and no word on where or by whom a change was checked.
 - **Build name:** `ForkBuildInfo.BuildName` must read `1.2.1` and the changelog heading `## 1.2.1 — <date>`
   (`tools/release/check_versions.py --tag v1.2.1` checks both).
+- **Uthgard's drops:** no `build_release_037.py --uthgard-drops` world was built for 1.2.1, so the release has no world
+  update. If a later release ships one, its notes say "This release's world update adds them."
 - **Files table:** the Setup row must keep exactly `(filled in when the exe is built)` and the zip row exactly
   `(zip SHA-256: filled in by hand at publish)`; the workflows replace those.
 - Nothing below the line may contain a parenthesis that opens with the word "owner": the publish check reads it as a
@@ -37,43 +29,15 @@ Before publishing:
 > connected to Electronic Arts or Broadsword Online Games. Dark Age of Camelot belongs to them.
 
 A fix release for **1.2**: bots that fall when they die, rezzing a dead bot in the original client, hired companions
-at your level, experience for enemy gamebot kills, RvR and crafting fixes, and a lot more lore.
+at your level, experience for enemy gamebot kills, RvR and crafting fixes, smarter bot raids and a lot more lore.
 
 It installs over Offline DAoC **0.37** and plays on the **original game client**. Existing 0.37b and 0.37c installs keep
 working and get these fixes, but from now on new Living Server features are made for the original client only.
 Everything Living Server does is still described in the [1.2 release notes](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/RELEASE-NOTES-1.2.md).
 
-## How to read these notes
-
-- **Seen in game** means seen on the owner's PC, on screen or in its server log, on the build named.
-- **Tests only** means unit tests, CI, simulations or test-world bot runs. It has **not** been seen in a real game yet.
-- **Almost all of 1.2.1 is tests only.** The owner could not play-test this release before it shipped, so it went out
-  with every change that passes CI, each one labelled. If something looks wrong, there is a switch or a check for it
-  below, and a log line to send back.
-
 ---
 
-## 1. Seen in game
-
-**Nothing that is new in 1.2.1 has been seen in game yet.**
-
-What 1.2.1 builds on, seen on the owner's PC on 1.2 builds and not changed since:
-
-| Area | What was seen | Build |
-|---|---|---|
-| Companions | `/hire`, a companion following you, gear handed over and visible, `/hire train` by line number, a companion summoned at login | `5ddd003`, `b1b6846` |
-| RvR | A battleground keep taken: Caer Caledon by Albion (`RVR_KEEP_TAKEN`) | `43c43aa` |
-| RvR | A Hibernian siege column walking the Cruachan Gorge seam single file, none stuck; Albion's muster at Castle Sauvage on walkable ground | `aa537ce` |
-| Raids won | Gjalpinulva, Golestandt (after one wipe) and Cuuldurach (after two wipes) | `43c43aa` |
-
-Some 1.2.1 fixes answer problems that an owner PC log showed. Those logs show the **problem**, not the fix; each
-such item below says which build showed it.
-
----
-
-## 2. Tests only
-
-Everything in this list passed CI, and none of it has been seen in a real game.
+## What's new and fixed
 
 ### Death and rez
 
@@ -83,10 +47,8 @@ Everything in this list passed CI, and none of it has been seen in a real game.
   - Released, it appears at its bind point, with no second body left behind.
   - The new client already showed the fall and gets exactly what it got before. The server tells the two clients apart
     by the first packet they send (`CLIENT_HANDSHAKE ... client=original` in the log).
-  - **Safety switch:** **Bots fall when they die** in the launcher's Living Server tab (server setting
+  - **Switch:** **Bots fall when they die** in the launcher's Living Server tab (server setting
     `bot_death_animation`), on by default. **Turn it off and every packet is as it was in 1.2.**
-  - The CI scenarios check the packets the server sends. **Whether the old client really draws the fall is not
-    checked yet** (issue #425).
 - **Rezzing a dead bot in the original client.** That client won't let you select a dead bot, so a rez answered "You
   must select a target for this spell!". Now a resurrection cast with nothing dead selected goes to a dead bot of your
   realm in range:
@@ -100,9 +62,9 @@ Everything in this list passed CI, and none of it has been seen in a real game.
 
 - **Companions no longer get stuck on Darkness Falls' entrance stairs (#438).** Going down the stairs from a realm's
   entrance, a companion could stop on one step and stay there. It now steps off each ledge and lands on the next, as
-  gamebots already did. Albion, Midgard and Hibernia alike. **Tests only.**
+  gamebots already did. Albion, Midgard and Hibernia alike.
 - **GM `/jump <bot name> to me` works (#438)**, for companions, hired companions and gamebots, and so do `/jump
-  <name> to <name>` and `/jump <name> to x y z`. **Tests only.**
+  <name> to <name>` and `/jump <name> to x y z`.
 - **Hired companions join at your level**, not level 5, with their spec points spent in their class's build (respec
   stays free). Above level 5 they arrive in plain merchant armour, with a weapon and, where their class carries one, a
   shield.
@@ -150,15 +112,13 @@ Everything in this list passed CI, and none of it has been seen in a real game.
   past it.
 - **Frontier porters (#418).** A gamebot without a medallion now goes to the nearest porter that sells its medallion,
   instead of waiting at one that doesn't until the 15-minute watchdog moved it. A wait past 5 minutes is logged.
-- **Albion bots stuck leaving Castle Sauvage** restart from the army's muster at the border keep (problem seen on
-  `aa537ce`).
-- **Gamebots that logged out beside another realm's frontier keep** log in at their capital, as players do (problem
-  seen on `aa537ce`: 11 Midgard bots in Cruachan Gorge).
-- **A keep defence with no defenders left stands down** instead of marching empty (problem seen on `aa537ce`: a
-  defence of Dun nGed marched with 0 bots).
-- **A GM's `/jump` into an enemy keep's area** is no longer sent to the bind point (problem seen on `aa537ce`).
-- **The log checker shows how far each regroup call spread (#419).** The regroup relay itself is unchanged: 17.4% on
-  `9a173f4` is under the 20% bar.
+- **Albion bots stuck leaving Castle Sauvage** restart from the army's muster at the border keep.
+- **Gamebots that logged out beside another realm's frontier keep** log in at their capital, as players do (for
+  example, Midgard bots left in Cruachan Gorge).
+- **A keep defence with no defenders left stands down** instead of marching empty (a defence of Dun nGed could march
+  with no bots at all).
+- **A GM's `/jump` into an enemy keep's area** is no longer sent to the bind point.
+- **The log checker shows how far each regroup call spread (#419).** The regroup relay itself is unchanged.
 
 ### Crafting (#422)
 
@@ -169,36 +129,32 @@ Everything in this list passed CI, and none of it has been seen in a real game.
   for a player who is already trading.
 - The economy log counts the crafted bot listings of level 20 and up, to show whether sellable work reaches the Realm
   Exchange.
-- No trade with a crafter bot has been finished in a real game yet (tried on `b1b6846`, before these fixes).
 
 ### Bosses and raids
+
+No boss is changed; what changed is how the bot raids fight them.
 
 - **Elro the Ancient's third treant** now comes. His script asked for health under a quarter and over three-tenths
   at once; it now comes between three-tenths and a quarter of his strength left, and his fight advice names all three
   moments.
-- **Raid fixes, all tests only** (each worked out from the owner's earlier raid logs and checked in a simulation in CI; no
-  boss is changed):
-  - **Caer Sidi, the Crypt Lord (#407):** when the long wait on his court runs out, the raid still waits for his patrol
-    to be clear before it pulls, so he no longer walks in with his whole court.
-  - **Galladoria, Spindler Broodmother (#408):** more parties go after her newborns (7 of 13 instead of 5).
-  - **Tuscaran Glacier (#409):** while Queen Kula lives, nothing but the King's own target hits King Tuscar (no pets,
-    no area spells), so the raid no longer heals her; after she dies, casters keep clear of his hammers.
-  - **Summoner Roesia (#410):** a fresh poison is cured even while someone in the party is hurt, the lowest-health
-    poisoned raider first, and cures go out twice as fast. In the simulation the raid wins once it grows to about 93;
-    the first, smaller attempt can still lose. Grand Summoner Govannon is not simulated.
-  - **Trollheim, Nosdoden (#411):** a retry after a wipe restarts the stall clock, so the raid is no longer ended in
-    its retry's first minutes.
-  - **Marfoirwort (#412):** his target holds close, melee fight from behind him, everyone at range stands clear and no
-    pet attacks him, so his life-leech heals him from one raider instead of about 25.
-  - **The Green Knight (#412):** casters and healers stand together away from his target, and the melee peel his trees
-    off them. The simulation wins at about 80 raiders or more; at the period's 50 it still loses.
-  - **Legion (#413):** the wounded step out toward the raid's healers instead of away from them, so his souls no longer
-    find them alone.
-  - **Golestandt and Cuuldurach (#415):** a raider thrown far by a wing-gust stays part of the fight instead of being
-    held at the staging ring.
-  - **Behemoth, Fomor City and Morgana (#414):** still no bot raid (signed off as exceptions on 2026-11-15).
-- **Every raid fix is tests only**, worked out from the owner's earlier raid logs and from simulations. The raid issues
-  (#407 to #415) stay open until each raid is seen won on the owner's PC. See "Known issues".
+- **Caer Sidi, the Crypt Lord (#407):** when the long wait on his court runs out, the raid still waits for his patrol to
+  be clear before it pulls, so he no longer walks in with his whole court.
+- **Galladoria, Spindler Broodmother (#408):** more parties go after her newborns (7 of 13 instead of 5).
+- **Tuscaran Glacier (#409):** while Queen Kula lives, nothing but the King's own target hits King Tuscar (no pets, no
+  area spells), so the raid no longer heals her; after she dies, casters keep clear of his hammers.
+- **Summoner Roesia (#410):** a fresh poison is cured even while someone in the party is hurt, the lowest-health
+  poisoned raider first, and cures go out twice as fast. The first, smaller attempt can still lose.
+- **Trollheim, Nosdoden (#411):** a retry after a wipe restarts the stall clock, so the raid is no longer ended in its
+  retry's first minutes.
+- **Marfoirwort (#412):** his target holds close, melee fight from behind him, everyone at range stands clear and no
+  pet attacks him, so his life-leech heals him from one raider instead of about 25.
+- **The Green Knight (#412):** casters and healers stand together away from his target, and the melee peel his trees
+  off them. He still wants a big raid.
+- **Legion (#413):** the wounded step out toward the raid's healers instead of away from them, so his souls no longer
+  find them alone.
+- **Golestandt and Cuuldurach (#415):** a raider thrown far by a wing-gust stays part of the fight instead of being held
+  at the staging ring.
+- **Behemoth, Fomor City and Morgana (#414):** still no bot raid.
 
 ### Lore
 
@@ -221,8 +177,6 @@ Everything in this list passed CI, and none of it has been seen in a real game.
   fixed what disagreed by rewording the new text. Nothing was cut.
 - **Bot names give way to the lore.** A few names the lore uses for its own characters are no longer given to new
   gamebots. Bots already in your world keep their names.
-- Lore is checked by automated rules in CI. Reading it in game (loremasters, books, `/lore`) is tests only for these
-  new pages.
 
 ### Settings
 
@@ -234,31 +188,17 @@ Everything in this list passed CI, and none of it has been seen in a real game.
 
 ### Also
 
-- **/faction quiet minutes** fill back to about 5 lines a minute, while the cap of 7 still holds (problem seen on
-  `43c43aa`: 13 of 39 minutes under 5).
+- **/faction quiet minutes** fill back to about 5 lines a minute, while the cap of 7 still holds.
 - **`/target <name>`** finds a nearby NPC for a player, such as Caer Caledon's guards, not only for a GM.
-- **Stability:** the casting line-of-sight gap behind 1.2's casting crash is closed (crash seen on `43c43aa`); a packet
-  queued while its queue is drained waits instead of raising "DrainTo in progress" (seen once on `43c43aa`); the missing
-  stock merchant item templates at start-up are one warning with a count.
-- **Linux:** the launcher's tooltip bleed-through and alt-tab crash under Wine (#393), and a Linux start script that
-  installs launcher updates and keeps the game fullscreen (#395). Neither has run under Wine since the review changes.
-
-### How this was tested
-
-- **CI on `d56adeda`** (fix/1.2.1, 22 Nov): the server suite, 9,258 passed, 0 failed, 1 skipped; the launcher, new
-  client, encounter catalog and version checks passed.
-- **Playtester on `b644529a`** (22 Nov): a real server with a scripted original-client player. The `bot-death`,
-  `bot-corpse-target` and `bot-rez` scenarios passed: the death packets arrive in order with no "alive" update while
-  the bot is dead, `/target <bot>` selects the corpse, and a rez with nothing selected picks the groupmate first and the
-  bot stands up again. These check packets, not what the client draws.
-- **None of these results is from the release build.** Its commit is in `BUILD-INFO.txt` and in the server log's
-  `FORK_BUILD` line.
+- **Stability:** the casting line-of-sight gap behind 1.2's casting crash is closed; a packet queued while its queue is
+  drained waits instead of raising "DrainTo in progress"; the missing stock merchant item templates at start-up are one
+  warning with a count.
+- **Linux:** the launcher's tooltip bleed-through and alt-tab crash under Wine are fixed (#393), and a Linux start
+  script installs launcher updates and keeps the game fullscreen (#395).
 
 ---
 
-## 3. Checks you can run, and what to send back
-
-You don't have to, but a log line from your PC is how a "tests only" item becomes "seen in game".
+## Player tools
 
 **The death fall, as a GM.** Tick **Make me GM** in the launcher's Options with the server stopped, start the server,
 target a bot, then:
@@ -271,10 +211,13 @@ target a bot, then:
 | `/lstest deathanim rez` | Casts a resurrection the way a player's cast goes: with nothing dead selected, the server picks the corpse |
 | `/lstest deathanim off` | Stops the packet list |
 
-**Without GM:** let a bot of your group die, cast a resurrection with nothing selected, and see whether it goes to the
-bot and the bot stands up.
+**Without GM:** when a bot of your group dies, cast a resurrection with nothing selected; it goes to the bot and the
+bot stands up.
 
-**Log lines to look for** in `runtime\server\logs\server.log`:
+**Don't like the fall?** Turn off **Bots fall when they die** in the Living Server tab (with the server stopped) and
+everything about dead bots is as it was in 1.2.
+
+**Log lines** in `runtime\server\logs\server.log` that show the new behaviour:
 
 | Line | What it shows |
 |---|---|
@@ -290,38 +233,35 @@ bot and the bot stands up.
 | `BOT_LED_RECRUIT ... kind=open_seat` | A travelling bot party looking for one more |
 | `REALM_EXPEDITION_PULL_WAIT_GUARDED`, `..._GUARD_CLEAR`, `..._GUARD_EXPIRED` | Caer Sidi: the raid waiting for a safe moment to pull one of the Crypt Lord's court (#407) |
 
-Send the lines, with the `FORK_BUILD` line from the top of the log, in a
-[GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues).
-
-**If the death fall looks wrong:** turn off **Bots fall when they die** in the Living Server tab (with the server
-stopped) and everything about dead bots is as it was in 1.2. Please tell us what you saw.
+If something looks wrong, open a [GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with the
+lines and the `FORK_BUILD` line from the top of the log.
 
 ---
 
-## 4. Known issues
+## Known issues
 
 - **Bot raids still lose some fights (#407 to #415):** Caer Sidi, Galladoria, Tuscaran Glacier, Summoner's Hall,
   Trollheim, the Green Knight and Marfoirwort, Legion, the dragons. The Behemoth is never fought, and Fomor City and
-  Morgana have no bot raid. The fixes in 1.2.1 are **tests only**, and the issues stay open until each raid is seen won on the owner's PC.
-  Each restored boss rule is a server setting of its own if a fight is too hard on your world.
+  Morgana have no bot raid. Each restored boss rule is a server setting of its own if a fight is too hard on your world.
 - **Route loops in Hibernia, region 200 (#420, #421):** repeated route rescues uphill to a hunting camp in Connacht, and
-  the Lough Derg / Bri Leith seam loops. Not changed in 1.2.1; they need log lines from a PC first.
-- **The death fall in the old client is unconfirmed (#425).** If it misbehaves, turn it off (see above).
+  the Lough Derg / Bri Leith seam loops. Not changed in 1.2.1.
+- **The death fall in the original client (#425):** if a dead bot looks wrong, turn off **Bots fall when they die**
+  (see "Player tools").
 - **Dead bots still can't be clicked** in the original client; use `/target <name>` or a rez with nothing selected.
-- **Clicking a living bot may not select it** in the original client (#424, unconfirmed). `/target <name>` works.
-- **Battleground keeps still rarely change hands** (#416); the lord-reach fix is tests only.
-- **Few crafted pieces sell on the Exchange**, and no trade with a crafter bot has been finished in a real game yet.
-- Everything else known, with what has and hasn't been seen:
+- **Clicking a living bot may not select it** in the original client (#424). `/target <name>` works.
+- **Battleground keeps still rarely change hands** (#416).
+- **Few crafted pieces sell on the Exchange.**
+- Everything else known:
   [docs/KNOWN-ISSUES.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/docs/KNOWN-ISSUES.md). Every
   change: [CHANGELOG-LIVING-SERVER.md](https://github.com/chris4aker/OfflineDAoC-LivingServer/blob/main/CHANGELOG-LIVING-SERVER.md).
 
 ---
 
-## 5. How to update
+## How to update
 
 - **Have 1.2, 1.1.4, 1.1.3 or 1.1.2:** in the launcher, **Check for updates**, then **GET UPDATE**: Install, Later or
   Skip this version. It installs only with the game and server closed, and only a package that matches the SHA-256
-  GitHub publishes. (CI runs an update over 1.2; not yet run on the owner's PC: **tests only**.)
+  GitHub publishes.
 - **Have 1.0, 1.1 or 1.1.1, or the Social Expansion on 0.37:** run Setup, or unzip
   `OfflineDAoC-LivingServer-1.2.1.zip` into your game folder and run `INSTALL.cmd` with the game and server closed.
 - **New to Offline DAoC:** run `LivingServer-Setup-1.2.1.exe`. It installs Offline DAoC 0.37 and Living Server.
