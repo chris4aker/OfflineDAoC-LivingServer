@@ -2157,7 +2157,14 @@ public static partial class AutonomousBotChatCoordinator
             friend: () => AutonomousLivingServer.TryFriendChat(bot, player, message, out bool offers) is { } friendly ? ((string, bool)?)(friendly, offers) : null,
             knowledge: () => AutonomousChatKnowledge.TryAnswer(player, message, out string knowledge) ? knowledge : null,
             voiced: () => KnownChoice(bot, player, message, () => VoicedChoice(bot, message, () => GenerateDirectedReply(message), player, addressed: true,
-                channel: "tell")));
+                channel: "tell")),
+            // 1.2.3: only inside an exchange (the bot told this player something in the last few minutes, or it is in their group),
+            // so "im in camelot hills" out of nowhere isn't taken as a meetup.
+            meetup: () => bot.Group != null && bot.Group == player.Group ||
+                          AutonomousChatThreads.Log.LastBy(bot.DatabaseID, now, AutonomousChatThreads.TellMemoryMs) is { } said && said.Channel == channel
+                ? AutonomousChatMeetup.Reply(message, Clean(bot.CurrentZone?.Description, null), bot.CurrentZone != null && bot.CurrentZone == player.CurrentZone,
+                    bot.Group != null && bot.Group == player.Group, Random.Shared)
+                : null);
     }
 
     /// <summary>"heading to vendo tonight", "anyone up for emain", "lets do df": a line that plans something. Pure.</summary>

@@ -198,7 +198,19 @@ public static class AutonomousChatReplyBudget
             return Pick(random, "no clue sry", "dunno sry", "not sure, try /advice", "no idea tbh", "hmm no clue");
         if (moment.Intent == eAutonomousChatIntent.Abuse)
             return Pick(random, "ok", "k", "lol ok", "whatever");
-        return Pick(random, "heh", "ya", "lol", "k", "oh ok", "ah");
+        // 1.2.3 (the owner's game: "I'm by camp station" by tell drew "lol"): where the player is, that they are coming, or a fact
+        // about themselves gets a real answer; any other statement a plain acknowledgement, never a bare laugh (a laugh answers
+        // only a line that laughs, above).
+        bool exchange = !string.IsNullOrEmpty(moment.LastBotLine);
+        if (exchange && AutonomousChatMeetup.PlaceSaid(message) != null)
+            return Pick(random, "k, inv me when ur close", "ok, come find me and inv", "gotcha, inv when ur near");
+        if (exchange && AutonomousChatMeetup.SaysComing(message))
+            return Pick(random, "cool, inv when ur close", "k, see u soon");
+        if (AutonomousChatMeetup.SaysAboutSelf(message))
+            return AutonomousChatMeetup.AboutSelfReply(random);
+        if (AutonomousChatMeetup.Laughs(message))
+            return Pick(random, "heh", "lol", "ha");
+        return Pick(random, "ya", "k", "oh ok", "ah ok", "gotcha");
     }
 
     /// <summary>"want a rez?", "u need heals?", "need anything?": the player offers the bot something (not a request). Pure on a padded line.</summary>

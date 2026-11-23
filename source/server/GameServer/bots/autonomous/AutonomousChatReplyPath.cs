@@ -222,7 +222,7 @@ public static class AutonomousChatReplyPath
     /// <paramref name="knowledge"/>. Not budgeted here (the caller does it).
     /// </summary>
     public static ReplyChoice Tell(Ports ports, string message, eAutonomousChatIntent intent, Func<string> invited, Func<string> join, Func<string> where,
-        Func<(string Text, bool Offers)?> friend, Func<string> knowledge, Func<ReplyChoice> voiced)
+        Func<(string Text, bool Offers)?> friend, Func<string> knowledge, Func<ReplyChoice> voiced, Func<string> meetup = null)
     {
         bool shortTalk = ports.Voices && IsShortTalk(message, intent, tell: true);
         if (AutonomousBotChatCoordinator.SaysInvited(message) && invited?.Invoke() is { } got)
@@ -231,6 +231,10 @@ public static class AutonomousChatReplyPath
             return new ReplyChoice(ports.Styled(joining), "join");
         if (AutonomousBotChatCoordinator.AsksWhereYouAre(message) && where?.Invoke() is { } here)
             return new ReplyChoice(ports.Styled(here), "live where");
+        // 1.2.3 (the owner's game: "I'm by camp station" by tell drew "lol"): where the player says they are, or that they are
+        // coming, is answered with where the bot is and how to meet (AutonomousChatMeetup).
+        if (ports.Voices && meetup?.Invoke() is { } meet)
+            return new ReplyChoice(ports.Styled(meet), "live meetup");
         if (ports.Voices && friend?.Invoke() is { } friendly && friendly.Text != null)
             return new ReplyChoice(ports.Styled(friendly.Text), friendly.Offers ? AutonomousBotChatCoordinator.FriendInviteRoute : "friend chat");
         if (ports.Voices && ports.Fact?.Invoke(message, true) is { } fact)
@@ -439,6 +443,11 @@ public static class AutonomousChatReplyPath
             choice = new ReplyChoice(null, "none contradicts (" + choice.Route + ")");
         else if (AutonomousChatReplyFit.Of(choice.Route, message) < AutonomousChatReplyFit.Known && AutonomousChatReplyFit.WrongSituation(message, choice.Text))
             choice = new ReplyChoice(null, "none situation (" + choice.Route + ")");
+        // 1.2.3 (the owner's game: "I'm by camp station" by tell drew "lol"): a bare laugh is never the whole answer to a line said to
+        // the bot that doesn't laugh itself; the short answer for the line takes its place.
+        if (addressed && AutonomousChatMeetup.IsBareLaugh(choice.Text) && !AutonomousChatMeetup.Laughs(message) &&
+            moment.Intent != eAutonomousChatIntent.Laugh)
+            choice = new ReplyChoice(null, "none laugh (" + choice.Route + ")");
         int fit = AutonomousChatReplyFit.Of(choice.Route, message);
         if (string.IsNullOrWhiteSpace(choice.Text) || AutonomousChatReplyBudget.IsBrushOff(choice.Text))
             fit = Math.Min(fit, AutonomousChatReplyFit.Weak);
