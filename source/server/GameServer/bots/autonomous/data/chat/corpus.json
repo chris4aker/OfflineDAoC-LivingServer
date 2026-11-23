@@ -530677,6 +530677,44 @@
    "needs": [
     "knows_player"
    ],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "{player}, where u headed?",
+   "id": "f3094be9d672"
+  },
+  {
+   "kind": "reply",
+   "topic": "player",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "knows_player"
+   ],
+   "intent": "travel",
+   "mood": "",
+   "weight": 1.0,
+   "text": "where to {player}?",
+   "id": "43955b48ea73"
+  },
+  {
+   "kind": "reply",
+   "topic": "player",
+   "who": [],
+   "realm": "*",
+   "class": [],
+   "levels": [
+    1,
+    50
+   ],
+   "needs": [
+    "knows_player"
+   ],
    "intent": "help",
    "mood": "",
    "weight": 1.0,

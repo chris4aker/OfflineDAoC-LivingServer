@@ -113,6 +113,15 @@ slow but steady {player}, you?
 not bad {player}, still grinding away
 @kind reply
 @topic player
+@intent travel
+@needs knows_player
+@who *
+# 1.2.3: no advice in place of an answer ("stablemaster is your friend" to "where is Humberton Castle"). A remembered player
+# gets a question back; where a place is comes from the knowledge lookup.
+{player}, where u headed?
+where to {player}?
+@kind reply
+@topic player
 @intent help
 @needs knows_player
 @who *
