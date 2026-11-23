@@ -1,6 +1,6 @@
 # Living Server 1.2.2: release notes (draft)
 
-The text below the line is the draft of the GitHub release notes for 1.2.2, the raid-size release on top of 1.2.1. It
+The text below the line is the draft of the GitHub release notes for 1.2.2, the raid release on top of 1.2.1. It
 lists only what changed since 1.2.1; [RELEASE-NOTES-1.2.md](RELEASE-NOTES-1.2.md) still describes the whole of Living
 Server. Publish it as Latest, not as a pre-release: the launcher's update check reads GitHub's latest release.
 
@@ -27,8 +27,9 @@ Before publishing:
 > Living Server is an unofficial, free, non-commercial fan project. It is not affiliated with, endorsed by or
 > connected to Electronic Arts or Broadsword Online Games. Dark Age of Camelot belongs to them.
 
-A small release for **1.2.1**: a new plan for **the Green Knight** and his trees, keep and tower lords fought in
-formation, and fixes for companions and bots on the move. **Every bot raid stays at its period size**, the size the
+A raid release on top of **1.2.1**: a new plan for **the Green Knight** and his trees, sharper bot tactics in six epic
+fights, keep and tower lords fought in formation, straighter answers in /faction, and fixes for companions and bots on
+the move. **Every bot raid stays at its period size**, the size the
 2003-2004 raid guides give. No boss was made weaker.
 
 Uthgard's drop tables and the next round of fixes come in **1.2.3**.
@@ -46,15 +47,7 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
   100, Tuscaran Glacier 100, the Green Knight 40, and every other raid as in 1.2.1.
 - **The raid still adjusts itself.** It starts at 125% of its size, gets smaller after wins and bigger after losses,
   as before.
-- **The bots keep fighting these raids the 1.2.1 way:**
-  - **Summoner's Hall:** the healers cure Summoner Roesia's fresh poison even while someone is hurt, the lowest-health
-    raider first.
-  - **Galladoria:** 7 of 13 parties go after Spindler Broodmother's newborns.
-  - **Tuscaran Glacier:** while Queen Kula lives, nothing but King Tuscar's own target hits him, no pets and no area
-    spells.
-  - **Caer Sidi:** the raid waits for the Crypt Lord's patrol to be clear before it pulls his court.
-  - **Trollheim:** a retry after a wipe at Nosdoden starts the raid's timer again.
-  - **The three dragons, Darkness Falls and Marfoirwort:** as in 1.2.1.
+- **What changed is how the bots fight**, below under *Raid tactics* and *The Green Knight*.
 
 ### Keep lords
 
@@ -75,7 +68,8 @@ spells, arrows and heals reach:
 - **Necromancers, Cabalists and other pet owners stand back** where no tree grows at them, and send their pets in.
 - **When he walks off to heal, the raid holds its ground** and finishes the trees until he comes back.
 
-His trees still stop at 70 a wave. He is still the hardest fight for a raid of 40, and we're still working on him.
+His trees still stop at 70 a wave, and he is as strong as ever. **A raid of 40 isn't expected to beat him yet:** he
+is still the hardest fight in the game for the bots, and the next releases keep working on him.
 
 ### Good to know
 
