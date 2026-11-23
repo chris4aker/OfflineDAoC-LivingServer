@@ -193,6 +193,9 @@ jobs:
           echo CHAT_CHANNEL_ROWS_END
           if [ -n "$ctx" ]; then sed 's/^/CHAT_CONTEXT_ROW /' "$ctx"; else echo "::warning title=Chat channel audit::no context-rows.jsonl"; fi
           echo CHAT_CONTEXT_ROWS_END
+          mom=$(find . -path '*chat-bench*' -name 'moment-rows.jsonl' | head -n 1 || true)
+          if [ -n "$mom" ]; then sed 's/^/CHAT_MOMENT_ROW /' "$mom"; else echo "::warning title=Chat channel audit::no moment-rows.jsonl"; fi
+          echo CHAT_MOMENT_ROWS_END
 
       - uses: actions/upload-artifact@v4
         if: always()

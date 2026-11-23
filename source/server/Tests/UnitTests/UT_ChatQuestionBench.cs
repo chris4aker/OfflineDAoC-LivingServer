@@ -665,6 +665,67 @@ namespace DOL.GS.Tests
             Assert.That(rows, Is.Not.Empty);
         }
 
+        /// <summary>
+        /// Audit 1.2.3, report only: lines a player types while grouped or meeting up ("im at the bridge", "omw", "ready?", "oom",
+        /// "which way?"), which the question bench doesn't hold, in the channels they are typed in. A tell is taken as inside an
+        /// exchange (the bot told the player something a moment ago), so the 1.2.3 meet-up answer is in reach; /group's own
+        /// branches before the reply path (a warning, "come here") are marked. Rows: chat-bench/moment-rows.jsonl.
+        /// </summary>
+        [Test]
+        public void Audit_LinesOfTheMomentInEveryChannel()
+        {
+            Bench bench = Load();
+            string[] said =
+            {
+                "im by camp station", "im at the bridge", "omw", "be there in 5", "where r u", "where are you guys?", "where to next?", "what now?",
+                "ready?", "rdy", "pull", "can you pull?", "who is pulling?", "afk 2 min", "back", "oom", "need to rest", "med break", "gj", "nice pull",
+                "ty for the group", "gtg, thanks all", "one more pull then i gotta go", "can someone rez me", "heal me pls", "buff pls", "follow me",
+                "wait here", "which way?", "is this camp ok for us?", "want to move to a better spot?", "whats your spec?", "what lvl are you?",
+                "how much longer can you stay?", "loot is yours", "need that drop?", "lol", "that was close", "sorry my bad", "add!",
+            };
+            string[] channels = ["faction", "say", "group", "group_named", "tell", "guild", "guild_named", "companion_say"];
+            var rows = new List<string>();
+            foreach (string channel in channels)
+            {
+                var recent = new VC.RecentLines();
+                DateTime now = AuditEpoch;
+                for (int i = 0; i < said.Length; i++)
+                {
+                    var q = new Question("m" + (i + 1).ToString("00"), said[i], channel, eRealm.Albion, "Armsman", 24, "moment", null);
+                    Run run = AuditRun(bench, q, recent, now);
+                    now = now.AddMinutes(3);
+                    eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(said[i]);
+                    Answer a;
+                    if (channel is "group" or "group_named" && AutonomousChatReplyBudget.IsAlarm(said[i], intent))
+                        a = AuditDone(run, "group alarm", "[world: the group's warning reply]");
+                    else if (channel is "group" or "group_named" && AutonomousBotGroupChatter.AsksToCome(said[i]))
+                        a = AuditDone(run, "group come", Style(run, AutonomousBotGroupChatter.ComeReply(true, 2_000, run.Me.Zone, run.Rng)));
+                    else if (channel == "tell")
+                    {
+                        AutonomousChatReplyPath.Ports ports = PortsOf(run);
+                        using AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Replying(said[i], "tell:" + run.Realm,
+                            (long)(run.Now - AuditEpoch).TotalMilliseconds);
+                        AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousChatReplyPath.Tell(ports, said[i], intent,
+                            invited: () => Stubbed(run, "[world: got the invite or not]"),
+                            join: () => Stubbed(run, "[world: join reply]"),
+                            where: () => AutonomousBotChatCoordinator.WhereText(run.Me.Zone, false, run.Me.Level, run.Me.Cls, run.Rng),
+                            friend: null,
+                            knowledge: () => Knowledge(run, said[i]),
+                            voiced: () => VoicedOf(run, ports, said[i], true, "tell"),
+                            meetup: () => AutonomousChatMeetup.Reply(said[i], run.Me.Zone, false, false, run.Rng));
+                        choice = AutonomousChatReplyPath.Budget(ports, choice, said[i], true, "tell");
+                        a = AuditDone(run, choice.Route, choice.Text);
+                    }
+                    else
+                        a = AnswerAs(run, channel);
+                    rows.Add(JsonSerializer.Serialize(new { ch = channel, id = q.Id, said = said[i], intent = AutonomousBotVoices.IntentName(intent),
+                        shape = AutonomousChatShortTalk.QuestionShape(said[i]), route = a.Route, reply = a.Reply }));
+                }
+            }
+            File.WriteAllLines(AuditPath("moment-rows.jsonl"), rows);
+            Assert.That(rows.Count, Is.EqualTo(said.Length * channels.Length));
+        }
+
         // ------------------------------------------------------------------------------------------------------------ tests
 
         [Test]
