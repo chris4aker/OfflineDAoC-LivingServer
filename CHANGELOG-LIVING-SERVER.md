@@ -8,6 +8,26 @@ of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedu
 language). From Beta 1.0 the whole add-on is the **Living Server** and that group is **Server life**.
 Older entries below keep the names they were written with.
 
+## 1.2.3 (in development)
+
+Uthgard's drop tables and the fixes from the next PC check (owner, 2026-11-22). **Tests only until seen in game.**
+
+**The server**
+- **No endurance regeneration at all** (a r/daoc report on 1.2.1, 0.37b: sitting alone in Camelot with Tireless and a
+  Minstrel endurance song, endurance stayed flat; in 1.2 power did too, until the launcher's power rate rewrote that row).
+  `ServerProperties.Load` read a value it couldn't parse by leaving the field at its C# default, 0 for
+  `ENDURANCE_REGEN_AMOUNT_MODIFIER` and `HEALTH_REGEN_AMOUNT_MODIFIER` (no initializer), and
+  `EnduranceRegenerationAmountCalculator` multiplies the whole tick, buffs and realm abilities included, by it. Now
+  (`ServerPropertyValue`): an unreadable value (blank, NULL, "1.0x") uses the attribute's default and logs
+  `SERVER_PROPERTY_UNREADABLE key= value=`; a comma decimal ("1,0", "0,5") is read as that number (en-US alone read
+  "1,0" as 10); every other value reads as before. The three regen multipliers start at 1, 1 and 1.5. Not confirmed on
+  the player's world: the row's value there is unknown, and no Living Server tool was found that writes a bad one
+  (every launcher, Setup and import writer uses invariant numbers). `UT_ServerPropertyValue123`. **Tests only.**
+- **Launcher:** an **Endurance rate** in the Living Server tab's regeneration card (1 to 10, 1 by default, the classic
+  rate; `release-server-settings.json` ships 1). An unreadable, 0 or below-1 row is reported and repaired by SAVE
+  SETTINGS (below 1 a standing character's rounded-down tick is nothing). The tab's notes for an unreadable number or
+  switch now show the server's default, which is what the server uses from 1.2.3. **Tests only.**
+
 ## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in

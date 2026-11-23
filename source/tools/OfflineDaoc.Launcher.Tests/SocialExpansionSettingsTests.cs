@@ -180,8 +180,59 @@ public class SocialExpansionSettingsTests
         Assert.That(SocialExpansionSettings.Defaults.AllOff().BotGroupInvites, Is.False);
         Exec("UPDATE ServerProperty SET Value = 'x' WHERE `Key` = 'bot_group_player_loot_weight'");
         problems.Clear();
-        Assert.That(SocialExpansionSettings.Load(_database, problems).PlayerLootWeight, Is.EqualTo(1));
+        Assert.That(SocialExpansionSettings.Load(_database, problems).PlayerLootWeight, Is.EqualTo(2), "the server uses its default (1.2.3)");
         Assert.That(problems, Has.Count.EqualTo(1));
+    }
+
+    /// <summary>
+    /// 1.2.3, from a r/daoc report (no endurance regeneration at all, Tireless and songs included): the endurance rate is in
+    /// the tab (1 by default, 1 to 10), an unreadable or too-low row is reported and repaired by a save, and the tab shows it.
+    /// </summary>
+    [Test] public void TheEnduranceRateIsSavedReadCheckedAndRepaired()
+    {
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That((d.EnduranceRegenModifier, SocialExpansionSettings.Recommended.EnduranceRegenModifier), Is.EqualTo((1.0, 1.0)));
+        Assert.That(d.ToStoredValues()["endurance_regen_amount_modifier"], Is.EqualTo("1"));
+        Assert.That(d.AllOff().EnduranceRegenModifier, Is.EqualTo(1.0), "ALL OFF leaves the rates alone");
+        Assert.That((d with { EnduranceRegenModifier = 0.5 }).Validate(), Does.Contain("endurance regeneration"));
+        Assert.That((d with { EnduranceRegenModifier = 11 }).Validate(), Does.Contain("endurance regeneration"));
+        (d with { EnduranceRegenModifier = 1.5 }).Save(_database, null, () => _stopped);
+        Assert.That(Rows()["endurance_regen_amount_modifier"], Is.EqualTo("1.5"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).EnduranceRegenModifier, Is.EqualTo(1.5));
+        Assert.That(problems, Is.Empty);
+
+        foreach (var (stored, shown) in new[] { ("", 1.0), ("fast", 1.0), ("0", 1.0), ("0.2", 1.0), ("25", 10.0) })
+        {
+            Exec($"UPDATE ServerProperty SET Value='{stored}' WHERE `Key`='endurance_regen_amount_modifier'");
+            problems.Clear();
+            var keys = new HashSet<string>();
+            var loaded = SocialExpansionSettings.Load(_database, problems, keys);
+            if (stored == "")
+            {
+                Assert.That((loaded.EnduranceRegenModifier, problems.Count), Is.EqualTo((1.0, 0)), "a blank row keeps the default");
+                continue;
+            }
+            Assert.That(loaded.EnduranceRegenModifier, Is.EqualTo(shown), stored);
+            Assert.That(keys, Is.EquivalentTo(new[] { "endurance_regen_amount_modifier" }), stored);
+            if (stored is "0" or "0.2")
+                Assert.That(problems[0], Does.Contain("regenerates no endurance"), stored);
+            if (stored == "fast")
+                Assert.That(problems[0], Does.Contain("uses its default 1"));
+            loaded.Save(_database, loaded, () => _stopped, keys);
+            problems.Clear();
+            Assert.That(SocialExpansionSettings.Load(_database, problems).EnduranceRegenModifier, Is.EqualTo(shown), stored);
+            Assert.That(problems, Is.Empty, "SAVE SETTINGS repaired " + stored);
+        }
+
+        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        Exec("UPDATE ServerProperty SET Value='2.5' WHERE `Key`='endurance_regen_amount_modifier'");
+        using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
+        var rate = (NumericUpDown)type.GetField("_enduranceRate", Hidden)!.GetValue(panel)!;
+        Assert.That(rate.Value, Is.EqualTo(2.5m));
+        rate.Value = 3m;
+        type.GetMethod("SaveSettings", Hidden)!.Invoke(panel, null);
+        Assert.That(Rows()["endurance_regen_amount_modifier"], Is.EqualTo("3"));
     }
 
     [Test] public void TheJoinModeIsSavedReadAndChecked()
@@ -283,7 +334,7 @@ public class SocialExpansionSettingsTests
         Assert.That(SocialExpansionSettings.FromStoredValues(bad, problems, keys).ChatRate, Is.EqualTo(3.0));
         Assert.That(keys, Does.Contain("bot_voices_chat_rate"));
         Assert.That(SocialExpansionSettings.FromStoredValues(new Dictionary<string, string?> { ["bot_voices_chat_rate"] = "lots" }, problems).ChatRate,
-            Is.EqualTo(0.0), "what the server reads");
+            Is.EqualTo(2.0), "what the server uses: its default (1.2.3; before, 0)");
     }
 
     [Test] public void UnreadableValuesAreReportedAndShownAsDefaults()
@@ -296,7 +347,7 @@ public class SocialExpansionSettingsTests
         var problems = new List<string>();
         var keys = new HashSet<string>();
         var loaded = SocialExpansionSettings.Load(_database, problems, keys);
-        Assert.That(loaded.BotGuilds, Is.False, "the server reads an unreadable bool as False");
+        Assert.That(loaded.BotGuilds, Is.True, "the server uses its default for an unreadable bool (1.2.3; before, False)");
         Assert.That(loaded.GuildSharePercent, Is.EqualTo(100), "a share above 1 shows as 100%");
         Assert.That(problems, Has.Count.EqualTo(2));
         Assert.That(keys, Is.EquivalentTo(new[] { "bot_guilds_enabled", "bot_guild_share" }));
@@ -401,7 +452,7 @@ public class SocialExpansionSettingsTests
         problems.Clear();
         var bad = SocialExpansionSettings.Load(_database, problems, keys);
         Assert.That(keys, Is.EquivalentTo(new[] { "mana_regen_amount_modifier" }));
-        Assert.That(bad.ManaRegenModifier, Is.EqualTo(SocialExpansionSettings.MinManaRegenModifier));
+        Assert.That(bad.ManaRegenModifier, Is.EqualTo(SocialExpansionSettings.DefaultManaRegenModifier), "the server uses its default (1.2.3; before, 0)");
         Exec("UPDATE ServerProperty SET Value='25' WHERE `Key`='mana_regen_amount_modifier'");
         Assert.That(SocialExpansionSettings.Load(_database, new List<string>()).ManaRegenModifier, Is.EqualTo(SocialExpansionSettings.MaxManaRegenModifier));
 
@@ -562,8 +613,8 @@ public class SocialExpansionSettingsTests
             "bot_crafting_pace", "bot_nolifer_buffbot_percent", "bot_crafters" }), "none is read as off by the server too, so it is no problem");
         Assert.That((bad.BotCrafterSharePercent, bad.ExchangeTaxPercent, bad.BotCrafterExchangeListings, bad.BotCraftingPace, bad.RealmCommissions,
                 bad.BuffBotPercent, bad.BotCrafters),
-            Is.EqualTo((7, 50, 3, "xp", "off", 0, true)),
-            "the server keeps its defaults (7, crafters on), clamps the tax and posts, reads xp, reads 0 buffbots (no start value)");
+            Is.EqualTo((7, 50, 3, "xp", "off", 30, true)),
+            "the server keeps its defaults (7, 30 buffbots, crafters on), clamps the tax and posts, reads xp");
         bad.Save(_database, bad, () => _stopped, keys);
         problems.Clear();
         Assert.That(SocialExpansionSettings.Load(_database, problems), Is.EqualTo(bad));

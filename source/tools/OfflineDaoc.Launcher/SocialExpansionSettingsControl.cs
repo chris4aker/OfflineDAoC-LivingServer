@@ -57,6 +57,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _atmosphere = Switch("Atmosphere lines");
     private readonly NumericUpDown _manaRate = Rate("Power regeneration rate");
     private readonly CheckBox _manaHalved = Switch("Half below 50% power");
+    private readonly NumericUpDown _enduranceRate = EnduranceRateInput("Endurance regeneration rate");
     private readonly CheckBox _botGroupInvites = Switch("Bot leaders invite you");
     private readonly CheckBox _botRaidInvites = Switch("Raid leaders invite you");
     private readonly CheckBox _deathFall = Switch("Bots fall when they die");
@@ -181,10 +182,12 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Add(living, _leeroy, null, "One end-game raid in twenty has a bot who charges the final boss early, yelling his name. The raid follows him in.");
         Add(living, _atmosphere, null, "Short lines in the middle of the screen: entering a dungeon, a boss's lair, a boss's phase, a dragon waking, a realm's first kill. One every 30 s at most; realm news first.");
 
-        var power = Card("POWER REGENERATION", DaocTheme.Gold, 3);
+        var power = Card("POWER AND ENDURANCE REGENERATION", DaocTheme.Gold, 4);
         Captioned(Caption("REGENERATION RATE", part: false), Add(power, null, WithUnit(_manaRate, "×"),
             "1 is the classic rate; patch 1.87 doubled it. 1.5 (the default) is a middle ground. Players and bots alike."));
         Add(power, _manaHalved, null, "The classic rule: list casters regenerate at half speed below half power. Players and bots alike.");
+        Captioned(Caption("ENDURANCE RATE", part: false), Add(power, null, WithUnit(_enduranceRate, "×"),
+            "1 (the default) is the classic rate. It multiplies every tick, Tireless and endurance songs included. Players and bots alike."));
         var powerNote = new Label
         {
             Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = StatusFont, ForeColor = DaocTheme.Muted,
@@ -348,6 +351,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _chatRate.ValueChanged += (_, _) => Edited();
         _minLevel.ValueChanged += (_, _) => Edited();
         _manaRate.ValueChanged += (_, _) => Edited();
+        _enduranceRate.ValueChanged += (_, _) => Edited();
         _lootWeight.ValueChanged += (_, _) => Edited();
         _playerXp.Changed += Edited;
         _botXp.Changed += Edited;
@@ -424,6 +428,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BotXpByLevel = _botXp.Value,
         ManaRegenModifier = (double)_manaRate.Value,
         ManaHalvedBelowHalf = _manaHalved.Checked,
+        EnduranceRegenModifier = (double)_enduranceRate.Value,
         BotGroupInvites = _botGroupInvites.Checked,
         BotRaidInvites = _botRaidInvites.Checked,
         DeathFall = _deathFall.Checked,
@@ -472,6 +477,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _manaRate.Value = (decimal)Math.Clamp(double.IsNaN(settings.ManaRegenModifier) ? SocialExpansionSettings.DefaultManaRegenModifier : settings.ManaRegenModifier,
             SocialExpansionSettings.MinManaRegenModifier, SocialExpansionSettings.MaxManaRegenModifier);
         _manaHalved.Checked = settings.ManaHalvedBelowHalf;
+        _enduranceRate.Value = (decimal)Math.Clamp(double.IsNaN(settings.EnduranceRegenModifier) ? SocialExpansionSettings.DefaultEnduranceRegenModifier : settings.EnduranceRegenModifier,
+            SocialExpansionSettings.MinEnduranceRegenModifier, SocialExpansionSettings.MaxEnduranceRegenModifier);
         _botGroupInvites.Checked = settings.BotGroupInvites;
         _botRaidInvites.Checked = settings.BotRaidInvites;
         _deathFall.Checked = settings.DeathFall;
@@ -800,6 +807,19 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         {
             Minimum = (decimal)SocialExpansionSettings.MinManaRegenModifier, Maximum = (decimal)SocialExpansionSettings.MaxManaRegenModifier,
             DecimalPlaces = 2, Increment = 0.25m, Value = (decimal)SocialExpansionSettings.DefaultManaRegenModifier,
+            Width = 62, AccessibleName = name, TextAlign = HorizontalAlignment.Right,
+        };
+        StyleInput(number);
+        return number;
+    }
+
+    /// <summary>The endurance multiplier (endurance_regen_amount_modifier): 1 to 10 in steps of 0.25, 1 by default.</summary>
+    private static NumericUpDown EnduranceRateInput(string name)
+    {
+        var number = new NumericUpDown
+        {
+            Minimum = (decimal)SocialExpansionSettings.MinEnduranceRegenModifier, Maximum = (decimal)SocialExpansionSettings.MaxEnduranceRegenModifier,
+            DecimalPlaces = 2, Increment = 0.25m, Value = (decimal)SocialExpansionSettings.DefaultEnduranceRegenModifier,
             Width = 62, AccessibleName = name, TextAlign = HorizontalAlignment.Right,
         };
         StyleInput(number);
