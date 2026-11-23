@@ -3734,7 +3734,7 @@ public static partial class AutonomousBotChatCoordinator
             Fact = bot == null ? null : (line, addressed) => AutonomousChatLiveAnswers.AnswerQuestion(bot, line, addressed, Random.Shared),
             Context = bot == null ? null : (channel, line) => ContextFor(bot, player, channel, line),
             Known = bot == null || player == null ? null
-                : (intent, line) => AutonomousLivingServer.TryKnownReply(bot, player, intent, out string known, line) ? known : null,
+                : (intent, incoming) => AutonomousLivingServer.TryKnownReply(bot, player, intent, out string known, incoming) ? known : null,
             WillComeRez = () => bot != null && WillComeRez(bot, player),
             Facts = bot == null ? null : () => AutonomousChatLiveAnswers.FactsOf(bot),
             Live = bot == null ? null : (shape, line) => AutonomousBotVoices.LiveShapeAnswer(bot, player, shape, line),
