@@ -452,7 +452,7 @@ namespace DOL.GS
         {
             if (raider.Group is not Group g) return false;
             GameLiving[] members = g.GetMembersInTheGroup().Where(m => m != null && m.IsAlive).ToArray();
-            if (!members.Any(m => m is GameBot b && RoleOf(b) == "caster" && AreaRadiusOf(b, now) > 0 && gk.IsWithinRadius(b, GreenKnightGrowRadius)))
+            if (!members.Any(m => m is GameBot b && RoleOf((GameLiving)b) == "caster" && AreaRadiusOf(b, now) > 0 && gk.IsWithinRadius(b, GreenKnightGrowRadius)))
                 return false;
             return members.Where(m => RoleOf(m) == "melee" && m != gk.TargetObject).OrderBy(m => m.ObjectID)
                 .Take(GreenKnightGuardsPerParty).Contains(raider);
@@ -540,7 +540,7 @@ namespace DOL.GS
             lock (GreenKnightAreaCasters)
                 if (GreenKnightAreaCasters.TryGetValue(gk, out var hit) && now - hit.Tick < 1_000) return hit.Any;
             bool any = gk.GetNPCsInRadius(GreenKnightGrowRadius).OfType<GameBot>().Any(b => b.IsAlive && b.IsAutonomousWorldBot &&
-                RoleOf(b) == "caster" && AreaRadiusOf(b, now) > 0);
+                RoleOf((GameLiving)b) == "caster" && AreaRadiusOf(b, now) > 0);
             lock (GreenKnightAreaCasters)
             {
                 if (GreenKnightAreaCasters.Count > 8) GreenKnightAreaCasters.Clear();
