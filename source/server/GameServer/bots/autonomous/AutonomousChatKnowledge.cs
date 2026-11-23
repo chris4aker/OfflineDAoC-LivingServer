@@ -78,9 +78,9 @@ public static class AutonomousChatKnowledge
         // 1.2.2 chat audit (C5, fix F7): a spec or weapon answer only for a class the tips know; the general rule ("whatever ur
         // spec is") answers nothing.
         if (Has(@" (what|which|wat) spec | (put|spend|spending) (my |ur |your )?(spec )?points | points in at | how (should|do) i spec "))
-            pool = AutonomousChatFieldTalk.KnowsClass(cls) ? AutonomousChatFieldTalk.SpecAdvice(cls) : null;
+            pool = AutonomousChatFieldTalk.ClassSpecAdvice(cls);
         else if (Has(@" (what|which) (weapon|weap) "))
-            pool = AutonomousChatFieldTalk.KnowsClass(cls) ? AutonomousChatFieldTalk.WeaponAdvice(cls) : null;
+            pool = AutonomousChatFieldTalk.ClassWeaponAdvice(cls);
         else if (Has(@" sc or drops | drops or sc | (worth|should i) (sc|spellcraft)"))
             pool = AutonomousChatFieldTalk.GearAdvice(AutonomousChatLiveAnswers.LevelAsked(text, askerLevel));
         else if (Has(@" (start|starting|get into|begin|learn) (to )?craft| how (do i|to|can i) craft| crafting (start|work) "))

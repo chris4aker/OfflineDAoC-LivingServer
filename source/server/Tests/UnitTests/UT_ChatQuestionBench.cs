@@ -307,7 +307,7 @@ namespace DOL.GS.Tests
                 if (AutonomousChatShortTalk.AsksSpec(incoming))
                 {
                     string cls = AutonomousChatFieldTalk.ClassNamed(incoming) ?? run.Me.Cls;
-                    string[] pool = AutonomousChatFieldTalk.SpecAdvice(cls.ToLowerInvariant());
+                    string[] pool = AutonomousChatFieldTalk.ClassSpecAdvice(cls.ToLowerInvariant());
                     if (pool.Length > 0)
                         return ("knowledge spec", Style(run, pool[run.Rng.Next(pool.Length)]));
                 }

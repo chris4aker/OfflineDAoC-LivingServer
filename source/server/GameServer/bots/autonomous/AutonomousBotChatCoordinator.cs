@@ -3893,7 +3893,8 @@ public static partial class AutonomousBotChatCoordinator
         string cls = AutonomousChatFieldTalk.ClassNamed(incoming) ?? responder?.CharacterClass?.Name;
         if (string.IsNullOrWhiteSpace(cls))
             return null;
-        string[] pool = AutonomousChatFieldTalk.SpecAdvice(cls.ToLowerInvariant());
+        // 1.2.2 (C5, fix F7): the class's own lines only, no general rule.
+        string[] pool = AutonomousChatFieldTalk.ClassSpecAdvice(cls.ToLowerInvariant());
         return pool.Length == 0 ? null : pool[random.Next(pool.Length)];
     }
 

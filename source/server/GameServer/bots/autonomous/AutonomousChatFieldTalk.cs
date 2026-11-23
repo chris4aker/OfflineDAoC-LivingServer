@@ -2822,20 +2822,28 @@ public static class AutonomousChatFieldTalk
     /// <summary>Whether the class tips know a class (its own spec and weapon lines). Pure.</summary>
     public static bool KnowsClass(string className) => ClassTips.ContainsKey(className?.Trim() ?? string.Empty);
 
-    /// <summary>
-    /// Spec advice for a class ("cs and envenom, rest in stealth" for an infiltrator), or a general rule for one not listed. Pure.
-    /// 1.2.2 chat audit (C5, fix F7): a known class's pool is its own lines only; "max ur main line first" appended to every
-    /// class drew "what spec for reaver?" "Max your main line first." one time in four.
-    /// </summary>
+    /// <summary>Spec advice for a class ("cs and envenom, rest in stealth" for an infiltrator), or a general rule for one not listed. Pure.</summary>
     public static string[] SpecAdvice(string className) =>
-        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.ToArray()
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.Append("max ur main line first").ToArray()
             : Pool("max ur main line first", "main line, rest wherever", "ask ur trainer, he shows the lines");
 
-    /// <summary>The weapon a class uses ("two thrust daggers" for an infiltrator). Pure. A known class's own lines only (C5, fix F7:
-    /// "what weapon should a thane use?" drew "whatever ur spec is").</summary>
+    /// <summary>The weapon a class uses ("two thrust daggers" for an infiltrator). Pure.</summary>
     public static string[] WeaponAdvice(string className) =>
-        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.ToArray()
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.Append("whatever ur spec is").ToArray()
             : Pool("whatever ur spec is", "best one that drops lol");
+
+    /// <summary>
+    /// The spec advice a player is given (1.2.2 chat audit, C5, fix F7): the class's own lines only, or none for a class the tips
+    /// don't know. "what spec for reaver?" drew "Max your main line first." one time in four from <see cref="SpecAdvice"/>, whose
+    /// general line stays for the bots' own class talk. Pure.
+    /// </summary>
+    public static string[] ClassSpecAdvice(string className) =>
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Spec.ToArray() : [];
+
+    /// <summary>The weapon a player is told for a class: its own lines only, or none (C5, fix F7: "what weapon should a thane
+    /// use?" drew "whatever ur spec is"). Pure.</summary>
+    public static string[] ClassWeaponAdvice(string className) =>
+        ClassTips.TryGetValue(className?.Trim() ?? string.Empty, out var tips) ? tips.Weapon.ToArray() : [];
 
     /// <summary>Where a class trains: every class trainer of the realm stands in its capital. Pure.</summary>
     public static string[] TrainerAnswers(Facts f, Random random)

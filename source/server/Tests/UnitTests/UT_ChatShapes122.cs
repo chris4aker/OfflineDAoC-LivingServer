@@ -60,6 +60,8 @@ public class UT_ChatShapes122
     [TestCase("where to next?")]
     [TestCase("where should we go")]
     [TestCase("mind if i hunt near cotswold?")]
+    [TestCase("is tomb of mithra any good for xp at 30ish")]
+    [TestCase("any good xp in vendo at 24?")]
     public void OtherQuestionsAreNotAHunt(string text) => Assert.That(Short.AsksWhereToLevel(text), Is.False, text);
 
     [Test]
@@ -168,15 +170,15 @@ public class UT_ChatShapes122
         {
             string name = cls.ToString();
             Assert.That(Field.KnowsClass(name), Is.True, name);
-            Assert.That(Field.SpecAdvice(name), Is.Not.Empty.And.None.Match("main line first|rest wherever|ask ur trainer"), name);
-            Assert.That(Field.WeaponAdvice(name), Is.Not.Empty.And.None.Match("whatever ur spec|that drops lol"), name);
+            Assert.That(Field.ClassSpecAdvice(name), Is.Not.Empty.And.None.Match("main line first|rest wherever|ask ur trainer"), name);
+            Assert.That(Field.ClassWeaponAdvice(name), Is.Not.Empty.And.None.Match("whatever ur spec|that drops lol"), name);
         }
         // A class the tips don't know: no player-facing advice at all (TryAnswerCommon), the general rule only between bots.
         Assert.That(Knowledge.TryAnswerCommon("what weapon should i use?", eRealm.Albion, null, 20, new Random(1), out _), Is.False);
         Assert.That(Knowledge.TryAnswerCommon("what spec should i go?", eRealm.Albion, null, 20, new Random(1), out _), Is.False);
         Assert.That(Knowledge.TryAnswerCommon("what weapon should a thane use?", eRealm.Midgard, "Healer", 20, new Random(1), out string thane), Is.True);
         Assert.That(thane, Does.Contain("hammer"));
-        Assert.That(Field.SpecAdvice("nobody"), Is.Not.Empty, "bot-to-bot class talk keeps a general rule for a class it doesn't know");
+        Assert.That(Field.ClassSpecAdvice("nobody"), Is.Empty, "no advice for a class the tips don't know");
     }
 
     // ---- F11: what the bot is doing, its pots, quick facts ----------------------------------------------------------------

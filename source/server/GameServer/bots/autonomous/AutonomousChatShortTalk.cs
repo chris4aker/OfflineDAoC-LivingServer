@@ -672,6 +672,11 @@ public static class AutonomousChatShortTalk
                       first is "where" or "wheres" or "best" or "good" or "any" or "anyone" or "anybody" or "any1" or "lvl" or "level" or "im";
         if (!asking)
             return false;
+        // "is tomb of mithra any good for xp at 30ish?", "any good xp in vendo at 24?": a place's levels (AnswerPlaceLevel), unless
+        // the line asks where ("where in myrkwood do 20s hunt?").
+        if (!System.Text.RegularExpressions.Regex.IsMatch(t, " (where|wheres) ") &&
+            AutonomousChatQuestions.PlaceNamed(text, AutonomousChatPlaces.All) is { Type: not "capital" })
+            return false;
         bool level = HuntLevel.IsMatch(t);
         if (HuntGo.IsMatch(t))
             return level;
