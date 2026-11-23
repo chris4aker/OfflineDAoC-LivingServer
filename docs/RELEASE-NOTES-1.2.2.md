@@ -84,6 +84,12 @@ still described in the [1.2 release notes](https://github.com/chris4aker/Offline
   [GitHub issue](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues) with those lines and the `FORK_BUILD`
   line from the top of `runtime\server\logs\server.log`.
 
+### Companions on the Darkness Falls stairs
+
+- **Your companions now follow you back up the entrance stairs of Darkness Falls**, one flight at a time. Before,
+  they waited at the bottom, or wandered off into the level below when you stood near the arrival point at the top.
+  The server log shows each climb as `DF_STAIR_CLIMB`.
+
 ### Bots on the road
 
 - **No more pacing at the Lough Derg / Valley of Bri Leith border.** Hibernian bots walking from the Valley toward
