@@ -228,7 +228,7 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.EmoteCommandHandler
 
 /classes
-  Lists your realm's Classic + SI classes and party roles
+  Lists your realm's Classic + SI classes, their helper builds and party roles
   /classes
   Handler: DOL.GS.Commands.ClassesCommandHandler
 
