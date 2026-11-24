@@ -680,8 +680,12 @@ public static class NoLiferBuffBots
             return;
         LastLineTo[key] = now;
         string text = Line(lines, MainOf(bot)?.Name, Random.Shared.Next());
-        ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
-        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name, bot);
+        // Issue #475: out through the say gate (a pass-through).
+        BotSayGate.Say(new BotSayGate.Utterance("tell", bot.Name, bot.Realm, text, player.Name, bot) { Listeners = [player] }, said =>
+        {
+            ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, said);
+            return said;
+        });
     }
 
     #endregion

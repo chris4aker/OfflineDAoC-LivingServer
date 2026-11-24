@@ -653,6 +653,12 @@ NORMAL PLAYER COMMANDS
   /o <text>
   Handler: DOL.GS.Commands.OfficerGuildChatCommandHandler
 
+/odd
+  Marks the last chat lines as odd, for the session chat log
+  /odd - marks the last few lines you saw as wrong
+  /odd <note> - the same, with a note saying what was wrong
+  Handler: DOL.GS.Commands.OddCommandHandler
+
 /online (aliases: /on)
   Shows all Players that are currently online
   Usage: /online

@@ -57,6 +57,11 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   **Built, tests only** (`UT_RvrFightRehearsal`): three report rows in the CI log, none a gate until a PC log agrees
   (evidence.md 5.3). Open: the two fight scenarios do not yet repeat exactly by seed (`Random.Shared` in the server's
   fight code); the world database's spells, specs and keeps are stood in.
+- [#475](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/475) Realism 1: record real play (the say gate as a
+  pass-through in all 17 exits, `logs/session-chat.log`, `/odd`, `tools/bot-voices/session_transcript.py`, the raw-send
+  ratchet). **Built, tests only;** done when a played session's `session-chat.log` gives a transcript an agent can read
+  line by line and a count of defects per hour, per channel, per build (baseline: 9 in about an hour on 1.2.2). Next:
+  #489's step 2 (the checks in the gate).
 
 ## 1.3
 

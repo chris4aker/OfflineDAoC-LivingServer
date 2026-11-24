@@ -197,8 +197,9 @@ public static class AutonomousRaidLeeroy
         if (!brain.OrderPull(boss))
             return false;
         string shout = Shouts[random.Next(Shouts.Length)];
-        if (leeroy.Yell(shout) && AutonomousLivingServer.PlayerHears(leeroy))
-            BotChatTranscript.Bot("yell", leeroy.Name, leeroy.Realm, shout);
+        // Issue #475: out through the say gate (a pass-through).
+        BotSayGate.Say(new BotSayGate.Utterance("yell", leeroy.Name, leeroy.Realm, shout) { Body = leeroy },
+            line => leeroy.Yell(line) && AutonomousLivingServer.PlayerHears(leeroy) ? line : null);
         // And in /faction, so the whole realm hears him go (owner 2026-10-29: "the leeroy character should also be shouting
         // in faction when they run in"). Sent as written: the speech pass would tidy it.
         // 1.1.3: the raid's big moment, a tagged event (his shout, one call, one word after the raid).

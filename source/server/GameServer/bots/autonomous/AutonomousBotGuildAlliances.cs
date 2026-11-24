@@ -138,16 +138,24 @@ public static class AutonomousBotGuildAlliances
             safe = safe[..AutonomousBotGuildChatLines.MaxLength];
         string message = $"[Alliance] {speaker}: \"{safe}\"";
         // Chat audit TEXT-051: alliance chat is in the transcript, as guild chat is.
-        if (HasListener(alliance))
-            BotChatTranscript.Bot("alliance", speaker, alliance.Guilds.Count > 0 ? (eRealm)alliance.Guilds[0].Realm : eRealm.None, safe);
-        foreach (Guild guild in alliance.Guilds)
+        bool heard = HasListener(alliance);
+        // Issue #475: out through the say gate (a pass-through; the message is formatted from the line as before).
+        BotSayGate.Say(new BotSayGate.Utterance("alliance", speaker, alliance.Guilds.Count > 0 ? (eRealm)alliance.Guilds[0].Realm : eRealm.None, safe)
         {
-            foreach (GamePlayer player in guild.GetListOfOnlineMembers())
+            Room = alliance.DbAlliance?.AllianceName,
+            Listeners = alliance.Guilds.SelectMany(guild => guild.GetListOfOnlineMembers().Where(player => guild.HasRank(player, Guild.eRank.AcHear))).ToList(),
+        }, line =>
+        {
+            foreach (Guild guild in alliance.Guilds)
             {
-                if (guild.HasRank(player, Guild.eRank.AcHear))
-                    player.Out.SendMessage(message, PacketHandler.eChatType.CT_Alliance, PacketHandler.eChatLoc.CL_ChatWindow);
+                foreach (GamePlayer player in guild.GetListOfOnlineMembers())
+                {
+                    if (guild.HasRank(player, Guild.eRank.AcHear))
+                        player.Out.SendMessage(message, PacketHandler.eChatType.CT_Alliance, PacketHandler.eChatLoc.CL_ChatWindow);
+                }
             }
-        }
+            return heard ? line : null;
+        });
     }
 
     #endregion

@@ -27,6 +27,8 @@ namespace DOL.GS.PacketHandler
         public override void SendMessage(string msg, eChatType type, eChatLoc loc)
         {
             SnoopManager.CheckAndBroadcast(m_gameClient.Player, msg, type, loc);
+            if (m_gameClient.ClientState is not GameClient.eClientState.CharScreen)
+                ScreenBursts.Note(m_gameClient.Player, msg, type);   // issue #475: counts system-window bursts, changes nothing
             SendRawMessage(msg, type, loc);
         }
 
