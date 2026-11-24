@@ -122,6 +122,28 @@ otherwise.
   hired and `/spawn` helpers and gamebot groups. No Lifer buffbots already planned by their main's needs and are
   unchanged. `UT_BotBuffTargets491`. **Tests only.**
 
+**Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
+- **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again
+  whenever it was more than 30 degrees off, every 400 ms, so 119 of the 120 look angles body language picks were undone
+  within half a second. Now it faces the leader once on arrival and then keeps whatever heading it has until it walks
+  again (`BotTurning.KeepsArrivedFollowHeading`). A walking leader and a player's group are as before. **Tests only.**
+- **A rest no longer ends in a sit-bounce.** Resting bots regain 10% a second, so a seat lasted 3 to 10 seconds and the bot
+  stood the moment it was full. Now an autonomous gamebot whose rest ends with nothing to fight keeps its seat until its
+  next move, cast or attack (as the waiting seat does); a party member a player can see stands 0.4 to 1.5 s after its
+  leader sets off, each one at its own time. Recovery and its speed are unchanged; companions, bots in a player's group
+  and any wake for a fight stand at once, as before. Whether the seat (emote 0xF0) is drawn on the original client is the
+  open PC check; `BotIdleLife.ShowSeat` and the two animation ids are the one place to drop or change it. **Tests only.**
+- **A standing party is no longer a perfect ring.** Outdoors each member's spot is moved by its own id: radius x0.75 to
+  1.35, angle up to 14 degrees, never within 32 units of another member (`BotIdleLife.RingOffsets`). A dungeon's tight
+  ring keeps its exact slots. **Tests only.**
+- **Bot emotes print their line.** A bot's wave now shows "Brannoc waves." in the chat window, as a player's does, and "...
+  waves at you." when it greets you or cheers your level (`EmoteCommandHandler.MessagesFor`); enemy-realm gamebots are
+  named as you see them. **Tests only.**
+- **A breather after a kill.** A bot you can see now pauses 1.5 to 7 s (mostly 2 to 4) before its next pull, looking around,
+  instead of running at the next monster within a second. Never with an add or a party member still fighting, never in
+  your group, an RvR party or a raid; a bot nobody sees keeps today's pace. `UT_IdleLife`, `UT_BotMobileSongs`. **Tests
+  only.**
+
 ## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in

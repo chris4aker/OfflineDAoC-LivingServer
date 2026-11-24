@@ -1430,8 +1430,17 @@ public static partial class AutonomousBotGroupCoordinator
         // slot. It avoids hash collisions and remains stable across AI turns,
         // so waiting members do not stand in a stack or continuously reshuffle.
         int radius = tight ? 48 + members.Length * 2 : 64 + members.Length * 3;
-        double angle = (Math.PI * 2d * index / members.Length) +
-                       (RuntimeHelpers.GetHashCode(bot.Group) & 31) * (Math.PI / 180d);
+        double rotation = (RuntimeHelpers.GetHashCode(bot.Group) & 31) * (Math.PI / 180d);
+        if (!tight)
+        {
+            // Realism 4a (#487, tell 6): outdoors the ring is spread per member (radius x0.75-1.35, angle +/-14
+            // degrees, 32 units apart; BotIdleLife.RingOffsets), stable for the same members. A dungeon's tight ring
+            // keeps its exact slots, inside the bound that keeps a slot off the far side of a wall.
+            long[] keys = members.Select(member => member.DatabaseID > 0 ? member.DatabaseID : member.ObjectID).ToArray();
+            Vector2 offset = BotIdleLife.RingOffsets(keys, radius, rotation)[index];
+            return new(center.X + offset.X, center.Y + offset.Y, center.Z);
+        }
+        double angle = (Math.PI * 2d * index / members.Length) + rotation;
         return new(center.X + (float)(Math.Cos(angle) * radius),
             center.Y + (float)(Math.Sin(angle) * radius), center.Z);
     }

@@ -246,7 +246,7 @@ namespace DOL.GS
                             state.Greeted[watcher.Name] = now;
                         BotTurning.TurnGradually(bot, watcher);
                         AutonomousLivingServer.Later(bot, 350 + Random.Shared.Next(500),
-                            () => Eligible(bot) && bot.IsWithinRadius(watcher, GreetRadius * 2), () => bot.Emote(choice.Emote));
+                            () => Eligible(bot) && bot.IsWithinRadius(watcher, GreetRadius * 2), () => bot.Emote(choice.Emote, watcher));
                         Count(ref _greets);
                         return false;
                     case BodyMove.Shuffle:
@@ -293,7 +293,7 @@ namespace DOL.GS
                     AutonomousLivingServer.Later(bot, 600 + i * 900 + Random.Shared.Next(1_200), () => Eligible(bot), () =>
                     {
                         BotTurning.TurnGradually(bot, who);
-                        bot.Emote(emote);
+                        bot.Emote(emote, who);
                         Count(ref _cheers);
                     });
                 }
@@ -302,6 +302,9 @@ namespace DOL.GS
             {
             }
         }
+
+        /// <summary>Whether a real player is within sight of <paramref name="who"/> (the idle-life gate, #487).</summary>
+        internal static bool IsWatched(GameObject who) => who?.CurrentRegion != null && NearestWatcher(who, out _) != null;
 
         /// <summary>The nearest real player who can see <paramref name="who"/>, or null.</summary>
         private static GamePlayer NearestWatcher(GameObject who, out double distance)

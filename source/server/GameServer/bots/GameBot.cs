@@ -330,11 +330,49 @@ namespace DOL.GS
         }
 
         /// <summary>A bot's emote, recorded (CHAT_EMOTE) when a player is near enough to see it (chat audit TEXT-051).</summary>
-        public override void Emote(eEmote emote)
+        public override void Emote(eEmote emote) => Emote(emote, null);
+
+        /// <summary>
+        /// A bot's emote: the animation, and (Realism 4a, #487, tell 7) the line a player's emote prints, "Brannoc waves at
+        /// you." to its target and "Brannoc waves." or "Brannoc waves at Maeve." to players in emote range. An enemy-realm
+        /// gamebot is named as each viewer sees it (AutonomousNameMask). Animations with no player emote print nothing.
+        /// </summary>
+        public void Emote(eEmote emote, GameObject target)
         {
             base.Emote(emote);
+            SendEmoteText(emote, target);
             if (AutonomousLivingServer.PlayerHears(this))
                 BotChatTranscript.Emote(this, emote);
+        }
+
+        private void SendEmoteText(eEmote emote, GameObject target)
+        {
+            string[] messages = DOL.GS.Commands.EmoteCommandHandler.MessagesFor(emote);
+            if (messages == null || ObjectState != eObjectState.Active || CurrentRegion == null)
+                return;
+            try
+            {
+                GamePlayer targetPlayer = target as GamePlayer;
+                if (targetPlayer != null && !IsWithinRadius(targetPlayer, WorldMgr.VISIBILITY_DISTANCE))
+                    targetPlayer = null;
+                if (targetPlayer != null)
+                    Send(targetPlayer, viewerIsTarget: true);
+                foreach (GamePlayer player in GetPlayersInRadius(DOL.GS.Commands.EmoteCommandHandler.EMOTE_RANGE_TO_OTHERS))
+                    if (player != targetPlayer)
+                        Send(player, viewerIsTarget: false);
+            }
+            catch (Exception)
+            {
+                // an emote's text is cosmetic: never let it break the bot's turn
+            }
+
+            void Send(GamePlayer viewer, bool viewerIsTarget)
+            {
+                string line = BotIdleLife.EmoteLine(messages, AutonomousNameMask.NameFor(viewer, this, 0, true),
+                    target == null ? null : AutonomousNameMask.NameFor(viewer, target, 0, false), viewerIsTarget);
+                if (line != null)
+                    viewer.Out.SendMessage(line, eChatType.CT_Emote, eChatLoc.CL_SystemWindow);
+            }
         }
 
         public override int MaxConcentration => GetModified(eProperty.MaxConcentration);
@@ -369,23 +407,52 @@ namespace DOL.GS
         // Bots sit down to rest, visibly (owner 2026-10-31). The NPC packets carry no sit state, so a seated bot is shown by
         // emote 0xF0 (sit down, then sit-idle) and stood up by 0xF1, sent on each change to the players who see it and
         // again by SendNPCCreate to a player who first sees it seated. Visual only: recovery and its timing are unchanged.
-        internal const eEmote SitEmote = (eEmote)0xF0;
-        internal const eEmote StandEmote = (eEmote)0xF1;
+        // Realism 4a (#487): the animation ids and the switch that drops them live in BotIdleLife (open PC check).
+        internal static eEmote SitEmote => BotIdleLife.SitAnimation;
+        internal static eEmote StandEmote => BotIdleLife.StandAnimation;
         private bool _seatedForClients;
 
         public bool IsSeatedForClients => _seatedForClients;
 
+        /// <summary>Seated and shown so: what a player who first sees the bot is sent (PacketLib1124.SendNPCCreate).</summary>
+        public bool IsShownSeated => _seatedForClients && BotIdleLife.ShowSeat;
+
         private void SetSeatedForClients(bool seated)
         {
             if (!seated)
+            {
                 _seatedByHabit = false;
+                _standSpreadAtTick = 0;
+            }
             if (_seatedForClients == seated)
                 return;
             _seatedForClients = seated;
-            if (ObjectState != eObjectState.Active)
+            if (ObjectState != eObjectState.Active || !BotIdleLife.ShowSeat)
                 return;
             foreach (GamePlayer player in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
                 player.Out.SendEmoteAnimation(this, seated ? SitEmote : StandEmote);
+        }
+
+        // Realism 4a (#487): a watched seated bot told to go stands 0.4-1.5 s later (per bot), not all on one tick.
+        private long _standSpreadAtTick;
+
+        /// <summary>
+        /// For a bot seated by habit (a wait, a wall or a kept rest seat) that is about to walk off: the milliseconds it
+        /// still sits before standing, or 0 to stand now. The spread is drawn once per seat and only while a player can see
+        /// the bot; anything to fight stands it at once.
+        /// </summary>
+        public int HoldSeatBeforeStanding(long now, bool watched)
+        {
+            if (!_seatedByHabit || !_seatedForClients)
+                return 0;
+            if (!BotIdleLife.SpreadsStanding(watched, InCombat || BotRestRecovery.BlocksRest(this)))
+            {
+                _standSpreadAtTick = 0;
+                return 0;
+            }
+            if (_standSpreadAtTick == 0)
+                _standSpreadAtTick = now + BotIdleLife.StandSpreadMs(Random.Shared.NextDouble());
+            return _standSpreadAtTick > now ? (int)(_standSpreadAtTick - now) : 0;
         }
 
         // Bots as people for 1.2, work package 5 (BotMovementHabits): an autonomous gamebot also sits while it waits (for
@@ -3237,9 +3304,21 @@ namespace DOL.GS
 
         public void WakeRecoveryRest()
         {
+            bool wasResting = _recoveryRestLocked;
             _recoveryRestLocked = false;
-            if (!_seatedByHabit)            // a seat taken by habit (WP5) stands on the bot's own move, cast or attack
-                SetSeatedForClients(false); // stands up before it moves, casts or fights (0xF1)
+            if (_seatedByHabit)             // a seat taken by habit (WP5) stands on the bot's own move, cast or attack
+                return;
+            // Realism 4a (#487, tell 4): a rest that ends because the bot is full, with nothing to fight, keeps its seat
+            // until the bot's next move, cast or attack (the habit seat's rules), instead of a 3-10 s sit-bounce. Visual only.
+            // (The cheap reads first: a companion or a standing bot never reaches the fight check.)
+            if (wasResting && _seatedForClients && IsAutonomousWorldBot && !IsTemporaryGroupHelper && !IsHiredCompanion &&
+                !IsPlayerLedGroup && IsAlive && BotIdleLife.KeepsSeatAfterRest(true, true, true,
+                    InCombat || BotRestRecovery.BlocksRest(this), IsMoving, IsCasting, IsAttacking))
+            {
+                _seatedByHabit = true;
+                return;
+            }
+            SetSeatedForClients(false);     // stands up before it moves, casts or fights (0xF1)
         }
 
         /// <summary>

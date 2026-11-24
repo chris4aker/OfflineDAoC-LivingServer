@@ -83,7 +83,7 @@ namespace DOL.GS.Commands
 	public class EmoteCommandHandler : AbstractCommandHandler, ICommandHandler
 	{
 		private const ushort EMOTE_RANGE_TO_TARGET = 2048; // 2064 was out of range and 2020 in range;
-		private const ushort EMOTE_RANGE_TO_OTHERS = 512; // 519 was out of range and 504 in range;
+		internal const ushort EMOTE_RANGE_TO_OTHERS = 512; // 519 was out of range and 504 in range;
 
 		public void OnCommand(GameClient client, string[] args)
 		{
@@ -368,6 +368,71 @@ namespace DOL.GS.Commands
 		}
 
 
+		/// <summary>
+		/// The four lines a player's emote prints (no target to self, no target to others, target to self, target to others),
+		/// or null for an animation with no player emote. Realism 4a (#487): a bot's emote prints the same text (GameBot.Emote).
+		/// </summary>
+		public static string[] MessagesFor(eEmote emote) =>
+			emote switch
+			{
+				eEmote.Angry => EMOTE_MESSAGES_ANGRY,
+				eEmote.BangOnShield => EMOTE_MESSAGES_BANG,
+				eEmote.Beckon => EMOTE_MESSAGES_BECKON,
+				eEmote.Beg => EMOTE_MESSAGES_BEG,
+				eEmote.Blush => EMOTE_MESSAGES_BLUSH,
+				eEmote.Bow => EMOTE_MESSAGES_BOW,
+				eEmote.LetsGo => EMOTE_MESSAGES_CHARGE,
+				eEmote.Cheer => EMOTE_MESSAGES_CHEER,
+				eEmote.Clap => EMOTE_MESSAGES_CLAP,
+				eEmote.Cry => EMOTE_MESSAGES_CRY,
+				eEmote.Curtsey => EMOTE_MESSAGES_CURTSEY,
+				eEmote.Dance => EMOTE_MESSAGES_DANCE,
+				eEmote.Dismiss => EMOTE_MESSAGES_DISMISS,
+				eEmote.Flex => EMOTE_MESSAGES_FLEX,
+				eEmote.Hug => EMOTE_MESSAGES_HUG,
+				eEmote.Induct => EMOTE_MESSAGES_INDUCT,
+				eEmote.Rider_LookFar => EMOTE_MESSAGES_RIDER_LOOKFAR,
+				eEmote.BlowKiss => EMOTE_MESSAGES_KISS,
+				eEmote.Laugh => EMOTE_MESSAGES_LAUGH,
+				eEmote.Military => EMOTE_MESSAGES_MILITARY,
+				eEmote.No => EMOTE_MESSAGES_NO,
+				eEmote.Point => EMOTE_MESSAGES_POINT,
+				eEmote.Ponder => EMOTE_MESSAGES_PONDER,
+				eEmote.Present => EMOTE_MESSAGES_PRESENT,
+				eEmote.Raise => EMOTE_MESSAGES_RAISE,
+				eEmote.Rude => EMOTE_MESSAGES_RUDE,
+				eEmote.Salute => EMOTE_MESSAGES_SALUTE,
+				eEmote.Shrug => EMOTE_MESSAGES_SHRUG,
+				eEmote.Slap => EMOTE_MESSAGES_SLAP,
+				eEmote.Slit => EMOTE_MESSAGES_SLIT,
+				eEmote.Smile => EMOTE_MESSAGES_SMILE,
+				eEmote.Rider_Stench => EMOTE_MESSAGES_RIDER_STENCH,
+				eEmote.Surrender => EMOTE_MESSAGES_SURRENDER,
+				eEmote.Taunt => EMOTE_MESSAGES_TAUNT,
+				eEmote.Victory => EMOTE_MESSAGES_VICTORY,
+				eEmote.Wave => EMOTE_MESSAGES_WAVE,
+				eEmote.Yes => EMOTE_MESSAGES_YES,
+				eEmote.Sweat => EMOTE_MESSAGES_SWEAT,
+				eEmote.Stagger => EMOTE_MESSAGES_STAGGER,
+				eEmote.Yawn => EMOTE_MESSAGES_YAWN,
+				eEmote.Doh => EMOTE_MESSAGES_DOH,
+				eEmote.Confused => EMOTE_MESSAGES_CONFUSE,
+				eEmote.Shiver => EMOTE_MESSAGES_SHIVER,
+				eEmote.Rofl => EMOTE_MESSAGES_ROFL,
+				eEmote.Mememe => EMOTE_MESSAGES_MEMEME,
+				eEmote.Worship => EMOTE_MESSAGES_WORSHIP,
+				eEmote.Drink => EMOTE_MESSAGES_DRINK,
+				eEmote.Howl => EMOTE_MESSAGES_HOWL,
+				eEmote.Diabolical => EMOTE_MESSAGES_DIABOLICAL,
+				eEmote.Brandish => EMOTE_MESSAGES_BRANDISH,
+				eEmote.Startled => EMOTE_MESSAGES_STARTLED,
+				eEmote.Talk => EMOTE_MESSAGES_TALK,
+				eEmote.Monty => EMOTE_MESSAGES_MONTY,
+				eEmote.Loco => EMOTE_MESSAGES_LOCO,
+				eEmote.Cower => EMOTE_MESSAGES_COWER,
+				_ => null,
+			};
+
 		// send emote animation to all visible players and format messages
 		private void SendEmote(GamePlayer sourcePlayer, GameObject targetObject, eEmote emoteID, string[] emoteMessages)
 		{
@@ -433,367 +498,367 @@ namespace DOL.GS.Commands
 		// ("{0} bangs on his shield at {1}!", Player.Name, YOU); sent to target
 		private const string YOU = "you";
 
-		private readonly string[] EMOTE_MESSAGES_BANG = {
+		private static readonly string[] EMOTE_MESSAGES_BANG = {
 			"You bang on your shield!",
 			"{0} bangs on his shield!",
 			"You bang on your shield at {0}!",
 			"{0} bangs on his shield at {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_BECKON = {
+		private static readonly string[] EMOTE_MESSAGES_BECKON = {
 			"You make a beckoning motion.",
 			"{0} beckons at nothing in particular.",
 			"You beckon {0}.",
 			"{0} beckons {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_BEG = {
+		private static readonly string[] EMOTE_MESSAGES_BEG = {
 			"You beg everyone.",
 			"{0} begs everyone.",
 			"You beg {0}.",
 			"{0} begs {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_BLUSH = {
+		private static readonly string[] EMOTE_MESSAGES_BLUSH = {
 			"You blush.",
 			"{0} blushes.",
 			"You blush at {0}.",
 			"{0} blushes at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_BOW = {
+		private static readonly string[] EMOTE_MESSAGES_BOW = {
 			"You bow.",
 			"{0} bows.",
 			"You bow to {0}.",
 			"{0} bows to {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_CHARGE = {
+		private static readonly string[] EMOTE_MESSAGES_CHARGE = {
 			"You motion everyone onward.",
 			"{0} motions everyone onward.",
 			"You motion {0} onward.",
 			"{0} motions {1} onward.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_CHEER = {
+		private static readonly string[] EMOTE_MESSAGES_CHEER = {
 			"You cheer wildly!",
 			"{0} cheers!",
 			"You cheer at {0}!",
 			"{0} cheers at {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_CLAP = {
+		private static readonly string[] EMOTE_MESSAGES_CLAP = {
 			"You give a round of applause!",
 			"{0} claps!",
 			"You clap at {0}!",
 			"{0} claps at {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_CRY = {
+		private static readonly string[] EMOTE_MESSAGES_CRY = {
 			"You begin sobbing!",
 			"{0} cries!",
 			"You cry at {0}!",
 			"{0} cries at {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_CURTSEY = {
+		private static readonly string[] EMOTE_MESSAGES_CURTSEY = {
 			"You curtsey gracefully.",
 			"{0} curtseys.",
 			"You curtsey to {0}.",
 			"{0} curtseys to {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_DANCE = {
+		private static readonly string[] EMOTE_MESSAGES_DANCE = {
 			"You begin dancing!",
 			"{0} dances!",
 			"You dance with {0}!",
 			"{0} dances with {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_DISMISS = {
+		private static readonly string[] EMOTE_MESSAGES_DISMISS = {
 			"You dismiss everyone.",
 			"{0} dismisses everyone.",
 			"You dismiss {0}.",
 			"{0} dismisses {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_FLEX = {
+		private static readonly string[] EMOTE_MESSAGES_FLEX = {
 			"You flex!",
 			"{0} flexes!",
 			"You flex at {0}!",
 			"{0} flexes at {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_HUG = {
+		private static readonly string[] EMOTE_MESSAGES_HUG = {
 			"You hug yourself.",
 			"{0} hugs himself.",
 			"You hug {0}.",
 			"{0} hugs {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_INDUCT = {
+		private static readonly string[] EMOTE_MESSAGES_INDUCT = {
 			"You induct everyone.",
 			"{0} inducts everyone.",
 			"You induct {0}.",
 			"{0} inducts {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_KISS = {
+		private static readonly string[] EMOTE_MESSAGES_KISS = {
 			"You blow a kiss!",
 			"{0} blows a kiss!",
 			"You blow a kiss to {0}!",
 			"{0} blows a kiss to {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_LAUGH = {
+		private static readonly string[] EMOTE_MESSAGES_LAUGH = {
 			"You burst into laughter!",
 			"{0} laughs!",
 			"You laugh at {0}!",
 			"{0} laughs at {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_MILITARY = {
+		private static readonly string[] EMOTE_MESSAGES_MILITARY = {
 			"You salute.",
 			"{0} salutes.",
 			"You salute {0}.",
 			"{0} salutes {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_NO = {
+		private static readonly string[] EMOTE_MESSAGES_NO = {
 			"You shake your head no.",
 			"{0} shakes his head no.",
 			"You shake your head no at {0}.",
 			"{0} shakes his head no at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_POINT = {
+		private static readonly string[] EMOTE_MESSAGES_POINT = {
 			"You point into the distance.",
 			"{0} points.",
 			"You point at {0}.",
 			"{0} points at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_PONDER = {
+		private static readonly string[] EMOTE_MESSAGES_PONDER = {
 			"You ponder.",
 			"{0} ponders.",
 			"You ponder at {0}.",
 			"{0} ponders at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_PRESENT = {
+		private static readonly string[] EMOTE_MESSAGES_PRESENT = {
 			"You present.",
 			"{0} presents.",
 			"You present to {0}.",
 			"{0} presents to {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_RAISE = {
+		private static readonly string[] EMOTE_MESSAGES_RAISE = {
 			"You raise your hand.",
 			"{0} raises his hand.",
 			"You raise your hand at {0}.",
 			"{0} raises his hand at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_RUDE = {
+		private static readonly string[] EMOTE_MESSAGES_RUDE = {
 			"You make a rude gesture.",
 			"{0} makes a rude gesture.",
 			"You make a rude gesture at {0}.",
 			"{0} makes a rude gesture at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_SALUTE = {
+		private static readonly string[] EMOTE_MESSAGES_SALUTE = {
 			"You give a firm salute.",
 			"{0} gives a firm salute.",
 			"You salute {0}.",
 			"{0} salutes {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_SHRUG = {
+		private static readonly string[] EMOTE_MESSAGES_SHRUG = {
 			"You shrug.",
 			"{0} shrugs.",
 			"You shrug at {0}.",
 			"{0} shrugs at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_SLAP = {
+		private static readonly string[] EMOTE_MESSAGES_SLAP = {
 			"You make a slapping motion.",
 			"{0} makes a slapping motion.",
 			"You slap {0}!",
 			"{0} slaps {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_SLIT = {
+		private static readonly string[] EMOTE_MESSAGES_SLIT = {
 			"You make a throat slit motion.",
 			"{0} makes a throat slit motion.",
 			"You make a throat slit motion at {0}.",
 			"{0} makes a throat slit motion at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_SURRENDER = {
+		private static readonly string[] EMOTE_MESSAGES_SURRENDER = {
 			"You make a surrendering gesture.",
 			"{0} makes a surrendering gesture.",
 			"You make a surrendering gesture at {0}.",
 			"{0} makes a surrendering gesture at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_TAUNT = {
+		private static readonly string[] EMOTE_MESSAGES_TAUNT = {
 			"You make a taunting gesture.",
 			"{0} makes a taunting gesture.",
 			"You taunt {0}.",
 			"{0} taunts {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_VICTORY = {
+		private static readonly string[] EMOTE_MESSAGES_VICTORY = {
 			"You howl in victory!",
 			"{0} howls in victory!",
 			"You howl in victory to {0}!",
 			"{0} howls in victory to {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_WAVE = {
+		private static readonly string[] EMOTE_MESSAGES_WAVE = {
 			"You wave at everyone.",
 			"{0} waves at everyone.",
 			"You wave to {0}.",
 			"{0} waves to {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_YES = {
+		private static readonly string[] EMOTE_MESSAGES_YES = {
 			"You nod your head yes.",
 			"{0} nods his head yes.",
 			"You nod your head yes at {0}.",
 			"{0} nods his head yes at {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_SWEAT = {
+		private static readonly string[] EMOTE_MESSAGES_SWEAT = {
 			"You break into a sweat.",
 			"{0} breaks into a sweat.",
 			"You break into a sweat at the sight of {0}.",
 			"{0} breaks into a sweat at the sight of {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_STAGGER = {
+		private static readonly string[] EMOTE_MESSAGES_STAGGER = {
 			"You stagger.",
 			"{0} staggers.",
 			"You stagger towards {0}.",
 			"{0} staggers towards {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_YAWN = {
+		private static readonly string[] EMOTE_MESSAGES_YAWN = {
 			"You yawn.",
 			"{0} yawns.",
 			"You yawn at {0}.",
 			"{0} yawns at {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_DOH = {
+		private static readonly string[] EMOTE_MESSAGES_DOH = {
 			"You slap your head in confusion.",
 			"{0} slaps your head in confusion.",
 			"You slap your head in confusion at {0}.",
 			"{0} slaps his head in confusion at {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_CONFUSE = {
+		private static readonly string[] EMOTE_MESSAGES_CONFUSE = {
 			"You look at yourself, clearly confused.",
 			"{0} looks at you, clearly confused.",
 			"You look at {0}, clearly confused.",
 			"{0} looks at {1}, clearly confused.",
 		};
-		private readonly string[] EMOTE_MESSAGES_SHIVER = {
+		private static readonly string[] EMOTE_MESSAGES_SHIVER = {
 			"You shiver.",
 			"{0} shivers.",
 			"You shiver at the sight of {0}.",
 			"{0} shivers at the sight of {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_ROFL = {
+		private static readonly string[] EMOTE_MESSAGES_ROFL = {
 			"You roll on the floor laughing.",
 			"{0} rolls on the floor laughing at.",
 			"You roll on the floor laughing at {0}.",
 			"{0} rolls on the floor laughing at {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_MEMEME = {
+		private static readonly string[] EMOTE_MESSAGES_MEMEME = {
 			"You beg to pick you.",
 			"{0} begs to pick him.",
 			"You beg {0} to pick you.",
 			"{0} begs {1} to pick them.",
 		};
-		private readonly string[] EMOTE_MESSAGES_WORSHIP = {
+		private static readonly string[] EMOTE_MESSAGES_WORSHIP = {
 			"You worship everything, and yet nothing.",
 			"{0} worships nothing in particular.",
 			"You worship {0}!",
 			"{0} worships {1}!",
 		};
-		private readonly string[] EMOTE_MESSAGES_DRINK = {
+		private static readonly string[] EMOTE_MESSAGES_DRINK = {
 			"You take a drink.",
 			"{0} takes a drink.",
 			"You toast {0} and take a drink.",
 			"{0} toasts {1}!",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_ANGRY = {
+		private static readonly string[] EMOTE_MESSAGES_ANGRY = {
 			"You look angrily around.",
 			"{0} looks angrily.",
 			"You look angrily at {0}.",
 			"{0} looks angrily at {1}.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_RIDER_LOOKFAR = {
+		private static readonly string[] EMOTE_MESSAGES_RIDER_LOOKFAR = {
 			"You look into the distance.",
 			"{0} looks into the distance.",
 			"You look into the distance.",
 			"{0} looks into the distance.",
 		};
 
-		private readonly string[] EMOTE_MESSAGES_RIDER_STENCH = {
+		private static readonly string[] EMOTE_MESSAGES_RIDER_STENCH = {
 			"You wave away the local stench.",
 			"{0} waves away the local stench.",
 			"You wave away the stench of {0}.",
 			"{0} waves away the stench of {1}.",
 		};
-		private readonly string[] EMOTE_MESSAGES_SMILE = {
+		private static readonly string[] EMOTE_MESSAGES_SMILE = {
 			"You smile happily.",
 			"{0} smiles happily.",
 			"You smile at {0}.",
 			"{0} smiles at {1}.",
 		};
 		// new
-        private readonly string[] EMOTE_MESSAGES_HOWL = {
+        private static readonly string[] EMOTE_MESSAGES_HOWL = {
             "You howl with rage.",
             "{0} howls with rage.",
             "You howl with rage at {0}.",
             "{0} howls with rage at {1}.",
         };
-        private readonly string[] EMOTE_MESSAGES_DIABOLICAL = {
+        private static readonly string[] EMOTE_MESSAGES_DIABOLICAL = {
             "You sneer diabolically.",
             "{0} sneer diabolically.",
             "You sneer diabolically at {0}.",
             "{0} sneer diabolically at {1}.",
         };
-        private readonly string[] EMOTE_MESSAGES_BRANDISH = {
+        private static readonly string[] EMOTE_MESSAGES_BRANDISH = {
             "You brandish your weapon.",
             "{0} brandishes their weapon.",
             "You brandish your weapon at {0}.",
             "{0} brandishes their weapon at {1}.",
         };
-        private readonly string[] EMOTE_MESSAGES_STARTLED = {
+        private static readonly string[] EMOTE_MESSAGES_STARTLED = {
             "You are startled.",
             "{0} is startled.",
             "You are startled by {0}.",
             "{0} is startled by {1}.",
         };
-        private readonly string[] EMOTE_MESSAGES_TALK = {
+        private static readonly string[] EMOTE_MESSAGES_TALK = {
             "You start talking with the hope that someone will listen.",
             "{0} starts talking with the hope that someone will listen.",
             "You talk to {0}.",
             "{0} talks to {1}.",
         };
-        private readonly string[] EMOTE_MESSAGES_MONTY = {
+        private static readonly string[] EMOTE_MESSAGES_MONTY = {
             "You think Camelot is a silly place.",
             "{0} thinks Camelot is a silly place.",
             "You inform {0} that Camelot is a silly place.",
             "{0} informs {0} that Camelot is a silly place.",
         };
-        private readonly string[] EMOTE_MESSAGES_LOCO = {
+        private static readonly string[] EMOTE_MESSAGES_LOCO = {
             "You think this is crazy.",
             "{0} thinks this is crazy.",
             "You think {0} is crazy.",
             "{0} thinks {1} is crazy.",
         };
-        private readonly string[] EMOTE_MESSAGES_COWER = {
+        private static readonly string[] EMOTE_MESSAGES_COWER = {
             "You cower.",
             "{0} cowers.",
             "You cower before {0}.",

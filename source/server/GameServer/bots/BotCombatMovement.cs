@@ -361,6 +361,19 @@ namespace DOL.GS
             target != null && target.CurrentRegion == owner.CurrentRegion &&
             !ShouldFace(owner.Heading, owner.GetHeading(target));
 
+        /// <summary>
+        /// Realism 4a (#487, tell 2): whether an arrived formation follower keeps its heading although it is more than 30
+        /// degrees off its leader: an autonomous gamebot of its own party (not a player's group, kept as before) whose leader
+        /// stands, once it has faced the leader on arrival. Its looks around then hold instead of being snapped back.
+        /// </summary>
+        public static bool KeepsArrivedFollowHeading(GameNPC owner, bool standingFormation, bool facedOnArrival) =>
+            KeepsArrivedFollowHeading(owner is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false } bot &&
+                !bot.IsPlayerLedGroup, standingFormation, facedOnArrival);
+
+        /// <summary>The rule on its own (unit tested).</summary>
+        public static bool KeepsArrivedFollowHeading(bool ownAutonomousParty, bool standingFormation, bool facedOnArrival) =>
+            ownAutonomousParty && standingFormation && facedOnArrival;
+
         private sealed class TurnState
         {
             public int Generation;
