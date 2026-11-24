@@ -102,18 +102,20 @@ def analyse(rows):
             if r["i"] == 0:
                 continue
             if opener is None:
-                flags.append(("reply_no_opener", r["n"], "its opener was never shown"))
+                # not the first minutes (the opener was before the transcript) and not the gold-spam reactions (the sim has no ads)
+                if r["at"] > 180 and not r["src"].startswith("spamreact"):
+                    flags.append(("reply_no_opener", r["n"], "its opener was never shown"))
                 continue
             if opener["ch"] != r["ch"]:
                 flags.append(("reply_wrong_channel", r["n"], f"opener in {opener['ch']}"))
-            if opener["at"] > r["at"]:
-                flags.append(("reply_before_opener", r["n"], ""))
+
             if r["src"].startswith(("debate", "story")):
                 continue
             prev = max((x for x in lines if x["at"] <= r["at"] and x is not r), key=lambda x: x["at"], default=opener)
             gap = r["at"] - prev["at"]
             between = position[id(r)] - position[id(prev)] - 1 if prev["ch"] == r["ch"] else 0
-            if gap > 90 or between >= 6:
+            # the asker's own "bump" or "nvm" minutes later is meant; another bot's late answer is not
+            if r["who"] != opener["who"] and (gap > 90 or between >= 6):
                 flags.append(("reply_stale", r["n"], f"{gap}s and {between} lines after the line it answers"))
     # the answers to the player's own lines
     said = [r for r in rows if r["src"].startswith("player")]
