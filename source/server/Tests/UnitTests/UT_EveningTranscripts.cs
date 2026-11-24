@@ -266,6 +266,14 @@ public class UT_EveningTranscripts
         long lastFactionLine = long.MinValue / 2, lastPlayerFaction = 0, debateUntil = 0;
         var dueReplies = new List<(long At, string Channel, string Text, long Who, bool Reply, string Src, long Ex, int I)>();
         var deferred = new Dictionary<string, int>(StringComparer.Ordinal);
+        // Live guards the budget simulation leaves out (audit, second run): a thread answer apart from its question names the asker
+        // (NamedWhenApart), a bot that said one of /faction's last four lines starts nothing new (SinkHold "hog"), no more than three
+        // threads at once (RoomFor), and a reaction the channel heard in the last ten minutes is said another way (Shorts).
+        var realmLog = new List<(long At, long Who)>();
+        var opened = new Dictionary<long, (long At, long Starter)>();
+        var lastFactionSpeakers = new Queue<long>();
+        var threadEnds = new List<long>();
+        string lane = $"sim:{s.Key}:{seed}:{speaks}:{Guid.NewGuid():N}";
 
         bool Visible(string channel, long who) => channel switch
         {
@@ -279,7 +287,16 @@ public class UT_EveningTranscripts
         void Say(long now, string channel, string text, long who, bool reply, string src, long ex, int index)
         {
             if (channel == "faction")
+            {
                 lastFactionLine = now;
+                lastFactionSpeakers.Enqueue(who);
+                while (lastFactionSpeakers.Count > AutonomousChatExchange.SpeakerShareWindow)
+                    lastFactionSpeakers.Dequeue();
+            }
+            if (channel is "faction" or "lfg" or "trade")
+                realmLog.Add((now, who));
+            if (index == 0 && ex > 0)
+                opened[ex] = (now, who);
             if (now >= start && now < end && Visible(channel, who))
                 rows.Add(new Row(now - start, channel, Who(who), src, ex, index, text));
             Budget.Channel? metered = channel switch
@@ -384,6 +401,11 @@ public class UT_EveningTranscripts
 
         string Styled(Bot bot, string text) => AutonomousBotVoices.StyleText(Corpus.VoiceFor(bot.Id), bot.Id, text, random);
 
+        // AutonomousBotVoices.StyleGenerated: a functional line as typed, a conversational one in its speaker's writing style.
+        string Generated(Bot bot, string text) => string.IsNullOrEmpty(text) ? text
+            : VC.IsFunctional(text) ? AutonomousChatIdiolect.Apply(VC.FixArticles(text), bot.Id, false, random, terse: true)
+            : Styled(bot, text);
+
         Bot Near(long now, Bot to, Func<Bot, bool> pool, double regularShare = 1.0)
         {
             bool regularFirst = regularShare >= 1 || random.NextDouble() < regularShare;
@@ -409,8 +431,10 @@ public class UT_EveningTranscripts
             int index = 1;
             foreach (Field.Step step in steps)
                 if (speakers[step.Who] is { } who)
-                    dueReplies.Add((now + Math.Max(500, step.AtMs), channel, AutonomousChatIdiolect.Apply(step.Text, who.Id, false, random, terse: true), who.Id,
+                    dueReplies.Add((now + Math.Max(500, step.AtMs), channel, step.Text, who.Id,
                         channel is "faction" or "say", "thread:" + step.Who, ex, index++));
+            if (steps.Count > 0 && channel == "faction")
+                threadEnds.Add(now + steps.Max(step => step.AtMs) + 2_000);
         }
 
         void FieldThread(long now, Bot bot, string channel, Field.Said said, Field.Memory memory, Func<Bot, bool> pool, long ex)
@@ -418,7 +442,23 @@ public class UT_EveningTranscripts
             bool Fits(Bot other) => Field.CanGiveAnswer(said, other.Class, other.Level, Healers.Contains(other.Class));
             double share = Field.WantsAnswer(said) ? AutonomousBotChatCoordinator.QuestionRegularShare : 1.0;
             Bot mate = Near(now, bot, other => pool(other) && Fits(other), share), third = Near(now, bot, other => other != mate && pool(other) && Fits(other));
-            var steps = Field.Thread(said, FactsOf(bot, now), mate == null ? null : FactsOf(mate, now), third == null ? null : FactsOf(third, now), memory, random, now);
+            // AutonomousChatExchange.RoomFor: no more than three threads at once in /faction.
+            threadEnds.RemoveAll(at => at <= now);
+            if (channel == "faction" && threadEnds.Count >= AutonomousChatExchange.MaxRunning)
+                return;
+            List<Field.Step> steps = null;
+            for (int attempt = 0; attempt < 3; attempt++)
+            {
+                steps = Field.Thread(said, FactsOf(bot, now), mate == null ? null : FactsOf(mate, now), third == null ? null : FactsOf(third, now), memory, random, now);
+                if (steps.All(step => step.Who == 0 || !AutonomousChatExchange.IsReaction(step.Text) || AutonomousChatExchange.Shorts.Fresh(lane + channel, step.Text, now)))
+                    break;
+                steps = null;
+            }
+            if (steps == null)
+                return;
+            foreach (Field.Step step in steps)
+                if (step.Who != 0 && AutonomousChatExchange.IsReaction(step.Text))
+                    AutonomousChatExchange.Shorts.TryUse(lane + channel, step.Text, now);
             Play(now, channel, steps, [bot, mate, third], ex);
         }
 
@@ -542,11 +582,14 @@ public class UT_EveningTranscripts
                 }
                 var choice = options[pick];
                 options.RemoveAt(pick);
+                // AutonomousChatExchange.SinkHold "hog" (1.2.3): a bot that said one of /faction's last four lines starts nothing new.
+                if (choice.Name == "faction" && lastFactionSpeakers.Contains(bot.Id) && now - lastFactionLine < AutonomousChatExchange.SpeakerShareQuietMs)
+                    continue;
                 if (meter.TryStart(choice.Channel, 1, now, choice.Band, random) is Budget.Verdict.HoldCeiling or Budget.Verdict.HoldGap)
                     continue;
                 if (random.NextDouble() < Field.Share(choice.Name) && Field.Line(choice.Name, FactsOf(bot, now), field, random, now) is { } said)
                 {
-                    string text = AutonomousChatIdiolect.Apply(said.Text, bot.Id, false, random, terse: true);
+                    string text = Generated(bot, said.Text);
                     if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
                         continue;
                     long ex = ++exchanges;
@@ -570,7 +613,7 @@ public class UT_EveningTranscripts
                 {
                     if (choice.Name is "faction" or "say" && Field.Line(choice.Name, FactsOf(bot, now), field, random, now) is { } fallback)
                     {
-                        string text = AutonomousChatIdiolect.Apply(fallback.Text, bot.Id, false, random, terse: true);
+                        string text = Generated(bot, fallback.Text);
                         if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
                             continue;
                         long ex = ++exchanges;
@@ -1104,7 +1147,9 @@ public class UT_EveningTranscripts
                 {
                     var bench = new UT_ChatQuestionBench.Bench
                     {
-                        Questions = [new UT_ChatQuestionBench.Question("evening", text, channel, realm, PartyOf[realm][1], s.Level, "evening", to)],
+                        Questions = [new UT_ChatQuestionBench.Question("evening", text, channel, realm,
+                            s.Level <= 5 ? realm switch { eRealm.Midgard => "Seer", eRealm.Hibernia => "Naturalist", _ => "Acolyte" } : PartyOf[realm][1],
+                            s.Level, "evening", to)],
                         World = Loaded.World, Towns = Loaded.Towns,
                     };
                     bench.Responders[realm] = new UT_ChatQuestionBench.Responder(responder.Id, responder.Name, responder.Class, responder.Level, responder.Zone,
@@ -1197,7 +1242,15 @@ public class UT_EveningTranscripts
                         dueReplies[i] = due with { At = now + 2_000 + random.Next(2_000) };
                         continue;
                     }
-                    Say(now, due.Channel, due.Text, due.Who, due.Reply, due.Src, due.Ex, due.I);
+                    string said = due.Text;
+                    if (due.Src.StartsWith("thread:", StringComparison.Ordinal) && byId.TryGetValue(due.Who, out Bot speaker))
+                    {
+                        if (due.Channel == "faction" && opened.TryGetValue(due.Ex, out var open) && open.Starter != due.Who)
+                            said = Field.NamedWhenApart(said, Who(open.Starter),
+                                realmLog.Count(line => line.At >= open.At && line.Who != open.Starter && line.Who != due.Who));
+                        said = Generated(speaker, said);
+                    }
+                    Say(now, due.Channel, said, due.Who, due.Reply, due.Src, due.Ex, due.I);
                     dueReplies.RemoveAt(i);
                 }
             double Pressure(Budget.Channel channel, int count)
