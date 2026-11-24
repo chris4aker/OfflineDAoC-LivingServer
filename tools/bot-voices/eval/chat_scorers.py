@@ -67,6 +67,24 @@ def is_non_answer(text):
     return bool(t) and any(p.search(t) for p in _NON_ANSWER)
 
 
+# What is left of a deflection once its own words are gone ("not sure, try /advice" -> ", try"): chat filler and the words a
+# deflection is padded with. 1.2.3 (#477): a must_any such as "re:sure|ask" passed "not sure, try /advice".
+_DEFLECTION_PAD = {'tbh', 'sry', 'sorry', 'srry', 'soz', 'mate', 'try', 'there', 'about', 'that', 'one', 'exactly', 'atm', 'rn', 'tho', 'though',
+                   'myself', 'either', 'havent', 'camped', 'them', 'dude'}
+
+
+def past_deflection(text):
+    """The reply with its deflection taken out, for matching the facts a good answer holds: a deflection's own words ("not
+    sure", "ask around", "no idea") are no answer, and a reply that is nothing but a deflection holds no fact at all."""
+    t = _APOS.sub('', (text or '').lower())
+    if not is_non_answer(t):
+        return text
+    for p in _NON_ANSWER:
+        t = p.sub(' ', t)
+    rest = [w for w in content_words(t) if w not in _DEFLECTION_PAD]
+    return t if rest else ''
+
+
 # ------------------------------------------------------------------------------------------------------------------ fluff
 
 # Words that carry nothing on their own in a reply (chat filler, laughs, agreement, pronouns, the commonest verbs).
@@ -247,7 +265,7 @@ def score(question, reply):
     if echoes(question.get('text', ''), reply):
         flags.append('ECHO')
     wrong = any_match(question.get('wrong_any'), reply)
-    good = any_match(question.get('must_any'), reply)
+    good = any_match(question.get('must_any'), past_deflection(reply))
     if good and padded(reply):
         flags.append('PADDED')
     if wrong:

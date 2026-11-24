@@ -19,7 +19,7 @@ namespace DOL.GS.Tests;
 /// four bots are in the player's group. Set TALK_BUDGET_OUT to keep the report.
 /// </summary>
 [TestFixture]
-public class UT_ChatBudgetSimulation
+public partial class UT_ChatBudgetSimulation
 {
     private static VC _corpus;
     private static VC Corpus => _corpus ??= Load();

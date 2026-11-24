@@ -56,6 +56,15 @@ def route_family(route):
     return r or '(none)'
 
 
+def stubbed(scored, reply_row):
+    """#477: a reply the bench marked stub (the live lookup reads the world data the bench stands in for: a dungeon's entrance zone,
+    a trainer NPC, the camps) that holds no fact is STUB, the bench cannot tell, not off-topic."""
+    cat, flags, why = scored
+    if reply_row.get('stub') and cat in ('OFF_TOPIC', 'FLUFF'):
+        return 'STUB', flags, 'stubbed world answer: ' + why
+    return cat, flags, why
+
+
 def score(questions_path, replies_path, worst=30):
     """Scores a bench replies file against its questions: the totals, groups, flow, worst examples and rows (pure)."""
     data = json.loads(Path(questions_path).read_text(encoding='utf-8'))
@@ -66,12 +75,13 @@ def score(questions_path, replies_path, worst=30):
         q = questions.get(r['id'])
         if q is None:
             continue
-        cat, flags, why = cs.score(q, r.get('reply'))
+        cat, flags, why = stubbed(cs.score(q, r.get('reply')), r)
         rows.append(dict(q=q, r=r, cat=cat, flags=flags, why=why, ok=cs.ok(q, cat),
                          issues=cs.clunky_issues(r.get('reply') or '')))
     missing = sorted(set(questions) - {row['q']['id'] for row in rows})
     total = len(rows)
-    out = {'total': total, 'missing': missing, 'categories': {}, 'flags': {}, 'by_intent': {}, 'by_realm': {}, 'by_channel': {},
+    out = {'total': total, 'missing': missing, 'categories': {}, 'flags': {}, 'by_intent': {}, 'by_realm': {}, 'by_channel': {}, 'by_kind': {},
+           'by_set': {},
            'routes_by_category': {}, 'flow': {}, 'worst': {}, 'stubbed': sum(1 for row in rows if row['r'].get('stub'))}
     cats = collections.Counter(row['cat'] for row in rows)
     out['categories'] = {c: cats.get(c, 0) for c in cs.CATEGORIES}
@@ -81,10 +91,10 @@ def score(questions_path, replies_path, worst=30):
     out['flags'] = {f: flags.get(f, 0) for f in cs.FLAGS}
     # Over the replies the scorer judged (a "[world: ...]" stub marker is no reply).
     out['clunky_codes'] = dict(collections.Counter(code for row in rows if 'CLUNKY' in row['flags'] for code, _ in row['issues']).most_common())
-    for key, field in (('by_intent', 'intent'), ('by_realm', 'realm'), ('by_channel', 'channel')):
+    for key, field in (('by_intent', 'intent'), ('by_realm', 'realm'), ('by_channel', 'channel'), ('by_kind', 'kind'), ('by_set', 'set')):
         groups = collections.defaultdict(list)
         for row in rows:
-            groups[row['q'][field]].append(row)
+            groups[row['q'].get(field) or ('question' if field == 'kind' else 'code' if field == 'set' else '?')].append(row)
         out[key] = {g: dict(n=len(v), ok=sum(x['ok'] for x in v), **{c: sum(1 for x in v if x['cat'] == c) for c in cs.CATEGORIES},
                             CLUNKY=sum(1 for x in v if 'CLUNKY' in x['flags']))
                     for g, v in sorted(groups.items())}
@@ -108,7 +118,12 @@ def score(questions_path, replies_path, worst=30):
         out['worst'][c] = [example(row) for row in bad[:worst]]
     clunky = [row for row in rows if 'CLUNKY' in row['flags']]
     out['worst']['CLUNKY'] = [example(row) for row in clunky[:worst]]
-    out['rows'] = [dict(id=row['q']['id'], intent=row['q']['intent'], realm=row['q']['realm'], channel=row['q']['channel'],
+    out['groups'] = {name: tally(v) for name, v in (('all', rows),) + tuple(
+        (f'{field}:{g}', [row for row in rows if (row['q'].get(field) or default) == g])
+        for field, default in (('set', 'code'), ('kind', 'question'))
+        for g in sorted({row['q'].get(field) or default for row in rows}))}
+    out['rows'] = [dict(id=row['q']['id'], intent=row['q']['intent'], realm=row['q']['realm'], channel=row['q']['channel'], kind=row['q'].get('kind'),
+                        set=row['q'].get('set'),
                         text=row['q']['text'], reply=row['r'].get('reply'), route=row['r'].get('route'), cat=row['cat'],
                         flags=row['flags'], why=row['why'], stub=row['r'].get('stub', False)) for row in rows]
     return out
@@ -155,7 +170,9 @@ def render(out):
     for f, n in out['flags'].items():
         lines.append(f'| flag {f} | {n} | {pct(n, t)} |')
     lines.append('')
-    for key in ('by_intent', 'by_realm', 'by_channel'):
+    for key in ('by_set', 'by_kind', 'by_channel', 'by_intent', 'by_realm'):
+        if not out.get(key):
+            continue
         lines.append(f'## {key.replace("_", " ")}')
         lines.append('')
         lines.append('| group | n | ok | answered | wrong | non-answer | off-topic | fluff | silent | stub | clunky |')
@@ -327,8 +344,29 @@ def lines_report(args):
 
 RATCHET = HERE / 'bench_ratchet.json'
 HOLDOUT = HERE / 'player_questions_holdout.json'
+CONTEXT = HERE / 'context_lines.json'
 # The categories and flags the ratchet caps: none may grow. SILENT counts only silence where an answer was due.
 CAPPED = ('WRONG', 'NON_ANSWER', 'OFF_TOPIC', 'FLUFF', 'SILENT', 'STUB', 'CLUNKY', 'ECHO', 'PADDED')
+# The headline of the bench since #477: the fresh lines (written by someone who had not read the bench), not the code's own tables.
+HEADLINE = 'set:fresh'
+# The side benches (#477) and the file UT_ChatQuestionBench writes for each.
+SIDES = ('channels', 'followups', 'moments', 'twoline')
+
+
+def tally(rows):
+    """What the ratchet holds of a group of scored rows (dicts with q, cat, flags, ok): the good count and share, and each capped
+    category (bad silence only). Pure."""
+    n = len(rows)
+    ok_n = sum(1 for row in rows if row['ok'])
+    counts = {k: 0 for k in CAPPED}
+    for row in rows:
+        if row['cat'] == 'SILENT':
+            counts['SILENT'] += 0 if row['ok'] else 1
+        elif row['cat'] in counts:
+            counts[row['cat']] += 1
+        for f in row['flags']:
+            counts[f] = counts.get(f, 0) + 1
+    return dict(total=n, ok=ok_n, ok_share=round(ok_n / n, 4) if n else 0.0, counts=counts)
 
 
 def ratchet_counts(out):
@@ -341,64 +379,172 @@ def ratchet_counts(out):
                 by_intent={g: dict(n=v['n'], ok=v['ok']) for g, v in out['by_intent'].items()})
 
 
-def check_ratchet(now, base):
+def check_ratchet(now, base, name=''):
     """The ratchet's verdict (pure): the problems (a capped count above its cap, the good share below its floor) and the slack
     (where the bench is now better than the baseline, so the baseline may be tightened with --write)."""
     problems, slack = [], []
+    at = f'{name}: ' if name else ''
     if now['ok_share'] + 1e-9 < base['ok_share']:
-        problems.append(f"good share {now['ok_share']:.1%} fell below the floor {base['ok_share']:.1%} ({now['ok']} of {now['total']})")
+        problems.append(f"{at}good share {now['ok_share']:.1%} fell below the floor {base['ok_share']:.1%} ({now['ok']} of {now['total']})")
     elif now['ok_share'] > base['ok_share'] + 1e-9:
-        slack.append(f"good share {now['ok_share']:.1%} (floor {base['ok_share']:.1%})")
+        slack.append(f"{at}good share {now['ok_share']:.1%} (floor {base['ok_share']:.1%})")
     for k in CAPPED:
         cap, n = base['counts'].get(k, 0), now['counts'].get(k, 0)
         if n > cap:
-            problems.append(f'{k} {n} is over its cap {cap}')
+            problems.append(f'{at}{k} {n} is over its cap {cap}')
         elif n < cap:
-            slack.append(f'{k} {n} (cap {cap})')
+            slack.append(f'{at}{k} {n} (cap {cap})')
     return problems, slack
+
+
+# ------------------------------------------------------------------------------------------------- the side benches (#477)
+
+def side_expectations(side, questions_path=QUESTIONS, context_path=CONTEXT):
+    """A function (row -> the question dict cs.score reads) for one side bench: the per-channel bench reads the bench's own
+    questions, the follow-ups, lines of the moment and two-line pairs read context_lines.json."""
+    if side == 'channels':
+        qs = {q['id']: q for q in json.loads(Path(questions_path).read_text(encoding='utf-8'))['questions']}
+        return lambda row: qs.get(row['id'])
+    ctx = json.loads(Path(context_path).read_text(encoding='utf-8'))
+    items = {x['id']: x for x in ctx[side]}
+
+    def expect(row):
+        x = items.get(row['id'])
+        if x is None:
+            return None
+        q = dict(id=x['id'], text=row.get('text') or x.get('said'), must_any=x.get('must_any', []), wrong_any=x.get('wrong_any', []),
+                 channel=row.get('ch'), intent=side, realm='alb', kind='followup' if side != 'moments' else 'statement')
+        if side == 'moments':
+            q['silence_ok'] = row.get('ch') in x.get('silence_ok_in', [])
+        elif x.get('silence_ok'):
+            q['silence_ok'] = True
+        return q
+    return expect
+
+
+def score_side(side, rows_path, questions_path=QUESTIONS, context_path=CONTEXT):
+    """Scores one side bench's rows (pure apart from reading): {channel: tally} and the scored rows."""
+    expect = side_expectations(side, questions_path, context_path)
+    scored = []
+    for r in json.loads(Path(rows_path).read_text(encoding='utf-8')):
+        q = expect(r)
+        if q is None:
+            continue
+        cat, flags, why = stubbed(cs.score(q, r.get('reply')), r)
+        scored.append(dict(q=q, r=r, cat=cat, flags=flags, why=why, ok=cs.ok(q, cat)))
+    by = collections.defaultdict(list)
+    for row in scored:
+        by[row['r']['ch']].append(row)
+    return {ch: tally(v) for ch, v in by.items()}, scored
+
+
+def table(title, groups):
+    """A markdown table of tallies: good, wrong, non-answer, silent (answer due), off-topic, fluff, stub."""
+    lines = [f'### {title}', '', '| group | n | good | good % | wrong | non-answer | silent | off-topic | fluff | stub |',
+             '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|']
+    for g, t in groups.items():
+        c = t['counts']
+        lines.append(f"| {g} | {t['total']} | {t['ok']} | {pct(t['ok'], t['total'])} | {c['WRONG']} | {c['NON_ANSWER']} | {c['SILENT']} | "
+                     f"{c['OFF_TOPIC']} | {c['FLUFF']} | {c['STUB']} |")
+    return '\n'.join(lines) + '\n'
+
+
+def compact(t):
+    return dict(ok=t['ok'], total=t['total'], ok_share=t['ok_share'], counts=t['counts'])
 
 
 def ratchet(args):
     out = score(args.questions, args.replies, args.worst)
     now = ratchet_counts(out)
     print(render(out))
+    groups = {g: compact(t) for g, t in out['groups'].items() if g != 'all'}
+    print(table('The bench by set and kind', groups))
     held = None
     if args.holdout and Path(args.holdout).exists():
         hout = score(args.holdout_questions, args.holdout, args.worst)
         held = ratchet_counts(hout)
-        print('## Holdout set (written after the fixes, never used to tune them; reported, not capped)\n')
+        print('## Holdout set (fresh lines held out, never used to tune them; reported, not capped)\n')
         print(render(hout))
         print('CHAT_HOLDOUT_ROWS_BEGIN')
         for row in hout['rows']:
             print('CHAT_HOLDOUT_ROW ' + json.dumps(row, ensure_ascii=False))
         print('CHAT_HOLDOUT_ROWS_END')
+    sides = {}
+    for side in SIDES:
+        path = getattr(args, side, None)
+        if not path or not Path(path).exists():
+            continue
+        tallies, scored = score_side(side, path, args.questions, args.context)
+        sides[side] = {ch: compact(t) for ch, t in tallies.items()}
+        print(table(f'{side} by channel', sides[side]))
+        tag = 'CHAT_' + side.upper() + '_ROW '
+        for row in scored:
+            print(tag + json.dumps(dict(ch=row['r']['ch'], id=row['q']['id'], text=row['q']['text'], reply=row['r'].get('reply'),
+                                        route=row['r'].get('route'), cat=row['cat'], ok=row['ok']), ensure_ascii=False))
     print('CHAT_BENCH_ROWS_BEGIN')
     for row in out['rows']:
         print('CHAT_BENCH_ROW ' + json.dumps(row, ensure_ascii=False))
     print('CHAT_BENCH_ROWS_END')
     if args.json:
-        Path(args.json).write_text(json.dumps(dict(bench=now, holdout=held), indent=1) + '\n', encoding='utf-8')
+        Path(args.json).write_text(json.dumps(dict(bench=now, groups=groups, holdout=held, **sides), indent=1) + '\n', encoding='utf-8')
     if args.write:
-        base = dict(note='The chat bench ratchet (score_bench.py ratchet): the good share may only rise and no capped count may grow. '
-                         'Tighten it with score_bench.py ratchet REPLIES --write after a fix; never loosen it to pass.',
-                    ok_share=now['ok_share'], ok=now['ok'], total=now['total'], counts=now['counts'],
+        base = dict(note='The chat bench ratchet (score_bench.py ratchet): no good share may fall and no capped count may grow, for the '
+                         'whole bench, each set and kind ("groups"), and each channel of the side benches. The headline is the fresh '
+                         'set. Tighten it with score_bench.py ratchet ... --write after a fix; never loosen it to pass.',
+                    headline=HEADLINE, ok_share=now['ok_share'], ok=now['ok'], total=now['total'], counts=now['counts'], groups=groups,
+                    **sides,
                     holdout=None if held is None else dict(ok=held['ok'], total=held['total'], ok_share=held['ok_share'], counts=held['counts']))
         Path(args.baseline).write_text(json.dumps(base, indent=1) + '\n', encoding='utf-8')
         print(f'wrote {args.baseline}')
         return 0
     base = json.loads(Path(args.baseline).read_text(encoding='utf-8'))
     problems, slack = check_ratchet(now, base)
-    line = (f"{now['total']} questions, good {now['ok']} ({now['ok_share']:.1%}); " +
+    missing = []
+    for g, b in base.get('groups', {}).items():
+        if g in groups:
+            p, sl = check_ratchet(groups[g], b, g)
+            problems += p
+            slack += sl
+        else:
+            missing.append(g)
+    for side in SIDES:
+        for ch, b in (base.get(side) or {}).items():
+            if side not in sides:
+                missing.append(side)
+                break
+            if ch in sides[side]:
+                p, sl = check_ratchet(sides[side][ch], b, f'{side} {ch}')
+                problems += p
+                slack += sl
+            else:
+                missing.append(f'{side} {ch}')
+    head = groups.get(HEADLINE)
+    line = ((f"fresh lines good {head['ok']} of {head['total']} ({head['ok_share']:.1%}); " if head else '') +
+            f"whole bench {now['total']} lines, good {now['ok']} ({now['ok_share']:.1%}); " +
             ', '.join(f'{k} {v}' for k, v in now['counts'].items()) +
             ('' if held is None else f"; holdout good {held['ok']} of {held['total']} ({held['ok_share']:.1%})"))
+
+    def summary(title, gs):
+        return title + ': ' + '; '.join(f"{g} {t['ok_share']:.0%} good, wrong {t['counts']['WRONG']}, non-answer {t['counts']['NON_ANSWER']}, "
+                                        f"silent {t['counts']['SILENT']}" for g, t in gs.items())
+    notes = [summary('by kind', {g[5:]: t for g, t in groups.items() if g.startswith('kind:')})]
+    notes += [summary(f'{side} per channel', sides[side]) for side in SIDES if side in sides]
     if args.github:
         print(f'::notice title=Chat question bench ratchet::{line}')
+        for n in notes:
+            print(f'::notice title=Chat bench::{n}')
+        for m in missing:
+            print(f'::warning title=Chat question bench ratchet::no rows for {m}: not checked')
         for p in problems:
             print(f'::error title=Chat question bench ratchet::{p}')
         if slack and not problems:
-            print('::notice title=Chat question bench ratchet::better than the baseline (' + '; '.join(slack) +
+            print('::notice title=Chat question bench ratchet::better than the baseline (' + '; '.join(slack[:30]) +
                   '): tighten tools/bot-voices/eval/bench_ratchet.json with score_bench.py ratchet --write')
     print(line)
+    for n in notes:
+        print(n)
+    for m in missing:
+        print('RATCHET NOT CHECKED (no rows): ' + m)
     for p in problems:
         print('RATCHET FAIL: ' + p)
     return 1 if problems else 0
@@ -419,6 +565,9 @@ def main(argv=None):
     r.add_argument('--questions', default=str(QUESTIONS))
     r.add_argument('--holdout', help="the holdout set's replies (bench-holdout.json)")
     r.add_argument('--holdout-questions', default=str(HOLDOUT))
+    r.add_argument('--context', default=str(CONTEXT))
+    for side in SIDES:
+        r.add_argument('--' + side, help=f"the {side} side bench's rows (bench-{side}.json)")
     r.add_argument('--baseline', default=str(RATCHET))
     r.add_argument('--json')
     r.add_argument('--write', action='store_true', help='write the baseline from these replies (after a fix only)')
