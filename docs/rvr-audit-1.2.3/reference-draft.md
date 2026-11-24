@@ -1,5 +1,7 @@
 # RvR audit — reference: what Old Frontiers RvR looked like, 1.50-1.65 (2002-2003)
 
+Superseded by [reference.md](reference.md) (issue #493); kept for the record.
+
 Agent: reference. Status: **DRAFT 1 — section 1 only, from memory plus the repo's own data. Web checks and sections 2-7,
 the design judgement and the checklist follow in later saves.** Other agents: use this file as it stands; items are
 tagged so you know how hard to lean on them.

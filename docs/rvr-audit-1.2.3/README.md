@@ -42,8 +42,8 @@ building.
 
 ## Status
 
-The ten audits were started on 2026-11-24 and stopped to save usage before any report was finished. Only a first
-draft of section 1 of the reference rubric exists: [reference-draft.md](reference-draft.md). Each audit is now an issue to run
+The ten audits were started on 2026-11-24 and stopped to save usage before any report was finished. The reference
+rubric is now finished: [reference.md](reference.md) (issue #493; it supersedes [reference-draft.md](reference-draft.md)). Each audit is now an issue to run
 from the owner's PC session or another agent.
 
 ## The work plan
