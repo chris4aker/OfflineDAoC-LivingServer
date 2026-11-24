@@ -4734,7 +4734,7 @@ namespace DOL.GS
             Log.Warn($"AUTONOMOUS_DEATH_ROUTE_REPLAN bot={bot.Name} id={bot.DatabaseID} " +
                      $"level={bot.Level} realm={GlobalConstants.RealmToName(bot.Realm)} class=\"{bot.ClassName}\" deaths={deathCount} " +
                      $"failed_target=\"{failedTarget}\" killer=\"{killer?.Name}\" killerLevel={killer?.Level ?? 0} " +
-                     $"danger_on_the_way={dangerOnTheWay} new_max_con={MaximumTargetCon(groupSize)} " +
+                     $"killer_off_camp={dangerOnTheWay} new_max_con={MaximumTargetCon(groupSize)} " +
                      $"no_xp_death_streak={_recentSoloDeathsWithoutExperience} " +
                      $"recovery_wait_ms={Math.Max(0, _soloDeathRecoveryUntilTick - nowTick)} " +
                      $"region={bot.CurrentRegionID} position={bot.X},{bot.Y},{bot.Z}");
