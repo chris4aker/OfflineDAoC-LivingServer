@@ -98,6 +98,14 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 - [#421](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/421) Lough Derg / Bri Leith seam loops at region 200. **Fixed in 1.2.2, tests only** (the zone itinerary's main-ground rule; `tools/navmesh/seam_route_sim.py`); open until a PC log shows no `AUTONOMOUS_ZONE_SEAM_CYCLE` there.
 - [#538](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/538) Party members stall at zone borders, so resurrections time out with the healer out of range. **Fixed in 1.2.3, tests only** (`AutonomousGroupFormationFollow.NeedsSeamRoute`: the AI turn takes the itinerary's seam crossing to a leader over the border; a stalled member is moved only out of a player's sight). Open until a PC log shows few cross-zone `AUTONOMOUS_GROUP_MEMBER_STALLED` (11/24: 1,784 in 5 h) and `seamRoutes=` in `AUTONOMOUS_GROUP_FORMATION`. Not done: retrying a resurrection blocked for power within the 60 s window (66 of 2,780 timeouts).
 - [#539](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/539) Parties stand at one target for up to 107 minutes on an unreachable ranged pull. **Fixed in 1.2.3, tests only** (`AutonomousDefensivePull.UnreachableBench`: two tries then an ordinary pull; three benched targets give the camp up). Open until a PC log shows no same-shooter, same-target `AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE` run past a few minutes.
+- [#526](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/526) World data and map one-offs. **Item 1 fixed
+  in 1.2.3, tests only:** Dun nGed, Da Behnn, Ailinne and Crauchon at level 5, with a one-time repair for older worlds
+  (`FrontierKeepLevelRepair`); PC check: `/keep info` at nGed on a fresh build and on an old world
+  (`KEEP_LEVEL_DEFAULT_RAISED`, doors at 50,000). **Owner decisions open:** Darkness Falls on a fresh or tied world, and
+  the 15-minute grace (item 2; the holder isn't persisted until then). **PC (#503):** home-realm circuits (P13), Odin's
+  Gate Hibernian exit (P4), lifts (P5), Midgard's walk to Caer Benowyc (P3). Item 7: `GetRealmKeepBonusLevel` is called
+  by `UpdateBaseLevels` when `use_keep_balancing` is on (off by default), so it is kept. Item 8 is the battleground-fill
+  issue's.
 
 ## Other bot behaviour
 
