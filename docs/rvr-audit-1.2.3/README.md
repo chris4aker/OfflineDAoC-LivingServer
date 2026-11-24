@@ -46,6 +46,10 @@ The ten audits were started on 2026-11-24 and stopped to save usage before any r
 rubric is now finished: [reference.md](reference.md) (issue #493; it supersedes [reference-draft.md](reference-draft.md)). Each audit is now an issue to run
 from the owner's PC session or another agent.
 
+**2026-11-24: all ten reports are written, and the synthesis is in [plan.md](plan.md) (#504).** It groups the findings
+by class into 15 work issues (#519-#533) in a recommended order: #505 first, then the small safe fixes, then pieces
+B-F in shadow. It also lists the owner decisions the plan needs. The PC checklist is folded into #503.
+
 ## The work plan
 
 1. **Audit** (the ten reports above, in this folder).
