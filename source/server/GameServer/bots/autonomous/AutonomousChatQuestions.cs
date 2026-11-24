@@ -88,7 +88,7 @@ public static class AutonomousChatQuestions
         // Beta 1.1.2, round 3: "how old r u" is the player's age question, before "how old is ur toon" (playing).
         (new Regex(@"\b(how old (are|r) (you|u)( irl)?|(ur|your) age|asl)\b"), "age"),
         (new Regex(@"\b(what (lvl|level) (are|r) (you|u)|what (lvl|level) (you|u)|(you|u|r u|are you|are u) (\d+|fifty) yet|how high (are|r) (you|u)|(r|are) (u|you) (\d{2}|[5-9])( yet| already| now)?$|ur level|your level|(you|u) (hit|dinged|reach|reached|made) (\d+|fifty)\b)"), "level"),
-        (new Regex(@"\b(what class (are|r) (you|u)|what (are|r) (you|u) playing|what do (you|u) play|(you|u|ur) an? (healer|tank|caster|cleric|druid|bard|shaman|healer))\b"), "class"),
+        (new Regex(@"\b(what class (are|r) (you|u)|whats? (ur|your) class( again)?$|what class is (ur|your) (toon|char)|what (are|r) (you|u) playing|what do (you|u) play|(you|u|ur) an? (healer|tank|caster|cleric|druid|bard|shaman|healer))\b"), "class"),
         (new Regex(@"\b(whats (ur|your) (rr|realm rank|rank)|what (rr|realm rank) (are|r) (you|u)|(ur|your) (rr|realm rank))\b"), "rank"),
         (new Regex(@"\b((do|can) (you|u) (have|do|cast|sing) speed|(you|u) got speed|(you|u) have speed|any speed)\b"), "speed"),
         (new Regex(@"\b((you|u) (got|have) (any )?(pots|potions)|any (pots|potions)|spare (pots|potions))\b"), "pots"),
@@ -121,6 +121,11 @@ public static class AutonomousChatQuestions
         // killing stuff" came from a bot whose target and zone were known). "tonight", "later" ask its plans (below).
         (new Regex(@"\b(what (are|r) (you|u) (up to|doing)|what (you|u) (up to|doing)|whatcha (up to|doing)|watcha (up to|doing)|wyd)\b(?! (tonight|later|tomorrow|this weekend|after))"), "doing"),
         (new Regex(@"\b((you|u) (going|goin|gonna go|heading|headed|coming) (to|out)\b(?! (sell|buy|make|be|need|pull|rez|heal|help|give|trade|craft)\b)|what (are |r )?(you|u) (doing|up to) (tonight|later|tomorrow)|(you|u) (doing|running) (rvr|df|emain|a raid)|(you|u) (going|goin) \w+ (later|tonight)|whatcha (up to|doing)|(you|u) (heading|headed|going|goin) (anywhere|somewhere)|(you|u) still (lvling|leveling|levelling|pve|rvr|grinding))"), "plans"),
+        // #478 (channels.md finding 3: "can you pull?" -> "Dunno", "how much longer can you stay?" -> "Not sure tbh"): what the bot
+        // does in its group, from its class and its session; and when it chose its class.
+        (new Regex(@"\b(what (lvl|level) (were|was) (you|u) when (you|u) (picked|chose|choose|took|got|went)|when did (you|u) (pick|choose|chose|get|take) (ur|your) (class|real class|advanced class))\b"), "choseclass"),
+        (new Regex(@"\b((can|could|will|would|wanna|want to|do) (you|u) pull|(you|u) (pulling|pull)( next)?$|(you|u) (wanna|want to) pull)\b"), "pull"),
+        (new Regex(@"\b(how (much )?(long|longer) (can|will|are|r) (you|u) (stay|be on|play|be around|on|around)|(you|u) staying (long|on|much longer|a while)|how long (r|are) (you|u) on( for)?)\b"), "stay"),
         // 1.2: "what zone r u in", "which area are you", "u in emain?" (blind round 1: bots didn't know where they were). Last, so a
         // group, guild or busy question goes first; "u in X?" is answered only when X is a known place (AnswerSelf).
         (new Regex(@"\b(what zone (are |r )?(you|u)|which zone (are |r )?(you|u)|(what|which) (area|zone|region) (are|r) (you|u)|(are|r) (you|u) (in|at) \w+|(you|u) (in|at) \w+ (atm|now|rn|still))"), "zone"),
@@ -151,6 +156,12 @@ public static class AutonomousChatQuestions
                 // "got any pots?" by tell or in the group (1.2.2 chat audit, fix F11: it drew "dunno sry").
                 : Regex.IsMatch(t, @"^((hey|hi|yo|so) )?(got|have|carrying|holding) (any |some )?(spare )?(pots|potions|heal pots|pow pots|power pots|end pots)\b") ? "pots"
                 : Regex.IsMatch(t, @"^((hey|hi|yo|so|oi) )?(what|wat) (class|race) (is that|is this|are those)\b") ? "class"
+                // #478: the group's own questions, said to every bot in it ("who is pulling?", "what now?", "need that drop?").
+                : Regex.IsMatch(t, @"\bwho (is |s )?(pulling|gonna pull|pulls|is the puller)\b") ? "pull"
+                : Regex.IsMatch(t, @"\b(need|want|wanna roll on|anyone need) (that|this|the) (drop|loot|item|piece)\b") ? "loot"
+                : Regex.IsMatch(t, @"^((so|ok|k|and|alright) )?(what now|whats next|what next|where (to )?next|now what|where now)\b") ? "next"
+                : Regex.IsMatch(t, @"\b((is )?(this|the|our) (camp|spot) (ok|good|fine|alright|any good)|(want|wanna|should we|shall we) (to )?(move|go) (to )?(a )?(better|another|new|different) (spot|camp)|move camp)\b") ? "camp"
+                : Regex.IsMatch(t, @"^((so|ok) )?(which way|what way)$") ? "way"
                 : null;
         if (WeaponAsked.IsMatch(t))
             return "weapon";
@@ -163,6 +174,13 @@ public static class AutonomousChatQuestions
                 return "class";
         return null;
     }
+
+    /// <summary>The classes that pull with a bow or a spell (#478: "can you pull?").</summary>
+    private static readonly HashSet<string> RangedPullers = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Scout", "Hunter", "Ranger", "Wizard", "Theurgist", "Sorcerer", "Cabalist", "Necromancer", "Runemaster", "Spiritmaster", "Bonedancer",
+        "Eldritch", "Enchanter", "Mentalist", "Animist",
+    };
 
     private static readonly Dictionary<string, string[]> RoleWords = new(StringComparer.Ordinal)
     {
@@ -301,13 +319,13 @@ public static class AutonomousChatQuestions
             case "craft":
                 return bot.Type == BotPersonalityType.Crafter
                     ? random.Next(2) == 0 ? "yeah, what do you need?" : "sure, send me what you need made"
-                    : random.Next(2) == 0 ? "not a crafter, sorry" : "i dont craft, ask around";
+                    : random.Next(2) == 0 ? "not a crafter, sorry" : $"i dont craft, just a {cls}";
             case "progress":
                 return bot.Level >= 50 ? "50 now, done leveling" : random.Next(2) == 0 ? $"{bot.Level} now, slow but getting there" : $"ok, {bot.Level} now";
             case "late":
                 return random.Next(2) == 0 ? "yeah cant sleep lol" : "one more level, then bed";
             case "raid":
-                return random.Next(3) switch { 0 => "maybe, depends when", 1 => "should be", _ => "if im on, yeah" };
+                return random.Next(3) switch { 0 => "maybe, if its tonight", 1 => "should be", _ => "if im on, yeah" };
             case "gear":
                 if (bot.Equipped == 0)
                     return random.Next(2) == 0 ? "what gear lol, still working on it" : "barely have any yet, earning it";   // promise: none (its gear)
@@ -337,18 +355,47 @@ public static class AutonomousChatQuestions
                         BotPersonalityType.Crafter => "crafting mostly",
                         BotPersonalityType.Explorer => "might wander somewhere new",
                         BotPersonalityType.Socialite => "whatever the guild is doing",
-                        _ => bot.Level >= 50 ? "not sure yet" : random.Next(2) == 0 ? "prob just leveling" : "leveling, same as always",
+                        _ => bot.Level >= 50 ? "no plans yet, prob rvr" : random.Next(2) == 0 ? "prob just leveling" : "leveling, same as always",
                     };
                 return bot.Type switch
                 {
-                    BotPersonalityType.Daredevil => random.Next(2) == 0 ? "probably, if theres a fight" : "maybe, depends whats going on",
+                    BotPersonalityType.Daredevil => random.Next(2) == 0 ? "probably, if theres a fight" : "maybe, if theres a fight",
                     BotPersonalityType.Crafter => random.Next(2) == 0 ? "prob just crafting" : "crafting more likely",
-                    BotPersonalityType.Explorer => random.Next(2) == 0 ? "might wander somewhere new" : "not sure yet, maybe explore a bit",
+                    BotPersonalityType.Explorer => random.Next(2) == 0 ? "might wander somewhere new" : "no plans, maybe explore a bit",
                     BotPersonalityType.Socialite => random.Next(2) == 0 ? "whatever the guild is doing" : "if people are going, sure",
                     _ => bot.Level >= 50
-                        ? random.Next(2) == 0 ? "maybe, not sure yet" : "probably at some point"
+                        ? random.Next(2) == 0 ? "maybe later, no plans yet" : "probably at some point"
                         : random.Next(2) == 0 ? "nah, leveling" : "prob just leveling",
                 };
+            case "choseclass":
+                return bot.Level >= 5 ? random.Next(2) == 0 ? $"at 5, like everyone" : $"5, been a {cls} since" : $"not yet, im only {bot.Level}";
+            case "pull":
+            {
+                bool tank = RoleWords["tank"].Contains(bot.ClassName, StringComparer.OrdinalIgnoreCase);
+                bool ranged = RangedPullers.Contains(bot.ClassName ?? "");
+                if (Regex.IsMatch(t, @"\bwho\b"))
+                    return tank ? random.Next(2) == 0 ? "i can, im the tank" : $"me, {cls} can take it"
+                        : ranged ? random.Next(2) == 0 ? $"i can, {cls} has range" : "i can pull if u want"
+                        : random.Next(2) == 0 ? "you or the tank, i got no range" : $"not me, no range on a {cls}";
+                return tank || ranged
+                    ? random.Next(2) == 0 ? $"ya, {cls} can pull" : "sure, i can pull"
+                    : random.Next(2) == 0 ? $"not really, no range on a {cls}" : $"cant pull well on a {cls}";
+            }
+            case "stay":
+                return bot.Type == BotPersonalityType.NoLifer ? "all night lol"
+                    : (bot.Id % 3) switch { 0 => "a while yet", 1 => "another hour or so", _ => "for a bit still" };
+            case "loot":
+                return random.Next(3) switch { 0 => "nah, take it", 1 => "all yours", _ => "pass, go ahead" };
+            case "next":
+                if (!string.IsNullOrEmpty(bot.Target))
+                    return $"keep on the {AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant())} here";
+                return random.Next(2) == 0 ? "stay here and keep pulling" : "lets keep going here";
+            case "camp":
+                if (Regex.IsMatch(t, @"\b(move|better|another|new|different)\b"))
+                    return random.Next(2) == 0 ? "this spot is fine for me" : "id stay here, mobs are fine";
+                return random.Next(2) == 0 ? $"fine for me at {bot.Level}" : "works for me";
+            case "way":
+                return bot.GroupSize > 1 ? "where to? ill follow you" : "where to?";
             case "age":
             {
                 // One answer per bot, the same each time it is asked.
@@ -411,7 +458,7 @@ public static class AutonomousChatQuestions
                 if (!string.IsNullOrEmpty(bot.Target))
                     return string.IsNullOrEmpty(bot.Zone) ? AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant())
                         : $"{AutonomousBotVoiceCorpus.Plural(bot.Target.ToLowerInvariant())} in {bot.Zone}";
-                return random.Next(2) == 0 ? "nothing yet, looking for a camp" : "not sure yet, ideas?";
+                return random.Next(2) == 0 ? "nothing yet, looking for a camp" : "nothing yet, got any ideas?";
         }
         return null;
     }

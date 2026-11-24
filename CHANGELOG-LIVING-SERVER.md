@@ -14,6 +14,20 @@ Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-
 otherwise.
 
 **Chat**
+- **No "dunno" as the whole answer, in any channel** (realism 2a, #478; tests only). A bot no longer answers a question it
+  can't answer with "no clue sry", "not sure, try /advice", "Dunno", a bare "where?", a bare "lol", "true" or "k". Before,
+  1.2.2 had taken "dunno" out of /faction only; /group, /say, guild chat, tells and lines naming a bot kept it, and bots
+  told each other "no idea sorry" and "dunno havent camped them" in /faction. Now a question about the bot or its group is
+  answered from what it knows: "whats your class", "can you pull?" (its class and range), "who is pulling?", "how much
+  longer can you stay?", "need that drop?", "what now?", "is this camp ok for us?", "what lvl were you when you picked your
+  class"; "u there?" gets "here, whats up?"; anything else the bot can't answer it leaves unanswered. A question that only
+  holds a word a warning uses ("where do animists train", "how do i add more bots") no longer reads as a warning. The rule
+  lives in the say gate (`BotSayGate.NonAnswer.cs`): the reply planner settles every reply with it, and the gate holds any
+  such line that still reaches an exit (`CHAT_HELD rule=non-answer`). The "not sure" reply set and every fallback that said
+  "dunno" are deleted. Bench: non-answers 0 in every channel (before: /say 28, /group 44, named in /group 78, tell 75,
+  guild 32, named in guild 78; follow-ups 18 and 33; lines of the moment 4-8 per channel); fresh lines 157 of 262 (59.9%,
+  was 59.2%); no good share fell. Silence where an answer was due rose by the same lines (tell 0 to 71, /group 42 to 86):
+  those questions need knowledge the bots don't have yet (#482).
 - **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,
   the bot's "in avalon marsh atm, inv me when ur close :)", the player's "I'm by camp station", and the bot's "lol"). The
   tell read as a grinding remark (the word "camp"), no grinding reply fitted, and the short answer for a tell ended on a

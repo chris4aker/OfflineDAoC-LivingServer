@@ -140,12 +140,14 @@ public class UT_PartyWhere123
         Assert.That(answer, Is.EqualTo("Humberton Castle is in Black Mtns. South, west of u"));
     }
 
-    [TestCase("group", "where is that", false)]
-    [TestCase("group", "where is Humberton Castle", false)]
-    [TestCase("say", "how do i get to humberton castle", false)]
-    [TestCase("group", "is it raining for you too?", true)]
-    public void AQuestionOfWhereNeverDrawsADunno(string channel, string line, bool dunnoMay) =>
-        Assert.That(AutonomousChatReplyBudget.RescuesWithDunno(channel, line), Is.EqualTo(dunnoMay));
+    // #478: no question draws a "dunno" in any channel now, a question of where included.
+    [TestCase("group", "where is that")]
+    [TestCase("group", "where is Humberton Castle")]
+    [TestCase("say", "how do i get to humberton castle")]
+    [TestCase("group", "is it raining for you too?")]
+    public void AQuestionOfWhereNeverDrawsADunno(string channel, string line) =>
+        Assert.That(AutonomousChatReplyBudget.Rescue(new AutonomousChatReplyBudget.Moment(line, channel, false, AutonomousChatIntentModel.Predict(line), "Thane",
+            false, false, false), "none factual", new Random(1)), Is.Null);
 
     [TestCase("Ardagh", "DOL.GS.Area+Circle", 1750, true)]
     [TestCase("Humberton Castle", "DOL.GS.Area+Circle", 2000, true)]

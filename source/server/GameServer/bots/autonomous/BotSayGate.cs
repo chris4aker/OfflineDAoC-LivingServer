@@ -15,7 +15,9 @@ namespace DOL.GS;
 /// <see cref="BotChatTranscript.Bot"/> themselves) hands its line here with the send it would have done; the gate runs its
 /// fixed steps in order and then sends and records.
 /// <para>
-/// <b>Step 1 is a pass-through.</b> Every check is a no-op that lets the line through as it came, byte for byte, so nothing a
+/// <b>Since #478 the gate holds one class of line</b>: a non-answer as the whole reply to a line said to the speaker or asked of
+/// its channel (step 2, <see cref="WholeAnswer"/>; BotSayGate.NonAnswer.cs), with a CHAT_HELD row (rule=non-answer). Every
+/// other check is still a no-op. <b>Step 1 was a pass-through.</b> Every check is a no-op that lets the line through as it came, byte for byte, so nothing a
 /// bot says, when it says it, or what it remembers changes. What the gate adds is the record: one <c>CHAT_SAY</c> row per
 /// line a player saw, <c>CHAT_HEAR</c> per player line, <c>CHAT_HELD</c> per line not sent or player line left unanswered
 /// (from <see cref="AutonomousChatWhy"/>, the /lswhy ring, written to the log), <c>SCREEN_BURST</c> for system-window bursts
@@ -24,7 +26,7 @@ namespace DOL.GS;
 /// per player. The <c>CHAT_LINE</c> rows in server.log are written exactly as before.
 /// </para>
 /// </summary>
-public static class BotSayGate
+public static partial class BotSayGate
 {
     /// <summary>The logger the session chat log's rows go to (logconfig.xml sends it to logs/session-chat.log only).</summary>
     public const string LoggerName = "sessionchat";
@@ -79,6 +81,13 @@ public static class BotSayGate
         public long Re { get; init; }
         /// <summary>Whether the caller already styled the text (so step 6 won't style it twice, once it styles).</summary>
         public bool? Styled { get; init; }
+        /// <summary>
+        /// The line this one answers, when the exit knows it (#478); else the gate takes the newest line in the room by someone
+        /// else (<see cref="AnswerWindowMs"/>).
+        /// </summary>
+        public string Answers { get; init; }
+        /// <summary>With <see cref="Answers"/>: whether that line was said to this speaker (a tell, its group, its name).</summary>
+        public bool SaidToSpeaker { get; init; }
     }
 
     /// <summary>What a step decided: pass the line on (maybe changed), or hold it with a reason.</summary>
@@ -149,8 +158,9 @@ public static class BotSayGate
 
     // 1. The line's contract allows this channel and audience.
     private static Verdict ChannelFit(Utterance line) => Verdict.Pass;
-    // 2. A short reply far from its question names the asker; a reaction's trigger is still on the listener's screen.
-    private static Verdict Addressee(Utterance line) => Verdict.Pass;
+    // 2. No non-answer as the whole answer to a line said to the speaker or asked of the channel (#478, BotSayGate.NonAnswer.cs).
+    //    Still to come: a short reply far from its question names the asker; a reaction's trigger is still on the listener's screen.
+    private static Verdict Addressee(Utterance line) => WholeAnswer(line);
     // 3. What it answers is recent; the speaker's state is still what the line needs.
     private static Verdict Freshness(Utterance line) => Verdict.Pass;
     // 4. Each claim is true now (place, level, class, grouped, item, promise).
@@ -167,6 +177,8 @@ public static class BotSayGate
         if (string.IsNullOrWhiteSpace(shown))
             return;
         Interlocked.Increment(ref _lines);
+        NoteInRoom(RoomKey(line.Channel, line.Realm, RoomOf(line), line.Speaker, line.To),
+            new Said(0, Now(), line.Speaker, shown, line.To, false, line.Channel));
         if (line.Act == null && line.LineId == null)
             Interlocked.Increment(ref _noContract);
         try
@@ -250,6 +262,7 @@ public static class BotSayGate
                 _ => GlobalConstants.RealmToName(player.Realm),
             };
             NoteHeard(seq, channel, player);
+            NoteInRoom(RoomKey(channel, player.Realm, room, player.Name, to), new Said(seq, Now(), player.Name, text, to, true, channel));
             Remember(seq, "hear", channel, player.Realm, heard, player.Name, text);
             Write($"CHAT_HEAR seq={seq} t={Now()} ch={channel} room={Quote(room)} realm={GlobalConstants.RealmToName(player.Realm)} " +
                   $"from={Quote(player.Name)}" + (to != null ? $" to={Quote(to)}" : "") + $" intent={intent ?? "?"} " +
@@ -460,7 +473,7 @@ public static class BotSayGate
         try
         {
             if (Interlocked.Exchange(ref _sessionWritten, 1) == 0)
-                Emit($"CHAT_SESSION build={ForkBuildInfo.BuildName} commit={ForkBuildInfo.Commit} rows=say,hear,held,burst,flag gate=pass-through");
+                Emit($"CHAT_SESSION build={ForkBuildInfo.BuildName} commit={ForkBuildInfo.Commit} rows=say,hear,held,burst,flag gate=non-answer");
             Emit(row);
         }
         catch (Exception)
@@ -487,6 +500,7 @@ public static class BotSayGate
             Recent.Clear();
             LastHeardBy.Clear();
             LastHeardIn.Clear();
+            LastInRoom.Clear();
         }
         Interlocked.Exchange(ref _lines, 0);
         Interlocked.Exchange(ref _noContract, 0);

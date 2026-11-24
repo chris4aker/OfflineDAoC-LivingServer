@@ -44,6 +44,13 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   ratchet). **Built, tests only;** done when a played session's `session-chat.log` gives a transcript an agent can read
   line by line and a count of defects per hour, per channel, per build (baseline: 9 in about an hour on 1.2.2). Next:
   #489's step 2 (the checks in the gate).
+- [#478](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/478) Realism 2a: no non-answer as a whole answer, in any
+  channel. **Built, tests only** (branch `fix/1.2.3-no-non-answers`, on top of #549). The say gate's step 2 holds the class
+  (dunno, try elsewhere, echo word, bare laugh, stock agreement; `BotSayGate.NonAnswer.cs`), the reply planner settles with
+  it (`AutonomousChatReplyPath.Settled`), and the "dunno" fallbacks and the `@answers ask` set are gone. Bench: non-answers
+  0 in every channel, no good share fell, bad silence rose where the dunnos were (tell 0 to 71, /group 42 to 86, follow-ups
+  in a tell 0 to 33): those lines need knowledge (#482). Open: see it in a PC log (`CHAT_HELD rule=non-answer`, and no
+  "dunno"/"not sure" rows in `session-chat.log`).
 - **The honest chat bench** ([#477](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/477), realism 1b): done
   on `feature/1.2.3-honest-bench`, **tests only**. The bench's headline is the realism audit's fresh lines (155 of 262 good,
   59.2%), reported per kind and per channel, with the side benches (every channel path, 54 follow-ups, 40 lines of the

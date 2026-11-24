@@ -1,19 +1,19 @@
 {
  "note": "The chat bench ratchet (score_bench.py ratchet): no good share may fall and no capped count may grow, for the whole bench, each set and kind (\"groups\"), and each channel of the side benches. The headline is the fresh set. Tighten it with score_bench.py ratchet ... --write after a fix; never loosen it to pass.",
  "headline": "set:fresh",
- "ok_share": 0.7959,
- "ok": 628,
+ "ok_share": 0.7985,
+ "ok": 630,
  "total": 789,
  "counts": {
-  "WRONG": 5,
-  "NON_ANSWER": 14,
-  "OFF_TOPIC": 30,
-  "FLUFF": 7,
-  "SILENT": 93,
+  "WRONG": 4,
+  "NON_ANSWER": 0,
+  "OFF_TOPIC": 29,
+  "FLUFF": 6,
+  "SILENT": 108,
   "STUB": 12,
   "CLUNKY": 0,
   "ECHO": 0,
-  "PADDED": 5
+  "PADDED": 4
  },
  "groups": {
   "set:code": {
@@ -29,19 +29,19 @@
     "STUB": 8,
     "CLUNKY": 0,
     "ECHO": 0,
-    "PADDED": 5
+    "PADDED": 4
    }
   },
   "set:fresh": {
-   "ok": 155,
+   "ok": 157,
    "total": 262,
-   "ok_share": 0.5916,
+   "ok_share": 0.5992,
    "counts": {
-    "WRONG": 5,
-    "NON_ANSWER": 14,
-    "OFF_TOPIC": 17,
-    "FLUFF": 6,
-    "SILENT": 61,
+    "WRONG": 4,
+    "NON_ANSWER": 0,
+    "OFF_TOPIC": 16,
+    "FLUFF": 5,
+    "SILENT": 76,
     "STUB": 4,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -49,15 +49,15 @@
    }
   },
   "kind:followup": {
-   "ok": 3,
+   "ok": 4,
    "total": 20,
-   "ok_share": 0.15,
+   "ok_share": 0.2,
    "counts": {
-    "WRONG": 1,
-    "NON_ANSWER": 6,
+    "WRONG": 0,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 1,
     "FLUFF": 2,
-    "SILENT": 6,
+    "SILENT": 12,
     "STUB": 1,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -65,19 +65,19 @@
    }
   },
   "kind:question": {
-   "ok": 544,
+   "ok": 545,
    "total": 667,
-   "ok_share": 0.8156,
+   "ok_share": 0.8171,
    "counts": {
     "WRONG": 4,
-    "NON_ANSWER": 8,
-    "OFF_TOPIC": 22,
+    "NON_ANSWER": 0,
+    "OFF_TOPIC": 21,
     "FLUFF": 2,
-    "SILENT": 77,
+    "SILENT": 85,
     "STUB": 10,
     "CLUNKY": 0,
     "ECHO": 0,
-    "PADDED": 3
+    "PADDED": 2
    }
   },
   "kind:statement": {
@@ -88,8 +88,8 @@
     "WRONG": 0,
     "NON_ANSWER": 0,
     "OFF_TOPIC": 7,
-    "FLUFF": 3,
-    "SILENT": 10,
+    "FLUFF": 2,
+    "SILENT": 11,
     "STUB": 1,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -105,9 +105,9 @@
    "counts": {
     "WRONG": 3,
     "NON_ANSWER": 0,
-    "OFF_TOPIC": 23,
+    "OFF_TOPIC": 22,
     "FLUFF": 5,
-    "SILENT": 80,
+    "SILENT": 81,
     "STUB": 9,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -115,15 +115,15 @@
    }
   },
   "say": {
-   "ok": 519,
+   "ok": 520,
    "total": 644,
-   "ok_share": 0.8059,
+   "ok_share": 0.8075,
    "counts": {
     "WRONG": 3,
-    "NON_ANSWER": 28,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 23,
     "FLUFF": 6,
-    "SILENT": 51,
+    "SILENT": 78,
     "STUB": 14,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -131,15 +131,15 @@
    }
   },
   "group": {
-   "ok": 517,
+   "ok": 520,
    "total": 644,
-   "ok_share": 0.8028,
+   "ok_share": 0.8075,
    "counts": {
     "WRONG": 3,
-    "NON_ANSWER": 44,
-    "OFF_TOPIC": 24,
-    "FLUFF": 5,
-    "SILENT": 42,
+    "NON_ANSWER": 0,
+    "OFF_TOPIC": 22,
+    "FLUFF": 4,
+    "SILENT": 86,
     "STUB": 9,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -147,15 +147,15 @@
    }
   },
   "group_named": {
-   "ok": 509,
+   "ok": 513,
    "total": 644,
-   "ok_share": 0.7904,
+   "ok_share": 0.7966,
    "counts": {
     "WRONG": 3,
-    "NON_ANSWER": 78,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 24,
     "FLUFF": 21,
-    "SILENT": 0,
+    "SILENT": 74,
     "STUB": 9,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -163,15 +163,15 @@
    }
   },
   "tell": {
-   "ok": 498,
+   "ok": 502,
    "total": 644,
-   "ok_share": 0.7733,
+   "ok_share": 0.7795,
    "counts": {
     "WRONG": 3,
-    "NON_ANSWER": 75,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 37,
     "FLUFF": 18,
-    "SILENT": 0,
+    "SILENT": 71,
     "STUB": 13,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -179,15 +179,15 @@
    }
   },
   "guild": {
-   "ok": 518,
+   "ok": 519,
    "total": 644,
-   "ok_share": 0.8043,
+   "ok_share": 0.8059,
    "counts": {
     "WRONG": 3,
-    "NON_ANSWER": 32,
-    "OFF_TOPIC": 20,
+    "NON_ANSWER": 0,
+    "OFF_TOPIC": 19,
     "FLUFF": 4,
-    "SILENT": 58,
+    "SILENT": 90,
     "STUB": 9,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -195,15 +195,15 @@
    }
   },
   "guild_named": {
-   "ok": 509,
+   "ok": 513,
    "total": 644,
-   "ok_share": 0.7904,
+   "ok_share": 0.7966,
    "counts": {
     "WRONG": 3,
-    "NON_ANSWER": 78,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 24,
     "FLUFF": 21,
-    "SILENT": 0,
+    "SILENT": 74,
     "STUB": 9,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -314,14 +314,14 @@
    "ok_share": 0.0185,
    "counts": {
     "WRONG": 2,
-    "NON_ANSWER": 18,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 3,
     "FLUFF": 0,
-    "SILENT": 17,
+    "SILENT": 35,
     "STUB": 13,
     "CLUNKY": 0,
     "ECHO": 0,
-    "PADDED": 1
+    "PADDED": 0
    }
   },
   "tell": {
@@ -329,15 +329,15 @@
    "total": 54,
    "ok_share": 0.0185,
    "counts": {
-    "WRONG": 3,
-    "NON_ANSWER": 33,
-    "OFF_TOPIC": 3,
+    "WRONG": 2,
+    "NON_ANSWER": 0,
+    "OFF_TOPIC": 4,
     "FLUFF": 0,
-    "SILENT": 0,
+    "SILENT": 33,
     "STUB": 14,
     "CLUNKY": 0,
     "ECHO": 0,
-    "PADDED": 1
+    "PADDED": 0
    }
   }
  },
@@ -359,12 +359,12 @@
    }
   },
   "say": {
-   "ok": 28,
+   "ok": 32,
    "total": 40,
-   "ok_share": 0.7,
+   "ok_share": 0.8,
    "counts": {
     "WRONG": 0,
-    "NON_ANSWER": 4,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 6,
     "FLUFF": 2,
     "SILENT": 0,
@@ -375,12 +375,12 @@
    }
   },
   "group": {
-   "ok": 17,
+   "ok": 24,
    "total": 40,
-   "ok_share": 0.425,
+   "ok_share": 0.6,
    "counts": {
-    "WRONG": 1,
-    "NON_ANSWER": 6,
+    "WRONG": 0,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 6,
     "FLUFF": 1,
     "SILENT": 8,
@@ -391,12 +391,12 @@
    }
   },
   "group_named": {
-   "ok": 22,
+   "ok": 29,
    "total": 40,
-   "ok_share": 0.55,
+   "ok_share": 0.725,
    "counts": {
     "WRONG": 0,
-    "NON_ANSWER": 7,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 8,
     "FLUFF": 2,
     "SILENT": 0,
@@ -407,12 +407,12 @@
    }
   },
   "tell": {
-   "ok": 24,
+   "ok": 31,
    "total": 40,
-   "ok_share": 0.6,
+   "ok_share": 0.775,
    "counts": {
     "WRONG": 0,
-    "NON_ANSWER": 7,
+    "NON_ANSWER": 0,
     "OFF_TOPIC": 7,
     "FLUFF": 2,
     "SILENT": 0,
@@ -423,13 +423,13 @@
    }
   },
   "guild": {
-   "ok": 27,
+   "ok": 31,
    "total": 40,
-   "ok_share": 0.675,
+   "ok_share": 0.775,
    "counts": {
     "WRONG": 0,
-    "NON_ANSWER": 5,
-    "OFF_TOPIC": 6,
+    "NON_ANSWER": 0,
+    "OFF_TOPIC": 7,
     "FLUFF": 2,
     "SILENT": 0,
     "STUB": 0,
@@ -439,13 +439,13 @@
    }
   },
   "guild_named": {
-   "ok": 23,
+   "ok": 30,
    "total": 40,
-   "ok_share": 0.575,
+   "ok_share": 0.75,
    "counts": {
     "WRONG": 0,
-    "NON_ANSWER": 8,
-    "OFF_TOPIC": 7,
+    "NON_ANSWER": 0,
+    "OFF_TOPIC": 8,
     "FLUFF": 2,
     "SILENT": 0,
     "STUB": 0,
@@ -522,15 +522,15 @@
   }
  },
  "holdout": {
-  "ok": 33,
+  "ok": 34,
   "total": 78,
-  "ok_share": 0.4231,
+  "ok_share": 0.4359,
   "counts": {
    "WRONG": 3,
-   "NON_ANSWER": 3,
+   "NON_ANSWER": 0,
    "OFF_TOPIC": 4,
    "FLUFF": 5,
-   "SILENT": 29,
+   "SILENT": 31,
    "STUB": 1,
    "CLUNKY": 0,
    "ECHO": 0,

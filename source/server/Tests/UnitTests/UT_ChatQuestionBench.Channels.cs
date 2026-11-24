@@ -403,9 +403,11 @@ namespace DOL.GS.Tests
                                   AutonomousChatThreads.WhereIsIt(last.Text, AutonomousBotVoices.CapitalOf(run.Realm), run.Rng) ??
                                   AutonomousBotChatCoordinator.WhereText(run.Me.Zone, false, run.Me.Level, run.Me.Cls, run.Rng));
             string family = last.Family;
-            if (!string.IsNullOrEmpty(family) && Pick(run, "reply", null, "followup_" + word, null, true, line => line.Topic == family) is { } fit)
+            // #478: as live, the say gate's non-answer class is left out of the follow-up pools.
+            if (!string.IsNullOrEmpty(family) && Pick(run, "reply", null, "followup_" + word, null, true,
+                    line => line.Topic == family && !BotSayGate.IsNonAnswer(line.Text)) is { } fit)
                 return fit.Text;
-            return Pick(run, "reply", null, "followup_" + word, null, true, line => line.Topic is "general" or "")?.Text;
+            return Pick(run, "reply", null, "followup_" + word, null, true, line => line.Topic is "general" or "" && !BotSayGate.IsNonAnswer(line.Text))?.Text;
         }
     }
 }
