@@ -78,11 +78,32 @@ namespace DOL.GS
         private static long _standAtAim, _standAtOldAim;
         public const short SlowLeaderSpeed = 100;
 
+        // 1.2.3 (#538): follow checks that left a leader over the border, farther than BorderWalkDistance, to the AI turn's
+        // seam route; and the AI turns that planned that route (AutonomousZoneItinerary through IssuePath).
+        private static long _borderHandOff, _seamRoutes;
+
         public static void NoteBorderFollow(bool walkedOver)
         {
             Interlocked.Increment(ref _borderFollow);
             if (walkedOver) Interlocked.Increment(ref _borderWalk);
         }
+
+        /// <summary>
+        /// 1.2.3 (#538), the pure rule: a party member whose leader is in another zone of the same region, farther than
+        /// <see cref="BorderWalkDistance"/>, takes a seam route to the leader on its AI turn instead of the formation follow.
+        /// Paths are planned inside one zone, so the follow's path to a leader over the border found nothing and the member
+        /// stood (owner's PC, 1.2.2 868a82d, 11/24: 1,784 of 2,450 AUTONOMOUS_GROUP_MEMBER_STALLED were in another zone
+        /// than the leader, median 1,720 units behind, Lough Derg > Connacht the worst border). Within that distance the
+        /// follow keeps walking straight after a leader that just crossed.
+        /// </summary>
+        public static bool NeedsSeamRoute(bool sameRegion, int followerZone, int leaderZone, float distanceToLeader) =>
+            sameRegion && followerZone > 0 && leaderZone > 0 && followerZone != leaderZone && distanceToLeader > BorderWalkDistance;
+
+        /// <summary>The follow check found the leader over the border and beyond a straight walk: the AI turn routes it.</summary>
+        public static void NoteBorderHandOff() => Interlocked.Increment(ref _borderHandOff);
+
+        /// <summary>The AI turn routed a member over the border to its leader (<see cref="NeedsSeamRoute"/>).</summary>
+        public static void NoteSeamRoute() => Interlocked.Increment(ref _seamRoutes);
 
         /// <summary>Called from the follower's AI turn: keep following <paramref name="leader"/> at
         /// <paramref name="slot"/> (computed around <paramref name="center"/>).</summary>
@@ -349,14 +370,15 @@ namespace DOL.GS
                  sitting = Interlocked.Exchange(ref _otherSitting, 0), held = Interlocked.Exchange(ref _otherHeld, 0),
                  noSpeed = Interlocked.Exchange(ref _otherNoSpeed, 0), otherZone = Interlocked.Exchange(ref _otherZone, 0),
                  slowLeader = Interlocked.Exchange(ref _atSlotSlowLeader, 0),
-                 atAim = Interlocked.Exchange(ref _standAtAim, 0), atOldAim = Interlocked.Exchange(ref _standAtOldAim, 0);
+                 atAim = Interlocked.Exchange(ref _standAtAim, 0), atOldAim = Interlocked.Exchange(ref _standAtOldAim, 0),
+                 handOff = Interlocked.Exchange(ref _borderHandOff, 0), seamRoutes = Interlocked.Exchange(ref _seamRoutes, 0);
             if (next == 0 || checks == 0) return;
             Log.Info($"AUTONOMOUS_GROUP_FORMATION walkingChecks={checks} standingWhileLeaderWalks={standing} " +
                      $"standingPct={100.0 * standing / checks:0.0} averageTrail={total / checks} trailOver300Pct={100.0 * over / checks:0.0} " +
                      $"standing: casting={casting} combat={combat} noPath={noPath} atSlot={atSlot} partial={partial} other={other} " +
                      $"standingTwice={twice} trailLeaderChecks={trailLeader} borderChecks={border} borderWalks={borderWalk} " +
                      $"other: sitting={sitting} held={held} noSpeed={noSpeed} otherZone={otherZone} atSlotSlowLeader={slowLeader} " +
-                     $"standingAtAim={atAim} standingAtLastWalkEnd={atOldAim}");
+                     $"standingAtAim={atAim} standingAtLastWalkEnd={atOldAim} borderHandOffs={handOff} seamRoutes={seamRoutes}");
         }
     }
 }
