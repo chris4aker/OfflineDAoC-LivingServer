@@ -302,6 +302,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void ShowBotsAsBotsIsOffByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // 1.2.3 (owner 2026-11-24, #485): the [Playerbot] tag in /who and "gamebot"/"buffbot" in refusals are a launcher
+        // setting, hidden by default, in Setup too; ALL OFF (a display choice, not a feature) leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.ShowBotsAsBots || SocialExpansionSettings.Recommended.ShowBotsAsBots, Is.False);
+        Assert.That((d with { ShowBotsAsBots = true }).AllOff().ShowBotsAsBots, Is.True);
+        (d with { ShowBotsAsBots = true }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_show_as_bots"], Is.EqualTo("True"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).ShowBotsAsBots, Is.True);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void RaidLearningIsOnByDefaultAndAllOffTurnsItOff()
     {
         // Bots as people WP7 (coordinator's decision, 2026-11-17): ALL OFF is the classic server, so it also turns

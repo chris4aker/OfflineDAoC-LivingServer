@@ -37,10 +37,25 @@ public static partial class BotLedGroups
     /// seconds of asking (owner 2026-11-04).
     /// </summary>
     public const long AskedWindowMs = 15_000L;
-    /// <summary>The leader's answer to an ask comes 1 to 2.5 seconds after the invite is decided.</summary>
-    public const int AskedTellDelayMinMs = 1_000, AskedTellDelaySpreadMs = 1_500;
-    /// <summary>The box follows the answer 1.5 to 3 seconds later.</summary>
-    public const int AskedBoxDelayMinMs = 1_500, AskedBoxDelaySpreadMs = 1_500;
+    /// <summary>
+    /// The leader's answer to an ask comes 3.5 to 7.5 seconds after the invite is decided: reading the /lfg and typing (#485; it
+    /// was 1 to 2.5 s, and a played session had the answer the same second).
+    /// </summary>
+    public const int AskedTellDelayMinMs = 3_500, AskedTellDelaySpreadMs = 4_000;
+    /// <summary>The box follows the answer 1.5 to 2.5 seconds later (the owner's 15 seconds still hold: <see cref="AskedWindowMs"/>).</summary>
+    public const int AskedBoxDelayMinMs = 1_500, AskedBoxDelaySpreadMs = 1_000;
+    /// <summary>
+    /// #485: no invite from across the map. A party whose leader and camp are both further than this from the player (in the
+    /// same region; about three and a half minutes on foot) does not invite. A played /lfg got its invite from 58,420 units.
+    /// </summary>
+    public const double MaxInviteDistance = 40_000;
+    /// <summary>
+    /// #485: an unasked "want in?" waits for the player's answer by tell; the box comes only after a yes, 1.5 to 3.5 seconds
+    /// later. No answer in this long and the leader lets it go.
+    /// </summary>
+    public const long UnaskedAnswerWaitMs = 60_000;
+    /// <summary>The box after a yes to "want in?": 1.5 to 3.5 seconds.</summary>
+    public const int YesBoxDelayMinMs = 1_500, YesBoxDelaySpreadMs = 2_000;
     /// <summary>The longest an asked invite takes from the decision to the box.</summary>
     public const long AskedLongestDelayMs = AskedTellDelayMinMs + AskedTellDelaySpreadMs + AskedBoxDelayMinMs + AskedBoxDelaySpreadMs;
     /// <summary>
@@ -139,6 +154,7 @@ public static partial class BotLedGroups
         : !group.Hunting ? "not_hunting"
         : group.OnRealmDuty ? "on_duty"
         : !group.Reachable ? "unreachable"
+        : group.Distance > MaxInviteDistance ? "too_far"
         : group.Members >= group.MaxMembers ? "full"
         : !InLevelBand(playerLevel, group.AverageLevel) ? "level_band"
         : null;
@@ -176,6 +192,39 @@ public static partial class BotLedGroups
         /// <summary>The player typed /invites off (B2): no unasked invite, from a party or a raid. Asking still works.</summary>
         public bool PlayerInvitesOff { get; set; }
         public Dictionary<long, long> DeclinedByLeader { get; } = new();
+        /// <summary>#485: the leader whose unasked "want in?" waits for the player's answer by tell (0: none), and since when.</summary>
+        public long AwaitingLeaderId { get; set; }
+        public long AwaitingSince { get; set; }
+
+        /// <summary>An unasked "want in?" went out: the box waits for a yes (<see cref="UnaskedAnswerWaitMs"/>).</summary>
+        public void AwaitAnswer(long leaderId, long now)
+        {
+            Pending = true;
+            PendingLeaderId = leaderId;
+            AwaitingLeaderId = leaderId;
+            AwaitingSince = now;
+        }
+
+        /// <summary>
+        /// The player said yes by tell to the leader whose question waits: true once (the box may go now), and the wait ends.
+        /// </summary>
+        public bool TakeYes(long leaderId)
+        {
+            if (AwaitingLeaderId == 0 || AwaitingLeaderId != leaderId)
+                return false;
+            AwaitingLeaderId = 0;
+            return true;
+        }
+
+        /// <summary>No answer to the "want in?" in <see cref="UnaskedAnswerWaitMs"/>: the leader lets it go (true once).</summary>
+        public bool AnswerWaitOver(long now)
+        {
+            if (AwaitingLeaderId == 0 || now - AwaitingSince <= UnaskedAnswerWaitMs)
+                return false;
+            AwaitingLeaderId = 0;
+            Pending = false;
+            return true;
+        }
 
         public InviteMemory(long onlineSince) => OnlineSince = onlineSince;
 
@@ -186,6 +235,7 @@ public static partial class BotLedGroups
             SessionDeclines++;
             DeclinedByLeader[leaderId] = now;
             Pending = false;
+            AwaitingLeaderId = 0;
         }
 
         /// <summary>The player asked for a group (/lfg, or "lfg?" by tell).</summary>
@@ -784,6 +834,8 @@ public static partial class BotLedGroups
                     memory.Pending = false;
                 }
                 LastSeen[player.Name] = now;
+                if (memory.AnswerWaitOver(now))
+                    LogInvite("not_sent", null, player, "no_answer", asked: false);
                 if (StateBlocks(StateOf(player)) != null ||
                     CadenceBlocks(memory, now, InvitesOn, AutonomousLivingServer.SinceLastBotTell(player, now)) != null)
                     continue;
@@ -840,7 +892,15 @@ public static partial class BotLedGroups
         string tell = InviteTell(leader, asked);
         // Asked: the answer, then the box, within 15 seconds of the ask (AskedLatestStartMs + AskedLongestDelayMs).
         int tellDelay = asked ? AskedTellDelayMinMs + Random.Shared.Next(AskedTellDelaySpreadMs) : 1_500 + Random.Shared.Next(2_500);
-        int boxDelay = asked ? AskedBoxDelayMinMs + Random.Shared.Next(AskedBoxDelaySpreadMs) : 2_500 + Random.Shared.Next(2_000);
+        int boxDelay = AskedBoxDelayMinMs + Random.Shared.Next(AskedBoxDelaySpreadMs);
+        if (!asked)
+        {
+            // #485: "want in?" is a question. The box comes after the player's yes by tell (OnInviteTellAnswered), never before
+            // it (a played session had the box 3 s before the words).
+            memory.AwaitAnswer(leader.DatabaseID, now);
+            AutonomousLivingServer.Later(leader, tellDelay, null, () => AutonomousLivingServer.Tell(leader, player, tell, InviteThread));
+            return true;
+        }
         AutonomousLivingServer.Later(leader, tellDelay, null, () =>
         {
             AutonomousLivingServer.Tell(leader, player, tell, InviteThread);
@@ -910,9 +970,19 @@ public static partial class BotLedGroups
     /// <summary>The player answered the leader's invite tell: "no thanks" counts as a no to that leader.</summary>
     public static void OnInviteTellAnswered(GameBot leader, GamePlayer player, bool yes)
     {
-        if (leader == null || player == null || yes)
+        if (leader == null || player == null)
             return;
-        MemoryOf(player, GameLoop.GameLoopTime).Declined(leader.DatabaseID, GameLoop.GameLoopTime);
+        InviteMemory memory = MemoryOf(player, GameLoop.GameLoopTime);
+        if (yes)
+        {
+            // #485: the yes to an unasked "want in?" brings the box, a moment later (the leader's "cool, accept the inv" first).
+            if (memory.TakeYes(leader.DatabaseID))
+                AutonomousLivingServer.Later(leader, YesBoxDelayMinMs + Random.Shared.Next(YesBoxDelaySpreadMs), null,
+                    () => ClientService.Instance.Post(static state => SendInviteBox(state.Player, state.Leader, false),
+                        (Player: player, Leader: leader)));
+            return;
+        }
+        memory.Declined(leader.DatabaseID, GameLoop.GameLoopTime);
         LogInvite("declined", leader, player, "tell", asked: false);
     }
 

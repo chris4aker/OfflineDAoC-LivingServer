@@ -182,7 +182,9 @@ namespace DOL.GS.Tests
         [Test]
         public void NeverGrouped_TheInviteRuleSaysSo()
         {
-            Assert.That(BotGroupInvite.BusyMessage("Bobbuff", BotGroupInvite.Duty.Buffing), Does.Contain("never joins a group"));
+            // #485: the word "buffbot" only with bot_show_as_bots; hidden (the default) it reads as a player's decline.
+            Assert.That(BotGroupInvite.BusyMessage("Bobbuff", BotGroupInvite.Duty.Buffing, showBots: true), Does.Contain("never joins a group"));
+            Assert.That(BotGroupInvite.BusyMessage("Bobbuff", BotGroupInvite.Duty.Buffing, showBots: false), Is.EqualTo("Bobbuff declines your invitation."));
             Assert.That(B.MayJoinGroup(null), Is.True, "only a buffbot is refused");
         }
 

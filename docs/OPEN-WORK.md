@@ -50,6 +50,11 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   series in `AttackAction` (`6258566a3`, `27bc0293f`, `a7468c046`, `109a38cf0`), kept apart from the interrupt port in
   the same file; the Savage buff effect refactor (`1713a0e8f`, `9f0bd91b1`, effect code). Held for the owner: the NPC evade
   arc and attacker rule and the NPC guard rule (weaker monsters).
+- [#485](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/485) Realism 3a, invites, joins and logouts with a
+  person behind them (one invite decision for words and act, human accept pauses, bot-led range and "want in?" waiting for
+  a yes, seated logout, wipe releases 15-45 s apart, `bot_show_as_bots` off by default). **In review, tests only**
+  (`UT_InvitesLogouts485`). PC check: /invite an idle bot, a fighting bot and a bot in its party; /lfg; watch a "brb"
+  logout and a wipe.
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
   heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
   below.

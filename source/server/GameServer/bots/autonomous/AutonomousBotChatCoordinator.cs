@@ -2174,6 +2174,8 @@ public static partial class AutonomousBotChatCoordinator
             // An invite the bot turned down for a duty ("busy with a siege") says so; only one that never came is "try again".
             invited: () => bot.Group != null && bot.Group == player.Group
                 ? Random.Shared.Next(2) == 0 ? "got it, omw" : "ty, on my way"   // promise: true (it is in the player's group now and follows it)
+                // #485: the invite came and the bot is still answering it (a pause, or its fight first).
+                : BotGroupInvite.IsConsidering(bot, player) ? Random.Shared.Next(2) == 0 ? "yep got it, sec" : "got it, one sec"
                 : bot.PlayerGroupLeader != null && bot.PlayerGroupLeader != player || BotGroupInvite.DutyOf(bot) != BotGroupInvite.Duty.None
                     ? JoinReply(bot, player, Random.Shared)
                     : Random.Shared.Next(2) == 0 ? "didnt get anything, try again?" : "no invite came through, send it again?",
@@ -2372,9 +2374,23 @@ public static partial class AutonomousBotChatCoordinator
                 BotGroupInvite.Duty.StableRoute => "on a horse right now, catch me after",
                 _ => "cant right now, sorry",
             };
+        // #485: the words come from the invite's own decision (BotGroupInvite.Consult), so what the bot says here is what an
+        // invite then does: the 8-level gap (a friend it outlevels is power-levelled), and its own bot group (it sometimes
+        // leaves for you, never mid-fight; the answer holds ten minutes).
+        BotInviteDecision.Activity activity = BotInviteDecision.Activity.Idle;
+        bool friend = false;
+        BotInviteDecision.Decision decision = BotGroupInvite.TakesAThought(bot)
+            ? BotGroupInvite.Consult(bot, player, out activity, out friend)
+            : new BotInviteDecision.Decision(BotInviteDecision.Verdict.Accept, 0);
         // The audit (2026-10-26): a 48 said "sure, send me an invite" to a 10. A player would mention the gap first.
-        if (LevelGapReply(bot.Level, player.Level, random) is { } gap)
+        if (decision.Verdict == BotInviteDecision.Verdict.DeclineLevelGap && LevelGapReply(bot.Level, player.Level, random) is { } gap)
             return gap;
+        if (!BotGroupInvite.TakesAThought(bot) && LevelGapReply(bot.Level, player.Level, random) is { } companionGap)
+            return companionGap;
+        if (decision.Verdict == BotInviteDecision.Verdict.DeclineBotGroup)
+            return BotInviteDecision.BotGroupDeclineLine(activity, friend, random);
+        if (decision.Verdict == BotInviteDecision.Verdict.LeaveGroupAndAccept && BotGroupInvite.CloseEnoughToInviteByName(player, bot))
+            return random.Next(2) == 0 ? "sure, ill leave my grp. inv me" : "ok, ill drop my group, send the inv";
         if (!BotGroupInvite.CloseEnoughToInviteByName(player, bot))
         {
             string where = Clean(bot.CurrentZone?.Description, "the other side of the realm");

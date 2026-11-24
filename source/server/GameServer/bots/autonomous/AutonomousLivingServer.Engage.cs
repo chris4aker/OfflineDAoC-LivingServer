@@ -198,7 +198,8 @@ public static partial class AutonomousLivingServer
                         role: "decline");
                 return;
             }
-            bool joined = BotGroupInvite.TryInvite(player, bot);
+            // The bot asked and the player said yes: it joins at once (#485 keeps its thinking pause for the player's invites).
+            bool joined = BotGroupInvite.TryInvite(player, bot, immediate: true);
             Log.Info($"BOT_INVITE_RESULT bot=\"{bot.Name}\" player=\"{player.Name}\" from=bot result={(joined ? "grouped" : "failed")}");
         });
     }
@@ -233,6 +234,24 @@ public static partial class AutonomousLivingServer
         Later(bot, 2_000 + Random.Shared.Next(3_000), () => IsSpeaker(bot) && player.Client != null, () =>
         {
             using (AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "decline", bot))
+                Tell(bot, player, AutonomousBotVoices.StyleFor(bot, line));
+        });
+    }
+
+    /// <summary>A friend of the player (grouped or rezzed before, and friendly), for the invite decision (#485).</summary>
+    internal static bool IsFriend(GameBot bot, GamePlayer player) => bot != null && player != null && MemoryOn && Friendly(bot, player);
+
+    /// <summary>
+    /// The bot's own word about the player's invite, by tell, after <paramref name="delayMs"/> (#485: "sec, fighting", "in a grp
+    /// already, sry", "im 48 lol, way too high for you"). A fighting or dead bot can still type it when <paramref name="whileFighting"/>.
+    /// </summary>
+    internal static void InviteAnswer(GameBot bot, GamePlayer player, string line, int delayMs, bool whileFighting = false)
+    {
+        if (string.IsNullOrWhiteSpace(line) || !TellsOn || player == null || !IsSpeaker(bot))
+            return;
+        Later(bot, delayMs, () => (whileFighting ? IsSpeaker(bot) : CanTalk(bot)) && player.Client != null, () =>
+        {
+            using (AutonomousChatExchange.Tag("player", AutonomousChatExchange.NewId(), 0, "invite_answer", bot))
                 Tell(bot, player, AutonomousBotVoices.StyleFor(bot, line));
         });
     }

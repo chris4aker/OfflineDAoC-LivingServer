@@ -2956,7 +2956,8 @@ public static partial class AutonomousBotGroupCoordinator
             }
             bool potentialResurrection = rescuers.Any(member =>
                 member.IsAlive && member.ResurrectionSpell != null);
-            long waitMilliseconds = potentialResurrection ? 60_000 : 20_000;
+            // #485: with no healer standing, each member waits its own 15-45 s (a wiped party releases one by one, not in one beat).
+            long waitMilliseconds = potentialResurrection ? 60_000 : BotReleaseTiming.WipeReleaseMs(deadBot.DatabaseID, deaths);
             if (GameLoop.GameLoopTime - wait.SinceTick < waitMilliseconds)
                 return PveCorpseDisposition.HoldForResurrection;
             long deadline = wait.SinceTick + waitMilliseconds;

@@ -45,6 +45,13 @@ public static partial class AutonomousBotGroupCoordinator
                        HostingPhases.Contains(session.Phase) && !session.Recovery.IsRegrouping && leader?.IsAlive == true &&
                        leader.IsAutonomousWorldBot && !leader.IsTemporaryGroupHelper;
         double distance = leader != null && leader.CurrentRegionID == player.CurrentRegionID ? leader.GetDistanceTo(player) : -1;
+        // #485: how far the player has to go is to the leader or to the camp, whichever is nearer (a party heading for a camp by
+        // the player is not "across the map").
+        if (camp != null && camp.RegionId == player.CurrentRegionID)
+        {
+            double toCamp = Vector2.Distance(new Vector2(camp.X, camp.Y), new Vector2(player.X, player.Y));
+            distance = distance < 0 ? toCamp : Math.Min(distance, toCamp);
+        }
         return new BotLedGroups.Candidate(leader?.DatabaseID ?? 0, leader?.Name ?? string.Empty, leader?.Realm ?? eRealm.None,
             members.Length == 0 ? 0 : (int)Math.Round(members.Average(member => member.Level)),
             session.Group.MemberCount, session.Group.MaximumMemberCount,
@@ -90,6 +97,15 @@ public static partial class AutonomousBotGroupCoordinator
             return false;
         party = picked;
         return true;
+    }
+
+    /// <summary>The phase of the coordinated party this group is ("Traveling", "Grinding"...), or null (#485: what a grouped bot is doing).</summary>
+    internal static string PhaseOf(Group group)
+    {
+        if (group == null)
+            return null;
+        lock (Sync)
+            return TryGetSession(group, out Session session) ? session.Phase : null;
     }
 
     /// <summary>The leader still leads a party that could take a player (just before the box is shown).</summary>

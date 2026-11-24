@@ -61,6 +61,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private readonly CheckBox _botGroupInvites = Switch("Bot leaders invite you");
     private readonly CheckBox _botRaidInvites = Switch("Raid leaders invite you");
     private readonly CheckBox _deathFall = Switch("Bots fall when they die");
+    private readonly CheckBox _showBotsAsBots = Switch("Mark bots as bots in /who");
     private readonly ComboBox _joinMode = Choice("When you join a bot's group", "Follow", "Lead");
     private readonly NumericUpDown _lootWeight = Number(SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight, "Your loot share");
     // Crafting 2.0, the player's side (docs/CRAFTING.md).
@@ -196,7 +197,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         power.Grid.Controls.Add(powerNote, 0, power.Grid.RowCount - 1);
         power.Grid.SetColumnSpan(powerNote, 3);
 
-        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 6);
+        var groups = Card("BOT-LED GROUPS", DaocTheme.Gold, 7);
         Add(groups, _hiredCompanions, null, "Hire up to seven companions of your own with /hire beside a healer of your realm. They level with you, keep their gear and talk like the other bots. Off: nobody can hire, and hired ones stay home.");
         Add(groups, _botGroupInvites, null, "A bot party leader of your level may send you a tell and the group invite box (at most every 45 minutes; /lfg asks for one). Say yes and just follow.");
         Captioned(Caption("YOUR LOOT SHARE", part: false), Add(groups, null, WithUnit(_lootWeight, "members"),
@@ -205,6 +206,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         Captioned(Caption("WHEN YOU JOIN A BOT'S GROUP", part: false), Add(groups, null, _joinMode,
             "Follow: the bot leads and you follow (/lead takes over). Lead: saying yes makes you the leader at once (/lead bot hands it back)."));
         Add(groups, _deathFall, null, "In the original game client a bot that dies falls and lies as a corpse; raised, it stands up again. The new client shows this already.");
+        Add(groups, _showBotsAsBots, null, "Off (default): bots look like players. On: /who tags every gamebot [Playerbot], and a refused invite says gamebot or buffbot.");
 
         var crafting = Card("CRAFTING (YOUR CHARACTERS)", DaocTheme.Gold, 8);
         Add(crafting, _craftEraStart, null, "New characters join an order at a crafting master, as in 1.65 (off: they start with Basic Crafting). Characters who already craft keep their skills.");
@@ -328,7 +330,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
                      _botCrafters, _craftOrders, _ledger, _level50Kit, _eraClassShares, _eraBuilds, _buffBotConcRange,
                      _skillProfiles, _placeKnowledge, _movementHabits, _milestones,
                      _personalities, _voices, _debates,
-                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere, _hiredCompanions, _deathFall })
+                     _memory, _grats, _firsts, _death, _alarms, _nemesis, _breaks, _body, _beggars, _buffBots, _deeds, _storylines, _characters, _rumours, _holidays, _leeroy, _atmosphere, _hiredCompanions, _deathFall, _showBotsAsBots })
             box.CheckedChanged += (_, _) => Edited();
         _skillProfiles.CheckedChanged += (_, _) =>
         {
@@ -432,6 +434,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BotGroupInvites = _botGroupInvites.Checked,
         BotRaidInvites = _botRaidInvites.Checked,
         DeathFall = _deathFall.Checked,
+        ShowBotsAsBots = _showBotsAsBots.Checked,
         PlayerLootWeight = (int)_lootWeight.Value,
         JoinMode = SocialExpansionSettings.JoinModes[Math.Max(0, _joinMode.SelectedIndex)],
         CraftingEraStart = _craftEraStart.Checked,
@@ -482,6 +485,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _botGroupInvites.Checked = settings.BotGroupInvites;
         _botRaidInvites.Checked = settings.BotRaidInvites;
         _deathFall.Checked = settings.DeathFall;
+        _showBotsAsBots.Checked = settings.ShowBotsAsBots;
         _lootWeight.Value = Math.Clamp(settings.PlayerLootWeight, SocialExpansionSettings.MinPlayerLootWeight, SocialExpansionSettings.MaxPlayerLootWeight);
         _craftEraStart.Checked = settings.CraftingEraStart;
         _craftSecondaryCaps.Checked = settings.CraftingSecondaryCaps;
