@@ -115,6 +115,21 @@ otherwise.
   switch now show the server's default, which is what the server uses from 1.2.3. **Tests only.**
 
 **Bots and companions**
+- **A sampled per-kill XP row for gamebot kills** (#544: at levels 10-19 the same kill paid Hibernian groups 2-4x what
+  Albion's got, and the logs could not say why). `AUTONOMOUS_GOAL_ATTEMPT` was on but never in the analysed logs: it is one
+  line per camp attempt, not per kill, and since the 2026-11-13 log audit `logconfig.xml` sends it to `detail.log` only
+  (kept 2 days); the analysis read `server.log`. It stays there (its volume is why it moved). New:
+  `AUTONOMOUS_KILL_XP` in `server.log` (`AutonomousKillXpDiagnostics`, called from `OnNpcKilled` around the bot awards):
+  realm, zone, monster level, its XP value and con to the party's highest member, the party (group/solo), group size and
+  contributors, min/max/average level and the level gap, the camp and its target, `onTarget`/`sameName`, the XP each
+  contributing member got, the killer party's damage share, the other parties' shares (`shares=` kind/realm/count/share)
+  and the share that paid nobody (`lost=`). Sampled: every 25th autonomous PvE kill server-wide, at most 120 rows a minute
+  (`dropped=` counts the capped ones); raid expedition kills left out. New server property
+  `autonomous_diagnostics.bot_kill_xp_sample_every` (25; 0 turns it off): on, as the row is a counter per kill and
+  capped. No random numbers, no state written: it reads the XP before and after the award. Report:
+  `source/tools/kill_xp_report.py server.log [detail.log] --since "MM/DD HH:MM" --hours 1` (per realm and zone: XP per
+  member per kill, cons, split and lost shares, off-target share; and attempt XP not from the camp target from
+  `detail.log`). `UT_KillXpRow123`, `UT_LogConfig`, `test_kill_xp_report.py`. **Tests only.**
 - **Buffers no longer waste buffs on groupmates who can't use them** (#491). A buffer bot spent power regen and acuity on
   melee classes with no power, and regen buffs on pets, so its concentration and power ran out before a critical buff (a
   shaman's endurance regen) was cast. Now (`BotBuffTargetPolicy`, every target path of `BotBrain` and

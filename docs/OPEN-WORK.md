@@ -89,6 +89,7 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 
 ## Other bot behaviour
 
+- [#544](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/544) Hibernian bots level about twice as fast as Albion's. **Open.** Albion has the fewest camps per band from 5 to 19 (world data, owner decision); the 10-19 group XP gap is not explained yet. 1.2.3 adds the sampled `AUTONOMOUS_KILL_XP` row and `source/tools/kill_xp_report.py` (tests only); next: one played hour at 10-19 to tell shared kills from off-target kills.
 - [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491) Buffers waste buffs on targets that can't use them; split base and spec buffs between healers and spec buffers. **Fixed in 1.2.3, tests only** (`BotBuffTargetPolicy`, `UT_BotBuffTargets491`); open until a PC log shows a group buffed without power regen or acuity on melee.
 - [#473](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/473) /classes showed party roles that /spawn won't accept as builds. **Fixed in 1.2.3, tests only** (`ClassesCommandHandler.Lines`, `UT_ClassesCommandBuilds473`).
 - ~~[#396](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/396) No xp for kills in Thid~~ **Done in 1.2.1, tests only** (closed 2026-11-22): enemy gamebot kills pay what a player kill pays.

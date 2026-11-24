@@ -1114,6 +1114,8 @@ namespace DOL.GS.ServerRules
                     .Distinct().ToArray();
             }
             var expeditionMembers = expeditionOwner?.Members.ToHashSet();
+            // GitHub #544: a sampled per-kill XP row (no random numbers, no state written; raid expeditions left out).
+            var killXpSample = expeditionOwner == null ? AutonomousKillXpDiagnostics.Begin(botCountAndDamage) : null;
             foreach (var pair in botCountAndDamage)
             {
                 GameBot bot = pair.Key;
@@ -1126,6 +1128,8 @@ namespace DOL.GS.ServerRules
                     AutonomousObjectiveAssignments.RecordPveKill(bot);
                     AutonomousGoalDiagnostics.Reward(bot, killedNpc, 0);
                 }
+            AutonomousKillXpDiagnostics.Finish(killXpSample, killedNpc, totalDamage, playerCountAndDamage,
+                botCountAndDamage, groupCountAndDamage);
 
             // A gamebot party moves on once its camp bonus runs dry (from True 1.65): the fraction this kill paid.
             NoteGamebotPartyCampBonus(killedNpc, botCountAndDamage.Keys);
