@@ -288,7 +288,7 @@ namespace DOL.AI.Brain
             log.Info($"RVR_PEEL group={RvrPlaceGroupId()} region={Body.CurrentRegionID} protector=\"{Body.Name}\" " +
                      $"protected=\"{charge?.Name}\" protectedClass={PeelClass(charge)?.ToString() ?? "none"} " +
                      $"attacker=\"{attacker?.Name}\" attackerKind={RvrPlaceKind(attacker)} action={action} " +
-                     $"skill={plan?.SkillTier ?? RvrSkillTier.Average}");
+                     $"skill={plan?.SkillTier ?? RvrSkillTier.Average} fight={RvrFights.IdOf(Body)}");
         }
     }
 }

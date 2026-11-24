@@ -340,7 +340,8 @@ namespace DOL.AI.Brain
             log.Info($"RVR_ASSIST_CALL group={RvrGroupLogId()} realm={GlobalConstants.RealmToName(Body.Realm)} region={Body.CurrentRegionID} " +
                      $"mainAssist=\"{plan.MainAssist?.Name}\" target=\"{target.Name}\" targetRealm={GlobalConstants.RealmToName(target.Realm)} " +
                      $"targetClass={enemy?.Class} role={RvrTargetPriority.KillRole(enemy)} score={score:0.#} tier={plan.SkillTier} " +
-                     $"rising={facts.Rising} hold={RvrAssist.HoldMilliseconds(RvrAssist.GroupSeed(board), plan.CalledAt)}");
+                     $"rising={facts.Rising} hold={RvrAssist.HoldMilliseconds(RvrAssist.GroupSeed(board), plan.CalledAt)} " +
+                     $"fight={RvrFights.Touch(Body, target, "call")}");
         }
 
         private void LogRvrSwitch(GameLiving called, long delay, bool followed, RvrSkillTier tier, long now)
@@ -350,18 +351,20 @@ namespace DOL.AI.Brain
             _rvrSwitchLogged = true;
             _rvrLastSwitchLogAt = now;
             log.Info($"RVR_ASSIST_SWITCH group={RvrGroupLogId()} member=\"{Body.Name}\" target=\"{called.Name}\" delay={delay} " +
-                     $"result={(followed ? "followed" : "tunnelled")} tier={tier}");
+                     $"result={(followed ? "followed" : "tunnelled")} tier={tier} fight={RvrFights.IdOf(Body)}");
         }
 
         private void LogRvrCrowdControl(GameLiving subject, RvrControlKind kind, string action, GameLiving killTarget,
             RvrSkillTier tier, long now)
         {
+            if (action is "assign" or "open")
+                RvrFights.CrowdControl(Body);   // #505: the fight's first crowd control (logging only)
             if (!log.IsInfoEnabled || action != "assign" && now - _rvrLastCcLogAt < 3_000)
                 return;
             _rvrLastCcLogAt = now;
             log.Info($"RVR_CC_ASSIGN group={RvrGroupLogId()} member=\"{Body.Name}\" subject=\"{subject.Name}\" " +
                      $"subjectClass={(subject as GameBot)?.CharacterClass?.Name ?? (subject as GamePlayer)?.CharacterClass?.Name ?? "pet"} " +
-                     $"kind={kind} action={action} killTarget=\"{killTarget?.Name}\" tier={tier}");
+                     $"kind={kind} action={action} killTarget=\"{killTarget?.Name}\" tier={tier} fight={RvrFights.IdOf(Body)}");
         }
 
         private void LogRvrInterrupt(GameLiving subject, string action, RvrSkillTier tier, long now)

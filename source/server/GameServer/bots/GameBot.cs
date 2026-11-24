@@ -3503,6 +3503,8 @@ namespace DOL.GS
         {
             if (RefuseCorpseMove("MoveInRegion", regionID, x, y, z))
                 return false;
+            if (forceMove || !InCombat)
+                RvrTeleports.Before(this, regionID, x, y, z, forceMove ? "moveInRegionForced" : "moveInRegion");   // #505: logging only
             return base.MoveInRegion(regionID, x, y, z, heading, forceMove);
         }
 
@@ -3510,6 +3512,7 @@ namespace DOL.GS
         {
             if (RefuseCorpseMove("MoveTo", regionID, x, y, z))
                 return false;
+            RvrTeleports.Before(this, regionID, x, y, z, "moveTo");   // #505: logging only
             // 1.2.2: a move within the region removes the bot from the world and adds it again; a dead bot's removal is
             // still held back from the original clients then (BotDeathAnimation.LeavesWorld).
             bool withinRegion = regionID == CurrentRegionID;

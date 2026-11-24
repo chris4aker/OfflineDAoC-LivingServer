@@ -2010,7 +2010,34 @@ namespace DOL.GS
         private static AutonomousBotGroupCoordinator.SharedCamp ToSharedCamp(CampDestination camp) =>
             new(camp.Id, camp.MonsterName, camp.ZoneName, camp.RegionId, camp.X, camp.Y, camp.Z, camp.IsDungeon, camp.IsFrontier, camp.TargetLevel);
 
+        /// <summary>
+        /// The RvR turn and its trace (#505, piece A): after the turn, a change of destination is written as RVR_DECIDE with
+        /// the rule of the step that set it (a site's hint, else the last status rule of the turn). Logging only.
+        /// </summary>
         private bool ExecuteRvr(BotBrain brain, GameBot bot)
+        {
+            _rvrRuleHint = null;
+            bool result = ExecuteRvrTurn(brain, bot);
+            RvrDecide.Change(bot, "controller", "destination", _rvrDestination?.Id ?? "-",
+                _rvrRuleHint ?? _rvrLastStatusRule ?? "exec.none", _rvrDestination?.MonsterName);
+            return result;
+        }
+
+        /// <summary>The rule code a destination write names for the trace (#505); read and cleared by <see cref="ExecuteRvr"/>.</summary>
+        private string _rvrRuleHint;
+        private string _rvrLastStatusRule;
+
+        /// <summary>"exec.ExecuteRvrTurn.traveling.to": the step that set a status, from its method and the activity's first words. Pure.</summary>
+        public static string StatusRule(string member, string activity)
+        {
+            var words = (activity ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Take(2).Select(word => new string(word.Where(char.IsLetterOrDigit).ToArray()).ToLowerInvariant())
+                .Where(word => word.Length > 0);
+            string tail = string.Join(".", words);
+            return "exec." + (string.IsNullOrEmpty(member) ? "unknown" : member) + (tail.Length > 0 ? "." + tail : string.Empty);
+        }
+
+        private bool ExecuteRvrTurn(BotBrain brain, GameBot bot)
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerRvr); // AI_PROFILE: measures only
             bool dynamicWarband = _groupDirective?.IsDynamic == true &&
@@ -2044,6 +2071,7 @@ namespace DOL.GS
                     bot.TempProperties.RemoveProperty(AutonomousFrontierTransport.RequestKey);
                 if (_rvrDestination?.Id != committedPlan.TargetId)
                     _rvrApproachDestination = null;
+                _rvrRuleHint = "exec.committed";
                 _rvrDestination = new(committedPlan.TargetId, committedPlan.Name, committedPlan.Name,
                     committedPlan.RegionId, committedPlan.X, committedPlan.Y, committedPlan.Z, 1, false, true);
                 _rvrSharedEvent = true;
@@ -2549,6 +2577,7 @@ namespace DOL.GS
             string siegedKeepId = null;
             bool siegeResolved = false;
             bool giveUps = HasRecentGiveUps(bot);
+            int rejected = 0;   // #505: candidates set aside (recent give-ups, behind a keep gate, no floor), for RVR_PLAN
             HashSet<ushort> reachable = ReachableRegions(bot.Realm, bot.CurrentRegionID);
             // The other frontiers are a porter ride away (TryFrontierTransport), not a walk through the dungeon hub.
             foreach (ushort frontier in AutonomousFrontierTransport.PorterFrontiers(bot.Realm, bot.CurrentRegionID))
@@ -2576,7 +2605,10 @@ namespace DOL.GS
                 if (giveUps && IsRecentGiveUpGoal(bot, enemy.CurrentRegionID, enemy.X, enemy.Y) ||
                     IsBehindKeepGate(bot, enemy.CurrentRegionID, enemy.X, enemy.Y,
                         ref keepsByRegion, ref siegedKeepId, ref siegeResolved))
+                {
+                    rejected++;
                     continue;
+                }
                 string id = $"rvr-enemy-{enemy.DatabaseID}";
                 CampDestination destination = new(id, enemy.Name, enemy.CurrentZone?.Description ?? "frontier",
                     enemy.CurrentRegionID, enemy.X, enemy.Y, enemy.Z, 1, false, true);
@@ -2657,7 +2689,11 @@ namespace DOL.GS
                     Vector3 raw = new(cell.X, cell.Y, cell.Z);
                     Vector3? floor = patrolNav.GetClosestPoint(cell.Zone, raw, 64, 64, 96, patrolNav.DefaultFilters);
                     if (giveUps && IsRecentGiveUpGoal(bot, cell.RegionId, cell.X, cell.Y) ||
-                        !floor.HasValue || !AutonomousRendezvousNavigation.HasLocalExit(patrolNav, cell.Zone, floor.Value)) continue;
+                        !floor.HasValue || !AutonomousRendezvousNavigation.HasLocalExit(patrolNav, cell.Zone, floor.Value))
+                {
+                    rejected++;
+                    continue;
+                }
                     string id = "rvr-camp-" + cell.Id;
                     string name = "frontier patrol near " + cell.MonsterName;
                     int x = (int)floor.Value.X, y = (int)floor.Value.Y, z = (int)floor.Value.Z;
@@ -2699,7 +2735,13 @@ namespace DOL.GS
             CampDestination chosen = choices.FirstOrDefault(destination => destination.Id == plan?.TargetId) ??
                 (plan == null ? null : new CampDestination(plan.TargetId, plan.Name, plan.Name,
                     plan.RegionId, plan.X, plan.Y, plan.Z, 1, false, true));
+            CampDestination planned = chosen;
             chosen = RvrTacticsRoamDestination(bot, chosen) ?? chosen;
+            // #505: RVR_PLAN and the destination decision (logging only).
+            string planRule = !ReferenceEquals(planned, chosen) ? "roam.override" : plan == null ? "plan.none" : "plan." + ToCamel(plan.Intent.ToString());
+            _rvrRuleHint = planRule;
+            RvrRecordRows.Plan(bot, chosen?.Id, plan?.Intent.ToString() ?? "none", planRule, choices.Count, rejected, plan?.Reason);
+            RvrDecide.Change(bot, "plan", "destination", chosen?.Id ?? "-", planRule, plan?.Reason);
             if (chosen != null && chosen.RegionId is 1 or 100 or 200 &&
                 (chosen.RegionId != _rvrFrontierRegion || GameLoop.GameLoopTime >= _rvrFrontierCommittedUntil))
             {
@@ -2708,6 +2750,8 @@ namespace DOL.GS
             }
             return chosen;
         }
+
+        private static string ToCamel(string name) => string.IsNullOrEmpty(name) ? "none" : char.ToLowerInvariant(name[0]) + name[1..];
 
         /// <summary>How long an ordinary warband keeps to the frontier it chose (plus up to five minutes per bot).</summary>
         internal const long FrontierCommitMilliseconds = 20 * 60_000;
@@ -2741,8 +2785,12 @@ namespace DOL.GS
             IssuePath(bot, _patrolDestination.Value);
         }
 
-        private void SetRvrStatus(GameBot bot, string activity, string progress, string detail, string target = "")
+        private void SetRvrStatus(GameBot bot, string activity, string progress, string detail, string target = "",
+            [System.Runtime.CompilerServices.CallerMemberName] string member = "")
         {
+            // #505: the status keeps its text and gains a rule code; an intent change is an RVR_DECIDE row.
+            _rvrLastStatusRule = StatusRule(member, activity);
+            RvrDecide.Change(bot, "controller", "intent", activity, _rvrLastStatusRule, progress);
             if (bot.PersistentRecord != null)
                 bot.PersistentRecord.ObjectivePhase = activity;
             SetStatus(bot, activity, "Active frontier RvR", detail, target, _rvrDestination?.ZoneName ?? string.Empty, true);

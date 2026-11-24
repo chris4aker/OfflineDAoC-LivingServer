@@ -48,6 +48,7 @@ namespace DOL.GS
             long now = GameLoop.GameLoopTime;
             if (_rvrDestination?.Id != id)
             {
+                _rvrRuleHint = "chat.promise";
                 _rvrDestination = new CampDestination(id, defend ? $"keep {target.Name}" : $"frontier near {target.Name}", target.Name,
                     target.RegionId, target.X, target.Y, target.Z, 1, false, true);
                 _rvrApproachDestination = null;
