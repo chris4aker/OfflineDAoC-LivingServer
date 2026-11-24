@@ -179,18 +179,46 @@ namespace DOL.GS.Commands
         }
     }
 
-    [CmdAttribute("&classes", ePrivLevel.Player, "Lists your realm's Classic + SI classes and party roles", "/classes")]
+    [CmdAttribute("&classes", ePrivLevel.Player, "Lists your realm's Classic + SI classes, their helper builds and party roles", "/classes")]
     public sealed class ClassesCommandHandler : AbstractCommandHandler, ICommandHandler
     {
         public void OnCommand(GameClient client, string[] args)
         {
-            var entries = TemporaryGroupClassCatalog.ForRealm(client.Player.Realm)
-                .Select(entry => $"{entry.CharacterClass} ({entry.Role})")
-                .ToArray();
-            DisplayMessage(client, $"{GlobalConstants.RealmToName(client.Player.Realm)} Classic + SI classes:");
-            foreach (string line in entries.Chunk(4).Select(chunk => string.Join("  |  ", chunk)))
+            foreach (string line in Lines(client.Player.Realm))
                 DisplayMessage(client, line);
-            DisplayMessage(client, "Use /spawn <class name> to create a temporary same-level helper.");
+        }
+
+        /// <summary>
+        /// What /classes prints (#473): one line per class with the builds /spawn accepts (TemporaryGroupSpecCatalog, the
+        /// same names /spawn specs offers) or "single build", and the party role labelled as a role so it can't be read as
+        /// a build; then how to pick a build.
+        /// </summary>
+        public static IReadOnlyList<string> Lines(eRealm realm)
+        {
+            var lines = new List<string> { $"{GlobalConstants.RealmToName(realm)} Classic + SI classes:" };
+            foreach ((eCharacterClass characterClass, string role) in TemporaryGroupClassCatalog.ForRealm(realm))
+                lines.Add($"{characterClass} - builds: {BuildText(characterClass)} - role: {role}");
+            lines.Add("Use /spawn <class> [build] to create a temporary same-level helper, for example " +
+                      $"/spawn {Example(realm)}. Without a build you get a random one. /spawn specs opens the build menu.");
+            return lines;
+        }
+
+        /// <summary>The class's build names, or "single build".</summary>
+        public static string BuildText(eCharacterClass characterClass) => BuildText(TemporaryGroupSpecCatalog.Describe(characterClass));
+
+        /// <summary>The described builds as /classes shows them: "single build" when there are none to choose from.</summary>
+        public static string BuildText(string describedBuilds) =>
+            string.IsNullOrEmpty(describedBuilds) ? "single build" : describedBuilds;
+
+        private static string Example(eRealm realm)
+        {
+            foreach ((eCharacterClass characterClass, _) in TemporaryGroupClassCatalog.ForRealm(realm))
+            {
+                IReadOnlyList<TemporaryGroupSpecCatalog.Option> options = TemporaryGroupSpecCatalog.For(characterClass);
+                if (options.Count > 0)
+                    return $"{characterClass.ToString().ToLowerInvariant()} {options[0].Label.ToLowerInvariant()}";
+            }
+            return "<class>";
         }
     }
 
@@ -241,7 +269,7 @@ namespace DOL.GS.Commands
         /// "healer", "healer augmentation" or "Healer (Augmentation)" (a menu click). The spec is one of the class's builds
         /// named after the line it trains highest (TemporaryGroupSpecCatalog); none means a random build, as before.
         /// </summary>
-        internal static bool TryResolve(eRealm realm, string text, out eCharacterClass characterClass,
+        public static bool TryResolve(eRealm realm, string text, out eCharacterClass characterClass,
             out TemporaryGroupSpecCatalog.Option spec, out string problem)
         {
             spec = null;
@@ -272,11 +300,26 @@ namespace DOL.GS.Commands
             if (TemporaryGroupSpecCatalog.TryResolve(characterClass, specText, out spec))
                 return true;
             string known = TemporaryGroupSpecCatalog.Describe(characterClass);
+            // A party role from /classes ("buffer", "tank") is not a build (#473): say so and name the builds.
+            string asRole = IsRoleWord(specText) ? $"'{specText}' is a party role, not a build. " : $"'{specText}' is not a {characterClass} build. ";
             problem = known.Length == 0
-                ? $"The {characterClass} helper has a single build. Use /spawn {characterClass.ToString().ToLowerInvariant()}."
-                : $"'{specText}' is not a {characterClass} build. {characterClass} specs: {known}.";
+                ? $"{(IsRoleWord(specText) ? asRole : "")}The {characterClass} helper has a single build. Use /spawn {characterClass.ToString().ToLowerInvariant()}."
+                : $"{asRole}{characterClass} builds: {known}. Type /classes for every class's builds.";
             return false;
         }
+
+        /// <summary>Whether the text is one of the party role words /classes shows (Tank, Healer, Buffer, Attacker...).</summary>
+        public static bool IsRoleWord(string text)
+        {
+            string wanted = TemporaryGroupSpecCatalog.Normalize(text ?? "");
+            return wanted.Length > 0 && RoleWords.Contains(wanted);
+        }
+
+        private static readonly HashSet<string> RoleWords = new(
+            Enum.GetValues<eCharacterClass>()
+                .SelectMany(characterClass => BotPartyRoles.Label(characterClass).Split('/'))
+                .Append("Song Support")
+                .Select(TemporaryGroupSpecCatalog.Normalize));
 
         internal static void Spawn(GameClient client, eCharacterClass characterClass, TemporaryGroupSpecCatalog.Option spec = null)
         {

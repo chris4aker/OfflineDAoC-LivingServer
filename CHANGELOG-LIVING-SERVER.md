@@ -77,6 +77,16 @@ otherwise.
   - "almost 6" was a bot's own level opener. Every level opener now says what it counts ("2 bubs to 6"), and "almost 6, 2
     bubs left" only with three bubbles or fewer (`AutonomousChatFieldTalk.LevelProgress`).
 
+
+**Companion helpers**
+- **/classes shows the builds /spawn accepts** (#473). It listed each class with its party role in brackets
+  ("Shaman (Buffer)"), which read like a build, and `/spawn shaman buffer` was refused. Each class now gets one line
+  with its real build names, the same ones `/spawn specs` offers (`TemporaryGroupSpecCatalog`), or "single build", and the
+  role labelled as a role ("Healer - builds: ... - role: Healer/Buffer", the builds being Augmentation, Mending and
+  Pacification). The footer says `/spawn <class> [build]`, gives an example that works, and mentions `/spawn specs`. A role typed as a build
+  ("/spawn shaman buffer") is now told it is a party role, not a build, and gets the class's builds. Real players' helper
+  commands only. `UT_ClassesCommandBuilds473`. **Tests only.**
+
 **The server**
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after
   "Berermund casts a spell!" and "Squishywizard casts a spell!", about ten lines of "XxEvilxX's weapon returns to normal.",
