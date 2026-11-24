@@ -40,6 +40,12 @@ chain link that fails, file:line, how often, the evidence level, the class of de
 fix with size and risk; then what was sound, what could not be checked, what only the PC can settle, and tools worth
 building.
 
+## Status
+
+The ten audits were started on 2026-11-24 and stopped to save usage before any report was finished. Only a first
+draft of section 1 of the reference rubric exists: [reference-draft.md](reference-draft.md). Each audit is now an issue to run
+from the owner's PC session or another agent.
+
 ## The work plan
 
 1. **Audit** (the ten reports above, in this folder).
@@ -80,8 +86,7 @@ structural (many paths, no shared state, rules added per path) and the measuring
 - Owner's rules that bind any proposal: never weaken bosses, guards, lords or keep levels; bots never play class 63; keep
   the gameplay rules in AGENTS.md; Living Server features default on; tell bot types apart (autonomous gamebots,
   companion bots, real players).
-- Repo: chris4aker/offlinedaoc-livingserver. Make your own worktree from the clone at /home/claude/offlinedaoc-livingserver:
-  `git fetch origin && git worktree add /home/claude/rvr-<yourname> origin/main` (main = e6b803db or later).
+- Repo: chris4aker/offlinedaoc-livingserver. Work on a fresh checkout or worktree of `origin/main`, one per audit.
 - RvR code: source/server/GameServer/bots/autonomous/ (Rvr*.cs, AutonomousRvr*.cs, AutonomousSiege*.cs, *Keep*.cs,
   *Relic*.cs, *Battleground*.cs, *Frontier*.cs, AutonomousWorldBotController.Rvr*.cs/.Siege.cs/.Relic.cs, RvrLordFormation,
   BotKeepWallSpots, RealmWarbandSupport, SiegeDefenseBalance...), source/server/GameServer/bots/ (BotBrain.Rvr*.cs,
@@ -93,7 +98,7 @@ structural (many paths, no shared state, rules added per path) and the measuring
   test printing rows to the CI log), push a branch `audit/rvr-<yourname>`, open a DRAFT PR into main via REST
   (`gh api repos/.../pulls`; GraphQL is blocked; push with `git -c push.negotiate=true push`), read the job log
   (`gh api repos/.../actions/jobs/<id>/logs`; artifacts are blocked), and close the PR when done. Never merge it.
-- Navmeshes are not in git. If /tmp/navtools exists (README-extract.txt, zipcd.py, nav/*.nav, and tools/navmesh in the
+- Navmeshes are not in git. On the owner's PC they are in the install's `runtime/server` folder; elsewhere they can be read from the v0.36b base download (see tools/navmesh in the
   repo: dfprobe.cpp, navscan.cpp, seam_route_sim.py), use it read-only; if it is gone, say what you could not check.
 - Web research is allowed for the period (Camelot Herald archives, 2001-2004 guides, forum threads, patch notes up to
   1.65). Paraphrase; never copy passages. Say which facts are from memory and which from a source.
