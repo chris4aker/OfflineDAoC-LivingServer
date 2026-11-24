@@ -1110,5 +1110,70 @@ namespace DOL.UnitTests
             maintain.Invoke(bot.Brain, null);
             Assert.That(bot.LastRequested, Is.Null);
         }
+
+        // Realism 4a (#487, tell 4): a full rest keeps its seat until the bot's next move, cast or attack.
+        [Test]
+        public void AnAutonomousGamebotKeepsItsRestSeatUntilItWalks()
+        {
+            Bot bot = NewBot(typeof(ClassSkald));
+            Field(typeof(GameBot), bot, "<IsAutonomousWorldBot>k__BackingField", true);
+            Assert.That(bot.BeginRecoveryRest(), Is.True);
+            Assert.That(bot.IsSeatedForClients, Is.True);
+
+            bot.WakeRecoveryRest();
+
+            Assert.That(bot.IsRecoveryResting, Is.False, "the rest itself ended: recovery and its timing are unchanged");
+            Assert.That(bot.IsSeatedForClients, Is.True, "no sit-bounce: still seated");
+            Assert.That(bot.IsSeatedByHabit, Is.True, "stands on its next move, cast or attack");
+            Assert.That(bot.IsSitting, Is.False);
+
+            // A walk stands a habit seat first (NpcMovementComponent.WalkToInternal calls StandFromHabit on its tick).
+            typeof(GameBot).GetMethod("StandFromHabit", Hidden).Invoke(bot, null);
+            Assert.That(bot.IsSeatedForClients, Is.False, "stands before it walks");
+            Assert.That(bot.IsSeatedByHabit, Is.False);
+        }
+
+        [Test]
+        public void AKeptRestSeatStandsWhenTheBotAttacks()
+        {
+            Bot bot = NewBot(typeof(ClassSkald));
+            Field(typeof(GameBot), bot, "<IsAutonomousWorldBot>k__BackingField", true);
+            Assert.That(bot.BeginRecoveryRest(), Is.True);
+            bot.WakeRecoveryRest();
+            Assert.That(bot.IsSeatedByHabit, Is.True);
+            Player enemy = Actor<Player>();
+            bot.InvokeGameBotStartAttack(enemy);
+            Assert.That(bot.IsSeatedForClients, Is.False, "stands to fight");
+        }
+
+        [TestCase(false, false, TestName = "a companion stands at once, as before")]
+        [TestCase(true, true, TestName = "a gamebot that just fought stands at once")]
+        public void ARestWakeStandsAtOnceForCompanionsAndFights(bool autonomous, bool fought)
+        {
+            Bot bot = NewBot(typeof(ClassSkald));
+            Field(typeof(GameBot), bot, "<IsAutonomousWorldBot>k__BackingField", autonomous);
+            Field(typeof(GameBot), bot, "<IsTemporaryGroupHelper>k__BackingField", !autonomous);
+            Assert.That(bot.BeginRecoveryRest(), Is.True);
+            if (fought)
+                bot.LastAttackedByEnemyTickPvE = GameLoop.GameLoopTime;
+            bot.WakeRecoveryRest();
+            Assert.That(bot.IsSeatedForClients, Is.False);
+            Assert.That(bot.IsSeatedByHabit, Is.False);
+        }
+
+        [Test]
+        public void AWatchedSeatedMemberStandsWithinTheSpreadAndAnUnwatchedOneAtOnce()
+        {
+            Bot bot = NewBot(typeof(ClassSkald));
+            Field(typeof(GameBot), bot, "<IsAutonomousWorldBot>k__BackingField", true);
+            Assert.That(bot.BeginRecoveryRest(), Is.True);
+            bot.WakeRecoveryRest();
+            long now = GameLoop.GameLoopTime;
+            Assert.That(bot.HoldSeatBeforeStanding(now, watched: false), Is.Zero, "unwatched: today's pace");
+            int hold = bot.HoldSeatBeforeStanding(now, watched: true);
+            Assert.That(hold, Is.InRange(BotIdleLife.StandSpreadMinimumMs, BotIdleLife.StandSpreadMaximumMs));
+            Assert.That(bot.HoldSeatBeforeStanding(now + 100, watched: true), Is.EqualTo(hold - 100), "drawn once per seat");
+            Assert.That(bot.HoldSeatBeforeStanding(now + hold, watched: true), Is.Zero);
+        }
     }
 }

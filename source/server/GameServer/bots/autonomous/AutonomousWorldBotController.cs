@@ -3038,6 +3038,40 @@ namespace DOL.GS
             return false;
         }
 
+        // Realism 4a (#487, tell 8): the fight the last breather was decided for, and the breather's end.
+        private long _breatherFightTick;
+        private long _breatherUntilTick;
+
+        /// <summary>
+        /// After a kill, a bot a real player can see pauses 1.5-7 s before its next pull (BotIdleLife.BreathesAfterKill):
+        /// never with aggro or a fight near it, in a player's group, an RvR party or a raid. Decided once per fight; a bot
+        /// nobody sees keeps today's 0.9-1.4 s, so the world's pace is unchanged. Anything that attacks it is fought at once
+        /// (the brain owns that; this only delays looking for the next monster).
+        /// </summary>
+        private bool TakeBreatherAfterKill(BotBrain brain, GameBot bot)
+        {
+            long lastFight = Math.Max(bot.LastAttackTickPvE, bot.LastAttackedByEnemyTickPvE);
+            if (lastFight <= _breatherFightTick)
+                return false;
+            _breatherFightTick = lastFight;
+            bool raid = AutonomousRealmRaid.IsRaidDungeon(bot.CurrentRegionID) ||
+                        bot.Group != null && AutonomousRealmRaid.GetView(bot.Group) != null;
+            // An add or a party member still fighting: no breather (BlocksRest would also count the kill just made).
+            bool fightNear = bot.IsAttacking || bot.IsCrowdControlled || bot.Group != null &&
+                bot.Group.GetMembersInTheGroup().Any(member => member != bot && member.IsAlive &&
+                    member.CurrentRegionID == bot.CurrentRegionID && bot.IsWithinRadius(member, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) &&
+                    (member.IsAttacking || member is GamePlayer { InCombat: true } ||
+                     member is GameNPC { Brain: BotBrain { HasAggro: true } }));
+            if (!BotIdleLife.BreathesAfterKill(AutonomousBotBodyLanguage.IsWatched(bot), brain.HasAggro, fightNear,
+                    bot.IsPlayerLedGroup, AutonomousLivingServer.InRvrParty(bot), raid))
+                return false;
+            long until = lastFight + BotIdleLife.BreatherMs(Random.Shared.NextDouble());
+            if (until <= GameLoop.GameLoopTime)
+                return false;
+            _breatherUntilTick = _nextTargetSearchTick = until;
+            return true;
+        }
+
         private bool WorkCamp(BotBrain brain, GameBot bot)
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerWorkCamp); // AI_PROFILE: measures only
@@ -3055,6 +3089,12 @@ namespace DOL.GS
             _recoverBeforeNextCampTarget = false;
 
             if (GameLoop.GameLoopTime < _nextTargetSearchTick)
+            {
+                if (GameLoop.GameLoopTime < _breatherUntilTick)
+                    AutonomousBotBodyLanguage.Idle(bot, BodySpot.Resting, default); // a look at the corpse or around
+                return true;
+            }
+            if (TakeBreatherAfterKill(brain, bot))
                 return true;
             _nextTargetSearchTick = GameLoop.GameLoopTime + 900 + bot.ObjectID % 500;
 

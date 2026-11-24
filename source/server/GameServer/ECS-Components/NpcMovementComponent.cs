@@ -22,6 +22,8 @@ namespace DOL.GS
         private Vector3 _velocity;
         private Vector3 _destination;
         private long _nextFollowTick;
+        // Realism 4a (#487): an arrived follower of a standing leader faced it once; from then on it keeps its heading.
+        private bool _facedStandingLeader;
         private int _followTickInterval;
         private short _moveOnPathSpeed;
         private long _stopAtPathPointUntil;
@@ -542,7 +544,10 @@ namespace DOL.GS
                 _climbContinuation = null;
 
             if (target != FollowTarget)
+            {
                 _nextFollowTick = 0;
+                _facedStandingLeader = false;
+            }
 
             FollowTarget = target;
             MinFollowDistance = minDistance;
@@ -1213,6 +1218,16 @@ namespace DOL.GS
             {
                 targetPos = formationSlot;
                 MinFollowDistance = 0;
+                // Realism 4a (#487): a watched party member seated by habit (a wait, a wall, a kept rest seat) stands
+                // 0.4-1.5 s after its leader sets off, per member, instead of the whole party on one tick. Visual only:
+                // anything to fight stands it at once (GameBot.HoldSeatBeforeStanding).
+                if (leaderWalking && Owner is GameBot { IsSeatedByHabit: true } seatedMember)
+                {
+                    int sitFor = seatedMember.HoldSeatBeforeStanding(GameLoop.GameLoopTime,
+                        AutonomousBotBodyLanguage.IsWatched(seatedMember));
+                    if (sitFor > 0)
+                        return Math.Min(sitFor, AutonomousGroupFormationFollow.FollowCheckMilliseconds);
+                }
                 // A slot the follower cannot reach: walk behind the leader for a while instead of standing.
                 if (leaderWalking)
                 {
@@ -1266,8 +1281,13 @@ namespace DOL.GS
             {
                 // An autonomous gamebot re-faces what it follows only when more than 30 degrees off, not on every follow
                 // check (Living Server 1.2: a party standing around its leader no longer turns with its every step).
-                if (!BotTurning.HoldsFollowHeading(Owner, FollowTarget))
+                // Realism 4a (#487, tell 2): an arrived formation follower of a standing leader faces it once, then keeps
+                // whatever heading it has, so its looks around (body language) are not snapped back every 400 ms.
+                bool standingFormation = formation && !leaderWalking;
+                if (!BotTurning.HoldsFollowHeading(Owner, FollowTarget) &&
+                    !BotTurning.KeepsArrivedFollowHeading(Owner, standingFormation, _facedStandingLeader))
                     TurnTo(FollowTarget);
+                _facedStandingLeader = standingFormation;
 
                 if (IsMoving)
                     UpdateMovement(0);
@@ -1276,6 +1296,7 @@ namespace DOL.GS
                 return formation ? AutonomousGroupFormationFollow.FollowCheckMilliseconds : Properties.GAMENPC_FOLLOWCHECK_TIME;
             }
 
+            _facedStandingLeader = false; // walking to its spot again: it faces the leader once more on arrival
             float distance = MathF.Sqrt(distanceSquared);
             float scale = MinFollowDistance / distance;
 

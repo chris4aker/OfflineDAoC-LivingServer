@@ -36,6 +36,9 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
 - **Uthgard drops:** run `source/tools/uthgard_drops_content.py` (dry run first) as [UTHGARD-DROPS.md](UTHGARD-DROPS.md)
   says; the tool is in the code since 1.2.1, and its tables ship in 1.2.3 (owner, 2026-11-22).
 - **The fixes from the owner's PC checks** of 1.2.1 and 1.2.2 (the list below).
+- [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
+  heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
+  below.
 
 ## 1.3
 
@@ -97,6 +100,9 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 
 ## Checks on a PC
 
+- [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Does a resting or waiting bot show as
+  sitting on the original client (emote 0xF0, `BOT_MOVE_SIT` in the log)? **Open.** If not, change or drop it in
+  `BotIdleLife` (`ShowSeat`, `SitAnimation`, `StandAnimation`); the seat's logic stays.
 - [#425](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/425) 1.2.1 PC check: the original client's handshake build, and the bot death fall. **Open.** CI's playtester scenarios `bot-death`, `bot-corpse-target` and `bot-rez` pass (on `b644529a`), but they check packets, not what the client draws.
 
 ## The 1.2.1 check on the owner's PC
