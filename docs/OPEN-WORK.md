@@ -87,6 +87,7 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 ## Other bot behaviour
 
 - [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491) Buffers waste buffs on targets that can't use them; split base and spec buffs between healers and spec buffers. **Fixed in 1.2.3, tests only** (`BotBuffTargetPolicy`, `UT_BotBuffTargets491`); open until a PC log shows a group buffed without power regen or acuity on melee.
+- [#473](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/473) /classes showed party roles that /spawn won't accept as builds. **Fixed in 1.2.3, tests only** (`ClassesCommandHandler.Lines`, `UT_ClassesCommandBuilds473`).
 - ~~[#396](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/396) No xp for kills in Thid~~ **Done in 1.2.1, tests only** (closed 2026-11-22): enemy gamebot kills pay what a player kill pays.
 - ~~[#397](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/397) Training hires doesn't work once the skill tree grows outside the training window~~ **Done in 1.2.1, tests only** (closed 2026-11-22): `/hire train` by line name; the trainer window shows the next skill first.
 - ~~[#422](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/422) Crafting: a trade with a crafter bot has never been finished, and few crafted pieces sell~~ **Done in 1.2.1, tests only** (closed 2026-11-22): the hand-over runs while the break lasts (`ECON_PLAYER_ORDER outcome="ready_told"`, `"handover_tried"`); `ECON_INDEX craftedListed20`.
