@@ -2265,6 +2265,8 @@ namespace DOL.AI.Brain
                 .Where(spell => BotMaintenancePulsePolicy.CanMaintain(spell, maintenancePulse))
                 .Where(spell => spell.SpellType != eSpellType.SpeedEnhancement || traveling)
                 .OrderByDescending(spell => spell.SpellType == eSpellType.SpeedEnhancement && traveling)
+                // Critical buffs first when concentration or power runs short (#491).
+                .ThenByDescending(spell => BotBuffTargetPolicy.Priority(spell.SpellType))
                 .ThenByDescending(spell => spell.Value)
                 .ThenByDescending(spell => spell.Level);
 
@@ -2276,6 +2278,8 @@ namespace DOL.AI.Brain
                 if (bot.Mana < bot.PowerCost(spell))
                     continue;
                 if (!bot.CanAffordConcentration(spell))
+                    continue;
+                if (BotBuffTargetPolicy.LeavesBaseBuff(bot, spell))
                     continue;
                 if (spell.NeedInstrument && !TryEquipRealInstrument(bot, spell.InstrumentRequirement))
                     continue;
@@ -2438,7 +2442,8 @@ namespace DOL.AI.Brain
                 : spell.CalculateEffectiveRange(Body);
             return Body.Group.GetMembersInTheGroup()
                 .Where(member => member != Body && member.IsAlive && InSupportReach(member) &&
-                    !Body.IsWithinRadius(member, range) && !LivingHasEffect(member, spell))
+                    !Body.IsWithinRadius(member, range) && !LivingHasEffect(member, spell) &&
+                    BotBuffTargetPolicy.Benefits(member, spell))
                 .OrderBy(member => Body.GetDistanceTo(member))
                 .FirstOrDefault();
         }
@@ -2746,7 +2751,8 @@ namespace DOL.AI.Brain
                 if (CompanionFollowPolicy.IsNativeCompanionTravelSpeed(BotBody, spell))
                     return LivingHasEffect(Body, spell) ? null : Body;
                 IEnumerable<GameLiving> members = Body.Group?.GetMembersInTheGroup() ?? [Body];
-                return members.Any(member => member.IsAlive && Body.IsWithinRadius(member, Math.Max(350, spell.Range)) && !LivingHasEffect(member, spell)) ||
+                return members.Any(member => member.IsAlive && Body.IsWithinRadius(member, Math.Max(350, spell.Range)) &&
+                                             !LivingHasEffect(member, spell) && BotBuffTargetPolicy.Benefits(member, spell)) ||
                        FindMissingPartyPetBuffTarget(spell) != null
                     ? Body
                     : null;
@@ -2756,12 +2762,13 @@ namespace DOL.AI.Brain
             {
                 if (!spell.IsPulsing)
                     return FindRandomMissingRealmBuffTarget(spell, 350);
-                if (!LivingHasEffect(Body, spell))
+                if (!LivingHasEffect(Body, spell) && BotBuffTargetPolicy.Benefits(Body, spell))
                     return Body;
                 return Body.Group?.GetMembersInTheGroup()
                     .FirstOrDefault(member => member != Body && member.IsAlive &&
                                               Body.IsWithinRadius(member, Math.Max(350, spell.Range)) &&
-                                              !LivingHasEffect(member, spell)) ?? FindMissingPartyPetBuffTarget(spell);
+                                              !LivingHasEffect(member, spell) &&
+                                              BotBuffTargetPolicy.Benefits(member, spell)) ?? FindMissingPartyPetBuffTarget(spell);
             }
 
             return null;
@@ -2797,10 +2804,18 @@ namespace DOL.AI.Brain
             IEnumerable<GameLiving> members = spell.Target == eSpellTarget.REALM ? AutonomousRealmRaid.SupportMembers(BotBody) : group?.GetMembersInTheGroup() ?? [Body];
             // One pool: players, companions, world bots and valid attached pets.
             // Do not leave pets until every humanoid has been processed first.
-            return BotBuffReservations<GameLiving>.Choose(
-                members.Concat(BotGroupPetBuffTargets.Enumerate(BotBody, spell)),
-                target => target.IsAlive && Body.IsWithinRadius(target, range) &&
-                    !LivingHasEffect(target, spell) && !(claims?.IsReserved(target, family, now) ?? false));
+            // Only targets the buff does something for (#491): no power regen or
+            // acuity on a class without a use for it, no regen buffs on pets.
+            List<GameLiving> pool = members.Concat(BotGroupPetBuffTargets.Enumerate(BotBody, spell))
+                .Where(target => target != null && target.IsAlive && Body.IsWithinRadius(target, range) &&
+                    !LivingHasEffect(target, spell) && !(claims?.IsReserved(target, family, now) ?? false) &&
+                    BotBuffTargetPolicy.Benefits(target, spell))
+                .ToList();
+            // STR/CON and DEX/QUI reach the tanks and melee damage dealers before the casters.
+            return BotBuffReservations<GameLiving>.Choose(pool, target =>
+                       BotBuffTargetPolicy.PreferredSpecTarget(spell.SpellType,
+                           BotBuffTargetPolicy.KindOf(target, out ICharacterClass cls), cls?.ClassType ?? eClassType.ListCaster)) ??
+                   BotBuffReservations<GameLiving>.Choose(pool, _ => true);
         }
 
         private bool CastCoordinatedBuff(Spell spell, bool? queued = null)
@@ -2829,7 +2844,7 @@ namespace DOL.AI.Brain
         private GameLiving FindMissingPartyPetBuffTarget(Spell spell)
         {
             GameNPC pet = BotGroupPetBuffTargets.Enumerate(BotBody, spell)
-                .FirstOrDefault(candidate => !LivingHasEffect(candidate, spell));
+                .FirstOrDefault(candidate => !LivingHasEffect(candidate, spell) && BotBuffTargetPolicy.Benefits(candidate, spell));
             // Native group spells fan out from the caster; realm buffs target one pet.
             return pet == null ? null : spell.Target == eSpellTarget.GROUP ? Body : pet;
         }
@@ -4893,6 +4908,9 @@ namespace DOL.AI.Brain
                 {
                     if (!BotBody.CanAffordConcentration(spell))
                         break;
+                    // A specialist buffer leaves the base buffs to the group's healer bots (#491).
+                    if (BotBuffTargetPolicy.LeavesBaseBuff(BotBody, spell))
+                        break;
 
                     if (spell.Target == eSpellTarget.REALM && !spell.IsPulsing)
                     {
@@ -4914,7 +4932,7 @@ namespace DOL.AI.Brain
                         break;
                     }
 
-                    if (!LivingHasEffect(Body, spell))
+                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(Body, spell)))
                     {
                         Body.TargetObject = Body;
                         break;
@@ -4928,7 +4946,8 @@ namespace DOL.AI.Brain
                             {
                                 if (groupMember != Body)
                                 {
-                                    if (!LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive)
+                                    if (!LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive &&
+                                        BotBuffTargetPolicy.Benefits(groupMember, spell))
                                     {
                                         Body.TargetObject = groupMember;
                                         break;
@@ -5043,6 +5062,9 @@ namespace DOL.AI.Brain
             if (spellsToCast.Count == 0)
                 return false;
 
+            // The most critical buffs go first (#491): endurance regen, spec buffs and haste before the rest.
+            int topPriority = spellsToCast.Max(entry => BotBuffTargetPolicy.Priority(entry.Item1.SpellType));
+            spellsToCast = spellsToCast.Where(entry => BotBuffTargetPolicy.Priority(entry.Item1.SpellType) == topPriority).ToList();
             GameObject oldTarget = Body.TargetObject;
             (Spell spell, GameLiving target) spellToCast = BotBody.IsEndgameCompanion
                 ? spellsToCast.OrderByDescending(entry => entry.Item1.Level).ThenByDescending(entry => entry.Item1.ID).First()
@@ -5079,6 +5101,8 @@ namespace DOL.AI.Brain
             // upkeep by starting caster speed again on the next FOLLOW pulse.
             if (spell.SpellType == eSpellType.SpeedEnhancement && spell.IsPulsing && !IsMaintenanceTraveling())
                 return null;
+            if (BotBody != null && BotBuffTargetPolicy.LeavesBaseBuff(BotBody, spell))
+                return null;
             if (spell.Target == eSpellTarget.REALM && !spell.IsPulsing && IsMaintainableClassBuff(spell))
                 return FindRandomMissingRealmBuffTarget(spell);
             GameLiving target = null;
@@ -5113,7 +5137,7 @@ namespace DOL.AI.Brain
                 case eSpellType.OffensiveProc:
                 case eSpellType.DefensiveProc:
                 case eSpellType.Bladeturn when !spell.IsPulsing:
-                    if (!LivingHasEffect(Body, spell))
+                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(Body, spell)))
                     {
                         target = Body;
                         break;
@@ -5123,7 +5147,8 @@ namespace DOL.AI.Brain
                     {
                         foreach (GameLiving groupMember in Body.Group.GetMembersInTheGroup())
                         {
-                            if (groupMember != Body && !LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive)
+                            if (groupMember != Body && !LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive &&
+                                BotBuffTargetPolicy.Benefits(groupMember, spell))
                             {
                                 target = groupMember;
                                 break;
