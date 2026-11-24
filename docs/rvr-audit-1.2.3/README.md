@@ -116,3 +116,12 @@ structural (many paths, no shared state, rules added per path) and the measuring
 - Then: what you checked and found sound; what you could not check and why; what only the owner's PC can settle (as
   exact things to look at: a place, an action, a log tag); measuring tools worth building.
 - Plain, short sentences. No padding. End with a hand-back summary of at most 25 lines.
+
+## Blind review of the #506 fixes (#519 step 9, evidence.md §5.3)
+- Each #506 fix gets its acceptance scenarios from [reference.md](reference.md) §11 (the tester's checklist), written by
+  someone who did not write the fix (another agent or the owner), before they read the implementation. A scenario names a
+  place, a starting state, what a 2003 player would see and the log tag that confirms it.
+- The fixer does not edit the scenarios. The reviewer runs them (the fight harness, #520, or the PC) and grades against
+  the rubric, not the code's comments.
+- A failed scenario reopens the issue. An issue closes only on a PC log of a named build (`FORK_BUILD`), with the log
+  tag that shows it.

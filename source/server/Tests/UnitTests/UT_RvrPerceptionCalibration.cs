@@ -45,6 +45,10 @@ namespace DOL.GS.Tests
             return sorted.Length % 2 == 1 ? sorted[sorted.Length / 2] : (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2;
         }
 
+        // This checks the fitted formula (NoticeChance, whose chance per scan is solved from these same targets) against
+        // its own targets, for a still target at a fixed distance in open sight: it is not evidence that the perception
+        // table holds in play (RvR audit 3, evidence.md F1, #519). The played measure is played_check_log.py's notice
+        // row: RVR_NOTICE time_since_first_los_ms by distance band.
         // Targets: the audit's for normal (1.5 s at 1,500, 6 s at 2,500, 20 s at 3,400); easy is twice that and never
         // reaches 3,400; veteran half. 4,000 samples per cell, seed 2003, tolerance ±10% of the target (about four
         // standard errors of a sample median at this size).
@@ -56,7 +60,7 @@ namespace DOL.GS.Tests
         [TestCase(RvrBotAwareness.Veteran, 1_500, 0.75)]
         [TestCase(RvrBotAwareness.Veteran, 2_500, 3.0)]
         [TestCase(RvrBotAwareness.Veteran, 3_400, 10.0)]
-        public void The_median_time_to_notice_matches_the_target_for_each_level_and_band(RvrBotAwareness level, int distance, double target)
+        public void The_fitted_formula_gives_its_own_target_median_for_each_level_and_band(RvrBotAwareness level, int distance, double target)
         {
             RvrAwarenessProfile profile = AutonomousRvrPerception.Profile(level);
             double median = Median(TimesToNotice(profile, distance, 4_000, new Random(Seed + distance)));
