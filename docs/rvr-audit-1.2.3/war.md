@@ -205,32 +205,74 @@ Ranked by how much each decides whether a player goes back to the frontier a sec
      the period spread, or a decay of bot realm points for bots above the realm's median. Never touch the player's own
      points.
 
-### 6. Battlegrounds fill only by accident of the roster's levels, and Abermenai never fills.
+### 6. Battleground filling depends on the goal settings and the roster's levels; on the owner's 1.2.2 world, Hibernia sends about 3x the others and the 20-35 brackets are nearly empty.
 
+- **Correction (2026-11-24).** The first version of this finding said "Abermenai never fills". That was wrong for the
+  owner's world. It holds only for the code's default goal rows. The played numbers below replace it.
+- **Played, Living Server 1.2.2, owner's PC.** A fresh 1.2 install from 2026-11-20 that started at level 1, so the roster
+  skews low. Launcher totals:
+  - 2,940 bots online: 979 Albion, 982 Midgard, so about 979 Hibernia.
+  - Battlegrounds tab: "67 bots inside 2 of 4 battlegrounds"; every keep Neutral.
+
+  | Battleground | Albion | Midgard | Hibernia | Total | On their way (A/M/H) |
+  |---|---|---|---|---|---|
+  | Abermenai (15-19) | 12 | 13 | 37 | 62 | 2/2/4 |
+  | Thidranki (20-24) | 1 | 2 | 2 | 5 | 2/0/0 |
+  | Murdaigean (25-29) | 0 | 0 | 0 | 0 | - |
+  | Caledonia (30-35) | 0 | 0 | 0 | 0 | - |
+
+  The owner's Bot Goals rows are not the code defaults. They are, Solo PvE / Group PvE / RvR / Battlegrounds %:
+  - Levels 1-19: 40/50/0/10.
+  - Levels 20-49: 30/40/10/20.
+  - Level 50: 20/40/40/0.
+
+  The code defaults are 60/40/0/0, 35/35/15/15 and 20/40/40/0 (`BotGoalSettings.cs:41`). The release excludes
+  `bot-goals.json` (`build_release_037.py:69`), so an installer user starts on the code defaults.
 - **What the player sees.**
-  - A level 17 in Abermenai is alone: no gamebot is ever sent there by default.
-  - A level 24 in Thidranki finds bots only if the roster happens to hold level 20-24 bots. On the owner's test world every
-    gamebot was 50, so every battleground was empty until the launcher's "+ Lv.20" button made 50-100 per realm.
-  - When a battleground does fill, a realm needs 8 of its bots inside before a wave goes. One keep capture is recorded in
-    about eight played battleground builds.
+  - On the code defaults, a level 17 in Abermenai is alone. Levels 1-19 have no battleground share, and the low band's
+    allocation reads that row's share (`AutonomousObjectiveAssignments.cs:178-182`). This is **read**. The owner's world
+    fills Abermenai only because its 1-19 row gives 10%. That is **played** on 1.2.2.
+  - Abermenai is lopsided: Hibernia has 37 inside against 12-13 for the other realms, with near-equal rosters. The
+    allocator works per realm-and-level bucket with the same shares (`:286-300`), so a 3x skew is not by design.
+  - A level 24 in Thidranki meets 5 bots in all, and the 25-35 brackets have none, even with 20% of levels 20-49 sent to
+    battlegrounds. On the owner's earlier test world every gamebot was 50, so every battleground was empty until the
+    launcher's "+ Lv.20" button made 50-100 per realm (`BattlegroundBotLevels.cs:4-7`, build `1dc66b6`).
+  - When a battleground does fill, a realm needs 8 of its bots inside before a wave goes (`AutonomousBattlegroundWave.cs:29, 85`).
+    One keep capture is recorded in about eight played battleground builds (evidence.md F6). All keeps were Neutral on 1.2.2.
 - **Chain link that fails.** Population (who is sent where), then fight → win.
 - **Where.**
-  - Levels 1-19 default to 60/40/0 with no battleground share (`BotGoalSettings.cs:41`). The low band's allocation
-    passes `weights.Battlegrounds` of that row (`AutonomousObjectiveAssignments.cs:178-182`), so 15-19 bots never get the
-    goal.
-  - Levels 20-49 send 15% to battlegrounds, capped by how many are 20-35 (`:188-196`), and each bot goes to its own level's
-    bracket. Nothing tops up a bracket a player is in.
-  - Waves: `MinimumWave = 8`, `WaveSize = 60%` (`AutonomousBattlegroundWave.cs:29, 85`).
-  - The empty-battleground note: `BattlegroundBotLevels.cs:4-7` (owner's PC, build `1dc66b6`).
-- **How often.** Every battleground visit on a roster without the right levels. **Evidence: played** for empty
-  battlegrounds (`1dc66b6`, launcher note) and for captures (evidence.md F6: one capture, `43c43aa`). The Abermenai default
-  is **read**.
+  - Levels 20-49 send their battleground share capped by how many bots are 20-35 (`:188-196`). Each bot goes to its own
+    level's bracket. Nothing tops up a bracket a player is in.
+  - Nothing balances realms inside a bracket.
+- **What would settle the two open questions.**
+  - *The Hibernian 3x.* Counts per realm, from the database (`offline` bot records: `Level`, `ObjectiveKind`) or the
+    launcher's realm cards:
+    - bots at levels 15-19;
+    - bots with the Battleground goal;
+    - bots inside Abermenai.
+
+    If Hibernia simply has 3x the 15-19 bots, it is level spread. If it has the same number but more hold the goal, the
+    cause is the allocator or the personality planner (`AutonomousBotPersonality.PlanGoals`, `:351-357`). If the goals are
+    equal but more are inside, the cause is the trip or the exit: Albion and Midgard bots failing to arrive, or Hibernian
+    bots not leaving. In that case, check the battleground arrival and exit lines in the server log per realm over an hour.
+  - *The empty 20-35 brackets.* The same counts per realm for levels 20-24, 25-29 and 30-35, and how many of those hold the
+    Battleground goal. Few bots at those levels on a 4-day-old world means it is level spread, and the brackets fill as the
+    roster levels. Bots that hold the goal but are not inside or on their way mean the goal does not lead to arrival.
+- **How often.** Every battleground visit. **Evidence:**
+  - **played** on 1.2.2 for the counts above;
+  - **played** on `1dc66b6` for the empty all-50 world;
+  - **played** on `43c43aa` for the single capture;
+  - **read** for the code defaults.
 - **Period.** Battlegrounds were the busy RvR of levels 15-35 (rubric 1.9). Thidranki at prime time was crowded.
-- **Class.** Population sent by quota of an arbitrary roster, not by need. **Where it belongs:** the allocator.
+- **Class.** Population sent by quota of the roster, with no per-realm balance inside a bracket. **Where it belongs:** the
+  allocator.
 - **Fix.** Size **S-M**, risk **low**:
-  1. Give Levels 1-19 a default battleground share (about 10%, for 15-19 only), with a `LivingServerSettingsUpgrade` line.
-  2. Add a per-bracket floor: while a player is in a battleground, the allocator prefers that bracket's eligible bots.
-  3. Have the launcher warn "no bots at levels 20-24: Thidranki will be empty" on the Battlegrounds panel.
+  1. Give the code default for levels 1-19 a battleground share, as the owner's row has (10%), with a
+     `LivingServerSettingsUpgrade` line.
+  2. Balance realms inside a bracket: a realm far above the others' count gets no new battleground goals there until the
+     others catch up.
+  3. Add a per-bracket floor: while a player is in a battleground, the allocator prefers that bracket's eligible bots.
+  4. Have the launcher warn "no bots at levels 20-24: Thidranki will be empty" on the Battlegrounds panel.
 
   Keep-capture tactics are the siege audit's (#498).
 
@@ -412,7 +454,7 @@ Each is a place, an action and a log tag.
    `RVR_EVENT_OPENED` attacker and the attendance (finding 7).
 6. **DF on a fresh world.** Start a released world. Try the DF entrance before any keep falls (finding 9).
 7. **Battlegrounds by bracket.** With the default goals and a mixed-level roster, count bots per battleground region
-   (`BG_KEEP_STATUS near=`) for an hour. Expect Abermenai at 0 (finding 6).
+   (`BG_KEEP_STATUS near=`) for an hour, with the per-realm level and goal counts of finding 6. On 1.2.2 (owner's goal rows), Abermenai had 62 inside with Hibernia at 37.
 
 ## Measuring tools worth building
 
@@ -452,14 +494,14 @@ Each is a place, an action and a log tag.
   4. Uniform targets over every keep and zone, with a rotation through all keeps and no DF or front weighting
      (`AutonomousWorldBotController.cs:2615`, `AutonomousRvrEventLayer.cs:368-375`).
   5. Rank inflation: computed RR5 in about 245-920 server hours, with no brake and RR5 leaning to RvR.
-  6. Abermenai never gets bots (Levels 1-19 battleground share 0); the other brackets fill only by the roster's levels.
+  6. Battleground filling (corrected; played on 1.2.2): Abermenai 62 inside with Hibernia at about 3x the others; Thidranki 5; Murdaigean and Caledonia 0. On the code defaults Abermenai gets no bots.
   7. Inc calls name a random enemy realm and a random count (`AutonomousChatFieldTalk.cs:1229-1244`).
   8. Hib keeps start at levels 1/1/1/4 against 5 everywhere else; the upstream catch-up hook is dead.
   9. DF is shut on a fresh world and after a tied restart; the holder is not persisted.
   10. No emote or word after RvR kills.
 - Sound: realm-balanced logins, relic retakes and sentinel feeders, relic persistence, one siege per realm with catch-up,
   the Herald page, chat promises, player-equivalent rewards.
-- Evidence: mostly read and computed. Played only for the flat night (`168f55d`) and the empty battlegrounds (`1dc66b6`).
+- Evidence: mostly read and computed. Played for the flat night (`168f55d`), the empty battlegrounds (`1dc66b6`) and the 1.2.2 battleground counts.
   Every played item comes from builds older than main.
 - First moves: the war-hour and player-seat log lines (S), then findings 2, 7 and 9 (all S, low risk), then 1 and 3 (M,
   owner decisions).
