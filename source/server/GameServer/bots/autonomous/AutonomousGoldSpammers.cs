@@ -283,8 +283,12 @@ public static class AutonomousGoldSpammers
                 AutonomousBotVoices.TryLineFor(spammer, player.Realm, "spam", "tell",
                     new Dictionary<string, string> { ["site"] = site, ["player"] = player.Name }, out string reply))
             {
-                ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", spammer, reply);
-                BotChatTranscript.Bot("tell", spammer, player.Realm, reply, player.Name);
+                // Issue #475: out through the say gate (a pass-through).
+                BotSayGate.Say(new BotSayGate.Utterance("tell", spammer, player.Realm, reply, player.Name) { Listeners = [player] }, said =>
+                {
+                    ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", spammer, said);
+                    return said;
+                });
             }
             return 0;
         }, 1_500 + Random.Shared.Next(2_500));

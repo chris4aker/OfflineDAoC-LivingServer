@@ -76,6 +76,8 @@ jobs:
           python tools/bot-voices/build_corpus.py --verify
           python tools/bot-voices/check_runtime_names.py
           python tools/bot-voices/debates_doc.py --check
+          # Issue #475: no new bot line may leave outside the say gate (BotSayGate.Say), and raw sends in bots/ may only fall.
+          python tools/bot-voices/say_gate_ratchet.py
           python -m unittest discover -s tools/bot-voices/tests -v
           python -m unittest discover -s tools/lore/tests -v
           # 1.2.1 lore checks beside the lint (which the tests above run): the repetition ratchet and the reachability caps

@@ -133,6 +133,8 @@ public static class AutonomousChatWhy
             if (_count < Capacity)
                 _count++;
         }
+        // Issue #475: a decision that ended without a line is a CHAT_HELD row in the session chat log (logs only).
+        BotSayGate.Held(decision);
     }
 
     /// <summary>Remembers a decision about a bot's line (or its silence).</summary>

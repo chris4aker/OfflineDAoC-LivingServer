@@ -61,7 +61,7 @@ namespace DOL.UnitTests
 
                 Assert.That(DOL.GS.GameServer.UpgradeLogConfig(file), Is.True);
                 Assert.That(File.ReadAllText(file.FullName), Does.Contain(DOL.GS.GameServer.LogConfigMarker));
-                Assert.That(File.ReadAllText(file.FullName + ".before-2"), Does.Contain("an old copy"));
+                Assert.That(File.ReadAllText(file.FullName + ".before-3"), Does.Contain("an old copy"));
                 Assert.That(DOL.GS.GameServer.UpgradeLogConfig(file), Is.False, "the current copy is left alone");
             }
             finally

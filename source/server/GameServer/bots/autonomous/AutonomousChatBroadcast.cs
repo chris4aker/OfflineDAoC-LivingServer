@@ -78,11 +78,15 @@ public static class AutonomousChatBroadcast
         listeners ??= Listeners(bot);
         if (listeners.Count == 0)
             return false;
-        foreach (GamePlayer player in listeners)
-            player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client?.Account?.Language ?? "EN", "Scripts.Players.Broadcast.Message", bot.Name, safe),
-                eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
-        AutonomousChatBudget.Meter.Count(ChannelOf(bot), KeyOf(bot), GameLoop.GameLoopTime);
-        BotChatTranscript.Bot("broadcast", bot.Name, bot.Realm, safe);
+        // Issue #475: out through the say gate (a pass-through).
+        BotSayGate.Say(new BotSayGate.Utterance("broadcast", bot.Name, bot.Realm, safe) { Body = bot, Listeners = listeners }, said =>
+        {
+            foreach (GamePlayer player in listeners)
+                player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client?.Account?.Language ?? "EN", "Scripts.Players.Broadcast.Message", bot.Name, said),
+                    eChatType.CT_Broadcast, eChatLoc.CL_ChatWindow);
+            AutonomousChatBudget.Meter.Count(ChannelOf(bot), KeyOf(bot), GameLoop.GameLoopTime);
+            return said;
+        });
         return true;
     }
 

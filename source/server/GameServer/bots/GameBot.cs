@@ -321,11 +321,15 @@ namespace DOL.GS
         {
             str = AutonomousRoleplayers.Voice(this, str);   // a roleplayer speaks in thee and thou (never a hired companion)
             str = ChatPromises.BeforeSend(Name, Realm, str);   // chat 1.2 follow-up: no "omw" whose promise ended unsaid
-            bool said = base.Say(str);
-            if (said)
-                ChatPromises.NoteSaid(this, str);   // chat 1.2 follow-up: a promise's line said, heard by a player or not
-            if (said && AutonomousLivingServer.PlayerHears(this))
-                BotChatTranscript.Bot("say", Name, Realm, str, who: this);
+            // Issue #475: out through the say gate (a pass-through: it sends what it is given and records what a player heard).
+            bool said = false;
+            BotSayGate.Say(new BotSayGate.Utterance("say", Name, Realm, str, who: this), str =>
+            {
+                said = base.Say(str);
+                if (said)
+                    ChatPromises.NoteSaid(this, str);   // chat 1.2 follow-up: a promise's line said, heard by a player or not
+                return said && AutonomousLivingServer.PlayerHears(this) ? str : null;
+            });
             return said;
         }
 
@@ -1692,8 +1696,11 @@ namespace DOL.GS
             if (string.IsNullOrWhiteSpace(text) || ReturnLineChannel(Group != null, AutonomousLivingServer.GroupHasPlayer(Group)) == null)
                 return;
             text = AutonomousRoleplayers.Voice(this, text);
-            Group.SendMessageToGroupMembers(this, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-            BotChatTranscript.Bot("group", Name, Realm, text, who: this);
+            BotSayGate.Say(new BotSayGate.Utterance("group", Name, Realm, text, who: this), said =>
+            {
+                Group.SendMessageToGroupMembers(this, said, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+                return said;
+            });
         }
 
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —

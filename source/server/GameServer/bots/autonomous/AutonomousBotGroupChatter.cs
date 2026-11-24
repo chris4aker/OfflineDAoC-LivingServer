@@ -377,8 +377,12 @@ public static class AutonomousBotGroupChatter
         // A formal companion (its Speech option) says only its own companion lines (CompanionChat165): one voice.
         if (bot.Group != null && AutonomousLivingServer.GroupHasPlayer(bot.Group) && !CompanionChat165.IsFormal(bot))
         {
-            bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-            BotChatTranscript.Bot("group", bot.Name, bot.Realm, text);
+            // Issue #475: out through the say gate (a pass-through).
+            BotSayGate.Say(new BotSayGate.Utterance("group", bot.Name, bot.Realm, text) { Body = bot }, said =>
+            {
+                bot.Group.SendMessageToGroupMembers(bot, said, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+                return said;
+            });
             AutonomousChatEngagement.NoteGroupLine(bot.DatabaseID, text, GameLoop.GameLoopTime);
             AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Group, KeyOf(bot.Group), GameLoop.GameLoopTime);
             if (remember)

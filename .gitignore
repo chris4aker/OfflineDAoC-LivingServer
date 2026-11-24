@@ -19,6 +19,9 @@
 **/__pycache__/
 **/*.pyc
 **/*.log
+# The say gate's session chat log (logs/session-chat.log and its archives) and the transcripts made from it (issue #475).
+**/session-chat.log*
+/sessions/
 **/*.dmp
 **/*.trx
 **/*.nettrace

@@ -39,6 +39,11 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
   heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
   below.
+- [#475](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/475) Realism 1: record real play (the say gate as a
+  pass-through in all 17 exits, `logs/session-chat.log`, `/odd`, `tools/bot-voices/session_transcript.py`, the raw-send
+  ratchet). **Built, tests only;** done when a played session's `session-chat.log` gives a transcript an agent can read
+  line by line and a count of defects per hour, per channel, per build (baseline: 9 in about an hour on 1.2.2). Next:
+  #489's step 2 (the checks in the gate).
 
 ## 1.3
 

@@ -86,6 +86,20 @@ otherwise.
   Pacification). The footer says `/spawn <class> [build]`, gives an example that works, and mentions `/spawn specs`. A role typed as a build
   ("/spawn shaman buffer") is now told it is a party role, not a build, and gets the class's builds. Real players' helper
   commands only. `UT_ClassesCommandBuilds473`. **Tests only.**
+- **The session chat log and `/odd`** (realism plan step 1, issue #475; docs/realism-audit-1.2.3). Every bot line now
+  leaves through one say gate (`BotSayGate.Say`), in all 17 wire exits (/say, /yell, /group, the raid calls, tells from
+  gamebots, buffbots, companions and the spammer, /faction, /lfg, /trade, /advice, /broadcast, /guild, alliance). The gate
+  is a pass-through: its seven steps (channel fit, addressee, freshness, grounding, pacing, style, send and record) let
+  every line through unchanged, and the `CHAT_LINE` rows of server.log are written as before. What it adds is a small
+  separate log, `logs/session-chat.log` (logconfig 3; an older logconfig.xml is replaced at start and kept as
+  `logconfig.xml.before-3`): `CHAT_SAY` per bot line a player saw (who, channel, room, addressee, the player line it
+  answers, `src=`, `via=`, the gate's rule, who heard it), `CHAT_HEAR` per player line (how it was read, the bots in the
+  group), `CHAT_HELD` per reply held or player line left unanswered (the /lswhy decisions, now in the log), and
+  `SCREEN_BURST` when one system message repeats four or more times close together. `/odd [note]` marks the last lines
+  the player saw (`CHAT_FLAG`). `tools/bot-voices/session_transcript.py` turns the file into a transcript per player in
+  screen order, player names masked, with flags counted per hour, per channel, per build. CI fails a bot line recorded
+  outside the gate, and raw sends in the bot code may only fall (`tools/bot-voices/say_gate_ratchet.py`).
+  `UT_SayGate475`. **Tests only.**
 
 **The server**
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after

@@ -78,8 +78,12 @@ namespace DOL.GS
             {
                 if (bot.IsAlive && player.Client != null && player.ObjectState == GameObject.eObjectState.Active)
                 {
-                    ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, reply);
-                    BotChatTranscript.Bot("tell", bot.Name, bot.Realm, reply, player.Name, bot);
+                    // Issue #475: out through the say gate (a pass-through).
+                    BotSayGate.Say(new BotSayGate.Utterance("tell", bot.Name, bot.Realm, reply, player.Name, bot) { Listeners = [player] }, said =>
+                    {
+                        ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, said);
+                        return said;
+                    });
                 }
                 return 0;
             }, 1_500 + Random.Shared.Next(1_500));

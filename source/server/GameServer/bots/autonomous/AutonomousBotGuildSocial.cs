@@ -969,11 +969,18 @@ public static class AutonomousBotGuildSocial
             return;
         if (safe.Length > Lines.MaxLength)
             safe = safe[..Lines.MaxLength];
-        guild.SendMessageToGuildMembers($"[Guild] {speaker}: \"{safe}\"", eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
-        NoteHeard(guild.GuildID, safe, GameLoop.GameLoopTime);
-        AutonomousChatExchange.NoteLine(AutonomousChatExchange.GuildKey(guild.GuildID), speaker, GameLoop.GameLoopTime);
-        AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Guild, KeyOf(guild), GameLoop.GameLoopTime);
-        BotChatTranscript.Bot("guild", speaker, (eRealm)guild.Realm, safe, guild.Name);
+        // Issue #475: out through the say gate (a pass-through; the guild's bookkeeping stays in its order, before the record).
+        BotSayGate.Say(new BotSayGate.Utterance("guild", speaker, (eRealm)guild.Realm, safe, guild.Name)
+        {
+            Room = guild.Name, Listeners = guild.GetListOfOnlineMembers(),
+        }, said =>
+        {
+            guild.SendMessageToGuildMembers($"[Guild] {speaker}: \"{said}\"", eChatType.CT_Guild, eChatLoc.CL_ChatWindow);
+            NoteHeard(guild.GuildID, said, GameLoop.GameLoopTime);
+            AutonomousChatExchange.NoteLine(AutonomousChatExchange.GuildKey(guild.GuildID), speaker, GameLoop.GameLoopTime);
+            AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Guild, KeyOf(guild), GameLoop.GameLoopTime);
+            return said;
+        });
     }
 
     /// <summary>The budget meter's key for a guild.</summary>

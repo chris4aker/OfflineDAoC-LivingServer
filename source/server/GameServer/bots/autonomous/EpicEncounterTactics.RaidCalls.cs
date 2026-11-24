@@ -256,13 +256,21 @@ namespace DOL.GS
             {
                 string said = AutonomousBotVoices.StyleFor(caller, text);
                 bool heard = false;
-                foreach (Group g in call.Parties)
+                // Issue #475: out through the say gate (a pass-through); every raid party with a player hears it.
+                BotSayGate.Say(new BotSayGate.Utterance("group", caller.Name, caller.Realm, said)
                 {
-                    if (g == null || !AutonomousLivingServer.GroupHasPlayer(g)) continue;
-                    g.SendMessageToGroupMembers(caller, said, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-                    heard = true;
-                }
-                if (heard) BotChatTranscript.Bot("group", caller.Name, caller.Realm, said);
+                    Body = caller, Room = "raid", Styled = true,
+                    Listeners = call.Parties.Where(g => g != null).SelectMany(g => g.GetPlayersInTheGroup()).ToList(),
+                }, line =>
+                {
+                    foreach (Group g in call.Parties)
+                    {
+                        if (g == null || !AutonomousLivingServer.GroupHasPlayer(g)) continue;
+                        g.SendMessageToGroupMembers(caller, line, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+                        heard = true;
+                    }
+                    return heard ? line : null;
+                });
                 if (Log.IsInfoEnabled) Log.Info($"EPIC_BLAST_SAY caller=\"{caller.Name}\" heard={heard} text=\"{said}\"");
             }
             catch (Exception ex)

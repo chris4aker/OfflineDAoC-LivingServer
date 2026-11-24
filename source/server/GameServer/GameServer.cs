@@ -257,12 +257,13 @@ namespace DOL.GS
 		/// </summary>
 		/// <param name="config"></param>
 		/// <summary>The line in the shipped logconfig.xml that marks the current version (audit 2026-11-13).</summary>
-		public const string LogConfigMarker = "living-server-logconfig 2";
+		public const string LogConfigMarker = "living-server-logconfig 3";
 
 		/// <summary>
 		/// The log settings are written once, so an install kept the old ones forever. An older copy (without
-		/// <see cref="LogConfigMarker"/>) is kept as logconfig.xml.before-2 and replaced with the shipped one: three days of
-		/// logs, routine bot lines in their own two-day file, and a limit on every file (audit 2026-11-13: 2-3 GB).
+		/// <see cref="LogConfigMarker"/>) is kept as logconfig.xml.before-3 and replaced with the shipped one: three days of
+		/// logs, routine bot lines in their own two-day file, and a limit on every file (audit 2026-11-13: 2-3 GB); from 3, the
+		/// session chat log (logs/session-chat.log, issue #475).
 		/// The logger isn't up yet, so the result goes to the console.
 		/// </summary>
 		public static bool UpgradeLogConfig(FileInfo logConfig)
@@ -272,7 +273,7 @@ namespace DOL.GS
 				if (File.ReadAllText(logConfig.FullName).Contains(LogConfigMarker, StringComparison.Ordinal))
 					return false;
 
-				string backup = logConfig.FullName + ".before-2";
+				string backup = logConfig.FullName + ".before-3";
 				if (!File.Exists(backup))
 					File.Copy(logConfig.FullName, backup);
 				ResourceUtil.ExtractResource("logconfig.xml", logConfig.FullName);

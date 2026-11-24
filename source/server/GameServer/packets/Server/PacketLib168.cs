@@ -601,6 +601,7 @@ namespace DOL.GS.PacketHandler
 		{
 			if (m_gameClient.ClientState == GameClient.eClientState.CharScreen)
 				return;
+			ScreenBursts.Note(m_gameClient.Player, msg, type);   // issue #475: counts system-window bursts, changes nothing
 
 			// types not supported by 1.68+ clients
 			switch (type)
