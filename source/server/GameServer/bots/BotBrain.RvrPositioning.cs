@@ -379,7 +379,8 @@ namespace DOL.AI.Brain
                 _rvrKiteLogAt = now;
                 log.Info($"RVR_KITE group={RvrPlaceGroupId()} region={Body.CurrentRegionID} healer=\"{Body.Name}\" class={me.Class} " +
                          $"attacker=\"{attacker.Living.Name}\" attackerKind={RvrPlaceKind(attacker.Living)} attackerClass={attacker.Class} " +
-                         $"run={(int)distance} guard={(RvrPeelPlan.GuardOf(plan, Body) is GameLiving g ? $"\"{g.Name}\"" : "none")} skill={tier}");
+                         $"run={(int)distance} guard={(RvrPeelPlan.GuardOf(plan, Body) is GameLiving g ? $"\"{g.Name}\"" : "none")} skill={tier} " +
+                         $"fight={RvrFights.IdOf(Body)}");
             }
             return true;
         }
@@ -512,7 +513,7 @@ namespace DOL.AI.Brain
             log.Info($"RVR_KITE group={RvrPlaceGroupId()} region={Body.CurrentRegionID} kind=group stepped={stepped} held={holds} " +
                      $"screened={screened} member=\"{Body.Name}\" class={(eCharacterClass)(BotBody?.CharacterClass?.ID ?? 0)} role={role} " +
                      $"enemyMelee={(int)meleeDistance} step={(int)stepLength} standOff={(int)standOff} error={error} " +
-                     $"heldReason={held} skill={tier}");
+                     $"heldReason={held} skill={tier} fight={RvrFights.IdOf(Body)}");
         }
 
         // ---- walking --------------------------------------------------------------------------------------------------------

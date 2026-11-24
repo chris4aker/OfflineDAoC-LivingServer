@@ -108,10 +108,20 @@ public static class AutonomousBotRealmPointRewards
         GameLiving owner = ResolveRootRewardOwner(living) ?? living;
         if (owner.Realm == eRealm.None || owner.Realm == victim.Realm) return;
         string force = victim.TempProperties.GetProperty<string>("RvrEventForce") ?? "";
+        // #505: the fight it fell in, both groups, its role and whether it was the killers' called target.
+        long fight = RvrFights.Death(victim, owner);
+        RvrRecordPulse.CountDeath(victim.Realm, owner.Realm);
+        if (owner is GamePlayer playerKiller)
+            RvrPlayerRecord.Killed(playerKiller);
+        bool called = ReferenceEquals(RvrFightBoards.Peek(owner)?.Plan?.CalledTarget, victim);
         RvrLog.Info($"RVR_BOT_KILLED victim={victim.Name} id={victim.DatabaseID} realm={GlobalConstants.RealmToName(victim.Realm)} " +
                     $"goal={AutonomousObjectiveAssignments.KindFor(victim)} force={force} killer=\"{owner.Name}\" killerRealm={GlobalConstants.RealmToName(owner.Realm)} " +
                     $"killerType={owner.GetType().Name} region={victim.CurrentRegionID} zone=\"{victim.CurrentZone?.Description}\" " +
-                    $"at={victim.X},{victim.Y},{victim.Z}");
+                    $"at={victim.X},{victim.Y},{victim.Z} fight={fight} victimGroup={RvrFights.GroupOf(victim) ?? "-"} " +
+                    $"victimRole={RvrRoles.For((eCharacterClass)(victim.CharacterClass?.ID ?? 0))} " +
+                    $"victimClass={RvrRecordText.Field(victim.CharacterClass?.Name ?? "-")} killerGroup={RvrFights.GroupOf(owner) ?? "-"} " +
+                    $"by={RvrRecordText.Kind(living)} calledTarget={(called ? "true" : "false")}" +
+                    (owner is GamePlayer named ? $" player={RvrRecordText.Field(named.Name)}" : string.Empty));
     }
 
     public static void Award(GameBot killedBot, GameObject killer)

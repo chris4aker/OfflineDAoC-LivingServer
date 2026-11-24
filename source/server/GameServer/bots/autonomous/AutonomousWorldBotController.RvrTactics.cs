@@ -316,6 +316,7 @@ public sealed partial class AutonomousWorldBotController
             if (walk == null || spot == null || !catalog.Usable(spot))
             {
                 box.Walk = walk == null ? null : RvrRoamCircuits.Advance(walk);
+                _rvrRuleHint = "roam.advance";
                 _rvrDestination = box.Walk is { Done: false } next && catalog.Spot(next.CurrentSpot) is { } nextSpot ? RvrSpotDestination(nextSpot) : null;
                 return false;
             }
@@ -420,6 +421,7 @@ public sealed partial class AutonomousWorldBotController
     {
         if (box.Walk is { Done: false } walk && catalog.Spot(walk.CurrentSpot) is { } next)
         {
+            _rvrRuleHint = "roam.next";
             _rvrDestination = RvrSpotDestination(next);
             _rvrApproachDestination = null;
             _patrolDestination = null;

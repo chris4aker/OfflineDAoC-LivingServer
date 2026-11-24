@@ -44,6 +44,14 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   ratchet). **Built, tests only;** done when a played session's `session-chat.log` gives a transcript an agent can read
   line by line and a count of defects per hour, per channel, per build (baseline: 9 in about an hour on 1.2.2). Next:
   #489's step 2 (the checks in the gate).
+- **The honest chat bench** ([#477](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/477), realism 1b): done
+  on `feature/1.2.3-honest-bench`, **tests only**. The bench's headline is the realism audit's fresh lines (155 of 262 good,
+  59.2%), reported per kind and per channel, with the side benches (every channel path, 54 follow-ups, 40 lines of the
+  moment, the two-line bench) and the evening ratchet (`evening_read.py`, `evening_ratchet.json`). The baselines were reset
+  to these numbers on 2026-11-24. Draft PRs #470-#472 can be closed once it merges. Left: the 167 data-gap lines wait for
+  facts from the world database; the evening stream is still a loop of its own beside `UT_ChatBudgetSimulation.Evening`
+  (same fixture, same items and keeps; a change to Evening's start rules must be made in both); new holdout lines come
+  from the owner's real lines, written by someone who did not write the fix.
 
 ## 1.3
 
@@ -85,12 +93,16 @@ its raid's log shows it lost again. #410, #412 and #414 stay open; 1.2.2's size 
 
 Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner's log lines.
 
+- [#519](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/519) Honest measuring (RvR audit 3): the log checker's notice, regroup, siege-outcome and party rows, the misleading test names, the Seen stamps. **Done in 1.2.3, tools and tests only.** Owed on the PC: re-read the `19e7037`, `5378dbe` and `9a173f4` logs with the notice row; run the real-mesh probes once per release (`docs/RELEASE-TRAIN.md`). Owner decisions: the regroup share bars (now a tally), and a "shipped, owed in play" state for #416, #417 and #418. First read on `868a82d` (2026-11-24): scans about 4.6 s apart instead of 1.0-1.25 s, so the time to notice from first sight is about 2.3 s at every range (the table: 0.5 s at 1,000-1,500, 11.8 s past 3,400); the notice row reads Contradicted.
+- [#505](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/505) RvR: record real frontier play (audit phase 0). **Built in 1.2.3, tests only** (branch `feature/1.2.3-rvr-record`): `RVR_DECIDE`, fight ids, the player's rows, siege stalls, teleports, `RVR_HOUR`, `/rvrodd`, `rvr_hour.py`. Open until a played frontier hour yields the report; still to add: `RVR_LORD_BLOCKED`, `RVR_EVENT_OPENED reason= depth=`, the stealth rows (#522), `RVR_COMPANION_ENGAGE`, `RVR_LEGS_LOST`, ram output per engine, `RVR_RANKS`, the CI ratchet on rule codes, and folding `/rvrodd` into #475's `/odd`.
 - ~~[#416](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/416) Battleground keeps rarely change hands~~ **Done in 1.2.1, tests only** (closed 2026-11-22): stormers strike the lord only from within 350 (battlegrounds and frontier; `BG_RALLY_STATUS inLordReach=`, `RVR_LORD_STEP_IN`).
 - ~~[#417](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/417) Roaming eight-man RvR groups rarely find a fight~~ **Done in 1.2.1, tests only** (closed 2026-11-22): patrols weigh enemy RvR bots, eights chase the planner's hunts (`RVR_ROAM_CHASE`).
 - ~~[#418](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/418) Gamebots wait a long time at frontier teleporters~~ **Done in 1.2.1, tests only** (closed 2026-11-22): bots pick a porter that sells their medallion; waits past 5 minutes log `RVR_FRONTIER_WAIT_LONG`.
 - ~~[#419](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/419) Open-field regroups pass between groups more than planned~~ **Closed.** 17.4% on `9a173f4` is under the owner's 20% bar; the log checker now shows each call's spread.
 - ~~[#420](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/420) Connacht: repeated route rescues uphill to a hunting camp (200:314846,471535)~~ **Done in 1.2.1, tests only** (closed 2026-11-22): after two identical rescues for one camp within 30 minutes the bot picks another camp (`AUTONOMOUS_ROUTE_POCKET_ESCAPE_LOOP`, PR #434).
 - [#421](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/421) Lough Derg / Bri Leith seam loops at region 200. **Fixed in 1.2.2, tests only** (the zone itinerary's main-ground rule; `tools/navmesh/seam_route_sim.py`); open until a PC log shows no `AUTONOMOUS_ZONE_SEAM_CYCLE` there.
+- [#538](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/538) Party members stall at zone borders, so resurrections time out with the healer out of range. **Fixed in 1.2.3, tests only** (`AutonomousGroupFormationFollow.NeedsSeamRoute`: the AI turn takes the itinerary's seam crossing to a leader over the border; a stalled member is moved only out of a player's sight). Open until a PC log shows few cross-zone `AUTONOMOUS_GROUP_MEMBER_STALLED` (11/24: 1,784 in 5 h) and `seamRoutes=` in `AUTONOMOUS_GROUP_FORMATION`. Not done: retrying a resurrection blocked for power within the 60 s window (66 of 2,780 timeouts).
+- [#539](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/539) Parties stand at one target for up to 107 minutes on an unreachable ranged pull. **Fixed in 1.2.3, tests only** (`AutonomousDefensivePull.UnreachableBench`: two tries then an ordinary pull; three benched targets give the camp up). Open until a PC log shows no same-shooter, same-target `AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE` run past a few minutes.
 
 ## Other bot behaviour
 

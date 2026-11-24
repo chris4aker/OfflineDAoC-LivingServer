@@ -101,6 +101,22 @@ otherwise.
   outside the gate, and raw sends in the bot code may only fall (`tools/bot-voices/say_gate_ratchet.py`).
   `UT_SayGate475`. **Tests only.**
 
+- **The chat bench now asks what a player would type, not what the code already knows** (realism audit 1.2.3, #477). Before,
+  428 of its 467 lines were /faction questions taken from the bots' own answer tables, so it said 79.6% good while fresh
+  lines got a fitting reply far less often. It now holds 262 fresh lines written by someone who had not read the bench
+  (questions, statements and follow-ups, in /faction, /say, /group and tells), and its headline is those: **155 of 262
+  good (59.2%)**. The old lines stay beside them (473 of 527, 89.7%). 78 more fresh lines are held out and never tuned on
+  (33 good, 42.3%). A reply that only deflects ("not sure, try /advice", "no idea tbh") no longer counts as an answer.
+  The bench also asks every /faction question in each chat path (say, group, tell, guild, advice, broadcast, chat
+  group, trade, a companion's /say), 54 follow-ups that lean on the line before ("where is that?"), 40 lines of the
+  moment ("im by camp station", "pulling") and 12 two-line pairs (a bot's line, then the player's follow-up), and CI
+  reports good, wrong, non-answer and silent per channel and per kind. Weakest today: follow-ups (0-2% good in every
+  channel), a companion's /say (4%), and trade, which stays silent. The bench's healer can now rez from level 10, as a
+  live healer does. A two-hour-evening simulation (18 evenings in three realms) now counts seven things a player would
+  notice: party banter after the first hour (0), /say that is "sry ks", "rdy", "brb" or "1 sec" (61%), the ten busiest
+  bots' share of /faction (50%), "how much u paying?" in /trade (25 an hour), answers that open with the asker's name
+  (27%), fight calls that end on a laugh (9%) and your party lines left unanswered (5.5 of 20). None of these may get
+  worse. No bot behaviour changed. **Tests only.**
 **The server**
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after
   "Berermund casts a spell!" and "Squishywizard casts a spell!", about ten lines of "XxEvilxX's weapon returns to normal.",
@@ -128,6 +144,25 @@ otherwise.
   SETTINGS (below 1 a standing character's rounded-down tick is nothing). The tab's notes for an unreadable number or
   switch now show the server's default, which is what the server uses from 1.2.3. **Tests only.**
 
+**RvR record (logging and tools only; #505, RvR audit phase 0)**
+- **A played frontier hour can now be audited fight by fight and siege by siege.** Nothing a bot does changes: the new rows
+  read the world and draw no random number (`UT_RvrRecord505.RecordFilesDrawNoRandomness`). New rows:
+  `RVR_DECIDE` (piece A: one row per change of a bot's intent, destination or target, and each engage and flee, with the
+  layer and a rule code; `SetRvrStatus` keeps its text and gains `exec.<method>.<first words>`), `RVR_ENGAGE` (the scan's
+  engage and the list the target came from), `RVR_PLAN` (each destination plan, with candidates rejected and the roam
+  override), `RVR_FIGHT_OPEN` / `RVR_FIGHT_END` (fight id, sides, sizes, deaths per realm, first death, first crowd
+  control, winner, who held the field, the player's part) with `fight=` stamped on `RVR_STANCE`, `RVR_ASSIST_*`,
+  `RVR_CC_ASSIGN`, `RVR_PEEL`, `RVR_KITE`, `RVR_RETREAT` and `RVR_BOT_KILLED` (which also gains `victimGroup=
+  victimRole= victimClass= killerGroup= by= calledTarget=`), `RVR_PLAYER_NOTICED` (distance, `time_since_first_los_ms`,
+  looker, called), `RVR_PLAYER_KILLED`, `RVR_PLAYER_VIEW` (what the player had around him), `RVR_PLAYER_SEAT` (hourly),
+  `RVR_SIEGE_BEGIN` / `_DOOR` / `_LORD` / `_STALL` (every 5 minutes without door or lord progress, with the reason) /
+  `_END`, `RVR_TELEPORT` (every snap of a war bot, who did it and whether the player could see it), `RVR_FORCE_CLUSTER`
+  (every 5 minutes) and `RVR_HOUR` (hourly per realm, with the count of rate-limited rows dropped). Per-tick rows are
+  change-only or under a counted per-minute budget. `/rvrodd [note]` writes `RVR_ODD` with the nearest fight and siege (to
+  fold into #475's `/odd` when that lands). Tools: `source/tools/rvr_hour.py` (also `played_check_log.py --rvr-hour`) and
+  `source/tools/rvr_fight_timeline.py`; on a 1.2.2 log they rebuild fights from `RVR_BOT_KILLED` and sieges from the `BG_*`
+  and `RVR_SIEGE` rows. `test_rvr_hour.py`. **Tests only.**
+
 **Bots and companions**
 - **Buffers no longer waste buffs on groupmates who can't use them** (#491). A buffer bot spent power regen and acuity on
   melee classes with no power, and regen buffs on pets, so its concentration and power ran out before a critical buff (a
@@ -145,6 +180,26 @@ otherwise.
   Targets are real players, companion bots, autonomous gamebots and their pets alike; the casters are companion `/bot`s,
   hired and `/spawn` helpers and gamebot groups. No Lifer buffbots already planned by their main's needs and are
   unchanged. `UT_BotBuffTargets491`. **Tests only.**
+- **Party members follow their leader over zone borders** (#538; the owner's PC on 1.2.2 868a82d, 11/24: 2,450
+  `AUTONOMOUS_GROUP_MEMBER_STALLED`, 1,784 of them with the member standing in another zone than its leader, every one
+  farther than 600 units; Lough Derg > Connacht the worst border). Paths are planned inside one zone, so the formation
+  follow's path to a leader over the border found nothing and the member stood until the leader went on without it, and
+  the party's healer was then too far to resurrect anyone (62% of 2,780 resurrection timeouts). Now the follow check
+  leaves such a member's walk alone and its AI turn takes the zone itinerary's validated seam crossing to the leader
+  (`AutonomousGroupFormationFollow.NeedsSeamRoute`, through `IssuePath` and `AutonomousZoneItinerary`). The member walks,
+  so the leader waits for it (bounded by the 10-minute hold); a border with no safe seam gives the camp up (the route's
+  own `AbandonCamp`), and a member still stalled after three minutes is moved to its leader only when no real player can
+  see either spot (`AUTONOMOUS_GROUP_MEMBER_RECOVERY_DEFERRED`). `AUTONOMOUS_GROUP_FORMATION` counts `borderHandOffs=`
+  and `seamRoutes=`. Autonomous gamebot parties only; companions and player-led groups are unchanged. No navmesh or seam
+  data changed. `UT_PartyStalls123`. **Tests only.**
+- **A party no longer stands on a ranged pull it can't make** (#539; 11/24: 2,788 `AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE`,
+  55 runs of one shooter on one target for 10 minutes or more, the worst 126 tries in 74 minutes). Nothing remembered that
+  a target had no firing point, so the camp check picked it again every 30 s. Now the second try with no firing point
+  benches that target for the camp for 20 minutes (`AUTONOMOUS_DEFENSIVE_PULL_BENCHED`) and the party pulls it the
+  ordinary way (the puller's watched pull, retried once, then another spawn); with three of the camp's targets benched the
+  party gives the camp up and picks another (`AUTONOMOUS_GROUP_CAMP_UNREACHABLE_PULLS`). Replayed on the 11/24 and 11/23
+  logs, no target gets more than two ranged tries. `AutonomousDefensivePull.UnreachableBench`, `UT_PartyStalls123`.
+  **Tests only.**
 
 **Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
 - **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again
@@ -167,6 +222,28 @@ otherwise.
   instead of running at the next monster within a second. Never with an add or a party member still fighting, never in
   your group, an RvR party or a raid; a bot nobody sees keeps today's pace. `UT_IdleLife`, `UT_BotMobileSongs`. **Tests
   only.**
+**Measuring (#519, RvR audit 3: tools and tests only, no game change)**
+- **The log checker's notice row reads the time to notice.** It read `delayMs`, the designed 0.5-2 s reaction delay after
+  a notice. It now reads `RVR_NOTICE ... time_since_first_los_ms` by distance band against the perception table (mirrored
+  in `played_check_log.py`, pinned by a test against the server's anchors). That field counts whole scans from the first
+  scan that saw the target, so the row adds half a scan, at the scan cadence the log shows, and prints the share noticed
+  on the first scan.
+- **The regroup row gates on the exact checks.** (a), (b), (c) and at most one relayed start per group reached decide it;
+  the relay-started share is printed as a tally beside the owner's bars (10/11.5/15/20%, unchanged; the owner decides
+  their fate).
+- **New rows:** siege outcomes per night by kind and thin with the attacker win rate (`RVR_EVENT_ENDED`; the 35-65% band
+  is a sim's assumption), and RvR parties formed per hour by kind and size against the assumed 55/30/15 split
+  (`RVR_PARTY_FORMED`). Tallies, no bar.
+- **Tests renamed to what they prove:** `UT_RvrTacticsHooks.With_no_world_each_brain_hook_has_no_opinion` and
+  `With_no_world_the_controller_and_coordinator_hooks_have_no_opinion`,
+  `UT_RvrPerceptionCalibration.The_fitted_formula_gives_its_own_target_median_for_each_level_and_band`; the
+  `UT_SiegeBalanceNov06` sims are labelled assumptions; `UT_SiegeMusterAndRankOct6.WeightedRankChoice...` sets up its
+  own `LanguageMgr` and passes alone.
+- **`source/tools/rvr_seen_stamps.py`** stamps each RvR "Seen" row of `docs/PLAYED-CHECK-1.2.md` with its build and
+  whether the RvR code changed since (a `git diff` of the RvR paths). The battleground row now says Caer Caledon was
+  taken on `43c43aa`.
+- The real-mesh RvR probes are run once per release on the PC (`docs/RELEASE-TRAIN.md`); the #506 fixes get blind
+  scenarios (`docs/rvr-audit-1.2.3/README.md`).
 
 ## 1.2.2 — 2026-11-23
 

@@ -16,9 +16,11 @@ using Kind = DOL.GS.eDutyLeaseKind;
 namespace DOL.UnitTests
 {
     /// <summary>
-    /// Open-field RvR tactics, work package 0 (docs/RVR-FIELD-1.2.md): the hook points and the settings. Every hook is a
-    /// stub: with every switch on, for a bot the tactics apply to, it has no opinion, so the code at its site runs as
-    /// before; and no stub builds a fight board. Gamebots without a world (DutyLeaseTestKit).
+    /// Open-field RvR tactics, work package 0 (docs/RVR-FIELD-1.2.md): the hook points, their gate and the settings.
+    /// Gamebots without a world (DutyLeaseTestKit). The hooks were stubs in work package 0; WP2-WP6 filled them, so the
+    /// "no opinion" cases below prove only that with no world (no enemy in range, no fight board) a hook changes nothing.
+    /// A hook that never fires in play passes them too (RvR audit 3, evidence.md F8, #519): they are no evidence that a
+    /// hook works.
     /// </summary>
     [TestFixture, NonParallelizable]
     public class UT_RvrTacticsHooks : DutyLeaseFixture
@@ -115,19 +117,19 @@ namespace DOL.UnitTests
             Assert.That(brain.RvrTacticsActive(), Is.False, "the master switch is read on every call, before the tick's kept answer");
         }
 
-        // ---- every stub has no opinion ------------------------------------------------------------------------------------
+        // ---- with no world, no hook has an opinion (not evidence that a hook works: #519, F8) -----------------------------
 
         private static Style StealthOpener() =>
             new(new DbStyle { Name = "opener", ID = 335, SpecKeyName = Specs.Critical_Strike, SpecLevelRequirement = 2, StealthRequirement = true }, null);
 
         [Test]
-        public void With_every_switch_on_each_brain_hook_has_no_opinion()
+        public void With_no_world_each_brain_hook_has_no_opinion()
         {
             (Bot bot, BotBrain brain) = FieldBot();
             Bot enemy = Gamebot(realm: eRealm.Midgard, objective: "RvR");
             enemy.Region = 250;
             long builds = RvrFightBoards.Builds;
-            Assert.That(brain.RvrTacticsActive(), Is.True, "the tactics do apply to this bot: the stubs are asked for real");
+            Assert.That(brain.RvrTacticsActive(), Is.True, "the tactics do apply to this bot: the hooks are asked for real, with no world");
             Assert.Multiple(() =>
             {
                 Assert.That(brain.RvrTacticsTarget(enemy, null, null), Is.Null, "target pick");
@@ -141,14 +143,14 @@ namespace DOL.UnitTests
                 Assert.That(BotBrain.RvrTacticsAllowsStealthOpener(bot, StealthOpener()), Is.False, "stealth opener");
                 Assert.That(BotBrain.RvrTacticsAllowsStealthOpener(bot, null), Is.False);
                 Assert.That(BotMeleeStylePolicy.IsEligible(StealthOpener()), Is.False, "so a stealth style stays out, as before");
-                Assert.That(RvrFightBoards.Builds, Is.EqualTo(builds), "no stub builds a fight board");
+                Assert.That(RvrFightBoards.Builds, Is.EqualTo(builds), "with no world no hook builds a fight board");
                 Assert.That(RvrFightBoards.Peek(bot), Is.Null);
                 Assert.That(brain.PeekRvrPlan(), Is.Null);
             });
         }
 
         [Test]
-        public void With_every_switch_on_the_controller_and_coordinator_hooks_have_no_opinion()
+        public void With_no_world_the_controller_and_coordinator_hooks_have_no_opinion()
         {
             (Bot bot, BotBrain brain) = FieldBot();
             Bot enemy = Gamebot(realm: eRealm.Midgard, objective: "RvR");
@@ -172,7 +174,7 @@ namespace DOL.UnitTests
                 Assert.That(roam.Invoke(controller, [bot, null]), Is.Null, "roam destination");
                 Assert.That(AutonomousBotGroupCoordinator.RvrTacticsRoster(bot, [bot], [bot], 2), Is.Null, "group formation");
                 Assert.That(AutonomousBotGroupCoordinator.RvrTacticsRoster(null, [], [], 2), Is.Null);
-                Assert.That(RvrFightBoards.Builds, Is.EqualTo(builds), "no stub builds a fight board");
+                Assert.That(RvrFightBoards.Builds, Is.EqualTo(builds), "with no world no hook builds a fight board");
             });
         }
 

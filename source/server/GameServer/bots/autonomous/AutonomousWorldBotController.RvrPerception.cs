@@ -220,6 +220,8 @@ public sealed partial class AutonomousWorldBotController
                          $"distance={(int)members[primary].Sighting.Distance} reasonFactors={AutonomousRvrPerception.Describe(seen.Factors)} " +
                          $"chance={seen.Chance:0.###} time_since_first_los_ms={seen.SinceFirstSightMilliseconds} delayMs={seen.DelayMilliseconds} " +
                          $"awareness={Properties.RVR_BOT_AWARENESS} region={bot.CurrentRegionID}");
+            // #505: the player (or his pet) noticed by this group: RVR_PLAYER_NOTICED once per contact.
+            RvrPlayerRecord.Noticed(bot, spotted, (int)members[primary].Sighting.Distance, seen.SinceFirstSightMilliseconds, called: false);
             if (Properties.RVR_BOT_SPOTTERS)
             {
                 var keys = new List<long>(noticed);
@@ -276,6 +278,7 @@ public sealed partial class AutonomousWorldBotController
                      $"chance={outcome.Chance:0.###} stealthLimit={RvrStealthNotice.Limit(sighting)} " +
                      $"time_since_first_los_ms={outcome.SinceFirstSightMilliseconds} delayMs={outcome.DelayMilliseconds} " +
                      $"awareness={Properties.RVR_BOT_AWARENESS} region={bot.CurrentRegionID}");
+        RvrPlayerRecord.Noticed(bot, target, (int)sighting.Distance, outcome.SinceFirstSightMilliseconds, called: false);
         return outcome.DelayMilliseconds <= 0;
     }
 
@@ -325,7 +328,13 @@ public sealed partial class AutonomousWorldBotController
                 news |= RvrPerceptionMemory.Alert(callee.Id, key, now, delay);
             if (!news)
                 continue;
-            if (callee.Relayed) relayed++;
+            if (callee.Relayed)
+            {
+                relayed++;
+                // #505: another group of the warband told of the player (it did not see him itself).
+                if (target is GamePlayer)
+                    RvrPlayerRecord.Noticed(mates[callee.Id], target, (int)mates[callee.Id].GetDistanceTo(target), -1, called: true);
+            }
             else told++;
         }
         if (told + relayed == 0 && held == 0)

@@ -51,6 +51,7 @@ public sealed partial class AutonomousWorldBotController
         bot.StopAttack();
         bot.TargetObject = null;
         _pvpWatch = null;
+        RvrDecide.Event(bot, "scan", "flee", "-", "flee.stalemate", $"target={target.Name}");
         Log.Info($"AUTONOMOUS_PVP_STALEMATE bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} target=\"{target.Name}\" " +
                  $"targetRealm={GlobalConstants.RealmToName(target.Realm)} region={bot.CurrentRegionID} position={bot.X},{bot.Y},{bot.Z} seconds={(now - _pvpWatchSince) / 1000}");
         return true;
@@ -113,6 +114,7 @@ public sealed partial class AutonomousWorldBotController
         bot.StopMovingOnPath();
         bot.TargetObject = null;
         _reachWatch = null;
+        RvrDecide.Event(bot, "scan", "flee", "-", "flee.unreachable", $"target={target.Name}");
         Log.Info($"AUTONOMOUS_UNREACHABLE_TARGET bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} target=\"{target.Name}\" " +
                  $"targetRealm={GlobalConstants.RealmToName(target.Realm)} heightAbove={target.Z - bot.Z} region={bot.CurrentRegionID} position={bot.X},{bot.Y},{bot.Z}");
         return true;
@@ -266,6 +268,13 @@ public sealed partial class AutonomousWorldBotController
         AutonomousDefensivePull.OnThreat(bot, enemy);
         AutonomousBotGroupCoordinator.MarkCombatObserved(bot.Group);
         brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
+        // #505: which list the target came from, the fight and the decision row (logging only).
+        string list = operatorThreats.Length > 0 ? "operator" : defending ? "defend" : siegeFighter ? "siege" :
+            FiringOnRealm(bot, enemy) ? "firing" : rvr.AtObjective ? "objective" : "noticed";
+        long fight = RvrFights.Touch(bot, enemy, "engage");
+        RvrRecordRows.Engage(bot, enemy, list, visibleTargets.Length, fight);
+        RvrDecide.Event(bot, "scan", "engage", RvrRecordText.Who(enemy), "scan." + list, $"visible={visibleTargets.Length}",
+            enemy is GamePlayer engagedPlayer ? engagedPlayer.Name : null);
         return true;
     }
 }

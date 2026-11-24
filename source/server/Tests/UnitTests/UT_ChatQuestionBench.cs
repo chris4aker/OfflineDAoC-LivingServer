@@ -27,7 +27,7 @@ namespace DOL.GS.Tests
     /// scores them in CI and fails the build when the good share falls or a bad category grows past bench_ratchet.json (1.2.2 fixes).
     /// </summary>
     [TestFixture]
-    public class UT_ChatQuestionBench
+    public partial class UT_ChatQuestionBench
     {
         internal sealed record Question(string Id, string Text, string Channel, eRealm Realm, string Cls, int Level, string Intent, string To);
 
@@ -119,10 +119,20 @@ namespace DOL.GS.Tests
             public bool Stub;
         }
 
+        /// <summary>
+        /// The responder as AutonomousBotVoices.SpeakerFor flags it. #477: a healing class has "is_healer", and "can_rez" from the
+        /// level its class learns a rez spell (live: ResurrectionSpell.Level &lt;= the bot's level); before, the bench's cleric said
+        /// "wish i could, no rez spell" and the ratchet could never see a rez reply.
+        /// </summary>
         private static VC.Speaker SpeakerOf(Run run, long id) =>
             new(id, run.Me.Name, run.Realm, run.Me.Cls, run.Me.Level, BotPersonalityType.Leveler,
-                new HashSet<string>(new[] { "solo", "outdoors", "evening" }.Concat(AutonomousChatPlaces.KeysAt(run.Me.Zone).Select(k => "at:" + k)),
+                new HashSet<string>(new[] { "solo", "outdoors", "evening" }.Concat(AutonomousChatPlaces.KeysAt(run.Me.Zone).Select(k => "at:" + k))
+                        .Concat(Healers.Contains(run.Me.Cls) ? ["is_healer"] : Array.Empty<string>())
+                        .Concat(CanRez(run.Me) ? ["can_rez"] : Array.Empty<string>()),
                     StringComparer.Ordinal));
+
+        /// <summary>The bench's stand-in for a rez spell: a healer class from level 10 (the evening sim's rule too).</summary>
+        internal static bool CanRez(Responder me) => Healers.Contains(me.Cls) && me.Level >= 10;
 
         /// <summary>The corpus port: AutonomousBotVoices.TryLine's request, with the bench's speaker, slots and clock.</summary>
         private static VC.Picked Pick(Run run, string kind, string intent, string answers, IEnumerable<string> flags, bool relax, Func<VC.Line, bool> filter,

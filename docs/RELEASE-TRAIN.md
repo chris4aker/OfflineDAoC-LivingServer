@@ -70,6 +70,15 @@ Changed 2026-11-14 (owner, later that night): **the True 1.65 edition gets 1.2 o
 
 - A stop ships only after its in-game check on the owner's PC, reported separately from automated tests
   (AGENTS.md). Automated tests and the rehearsal transcripts are reported as what they are.
+- **Real-mesh RvR probes, once per release on the PC** (#519, RvR audit 3 F7). The RvR route and muster tests in CI
+  run on a stand-in mesh; only these read the installed navmeshes, so CI cannot run them. On the owner's PC, on the
+  release candidate's build, run the four `Explicit` probes `UT_RvrRouteTrapProbe`, `UT_RvrCheckSpotCatalog`,
+  `UT_RvrLaneSurvey` and `UT_RelicShrineReach` (with `OFFLINE_DAOC_NAV_ROOT` and the other variables each one's
+  summary names), and the CI-excluded RvR navmesh classes in `.github/ci-excluded-tests.txt` (`UT_AllFrontierKeepRoutes`,
+  `UT_InstalledKeepRoutes`, `UT_KeepDoorNavmeshProbe`, `UT_SiegeFiringPositions`, `UT_SiegeIncidentNavigation`; and
+  `UT_SiegeMerchantCatalog`, `UT_FrontierSupplyMerchants`, which also read the installed world). Commit only their
+  summary lines (pass/fail counts and each probe's result line, with the build's `FORK_BUILD` commit) to the release's
+  PC results file, never the proof files, logs or the world. A route fix stays "tests only" until its probe line is in.
 - One major system at a time in the overnight soak runs, so a lag or a regression can be attributed.
 - Release notes show the work and the research and never spoil the Easter eggs or the internal vocabulary.
   - They say what changed for players, with no testing-status framing ("tests only", "seen in game") and no references

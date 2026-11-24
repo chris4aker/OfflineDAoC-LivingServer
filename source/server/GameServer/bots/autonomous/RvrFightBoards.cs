@@ -140,6 +140,9 @@ public static class RvrFightBoards
             Interlocked.Increment(ref _builds);
             if (Log.IsInfoEnabled && holder.TakeLogTurn(board))
                 Log.Info(DescribeBoard(asker, board, holder.Builds));
+            // #505: a board in contact keeps its group's fight open (logging only).
+            if (board != null && board.InContact)
+                RvrFights.OnBoard(asker, board);
         }
         return board;
     }

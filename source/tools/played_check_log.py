@@ -79,7 +79,42 @@ RAW_FRONT_RETRIES = 10
 # hour with (a), (b) and (c) all 0, so 11.5% failed a correct build. 15% still catches a runaway relay; the exact checks
 # catch a second hop or an echo at any share. Raised to 20% by the owner (2026-11-19, "Raise to 20%"): on 9a173f4
 # 17.4% of starts were relay-started with (a), (b) and (c) all 0 (exact, from= on every relayed start).
+# #519 (RvR audit 3, evidence.md F3): the bar went 10 -> 11.5 -> 15 -> 20% after builds came in over it, so the share no
+# longer constrains anything. The row now gates on the exact checks (a), (b), (c) and the fan-out per group reached
+# (RELAY_STARTS_PER_GROUP_REACHED); the share is reported as a tally beside the owner's bars, which stay here unchanged.
+# Whether to drop, freeze or keep them is the owner's decision.
 RELAY_SHARE_BAR = 20.0
+RELAY_SHARE_BAR_HISTORY = (10.0, 11.5, 15.0, 20.0)
+# One hop: a relaying stance that reaches a group starts at most one regroup there. More relayed starts than groups
+# reached means a group started again on one delivery, or a relay nobody logged as sent (#419's second part).
+RELAY_STARTS_PER_GROUP_REACHED = 1.0
+# #519 (evidence.md F1): the perception table (AutonomousRvrPerception: NormalAnchors, EasyAnchors, VeteranAnchors,
+# and the rate factors of NoticeChance), mirrored here so that the checker can hold RVR_NOTICE's
+# time_since_first_los_ms (the real time to notice) against it. delayMs is the designed 0.5-2 s reaction delay after a
+# notice, whatever the range, and is not the time to notice.
+NOTICE_PROFILES = {   # awareness -> (sure radius, outer range, anchors (distance, median seconds))
+    "normal": (1_000, 3_500, ((1_000, 0.75), (1_500, 1.5), (2_500, 6.0), (3_400, 20.0))),
+    "easy": (700, 2_500, ((700, 1.5), (1_500, 3.0), (2_500, 12.0))),
+    "veteran": (1_300, 4_500, ((1_300, 0.5), (1_500, 0.75), (2_500, 3.0), (3_400, 10.0))),
+}
+NOTICE_RATE_FACTORS = {"Combat": 2.0, "Casting": 1.5, "Group": 1.5, "Facing": 1.75, "Still": 0.5}
+# Notices that did not come from a roll on the table: noticed with a party mate, on a call, by the stealth rule.
+NOTICE_NOT_ROLLED = ("Party", "Alerted", "Stealth")
+NOTICE_BANDS = ((0, 1_000), (1_000, 1_500), (1_500, 2_500), (2_500, 3_400), (3_400, 10**9))
+# A band is judged with this many rolled notices; it holds when its median time to notice is within this factor of the
+# table's median for the same notices. Set by #519 before any PC log was read with it; the owner may change it.
+NOTICE_BAND_MIN = 20
+NOTICE_HOLD_FACTOR = 1.5
+# time_since_first_los_ms runs from the first scan that saw the target (AutonomousRvrPerception.Memory.Notice), not
+# from the moment of first sight that the table's medians are fitted to (ChancePerScan: first sight at a random moment
+# between two scans): it is a whole number of scans, 0 when the first scan noticed. So the row adds half a scan, at the
+# cadence the log shows (notice_cadence), and holds that against the table. Found on 868a82d (#519): read raw, every
+# band's median was 0 s; the scans there came about 4.3 s apart, not the nominal 1.0-1.25 s.
+NOTICE_SCAN_MS = 1_125   # DefaultScanIntervalMilliseconds, used when the log has too few repeat scans to measure it
+# #519 (F9): a night of RVR_EVENT_ENDED runs from noon to noon, so an evening and its small hours stay one night.
+NIGHT_STARTS_HOUR = 12
+# #519 (F10): the owner's assumed RvR split (rvr_roam_population_split, owner decision 2026-11-16), when the line has none.
+ASSUMED_SPLIT = "55/30/15"
 # Sweep 6d (build b1b6846): a required-adds phase with no add death this long while the raid dealt the adds more than
 # their combined health (D-1, the Galladoria Earthmenders); raider deaths to an epic this soon after its raid ended, in
 # its region (P-1, P-2); a raid's end outcome lines are matched to its REALM_RAID_ENDED within this many seconds.
@@ -554,7 +589,7 @@ simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE",
        "EPIC_SWEEP_ADD", "EPIC_SWEEP_RAID_START", "EPIC_SWEEP_RAID_DONE", "EPIC_SWEEP_RAID_NOT_STARTED",
        "EPIC_SWEEP_HELD", "RVR_SPOT", "RVR_ROAM_CHECK", "RVR_ROAM_HUNT", "RVR_ROAM_MOVE_ON", "RVR_LANE_FALLBACK",
        "RVR_LANE_REJECTED", "RVR_ASSIST_CALL", "RVR_ASSIST_SWITCH", "RVR_CC_ASSIGN", "RVR_INTERRUPT", "RVR_PEEL",
-       "RVR_KITE", "RVR_STEALTH_OPEN", "RVR_PARTY_FORMED", "CRAFT_SESSION_START", "ECON_SUPPLY",
+       "RVR_KITE", "RVR_STEALTH_OPEN", "CRAFT_SESSION_START", "ECON_SUPPLY",
        "HIRE_WORD_165", "HIRED_COMPANION", "HIRED_COMPANION_SUMMONED", "HIRED_COMPANION_DISMISSED",
        "HIRED_COMPANION_REVIVED", "HIRED_COMPANION_RELEASED", "HIRED_COMPANION_ORPHAN",
        "HIRED_COMPANION_DELETE_FAILED", "BOT_PEOPLE_SUMMARY", "BOT_SKILL_BUDGET",
@@ -1511,8 +1546,189 @@ def _rvr_notice(sec, t, message, level, near):
         sec.ev["notice.enemybot"].add(t, message)
         if f.get("delayMs") is not None and len(sec.lists["notice_delay"]) < 200000:
             sec.lists["notice_delay"].append(num(f["delayMs"]))
+        if f.get("time_since_first_los_ms") is not None and len(sec.lists["notice_time"]) < 200000:
+            # (distance, seconds to notice, the table's median for this notice or None when not rolled on the table)
+            distance = num(f.get("distance"), -1)
+            sec.lists["notice_time"].append((distance, num(f["time_since_first_los_ms"]) / 1000,
+                                             notice_table_median(distance, f.get("awareness"), f.get("reasonFactors"))))
     elif kind == "Player":
         sec.ev["notice.player"].add(t, message)
+
+
+def notice_table_median(distance: float, awareness: str | None, factors: str | None) -> float | None:
+    """The perception table's median seconds to notice for one RVR_NOTICE (AutonomousRvrPerception.NoticeChance:
+    MedianSecondsToNotice over the rate of its factors). 0 inside the sure radius; None for a notice not rolled on the
+    table (a party mate, a call, the stealth rule), past the outer range or without a distance. Pure."""
+    sure, outer, anchors = NOTICE_PROFILES.get((awareness or "normal").strip().lower(), NOTICE_PROFILES["normal"])
+    names = set((factors or "").split("+"))
+    if distance < 0 or names & set(NOTICE_NOT_ROLLED) or distance > outer:
+        return None
+    if distance <= sure or "Close" in names:
+        return 0.0
+    if distance <= anchors[0][0]:
+        median = anchors[0][1]
+    else:
+        i = 0
+        while i < len(anchors) - 2 and distance > anchors[i + 1][0]:
+            i += 1
+        (d0, m0), (d1, m1) = anchors[i], anchors[i + 1]
+        x = (distance - d0) / max(1, d1 - d0)
+        median = math.exp(math.log(m0) + x * (math.log(m1) - math.log(m0)))
+    rate = 1.0
+    for name, factor in NOTICE_RATE_FACTORS.items():
+        if name in names and not (name == "Still" and "Combat" in names):
+            rate *= factor
+    return median / rate
+
+
+def notice_cadence(notices) -> tuple[float, bool]:
+    """The scan cadence in seconds that the log shows: time_since_first_los_ms is a whole number of scans, so the lowest
+    cluster of positive values is one scan (the median of those within half and one and a half times their 10th
+    percentile). (cadence, measured); with under NOTICE_BAND_MIN positive values, the nominal NOTICE_SCAN_MS. Pure."""
+    positive = sorted(s for _, s, m in notices if m is not None and s > 0)
+    if len(positive) < NOTICE_BAND_MIN:
+        return NOTICE_SCAN_MS / 1000, False
+    low = positive[len(positive) // 10]
+    one = [s for s in positive if 0.5 * low <= s <= 1.5 * low]
+    return one[len(one) // 2], True
+
+
+def notice_bands(notices, cadence: float | None = None) -> list[dict]:
+    """Rolled notices by distance band: count, the median time from first sight (time_since_first_los_ms plus half a
+    scan: the first sight falls at a random moment before the first scan that saw the target), the table's median for
+    the same notices, the share noticed on the first scan, and whether the band holds (NOTICE_BAND_MIN,
+    NOTICE_HOLD_FACTOR); the sure radius is a tally. Pure."""
+    def median(values):
+        values = sorted(values)
+        n = len(values)
+        return None if not n else values[n // 2] if n % 2 else (values[n // 2 - 1] + values[n // 2]) / 2
+    if cadence is None:
+        cadence = notice_cadence(notices)[0]
+    rows = []
+    for lo, hi in NOTICE_BANDS:
+        rolled = [(s, m) for d, s, m in notices if m is not None and lo <= d < hi]
+        seen, table = median([s + cadence / 2 for s, _ in rolled]), median([m for _, m in rolled])
+        first = (sum(1 for s, _ in rolled if s <= 0) / len(rolled)) if rolled else None
+        judged = len(rolled) >= NOTICE_BAND_MIN and table is not None and table > 0
+        holds = None
+        if judged:
+            holds = table / NOTICE_HOLD_FACTOR <= seen <= table * NOTICE_HOLD_FACTOR
+        rows.append({"band": f"{lo}-{hi}" if hi < 10**9 else f"{lo}+", "n": len(rolled), "seen": seen,
+                     "table": table, "first": first, "judged": judged, "holds": holds})
+    return rows
+
+
+def notice_text(rows) -> str:
+    """One line per band for the row's detail. Pure."""
+    def sec_text(value):
+        return "-" if value is None else f"{value:.1f} s"
+    parts = []
+    for r in rows:
+        verdict = ("holds" if r["holds"] else "off the table") if r["judged"] else (
+            "sure radius, a tally" if r["table"] == 0 else f"not judged (under {NOTICE_BAND_MIN})")
+        first = "" if r["first"] is None else f", {100 * r['first']:.0f}% on the first scan"
+        parts.append(f"{r['band']}: {r['n']}, median {sec_text(r['seen'])} against {sec_text(r['table'])}{first} "
+                     f"({verdict})")
+    return "; ".join(parts)
+
+
+def night_of(t: dt.datetime) -> str:
+    """The night a line belongs to (noon to noon), named by its evening's date. Pure."""
+    return (t - dt.timedelta(hours=NIGHT_STARTS_HOUR)).strftime("%m/%d")
+
+
+def siege_outcome(reason: str) -> str:
+    """RVR_EVENT_ENDED reason= as an outcome (AutonomousRvrEventLayer.EndEvent's reasons). Pure."""
+    reason = reason or ""
+    if reason.startswith("Keep captured"):
+        return "captured"
+    if reason.startswith("Siege defended"):
+        return "defended"
+    if reason.startswith("Rally failed"):
+        return "rally_failed"
+    return "other"
+
+
+@handles("RVR_EVENT_ENDED")
+def _rvr_event_ended(sec, t, message, level, near):
+    """#519 (F9): siege outcomes per night by kind and thin; the attacker win rate is captured over captured + defended."""
+    f = kv(message)
+    sec.ev["RVR_EVENT_ENDED"].add(t, message)
+    sec.lists["siege_ends"].append((night_of(t), f.get("kind", "?"), f.get("thin", "?"), siege_outcome(f.get("reason"))))
+
+
+def siege_nights(ends) -> list[dict]:
+    """Per night, and per kind and thin in it: captured, defended, failed rallies and other ends. Pure."""
+    nights = {}
+    for night, kind, thin, outcome in ends:
+        row = nights.setdefault(night, {"night": night, "by": {}, "all": Counter()})
+        row["by"].setdefault((kind, thin), Counter())[outcome] += 1
+        row["all"][outcome] += 1
+    return [nights[k] for k in sorted(nights)]
+
+
+def win_rate(outcomes: Counter) -> str:
+    decided = outcomes["captured"] + outcomes["defended"]
+    return f"{100 * outcomes['captured'] / decided:.0f}%" if decided else "-"
+
+
+def siege_text(nights) -> str:
+    parts = []
+    for row in nights:
+        a = row["all"]
+        kinds = ", ".join(f"{kind} thin={thin}: {o['captured']}/{o['defended']}/{o['rally_failed']}/{o['other']}"
+                          for (kind, thin), o in sorted(row["by"].items()))
+        parts.append(f"night of {row['night']}: {sum(a.values())} ended, attackers took {a['captured']} of "
+                     f"{a['captured'] + a['defended']} decided ({win_rate(a)}), {a['rally_failed']} failed rallies "
+                     f"[captured/defended/failed rally/other by kind: {kinds}]")
+    return "; ".join(parts)
+
+
+@handles("RVR_PARTY_FORMED")
+def _rvr_party_formed(sec, t, message, level, near):
+    """#519 (F10): parties formed per hour by kind and size, and the realm's census (census=warband/eight/small bots)
+    against the split the line names (split=, the owner's assumed 55/30/15)."""
+    f = kv(message)
+    sec.ev["RVR_PARTY_FORMED"].add(t, message)
+    hour = t.strftime("%m/%d %H:00")
+    sec.lists["parties"].append((hour, f.get("kind", "?"), num(f.get("size"))))
+    if f.get("census"):
+        sec.lists["party_census"].append((hour, f.get("realm", "?"), f["census"]))
+    if f.get("split"):
+        sec.lists["party_split"] = [f["split"]]
+
+
+def party_hours(parties, census) -> list[dict]:
+    """Per clock hour: parties and their bots by kind, and each realm's last census of the hour. Pure."""
+    hours_ = {}
+    for hour, kind, size in parties:
+        row = hours_.setdefault(hour, {"hour": hour, "parties": Counter(), "bots": Counter(), "census": {}})
+        row["parties"][kind] += 1
+        row["bots"][kind] += size
+    for hour, realm, text in census:
+        if hour in hours_:
+            hours_[hour]["census"][realm] = text
+    return [hours_[k] for k in sorted(hours_)]
+
+
+def census_share(text: str) -> str:
+    """'warband/eight/small' bot counts as percent shares, '55/30/15' style. Pure."""
+    try:
+        parts = [int(p) for p in text.split("/")]
+    except ValueError:
+        return text
+    total = sum(parts)
+    return "/".join(f"{100 * p / total:.0f}" for p in parts) if total and len(parts) == 3 else text
+
+
+def party_text(rows, split: str) -> str:
+    parts = []
+    for row in rows:
+        kinds = ", ".join(f"{k} {row['parties'][k]:.0f} ({row['bots'][k]:.0f} bots, "
+                          f"{row['bots'][k] / row['parties'][k]:.1f} each)" for k in sorted(row["parties"]))
+        census = ", ".join(f"{realm} {census_share(text)}%" for realm, text in sorted(row["census"].items()))
+        parts.append(f"{row['hour']}: {kinds}" + (f"; census by realm {census}" if census else ""))
+    return f"against the assumed split {split}: " + "; ".join(parts)
 
 
 @handles("RVR_FRONTIER_WAIT_LONG")
@@ -2358,7 +2574,10 @@ def rvr(j: Judge, sec: Section, c):
     share = 100 * relay_started / starts if starts else 0.0
     counts = {k: c(f"regroup.{k}") for k in ("a_relayed_sends", "b_echo_source", "c_returned")}
     named, one_fight = sec.n["relay.named"], c("regroup.c_one_fight")
-    over = starts and share > RELAY_SHARE_BAR
+    sends, delivered = sec.n["relay.sends"], sec.n["relay.delivered"]
+    # with no group reached logged (relayedTo=), the fan-out cannot be read; the exact checks still judge
+    fanned = bool(delivered) and relay_started / delivered > RELAY_STARTS_PER_GROUP_REACHED
+    over = bool(starts) and share > RELAY_SHARE_BAR
     # c81eb5d: with no relayed start at all there is nothing to judge, whatever the build logs (it logs from=).
     c_text = (f"(c) relay back at its sender within 60 s: nothing to judge (no relayed starts)" if not relay_started else
               f"(c) relay back at its sender within 60 s: {counts['c_returned']} (exact, from= on {named} relayed "
@@ -2367,17 +2586,22 @@ def rvr(j: Judge, sec: Section, c):
               f"sender was logged); relays among the groups of one fight: {one_fight}")
     if named and one_fight:
         c_text += f"; {one_fight} relayed start(s) without from= among the groups of one fight"
-    detail = (f"{starts} regroup starts in {hours(span)} ({starts / (span / 3600):.0f}/h), {relay_started} started by "
-              f"a relay ({share:.1f}%, at most {RELAY_SHARE_BAR:g}%); (a) relayed stance relayed again: "
-              f"{counts['a_relayed_sends']}, (b) regroup ending a relayed retreat relayed: {counts['b_echo_source']}, "
-              f"{c_text}; relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}; "
-              f"{relay_fan_out(sec.n['relay.sends'], sec.n['relay.delivered'], relay_started)}")
+    bars = "/".join(f"{b:g}" for b in RELAY_SHARE_BAR_HISTORY)
+    tally = (f"share, a tally (#519, not a gate): {relay_started} of {starts} starts by a relay ({share:.1f}%; "
+             f"{'over' if over else 'at or under'} the owner's last bar of {RELAY_SHARE_BAR:g}%, bars "
+             f"{bars}%: the owner decides their fate)")
+    detail = (f"{starts} regroup starts in {hours(span)} ({starts / (span / 3600):.0f}/h); (a) relayed stance relayed "
+              f"again: {counts['a_relayed_sends']}, (b) regroup ending a relayed retreat relayed: "
+              f"{counts['b_echo_source']}, {c_text}; {relay_fan_out(sends, delivered, relay_started)}"
+              f"{' (over ' + format(RELAY_STARTS_PER_GROUP_REACHED, 'g') + ' per group reached)' if fanned else ''}; "
+              f"relayed regroups ended by contact within 1 s: {c('regroup.relay_flash')}; {tally}")
     bad = [j.ev(f"regroup.{k}") for k, n in counts.items() if n]
-    if over:
+    if fanned:
         bad.append(j.ev("regroup.relay_started"))
-    row = (f"Regroups no longer flap: one hop, no echo, relay-started regroups {RELAY_SHARE_BAR:g}% of starts or less "
-           f"(RVR_REGROUP)")
-    note = "relayedTo>0 on a group's own retreat or own regroup is allowed (#304: one hop)"
+    row = ("Regroups no longer flap: one hop, no echo (exact checks (a), (b), (c) and at most one relayed start per "
+           "group reached; RVR_REGROUP)")
+    note = ("relayedTo>0 on a group's own retreat or own regroup is allowed (#304: one hop); the relay-started share "
+            "is a tally beside the owner's bars, not a gate (#519, evidence.md F3)")
     if bad:
         j.add("rvr", "regroup", row, CONTRADICTED, min(bad, key=lambda e: e.first_t), detail, note=note)
     elif starts:
@@ -2385,11 +2609,52 @@ def rvr(j: Judge, sec: Section, c):
     else:
         j.add("rvr", "regroup", row, NOT_SEEN, None, detail)
     delays = sorted(sec.lists["notice_delay"])
-    median = f"{delays[len(delays) // 2]:.0f} ms" if delays else "-"
-    j.seen_if("rvr", "notice", "Bots notice bots by the player rules (RVR_NOTICE kind=EnemyBot, RVR_SPOT)",
-              "notice.enemybot", f"{c('notice.enemybot')} EnemyBot notices (median delayMs {median}), "
-              f"{sec.n['notice.Player']} of the player, {c('RVR_SPOT')} spots",
-              note="held against the perception table by the log review, not here")
+    delay = f"{delays[len(delays) // 2]:.0f} ms" if delays else "-"
+    notices = sec.lists["notice_time"]
+    cadence, measured = notice_cadence(notices)
+    bands = notice_bands(notices, cadence)
+    judged = [b for b in bands if b["judged"]]
+    not_rolled = sum(1 for _, _, m in notices if m is None)
+    notice_detail = (f"{c('notice.enemybot')} EnemyBot notices, {len(notices)} with time_since_first_los_ms "
+                     f"({not_rolled} not rolled on the table: party mate, call, stealth or past the outer range); by "
+                     f"band, notices, median time from first sight (the measure plus half a scan) against the table's: "
+                     f"{notice_text(bands)}; scans {cadence:.2f} s apart "
+                     f"({'measured in the log' if measured else 'nominal: too few repeat scans to measure'}; designed "
+                     f"1.0-1.25 s); "
+                     f"{sec.n['notice.Player']} of the player, {c('RVR_SPOT')} spots; median delayMs {delay} (the "
+                     f"designed 0.5-2 s reaction delay after a notice, not the time to notice)")
+    if not c("notice.enemybot"):
+        status, ev = NOT_SEEN, None
+    elif not notices:
+        status, ev = NOT_SEEN, None
+        notice_detail += "; no time_since_first_los_ms in the lines (a build before WP1, #301): not held"
+    elif not judged:
+        status, ev = NOT_SEEN, None
+        notice_detail += f"; no band has {NOTICE_BAND_MIN} rolled notices: not held"
+    elif all(b["holds"] for b in judged):
+        status, ev = SEEN, j.ev("notice.enemybot")
+    else:
+        status, ev = CONTRADICTED, j.ev("notice.enemybot")
+    j.add("rvr", "notice", "Bots notice bots by the player rules: the time to notice (RVR_NOTICE kind=EnemyBot "
+          "time_since_first_los_ms) by distance band, held against the perception table", status, ev, notice_detail,
+          note=(f"a band holds when its median time from first sight is within a factor of {NOTICE_HOLD_FACTOR:g} of "
+                f"the table's for the same notices (distance, awareness, factors) with {NOTICE_BAND_MIN}+ notices (#519's "
+                f"bar); time_since_first_los_ms counts whole scans from the first scan that saw the target, so half a "
+                f"scan is added (added after 868a82d's log, where every raw median was 0 s); the distance is at the notice, so a target walking in is held against a "
+                f"closer, shorter median than when first seen"))
+    nights = siege_nights(sec.lists["siege_ends"])
+    j.add("rvr", "siege_outcomes", "Siege outcomes per night by kind and thin, with the attacker win rate "
+          "(RVR_EVENT_ENDED)", SEEN if nights else NOT_SEEN, j.ev("RVR_EVENT_ENDED") if nights else None,
+          siege_text(nights) or "no RVR_EVENT_ENDED", must=False,
+          note="a tally, no bar: the 35-65% band is an assumption of a sim (UT_SiegeBalanceNov06) that assumes the "
+               "balance moves the win rate (#519, evidence.md F9)")
+    split = (sec.lists["party_split"] or [ASSUMED_SPLIT])[-1]
+    party_rows = party_hours(sec.lists["parties"], sec.lists["party_census"])
+    j.add("rvr", "party_split", "RvR parties formed per hour by kind and size, against the assumed split "
+          "(RVR_PARTY_FORMED)", SEEN if party_rows else NOT_SEEN, j.ev("RVR_PARTY_FORMED") if party_rows else None,
+          party_text(party_rows, split) if party_rows else "no RVR_PARTY_FORMED", must=False,
+          note="a tally, no bar: 55/30/15 is the owner's assumption (#519, evidence.md F10); the line has a budget of "
+               "60 a minute, and census= counts each realm's RvR bots not in a siege after the party formed")
     online = sec.lists["online"]
     kills = c("RVR_BOT_KILLED")
     rate = f"{kills / (span / 3600):.0f} an hour"
@@ -2783,11 +3048,18 @@ def main(argv=None) -> int:
     parser.add_argument("--year", type=int, help="the log's year (lines carry no year; default this year)")
     parser.add_argument("--near", type=float, default=RESTING_BOSS_NEAR,
                         help=f"distance to a resting boss that flags a stranded teleport (default {RESTING_BOSS_NEAR:.0f})")
+    parser.add_argument("--rvr-hour", action="store_true",
+                        help="the RvR hour report instead (rvr_hour.py: fights, sieges, perception, the player; #505)")
     args = parser.parse_args(argv)
     path = Path(args.log)
     if not path.is_file():
         print(f"no such file: {path}", file=sys.stderr)
         return 2
+    if args.rvr_hour:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import rvr_hour
+        return rvr_hour.main([str(path)] + (["--json"] if args.json else []) + (["--year", str(args.year)] if args.year else []) +
+                             (["--since", args.since] if args.since else []))
     year = args.year or dt.date.today().year
     since = parse_since(args.since, year) if args.since else None
     sections = read_log(path, since=since, year=year, near=args.near)

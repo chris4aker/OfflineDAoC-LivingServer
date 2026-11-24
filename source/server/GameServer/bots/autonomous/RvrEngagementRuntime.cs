@@ -293,7 +293,9 @@ public static class RvrEngagementRuntime
                      $"reason=\"{reason}\" odds={sizeUp.Odds:0.00} read={sizeUp.PerceivedOdds:0.00} friendly=\"{sizeUp.Friendly}\" " +
                      $"enemy=\"{sizeUp.Enemy}\" skill={plan.SkillTier} runners={runners} holdouts={holdouts} slowestMs={slowest} " +
                      $"to={board.RegionId}:{(int)point.X},{(int)point.Y} relayedTo={relayed} relay={relay} relayed={relayedHere}" +
-                     (relayFrom != null ? $" from={relayFrom}" : string.Empty));
+                     (relayFrom != null ? $" from={relayFrom}" : string.Empty) + $" fight={RvrFights.IdOf(bot)}");
+        RvrDecide.Event(bot, "plan", "flee", $"{board.RegionId}:{(int)point.X},{(int)point.Y}",
+            relayedHere ? "flee.stanceRelayed" : "flee.stance", reason);
     }
 
     private static void BeginRegroup(GameBot bot, Runtime runtime, string groupName, RvrFightBoard board, RvrFightPlan plan,
@@ -413,7 +415,8 @@ public static class RvrEngagementRuntime
         if (Log.IsInfoEnabled)
             Log.Info($"RVR_STANCE group={groupName} realm={GlobalConstants.RealmToName(board.Realm)} region={board.RegionId} " +
                      $"from={previous} to={plan.Stance} reason=\"{reason}\" skill={plan.SkillTier} members={board.Friendly.Count} " +
-                     $"enemies={board.Enemy.Count} contact={board.InContact} wipes={board.State.WipesWithin(now)} unlogged={suppressed}");
+                     $"enemies={board.Enemy.Count} contact={board.InContact} wipes={board.State.WipesWithin(now)} unlogged={suppressed} " +
+                     $"fight={RvrFights.IdOfGroup(groupName)}");
     }
 
     private static void LogSizeUp(Runtime runtime, string groupName, RvrFightBoard board, in RvrSizeUp s, RvrFightPlan plan,

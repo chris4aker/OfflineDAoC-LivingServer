@@ -838,6 +838,12 @@ NORMAL PLAYER COMMANDS
   /rude
   Handler: DOL.GS.Commands.EmoteCommandHandler
 
+/rvrodd
+  Marks this moment of the realm war as odd, for the server log
+  /rvrodd - marks the fight or siege around you as wrong
+  /rvrodd <note> - the same, with a note saying what was wrong
+  Handler: DOL.GS.Commands.RvrOddCommandHandler
+
 /safety
   Turns off PvP safety flag.
   /safety off

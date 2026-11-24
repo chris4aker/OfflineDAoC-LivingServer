@@ -3414,6 +3414,19 @@ namespace DOL.AI.Brain
             // away from the fight their pet had already started.
             Body.TargetObject = protectionTarget ?? directAttacker ?? activePetTarget ?? CalculateNextAttackTarget();
             if (RvrTacticsTarget(Body.TargetObject as GameLiving, protectionTarget, directAttacker) is { } rvrCalled) Body.TargetObject = rvrCalled;
+            // #505: the brain's target decision, change-only, in a war zone (logging only).
+            if (BotBody is { IsAutonomousWorldBot: true } tracedBot && Body.TargetObject is GameLiving tracedTarget &&
+                tracedTarget.Realm != Body.Realm && tracedTarget.Realm != eRealm.None && AutonomousRvrRecordScope.InWar(Body))
+            {
+                string rule = ReferenceEquals(tracedTarget, protectionTarget) ? "brain.protect" :
+                    ReferenceEquals(tracedTarget, directAttacker) ? "brain.attacker" :
+                    ReferenceEquals(tracedTarget, activePetTarget) ? "brain.pet" :
+                    ReferenceEquals(tracedTarget, (RvrFightBoards.Peek(Body)?.Plan?.CalledTarget)) ? "brain.called" : "brain.aggro";
+                string before = RvrDecide.Memory.Last(tracedBot.DatabaseID, "target");
+                RvrDecide.Target(tracedBot, "brain", tracedTarget, rule, previousAttackTarget is GameLiving was ? $"was={was.Name}" : null);
+                if (!string.Equals(before, RvrDecide.Memory.Last(tracedBot.DatabaseID, "target"), StringComparison.Ordinal))
+                    RvrFights.Touch(Body, tracedTarget, "target");
+            }
             RedirectPetFromControlledTarget(Body.TargetObject as GameLiving);
             MaintainTankPeel();
             // A tethered boss outside its tether is immune: stop hitting it and lead it home (AutonomousTetherReset).
