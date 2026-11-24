@@ -251,6 +251,18 @@ otherwise.
     of 10,303 death replans had dropped to green); `AUTONOMOUS_DEATH_ROUTE_REPLAN` names the killer
     (`AutonomousDeathBlame`). `UT_CampChoiceAndDeaths123`. **Tests only.**
 
+**RvR**
+- **Every claimable frontier keep starts at level 5** (#526, owner 2026-11-24). Dun nGed, Dun Da Behnn and Dun Ailinne
+  shipped at level 1 and Dun Crauchon at 4, so their doors were a fifth (four fifths) of every other keep's and their
+  guards and lord lower, at the two keeps that guard Hibernia's relics among them (siege.md 9). They are at 5 in
+  `release-world-defaults.json`. A world from an earlier build is raised once at start (`FrontierKeepLevelRepair`, after
+  the relic manager): only a keep that still holds its old shipped level and that no guild holds, so a level a player
+  changed is left alone. The doors of such a keep that still hold the old level's full health (the shipped rows, which
+  a fresh 1.2.3 world also has) are made whole at level 5; a hurt door keeps its share. Recorded as
+  `hib-keep-levels-1.2.3` in `living_server_world_repairs`, so it never runs again (a later capture's reset to
+  `starting_keep_level` stays). Only raises. Log `KEEP_LEVEL_DEFAULT_RAISED`. `UT_FrontierKeepLevelRepair526` pins
+  every claimable keep at 5. **Tests only.**
+
 ## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in
