@@ -74,19 +74,54 @@ namespace DOL.UnitTests
             Assert.That(new BotGoalWeights(0, 0, 0, 100).Choose(0.5, excludeBattlegrounds: true), Is.EqualTo(0));
         }
 
+        // A band of 100 bots with 40 battleground slots (40%): the share goes to the bracket bots at that rate only.
         [TestCase(10, 20, 30, 40, 100, 40)]
-        [TestCase(10, 20, 30, 40, 25, 25)]
+        [TestCase(10, 20, 30, 40, 25, 10)]
         [TestCase(10, 20, 30, 40, 0, 0)]
         public void UnusableBattlegroundSlotsReturnToPve(int solo, int group, int rvr, int battlegrounds, int eligible, int expected)
         {
             var target = new AutonomousObjectiveAssignments.Allocation(solo, group, rvr, battlegrounds);
-            var limited = AutonomousObjectiveAssignments.LimitBattlegrounds(target, eligible);
+            var limited = AutonomousObjectiveAssignments.LimitBattlegrounds(target, eligible, solo + group + rvr + battlegrounds);
             Assert.Multiple(() =>
             {
                 Assert.That(limited.Battlegrounds, Is.EqualTo(expected));
                 Assert.That(limited.RvR, Is.EqualTo(rvr));
                 Assert.That(limited.SoloPve + limited.GroupPve + limited.RvR + limited.Battlegrounds, Is.EqualTo(solo + group + rvr + battlegrounds));
             });
+        }
+
+        /// <summary>
+        /// The Levels 1-19 row's 10% is for the bots in a bracket only: of a realm's 900 bots at 1-19 with 41 at 15-19,
+        /// 10% of the 41 go (4), not the band's 90 capped at all 41. The old target disagreed with the task-break draw,
+        /// which already gave 10% of the 15-19 bots (1.2.2, Levels 1-19 row 40/50/0/10).
+        /// </summary>
+        [TestCase(900, 41, 4)]
+        [TestCase(900, 14, 1)]
+        [TestCase(900, 900, 90)]
+        [TestCase(900, 0, 0)]
+        public void TheShareAppliesToTheBracketBotsOnly(int band, int eligible, int expected)
+        {
+            var target = new AutonomousObjectiveAssignments.Allocation(band * 40 / 100, band * 50 / 100, 0, band * 10 / 100);
+            var limited = AutonomousObjectiveAssignments.LimitBattlegrounds(target, eligible, band);
+            Assert.Multiple(() =>
+            {
+                Assert.That(limited.Battlegrounds, Is.EqualTo(expected));
+                Assert.That(limited.SoloPve + limited.GroupPve, Is.EqualTo(band - expected));
+                Assert.That(limited.SoloPve - target.SoloPve, Is.EqualTo((int)Math.Round((target.Battlegrounds - expected) * 40d / 90)));
+            });
+        }
+
+        /// <summary>The allocator and the per-bot draw agree: a bracket bot's battleground odds are the row's percentage.</summary>
+        [Test]
+        public void AllocatorMatchesThePerBotDraw()
+        {
+            var weights = new BotGoalWeights(30, 40, 10, 20);
+            int drawn = Enumerable.Range(0, 1000).Count(i => weights.Choose(i / 1000d) == 3);
+            // Levels 20-49: 200 bots, 50 of them at 20-35.
+            var target = new AutonomousObjectiveAssignments.Allocation(60, 80, 20, 40);
+            var limited = AutonomousObjectiveAssignments.LimitBattlegrounds(target, 50, 200);
+            Assert.That(limited.Battlegrounds / 50d, Is.EqualTo(drawn / 1000d));
+            Assert.That(limited.RvR, Is.EqualTo(20));
         }
     }
 }
