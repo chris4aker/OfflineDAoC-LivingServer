@@ -1302,6 +1302,14 @@ namespace DOL.GS
                 WalkToInternal(destination, Math.Max((short) 20, speed));
                 return AutonomousGroupFormationFollow.FollowCheckMilliseconds;
             }
+            // 1.2.3 (#538): farther than that, a path to the leader's zone finds nothing here (paths stay inside one zone):
+            // it paused the follower, and it stood 1,500-2,500 units back at the border. The follower keeps any walk under
+            // way and its next AI turn routes it over the border (AutonomousGroupFormationFollow.NeedsSeamRoute).
+            if (crossBorder)
+            {
+                AutonomousGroupFormationFollow.NoteBorderHandOff();
+                return AutonomousGroupFormationFollow.FollowCheckMilliseconds;
+            }
 
             // Snap the destination to the mesh with a generous search distance. Use the follow target's position as a fallback.
             if (!TrySnapToMesh(ref destination))

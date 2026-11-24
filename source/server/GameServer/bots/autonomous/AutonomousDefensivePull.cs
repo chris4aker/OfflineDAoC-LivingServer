@@ -24,6 +24,80 @@ namespace DOL.GS
             public readonly Dictionary<IControlledBrain, eAggressionState> Pets = new();
             public long Until, RetryAfter, NextMove;
             public bool Shot, Active;
+            public readonly UnreachableBench Bench = new();
+        }
+
+        /// <summary>
+        /// 1.2.3 (#539): a party's memory of ranged pulls with no firing point. A target with no firing point
+        /// <see cref="TriesBeforeBench"/> times is benched for the camp: the party pulls it the ordinary way (the puller's
+        /// watched pull, retried once, then another spawn) instead of standing on the ranged pull. With
+        /// <see cref="BenchedTargetsBeforeCampGiveUp"/> targets benched the camp is given up (a new camp). Owner's PC, 1.2.2
+        /// 868a82d, 11/24: 2,788 AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE, 55 runs of one shooter on one target for 10 minutes
+        /// or more (Hendrik and a sheevra skirmisher 126 times in 74 minutes), because nothing remembered the failure.
+        /// Pure: fed one observation at a time; not thread-safe (the pull state's lock guards it).
+        /// </summary>
+        public sealed class UnreachableBench
+        {
+            public const int TriesBeforeBench = 2;
+            public const int BenchedTargetsBeforeCampGiveUp = 3;
+            public const long BenchMilliseconds = 20 * 60_000L;
+
+            private readonly Dictionary<int, (int Tries, long BenchedAt)> _targets = new();
+
+            public string CampKey { get; private set; } = string.Empty;
+
+            /// <summary>The party works this camp; a different camp starts with a clean bench.</summary>
+            public void ForCamp(string campKey)
+            {
+                campKey ??= string.Empty;
+                if (string.Equals(campKey, CampKey, StringComparison.Ordinal)) return;
+                CampKey = campKey;
+                _targets.Clear();
+            }
+
+            public bool IsBenched(int target, long now) =>
+                _targets.TryGetValue(target, out var entry) && entry.BenchedAt > 0 && now - entry.BenchedAt < BenchMilliseconds;
+
+            public int Tries(int target) => _targets.TryGetValue(target, out var entry) ? entry.Tries : 0;
+
+            /// <summary>One more ranged pull of this target found no firing point; true when this one benches it.</summary>
+            public bool RecordUnreachable(int target, long now)
+            {
+                if (IsBenched(target, now)) return false;
+                _targets.TryGetValue(target, out var entry);
+                // A bench that ran out starts counting again.
+                int tries = entry.BenchedAt > 0 ? 1 : entry.Tries + 1;
+                bool bench = tries >= TriesBeforeBench;
+                _targets[target] = (tries, bench ? Math.Max(1, now) : 0);
+                return bench;
+            }
+
+            public int BenchedCount(long now) => _targets.Values.Count(entry => entry.BenchedAt > 0 && now - entry.BenchedAt < BenchMilliseconds);
+
+            /// <summary>Enough of this camp's targets are benched: the camp is given up.</summary>
+            public bool ShouldGiveUpCamp(long now) => BenchedCount(now) >= BenchedTargetsBeforeCampGiveUp;
+
+            public void Clear() => _targets.Clear();
+        }
+
+        /// <summary>
+        /// 1.2.3 (#539), called by the party's camp worker before a pull: true when enough of this camp's targets had no
+        /// firing point that the party should give the camp up. The bench is then cleared for the next camp.
+        /// </summary>
+        public static bool ShouldGiveUpCamp(Group group, string campKey, out int benched)
+        {
+            benched = 0;
+            if (group == null) return false;
+            State state = States.GetOrCreateValue(group);
+            lock (state)
+            {
+                state.Bench.ForCamp(campKey);
+                long now = GameLoop.GameLoopTime;
+                benched = state.Bench.BenchedCount(now);
+                if (!state.Bench.ShouldGiveUpCamp(now)) return false;
+                state.Bench.Clear();
+                return true;
+            }
         }
         private static readonly ConditionalWeakTable<Group, State> States = new();
         private static readonly ConditionalWeakTable<GameBot, State> Holding = new();
@@ -137,7 +211,10 @@ namespace DOL.GS
             State state = States.GetOrCreateValue(shooter.Group);
             lock (state)
             {
-                if (state.Active || GameLoop.GameLoopTime < state.RetryAfter) return true;
+                if (state.Active) return true;
+                // 1.2.3 (#539): a target benched for this camp is pulled the ordinary way, not stood on again.
+                if (target != null && state.Bench.IsBenched(target.ObjectID, GameLoop.GameLoopTime)) return false;
+                if (GameLoop.GameLoopTime < state.RetryAfter) return true;
                 GameBot[] members = shooter.Group.GetMembersInTheGroup().OfType<GameBot>().ToArray();
                 if (members.Length < (flyingHandoff ? 2 : MinimumPullParty) ||
                     target?.IsAlive != true || shooter.CurrentRegion != target.CurrentRegion)
@@ -169,9 +246,18 @@ namespace DOL.GS
                         state.RetryAfter = 0;
                         return false;
                     }
-                    LoggerManager.Create(typeof(AutonomousDefensivePull)).Info(
-                        $"AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE bot={shooter.Name} target={target.Name} region={shooter.CurrentRegionID} x={shooter.X} y={shooter.Y} z={shooter.Z}");
-                    return true;
+                    bool benched = state.Bench.RecordUnreachable(target.ObjectID, GameLoop.GameLoopTime);
+                    var log = LoggerManager.Create(typeof(AutonomousDefensivePull));
+                    log.Info($"AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE bot={shooter.Name} target={target.Name} region={shooter.CurrentRegionID} " +
+                             $"x={shooter.X} y={shooter.Y} z={shooter.Z} tries={state.Bench.Tries(target.ObjectID)}");
+                    if (!benched) return true;
+                    // Benched: no more waiting on this ranged pull; the caller pulls it the ordinary way now.
+                    state.RetryAfter = 0;
+                    log.Warn($"AUTONOMOUS_DEFENSIVE_PULL_BENCHED bot={shooter.Name} target={target.Name} targetId={target.ObjectID} " +
+                             $"camp=\"{state.Bench.CampKey}\" benched={state.Bench.BenchedCount(GameLoop.GameLoopTime)} " +
+                             $"region={shooter.CurrentRegionID} x={shooter.X} y={shooter.Y} z={shooter.Z}; " +
+                             $"no firing point {UnreachableBench.TriesBeforeBench} times, an ordinary pull instead");
+                    return false;
                 }
                 state.Members = members;
                 state.Shooter = shooter;

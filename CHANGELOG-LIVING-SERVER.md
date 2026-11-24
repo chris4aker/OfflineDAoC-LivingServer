@@ -131,6 +131,26 @@ otherwise.
   Targets are real players, companion bots, autonomous gamebots and their pets alike; the casters are companion `/bot`s,
   hired and `/spawn` helpers and gamebot groups. No Lifer buffbots already planned by their main's needs and are
   unchanged. `UT_BotBuffTargets491`. **Tests only.**
+- **Party members follow their leader over zone borders** (#538; the owner's PC on 1.2.2 868a82d, 11/24: 2,450
+  `AUTONOMOUS_GROUP_MEMBER_STALLED`, 1,784 of them with the member standing in another zone than its leader, every one
+  farther than 600 units; Lough Derg > Connacht the worst border). Paths are planned inside one zone, so the formation
+  follow's path to a leader over the border found nothing and the member stood until the leader went on without it, and
+  the party's healer was then too far to resurrect anyone (62% of 2,780 resurrection timeouts). Now the follow check
+  leaves such a member's walk alone and its AI turn takes the zone itinerary's validated seam crossing to the leader
+  (`AutonomousGroupFormationFollow.NeedsSeamRoute`, through `IssuePath` and `AutonomousZoneItinerary`). The member walks,
+  so the leader waits for it (bounded by the 10-minute hold); a border with no safe seam gives the camp up (the route's
+  own `AbandonCamp`), and a member still stalled after three minutes is moved to its leader only when no real player can
+  see either spot (`AUTONOMOUS_GROUP_MEMBER_RECOVERY_DEFERRED`). `AUTONOMOUS_GROUP_FORMATION` counts `borderHandOffs=`
+  and `seamRoutes=`. Autonomous gamebot parties only; companions and player-led groups are unchanged. No navmesh or seam
+  data changed. `UT_PartyStalls123`. **Tests only.**
+- **A party no longer stands on a ranged pull it can't make** (#539; 11/24: 2,788 `AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE`,
+  55 runs of one shooter on one target for 10 minutes or more, the worst 126 tries in 74 minutes). Nothing remembered that
+  a target had no firing point, so the camp check picked it again every 30 s. Now the second try with no firing point
+  benches that target for the camp for 20 minutes (`AUTONOMOUS_DEFENSIVE_PULL_BENCHED`) and the party pulls it the
+  ordinary way (the puller's watched pull, retried once, then another spawn); with three of the camp's targets benched the
+  party gives the camp up and picks another (`AUTONOMOUS_GROUP_CAMP_UNREACHABLE_PULLS`). Replayed on the 11/24 and 11/23
+  logs, no target gets more than two ranged tries. `AutonomousDefensivePull.UnreachableBench`, `UT_PartyStalls123`.
+  **Tests only.**
 
 ## 1.2.2 — 2026-11-23
 

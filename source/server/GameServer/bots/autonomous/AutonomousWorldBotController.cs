@@ -1987,6 +1987,16 @@ namespace DOL.GS
                     bot.StopMoving();
                 }
             }
+            else if (AutonomousGroupFormationFollow.NeedsSeamRoute(true, bot.CurrentZone?.ID ?? 0, leader.CurrentZone?.ID ?? 0,
+                         bot.GetDistanceTo(leader)))
+            {
+                // 1.2.3 (#538): the leader is over a zone border. The formation follow cannot path there, so the member
+                // takes the itinerary's validated seam crossing to the leader (IssuePath, AutonomousZoneItinerary). While
+                // it walks it is not stalled, so the leader waits for it (bounded by the 10-minute hold); a border with no
+                // safe seam is the route's own give-up (AbandonCamp: the party picks another camp).
+                AutonomousGroupFormationFollow.NoteSeamRoute();
+                IssuePath(bot, new Vector3(leader.X, leader.Y, leader.Z), retargetWhileMoving: true);
+            }
             else if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), formation) < FormationFollowReach * FormationFollowReach)
             {
                 // Move as one unit: the movement service keeps this slot around the leader between AI turns,
@@ -3101,6 +3111,16 @@ namespace DOL.GS
                 _patrolDestination = null;
                 bot.StopMovingOnPath();
                 bot.StopMoving();
+                // 1.2.3 (#539): a party whose ranged pulls found no firing point on several of this camp's targets gives
+                // the camp up (the solo rule, AbandonCampAfterUnreachablePulls, has no party counterpart).
+                if (bot.Group != null && AutonomousDefensivePull.ShouldGiveUpCamp(bot.Group, _camp.Id, out int benchedPulls))
+                {
+                    Log.Warn($"AUTONOMOUS_GROUP_CAMP_UNREACHABLE_PULLS bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                             $"class=\"{bot.ClassName}\" camp=\"{_camp.Id}\" target=\"{_camp.MonsterName}\" benched={benchedPulls} " +
+                             $"region={bot.CurrentRegionID} x={bot.X} y={bot.Y} z={bot.Z}");
+                    AbandonCamp(bot, $"{benchedPulls} {_camp.MonsterName} had no ranged firing point");
+                    return true;
+                }
                 if (!SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
                     AutonomousDefensivePull.TryBegin(bot, target))
                 {

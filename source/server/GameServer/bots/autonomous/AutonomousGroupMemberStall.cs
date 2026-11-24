@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using DOL.AI.Brain;
+using System.Linq;
 using DOL.Logging;
 
 namespace DOL.GS
@@ -95,7 +96,15 @@ namespace DOL.GS
             public int SampleTotal;
             public readonly HoldClock Hold = new();
             public bool LongHoldLogged;
+            public bool RecoverDeferredLogged;
         }
+
+        /// <summary>A real player within sight range of this bot.</summary>
+        private static bool PlayerSees(GameBot bot) =>
+            bot.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE).Any(player => player.ObjectState == GameObject.eObjectState.Active);
+
+        /// <summary>The pure rule: a stalled member is moved to its leader only when no player sees either end.</summary>
+        public static bool MayMoveUnseen(bool playerSeesMember, bool playerSeesLeader) => !playerSeesMember && !playerSeesLeader;
 
         private static readonly ConditionalWeakTable<GameBot, Trail> Trails = new();
 
@@ -235,6 +244,21 @@ namespace DOL.GS
                     trail.RecoverRequested = false;
                     return false;
                 }
+                // 1.2.3 (#538): nothing moves a bot in sight of a real player. The move waits (it is asked again on the
+                // member's next turn) until no player sees either end; meanwhile the member keeps its route.
+                if (!MayMoveUnseen(PlayerSees(member), PlayerSees(leader)))
+                {
+                    trail.RecoverRequested = false;
+                    if (!trail.RecoverDeferredLogged)
+                    {
+                        trail.RecoverDeferredLogged = true;
+                        Log.Info($"AUTONOMOUS_GROUP_MEMBER_RECOVERY_DEFERRED leader={leader.Name} member={member.Name} " +
+                                 $"id={member.DatabaseID} distance={member.GetDistanceTo(leader):0} " +
+                                 $"zone=\"{member.CurrentZone?.Description}\"({member.CurrentZone?.ID}) " +
+                                 $"leaderZone=\"{leader.CurrentZone?.Description}\"({leader.CurrentZone?.ID}); a player can see it");
+                    }
+                    return false;
+                }
                 trailText = DescribeTrail(trail, now);
                 stalledSeconds = (now - trail.Since) / 1000;
             }
@@ -253,6 +277,7 @@ namespace DOL.GS
                 trail.AnchorY = member.Y;
                 trail.Since = now;
                 trail.Logged = false;
+                trail.RecoverDeferredLogged = false;
             }
             Log.Warn($"AUTONOMOUS_GROUP_MEMBER_RECOVERED leader={leader.Name} member={member.Name} id={member.DatabaseID} " +
                      $"class=\"{member.ClassName}\" stalledSeconds={stalledSeconds} distance={distance:0} from={from} " +
