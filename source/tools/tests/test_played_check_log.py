@@ -466,7 +466,7 @@ class Rvr(unittest.TestCase):
         row = self.regroup(self.stance_log())
         self.assertEqual(row["status"], pcl.SEEN)
         self.assertIn("12 regroup starts", row["detail"])
-        self.assertIn("1 started by a relay (8.3%", row["detail"])
+        self.assertIn("1 of 12 starts by a relay (8.3%", row["detail"])
         self.assertIn("(a) relayed stance relayed again: 0", row["detail"])
         self.assertIn("(b) regroup ending a relayed retreat relayed: 0", row["detail"])
         self.assertIn("(c) relay back at its sender within 60 s: not judged", row["detail"])
@@ -564,26 +564,38 @@ class Rvr(unittest.TestCase):
         self.assertIn("relayed regroups ended by contact within 1 s: 1", row["detail"])
         self.assertIn("32 regroup starts", row["detail"], "an end line is not a start")
 
-    def test_d_relay_started_regroups_over_the_bar(self):
-        # Owner decision 2026-11-19: the bar is 20% (15% from 2026-11-18 18:19, 11.5% before; 9a173f4 read 17.4% with the
-        # exact checks clean).
+    def test_d_the_share_is_a_tally_beside_the_owners_bars_not_a_gate(self):
+        # #519 (evidence.md F3): the owner's bar went 10 -> 11.5 -> 15 -> 20% after builds came in over it (9a173f4 read
+        # 17.4% with the exact checks clean). The bars stay, unchanged and shown; the owner decides their fate. The row
+        # gates on (a), (b), (c) and the fan-out per group reached.
         self.assertEqual(pcl.RELAY_SHARE_BAR, 20.0)
-        log = self.stance_log(own_regroups=2)
+        self.assertEqual(pcl.RELAY_SHARE_BAR_HISTORY, (10.0, 11.5, 15.0, 20.0))
+        row = self.regroup(self.stance_log(own_regroups=2))
+        self.assertEqual(row["status"], pcl.SEEN, "1 of 4 (25%) is over the owner's last bar, and one hop held")
+        self.assertIn("1 of 4 starts by a relay (25.0%; over the owner's last bar of 20%, bars 10/11.5/15/20%: the "
+                      "owner decides their fate)", row["detail"])
+        self.assertIn("share, a tally (#519, not a gate)", row["detail"])
+        self.assertNotIn("% of starts or less", row["row"])
+        self.assertIn("at or under the owner's last bar of 20%", self.regroup(self.stance_log(own_regroups=3))["detail"])
+        # 1 of 9 (11.1%): under every bar but the first
+        self.assertIn("1 of 9 starts by a relay (11.1%; at or under", self.regroup(self.stance_log(own_regroups=7))["detail"])
+
+    def test_d_more_relayed_starts_than_groups_reached_contradicts(self):
+        # one retreat reached one group, and two relayed regroups started on it: not one hop
+        log = Log().start(at(0))
+        log.add(at(1), self.RETREAT.format(g=1, r="in contact: fight lost", to=1, relay="sent", relayed="False"))
+        log.add(at(1, 8), self.REGROUP.format(g=2, r="relayed retreat", to=0, relay="none"))
+        log.add(at(1, 9), self.REGROUP.format(g=3, r="relayed retreat", to=0, relay="none"))
         row = self.regroup(log)
         self.assertEqual(row["status"], pcl.CONTRADICTED)
-        self.assertIn("1 started by a relay (25.0%, at most 20%)", row["detail"])
-        self.assertIn('reason="relayed retreat"', row["line"])
-        self.assertIn("relay-started regroups 20% of starts or less", row["row"])
-        # 1 of 5 (20.0%) is at the bar, not over it
-        self.assertEqual(self.regroup(self.stance_log(own_regroups=3))["status"], pcl.SEEN)
-        # 1 of 6 (16.7%) failed the old 15% bar and passes the owner's 20%
-        self.assertEqual(self.regroup(self.stance_log(own_regroups=4))["status"], pcl.SEEN)
-
-    def test_d_a_share_between_ten_and_eleven_and_a_half_percent_passes(self):
-        # 1 of 9 (11.1%): failed the old 10% bar, under the owner's 20%
-        row = self.regroup(self.stance_log(own_regroups=7))
-        self.assertEqual(row["status"], pcl.SEEN)
-        self.assertIn("1 started by a relay (11.1%, at most 20%)", row["detail"])
+        self.assertIn("2.00 relayed regroup start(s) per group reached (over 1 per group reached)", row["detail"])
+        self.assertIn("(a) relayed stance relayed again: 0", row["detail"])
+        # the same two starts on two groups reached: one each, Seen
+        log = Log().start(at(0))
+        log.add(at(1), self.RETREAT.format(g=1, r="in contact: fight lost", to=2, relay="sent", relayed="False"))
+        log.add(at(1, 8), self.REGROUP.format(g=2, r="relayed retreat", to=0, relay="none"))
+        log.add(at(1, 9), self.REGROUP.format(g=3, r="relayed retreat", to=0, relay="none"))
+        self.assertEqual(self.regroup(log)["status"], pcl.SEEN)
 
     def test_c_with_no_relayed_start_says_there_is_nothing_to_judge(self):
         # c81eb5d: 23 starts, none relay-started; the build logs from=, so "a build before the sender was logged" was wrong.
@@ -592,13 +604,17 @@ class Rvr(unittest.TestCase):
             log.add(at(1, i), self.REGROUP.format(g=100 + i, r="after the fight", to=0, relay="window"))
         row = self.regroup(log)
         self.assertEqual(row["status"], pcl.SEEN)
-        self.assertIn("0 started by a relay (0.0%", row["detail"])
+        self.assertIn("0 of 5 starts by a relay (0.0%", row["detail"])
         self.assertIn("(c) relay back at its sender within 60 s: nothing to judge (no relayed starts)", row["detail"])
         self.assertNotIn("a build before the sender was logged", row["detail"])
 
     def test_field_rows(self):
         log = Log().start(at(0))
         log.add(at(1), 'RVR_NOTICE bot=A id=1 realm=Midgard target="B" kind=EnemyBot distance=631 delayMs=967')
+        log.add(at(10), 'RVR_EVENT_ENDED target=rvr-keep-52 kind=keep-siege thin=false marched=70 attackers=70 '
+                        'defenders=20 thirdRealm=0 reason="Keep captured: siege ended"')
+        log.add(at(10), 'RVR_PARTY_FORMED group=g realm=Midgard kind=Eight template=x size=8 tier=Average '
+                        'classes="a" split=55/30/15 census=10/8/2')
         log.add(at(1), 'RVR_SPOT bot=A id=1 target="B" kind=EnemyBot call="inc 1 se"')
         log.add(at(2), 'RVR_BOT_KILLED victim=B id=2 realm=Hibernia killer="A" killerRealm=Midgard')
         log.add(at(3), 'REALM_RAID_SCHEDULED event=x realm=Albion online=153 required=80 nextMinutes=240')
@@ -612,12 +628,137 @@ class Rvr(unittest.TestCase):
         log.add(at(9), 'RVR_LANE_LOADED lanes=332 trips=149 validated=318 rejected=14')
         log.add(at(10), 'RVR_KITE group=g bot=A')
         sec = only(log.run()[1])
-        for cid in ("notice", "frontier", "roam", "tactics", "lanes", "sieges", "catalogs"):
+        for cid in ("frontier", "roam", "tactics", "lanes", "sieges", "catalogs", "siege_outcomes", "party_split"):
             self.assertEqual(check(sec, cid)["status"], pcl.SEEN, cid)
         self.assertIn("Albion 153", check(sec, "frontier")["detail"])
-        self.assertIn("median delayMs 967 ms", check(sec, "notice")["detail"])
+        # a line with delayMs only (a build before WP1) is not held against the table: delayMs is the reaction delay
+        notice = check(sec, "notice")
+        self.assertEqual(notice["status"], pcl.NOT_SEEN)
+        self.assertIn("median delayMs 967 ms (the designed 0.5-2 s reaction delay", notice["detail"])
+        self.assertIn("no time_since_first_los_ms in the lines", notice["detail"])
         log.add(at(11), 'RVR_CHECKSPOT_VALIDATED ok=True walked=400 failed=2')
         self.assertEqual(check(only(log.run()[1]), "catalogs")["status"], pcl.CONTRADICTED)
+
+
+class RvrMeasures(unittest.TestCase):
+    """#519 (RvR audit 3, evidence.md F1, F9, F10): the time to notice by band, siege outcomes per night, parties per
+    hour. The lines are laid out as the server writes them (AutonomousWorldBotController.RvrPerception.cs,
+    AutonomousRvrEventLayer.EndEvent, AutonomousBotGroupCoordinator.RvrTacticsPartyFormed); no line is from a PC log."""
+    NOTICE = ('RVR_NOTICE bot=Bot{i} id={i} realm=Midgard target="Enemy{i}" kind=EnemyBot party=p{i} partyNoticed=1 '
+              'partyVisible=1 distance={d} reasonFactors={f} chance=0.12 time_since_first_los_ms={ms} delayMs={delay} '
+              'awareness=normal region=163')
+    ENDED = ('RVR_EVENT_ENDED target=rvr-keep-{k} kind={kind} thin={thin} marched=40 attackers=40 defenders=12 '
+             'thirdRealm=0 battleMinutes=20 present=30/10/0 peakPresent=40/14 defendersFirstAt=3 attackerCap=96 '
+             'reason="{reason}"')
+    PARTY = ('RVR_PARTY_FORMED group={g} realm={realm} kind={kind} template={template} size={size} tier=Average '
+             'classes="Armsman,Cleric" split=55/30/15 census={census}')
+
+    def notice_log(self, ms, d=2000, factors="distance", n=21):
+        log = Log().start(at(0))
+        for i in range(n):
+            # the reaction delay is about 1 s whatever the range: the old row read it as the time to notice
+            log.add(at(1, i), self.NOTICE.format(i=i, d=d, f=factors, ms=ms + 100 * (i - n // 2), delay=1000))
+        return log
+
+    def test_the_table_mirror_matches_the_server(self):
+        # NormalAnchors: 1.5 s at 1,500, 6 s at 2,500, log-scale between (3 s at 2,000); 0 in the sure radius
+        self.assertAlmostEqual(pcl.notice_table_median(1500, "normal", "distance"), 1.5)
+        self.assertAlmostEqual(pcl.notice_table_median(2000, "normal", "distance"), 3.0)
+        self.assertAlmostEqual(pcl.notice_table_median(2000, "normal", "Facing"), 3.0 / 1.75)
+        self.assertAlmostEqual(pcl.notice_table_median(2000, "normal", "Combat+Still"), 1.5, msg="still is off in combat")
+        self.assertAlmostEqual(pcl.notice_table_median(2000, "veteran", "distance"), 1.5)
+        self.assertEqual(pcl.notice_table_median(800, "normal", "Close"), 0.0)
+        self.assertIsNone(pcl.notice_table_median(2000, "normal", "Party"))
+        self.assertIsNone(pcl.notice_table_median(3600, "normal", "distance"), "past the outer range")
+
+    def test_notices_on_the_table_hold(self):
+        # 21 notices at 2,000 (table 3.0 s); half a scan is added to the measure (it counts from the first scan that
+        # saw the target)
+        row = check(only(self.notice_log(2500).run()[1]), "notice")
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertRegex(row["detail"], r"1500-2500: 21, median 3\.\d s against 3\.0 s, 0% on the first scan \(holds\)")
+        row = check(only(self.notice_log(2500, n=5).run()[1]), "notice")
+        self.assertIn("scans 1.12 s apart (nominal", row["detail"], "too few repeat scans to measure the cadence")
+        self.assertIn("median delayMs 1000 ms (the designed 0.5-2 s reaction delay", row["detail"])
+
+    def test_notices_off_the_table_contradict(self):
+        # about three times the table's median at 2,000: off by more than the factor of 1.5
+        row = check(only(self.notice_log(9000).run()[1]), "notice")
+        self.assertEqual(row["status"], pcl.CONTRADICTED)
+        self.assertIn("against 3.0 s", row["detail"])
+        self.assertIn("(off the table)", row["detail"])
+        # the same times with the facing cone: the table's median is shorter
+        self.assertIn("against 1.7 s", check(only(self.notice_log(3000, factors="Facing").run()[1]), "notice")["detail"])
+
+    def test_first_scan_notices_are_read_at_the_cadence_the_log_shows(self):
+        # Laid out as on 868a82d (#519): most notices on the first scan (0 ms), the rest one or more scans of about
+        # 4.3 s later. Read raw, the median was 0 s in every band; half a measured scan is added instead.
+        log = Log().start(at(0))
+        times = ([0] * 15 + [4233, 4300, 4267, 4333, 4300, 8600, 4300, 4233, 4267, 4300, 4300, 8567]) * 2
+        for i, ms in enumerate(times):
+            log.add(at(1, i), self.NOTICE.format(i=i, d=1200, f="Combat+Facing", ms=ms, delay=1000))
+        rows = pcl.notice_bands([(1200, ms / 1000, pcl.notice_table_median(1200, "normal", "Combat+Facing"))
+                                 for ms in times])
+        self.assertAlmostEqual(pcl.notice_cadence([(1200, ms / 1000, 1.0) for ms in times])[0], 4.3)
+        band = rows[1]
+        self.assertEqual(band["n"], 54)
+        self.assertAlmostEqual(band["seen"], 2.15)   # 0 s + half of 4.3 s
+        self.assertAlmostEqual(band["first"], 30 / 54)
+        row = check(only(log.run()[1]), "notice")
+        self.assertIn("scans 4.30 s apart (measured in the log", row["detail"])
+        self.assertIn("56% on the first scan", row["detail"])
+        self.assertEqual(row["status"], pcl.CONTRADICTED, "2.2 s against the table's 0.3 s: slower than a 2003 player")
+
+    def test_too_few_or_not_rolled_notices_are_not_held(self):
+        row = check(only(self.notice_log(3000, n=5).run()[1]), "notice")
+        self.assertEqual(row["status"], pcl.NOT_SEEN)
+        self.assertIn("not judged (under 20)", row["detail"])
+        row = check(only(self.notice_log(3000, factors="Party").run()[1]), "notice")
+        self.assertEqual(row["status"], pcl.NOT_SEEN)
+        self.assertIn("(21 not rolled on the table", row["detail"])
+        row = check(only(self.notice_log(0, d=600, factors="Close").run()[1]), "notice")
+        self.assertIn("0-1000: 21, median", row["detail"])
+        self.assertIn("(sure radius, a tally)", row["detail"])
+
+    def test_siege_outcomes_per_night_by_kind_and_thin(self):
+        log = Log().start(at(0))   # 06:00 on 11/17: the night of 11/16
+        log.add(at(10), self.ENDED.format(k=1, kind="keep-siege", thin="false", reason="Keep captured: siege ended"))
+        log.add(at(20), self.ENDED.format(k=2, kind="keep-siege", thin="true",
+                                          reason="Siege defended: no attacker reached the keep for 10 minutes"))
+        log.add(at(30), self.ENDED.format(k=3, kind="relic-siege", thin="false", reason="Keep captured: ownership changed"))
+        log.add(at(40), self.ENDED.format(k=4, kind="keep-siege", thin="false",
+                                          reason="Rally failed: insufficient physical attackers at the one-hour deadline"))
+        log.add(at(14 * 60), self.ENDED.format(k=5, kind="retake", thin="false",
+                                               reason="Siege defended: four-hour battle timer expired"))
+        row = check(only(log.run()[1]), "siege_outcomes")
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertFalse(row["must"])
+        self.assertIn("night of 11/16: 4 ended, attackers took 2 of 3 decided (67%), 1 failed rallies", row["detail"])
+        self.assertIn("keep-siege thin=false: 1/0/1/0", row["detail"])
+        self.assertIn("keep-siege thin=true: 0/1/0/0", row["detail"])
+        self.assertIn("relic-siege thin=false: 1/0/0/0", row["detail"])
+        self.assertIn("night of 11/17: 1 ended, attackers took 0 of 1 decided (0%)", row["detail"])
+        self.assertIn("35-65% band is an assumption of a sim", row["note"])
+        self.assertEqual(check(only(Log().start(at(0)).run()[1]), "siege_outcomes")["status"], pcl.NOT_SEEN)
+
+    def test_parties_per_hour_by_kind_and_size_against_the_split(self):
+        log = Log().start(at(0))
+        log.add(at(5), self.PARTY.format(g=1, realm="Albion", kind="Warband", template="warband", size=2,
+                                         census="20/0/10"))
+        log.add(at(6), self.PARTY.format(g=2, realm="Albion", kind="Eight", template="albion-eight", size=8,
+                                         census="20/8/2"))
+        log.add(at(7), self.PARTY.format(g=3, realm="Albion", kind="Warband", template="warband", size=4,
+                                         census="24/8/2"))
+        log.add(at(70), self.PARTY.format(g=4, realm="Midgard", kind="Small", template="duo", size=2,
+                                          census="10/0/10"))
+        row = check(only(log.run()[1]), "party_split")
+        self.assertEqual(row["status"], pcl.SEEN)
+        self.assertIn("against the assumed split 55/30/15", row["detail"])
+        self.assertIn("11/17 06:00: Eight 1 (8 bots, 8.0 each), Warband 2 (6 bots, 3.0 each); census by realm "
+                      "Albion 71/24/6%", row["detail"])
+        self.assertIn("11/17 07:00: Small 1 (2 bots, 2.0 each); census by realm Midgard 50/0/50%", row["detail"])
+        # the tactics row still counts parties
+        self.assertIn("party_formed=4", check(only(log.run()[1]), "tactics")["detail"])
 
 
 class Crafting(unittest.TestCase):

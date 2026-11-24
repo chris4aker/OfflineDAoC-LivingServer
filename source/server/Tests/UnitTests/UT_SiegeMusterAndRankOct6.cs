@@ -21,6 +21,9 @@ namespace DOL.UnitTests
         [Test]
         public void WeightedRankChoiceFavoursTheHighestRankButKeepsLowerOnes()
         {
+            // A Spell reads SkillBase's names through LanguageMgr, which is null when this test runs alone (it passed only
+            // after another fixture had set it up: RvR audit 3, evidence.md, #519). The scope sets it and restores it.
+            using var language = new PetTestLanguageScope();
             Spell low = Spell(1, 10), high = Spell(2, 40), high2 = Spell(3, 40);
             var pool = new[] { (low, (SpellLine)null), (high, (SpellLine)null), (high2, (SpellLine)null) };
             var picks = Enumerable.Range(0, 4000).Select(_ => AutonomousPetSupport.ChooseWeightedByRank(pool).Spell).ToArray();

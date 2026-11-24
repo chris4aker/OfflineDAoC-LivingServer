@@ -68,6 +68,10 @@ namespace DOL.UnitTests
         /// defenders (and then trims attackers). Where it crosses one half and how steeply are unknown, so the cases move both:
         /// a strong defense that holds even with few defenders (the half point at -0.125) to one that needs the full trim (+0.375).
         /// It is a model, not a measurement.
+        /// An assumption, not evidence (RvR audit 3, evidence.md F9, #519): the sims below assume the lever they test, that
+        /// the balance moves the win rate. The PC nights said otherwise (168f55d: share at its limit all night, attackers
+        /// took 13 of 17). The 35-65% band has no played measure yet; played_check_log.py's siege_outcomes row counts
+        /// RVR_EVENT_ENDED per night by kind and thin, with the attacker win rate.
         /// </summary>
         private static double AttackerChance(double shift, double half, double steep) =>
             1 / (1 + Math.Exp(steep * (shift - half)));
@@ -102,6 +106,7 @@ namespace DOL.UnitTests
         [TestCase(0.25, 16)]
         [TestCase(0.375, 8)]
         [TestCase(0.375, 16)]
+        [Description("Assumption: in a sim whose made-up curve makes the balance move the win rate, it settles near half (#519, F9)")]
         public void TheBalanceSettlesNearHalf(double half, double steep)
         {
             var (share, meanShift) = SimulateSieges(half, steep, 20_000, 1);
@@ -110,6 +115,7 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        [Description("Assumption: averaged over made-up curves that make the balance move the win rate, it settles at half (#519, F9)")]
         public void OnAverageTheBalanceSettlesAtHalf()
         {
             double[] halves = [-0.125, 0, 0.125, 0.25, 0.375];
@@ -119,6 +125,10 @@ namespace DOL.UnitTests
             Assert.That(mean, Is.InRange(0.47, 0.53));
         }
 
+        /// <summary>
+        /// Replays the night's inputs: it shows that the trim fires on them, not what it would change. "Attackers still took
+        /// 13 of 17" is the input, not a result (#519, F9).
+        /// </summary>
         [Test]
         public void TheOwnersNightWouldHaveTrimmedTheAttackersByTheThirdCapture()
         {

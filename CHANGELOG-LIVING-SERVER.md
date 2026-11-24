@@ -153,6 +153,28 @@ otherwise.
   instead of running at the next monster within a second. Never with an add or a party member still fighting, never in
   your group, an RvR party or a raid; a bot nobody sees keeps today's pace. `UT_IdleLife`, `UT_BotMobileSongs`. **Tests
   only.**
+**Measuring (#519, RvR audit 3: tools and tests only, no game change)**
+- **The log checker's notice row reads the time to notice.** It read `delayMs`, the designed 0.5-2 s reaction delay after
+  a notice. It now reads `RVR_NOTICE ... time_since_first_los_ms` by distance band against the perception table (mirrored
+  in `played_check_log.py`, pinned by a test against the server's anchors). That field counts whole scans from the first
+  scan that saw the target, so the row adds half a scan, at the scan cadence the log shows, and prints the share noticed
+  on the first scan.
+- **The regroup row gates on the exact checks.** (a), (b), (c) and at most one relayed start per group reached decide it;
+  the relay-started share is printed as a tally beside the owner's bars (10/11.5/15/20%, unchanged; the owner decides
+  their fate).
+- **New rows:** siege outcomes per night by kind and thin with the attacker win rate (`RVR_EVENT_ENDED`; the 35-65% band
+  is a sim's assumption), and RvR parties formed per hour by kind and size against the assumed 55/30/15 split
+  (`RVR_PARTY_FORMED`). Tallies, no bar.
+- **Tests renamed to what they prove:** `UT_RvrTacticsHooks.With_no_world_each_brain_hook_has_no_opinion` and
+  `With_no_world_the_controller_and_coordinator_hooks_have_no_opinion`,
+  `UT_RvrPerceptionCalibration.The_fitted_formula_gives_its_own_target_median_for_each_level_and_band`; the
+  `UT_SiegeBalanceNov06` sims are labelled assumptions; `UT_SiegeMusterAndRankOct6.WeightedRankChoice...` sets up its
+  own `LanguageMgr` and passes alone.
+- **`source/tools/rvr_seen_stamps.py`** stamps each RvR "Seen" row of `docs/PLAYED-CHECK-1.2.md` with its build and
+  whether the RvR code changed since (a `git diff` of the RvR paths). The battleground row now says Caer Caledon was
+  taken on `43c43aa`.
+- The real-mesh RvR probes are run once per release on the PC (`docs/RELEASE-TRAIN.md`); the #506 fixes get blind
+  scenarios (`docs/rvr-audit-1.2.3/README.md`).
 
 ## 1.2.2 — 2026-11-23
 
