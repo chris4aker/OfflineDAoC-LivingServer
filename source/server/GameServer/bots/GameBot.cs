@@ -4327,6 +4327,22 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>
+        /// Whether a trained specialization (level above 0) raises this skill property: GetSpecList's answer without its
+        /// sorted copy. Issue #540: the gear checks asked this through GetSpecList for every skill bonus of every Exchange
+        /// candidate, and the sort's arrays and iterators were the 1.2.2 PC log's next largest allocations.
+        /// </summary>
+        public bool HasTrainedSpecRaising(eProperty property)
+        {
+            lock (((ICollection)m_specialization).SyncRoot)
+            {
+                foreach (Specialization spec in m_specialization.Values)
+                    if (spec != null && spec.Level > 0 && SkillBase.SpecToSkill(spec.KeyName) == property)
+                        return true;
+            }
+            return false;
+        }
+
         public virtual IList<Specialization> GetSpecList()
         {
             lock (((ICollection)m_specialization).SyncRoot)

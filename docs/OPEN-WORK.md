@@ -126,6 +126,7 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Does a resting or waiting bot show as
   sitting on the original client (emote 0xF0, `BOT_MOVE_SIT` in the log)? **Open.** If not, change or drop it in
   `BotIdleLife` (`ShowSeat`, `SitAnimation`, `StandAnimation`); the seat's logic stays.
+- [#540](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/540) Blocking gen-2 GC pauses of 1.1-2.4 s (49 in 5 h on 1.2.2 `868a82d`) and handles growing about 700 an hour. **Fixed in part in 1.2.3, tests only:** the gear checks' allocations (the log's largest allocator, 27-35% of all bytes) are gone, the stat tables no longer hold a `Lock` (the 2026-10-22 census's main owner of Windows events), and `SERVER_HANDLE_CENSUS` (handles by type, every 10 min) and the memory-load fields of `SERVER_MEMORY` / `SERVER_GC_PAUSE` run in every session. Open until a 6 h+ PC log on 1.2.3 shows: `topAllocations` without the tuple arrays, the pause count and length, which handle type grows, and whether `memoryLoadPct` is at `highLoadPct` when a blocking collection runs (then the fix is memory on the PC or the launcher's "Lean server memory", not a GC setting).
 - [#425](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/425) 1.2.1 PC check: the original client's handshake build, and the bot death fall. **Open.** CI's playtester scenarios `bot-death`, `bot-corpse-target` and `bot-rez` pass (on `b644529a`), but they check packets, not what the client draws.
 
 ## The 1.2.1 check on the owner's PC
@@ -356,8 +357,10 @@ English; German and French come with the language selector in 1.3 (#437).
   hasn't been completed yet (4 h 42 min on `19e7037` had one stall of 1.05 s).
 - **A bot can search for a camp for minutes** (mostly level 50s at Tir na Nog's bind). It clears its search after 3
   minutes; the cause isn't found yet.
-- **Memory over very long sessions:** Windows handles grow slowly (about 1,700 an hour with 600 bots a realm). The server's
-  own memory stays flat.
+- **Memory over very long sessions:** Windows handles grow slowly (about 1,700 an hour with 600 bots a realm; about 700
+  an hour on 1.2.2 with 2,930 bots). The live heap grows about 75 MB an hour (1.2.2), and blocking gen-2 collections froze
+  the server 1.1-2.4 s every 10-25 minutes (#540: 1.2.3 removes the largest allocator and the stat tables' Locks; tests
+  only).
 
 ### New client (0.37c)
 
