@@ -269,6 +269,8 @@ public class UT_EveningTranscripts
         // Live guards the budget simulation leaves out (audit, second run): a thread answer apart from its question names the asker
         // (NamedWhenApart), a bot that said one of /faction's last four lines starts nothing new (SinkHold "hog"), no more than three
         // threads at once (RoomFor), and a reaction the channel heard in the last ten minutes is said another way (Shorts).
+        // AutonomousChatStance.Shared in the live server: a bot looks for a group or forms one, not both, for half an hour.
+        var stance = new AutonomousChatStance();
         var realmLog = new List<(long At, long Who)>();
         var opened = new Dictionary<long, (long At, long Starter)>();
         var lastFactionSpeakers = new Queue<long>();
@@ -587,7 +589,7 @@ public class UT_EveningTranscripts
                     continue;
                 if (meter.TryStart(choice.Channel, 1, now, choice.Band, random) is Budget.Verdict.HoldCeiling or Budget.Verdict.HoldGap)
                     continue;
-                if (random.NextDouble() < Field.Share(choice.Name) && Field.Line(choice.Name, FactsOf(bot, now), field, random, now) is { } said)
+                if (random.NextDouble() < Field.Share(choice.Name) && Field.Line(choice.Name, FactsOf(bot, now), field, random, now, stance) is { } said)
                 {
                     string text = Generated(bot, said.Text);
                     if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
@@ -611,7 +613,7 @@ public class UT_EveningTranscripts
                 if (!Pick(now, kind, bot, out VC.Picked picked, filter: filter) &&
                     (choice.Name is "lfg" or "trade" || !Pick(now, "ambient", bot, out picked, filter: filter)))
                 {
-                    if (choice.Name is "faction" or "say" && Field.Line(choice.Name, FactsOf(bot, now), field, random, now) is { } fallback)
+                    if (choice.Name is "faction" or "say" && Field.Line(choice.Name, FactsOf(bot, now), field, random, now, stance) is { } fallback)
                     {
                         string text = Generated(bot, fallback.Text);
                         if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
