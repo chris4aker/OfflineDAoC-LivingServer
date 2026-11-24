@@ -182,12 +182,20 @@ public static class AutonomousObjectiveAssignments
     }
 
     /// <summary>
-    /// Battleground slots can only go to bots whose level fits a bracket (levels 15-35);
-    /// the share the rest of the band can't use is handed back to solo/group PvE in their ratio.
+    /// Battleground slots can only go to bots whose level fits a bracket (levels 15-35), and the Battlegrounds %
+    /// applies to those bots alone: of a band's <paramref name="count"/> bots, the <paramref name="eligible"/> ones in a
+    /// bracket get that share, and the share of the rest goes back to solo/group PvE in their ratio (the launcher's
+    /// Bot Goals text and the 0.35 changelog: "Bots outside those levels do solo or group PvE with that share instead"; the
+    /// per-bot draw at a task break, <see cref="BotGoalWeights.Choose"/>, does the same). The band's whole share used to
+    /// go to its bracket bots, so this pass aimed at 10% of all of levels 1-19 (about 90 a realm) while the task-break draw
+    /// gave 10% of the 15-19 bots; on 1.2.2 the draw won and each realm's battleground count was about a tenth of its
+    /// 15-19 headcount, never the pass's target.
     /// </summary>
-    public static Allocation LimitBattlegrounds(Allocation target, int eligible)
+    public static Allocation LimitBattlegrounds(Allocation target, int eligible, int count)
     {
-        int surplus = target.Battlegrounds - Math.Clamp(eligible, 0, target.Battlegrounds);
+        eligible = Math.Clamp(eligible, 0, Math.Max(0, count));
+        int share = count <= 0 ? 0 : (int)Math.Round(target.Battlegrounds * (double)eligible / count, MidpointRounding.AwayFromZero);
+        int surplus = target.Battlegrounds - Math.Clamp(share, 0, target.Battlegrounds);
         if (surplus <= 0) return target;
         int pve = target.SoloPve + target.GroupPve;
         int toSolo = pve == 0 ? surplus : (int)Math.Round(surplus * (double)target.SoloPve / pve);
@@ -298,7 +306,7 @@ public static class AutonomousObjectiveAssignments
                 Allocation target = bucket.Key.Band == 0
                     ? TargetForLowLevelPopulation(members.Length)
                     : TargetForPopulation(members.Length, bucket.Key.Band == 50);
-                target = LimitBattlegrounds(target, members.Count(CanTakeBattleground));
+                target = LimitBattlegrounds(target, members.Count(CanTakeBattleground), members.Length);
                 int currentRvr = members.Count(bot => Is(bot, eAutonomousObjectiveKind.RvR));
                 foreach (GameBot bot in members.Where(bot => bot.Group == null &&
                              Is(bot, eAutonomousObjectiveKind.GroupPve) &&
