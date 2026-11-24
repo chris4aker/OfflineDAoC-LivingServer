@@ -3048,11 +3048,18 @@ def main(argv=None) -> int:
     parser.add_argument("--year", type=int, help="the log's year (lines carry no year; default this year)")
     parser.add_argument("--near", type=float, default=RESTING_BOSS_NEAR,
                         help=f"distance to a resting boss that flags a stranded teleport (default {RESTING_BOSS_NEAR:.0f})")
+    parser.add_argument("--rvr-hour", action="store_true",
+                        help="the RvR hour report instead (rvr_hour.py: fights, sieges, perception, the player; #505)")
     args = parser.parse_args(argv)
     path = Path(args.log)
     if not path.is_file():
         print(f"no such file: {path}", file=sys.stderr)
         return 2
+    if args.rvr_hour:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import rvr_hour
+        return rvr_hour.main([str(path)] + (["--json"] if args.json else []) + (["--year", str(args.year)] if args.year else []) +
+                             (["--since", args.since] if args.since else []))
     year = args.year or dt.date.today().year
     since = parse_since(args.since, year) if args.since else None
     sections = read_log(path, since=since, year=year, near=args.near)

@@ -151,6 +151,8 @@ namespace DOL.AI.Brain
                 AutonomousWorldBotController.TryCampSafeSpot(_autonomousWorldController?.CurrentCampId, bot.CurrentRegionID,
                     out Vector3 campSafe) ? campSafe : null,
                 enemy, BotGroupRetreat.RetreatPoint(here, _lastPeacePosition, enemy, SoloBailDistance));
+            RvrDecide.Event(bot, "brain", "flee", $"{bot.CurrentRegionID}:{(int)point.X},{(int)point.Y}", "flee.soloBail",
+                $"health={bot.HealthPercent} attackers={attackers}");
             log.Info($"BOT_SOLO_BAIL bot=\"{bot.Name}\" level={bot.Level} class=\"{bot.ClassName}\" health={bot.HealthPercent} " +
                      $"target=\"{target?.Name}\" targetHealth={target?.HealthPercent} attackers={attackers} " +
                      $"to={bot.CurrentRegionID}:{(int)point.X},{(int)point.Y}");

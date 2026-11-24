@@ -130,6 +130,25 @@ otherwise.
   SETTINGS (below 1 a standing character's rounded-down tick is nothing). The tab's notes for an unreadable number or
   switch now show the server's default, which is what the server uses from 1.2.3. **Tests only.**
 
+**RvR record (logging and tools only; #505, RvR audit phase 0)**
+- **A played frontier hour can now be audited fight by fight and siege by siege.** Nothing a bot does changes: the new rows
+  read the world and draw no random number (`UT_RvrRecord505.RecordFilesDrawNoRandomness`). New rows:
+  `RVR_DECIDE` (piece A: one row per change of a bot's intent, destination or target, and each engage and flee, with the
+  layer and a rule code; `SetRvrStatus` keeps its text and gains `exec.<method>.<first words>`), `RVR_ENGAGE` (the scan's
+  engage and the list the target came from), `RVR_PLAN` (each destination plan, with candidates rejected and the roam
+  override), `RVR_FIGHT_OPEN` / `RVR_FIGHT_END` (fight id, sides, sizes, deaths per realm, first death, first crowd
+  control, winner, who held the field, the player's part) with `fight=` stamped on `RVR_STANCE`, `RVR_ASSIST_*`,
+  `RVR_CC_ASSIGN`, `RVR_PEEL`, `RVR_KITE`, `RVR_RETREAT` and `RVR_BOT_KILLED` (which also gains `victimGroup=
+  victimRole= victimClass= killerGroup= by= calledTarget=`), `RVR_PLAYER_NOTICED` (distance, `time_since_first_los_ms`,
+  looker, called), `RVR_PLAYER_KILLED`, `RVR_PLAYER_VIEW` (what the player had around him), `RVR_PLAYER_SEAT` (hourly),
+  `RVR_SIEGE_BEGIN` / `_DOOR` / `_LORD` / `_STALL` (every 5 minutes without door or lord progress, with the reason) /
+  `_END`, `RVR_TELEPORT` (every snap of a war bot, who did it and whether the player could see it), `RVR_FORCE_CLUSTER`
+  (every 5 minutes) and `RVR_HOUR` (hourly per realm, with the count of rate-limited rows dropped). Per-tick rows are
+  change-only or under a counted per-minute budget. `/rvrodd [note]` writes `RVR_ODD` with the nearest fight and siege (to
+  fold into #475's `/odd` when that lands). Tools: `source/tools/rvr_hour.py` (also `played_check_log.py --rvr-hour`) and
+  `source/tools/rvr_fight_timeline.py`; on a 1.2.2 log they rebuild fights from `RVR_BOT_KILLED` and sieges from the `BG_*`
+  and `RVR_SIEGE` rows. `test_rvr_hour.py`. **Tests only.**
+
 **Bots and companions**
 - **Buffers no longer waste buffs on groupmates who can't use them** (#491). A buffer bot spent power regen and acuity on
   melee classes with no power, and regen buffs on pets, so its concentration and power ran out before a critical buff (a
