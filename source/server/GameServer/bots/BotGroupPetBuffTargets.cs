@@ -14,6 +14,9 @@ namespace DOL.GS
             Group group = caster?.Group;
             if (group == null || !group.IsInTheGroup(caster) || !IsShareable(spell))
                 yield break;
+            // Pets never get endurance or power regen (or acuity): wasted on them (#491).
+            if (!BotBuffTargetPolicy.Benefits(spell.SpellType, BotBuffTargetPolicy.TargetKind.Pet))
+                yield break;
 
             int range = spell.Range == 0 ? spell.Radius : spell.CalculateEffectiveRange(caster);
             HashSet<IControlledBrain> visited = null;

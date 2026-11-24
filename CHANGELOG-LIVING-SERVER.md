@@ -104,6 +104,24 @@ otherwise.
   SETTINGS (below 1 a standing character's rounded-down tick is nothing). The tab's notes for an unreadable number or
   switch now show the server's default, which is what the server uses from 1.2.3. **Tests only.**
 
+**Bots and companions**
+- **Buffers no longer waste buffs on groupmates who can't use them** (#491). A buffer bot spent power regen and acuity on
+  melee classes with no power, and regen buffs on pets, so its concentration and power ran out before a critical buff (a
+  shaman's endurance regen) was cast. Now (`BotBuffTargetPolicy`, every target path of `BotBrain` and
+  `BotGroupPetBuffTargets.Enumerate`):
+  - power regen goes only to a class with a power pool (a Paladin yes, an Armsman no), and acuity only to list casters
+    (the stat calculator adds acuity to a list caster's power stat only, so a hybrid gains nothing from it);
+  - pets (summoned, charmed, shades, minions, turrets) never get endurance regen, power regen or acuity; they still get
+    stats, AF, resists and haste;
+  - a specialist buffer (one that knows spec buffs: STR/CON, DEX/QUI, spec AF, acuity) leaves the base STR, CON, DEX and
+    AF buffs to a healer bot of its group that can cast the same buff now (it knows it, is level for it and has the
+    concentration). Alone, beside a real-player healer, or with another specialist, it still casts them;
+  - endurance regen comes first, then the spec buffs and haste, then the rest, then the base buffs; STR/CON and DEX/QUI
+    reach tanks and melee before casters.
+  Targets are real players, companion bots, autonomous gamebots and their pets alike; the casters are companion `/bot`s,
+  hired and `/spawn` helpers and gamebot groups. No Lifer buffbots already planned by their main's needs and are
+  unchanged. `UT_BotBuffTargets491`. **Tests only.**
+
 ## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in
