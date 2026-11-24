@@ -39,6 +39,14 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
   heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
   below.
+- **The honest chat bench** ([#477](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/477), realism 1b): done
+  on `feature/1.2.3-honest-bench`, **tests only**. The bench's headline is the realism audit's fresh lines (155 of 262 good,
+  59.2%), reported per kind and per channel, with the side benches (every channel path, 54 follow-ups, 40 lines of the
+  moment, the two-line bench) and the evening ratchet (`evening_read.py`, `evening_ratchet.json`). The baselines were reset
+  to these numbers on 2026-11-24. Draft PRs #470-#472 can be closed once it merges. Left: the 167 data-gap lines wait for
+  facts from the world database; the evening stream is still a loop of its own beside `UT_ChatBudgetSimulation.Evening`
+  (same fixture, same items and keeps; a change to Evening's start rules must be made in both); new holdout lines come
+  from the owner's real lines, written by someone who did not write the fix.
 
 ## 1.3
 

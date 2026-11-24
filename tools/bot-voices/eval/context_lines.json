@@ -1,0 +1,1607 @@
+{
+ "note": "Context lines for the chat bench (#477; realism audit 1.2.3, channels.md): \"followups\" are the 54 phrasings that lean on the line before (the player named a place, an item, a class or a person, then asks about \"it\"), \"moments\" the 40 lines a player types while grouped or meeting up, \"twoline\" a bot's line and then the player's follow-up. must_any and wrong_any as in player_questions.json; silence_ok_in lists the channels where saying nothing is fine. Facts: data/chat/places.json (the Barrows 37-47), lore/locations/forest-sauvage.json (the Green Knight, level 79), the bench responders (Aldwyn, 32 Cleric, 33 rejuvenation, 24 enhancement, in Lyonesse). UT_ChatQuestionBench answers them; score_bench.py scores them.",
+ "followups": [
+  {
+   "id": "c01",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "how do i get there",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c02",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "how do i get there?",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c03",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "how do you get there from camelot?",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c04",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "where is that",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c05",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "where is that?",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c06",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "wheres that",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c07",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "where's that at?",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c08",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "where is it",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c09",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "and where is that",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c10",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "ty, where is it",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c11",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "never heard of it, where?",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c12",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "where?",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c13",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "where exactly",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c14",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "is it far?",
+   "must_any": [
+    "re:\\b(far|close|near|ride|horse|mins?|bit|long way|salisbury)\\b"
+   ]
+  },
+  {
+   "id": "c15",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "how far is it",
+   "must_any": [
+    "re:\\b(far|close|near|ride|horse|mins?|bit|long way|salisbury)\\b"
+   ]
+  },
+  {
+   "id": "c16",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "how far is that?",
+   "must_any": [
+    "re:\\b(far|close|near|ride|horse|mins?|bit|long way|salisbury)\\b"
+   ]
+  },
+  {
+   "id": "c17",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "which way?",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c18",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "what lvl is it?",
+   "must_any": [
+    "re:\\b(3[5-9]|4[0-9])\\b"
+   ],
+   "wrong_any": [
+    "re:^\\W*\\d+\\W*$"
+   ],
+   "note": "a bare number is the bot's own level (the audit: \"32\")"
+  },
+  {
+   "id": "c19",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "what level is that?",
+   "must_any": [
+    "re:\\b(3[5-9]|4[0-9])\\b"
+   ],
+   "wrong_any": [
+    "re:^\\W*\\d+\\W*$"
+   ],
+   "note": "a bare number is the bot's own level (the audit: \"32\")"
+  },
+  {
+   "id": "c20",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "what lvl do i need for it",
+   "must_any": [
+    "re:\\b(3[5-9]|4[0-9])\\b"
+   ],
+   "wrong_any": [
+    "re:^\\W*\\d+\\W*$"
+   ],
+   "note": "a bare number is the bot's own level (the audit: \"32\")"
+  },
+  {
+   "id": "c21",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "is it any good?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|good|great|decent|ok|meh|no|nah|bad|group|xp)\\b|\\b(3[5-9]|4[0-9])\\b"
+   ]
+  },
+  {
+   "id": "c22",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "is it good xp?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|good|great|decent|ok|meh|no|nah|bad|group|xp)\\b|\\b(3[5-9]|4[0-9])\\b"
+   ]
+  },
+  {
+   "id": "c23",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "any good?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|good|great|decent|ok|meh|no|nah|bad|group|xp)\\b|\\b(3[5-9]|4[0-9])\\b"
+   ]
+  },
+  {
+   "id": "c24",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "whats there?",
+   "must_any": [
+    "re:undead|skeleton|ghost|ghoul|wight|barrow|named|drops?|bones|zombie|loot"
+   ]
+  },
+  {
+   "id": "c25",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "what's in there?",
+   "must_any": [
+    "re:undead|skeleton|ghost|ghoul|wight|barrow|named|drops?|bones|zombie|loot"
+   ]
+  },
+  {
+   "id": "c26",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "what drops there?",
+   "must_any": [
+    "re:undead|skeleton|ghost|ghoul|wight|barrow|named|drops?|bones|zombie|loot"
+   ]
+  },
+  {
+   "id": "c27",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "is it hard?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|hard|tough|easy|group|no|nah|bit)\\b|\\b(3[5-9]|4[0-9])\\b"
+   ]
+  },
+  {
+   "id": "c28",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "can i solo it?",
+   "must_any": [
+    "re:\\b(no|nah|group|grp|yes|maybe|hard|tough|duo)\\b"
+   ]
+  },
+  {
+   "id": "c29",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "can i solo there?",
+   "must_any": [
+    "re:\\b(no|nah|group|grp|yes|maybe|hard|tough|duo)\\b"
+   ]
+  },
+  {
+   "id": "c30",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "anyone there now?",
+   "must_any": [
+    "re:\\b(no|nah|empty|few|some|yes|ya|group|grp|saw)\\b"
+   ]
+  },
+  {
+   "id": "c31",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "is that a dungeon?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|yep|dungeon)\\b"
+   ]
+  },
+  {
+   "id": "c32",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "what zone is that in?",
+   "must_any": [
+    "re:salisbury|stonehenge"
+   ]
+  },
+  {
+   "id": "c33",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "ok how do i find it",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c34",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "is there a group going there?",
+   "must_any": [
+    "re:\\b(no|nah|lfg|lfm|yes|ya|inv|group|grp|not that)\\b"
+   ]
+  },
+  {
+   "id": "c35",
+   "setup": "anyone been to the barrows?",
+   "subject": "place",
+   "said": "whats the best way there",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south|north|east|west|road|entrance (is )?(in|at|by|near)"
+   ]
+  },
+  {
+   "id": "c36",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "how much for it?",
+   "must_any": [
+    "re:\\d+\\s*(g|gold|s|silver|p|plat)\\b|\\bfree\\b|cheap|expensive|depends on (the )?quality"
+   ]
+  },
+  {
+   "id": "c37",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "how much for one?",
+   "must_any": [
+    "re:\\d+\\s*(g|gold|s|silver|p|plat)\\b|\\bfree\\b|cheap|expensive|depends on (the )?quality"
+   ]
+  },
+  {
+   "id": "c38",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "how much?",
+   "must_any": [
+    "re:\\d+\\s*(g|gold|s|silver|p|plat)\\b|\\bfree\\b|cheap|expensive|depends on (the )?quality"
+   ]
+  },
+  {
+   "id": "c39",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "what stats on it?",
+   "must_any": [
+    "re:\\baf\\b|absorb|quality|\\bcon\\b|\\bstr\\b|\\bdex\\b|\\d+%"
+   ]
+  },
+  {
+   "id": "c40",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "who sells them?",
+   "must_any": [
+    "re:merchant|vendor|armou?r(er|crafter|craft)|smith|exchange"
+   ]
+  },
+  {
+   "id": "c41",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "where do i get one?",
+   "must_any": [
+    "re:merchant|vendor|armou?r(er|crafter|craft)|crafter|exchange"
+   ]
+  },
+  {
+   "id": "c42",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "can u make one?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|sure|no|nah|cant|armou?rcraft\\w*|craft\\w*)\\b"
+   ]
+  },
+  {
+   "id": "c43",
+   "setup": "wtb a studded helm",
+   "subject": "item",
+   "said": "who makes those?",
+   "must_any": [
+    "re:armou?r(er|crafter|craft)|crafter|smith"
+   ]
+  },
+  {
+   "id": "c44",
+   "setup": "thinking of rolling a minstrel",
+   "subject": "class",
+   "said": "are they good solo?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|good|decent|ok|great|charm|pet|not great|no|nah|meh|stealth)\\b"
+   ],
+   "wrong_any": [
+    "re:\\b(armsman|cleric|wizard|sorcerer|paladin|friar|scout|infiltrator|theurgist|cabalist|mercenary|necromancer|reaver)\\b"
+   ]
+  },
+  {
+   "id": "c45",
+   "setup": "thinking of rolling a minstrel",
+   "subject": "class",
+   "said": "what spec for one?",
+   "must_any": [
+    "re:instrument|stealth|slash|thrust"
+   ],
+   "wrong_any": [
+    "re:\\b(armsman|cleric|wizard|sorcerer|paladin|friar|scout|infiltrator|theurgist|cabalist|mercenary|necromancer|reaver)\\b",
+    "re:polearm|shield"
+   ]
+  },
+  {
+   "id": "c46",
+   "setup": "thinking of rolling a minstrel",
+   "subject": "class",
+   "said": "who trains them?",
+   "must_any": [
+    "re:minstrel"
+   ],
+   "wrong_any": [
+    "re:\\b(armsman|cleric|wizard|sorcerer|paladin|friar|scout|infiltrator|theurgist|cabalist|mercenary|necromancer|reaver)\\b"
+   ]
+  },
+  {
+   "id": "c47",
+   "setup": "thinking of rolling a minstrel",
+   "subject": "class",
+   "said": "what armor do they wear?",
+   "must_any": [
+    "re:chain|studded"
+   ],
+   "wrong_any": [
+    "re:\\b(armsman|cleric|wizard|sorcerer|paladin|friar|scout|infiltrator|theurgist|cabalist|mercenary|necromancer|reaver)\\b",
+    "re:\\bplate\\b|\\bcloth\\b"
+   ]
+  },
+  {
+   "id": "c48",
+   "setup": "thinking of rolling a minstrel",
+   "subject": "class",
+   "said": "what race is best for one?",
+   "must_any": [
+    "re:briton|highlander|saracen"
+   ],
+   "wrong_any": [
+    "re:\\b(armsman|cleric|wizard|sorcerer|paladin|friar|scout|infiltrator|theurgist|cabalist|mercenary|necromancer|reaver)\\b",
+    "re:avalonian|inconnu|half ogre|troll"
+   ]
+  },
+  {
+   "id": "c49",
+   "setup": "who is the green knight?",
+   "subject": "person",
+   "said": "where is he?",
+   "must_any": [
+    "re:forest sauvage|sauvage|frontier"
+   ]
+  },
+  {
+   "id": "c50",
+   "setup": "who is the green knight?",
+   "subject": "person",
+   "said": "where does he spawn?",
+   "must_any": [
+    "re:forest sauvage|sauvage|frontier"
+   ]
+  },
+  {
+   "id": "c51",
+   "setup": "who is the green knight?",
+   "subject": "person",
+   "said": "what lvl is he?",
+   "must_any": [
+    "re:\\b79\\b|\\b7\\d\\b|purple|high"
+   ],
+   "wrong_any": [
+    "re:^\\W*\\d{1,2}\\W*$"
+   ]
+  },
+  {
+   "id": "c52",
+   "setup": "who is the green knight?",
+   "subject": "person",
+   "said": "what does he drop?",
+   "must_any": [
+    "re:drops?|loot|armou?r|cloak|weapon|quest"
+   ]
+  },
+  {
+   "id": "c53",
+   "setup": "who is the green knight?",
+   "subject": "person",
+   "said": "can we kill him?",
+   "must_any": [
+    "re:\\b(raid|group|zerg|lot of|many|no|nah|hard|yes|maybe|79)\\b"
+   ]
+  },
+  {
+   "id": "c54",
+   "setup": "who is the green knight?",
+   "subject": "person",
+   "said": "how many to kill him?",
+   "must_any": [
+    "re:\\d|raid|full group|lots|many|zerg"
+   ]
+  }
+ ],
+ "moments": [
+  {
+   "id": "m01",
+   "said": "im by camp station",
+   "must_any": [
+    "re:\\b(k|ok|kk|omw|otw|coming|be there|see (u|you)|inv|wait|waiting|on (my|the) way|still|here)\\b|\\b(in|at) [a-z]"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m02",
+   "said": "im at the bridge",
+   "must_any": [
+    "re:\\b(k|ok|kk|omw|otw|coming|be there|see (u|you)|inv|wait|waiting|on (my|the) way|still|here)\\b|\\b(in|at) [a-z]"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m03",
+   "said": "omw",
+   "must_any": [
+    "re:\\b(k|kk|ok|np|cool|waiting|here|see (u|you)|ty|sure)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m04",
+   "said": "be there in 5",
+   "must_any": [
+    "re:\\b(k|kk|ok|np|cool|waiting|here|see (u|you)|ty|sure)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m05",
+   "said": "where r u",
+   "must_any": [
+    "re:\\b(in|at|by|near|camp|zone|omw|here|lyonesse)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m06",
+   "said": "where are you guys?",
+   "must_any": [
+    "re:\\b(in|at|by|near|camp|zone|omw|here|lyonesse)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m07",
+   "said": "where to next?",
+   "must_any": [
+    "re:\\b(next|room|camp|stay|move|town|try|lets|here|there|pull|keep going)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m08",
+   "said": "what now?",
+   "must_any": [
+    "re:\\b(next|room|camp|stay|move|town|try|lets|here|there|pull|keep going)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m09",
+   "said": "ready?",
+   "must_any": [
+    "re:\\b(ya|yes|yep|yeah|rdy|ready|go|sec|wait|med|oom|k)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m10",
+   "said": "rdy",
+   "must_any": [
+    "re:\\b(k|kk|ok|go|pull|pulling|inc|ready|rdy)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m11",
+   "said": "pull",
+   "must_any": [
+    "re:\\b(pulling|k|ok|on it|inc|incoming|got it|go)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ],
+   "wrong_any": [
+    "re:^\\W*(lol|heh|haha|hehe)\\W*$"
+   ]
+  },
+  {
+   "id": "m12",
+   "said": "can you pull?",
+   "must_any": [
+    "re:\\b(sure|yes|ya|ok|k|on it|pulling|cant|no|not)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m13",
+   "said": "who is pulling?",
+   "must_any": [
+    "re:\\b(me|i (can|will)|ill|you|u|tank|whoever)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m14",
+   "said": "afk 2 min",
+   "must_any": [
+    "re:\\b(k|kk|ok|np|sure|wait|hurry|take your time)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m15",
+   "said": "back",
+   "must_any": [
+    "re:\\b(wb|welcome back|re|k|ok)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m16",
+   "said": "oom",
+   "must_any": [
+    "re:\\b(k|kk|ok|med|medding|rest|sit|wait|hold|np|same|take your time)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m17",
+   "said": "need to rest",
+   "must_any": [
+    "re:\\b(k|kk|ok|med|medding|rest|sit|wait|hold|np|same|take your time)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m18",
+   "said": "med break",
+   "must_any": [
+    "re:\\b(k|kk|ok|med|medding|rest|sit|wait|hold|np|same|take your time)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m19",
+   "said": "gj",
+   "must_any": [
+    "re:\\b(ty|thx|thanks|gj|you too|u too|nice|np)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "group",
+    "group_named",
+    "tell",
+    "guild",
+    "guild_named",
+    "companion_say",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m20",
+   "said": "nice pull",
+   "must_any": [
+    "re:\\b(ty|thx|thanks|np)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "group",
+    "group_named",
+    "tell",
+    "guild",
+    "guild_named",
+    "companion_say",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m21",
+   "said": "ty for the group",
+   "must_any": [
+    "re:\\b(np|yw|welcome|anytime|ty|thx|thanks|you too|gl|cya)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m22",
+   "said": "gtg, thanks all",
+   "must_any": [
+    "re:\\b(cya|bye|gn|night|later|np|ty|take care|gl)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m23",
+   "said": "one more pull then i gotta go",
+   "must_any": [
+    "re:\\b(k|kk|ok|np|sure|sounds good|fine|cya)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m24",
+   "said": "can someone rez me",
+   "must_any": [
+    "re:\\b(omw|coming|rez|rezzing|sec|where|cant|no rez|too far|release)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m25",
+   "said": "heal me pls",
+   "must_any": [
+    "re:\\b(heal|healing|omw|sec|cant|no heals|k|on it|pot)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m26",
+   "said": "buff pls",
+   "must_any": [
+    "re:\\b(buff|buffs|sec|k|cant|no buffs|on it|sure)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m27",
+   "said": "follow me",
+   "must_any": [
+    "re:\\b(k|ok|following|right behind|lead|sure|omw)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m28",
+   "said": "wait here",
+   "must_any": [
+    "re:\\b(k|ok|waiting|sure|np|here)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m29",
+   "said": "which way?",
+   "must_any": [
+    "re:\\b(north|south|east|west|left|right|road|this way|follow|here|there|bridge)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m30",
+   "said": "is this camp ok for us?",
+   "must_any": [
+    "re:\\b(yes|yeah|ya|fine|ok|good|works|no|nah|move|better)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m31",
+   "said": "want to move to a better spot?",
+   "must_any": [
+    "re:\\b(sure|yes|ya|ok|k|lets|stay|here|fine|no|nah|where)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m32",
+   "said": "whats your spec?",
+   "must_any": [
+    "re:rejuv|enhancement|smit|\\b\\d\\d\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m33",
+   "said": "what lvl are you?",
+   "must_any": [
+    "re:\\b32\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m34",
+   "said": "how much longer can you stay?",
+   "must_any": [
+    "re:\\b(hour|hours|min|mins|while|late|bit|few|all night|not long|another)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m35",
+   "said": "loot is yours",
+   "must_any": [
+    "re:\\b(ty|thx|thanks|sure|k|ok|np)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m36",
+   "said": "need that drop?",
+   "must_any": [
+    "re:\\b(no|nah|yes|ya|sure|take it|its yours|go ahead|all yours|pass)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m37",
+   "said": "lol",
+   "must_any": [
+    "re:^\\W*(lol|haha|heh|ha|hehe)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "group",
+    "group_named",
+    "tell",
+    "guild",
+    "guild_named",
+    "companion_say",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m38",
+   "said": "that was close",
+   "must_any": [
+    "re:\\b(ya|yeah|yep|close|too close|phew|lol|heh|wow|nice|almost)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "group",
+    "group_named",
+    "tell",
+    "guild",
+    "guild_named",
+    "companion_say",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m39",
+   "said": "sorry my bad",
+   "must_any": [
+    "re:\\b(np|no worries|its ok|all good|happens|dw|ok)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "group",
+    "group_named",
+    "tell",
+    "guild",
+    "guild_named",
+    "companion_say",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  },
+  {
+   "id": "m40",
+   "said": "add!",
+   "must_any": [
+    "re:\\b(got it|on it|mez|root|k|see|mine|where|incoming)\\b"
+   ],
+   "silence_ok_in": [
+    "faction",
+    "say",
+    "guild",
+    "broadcast",
+    "chatgroup",
+    "advice",
+    "trade"
+   ]
+  }
+ ],
+ "twoline": [
+  {
+   "id": "t01",
+   "channel": "faction",
+   "bot": "try the bone camp in salisbury plains, good xp at 24",
+   "invites": "chat",
+   "to_player": false,
+   "said": "where?",
+   "must_any": [
+    "re:salisbury|camelot|south|horse|stable"
+   ]
+  },
+  {
+   "id": "t02",
+   "channel": "faction",
+   "bot": "took the horse to humberton, way faster",
+   "invites": "chat",
+   "to_player": false,
+   "said": "how?",
+   "must_any": [
+    "re:stable|horse|master|route|/stables|camelot|cotswold"
+   ],
+   "note": "channels.md finding 6: \"how?\" draws a stock line"
+  },
+  {
+   "id": "t03",
+   "channel": "faction",
+   "bot": "heard they lost the relic again",
+   "invites": "news",
+   "to_player": false,
+   "said": "who?",
+   "must_any": [
+    "re:\\b(albs?|mids?|hibs?|albion|midgard|hibernia|we|us|our)\\b"
+   ]
+  },
+  {
+   "id": "t04",
+   "channel": "faction",
+   "bot": "anyone for the barrows tonight?",
+   "invites": "ask",
+   "to_player": false,
+   "said": "how do i get there",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south"
+   ]
+  },
+  {
+   "id": "t05",
+   "channel": "faction",
+   "bot": "want to duo? im in avalon marsh tho, come find me",
+   "invites": "ask_duo",
+   "to_player": true,
+   "said": "how do i get there",
+   "must_any": [
+    "re:horse|stable|camelot|road|south|north|east|west"
+   ],
+   "note": "channels.md finding 9: a bot-started line sets no place"
+  },
+  {
+   "id": "t06",
+   "channel": "faction",
+   "bot": "dinged 32 finally",
+   "invites": "boast",
+   "to_player": false,
+   "said": "gz! what class?",
+   "must_any": [
+    "re:cleric"
+   ]
+  },
+  {
+   "id": "t07",
+   "channel": "faction",
+   "bot": "ready?",
+   "invites": "ask_ready",
+   "to_player": false,
+   "said": "sec need pow",
+   "must_any": [
+    "re:\\b(k|kk|ok|np|sure|wait|take your time|no rush)\\b"
+   ]
+  },
+  {
+   "id": "t08",
+   "channel": "faction",
+   "bot": "what lvl are you?",
+   "invites": "ask_level",
+   "to_player": true,
+   "said": "24",
+   "must_any": [
+    "re:\\b(cool|nice|ok|k|gotcha|ah|close|good|xp|group)\\b"
+   ]
+  },
+  {
+   "id": "t09",
+   "channel": "faction",
+   "bot": "Lyonesse is mostly 40s, too high for you yet",
+   "invites": "answer",
+   "to_player": true,
+   "said": "ty",
+   "must_any": [
+    "re:\\b(np|yw|welcome|any ?time|no problem|no prob|sure|gl)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t10",
+   "channel": "faction",
+   "bot": "lol that mob just one shot me",
+   "invites": "joke",
+   "to_player": false,
+   "said": "lol",
+   "must_any": [
+    "re:^\\W*(lol|haha|heh|ha|hehe|ikr|ya)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t11",
+   "channel": "faction",
+   "bot": "the keep at caer benowyc fell last night",
+   "invites": "news",
+   "to_player": false,
+   "said": "really?",
+   "must_any": [
+    "re:\\b(ya|yeah|yep|yes|really|saw|heard|mids|hibs|benowyc)\\b"
+   ]
+  },
+  {
+   "id": "t12",
+   "channel": "faction",
+   "bot": "need a cleric for the barrows, lvl 40ish",
+   "invites": "ask_group",
+   "to_player": false,
+   "said": "why not",
+   "must_any": [
+    "re:\\b(too|low|high|level|lvl|need|because|cuz|heal)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t13",
+   "channel": "group",
+   "bot": "try the bone camp in salisbury plains, good xp at 24",
+   "invites": "chat",
+   "to_player": false,
+   "said": "where?",
+   "must_any": [
+    "re:salisbury|camelot|south|horse|stable"
+   ]
+  },
+  {
+   "id": "t14",
+   "channel": "group",
+   "bot": "took the horse to humberton, way faster",
+   "invites": "chat",
+   "to_player": false,
+   "said": "how?",
+   "must_any": [
+    "re:stable|horse|master|route|/stables|camelot|cotswold"
+   ],
+   "note": "channels.md finding 6: \"how?\" draws a stock line"
+  },
+  {
+   "id": "t15",
+   "channel": "group",
+   "bot": "heard they lost the relic again",
+   "invites": "news",
+   "to_player": false,
+   "said": "who?",
+   "must_any": [
+    "re:\\b(albs?|mids?|hibs?|albion|midgard|hibernia|we|us|our)\\b"
+   ]
+  },
+  {
+   "id": "t16",
+   "channel": "group",
+   "bot": "anyone for the barrows tonight?",
+   "invites": "ask",
+   "to_player": false,
+   "said": "how do i get there",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south"
+   ]
+  },
+  {
+   "id": "t17",
+   "channel": "group",
+   "bot": "want to duo? im in avalon marsh tho, come find me",
+   "invites": "ask_duo",
+   "to_player": true,
+   "said": "how do i get there",
+   "must_any": [
+    "re:horse|stable|camelot|road|south|north|east|west"
+   ],
+   "note": "channels.md finding 9: a bot-started line sets no place"
+  },
+  {
+   "id": "t18",
+   "channel": "group",
+   "bot": "dinged 32 finally",
+   "invites": "boast",
+   "to_player": false,
+   "said": "gz! what class?",
+   "must_any": [
+    "re:cleric"
+   ]
+  },
+  {
+   "id": "t19",
+   "channel": "group",
+   "bot": "ready?",
+   "invites": "ask_ready",
+   "to_player": false,
+   "said": "sec need pow",
+   "must_any": [
+    "re:\\b(k|kk|ok|np|sure|wait|take your time|no rush)\\b"
+   ]
+  },
+  {
+   "id": "t20",
+   "channel": "group",
+   "bot": "what lvl are you?",
+   "invites": "ask_level",
+   "to_player": true,
+   "said": "24",
+   "must_any": [
+    "re:\\b(cool|nice|ok|k|gotcha|ah|close|good|xp|group)\\b"
+   ]
+  },
+  {
+   "id": "t21",
+   "channel": "group",
+   "bot": "Lyonesse is mostly 40s, too high for you yet",
+   "invites": "answer",
+   "to_player": true,
+   "said": "ty",
+   "must_any": [
+    "re:\\b(np|yw|welcome|any ?time|no problem|no prob|sure|gl)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t22",
+   "channel": "group",
+   "bot": "lol that mob just one shot me",
+   "invites": "joke",
+   "to_player": false,
+   "said": "lol",
+   "must_any": [
+    "re:^\\W*(lol|haha|heh|ha|hehe|ikr|ya)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t23",
+   "channel": "group",
+   "bot": "the keep at caer benowyc fell last night",
+   "invites": "news",
+   "to_player": false,
+   "said": "really?",
+   "must_any": [
+    "re:\\b(ya|yeah|yep|yes|really|saw|heard|mids|hibs|benowyc)\\b"
+   ]
+  },
+  {
+   "id": "t24",
+   "channel": "group",
+   "bot": "need a cleric for the barrows, lvl 40ish",
+   "invites": "ask_group",
+   "to_player": false,
+   "said": "why not",
+   "must_any": [
+    "re:\\b(too|low|high|level|lvl|need|because|cuz|heal)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t25",
+   "channel": "tell",
+   "bot": "try the bone camp in salisbury plains, good xp at 24",
+   "invites": "chat",
+   "to_player": true,
+   "said": "where?",
+   "must_any": [
+    "re:salisbury|camelot|south|horse|stable"
+   ]
+  },
+  {
+   "id": "t26",
+   "channel": "tell",
+   "bot": "took the horse to humberton, way faster",
+   "invites": "chat",
+   "to_player": true,
+   "said": "how?",
+   "must_any": [
+    "re:stable|horse|master|route|/stables|camelot|cotswold"
+   ],
+   "note": "channels.md finding 6: \"how?\" draws a stock line"
+  },
+  {
+   "id": "t27",
+   "channel": "tell",
+   "bot": "heard they lost the relic again",
+   "invites": "news",
+   "to_player": true,
+   "said": "who?",
+   "must_any": [
+    "re:\\b(albs?|mids?|hibs?|albion|midgard|hibernia|we|us|our)\\b"
+   ]
+  },
+  {
+   "id": "t28",
+   "channel": "tell",
+   "bot": "anyone for the barrows tonight?",
+   "invites": "ask",
+   "to_player": true,
+   "said": "how do i get there",
+   "must_any": [
+    "re:salisbury|horse|stable|camelot|south"
+   ]
+  },
+  {
+   "id": "t29",
+   "channel": "tell",
+   "bot": "want to duo? im in avalon marsh tho, come find me",
+   "invites": "ask_duo",
+   "to_player": true,
+   "said": "how do i get there",
+   "must_any": [
+    "re:horse|stable|camelot|road|south|north|east|west"
+   ],
+   "note": "channels.md finding 9: a bot-started line sets no place"
+  },
+  {
+   "id": "t30",
+   "channel": "tell",
+   "bot": "dinged 32 finally",
+   "invites": "boast",
+   "to_player": true,
+   "said": "gz! what class?",
+   "must_any": [
+    "re:cleric"
+   ]
+  },
+  {
+   "id": "t31",
+   "channel": "tell",
+   "bot": "ready?",
+   "invites": "ask_ready",
+   "to_player": true,
+   "said": "sec need pow",
+   "must_any": [
+    "re:\\b(k|kk|ok|np|sure|wait|take your time|no rush)\\b"
+   ]
+  },
+  {
+   "id": "t32",
+   "channel": "tell",
+   "bot": "what lvl are you?",
+   "invites": "ask_level",
+   "to_player": true,
+   "said": "24",
+   "must_any": [
+    "re:\\b(cool|nice|ok|k|gotcha|ah|close|good|xp|group)\\b"
+   ]
+  },
+  {
+   "id": "t33",
+   "channel": "tell",
+   "bot": "Lyonesse is mostly 40s, too high for you yet",
+   "invites": "answer",
+   "to_player": true,
+   "said": "ty",
+   "must_any": [
+    "re:\\b(np|yw|welcome|any ?time|no problem|no prob|sure|gl)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t34",
+   "channel": "tell",
+   "bot": "lol that mob just one shot me",
+   "invites": "joke",
+   "to_player": true,
+   "said": "lol",
+   "must_any": [
+    "re:^\\W*(lol|haha|heh|ha|hehe|ikr|ya)\\b"
+   ],
+   "silence_ok": true
+  },
+  {
+   "id": "t35",
+   "channel": "tell",
+   "bot": "the keep at caer benowyc fell last night",
+   "invites": "news",
+   "to_player": true,
+   "said": "really?",
+   "must_any": [
+    "re:\\b(ya|yeah|yep|yes|really|saw|heard|mids|hibs|benowyc)\\b"
+   ]
+  },
+  {
+   "id": "t36",
+   "channel": "tell",
+   "bot": "need a cleric for the barrows, lvl 40ish",
+   "invites": "ask_group",
+   "to_player": true,
+   "said": "why not",
+   "must_any": [
+    "re:\\b(too|low|high|level|lvl|need|because|cuz|heal)\\b"
+   ],
+   "silence_ok": true
+  }
+ ]
+}

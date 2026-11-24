@@ -162,11 +162,34 @@ jobs:
           path: chat-audit/
           if-no-files-found: warn
 
+      # Realism 1b (#477; docs/realism-audit-1.2.3/evenings.md): the player's evenings (UT_ChatBudgetSimulation.PlaysThePlayersEvenings,
+      # 18 two-hour evenings as one player reads them) read by evening_read.py, whose seven judgement-free counts may not get worse
+      # than tools/bot-voices/eval/evening_ratchet.json. Synthetic bots only, no played world; tests only.
+      - name: Evening transcripts ratchet
+        if: always()
+        shell: bash
+        run: |
+          rows=$(find . -path '*evening-transcripts*' -name 'evenings.tsv' | head -n 1 || true)
+          if [ -z "$rows" ]; then echo "::error title=Evening transcripts::no evenings.tsv found"; exit 1; fi
+          mkdir -p evening-transcripts
+          cp "$rows" evening-transcripts/
+          python tools/bot-voices/eval/evening_read.py "$rows" --metrics > evening-transcripts/metrics.txt || echo "::warning title=Evening transcripts::the metrics failed"
+          python tools/bot-voices/eval/evening_read.py "$rows" --ratchet --github
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evening-transcripts
+          path: evening-transcripts/
+          if-no-files-found: warn
+
       # 1.2.2 chat audit (docs/bot-voices/CHAT-AUDIT-1.2.2.md): the player questions of tools/bot-voices/eval/player_questions.json
       # answered through the server's own reply path (UT_ChatQuestionBench runs AutonomousChatReplyPath) and scored. Since the 1.2.2
       # fixes it is a ratchet: the build fails when the good share falls or a bad category grows past bench_ratchet.json's caps.
-      # The holdout set (player_questions_holdout.json, written after the fixes) is reported beside it. The written lines are
-      # scanned for fluff and clunky patterns (report only).
+      # Realism 1b (#477): the bench holds the realism audit's fresh lines too (the headline), reports good / wrong / non-answer /
+      # silent per kind and per channel, and ratchets the side benches: the same questions in every channel, the 54 follow-ups,
+      # the 40 lines of the moment and the two-line bench (context_lines.json). The holdout set (fresh lines held out) is reported
+      # beside it. The written lines are scanned for fluff and clunky patterns (report only).
       - name: Chat question bench ratchet
         if: always()
         shell: bash
@@ -179,7 +202,12 @@ jobs:
           if [ -n "$holdout" ]; then cp "$holdout" chat-bench/; else echo "::warning title=Chat question bench::no bench-holdout.json found"; fi
           python tools/bot-voices/eval/score_bench.py bench "$replies" --json chat-bench/bench-score.json --md chat-bench/bench-score.md > /dev/null || echo "::warning title=Chat question bench::the report failed"
           python tools/bot-voices/eval/score_bench.py lines --json chat-bench/lines-scan.json || echo "::warning title=Chat line scan::the scan failed"
-          python tools/bot-voices/eval/score_bench.py ratchet "$replies" ${holdout:+--holdout "$holdout"} --github --json chat-bench/ratchet.json
+          sides=""
+          for side in channels followups moments twoline; do
+            f=$(find . -path '*chat-bench*' -name "bench-$side.json" | head -n 1 || true)
+            if [ -n "$f" ]; then cp "$f" chat-bench/; sides="$sides --$side $f"; else echo "::warning title=Chat question bench::no bench-$side.json found"; fi
+          done
+          python tools/bot-voices/eval/score_bench.py ratchet "$replies" ${holdout:+--holdout "$holdout"} $sides --github --json chat-bench/ratchet.json
 
       - uses: actions/upload-artifact@v4
         if: always()

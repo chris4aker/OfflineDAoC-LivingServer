@@ -87,6 +87,22 @@ otherwise.
   ("/spawn shaman buffer") is now told it is a party role, not a build, and gets the class's builds. Real players' helper
   commands only. `UT_ClassesCommandBuilds473`. **Tests only.**
 
+- **The chat bench now asks what a player would type, not what the code already knows** (realism audit 1.2.3, #477). Before,
+  428 of its 467 lines were /faction questions taken from the bots' own answer tables, so it said 79.6% good while fresh
+  lines got a fitting reply far less often. It now holds 262 fresh lines written by someone who had not read the bench
+  (questions, statements and follow-ups, in /faction, /say, /group and tells), and its headline is those: **155 of 262
+  good (59.2%)**. The old lines stay beside them (473 of 527, 89.7%). 78 more fresh lines are held out and never tuned on
+  (33 good, 42.3%). A reply that only deflects ("not sure, try /advice", "no idea tbh") no longer counts as an answer.
+  The bench also asks every /faction question in each chat path (say, group, tell, guild, advice, broadcast, chat
+  group, trade, a companion's /say), 54 follow-ups that lean on the line before ("where is that?"), 40 lines of the
+  moment ("im by camp station", "pulling") and 12 two-line pairs (a bot's line, then the player's follow-up), and CI
+  reports good, wrong, non-answer and silent per channel and per kind. Weakest today: follow-ups (0-2% good in every
+  channel), a companion's /say (4%), and trade, which stays silent. The bench's healer can now rez from level 10, as a
+  live healer does. A two-hour-evening simulation (18 evenings in three realms) now counts seven things a player would
+  notice: party banter after the first hour (0), /say that is "sry ks", "rdy", "brb" or "1 sec" (61%), the ten busiest
+  bots' share of /faction (50%), "how much u paying?" in /trade (25 an hour), answers that open with the asker's name
+  (27%), fight calls that end on a laugh (9%) and your party lines left unanswered (5.5 of 20). None of these may get
+  worse. No bot behaviour changed. **Tests only.**
 **The server**
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after
   "Berermund casts a spell!" and "Squishywizard casts a spell!", about ten lines of "XxEvilxX's weapon returns to normal.",

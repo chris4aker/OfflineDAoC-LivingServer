@@ -42,6 +42,15 @@ class Categories(unittest.TestCase):
         for reply in ('not sure tbh', 'no idea, ask around', 'depends', 'ya?', '?', 'try /advice', 'good question'):
             self.assertEqual(cs.score(Q, reply)[0], 'NON_ANSWER', reply)
 
+    def test_a_deflection_holds_no_fact(self):
+        # #477: "re:sure|ask" passed "not sure, try /advice" (the audit's hand judgments: f046, f371, f467).
+        q = {'text': 'hey Siobhan can u help a newbie', 'must_any': [r're:sure|ya|yes|what|need|ask|help']}
+        for reply in ('not sure, try /advice', 'Not sure, try /advice.', 'no idea tbh', 'no clue, sry', 'dunno, ask around'):
+            self.assertEqual(cs.score(q, reply)[0], 'NON_ANSWER', reply)
+        self.assertEqual(cs.score(q, 'sure, what do you need?')[0], 'ANSWERED')
+        # A fact beside the deflection still counts.
+        self.assertEqual(cs.score(Q, 'not sure, but vendo is about 20-28')[0], 'ANSWERED')
+
     def test_fluff(self):
         for reply in ('lol', 'heh true', 'nice', 'yeah same', 'good times'):
             self.assertEqual(cs.score(Q, reply)[0], 'FLUFF', reply)
@@ -140,7 +149,9 @@ class Bench(unittest.TestCase):
         self.assertGreaterEqual(len(questions), 300)
         self.assertEqual(len({q['id'] for q in questions}), len(questions))
         for q in questions:
-            self.assertTrue(q['must_any'], q['id'])
+            self.assertTrue(q['must_any'] or q.get('silence_ok'), q['id'])
+            self.assertIn(q['kind'], ('question', 'statement', 'followup'), q['id'])
+            self.assertIn(q['set'], ('code', 'fresh'), q['id'])
             self.assertIn(q['channel'], ('faction', 'say', 'group', 'tell'))
             self.assertIn(q['realm'], ('alb', 'mid', 'hib'))
         intents = {q['intent'] for q in questions}
@@ -182,6 +193,70 @@ if __name__ == '__main__':
     unittest.main()
 
 
+class SideBenches(unittest.TestCase):
+    """#477: the per-channel bench, the follow-ups, the lines of the moment and the two-line bench (context_lines.json)."""
+
+    def test_context_file(self):
+        ctx = json.loads((EVAL / 'context_lines.json').read_text(encoding='utf-8'))
+        self.assertEqual(len(ctx['followups']), 54)
+        self.assertEqual(len(ctx['moments']), 40)
+        self.assertTrue(ctx['twoline'])
+        for side in ('followups', 'moments', 'twoline'):
+            ids = [x['id'] for x in ctx[side]]
+            self.assertEqual(len(ids), len(set(ids)), side)
+            for x in ctx[side]:
+                self.assertTrue(x['must_any'] or x.get('silence_ok'), x['id'])
+                for fact in x['must_any'] + x.get('wrong_any', []):
+                    cs.matches(fact, 'a line')    # every pattern compiles
+
+    def test_moments_are_quiet_where_the_file_says(self):
+        import tempfile
+        rows = [dict(ch='faction', id='m01', text='im by camp station', reply=None, route='silent', stub=False),
+                dict(ch='group', id='m01', text='im by camp station', reply=None, route='silent', stub=False),
+                dict(ch='group', id='m33', text='what lvl are you?', reply='32 here', route='fact level', stub=False)]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'm.json'
+            path.write_text(json.dumps(rows), encoding='utf-8')
+            tallies, scored = score_bench.score_side('moments', path)
+        self.assertEqual(tallies['faction']['ok'], 1)
+        self.assertEqual(tallies['group']['ok'], 1)
+        self.assertEqual(tallies['group']['counts']['SILENT'], 1)
+
+    def test_a_stubbed_reply_without_the_fact_is_a_stub(self):
+        cat, _, _ = score_bench.stubbed(('OFF_TOPIC', [], 'none of'), {'stub': True})
+        self.assertEqual(cat, 'STUB')
+        self.assertEqual(score_bench.stubbed(('ANSWERED', [], 'holds'), {'stub': True})[0], 'ANSWERED')
+
+
+class Evenings(unittest.TestCase):
+    """#477: evening_read.py's seven counts and their ratchet."""
+
+    def test_counts_and_check(self):
+        import evening_read as er
+        rows = [dict(at=10, ch='say', who='Ros', src='field:say', ex=1, i=0, text='sry ks'),
+                dict(at=20, ch='say', who='Zan', src='field:say', ex=2, i=0, text='nice weather'),
+                dict(at=30, ch='trade', who='Orm', src='market:reply', ex=3, i=1, text='how much u paying?'),
+                dict(at=40, ch='group', who='Per', src='combat:pull', ex=0, i=0, text='pulling lol'),
+                dict(at=3700, ch='group', who='Ros', src='group:ambient/chat', ex=4, i=0, text='good group'),
+                dict(at=50, ch='faction', who='Fen', src='field:ask', ex=5, i=0, text='any1 up for mithra?'),
+                dict(at=55, ch='faction', who='Yor', src='thread:1', ex=5, i=1, text='Fen, x2')]
+        for n, r in enumerate(rows):
+            r['n'] = n
+        now = er.counts({('L24-dungeon-alb', '1', 'silent'): rows})
+        self.assertEqual(now['say_stock_share'], 0.5)
+        self.assertEqual(now['party_banter_after_60'], 1)
+        self.assertEqual(now['laughing_calls_share'], 1.0)
+        self.assertEqual(now['name_first_share'], 1.0)
+        problems, _ = er.check(now, dict(now, say_stock_share=0.4, party_banter_after_60=2))
+        self.assertEqual(len(problems), 2)
+        self.assertEqual(er.check(now, now), ([], []))
+
+    def test_baseline_exists(self):
+        import evening_read as er
+        base = json.loads((EVAL / 'evening_ratchet.json').read_text(encoding='utf-8'))
+        self.assertTrue(set(er.COUNTS) <= set(base))
+
+
 class Ratchet(unittest.TestCase):
     """The 1.2.2 ratchet (score_bench.py ratchet): the good share may only rise, no capped count may grow."""
 
@@ -216,8 +291,15 @@ class Ratchet(unittest.TestCase):
     def test_baseline_and_holdout_exist(self):
         base = json.loads((EVAL / 'bench_ratchet.json').read_text(encoding='utf-8'))
         self.assertTrue(set(score_bench.CAPPED) <= set(base['counts']))
+        self.assertEqual(base['headline'], 'set:fresh')
+        for group in ('set:fresh', 'set:code', 'kind:question', 'kind:statement', 'kind:followup'):
+            self.assertIn(group, base['groups'])
+        for side in score_bench.SIDES:
+            self.assertTrue(base[side], side)
+        self.assertIn('companion_say', base['channels'])
         held = json.loads((EVAL / 'player_questions_holdout.json').read_text(encoding='utf-8'))['questions']
-        self.assertEqual(len(held), 60)
-        self.assertTrue(all(q['id'].startswith('h') and q['must_any'] for q in held))
+        # #477: the realism audit's fresh lines held out (written by someone who did not write the fixes).
+        self.assertEqual(len(held), 78)
+        self.assertTrue(all(q['id'].startswith('f') and (q['must_any'] or q.get('silence_ok')) and q['set'] == 'fresh' for q in held))
         bench_texts = {q['text'] for q in json.loads((EVAL / 'player_questions.json').read_text(encoding='utf-8'))['questions']}
         self.assertFalse({q['text'] for q in held} & bench_texts, 'the holdout holds no bench question')

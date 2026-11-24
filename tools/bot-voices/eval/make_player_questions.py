@@ -689,21 +689,76 @@ def build_holdout():
     return b.items
 
 
+# Realism 1b (#477): the audit's fresh lines (fresh_questions.json, written by someone who had not read the bench) join the bench and
+# make the holdout; audit/proposal.json says which. Two of the proposed holdout lines are word for word bench lines (q095, q177):
+# they go to the bench instead, and channel twins go together (fresh_sets), so the holdout holds nothing the bench has.
+FRESH = HERE / 'fresh_questions.json'
+PROPOSAL = HERE / 'audit' / 'proposal.json'
+NOT_HELD = ('f147', 'f214')
+FRESH_FIELDS = ('id', 'text', 'channel', 'realm', 'cls', 'level', 'intent', 'kind', 'must_any', 'wrong_any', 'silence_ok', 'to', 'bracket',
+                'data_gap', 'variant_of', 'hand', 'tightened')
+
+
+def kind_of(item):
+    """question, statement or followup: the fresh lines carry theirs; a line of the code's own tables is a question unless it is
+    small talk said without a question mark."""
+    if item.get('kind'):
+        return item['kind']
+    return 'statement' if item['intent'] == 'small_talk' and '?' not in item['text'] else 'question'
+
+
+def fresh_sets():
+    """(bench, holdout): the fresh lines the proposal puts in each, with set "fresh"."""
+    fresh = {q['id']: q for q in json.loads(FRESH.read_text(encoding='utf-8'))['questions']}
+    proposal = json.loads(PROPOSAL.read_text(encoding='utf-8'))
+
+    def row(i):
+        q = fresh[i]
+        out = {k: q[k] for k in FRESH_FIELDS if q.get(k) not in (None, [], '')}
+        out.setdefault('must_any', [])
+        out['set'] = 'fresh'
+        return out
+    place = {i: 'bench' for i in proposal['bench']}
+    place.update({i: 'bench' if i in NOT_HELD else 'holdout' for i in proposal['holdout']})
+    # A line and its channel twins (the same words in /say, /group or a tell, "variant_of") stay together, where the first of them
+    # (lowest id) was put: a holdout line whose words the bench answers in another channel is no holdout line.
+    twins = {}
+    for i in sorted(place, key=lambda i: int(i[1:])):
+        twins.setdefault(fresh[i]['text'].strip().lower(), []).append(i)
+    for ids in twins.values():
+        for i in ids[1:]:
+            place[i] = place[ids[0]]
+    bench = [row(i) for i in proposal['bench'] + proposal['holdout'] if place[i] == 'bench']
+    held = [row(i) for i in proposal['bench'] + proposal['holdout'] if place[i] == 'holdout']
+    return bench, held
+
+
 def main():
     items = build()
+    # The 1.2.2 holdout (written by the hand that wrote the fixes) is no holdout any more: it joins the bench as code lines.
+    retired = build_holdout()
+    for item in items + retired:
+        item['kind'] = kind_of(item)
+        item['set'] = 'code'
+    fresh, held = fresh_sets()
+    items = items + retired + fresh
     data = {
-        'note': 'The 1.2.2 chat audit question bench (tools/bot-voices/eval/make_player_questions.py writes it; do not edit by hand). '
-                'UT_ChatQuestionBench answers every question through the real reply path; score_bench.py scores the answers.',
+        'note': 'The chat question bench (tools/bot-voices/eval/make_player_questions.py writes it; do not edit by hand): the 1.2.2 audit\'s '
+                'questions from the code\'s own answer tables (set "code", ids q and h) and, since #477, the realism audit\'s fresh lines '
+                '(set "fresh", ids f, from fresh_questions.json). kind: question, statement or followup. UT_ChatQuestionBench answers every '
+                'question through the real reply path; score_bench.py scores the answers, and its headline is the fresh set.',
         'world': WORLD,
         'responders': RESPONDERS,
         'dungeon_table': {r: [list(d) for d in v] for r, v in DUNGEON_TABLE.items()},
         'questions': items,
     }
     text = json.dumps(data, indent=1, ensure_ascii=False) + '\n'
-    held = build_holdout()
-    holdout = json.dumps({'note': 'The holdout set of the chat bench (make_player_questions.py build_holdout writes it; do not edit by hand): '
-                                  'written after the 1.2.2 routing fixes, never used to tune them. The bench answers it with the world '
-                                  'and responders of player_questions.json; score_bench.py ratchet reports it.',
+    for item in held:
+        item['kind'] = kind_of(item)
+    holdout = json.dumps({'note': 'The holdout set of the chat bench (make_player_questions.py writes it; do not edit by hand): since #477 the '
+                                  'realism audit\'s fresh lines held out at random (seed 123), written by someone who did not write the fixes '
+                                  'and never to be tuned on. The bench answers it with the world and responders of player_questions.json; '
+                                  'score_bench.py ratchet reports it.',
                           'questions': held}, indent=1, ensure_ascii=False) + '\n'
     if '--check' in sys.argv:
         if OUT.read_text(encoding='utf-8') != text:
@@ -716,8 +771,8 @@ def main():
     HOLDOUT.write_text(holdout, encoding='utf-8')
     counts = {}
     for item in items:
-        counts[item['intent']] = counts.get(item['intent'], 0) + 1
-    print(f'{len(items)} questions:', ', '.join(f'{k} {v}' for k, v in sorted(counts.items())))
+        counts[item['kind']] = counts.get(item['kind'], 0) + 1
+    print(f'{len(items)} questions:', ', '.join(f'{k} {v}' for k, v in sorted(counts.items())), f'; {len(held)} held out')
 
 
 if __name__ == '__main__':
