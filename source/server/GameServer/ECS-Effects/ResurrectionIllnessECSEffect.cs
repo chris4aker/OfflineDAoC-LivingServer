@@ -4,8 +4,10 @@
     {
         public ResurrectionIllnessECSGameEffect(in ECSGameEffectInitParams initParams) : base(initParams)
         {
-            if (Owner is not GamePlayer player)
+            // #521: an autonomous gamebot carries it too (GameBot.ApplyRvrResurrectionIllness), with the same duration rules.
+            if (Owner is not GamePlayer and not GameBot)
                 return;
+            GameLiving player = Owner;
 
             // Overwrite Duration. Higher level rez spells reduce duration of rez sick.
             if (player.TempProperties.GetAllProperties().Contains(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS))
@@ -27,6 +29,8 @@
                 player.Out.SendUpdateWeaponAndArmorStats();
                 player.Out.SendStatusUpdate();
             }
+            else if (Owner is GameBot bot)
+                bot.AddResurrectionIllnessPenalty(SpellHandler.Spell.Value * 0.01);
         }
 
         public override void OnStopEffect()
@@ -37,6 +41,8 @@
                 player.Out.SendUpdateWeaponAndArmorStats();
                 player.Out.SendStatusUpdate();
             }
+            else if (Owner is GameBot bot)
+                bot.AddResurrectionIllnessPenalty(-SpellHandler.Spell.Value * 0.01);
         }
     }
 }

@@ -30,7 +30,10 @@ namespace DOL.GS
         public virtual string Name => "Default Effect Name";
         public virtual string OwnerName => Owner != null ? Owner.Name : string.Empty;
         public virtual bool HasPositiveEffect => false;
-        public ImmunityType AppliedImmunityType => !TriggersImmunity ? ImmunityType.None : (Owner is GamePlayer ? ImmunityType.Player : ImmunityType.Npc);
+        // #521: an autonomous gamebot crowd-controlled by an enemy-realm player character takes the player's immunity (60 s
+        // after the effect, roots and snares too, no same-spell refresh); against a monster or guard it keeps the NPC rule.
+        public ImmunityType AppliedImmunityType => DOL.GS.ServerRules.PvpRules.ImmunityTypeFor(TriggersImmunity,
+            Owner is GamePlayer || DOL.GS.ServerRules.PvpRules.TakesPlayerRules(Owner, SpellHandler?.Caster));
         public bool TriggersImmunity { get; set; }
         public int ImmunityDuration { get; protected set; } = 60000;
         public bool IsBeingReplaced { get; set; } // Used externally to force an effect to be silent (no message, no immunity) when being refreshed.

@@ -281,10 +281,15 @@ public static class AutonomousBotRealmPointRewards
         }
     }
 
-    /// <summary>A player killed in PvP pays the gamebots that fought them (players are paid by the rules).</summary>
+    /// <summary>A player killed in PvP pays the gamebots that fought them (players are paid by the rules), only past the
+    /// player's repeat-kill window (#521: RP_WORTH_SECONDS, as AwardPlayerOnPlayerKill does for players). Called before
+    /// GamePlayer.Die stamps this death, so DeathTime is still the previous death. No grey floor: the player path has none
+    /// either (the realm point value already scales with the victim's level), and the rule is parity.</summary>
     public static void PayGamebotsForPlayerKill(GamePlayer killedPlayer)
     {
         if (killedPlayer == null) return;
+        if (!DOL.GS.ServerRules.PvpRules.WorthRealmPoints(killedPlayer.DeathTime, killedPlayer.PlayedTime, Properties.RP_WORTH_SECONDS))
+            return;
         KeyValuePair<GameLiving, double>[] raw;
         lock (killedPlayer.XpGainersLock)
             raw = killedPlayer.XPGainers.ToArray();

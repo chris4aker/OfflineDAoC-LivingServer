@@ -67,7 +67,8 @@ namespace DOL.GS
         /// </summary>
         public static bool ShouldAutonomousPlayerBotRecover(GameBot bot, long now)
         {
-            if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper ||
+            // #521: not in RvR, where an autonomous gamebot regenerates as the player does (GameBot.UsesPlayerRegeneration).
+            if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.UsesPlayerRegeneration ||
                 !bot.IsAlive || !HasAnyResourceDeficit(bot.Health, bot.MaxHealth,
                     bot.Mana, bot.MaxMana, bot.Endurance, bot.MaxEndurance) ||
                 BlocksRest(bot))

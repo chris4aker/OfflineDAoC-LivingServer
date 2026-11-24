@@ -226,6 +226,35 @@ otherwise.
   logs, no target gets more than two ranged tries. `AutonomousDefensivePull.UnreachableBench`, `UT_PartyStalls123`.
   **Tests only.**
 
+**RvR: autonomous gamebots follow the player's PvP rules** (#521; owner decision 2026-11-24; mechanics.md findings 1-5,
+7-9)
+- One check, `PvpRules.TakesPlayerRules`, replaces the `is GamePlayer` test at every PvP rule site, so an autonomous
+  gamebot (never a companion, monster, guard or boss) takes the player's rule in RvR. "In RvR": for a rule with two sides
+  (crowd control, interrupts, crits, facing, cast line of sight, spell level) the other side, its pets and companions
+  resolved to their controller, is an enemy-realm player character (the player or a gamebot); a bot fighting a monster,
+  guard or boss keeps today's rule everywhere. For a rule about the bot alone (speed, sprint, regeneration, rez sickness)
+  the bot is in a frontier zone or battleground (New Frontiers, Cathal Valley, the battleground regions, the frontier
+  dungeon; not Darkness Falls, Summoner's Hall or Demons' Breach) or fought an enemy realm in the last 10 s.
+- Crowd control: no "enraged" refusal below 75% health; the player's 60 s immunity after a mez or stun wears off, roots,
+  snares and nearsight included; no refresh by the same spell (`ECSGameEffect.AppliedImmunityType`). The spell handlers
+  and the bots' planner read one copy of the refusals (`CrowdControlImmunity`); the older bot CC path now skips immune
+  targets.
+- Interrupts: no extra 2.5 s (3 s for a spell, as the player). Crits on a bot are capped at half the damage, melee and
+  spells. A bot must face an enemy player character to swing (it turns for the next swing). A bot's spell rolls to hit
+  with the spell's level.
+- Line of sight: a bot's cast at another bot or its pet is checked on the navmesh at the start and the end of the cast
+  (`BotCastSight`); casts at the player are still checked by his client.
+- Speed in RvR: no low-health slow; stealth slows a bot by the player's formula (`PvpRules.StealthSpeedFactor`, shared
+  with the player); sprint is +30% and drains endurance as the player's does.
+- Rez sickness: a bot raised or released after an RvR death at or above `RESS_SICKNESS_LEVEL` carries the RvR
+  resurrection illness (a full raise halves it, Perfect Recovery removes it) and its effectiveness drops with it.
+- Regeneration: in RvR a bot regenerates as the player does (6 s ticks standing, 3 s on its rest seat); the fast rest
+  floor (`BotRestRecovery`, 10% a second) stays in PvE and for companions.
+- Realm points: bots are paid for the player's death only past the player's repeat-kill window (`RP_WORTH_SECONDS`).
+  No grey floor: the player's own path has none, and the rule is parity.
+- `UT_PvpRuleParity`: the same scenario against a player and a gamebot gives the same outcome at every site; monsters,
+  guards, companions and PvE keep theirs. **Tests only.**
+
 **Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
 - **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again
   whenever it was more than 30 degrees off, every 400 ms, so 119 of the 120 look angles body language picks were undone

@@ -47,6 +47,12 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   facts from the world database; the evening stream is still a loop of its own beside `UT_ChatBudgetSimulation.Evening`
   (same fixture, same items and keeps; a change to Evening's start rules must be made in both); new holdout lines come
   from the owner's real lines, written by someone who did not write the fix.
+- [#521](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/521) RvR work 3, player/bot rule parity: autonomous
+  gamebots take the player's PvP rules in RvR (mez/CC immunity, interrupts, crits, facing, speed, sprint, stealth speed,
+  rez sickness, cast line of sight, spell level, RP window, regeneration; `PvpRules`, `UT_PvpRuleParity`). **In review,
+  tests only.** Companions unchanged. Open: the fight harness rows (#520) before/after, the PC checks P-mech 1-7
+  (mechanics.md) on a named build, and the realm-ability gaps (finding 6) and companion RvR jobs (finding 10), which
+  are not part of this change.
 
 ## 1.3
 
