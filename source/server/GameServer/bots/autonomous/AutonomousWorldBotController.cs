@@ -3180,6 +3180,8 @@ namespace DOL.GS
             {
                 Log.Info($"AUTONOMOUS_CAMP_OUTLEVELED bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
                          $"class=\"{bot.ClassName}\" camp=\"{_camp.Id}\" target=\"{target.Name}\" targetLevel={target.Level}");
+                // 1.2.3 (#535): not re-picked for a while (Pwnage1337 outleveled the same four camps 28 times)
+                _recentFailedSoloCamps[_camp.Id] = GameLoop.GameLoopTime + AutonomousDeathRecoveryPolicy.FailureMemoryMilliseconds;
                 AbandonCamp(bot, $"Outleveled {_camp.MonsterName}; the camp no longer gives experience");
                 return true;
             }
@@ -3567,6 +3569,8 @@ namespace DOL.GS
                 // a party pulls the monster standing apart first, then the highest level (AutonomousGroupPullOrder);
                 // a careless puller now and then takes one with an add (Bots as people WP2, its skill)
                 .OrderForPull(_groupDirective?.IsDynamic == true, bot)
+                // 1.2.3 (#535): a solo bot takes a grey only when nothing else is near, so a grey pick really means outleveled
+                .ThenBy(npc => _groupDirective?.IsDynamic != true && AutonomousSoloCampFloor.IsGrey(bot.EffectiveLevel, npc.EffectiveLevel) ? 1 : 0)
                 .ThenBy(npc => bot.GetDistanceTo(npc) + Math.Abs((int)ConLevels.GetConColor(bot.GetConLevel(npc))) * 220)
                 // Run native checks only after cheap filters and sorting, and
                 // stop at the first reachable target. Self-defense is handled
@@ -3724,6 +3728,13 @@ namespace DOL.GS
             int planningLevel = sharedGroup ? _groupDirective.AverageLevel : bot.Level;
             int highestMemberLevel = sharedGroup
                 ? bot.Group.GetMembersInTheGroup().Max(member => member.EffectiveLevel) : bot.EffectiveLevel;
+            int lowestMemberLevel = sharedGroup
+                ? bot.Group.GetMembersInTheGroup().Min(member => member.EffectiveLevel) : bot.EffectiveLevel;
+            // 1.2.3 (#536): group camps in con steps against the members (AutonomousGroupCampBand)
+            AutonomousGroupCampBand.Band groupBand = sharedGroup
+                ? AutonomousGroupCampBand.For(lowestMemberLevel, highestMemberLevel, planningLevel,
+                    _groupDirective.PreferredLevelBonus, groupSize, _groupDirective.WipePenalty)
+                : default;
             ConColor maximumTargetCon = MaximumTargetCon(groupSize);
             ConColor naturalMaximumTargetCon = NaturalMaximumTargetCon(groupSize);
             // Normal groups start at yellow-or-better, but every death retry is
@@ -3803,7 +3814,7 @@ namespace DOL.GS
                     !sharedGroup && !AutonomousSoloCampFloor.CampQualifies(bot.Level, validCount, cell.Levels.Length))
                     continue;
                 // No camp beside a spot where a monster far above this bot killed one recently (stefanrows' boss danger).
-                if (AutonomousPveBossDanger.IsNear(cell.RegionId, cell.X, cell.Y, planningLevel, dangerUtc))
+                if (AutonomousPveBossDanger.IsNear(cell.RegionId, cell.X, cell.Y, sharedGroup ? lowestMemberLevel : planningLevel, dangerUtc))
                     continue;
                 // Nor beside a place where this bot itself died again and again (AutonomousRepeatDeathSpots).
                 if (ownDeathSpots.Length > 0 && AutonomousRepeatDeathSpots.IsNear(ownDeathSpots, cell.RegionId, cell.X, cell.Y))
@@ -3813,9 +3824,7 @@ namespace DOL.GS
                 bool IsValidCampLevel(int level)
                     {
                         if (sharedGroup)
-                            return level >= planningLevel + 3 &&
-                                level <= planningLevel + _groupDirective.PreferredLevelBonus &&
-                                ConLevels.GetConColor(ConLevels.GetConLevel(highestMemberLevel, level)) > ConColor.GREY;
+                            return groupBand.Allows(level);
                         ConColor con = ConLevels.GetConColor(ConLevels.GetConLevel(bot.EffectiveLevel, level));
                         // Retain every naturally valid non-grey option in the
                         // catalog. The requested death ceiling is applied below,
@@ -3865,8 +3874,7 @@ namespace DOL.GS
                         sharedGroup ? planningLevel : bot.Level, groupSize))
                     continue;
                 int averageLevel = sharedGroup
-                    ? AutonomousGroupTargetPolicy.SelectFixedEightManLevel(validLevels, planningLevel,
-                        _groupDirective.PreferredLevelBonus)
+                    ? AutonomousGroupCampBand.SelectLevel(validLevels, groupBand)
                     : (int)Math.Round(validLevels.Average());
 
                 destinations[cell.Id] = new(cell.Id, cell.MonsterName, cell.ZoneName, cell.RegionId,
@@ -3933,9 +3941,8 @@ namespace DOL.GS
                     region: camp => camp.RegionId,
                     position: camp => new Vector3(destinations[camp.Id].X,
                         destinations[camp.Id].Y, destinations[camp.Id].Z));
-                int selectedLevel = AutonomousGroupTargetPolicy.SelectFixedEightManLevel(
-                    legal.Select(camp => camp.AverageMobLevel), planningLevel,
-                    _groupDirective.PreferredLevelBonus);
+                int selectedLevel = AutonomousGroupCampBand.SelectLevel(
+                    legal.Select(camp => camp.AverageMobLevel), groupBand);
                 legal = legal.Where(camp => camp.AverageMobLevel == selectedLevel);
             }
             else
@@ -4681,16 +4688,23 @@ namespace DOL.GS
             _routeCautionUntilTick = nowTick + RouteCautionAfterDeathMilliseconds;
             _recoverAfterSoloDeath = true;
 
+            // 1.2.3 (#537): blame the killer, not the camp the bot was heading to (AutonomousDeathBlame).
+            AutonomousDeathBlame.Killer? killer = bot.LastAutonomousKiller;
+            bot.LastAutonomousKiller = null;
+            bool dangerOnTheWay = AutonomousDeathBlame.IsDangerOnTheWay(killer, _camp?.MonsterName, bot.Level);
             ConColor failedCon = _lastEngagedCon ?? MaximumTargetCon(groupSize);
             // crowd widening never sends it back to the con it died to (null: no pull since the last death)
             _lastDeathCon = _lastEngagedCon;
             _lastDeathConTick = nowTick;
             ConColor saferCon = (ConColor)Math.Max((int)ConColor.GREEN, (int)failedCon - 1);
             int requiredSteps = (int)naturalMaximum - (int)saferCon;
-            _deathDifficultySteps = Math.Clamp(
-                Math.Max(_deathDifficultySteps + deathCount - _observedDeathCount, requiredSteps),
-                0,
-                maximumSafetySteps);
+            // A red or purple monster met on the way is remembered by its spot; it is no reason to hunt greens
+            // (in the 1.2.2 log 8,149 of 10,303 death replans dropped to green, onto camps grey on arrival, #535).
+            if (!dangerOnTheWay)
+                _deathDifficultySteps = Math.Clamp(
+                    Math.Max(_deathDifficultySteps + deathCount - _observedDeathCount, requiredSteps),
+                    0,
+                    maximumSafetySteps);
             _observedDeathCount = deathCount;
             _lastEngagedCon = null;
 
@@ -4703,12 +4717,12 @@ namespace DOL.GS
             if (AutonomousCampDangerBench.RecordDeath(_lastFailedCampId, bot.DatabaseID) is TimeSpan bench)
                 Log.Warn($"AUTONOMOUS_CAMP_DANGER_BENCH camp=\"{_lastFailedCampId}\" target=\"{failedTarget}\" " +
                          $"bots={AutonomousCampDangerBench.DistinctBotsToBench} hours={bench.TotalHours:0}");
-            string species = _camp == null ? null : AutonomousCampDangerBench.SpeciesKey(_camp.RegionId, _camp.MonsterName);
+            string species = _camp == null ? null : AutonomousDeathBlame.SpeciesToBench(killer, _camp.RegionId, _camp.MonsterName);
             if (AutonomousCampDangerBench.RecordDeath(species, bot.DatabaseID) is TimeSpan speciesBench)
                 Log.Warn($"AUTONOMOUS_SPECIES_DANGER_BENCH species=\"{species}\" " +
                          $"bots={AutonomousCampDangerBench.DistinctBotsToBench} hours={speciesBench.TotalHours:0}");
             if (_recentSoloDeathsWithoutExperience >= 2 && _camp != null &&
-                !string.IsNullOrWhiteSpace(_camp.MonsterName))
+                AutonomousDeathBlame.BlamesCampMonster(killer, _camp.MonsterName))
                 _recentFailedSoloTargets[_camp.MonsterName] = nowTick + AutonomousDeathRecoveryPolicy.FailureMemoryMilliseconds;
             _camp = null;
             _campStartedTick = 0;
@@ -4719,7 +4733,8 @@ namespace DOL.GS
                 bot.PersistentRecord.CurrentCampId = string.Empty;
             Log.Warn($"AUTONOMOUS_DEATH_ROUTE_REPLAN bot={bot.Name} id={bot.DatabaseID} " +
                      $"level={bot.Level} realm={GlobalConstants.RealmToName(bot.Realm)} class=\"{bot.ClassName}\" deaths={deathCount} " +
-                     $"failed_target=\"{failedTarget}\" new_max_con={MaximumTargetCon(groupSize)} " +
+                     $"failed_target=\"{failedTarget}\" killer=\"{killer?.Name}\" killerLevel={killer?.Level ?? 0} " +
+                     $"danger_on_the_way={dangerOnTheWay} new_max_con={MaximumTargetCon(groupSize)} " +
                      $"no_xp_death_streak={_recentSoloDeathsWithoutExperience} " +
                      $"recovery_wait_ms={Math.Max(0, _soloDeathRecoveryUntilTick - nowTick)} " +
                      $"region={bot.CurrentRegionID} position={bot.X},{bot.Y},{bot.Z}");

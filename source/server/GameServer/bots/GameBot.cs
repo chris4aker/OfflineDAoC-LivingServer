@@ -142,6 +142,8 @@ namespace DOL.GS
         private Point3D _stableRouteLastPosition;
         private ECSGameTimer _deathRecoveryTimer;
         private long _deathTick;
+        /// <summary>Autonomous gamebots only: what killed this bot last, and where (AutonomousDeathDiagnostics, #537).</summary>
+        public AutonomousDeathBlame.Killer? LastAutonomousKiller { get; set; }
         private ushort _deathRegionId;
         private Point3D _deathLocation;
         private long _nextReturnRoleplayTick;

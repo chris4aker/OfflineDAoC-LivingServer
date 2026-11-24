@@ -230,6 +230,26 @@ otherwise.
   taken on `43c43aa`.
 - The real-mesh RvR probes are run once per release on the PC (`docs/RELEASE-TRAIN.md`); the #506 fixes get blind
   scenarios (`docs/rvr-audit-1.2.3/README.md`).
+- **Gamebots pick camps the way players did, and remember what killed them** (#535, #536, #537; the 1.2.2 logs of
+  11/23 and 11/24: about one bot death per bot-hour, 41% to purple monsters, 97% of those before the camp). Gamebots only;
+  companions and real players are unchanged, and monsters are as strong as before.
+  - *Solo camps are no longer grey on arrival* (#535). The "half of the spawns, at least 3" rule that 1.2 gave level 50
+    solo camps now holds at every level (a smaller camp qualifies below 50 when all its spawns do): at low levels a con
+    band is a level or two wide, so a camp of grey spawns with one green qualified (5,176 `AUTONOMOUS_CAMP_OUTLEVELED`
+    in five hours on 11/24; 5,265 level 4 bots at level 1 skeletal pawns on 11/23). At the camp a solo bot takes a grey
+    only when nothing else is near, and an outleveled camp is not re-picked for 15 minutes.
+  - *Group camps sit at the party's level* (#536). A party took camps +3 to +10 raw levels over its average, a level-50
+    rule that is red to purple at levels 10-15 (75% of grouped deaths were to purple monsters). The band is now set in
+    cons against the members (`AutonomousGroupCampBand`): at most orange to the lowest member (red for a full eight), at
+    least yellow to it, never grey to the highest, and never above the old raw roll; one con step lower after a wipe. At
+    level 50 a full eight keeps its +10 top (red 56-60).
+  - *The killer is remembered, not the camp* (#537). A death to a monster purple to the bot, or red to a bot alone, now
+    marks the killer and its spot (it took ten levels before: 18% of the 11/24 monster deaths marked a spot, 51% would
+    now); the spot warns every bot the killer still cons red or purple to, deaths at one place refresh one spot, and a
+    new spot logs `AUTONOMOUS_KILLER_DANGER_SPOT`. A solo death to a red or purple monster that was not the camp's no
+    longer benches the camp's monster, no longer counts as a failed target and no longer lowers the bot's camp con (8,149
+    of 10,303 death replans had dropped to green); `AUTONOMOUS_DEATH_ROUTE_REPLAN` names the killer
+    (`AutonomousDeathBlame`). `UT_CampChoiceAndDeaths123`. **Tests only.**
 
 ## 1.2.2 — 2026-11-23
 
