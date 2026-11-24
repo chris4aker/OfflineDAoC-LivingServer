@@ -6068,6 +6068,11 @@ namespace DOL.GS
         {
             bool rvrDeath = _lastDeathRvr;
             _lastDeathRvr = false;
+            if (!rvrDeath)
+            {
+                TempProperties?.RemoveProperty(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS);
+                return;
+            }
             double rezSick = TempProperties.GetAllProperties().Contains(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS)
                 ? TempProperties.GetProperty<double>(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS) : 1.0;
             if (!DOL.GS.ServerRules.PvpRules.RvrRezSicknessApplies(DOL.GS.ServerRules.PvpRules.IsAutonomousGamebot(this), rvrDeath,

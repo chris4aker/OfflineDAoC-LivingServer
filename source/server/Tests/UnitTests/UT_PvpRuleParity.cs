@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using DOL.Database;
 using DOL.GS;
 using DOL.GS.ServerRules;
 using NUnit.Framework;
@@ -14,9 +17,40 @@ namespace DOL.UnitTests
     /// rez sickness, spell level, regeneration, repeat-kill window, cast line of sight). Monsters, guards, bosses and
     /// companions keep today's rule (PvE unchanged), and a gamebot fighting a monster keeps it too.
     /// </summary>
-    [TestFixture]
+    [TestFixture, NonParallelizable]
     public sealed class UT_PvpRuleParity
     {
+        // The game objects below need a server double: GameObject's type initializer reads the database (empty here).
+        private static readonly IObjectDatabase Empty = DispatchProxy.Create<IObjectDatabase, ReadOnly>();
+        public class ReadOnly : DispatchProxy
+        {
+            protected override object Invoke(MethodInfo method, object[] args)
+            {
+                if (!method.Name.StartsWith("Select") && !method.Name.StartsWith("Find"))
+                    throw new InvalidOperationException("No database writes allowed: " + method.Name);
+                Type type = method.ReturnType;
+                return type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type)
+                    ? Activator.CreateInstance(typeof(List<>).MakeGenericType(type.GetGenericArguments()[0])) : null;
+            }
+        }
+        private sealed class Server : GameServer
+        {
+            protected override IObjectDatabase DataBaseImpl => Empty;
+            protected override GS.ServerRules.IServerRules ServerRulesImpl => new GS.ServerRules.NormalServerRules();
+        }
+
+        private GameServer _previous;
+
+        [SetUp]
+        public void Setup()
+        {
+            _previous = GameServer.Instance;
+            GameServer.LoadTestDouble((Server)RuntimeHelpers.GetUninitializedObject(typeof(Server)));
+        }
+
+        [TearDown]
+        public void Cleanup() => GameServer.LoadTestDouble(_previous);
+
         private static readonly PvpSide Player = new(PvpCharacterKind.Player, eRealm.Albion);
         private static readonly PvpSide Gamebot = new(PvpCharacterKind.AutonomousGamebot, eRealm.Albion);
         private static readonly PvpSide Companion = new(PvpCharacterKind.Companion, eRealm.Albion);
