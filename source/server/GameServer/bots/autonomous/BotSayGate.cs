@@ -200,6 +200,8 @@ public static partial class BotSayGate
     {
         List<string> heard = Heard(line);
         long re = line.Re > 0 ? line.Re : ReOf(line, heard);
+        // #625: a bot line that answers a player's line counts toward its PLAYER_LINE_OUTCOME (logs only).
+        PlayerLineOutcomes.Answered(re, line.Speaker, Now());
         AutonomousChatExchange.Source source = AutonomousChatExchange.Current;
         string via;
         try { via = BotChatTranscript.Via(new System.Diagnostics.StackTrace(1, false)); } catch { via = "?"; }
@@ -262,6 +264,8 @@ public static partial class BotSayGate
                 _ => GlobalConstants.RealmToName(player.Realm),
             };
             NoteHeard(seq, channel, player);
+            // #625: PLAYER_LINE_OUTCOME follows the line for its 30 s (logs only).
+            PlayerLineOutcomes.Heard(seq, channel, player, intent, Now());
             NoteInRoom(RoomKey(channel, player.Realm, room, player.Name, to), new Said(seq, Now(), player.Name, text, to, true, channel));
             Remember(seq, "hear", channel, player.Realm, heard, player.Name, text);
             Write($"CHAT_HEAR seq={seq} t={Now()} ch={channel} room={Quote(room)} realm={GlobalConstants.RealmToName(player.Realm)} " +
