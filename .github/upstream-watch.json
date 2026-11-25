@@ -1,0 +1,12 @@
+{
+  "_comment": "Repos the weekly upstream watch follows (.github/workflows/upstream-watch.yml). 'reviewed' is the last commit a person or agent has gone through; move it forward when a review is done (see docs/UPSTREAM-WATCH.md).",
+  "repos": [
+    {
+      "name": "OpenDAoC-Core",
+      "url": "https://github.com/OpenDAoC/OpenDAoC-Core",
+      "branch": "master",
+      "reviewed": "428927b33163234a578a14cd2762b9d50fd927f9",
+      "note": "Our server base. Reviewed through 2026-11-23 in the 2026-11-24 harvest (base was about d51233cb, 2026-03-13)."
+    }
+  ]
+}
