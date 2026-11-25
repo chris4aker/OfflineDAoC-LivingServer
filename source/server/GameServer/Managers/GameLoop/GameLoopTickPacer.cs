@@ -12,13 +12,15 @@ namespace DOL.GS
 
         private const bool DYNAMIC_BUSY_WAIT_THRESHOLD = true;
 
-        private double _tickDuration;
+        private readonly double _tickDuration;
+        private readonly long _tickDurationTicks;
         private bool _running;
         private Thread _busyWaitThresholdThread;
         private int _busyWaitThreshold;
+        private long _busyWaitThresholdTicks;
 
         private double _gameLoopTime;
-        private double _totalElapsedTime;
+        private long _nextTickDeadlineTicks;
         private Stopwatch _stopwatch;
 
         public GameLoopTickPacerStats Stats { get; private set; }
@@ -29,6 +31,7 @@ namespace DOL.GS
                 throw new ArgumentOutOfRangeException(nameof(tickDuration), "Tick duration must be a positive value.");
 
             _tickDuration = tickDuration;
+            _tickDurationTicks = (long) (tickDuration * Stopwatch.Frequency / 1000.0);
         }
 
         public void Start()
@@ -51,14 +54,16 @@ namespace DOL.GS
 
             Stats = new([60000, 30000, 10000], 1000.0 / _tickDuration);
             _stopwatch = Stopwatch.StartNew();
+            _nextTickDeadlineTicks = _tickDurationTicks;
         }
 
         public void Stop()
         {
+            // Port of OpenDAoC-Core 7b31c6910: clear the flag even when no calibration thread was started.
+            _running = false;
+
             if (_busyWaitThresholdThread == null)
                 return;
-
-            _running = false;
 
             if (_busyWaitThresholdThread != Thread.CurrentThread && _busyWaitThresholdThread.IsAlive)
                 _busyWaitThresholdThread.Interrupt(); // This thread sleeps for a long time, let's not wait for it to finish.
@@ -66,31 +71,43 @@ namespace DOL.GS
             _busyWaitThresholdThread = null;
         }
 
+        /// <summary>
+        /// Port of OpenDAoC-Core c955cc64c: ticks are paced against an absolute deadline. Before, the stopwatch was restarted
+        /// every tick, so each tick's small overshoot (scheduler jitter) was thrown away and timers, buffs and respawns slowly
+        /// fell behind the wall clock over a long session. Catch-up stays capped at one tick: a tick that runs more than a
+        /// whole tick late resets the deadline instead of bursting through the missed ones.
+        /// </summary>
         public long WaitForNextTick()
         {
-            int sleepFor = (int) (_tickDuration - _stopwatch.Elapsed.TotalMilliseconds);
+            long ticksUntilDeadline = _nextTickDeadlineTicks - _stopwatch.ElapsedTicks;
             int busyWaitThreshold = _busyWaitThreshold;
 
-            if (sleepFor >= busyWaitThreshold)
-                Thread.Sleep(sleepFor - busyWaitThreshold);
-
-            if (_tickDuration > _stopwatch.Elapsed.TotalMilliseconds)
+            // Only sleep if enough time remains that the OS sleep overshoot won't carry us past the deadline.
+            if (ticksUntilDeadline >= Volatile.Read(ref _busyWaitThresholdTicks))
             {
-                // Any small number will do here. Technically, this could be 0.
-                // If the game loop appears to overshoot the tick duration for no reason, this can be reduced even further.
-                while (_tickDuration > _stopwatch.Elapsed.TotalMilliseconds)
-                    Thread.SpinWait(10);
+                int sleepFor = (int) (ticksUntilDeadline * 1000.0 / Stopwatch.Frequency) - busyWaitThreshold;
+
+                if (sleepFor > 0)
+                    Thread.Sleep(sleepFor);
             }
 
-            double elapsedTime = _stopwatch.Elapsed.TotalMilliseconds;
-            _totalElapsedTime += elapsedTime;
-            _stopwatch.Restart();
+            while (_stopwatch.ElapsedTicks < _nextTickDeadlineTicks)
+                Thread.SpinWait(10);
 
-            // In case the game loop is running faster than the tick rate. We don't want things to run faster than intended.
-            _gameLoopTime += elapsedTime < _tickDuration ? elapsedTime : _tickDuration;
-            Stats.RecordTick(_totalElapsedTime);
+            long currentTicks = _stopwatch.ElapsedTicks;
+
+            // Drop the missed ticks if this one ran more than a whole tick late.
+            _nextTickDeadlineTicks = NextDeadline(_nextTickDeadlineTicks, currentTicks, _tickDurationTicks);
+
+            // Game time advances by exactly one tick: things never run faster than intended.
+            _gameLoopTime += _tickDuration;
+            Stats.RecordTick(currentTicks * 1000.0 / Stopwatch.Frequency);
             return (long) _gameLoopTime;
         }
+
+        /// <summary>The next deadline after a tick that finished at <paramref name="currentTicks"/> (for tests).</summary>
+        public static long NextDeadline(long deadlineTicks, long currentTicks, long tickDurationTicks) =>
+            currentTicks - deadlineTicks >= tickDurationTicks ? currentTicks + tickDurationTicks : deadlineTicks + tickDurationTicks;
 
         private void UpdateBusyWaitThreshold()
         {
@@ -119,6 +136,7 @@ namespace DOL.GS
                     }
 
                     _busyWaitThreshold = (int) Math.Max(0, Math.Ceiling(highest));
+                    Volatile.Write(ref _busyWaitThresholdTicks, (long) (_busyWaitThreshold * Stopwatch.Frequency / 1000.0));
                     Thread.Sleep(pauseFor);
                 }
             }
