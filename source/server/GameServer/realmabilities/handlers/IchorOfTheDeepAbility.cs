@@ -262,8 +262,8 @@ namespace DOL.GS.RealmAbilities
 			// Make sure they're not using SoS (needs fixing), Charge, or in Shade form
 			var targetCharge = EffectListService.GetEffectOnTarget(target, eEffect.Charge);
 			var targetShade = EffectListService.GetEffectOnTarget(target, eEffect.Shade);
-			var targetSoS = EffectListService.GetEffectOnTarget(target, eEffect.SpeedOfSound);
-			if (targetCharge == null && targetSoS == null && targetShade == null)
+
+			if (targetCharge == null && targetShade == null)
 			{
 				/*
 				// Send spell message to player if applicable

@@ -184,7 +184,7 @@ public static class RvrCrowdControlPlan
     public static bool StunImmune(GameLiving target, int duration, GameLiving caster = null) =>
         CrowdControlImmunity.StunRefused(caster, target, duration, stillStunnedCounts: false);
 
-    /// <summary>The server would refuse a root (SpeedDecreaseSpellHandler.ApplyEffectOnTarget). Not pure.</summary>
+    /// <summary>The server would refuse a root (SpeedDecreaseSpellHandler.ApplyEffectOnTarget), or Speed of Sound would ignore it while it lasts (MaxSpeedCalculator). Not pure.</summary>
     public static bool RootImmune(GameLiving target)
     {
         if (target?.effectListComponent == null)

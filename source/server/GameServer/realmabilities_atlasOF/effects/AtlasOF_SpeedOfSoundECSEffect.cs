@@ -13,44 +13,16 @@ namespace DOL.GS.Effects
 
         public override bool HasPositiveEffect => true;
 
+        // Speed of Sound is applied by MaxSpeedCalculator, which reads this effect for players and gamebots alike
+        // (port of OpenDAoC-Core 324780db2). Snares, roots, Ichor and speed buffs are no longer disabled under it.
         public override void OnStartEffect()
         {
-            if (OwnerPlayer == null)
-                return;
-
-            foreach (ECSGameSpellEffect speedBuff in OwnerPlayer.effectListComponent.GetSpellEffects(eEffect.MovementSpeedBuff))
-            {
-                if (speedBuff.GetType() != typeof(SpeedOfSoundECSEffect))
-                    speedBuff.Disable();
-            }
-
-            foreach (ECSGameSpellEffect root in OwnerPlayer.effectListComponent.GetSpellEffects(eEffect.MovementSpeedDebuff))
-                root.Disable();
-
-            foreach (ECSGameSpellEffect ichor in OwnerPlayer.effectListComponent.GetSpellEffects(eEffect.Ichor))
-                ichor.Disable();
-
-            OwnerPlayer.BuffBonusMultCategory1.Set((int) eProperty.MaxSpeed, this, PropertyCalc.MaxSpeedCalculator.SPEED4);
-            OwnerPlayer.Out.SendUpdateMaxSpeed();
+            Owner.OnMaxSpeedChange();
         }
 
         public override void OnStopEffect()
         {
-            if (OwnerPlayer == null)
-                return;
-
-            OwnerPlayer.BuffBonusMultCategory1.Remove((int)eProperty.MaxSpeed, this);
-
-            foreach (ECSGameSpellEffect speedBuff in OwnerPlayer.effectListComponent.GetSpellEffects(eEffect.MovementSpeedBuff))
-                speedBuff.Enable();
-
-            foreach (ECSGameSpellEffect root in OwnerPlayer.effectListComponent.GetSpellEffects(eEffect.MovementSpeedDebuff))
-                root.Enable();
-
-            foreach (ECSGameSpellEffect ichor in OwnerPlayer.effectListComponent.GetSpellEffects(eEffect.Ichor))
-                ichor.Enable();
-
-            OwnerPlayer.Out.SendUpdateMaxSpeed();
+            Owner.OnMaxSpeedChange();
         }
     }
 }

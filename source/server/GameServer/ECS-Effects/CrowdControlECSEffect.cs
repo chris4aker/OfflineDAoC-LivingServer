@@ -32,7 +32,7 @@ namespace DOL.GS
             if (Owner is GameNPC npc)
                 npc.StopMoving();
 
-            if (Owner.effectListComponent.GetEffects().FirstOrDefault(x => x.GetType() == typeof(SpeedOfSoundECSEffect)) == null)
+            if (!Owner.effectListComponent.ContainsEffectForEffectType(eEffect.SpeedOfSound))
                 UpdatePlayerStatus();
         }
 
