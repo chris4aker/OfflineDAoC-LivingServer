@@ -38,7 +38,14 @@ LINES = [
     "11/25 12:00:07 | WRN | DOL.GS.T | FORK_BUILD name=1.2.3 commit=abc bot_guilds=on sluaghbinder=off",
     "11/25 12:00:08 | INF | DOL.GS.T | SERVER_STALL worstTickMs=900 stage=npc gcPauseMs=1 gen2=0 heapMB=800 slowest=10.1.2.3",
     "11/25 12:00:09 | INF | DOL.GS.T | PLAYER_LINE_OUTCOME seq=1 t=2 ch=say realm=Hibernia intent=Q answered=1 latencyMs=900 kind=answer bots=1 replies=1 window=30000",
+    '11/25 12:00:10 | INF | DOL.GS.T | QUEST_XP player="Sirwhatever" level=20 source="quest" xp=100',
+    '11/25 12:00:11 | WRN | DOL.GS.T | GM_JUMP_BOT gm="Sirwhatever" bot="Aldwyn" kind=gamebot',
+    "11/25 12:00:12 | INF | DOL.GS.T | GROUP_ENDED realm=Albion reason=wipe leader=Aldwyn note=Sirwhatever size=5",
 ]
+
+
+# Alloy's own start-up complaints about the host, not about this config (a container without cgroup v1, for one).
+HOST_ERRORS = re.compile(r"GOMEMLIMIT|memory limit")
 
 
 def free_port() -> int:
@@ -71,25 +78,28 @@ class RealAlloyTests(unittest.TestCase):
             env = dict(os.environ, OFFLINEDAOC_LOGS=str(root / "logs"), OFFLINEDAOC_TZ="UTC")
             proc = subprocess.Popen([ALLOY, "run", "--disable-reporting", f"--server.http.listen-addr=127.0.0.1:{free_port()}",
                                      f"--storage.path={root / 'data'}", str(root / "test.alloy")],
-                                    env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                                    env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             output, deadline = "", time.time() + 60
             try:
                 import selectors
                 sel = selectors.DefaultSelector()
                 sel.register(proc.stdout, selectors.EVENT_READ)
+                # os.read, not readline: a buffered reader can hold the last entries while select() waits on the
+                # empty pipe, and the test then times out short of them.
                 while time.time() < deadline and output.count("received log entry") < len(want):
                     if sel.select(timeout=1):
-                        chunk = proc.stdout.readline()
+                        chunk = os.read(proc.stdout.fileno(), 65536)
                         if not chunk:
                             break
-                        output += chunk
+                        output += chunk.decode("utf-8", "replace")
             finally:
                 proc.terminate()
                 try:
                     proc.wait(10)
                 except subprocess.TimeoutExpired:
                     proc.kill()
-        self.assertNotIn("level=error", output, output[-2000:])
+        errors = [ln for ln in output.splitlines() if "level=error" in ln and not HOST_ERRORS.search(ln)]
+        self.assertEqual(errors, [], output[-2000:])
         got = []
         for m in re.finditer(r'labels="(?P<labels>(?:[^"\\]|\\.)*)" entry="(?P<entry>(?:[^"\\]|\\.)*)"', output):
             labels = dict(re.findall(r'(\w+)=\\"((?:[^"\\]|\\\\.)*)\\"', m.group("labels")))

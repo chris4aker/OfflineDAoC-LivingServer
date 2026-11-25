@@ -49,10 +49,10 @@ loki.process "offlinedaoc" {
 
 	// 3. Fields that could carry a name or free text, per row (docs/LOG-ROWS.md, "Dropped").
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECONOMY_PULSE|GROUP_ENDED|REALM_LEVEL_SPREAD|STUCK_HOTSPOT)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_MOVE_STICK_LOST)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:account|accountName|addr|address|bot|botName|buyer|caller|carrier|email|friend|from|guild|hirer|holder|host|hosting|ip|killer|leader|member|members|msg|name|names|nemesis|nickname|owner|partner|password|player|playerName|quote|recruit|reply|rival|say|seller|speaker|target|text|to|user|username|victim|who|words)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:ahead|bot|leader)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -61,16 +61,16 @@ loki.process "offlinedaoc" {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_WAY_TOLD)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:answerer)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:answerer|asker)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_PEEL)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:TALE_START)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:attacker)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:asked_by|teller)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -97,7 +97,16 @@ loki.process "offlinedaoc" {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_KITE)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:attacker|member)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:attacker|guard|healer|member)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_PEEL)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:attacker|protected|protector)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -115,7 +124,7 @@ loki.process "offlinedaoc" {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BEGGAR_GIFT)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:beggar|from_player)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:beggar|from_bot|from_player)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -125,6 +134,33 @@ loki.process "offlinedaoc" {
 
 		stage.replace {
 			expression = "( (?:beggar|player)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:CRAFT_SESSION_END)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:best|bot)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_DUNGEON_HOLD_LONG|AUTONOMOUS_DUNGEON_PULLER_AWAY)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:blocker|bot|puller)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:HIRED_COMPANION_REVIVED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:body|owner)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -148,7 +184,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ANIMIST_SHROOMS|AUTONOMOUS_BATTLEGROUND_EXIT|AUTONOMOUS_BETWEEN_TASK_TIMEOUT|AUTONOMOUS_BLOCKED_BACKPACK_CLEARED|AUTONOMOUS_CAMP_SEARCH_RESET|AUTONOMOUS_CAMP_UNREACHABLE_PULLS|AUTONOMOUS_CAMP_WIDENED|AUTONOMOUS_CAPITAL_EGRESS_RECOVERY|AUTONOMOUS_CAPITAL_TRANSIT|AUTONOMOUS_CAPITAL_TRANSIT_ARRIVE|AUTONOMOUS_CROSSING_SOURCE_RECOVERY|AUTONOMOUS_DANGER_BYPASS|AUTONOMOUS_DB_WRITE_DEFERRED|AUTONOMOUS_DF_LOGIN_AT_ENTRANCE|AUTONOMOUS_DUNGEON_PULLER_AWAY|AUTONOMOUS_EQUIPMENT_UPGRADE|AUTONOMOUS_FLOOR_STEP|AUTONOMOUS_FOCUS_RELEASE|AUTONOMOUS_GROUP_CAMP_UNREACHABLE_PULLS|AUTONOMOUS_GROUP_HEALER_SHORT|AUTONOMOUS_GROUP_MATCHMAKING_TIMEOUT|AUTONOMOUS_GROUP_MEETUP_DEATHS|AUTONOMOUS_GROUP_RENDEZVOUS_RESELECTED|AUTONOMOUS_GROUP_RESURRECTION_TIMEOUT|AUTONOMOUS_GROUP_UNREACHABLE_RENDEZVOUS|AUTONOMOUS_LOCAL_SURFACE_RECOVERY|AUTONOMOUS_LOGIN_MOVED_FROM_BOSS|AUTONOMOUS_NECRO_PET_RELEASE|AUTONOMOUS_POCKET_NUDGE|AUTONOMOUS_RAID_STUCK_RECOVERY|AUTONOMOUS_RESURRECTION_BLOCKED|AUTONOMOUS_ROUTE_FLOOR_CORRECTION|AUTONOMOUS_ROUTE_POCKET_ESCAPE|AUTONOMOUS_ROUTE_POCKET_ESCAPE_LOOP|AUTONOMOUS_ROUTE_STALL_TRACE|AUTONOMOUS_SEAL_PURCHASE|AUTONOMOUS_SERVICE_BLOCKED|AUTONOMOUS_SERVICE_SURFACE_RECOVERY|AUTONOMOUS_SERVICE_UNREACHABLE|AUTONOMOUS_STABLE_APPROACH_FAILED|AUTONOMOUS_STATUS_SAVE_DROPPED|AUTONOMOUS_TETHER_RESET|AUTONOMOUS_TOWN_IDLE_ENDED|AUTONOMOUS_TOWN_IDLE_ROUTE|AUTONOMOUS_TOWN_IDLE_STARTED|AUTONOMOUS_TOWN_TELEPORT|AUTONOMOUS_TOWN_TELEPORT_FAILED|AUTONOMOUS_TOWN_TELEPORT_PLANNED|AUTONOMOUS_ZONE_SEAM_CYCLE|BEGGAR_CORNER|BEGGAR_LISTED|BEGGAR_LOGIN|BEGGAR_SOLD|BOND_TALK|BOT_ADD_CONTROL|BOT_AREA_SPELL|BOT_BUFFBOT_COPY_SUSPECTED|BOT_COSMETIC|BOT_DEATH_ANIM|BOT_GROUP_RELEASE|BOT_GROUP_RELEASE_FAILED|BOT_GUILD_JOIN_DECLINED|BOT_MOVE_OVERSHOOT|BOT_MOVE_SIT|BOT_MOVE_WALL|BOT_PLACE_LEARNED|BOT_REALM_ABILITY_FAILED|BOT_REALM_ABILITY_TRAINED|BOT_REALM_ABILITY_USED|BOT_RETREAT_ENDED|BOT_WAY_ASK|BOT_WAY_WRONG_ROAD|BUFFBOT_GEAR|COMPANION_EQUIP_REFUSED|COMPANION_OPTION_165|CRAFT_ENROLL|CRAFT_FIRST|CRAFT_MADE|CRAFT_SESSION_END|CRAFT_SESSION_START|CRAFT_TITLE|DF_STAIR_CLIMB|DF_STAIR_LANDING|DRAGON_RALLY_ROUTE_RETRY|ECON_CONSUMABLE|ECON_GEAR_CHECK|ECON_LIST|ECON_LUXURY|ECON_RECLAIM|ECON_REPAIR|ECON_SIEGE_SUPPLY|EPIC_BLAST_REACT|EPIC_DISPLACEMENT_BARRED|EPIC_DISPLACEMENT_BOT_OFF|EPIC_DISPLACEMENT_FALLBACK|EPIC_DISPLACEMENT_LANDED|EPIC_DISPLACEMENT_PORTAL|EPIC_DISPLACEMENT_RECALLED|EPIC_DISPLACEMENT_RECOVERED|EPIC_LOSSREN_SOUL_HOLDER|GM_JUMP_BOT|GM_JUMP_BOT_REFUSED|LIVING_SERVER_LINKDEAD|LIVING_SERVER_LOGOUT|LIVING_SERVER_LOGOUT_CANCELLED|LIVING_SERVER_REZ|LIVING_SERVER_REZ_ASK|LIVING_SERVER_REZ_SKIP|NAV_LINK_LANDING|NECRO_SERVANT_COMMAND_DROPPED|RAID_CURE_MEZZ|RAID_LEEROY|REALM_EXPEDITION_ORDINARY_TRAVEL|REALM_EXPEDITION_ROUTE_RETRY|REALM_EXPEDITION_STRANDED_REGROUP|REALM_RAID_HUB_FLOOR_ESCAPE|REALM_RAID_HUB_POCKET_ESCAPE|REALM_RAID_HUB_ROUTE_FAILED|REALM_RAID_HUB_ROUTE_RELEASED|REALM_RAID_HUB_ROUTE_VIA|REALM_RAID_LEEROY_START|REALM_RAID_LOOT|REALM_RAID_RELEASE_POST|REALM_RAID_REPLACEMENT|REALM_RAID_TRAVEL_CANCEL|RELIC_CARRIER_CHOSEN|RELIC_CARRIER_CORNERED|RELIC_CARRIER_DOOR|RELIC_CARRIER_STUCK|RELIC_PICKUP_REFUSED|ROLEPLAY_AMBIENT|ROLEPLAY_MOCK|RVR_BORDER_STAGING|RVR_DECIDE|RVR_DEFENSE_POST_RETRY|RVR_DOOR_REPAIR|RVR_FRONTIER_WAIT_LONG|RVR_KEEP_ROUTE_FAILED|RVR_KEEP_ROUTE_RESTART|RVR_KEEP_TRAVEL_STALL|RVR_LANE_FALLBACK|RVR_LORD_FORMATION|RVR_LORD_STEP_IN|RVR_PLAN|RVR_STEALTH_TRAVEL|TALE_STANDIN|TALE_TELLER)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ANIMIST_SHROOMS|AUTONOMOUS_BATTLEGROUND_EXIT|AUTONOMOUS_BETWEEN_TASK_TIMEOUT|AUTONOMOUS_BLOCKED_BACKPACK_CLEARED|AUTONOMOUS_CAMP_SEARCH_RESET|AUTONOMOUS_CAMP_UNREACHABLE_PULLS|AUTONOMOUS_CAMP_WIDENED|AUTONOMOUS_CAPITAL_EGRESS_RECOVERY|AUTONOMOUS_CAPITAL_TRANSIT|AUTONOMOUS_CAPITAL_TRANSIT_ARRIVE|AUTONOMOUS_CROSSING_SOURCE_RECOVERY|AUTONOMOUS_DANGER_BYPASS|AUTONOMOUS_DB_WRITE_DEFERRED|AUTONOMOUS_DF_LOGIN_AT_ENTRANCE|AUTONOMOUS_EQUIPMENT_UPGRADE|AUTONOMOUS_FIRST_LOOT|AUTONOMOUS_FLOOR_STEP|AUTONOMOUS_FOCUS_RELEASE|AUTONOMOUS_GROUP_CAMP_UNREACHABLE_PULLS|AUTONOMOUS_GROUP_HEALER_SHORT|AUTONOMOUS_GROUP_MATCHMAKING_TIMEOUT|AUTONOMOUS_GROUP_MEETUP_DEATHS|AUTONOMOUS_GROUP_RENDEZVOUS_RESELECTED|AUTONOMOUS_GROUP_RESURRECTION_TIMEOUT|AUTONOMOUS_GROUP_UNREACHABLE_RENDEZVOUS|AUTONOMOUS_LOCAL_SURFACE_RECOVERY|AUTONOMOUS_LOGIN_MOVED_FROM_BOSS|AUTONOMOUS_LOOT_APPRAISAL_FAILED|AUTONOMOUS_LOOT_REJECTED|AUTONOMOUS_NECRO_PET_RELEASE|AUTONOMOUS_POCKET_NUDGE|AUTONOMOUS_RAID_STUCK_RECOVERY|AUTONOMOUS_ROUTE_FLOOR_CORRECTION|AUTONOMOUS_ROUTE_POCKET_ESCAPE|AUTONOMOUS_ROUTE_POCKET_ESCAPE_LOOP|AUTONOMOUS_ROUTE_STALL_TRACE|AUTONOMOUS_SEAL_PURCHASE|AUTONOMOUS_SERVICE_BLOCKED|AUTONOMOUS_SERVICE_SURFACE_RECOVERY|AUTONOMOUS_SERVICE_UNREACHABLE|AUTONOMOUS_STABLE_APPROACH_FAILED|AUTONOMOUS_STABLE_LANDING_CORRECTION|AUTONOMOUS_STABLE_ROUTE_ARRIVE|AUTONOMOUS_STABLE_ROUTE_BOARD|AUTONOMOUS_STABLE_ROUTE_FAIL|AUTONOMOUS_STABLE_ROUTE_RESUME|AUTONOMOUS_STATUS_SAVE_DROPPED|AUTONOMOUS_TETHER_RESET|AUTONOMOUS_TOWN_IDLE_ENDED|AUTONOMOUS_TOWN_IDLE_ROUTE|AUTONOMOUS_TOWN_IDLE_STARTED|AUTONOMOUS_TOWN_TELEPORT|AUTONOMOUS_TOWN_TELEPORT_FAILED|AUTONOMOUS_TOWN_TELEPORT_PLANNED|AUTONOMOUS_TRAINING|AUTONOMOUS_TRANSFER_REQUEUE|AUTONOMOUS_XP_PROGRESS|AUTONOMOUS_ZONE_SEAM_CYCLE|BEGGAR_CORNER|BEGGAR_LISTED|BEGGAR_LOGIN|BEGGAR_SOLD|BOT_ADD_CONTROL|BOT_AREA_SPELL|BOT_BUFFBOT_COPY_SUSPECTED|BOT_CORPSE_MOVE_REFUSED|BOT_COSMETIC|BOT_DEATH_ANIM|BOT_GROUP_RELEASE|BOT_GROUP_RELEASE_FAILED|BOT_MOVE_OVERSHOOT|BOT_MOVE_SIT|BOT_MOVE_WALL|BOT_PLACE_LEARNED|BOT_REALM_ABILITY_FAILED|BOT_REALM_ABILITY_TRAINED|BOT_REALM_ABILITY_USED|BOT_RELEASE_RETRY|BOT_RETREAT_ENDED|BOT_WAY_ASK|BOT_WAY_WRONG_ROAD|BUFFBOT_GEAR|COMPANION_EQUIP_REFUSED|COMPANION_OPTION_165|COMPANION_SKILLS_165|CRAFT_ENROLL|CRAFT_FIRST|CRAFT_MADE|CRAFT_SESSION_START|CRAFT_TITLE|DF_STAIR_CLIMB|DF_STAIR_LANDING|DRAGON_RALLY_ROUTE_RETRY|ECON_CONSUMABLE|ECON_LIST|ECON_LUXURY|ECON_RECLAIM|ECON_REPAIR|EPIC_BLAST_REACT|EPIC_DISPLACEMENT_BARRED|EPIC_DISPLACEMENT_BOT_OFF|EPIC_DISPLACEMENT_FALLBACK|EPIC_DISPLACEMENT_LANDED|EPIC_DISPLACEMENT_PORTAL|EPIC_DISPLACEMENT_RECALLED|EPIC_DISPLACEMENT_RECOVERED|EPIC_LOSSREN_SOUL_HOLDER|ERA_BUILD_ASSIGNED|ERA_BUILD_TRAINED|HIRED_COMPANION_GEAR|LIVING_SERVER_LINKDEAD|LIVING_SERVER_LOGOUT|LIVING_SERVER_LOGOUT_CANCELLED|NAV_LINK_LANDING|NECRO_SERVANT_COMMAND_DROPPED|RAID_LEEROY|REALM_EXPEDITION_ORDINARY_TRAVEL|REALM_EXPEDITION_ROUTE_RETRY|REALM_EXPEDITION_STRANDED_REGROUP|REALM_RAID_HUB_FLOOR_ESCAPE|REALM_RAID_HUB_POCKET_ESCAPE|REALM_RAID_HUB_ROUTE_FAILED|REALM_RAID_HUB_ROUTE_RELEASED|REALM_RAID_LEEROY_START|REALM_RAID_LOOT|REALM_RAID_RELEASE_POST|REALM_RAID_REPLACEMENT|REALM_RAID_TRAVEL_CANCEL|RELIC_CARRIER_CHOSEN|RELIC_CARRIER_CORNERED|RELIC_CARRIER_DOOR|RELIC_CARRIER_STUCK|RELIC_PICKUP_REFUSED|ROLEPLAY_AMBIENT|RVR_BORDER_STAGING|RVR_DECIDE|RVR_DEFENSE_POST_RETRY|RVR_DOOR_REPAIR|RVR_FRONTIER_WAIT_LONG|RVR_KEEP_ROUTE_FAILED|RVR_KEEP_ROUTE_RESTART|RVR_KEEP_TRAVEL_STALL|RVR_LANE_FALLBACK|RVR_LORD_FORMATION|RVR_LORD_STEP_IN|RVR_PLAN|RVR_STEALTH_TRAVEL|TALE_STANDIN|TALE_TELLER)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:bot)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -161,6 +197,24 @@ loki.process "offlinedaoc" {
 
 		stage.replace {
 			expression = "( (?:bot|by)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECON_GEAR_CHECK)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|copper)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_RESURRECTION_BLOCKED|LIVING_SERVER_REZ|LIVING_SERVER_REZ_SKIP)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|corpse)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -211,7 +265,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_DEATH_ANIM_TRACE)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_DEATH_ANIM_TRACE|GM_JUMP_BOT|GM_JUMP_BOT_REFUSED)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:bot|gm)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -220,10 +274,28 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_GUILD_JOIN|BOT_GUILD_REMOVE)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_GUILD_REMOVE)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:bot|guild)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_GUILD_JOIN)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|guild|invitedBy)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_GUILD_JOIN_DECLINED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|invitedBy)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -238,7 +310,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_MOVE_STICK_LOST|BOT_WAY_FOLLOW)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_WAY_FOLLOW)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:bot|leader)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -256,7 +328,16 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOND_FRIENDS|BOND_GRUDGE)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ROLEPLAY_MOCK)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|mocker)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOND_FRIENDS|BOND_GRUDGE|BOND_TALK)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:bot|other)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -283,6 +364,24 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_STARTER_GEAR)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|path)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BG_LORD_PATH|BG_STORM_TRACE)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|path|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_LED_HANDOVER|CHAT_PLAYER_REPLY_DROPPED|COMPANION_RIDE_BACK|COMPANION_RIDE_STOWED|COMPANION_STALE_COPY_165|COMPANION_SURVIVE_TO_REZ|ECON_PLAYER_SELL|ECON_SC_JOB|LORE_PLACED|RAID_RELIC_PICKUP|RVR_ENGAGE)(?: |$)\""
 
 		stage.replace {
@@ -301,19 +400,19 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_DUNGEON_HOLD_LONG)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_ROUTE_THREAT_HOLD_EXPIRED)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:bot|puller)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:bot|puller|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_ROUTE_THREAT_HOLD_EXPIRED)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:LIVING_SERVER_REZ_ASK)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:bot|puller|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:bot|rezzer)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -328,7 +427,34 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_CAMP_OUTLEVELED|AUTONOMOUS_DEFENSIVE_PULL_BENCHED|AUTONOMOUS_DEFENSIVE_PULL_IGNORED|AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE|AUTONOMOUS_DUNGEON_EPIC_AVOIDED|AUTONOMOUS_DUNGEON_SEPARATED_DETOUR|AUTONOMOUS_PULL_TIMEOUT|AUTONOMOUS_PVP_STALEMATE|AUTONOMOUS_ROUTE_RECOVERY|AUTONOMOUS_ROUTE_THREAT|AUTONOMOUS_ROUTE_THREAT_PULL_FAILED|AUTONOMOUS_ROUTE_THREAT_UNREACHABLE|AUTONOMOUS_UNREACHABLE_TARGET|BG_LORD_PATH|BG_RALLY_CONTACT|BG_STORM_TRACE|BOT_PET_FOCUS_SHIELD|BOT_SOLO_BAIL|CHAT_PROMISE|EPIC_MELEE_SWITCH_TRACE|REALM_EXPEDITION_LEEROY|RVR_CHASE|RVR_NOTICE|RVR_SIEGE|RVR_SPOT|RVR_STEALTH_ARCHER_OPEN|RVR_STEALTH_OPEN|SAVAGE_MELEE_PULL_TIMEOUT)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_DISPLACEMENT)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|source|who)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_MELEE_SWITCH_TRACE)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|stack|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECON_SIEGE_SUPPLY)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:bot|supplier)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_CAMP_OUTLEVELED|AUTONOMOUS_DEFENSIVE_PULL_BENCHED|AUTONOMOUS_DEFENSIVE_PULL_IGNORED|AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE|AUTONOMOUS_DUNGEON_EPIC_AVOIDED|AUTONOMOUS_DUNGEON_SEPARATED_DETOUR|AUTONOMOUS_PULL_TIMEOUT|AUTONOMOUS_PVP_STALEMATE|AUTONOMOUS_ROUTE_RECOVERY|AUTONOMOUS_ROUTE_THREAT|AUTONOMOUS_ROUTE_THREAT_PULL_FAILED|AUTONOMOUS_ROUTE_THREAT_UNREACHABLE|AUTONOMOUS_UNREACHABLE_TARGET|BG_RALLY_CONTACT|BOT_PET_FOCUS_SHIELD|BOT_SOLO_BAIL|CHAT_PROMISE|RAID_CURE_MEZZ|REALM_EXPEDITION_LEEROY|RVR_CHASE|RVR_NOTICE|RVR_SIEGE|RVR_SPOT|RVR_STEALTH_ARCHER_OPEN|RVR_STEALTH_OPEN|SAVAGE_MELEE_PULL_TIMEOUT)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:bot|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -355,19 +481,10 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_DISPLACEMENT)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_RAID_HUB_ROUTE_VIA)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:bot|who)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
-			replace    = ""
-		}
-	}
-
-	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BUFFBOT_LOGOUT|BUFFBOT_RELOCATED)(?: |$)\""
-
-		stage.replace {
-			expression = "( (?:buffbot)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:bot|via)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -376,13 +493,13 @@ loki.process "offlinedaoc" {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BUFFBOT_DIED)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:buffbot|killer)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:buffbot|killer|main)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BUFFBOT_BUFFED|BUFFBOT_CREATED)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BUFFBOT_BUFFED|BUFFBOT_CREATED|BUFFBOT_LOGOUT|BUFFBOT_RELOCATED)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:buffbot|main)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -412,7 +529,7 @@ loki.process "offlinedaoc" {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECON_ORDER)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:buyer)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:buyer|crafter)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -422,6 +539,15 @@ loki.process "offlinedaoc" {
 
 		stage.replace {
 			expression = "( (?:buyer|seller)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_ENCOUNTER_STARTED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:by)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -445,10 +571,19 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RELIC_CAPTURE|RELIC_DROP|RELIC_ITEM_RESTORED|RELIC_PICKUP|RELIC_STALE_CARRIER|RELIC_TIMER_ERROR)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RELIC_DROP|RELIC_ITEM_RESTORED|RELIC_PICKUP|RELIC_STALE_CARRIER|RELIC_TIMER_ERROR)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:carrier)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RELIC_CAPTURE)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:carrier|path)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -463,7 +598,34 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECON_HAGGLE|ECON_PLAYER_DELIVERY)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_BLAST_LANDED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:center)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_SIEGE_RESURRECTION)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:corpse|healer)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECON_COMMISSION)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:crafter)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECON_HAGGLE|ECON_PLAYER_DELIVERY|ECON_PLAYER_ORDER)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:crafter|player)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -490,10 +652,64 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:DB_BACKUP)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:error|path)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_RAID_RETURN_GATHER)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:event)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_RAID_RETURN_WAVE)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:event|goal|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:CRAFT_ERA_JOIN)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:event|player)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:LOOT_ITEMS_MISSING|MERCHANT_ITEMS_MISSING)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:examples|note)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_EXPEDITION_TACTIC)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:fights|from|to)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_RELIC_STATE_LOADED|SERVER_HEAP_SNAPSHOT)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:file)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -571,7 +787,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_EXPEDITION_TARGET_SWITCH)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_EXPEDITION_TARGET_SWITCH|TALE_HANDOVER)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:from|to)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -580,10 +796,10 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_RAID_RETURN_WAVE)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_SWEEP_END|EPIC_SWEEP_START)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:goal|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:guest)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -607,10 +823,19 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_SIEGE_RESURRECTION)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:SERVER_MEMORY_DIAGNOSTICS)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:healer)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:heapSnapshots)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:SERVER_HOLDER_CENSUS)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:holders)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -620,6 +845,24 @@ loki.process "offlinedaoc" {
 
 		stage.replace {
 			expression = "( (?:hosting|left|recruit)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_EXPEDITION_TARGET_STATUS)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:itsTarget|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:DB_SAFETY)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:journal)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -637,7 +880,7 @@ loki.process "offlinedaoc" {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_CC_ASSIGN)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:killTarget|member)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:killTarget|member|subject)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -688,6 +931,15 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:CABALIST_REST)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:lastMessage|name)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_SOUL_RECKONER_OUT)(?: |$)\""
 
 		stage.replace {
@@ -733,10 +985,19 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_LED_INVITE|RAID_PLAYER_INVITE)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_LED_INVITE)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:leader|player)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RAID_PLAYER_INVITE)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:leader|player|steppedOut)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -751,6 +1012,24 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_MILESTONE_TALK)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:line)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:TALE_FIRESIDE)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:listener|player|teller)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_DISPLACEMENT_BOUNCED)(?: |$)\""
 
 		stage.replace {
@@ -760,10 +1039,28 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_BACKLINE|RVR_INTERRUPT)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_ASSIST_CALL)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:mainAssist|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_BACKLINE)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:member)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_INTERRUPT)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:member|subject)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -787,7 +1084,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:CABALIST_REST|DRAGON_FLIGHT_CUT_SHORT|DRAGON_HEALTH|DRAGON_LANDED|DRAGON_LANDING_APPROACH|DRAGON_LANDING_FORCED|DRAGON_RESET|DRAGON_TAKEOFF|GOLD_SPAMMER_BANNED|GOLD_SPAMMER_START|LIVING_SERVER_FIRST|LOREMASTER_SPAWNED|RVR_EVENT_OPENED)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_SKILL_GROWTH|BOT_SKILL_MISTAKE|BOT_SKILL_PROFILE|DRAGON_FLIGHT_CUT_SHORT|DRAGON_HEALTH|DRAGON_LANDED|DRAGON_LANDING_APPROACH|DRAGON_LANDING_FORCED|DRAGON_RESET|DRAGON_TAKEOFF|EPIC_SWEEP_RAID_START|GOLD_SPAMMER_BANNED|GOLD_SPAMMER_START|LIVING_SERVER_FIRST|LOREMASTER_SPAWNED|RVR_EVENT_OPENED)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:name)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -814,6 +1111,24 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_EXPEDITION_RESPAWNS_LEFT|REALM_EXPEDITION_ROUTE_BLOCKED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:nearest)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_EXPEDITION_TACTIC_KEPT)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:note)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:PATH_CLOSED_DOOR_HOLD)(?: |$)\""
 
 		stage.replace {
@@ -823,7 +1138,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_KVASIR_HEALED|HIRED_COMPANION|HIRED_COMPANION_DISMISSED|HIRED_COMPANION_LOGIN|HIRED_COMPANION_LOGOUT|HIRED_COMPANION_ORPHAN|HIRED_COMPANION_RELEASED|HIRED_COMPANION_REVIVED|HIRED_COMPANION_SUMMONED)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:HIRED_COMPANION|HIRED_COMPANION_DISMISSED|HIRED_COMPANION_LOGIN|HIRED_COMPANION_LOGOUT|HIRED_COMPANION_ORPHAN|HIRED_COMPANION_RELEASED|HIRED_COMPANION_SUMMONED)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:owner)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -836,6 +1151,15 @@ loki.process "offlinedaoc" {
 
 		stage.replace {
 			expression = "( (?:owner|pet)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_KVASIR_HEALED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:owner|source|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -859,7 +1183,16 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BEGGAR_MARKED|BOT_LED_GROUP_GOING_ON|BOT_LED_PLAYER_LEFT|CHAT_PLAYER_REPLY_PLAN|COMPANIONUI_CMD|COMPANION_DELVE_165|COMPANION_REPAIR_165|COMPANION_STATS_165|CRAFT_ERA_JOIN|CRAFT_PLAYER_TITLE|DOOR_NOT_IN_DATABASE|ECON_PLAYER_ORDER|HIRE_CMD|HIRE_PREVIEW_165|HIRE_WORD_165|PLAYER_TAXI_DISMOUNT_REQUEST|PLAYER_TAXI_SYNC|RAID_BOTS_DISPERSED|RAID_BOTS_REGROUPED|RAID_SQUAD_STATUS|RVR_ODD|RVR_PLAYER_KILLED|RVR_PLAYER_NOTICED|RVR_PLAYER_SEAT|RVR_PLAYER_VIEW|STORYLINE_SIDE|TALE_ASIDE|TALE_REQUEST)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BG_TOWER_FOOT)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:path)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BEGGAR_MARKED|BOT_LED_GROUP_GOING_ON|BOT_LED_PLAYER_LEFT|COMPANIONUI_CMD|COMPANION_DELVE_165|COMPANION_REPAIR_165|COMPANION_STATS_165|CRAFT_PLAYER_TITLE|DOOR_NOT_IN_DATABASE|HIRE_CMD|HIRE_PREVIEW_165|HIRE_WORD_165|PLAYER_TAXI_DISMOUNT_REQUEST|PLAYER_TAXI_SYNC|QUEST_XP|RAID_BOTS_DISPERSED|RAID_BOTS_REGROUPED|RAID_SQUAD_STATUS|RVR_ODD|RVR_PLAYER_KILLED|RVR_PLAYER_NOTICED|RVR_PLAYER_SEAT|RVR_PLAYER_VIEW|STORYLINE_SIDE|TALE_ASIDE|TALE_REQUEST)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:player)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -868,19 +1201,19 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:PLAYER_DEED)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:CHAT_PLAYER_REPLY_PLAN)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:player|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:player|shape)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:TALE_FIRESIDE)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:PLAYER_DEED)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:player|teller)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:player|target|witness)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -904,6 +1237,24 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_ROAM_HUNT)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:prey)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_RAID_HUB_POST_REJECTED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:rejectedBy)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_GROUP_PARTIAL_ROSTER)(?: |$)\""
 
 		stage.replace {
@@ -922,6 +1273,33 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_LOSSREN_KEPT_SOUL)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:soul)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_FUNUS_HEALED_TRACE)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:source|stack)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_FUNUS_HEALED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:source|target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:LIVING_SERVER_ALARM)(?: |$)\""
 
 		stage.replace {
@@ -931,10 +1309,19 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_FIGHT_LEDGER|EPIC_LEECH_EXPOSURE|REALM_EXPEDITION_ATTEMPT_ENDED|REALM_EXPEDITION_BARRED|REALM_EXPEDITION_COURT_LEASH|REALM_EXPEDITION_COURT_WINDOW|REALM_EXPEDITION_EARLY_PULL|REALM_EXPEDITION_ENCOUNTER_RESET|REALM_EXPEDITION_FINAL_MUSTER|REALM_EXPEDITION_FRONT_REFRESHED|REALM_EXPEDITION_HOLD|REALM_EXPEDITION_LATE_OBJECTIVE_LEFT|REALM_EXPEDITION_MUSTER_GUARDED|REALM_EXPEDITION_MUSTER_MOVED|REALM_EXPEDITION_MUSTER_STALLED|REALM_EXPEDITION_MUSTER_UNREACHABLE|REALM_EXPEDITION_MUSTER_UNSAFE|REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE|REALM_EXPEDITION_PULL_UNREACHED|REALM_EXPEDITION_PULL_WAIT|REALM_EXPEDITION_PULL_WAIT_EXPIRED|REALM_EXPEDITION_PULL_WAIT_GUARDED|REALM_EXPEDITION_PULL_WAIT_GUARD_CLEAR|REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS|REALM_EXPEDITION_REGROUP_REFUSED|REALM_EXPEDITION_REGROUP_THREATENED|REALM_EXPEDITION_SKIRMISH_LOST|REALM_EXPEDITION_TARGET_CALLED|REALM_EXPEDITION_TARGET_DEFEATED|REALM_EXPEDITION_TARGET_HEALED|REALM_EXPEDITION_TARGET_STATUS|RUMOUR_NAMED|RUMOUR_NAMED_CHECK|RVR_ASSIST_CALL)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:EPIC_FIGHT_LEDGER|EPIC_LEECH_EXPOSURE|REALM_EXPEDITION_ATTEMPT_ENDED|REALM_EXPEDITION_BARRED|REALM_EXPEDITION_COURT_LEASH|REALM_EXPEDITION_COURT_WINDOW|REALM_EXPEDITION_EARLY_PULL|REALM_EXPEDITION_ENCOUNTER_RESET|REALM_EXPEDITION_FINAL_MUSTER|REALM_EXPEDITION_FRONT_REFRESHED|REALM_EXPEDITION_HOLD|REALM_EXPEDITION_LATE_OBJECTIVE_LEFT|REALM_EXPEDITION_MUSTER_GUARDED|REALM_EXPEDITION_MUSTER_MOVED|REALM_EXPEDITION_MUSTER_UNREACHABLE|REALM_EXPEDITION_MUSTER_UNSAFE|REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE|REALM_EXPEDITION_PULL_UNREACHED|REALM_EXPEDITION_PULL_WAIT|REALM_EXPEDITION_PULL_WAIT_EXPIRED|REALM_EXPEDITION_PULL_WAIT_GUARDED|REALM_EXPEDITION_PULL_WAIT_GUARD_CLEAR|REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS|REALM_EXPEDITION_REGROUP_REFUSED|REALM_EXPEDITION_REGROUP_THREATENED|REALM_EXPEDITION_SKIRMISH_LOST|REALM_EXPEDITION_TARGET_CALLED|REALM_EXPEDITION_TARGET_DEFEATED|REALM_EXPEDITION_TARGET_HEALED|REALM_RAID_STALL_CLOCK|RUMOUR_NAMED|RUMOUR_NAMED_CHECK)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:target)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:REALM_EXPEDITION_MUSTER_STALLED)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:target|turnsOn)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -949,7 +1336,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_DEBATE_START|TALE_START)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:BOT_DEBATE_START)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:teller)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
@@ -962,15 +1349,6 @@ loki.process "offlinedaoc" {
 
 		stage.replace {
 			expression = "( (?:text)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
-			replace    = ""
-		}
-	}
-
-	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:TALE_HANDOVER)(?: |$)\""
-
-		stage.replace {
-			expression = "( (?:to)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}
@@ -1020,6 +1398,20 @@ loki.process "offlinedaoc" {
 
 	stage.label_drop {
 		values = ["filename"]
+	}
+
+	// 5. Rows whose fields are not known yet (4): only the marker and the realm ship.
+	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:ECONOMY_PULSE|GROUP_ENDED|REALM_LEVEL_SPREAD|STUCK_HOTSPOT)(?: |$)\""
+
+		stage.template {
+			source   = "rebuilt"
+			template = "{{ .row }}{{ with .realm }} realm={{ . }}{{ end }}"
+		}
+
+		stage.output {
+			source = "rebuilt"
+		}
 	}
 }
 
