@@ -94,6 +94,8 @@ public class SocialExpansionSettingsTests
         [
             nameof(SocialExpansionSettings.ManaHalvedBelowHalf), nameof(SocialExpansionSettings.CraftingSecondaryCaps),
             nameof(SocialExpansionSettings.CraftingClassicQuality), nameof(SocialExpansionSettings.CraftingClassicLosses),
+            // Not a feature switch: marking bots as bots stays off so they look like players (owner decision 2026-11-24, #485).
+            nameof(SocialExpansionSettings.ShowBotsAsBots),
         ];
         var switches = typeof(SocialExpansionSettings).GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.PropertyType == typeof(bool) && p.CanWrite && !classicRules.Contains(p.Name)).ToArray();
