@@ -25,7 +25,17 @@ namespace DOL.GS
             bot.IsAlive && !bot.InCombat && !bot.IsAttacking && !bot.IsCasting && !bot.IsCrowdControlled &&
             !bot.IsOnHorse && bot.castingComponent?.HasPendingSkillRequests != true && !GameRelic.IsPlayerCarryingRelic(bot) &&
             IsEnemyCombatant(bot, target) && bot.IsWithinRadius(target, 2_000) &&
-            GameServer.ServerRules.IsAllowedToAttack(bot, target, true);
+            GameServer.ServerRules.IsAllowedToAttack(bot, target, true) && InAmbushScope(bot);
+
+        /// <summary>
+        /// #522 (stealth.md, "the ambush approach has no scope check"): only an autonomous gamebot in the open-field scope
+        /// stalks an enemy from stealth (RvrTacticsScope: no companion, player's group, raid, battleground assault, keep
+        /// defender or siege fighter at its objective, siege operator or relic carrier), in the frontier or a battle area.
+        /// Before, a keep defender assassin left its wall post this way, and a companion flickered in and out of stealth.
+        /// Last in CanApproach: the scope reads the bot's group and lease.
+        /// </summary>
+        public static bool InAmbushScope(GameBot bot) =>
+            bot?.IsAutonomousWorldBot == true && AutonomousWorldBotController.IsBattleground(bot) && RvrTacticsScope.Allows(bot);
 
         // ---- 1.2 work package 6: the stealth opener (RvrStealthOpener, rvr_bot_stealth_openers) ----------------------------
 
@@ -118,6 +128,8 @@ namespace DOL.GS
                         bot.StopMovingOnPath();
                         bot.TurnTo(target);
                         bot.StartAttack(target);
+                        // #522: the opener is noted for the "edge gone" retreat input (BotStealthEdge).
+                        BotStealthEdge.Opened(bot, target, now);
                         if (RvrLogBudget.Take("RVR_STEALTH_OPEN", now, 60))
                             Log.Info($"RVR_STEALTH_OPEN bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
                                      $"class={(eCharacterClass)bot.CharacterClass.ID} style=\"{usable.Name}\" target=\"{target.Name}\" " +

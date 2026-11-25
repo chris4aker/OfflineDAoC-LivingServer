@@ -67,7 +67,6 @@ namespace DOL.GS.PropertyCalc
 
                 if (player.IsStealthed && player.Client.Account.PrivLevel == 1)
                 {
-                    AtlasOF_MasteryOfStealth mos = player.GetAbility<AtlasOF_MasteryOfStealth>();
                     //GameSpellEffect bloodrage = SpellHandler.FindEffectOnTarget(player, "BloodRage");
                     //VanishEffect vanish = player.EffectList.GetOfType<VanishEffect>();
                     //if (vanish != null)
@@ -75,10 +74,8 @@ namespace DOL.GS.PropertyCalc
                     //if (bloodrage != null)
                     //    speed *= 1 + (bloodrage.Spell.Value * 0.01); // 25 * 0.01 = 0.25 (a.k 25%) value should be 25.5
 
-                    // #521: one formula for the player and the gamebots (PvpRules.StealthSpeedFactor).
-                    speedIncrease *= PvpRules.StealthSpeedFactor(player.GetModifiedSpecLevel(Specs.Stealth), player.Level,
-                        mos != null ? mos.GetAmountForLevel(mos.Level) : 0,
-                        player.effectListComponent.ContainsEffectForEffectType(eEffect.ShadowRun));
+                    // #521/#522: one formula for the player and the gamebots (StealthRules.SpeedFactor, PvpRules.StealthSpeedFactor).
+                    speedIncrease *= StealthRules.SpeedFactor(player);
                 }
 
                 if (GameRelic.IsPlayerCarryingRelic(player))
@@ -135,13 +132,8 @@ namespace DOL.GS.PropertyCalc
 
                 if (botPlayerRules && npc is GameBot bot)
                 {
-                    if (bot.IsStealthed)
-                    {
-                        AtlasOF_MasteryOfStealth mos = bot.GetAbility<AtlasOF_MasteryOfStealth>();
-                        speedIncrease *= PvpRules.StealthSpeedFactor(bot.GetModifiedSpecLevel(Specs.Stealth), bot.Level,
-                            mos != null ? mos.GetAmountForLevel(mos.Level) : 0,
-                            bot.effectListComponent.ContainsEffectForEffectType(eEffect.ShadowRun));
-                    }
+                    // #522: the same stealth rule as the player's (StealthRules.SpeedFactor).
+                    speedIncrease *= StealthRules.SpeedFactor(bot);
 
                     speedIncrease *= PvpRules.SprintSpeedFactor(true, bot.IsSprinting);
                 }

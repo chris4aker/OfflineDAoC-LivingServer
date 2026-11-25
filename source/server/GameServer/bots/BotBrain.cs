@@ -1417,6 +1417,8 @@ namespace DOL.AI.Brain
             if (AutonomousBotCombatCalls.ObservesFight(BotBody))
                 AutonomousBotCombatCalls.Observe(BotBody);
             CompanionStealth.Maintain(BotBody);
+            // #522: a gamebot stealther travels hidden (and a duo's follower copies its leader).
+            BotStealthTravel.Maintain(BotBody);
             WatchPetFocusShield();
             WatchHarmfulAura();
             BotBody?.WakeRecoveryRestIfCombatBlocked();
@@ -3690,16 +3692,20 @@ namespace DOL.AI.Brain
             // Idle is not a reason to hide (and slow travel). Stealth belongs to
             // the approach to a legal enemy player/bot, not random PvE pauses,
             // or to a companion hidden with its hidden player (CompanionStealth).
-            if (Body.IsStealthed && !CompanionStealth.HoldsStealth(BotBody)) Body.Stealth(false);
+            // A gamebot stealther travelling hidden (BotStealthTravel, #522) is not idling in stealth either.
+            if (Body.IsStealthed && !CompanionStealth.HoldsStealth(BotBody) && !BotStealthTravel.HoldsStealth(BotBody))
+                Body.Stealth(false);
         }
 
         private bool TryApproachAmbush(GameLiving target)
         {
             if (!BotRvrAmbush.CanApproach(BotBody, target)) return false;
             int range = Body.MeleeAttackRange;
+            // #522: with the stealth openers on, a hidden archer stops at its bow's opener range (1,500-2,300 when the bow
+            // reaches; BotStealthArcher), not at 1,000.
             if (BotRangedCombat.IsDedicatedArcher((eCharacterClass)BotBody.CharacterClass.ID) &&
                 BotRangedCombat.CanUse(BotBody, BotBody.Inventory.GetItem(eInventorySlot.DistanceWeapon)))
-                range = 1_000;
+                range = BotStealthArcher.ApproachRange(BotBody, GS.ServerProperties.Properties.RVR_BOT_STEALTH_OPENERS && RvrTacticsActive());
             if (Body.IsWithinRadius(target, range)) return false;
             Body.Stealth(true);
             if (!Body.IsStealthed) return false; // A running song can legally prevent stealth.

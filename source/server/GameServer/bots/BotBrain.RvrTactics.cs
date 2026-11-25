@@ -436,6 +436,9 @@ namespace DOL.AI.Brain
             // before any work package 3 placement step.
             if (Properties.RVR_BOT_STEALTH_OPENERS && BotRvrAmbush.TryStealthOpener(BotBody, target))
                 return true;
+            // #522: a hidden archer opens from bow range (a Critical Shot from stealth; BotStealthArcher).
+            if (Properties.RVR_BOT_STEALTH_OPENERS && BotStealthArcher.TryOpen(BotBody, target))
+                return true;
             if (Properties.RVR_BOT_POSITIONING && TryRvrPlaceMove(target))
                 return true;
             return false;

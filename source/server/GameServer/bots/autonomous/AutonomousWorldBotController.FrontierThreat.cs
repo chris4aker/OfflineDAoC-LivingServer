@@ -168,8 +168,9 @@ public sealed partial class AutonomousWorldBotController
         // Away from its objective a bot looks only to where noticing stops (never less than 2,600), not 5,000.
         int searchRadius = AutonomousRvrPerception.ScanRadius(rvr.Profile, rvr.Rules.FieldRadius, TargetSearchRadius);
         // A stealthed enemy is a candidate only close up, for the stealth rule (RvrStealthNotice); never otherwise.
+        // #522: at an objective too (RvrScanContext.StealthNotice), now that gamebots no longer uncover stealthers like monsters.
         bool StealthOk(GameLiving target) => !target.IsStealthed ||
-            rvr.Rules.Stealth && bot.IsWithinRadius(target, RvrStealthNotice.MaxRange);
+            rvr.StealthNotice && bot.IsWithinRadius(target, RvrStealthNotice.MaxRange);
         // Cheap rejections first (most nearby livings are friendly bots); the area lookup last
         // (IsSafeArea/GetAreasOfZone were ~64 MB per 40 s of allocations in run 11).
         bool Eligible(GameLiving target) => target != bot && StealthOk(target) && !IsIgnoredPvpTarget(target) &&
@@ -191,7 +192,7 @@ public sealed partial class AutonomousWorldBotController
                 bot.IsWithinRadius(friendly, 1000) && BotSiegeRuntime.HoldingPosition(friendly) ? 0 : 1)
             .ThenBy(bot.GetDistanceTo).ToArray();
         // Nobody calls out a stealther they have not seen: the alarms hear only the visible enemies.
-        AutonomousLivingServer.ObserveEnemies(bot, rvr.Rules.Stealth ? nearby.Where(target => !target.IsStealthed).ToArray() : nearby);
+        AutonomousLivingServer.ObserveEnemies(bot, rvr.StealthNotice ? nearby.Where(target => !target.IsStealthed).ToArray() : nearby);
         bool Ray(bool seen)
         {
             RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.Rays);

@@ -404,7 +404,8 @@ public sealed partial class AutonomousWorldBotController
                     box.Hunting = null;
                     box.PreySeen = 0;
                     box.RoamersSeen = 0;
-                    if (bot.IsStealthed && !bot.InCombat)
+                    // #522: a stealther walks on hidden (BotStealthTravel owns its stealth while it moves).
+                    if (bot.IsStealthed && !bot.InCombat && !BotStealthTravel.HoldsStealth(bot))
                         bot.Stealth(false);
                     if (box.Stealther && RvrStealthCamps.TryGetValue((spot.Id, bot.Realm), out var campers))
                         campers.TryRemove(bot.DatabaseID, out _);
