@@ -148,7 +148,7 @@ DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_Upstrea
     gives no speed (`324780db2`, `879ac3090`); gamebots get it too.
   - **Realm abilities:** training several at once sees prerequisites trained in the same batch (`6b8f85c02`, `4b56561a1`).
     The realm ability static leak (`84f1a46a6`) came in with P1 (#595).
-  - **Necromancer pets:** the queue no longer stalls on a failed LoS check (`7cd8b8f12`), Mastery of Concentration and
+  - **Necromancer pets:** Mastery of Concentration and
     Quickcast work through the self interrupt for every caster (`472dd93e0`), instants need LoS (`d774cacf9`), and no
     monster interrupt extra (`25a5f6cad`).
   - **Animist turrets:** fire-and-forget turrets prefer very close targets and enemy players and drop targets out of range

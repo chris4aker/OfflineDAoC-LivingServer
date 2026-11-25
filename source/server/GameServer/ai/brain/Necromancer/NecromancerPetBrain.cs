@@ -225,7 +225,7 @@ namespace DOL.AI.Brain
                         break;
 
                     case CastFailedEventArgs.Reasons.NotEnoughPower:
-                        TryRemoveSpellFromQueue(out _);
+                        RemoveSpellFromQueue();
                         MessageToHumanOwner("AI.Brain.Necromancer.NoPower", eChatType.CT_SpellResisted, Body.Name);
                         break;
                 }
@@ -257,9 +257,13 @@ namespace DOL.AI.Brain
             if (!Body.IsCasting)
                 CheckAttackSpellQueue();
 
-            // Dequeue before casting (port of OpenDAoC-Core 7cd8b8f12): a spell that fails its LoS check no longer stays at the
-            // head of the queue and stalls every spell behind it.
-            return TryRemoveSpellFromQueue(out SpellQueueEntry entry) && CastSpell(entry.Spell, entry.SpellLine, entry.Target, true);
+            SpellQueueEntry entry = GetSpellFromQueue();
+
+            if (entry == null || !CastSpell(entry.Spell, entry.SpellLine, entry.Target, true))
+                return false;
+
+            RemoveSpellFromQueue();
+            return true;
         }
 
         /// <summary>
@@ -370,13 +374,21 @@ namespace DOL.AI.Brain
         /// <summary>
         /// Removes the spell that is first in the queue.
         /// </summary>
-        private bool TryRemoveSpellFromQueue(out SpellQueueEntry spellQueueEntry)
+        public void RemoveSpellFromQueue()
         {
-            if (!m_spellQueue.TryDequeue(out spellQueueEntry))
-                return false;
+            m_spellQueue.TryDequeue(out SpellQueueEntry spellQueueEntry);
 
-            DebugMessageToOwner(string.Format("Removing spell '{0}' from the start of the queue", spellQueueEntry.Spell.Name));
-            return true;
+            if (spellQueueEntry != null)
+                DebugMessageToOwner(string.Format("Removing spell '{0}' from the start of the queue", spellQueueEntry.Spell.Name));
+        }
+
+        /// <summary>
+        /// Fetches a spell from the queue without removing it; the spell is removed *after* the spell has started to cast.
+        /// </summary>
+        private SpellQueueEntry GetSpellFromQueue()
+        {
+            m_spellQueue.TryPeek(out SpellQueueEntry spellQueueEntry);
+            return spellQueueEntry;
         }
 
         /// <summary>
