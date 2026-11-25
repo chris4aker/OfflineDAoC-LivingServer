@@ -39,6 +39,10 @@ jobs:
         run: |
           python3 source/tools/epic_encounter_catalog.py --check
           python3 -m unittest discover -s source/tools/tests -v
+      # Issue #615: each pull request adds a changelog.d/*.md fragment instead of editing the changelog; every fragment
+      # must parse (front matter: version, section) and name a version still in development (changelog.d/README.md).
+      - name: Check the changelog fragments
+        run: python3 source/tools/assemble_changelog.py --check
 
   # The new client as a 0.37c player gets it: the released scripts with tools/fork-build/content-patches.json applied
   # must all compile in Godot against the released class cache, and issue #34's probe (skills onto the quickbar,

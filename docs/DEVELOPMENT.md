@@ -49,6 +49,41 @@ dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.c
 
 The new client builds separately; see [source/new-client/README.md](../source/new-client/README.md).
 
+## Before you push
+
+Run the checks CI runs that need no dotnet (issue #615):
+
+```bash
+tools/check.sh                 # Windows: python tools\check.py
+tools/check.sh --list          # what it runs, with the CI job each one mirrors
+tools/check.sh --only lore     # only the checks whose name contains "lore"
+```
+
+- It runs every Python command of `.github/workflows/build-and-test.yml` (the `versions` and `encounter-catalog` jobs and
+  the Python steps of `server`), one process per test file, in parallel. About 175 CPU seconds: about 90 s on a 2-core
+  box, under a minute with 4 cores or more.
+- Not run locally: the steps that read what the dotnet tests write (`chat_audit.py`, `evening_read.py`,
+  `score_bench.py`) and the new-client job (Godot). `check.py`'s `NOT_LOCAL` lists them with the reason.
+- `source/tools/tests/test_check.py` reads the workflow and fails when a Python check there is missing from
+  `tools/check.py`, and plants a stale epic encounter catalog in a temp copy to see the script fail.
+- Locally, build and run the targeted tests of what you changed (`dotnet test ... --filter "FullyQualifiedName~UT_X"`).
+  The full server suite is CI's: every push runs it. Agents: at most 3-4 build-heavy agents at once, and the dotnet
+  build only when C# changed (AGENTS.md).
+
+## Pull requests
+
+- Open a draft pull request at the first commit and push every checkpoint; mark it ready when done.
+- Fill in [the template](../.github/pull_request_template.md): the issue it closes, the period sources of a gameplay
+  change, the owner decisions it needs (asked on the issue, label `needs-owner`, before building), tests vs in-game
+  checks, and the reruns it leaves owed.
+- **Changelog:** add `changelog.d/<issue-or-branch>.md` instead of editing `CHANGELOG-LIVING-SERVER.md`; the format is
+  in [changelog.d/README.md](../changelog.d/README.md). CI checks every fragment
+  (`python3 source/tools/assemble_changelog.py --check`). At release, `python3 source/tools/assemble_changelog.py` folds
+  them into the version's block (by section, in file-name order) and deletes them; `--dry-run` shows the result first.
+- **OPEN-WORK.md:** a pull request only adds or removes its own line there; the rest goes on the issue.
+- **Labels:** `needs-owner`, `needs-PC`, `tests-only`, `blocked`, `reruns-owed`, and the release milestone (`1.2.3`).
+  AGENTS.md says what each means.
+
 ## Deploy a build into a playable folder
 
 1. **Stop everything:** the launcher, the game and the server.
@@ -195,11 +230,17 @@ build's).
 Not applied by any script; the owner sets them under Settings → Branches (or Rules):
 - require a pull request before merging, with no required review (a single maintainer couldn't merge otherwise);
 - require the status checks `server`, `launcher`, `encounter-catalog`, `new-client` and `versions` (build-and-test) to
-  pass (the "main: green checks" ruleset does; what each one gates is in [CI.md](CI.md));
+  pass (`encounter-catalog` checks the epic encounter catalog, `source/tools/tests` and the changelog fragments; what
+  each check gates, and which jobs only report, is in [CI.md](CI.md));
 - block force pushes and block deletion;
 - let the owner (repository admin) bypass, for hotfixes.
 
 CI runs on every push to main as well, so a direct push or a merge is still tested afterwards.
+
+Merges go through one queue (issue #615): a single serial merge daemon on the coordinator side merges one green pull
+request at a time, so two pull requests that each pass alone can't break main together. It lives outside the
+repository; the required checks above are what it waits on, and the owner sets them by hand (the agents' session can't
+change repository settings).
 
 ## Sharing safely
 

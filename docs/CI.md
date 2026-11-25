@@ -13,7 +13,7 @@ The "main: green checks" ruleset requires these five jobs of `build-and-test.yml
 | Job | Runner | Gates (each fails the job) |
 |---|---|---|
 | `versions` | ubuntu | README, `ForkBuildInfo.BuildName`, the newest released changelog heading and `MainForm.DisplayVersion` name one release (`tools/release/check_versions.py`); the release scripts' tests (`tools/release/tests`); the installer seeding tests (`tools/installer/tests`). |
-| `encounter-catalog` | ubuntu | `docs/encounters` matches the boss scripts (`source/tools/epic_encounter_catalog.py --check`); every test in `source/tools/tests` (the tools, `ALL SERVER COMMANDS.txt` up to date, `tools/check.py`'s mirror, the CI glue `ci_test_results.py` and the excluded-test list's format). |
+| `encounter-catalog` | ubuntu | `docs/encounters` matches the boss scripts (`source/tools/epic_encounter_catalog.py --check`); every `changelog.d/` fragment parses and names the version in development (`source/tools/assemble_changelog.py --check`); every test in `source/tools/tests` (the tools, `ALL SERVER COMMANDS.txt` up to date, `tools/check.py`'s mirror, the CI glue `ci_test_results.py` and the excluded-test list's format). |
 | `new-client` | ubuntu | The 0.37c new client's released scripts plus `tools/fork-build/content-patches.json` compile in Godot 4.7.2 (pinned by SHA-512) against the released class cache, and issue #34's probe passes (`tools/newclient-compat/installed_check.py`). |
 | `server` | windows | See below. |
 | `launcher` | windows | Every launcher test (`OfflineDaoc.Launcher.Tests`), and at least 400 of them ran (411 in 1.2.3). |
@@ -106,4 +106,9 @@ Each checker CI runs has a test that plants a defect and sees it fail, and sees 
 
 CI on the pull request is the proof. Push a throwaway commit that plants the failure (a launcher test and a server
 feature test that `Assert.Fail`), check the run goes red at the expected checks, then revert it in the next commit and
-note both run URLs in the pull request. Locally, `tools/check.sh` runs the Python checks (docs/CONTRIBUTING.md).
+note both run URLs in the pull request.
+
+Locally, `tools/check.sh` (`python tools\check.py` on Windows) runs every Python check of the workflow before a push. A
+Python command added to `build-and-test.yml` goes into `tools/check.py`'s `CHECKS`, or into `NOT_LOCAL` with the reason
+when it reads what the dotnet tests write (`ci_test_results.py`, `chat_audit.py`, the bench and evening ratchets);
+`source/tools/tests/test_check.py` fails otherwise.
