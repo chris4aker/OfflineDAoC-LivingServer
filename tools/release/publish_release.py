@@ -15,6 +15,13 @@ For sessions that can't create releases or upload files themselves: the workflow
         publishes the release as Latest (not a pre-release). Stops, changing nothing, when the tag or a release for it
         exists already. --dry-run does every check and prints what it would do.
 
+Test builds (issue #637): with --prerelease, the tag is a release candidate v<X>-rc.<N> (v1.2.3-rc.1). The push
+run's package is still build X (its LivingServer-<X> folder and BUILD-INFO.txt BuildName=X, checked the same way), zipped
+as OfflineDAoC-LivingServer-<X>-rc.<N>.zip; `notes --prerelease` writes short player-facing notes (no notes file
+needed); `publish --prerelease` publishes it as a pre-release that never becomes Latest (make_latest false), so
+/releases/latest and every player on the normal channel keep the final release. A candidate tag without --prerelease,
+or --prerelease with a final tag, is refused.
+
 A release published by the workflow's token doesn't start the release workflow (GitHub doesn't start workflows from
 that token's events), so Setup is built by running "release" by hand afterwards (docs/DEVELOPMENT.md).
 Standard library only. Needs GITHUB_TOKEN (or GH_TOKEN) to publish.
@@ -38,6 +45,8 @@ ZIP_PLACEHOLDER = "(zip SHA-256: filled in by hand at publish)"
 # v1.1.4-beta (the betas, up to 1.1.4) or v1.2 (final releases, from 1.2 on: owner 2026-11-19). The build is the tag
 # without its "v"; 0.x tags (v0.37) are Offline DAoC's own releases, never a Living Server one.
 TAG = re.compile(r"^v((\d+)(?:\.\d+)+(?:-beta)?)$")
+# A release candidate, published as a GitHub pre-release (issue #637): v1.2.3-rc.1. Its package is build 1.2.3.
+RC_TAG = re.compile(r"^v((\d+)(?:\.\d+)+)-rc\.([1-9]\d*)$")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
 LEFTOVER = re.compile(r"\((?:owner|zip SHA-256)[^)]*\)|@@[A-Z_]+@@")
 
@@ -52,6 +61,25 @@ def build_of(tag):
         raise Stop(f"{tag} is not a Living Server release tag (v<version> or v<version>-beta, e.g. v1.2 or "
                    "v1.1.4-beta)")
     return m.group(1)
+
+
+def candidate_of(tag):
+    """(package build, tag build) of a release-candidate tag: ("1.2.3", "1.2.3-rc.1") for v1.2.3-rc.1."""
+    m = RC_TAG.match(tag or "")
+    if not m or int(m.group(2)) < 1:
+        raise Stop(f"{tag} is not a test-build tag (v<version>-rc.<N>, e.g. v1.2.3-rc.1)")
+    return m.group(1), f"{m.group(1)}-rc.{m.group(3)}"
+
+
+def builds_of(tag, prerelease):
+    """(package build, release build): the same for a final release; for a pre-release the candidate's final build
+    and its own name. A candidate tag must be published as a pre-release, and a pre-release must have one."""
+    if prerelease:
+        return candidate_of(tag)
+    if RC_TAG.match(tag or ""):
+        raise Stop(f"{tag} is a test-build tag: publish it as a pre-release (prerelease input on)")
+    build = build_of(tag)
+    return build, build
 
 
 def zip_name(build):
@@ -119,14 +147,14 @@ def write_zip(folder, out_zip):
         add_dir(folder, folder.name)
 
 
-def package(artifact, tag, commit, out):
-    build = build_of(tag)
+def package(artifact, tag, commit, out, prerelease=False):
+    build, release = builds_of(tag, prerelease)
     if not SHA1.match(commit or ""):
         raise Stop(f"{commit} is not a full commit SHA")
     folder = check_package_folder(artifact, build, commit)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    target = out / zip_name(build)
+    target = out / zip_name(release)
     write_zip(folder, target)
     with zipfile.ZipFile(target) as z:
         bad = z.testzip()
@@ -154,6 +182,19 @@ def release_body(notes_text, build, zip_sha):
     if left:
         raise Stop(f"the notes still have placeholders: {left}")
     return body
+
+
+def prerelease_body(release, zip_sha):
+    """Short, player-facing notes for a test build (AGENTS.md, "Release notes are for players")."""
+    build, candidate = release.split("-rc.")
+    return (f"### Living Server {build}, test build {candidate}\n\n"
+            f"A test build of the coming Living Server {build}, for testers. It is a pre-release: the launcher offers it "
+            "only with \"Offer test builds (pre-releases)\" turned on, and players on the normal updates keep the current "
+            "release.\n\n"
+            "Install it from the launcher with **Install into a new test folder**: a fresh install beside your game, with "
+            "a new world, so your own world and characters are not touched.\n\n"
+            "### Files\n\n| File | SHA-256 |\n|---|---|\n"
+            f"| `{zip_name(release)}` | `{zip_sha}` |\n")
 
 
 class GitHub:
@@ -190,9 +231,9 @@ class GitHub:
                 return rel
         return None
 
-    def create_draft(self, tag, commit, title, body):
+    def create_draft(self, tag, commit, title, body, prerelease=False):
         data = {"tag_name": tag, "target_commitish": commit, "name": title, "body": body,
-                "draft": True, "prerelease": False}
+                "draft": True, "prerelease": prerelease}
         return self.request("POST", f"{API}/repos/{REPO}/releases", json.dumps(data).encode("utf-8"))
 
     def upload(self, release, path, name):
@@ -202,14 +243,15 @@ class GitHub:
     def get(self, release):
         return self.request("GET", release["url"])
 
-    def publish(self, release):
-        data = {"draft": False, "prerelease": False, "make_latest": "true"}
+    def publish(self, release, prerelease=False):
+        # A pre-release never becomes Latest: /releases/latest (the normal update channel) keeps the final release.
+        data = {"draft": False, "prerelease": prerelease, "make_latest": "false" if prerelease else "true"}
         return self.request("PATCH", release["url"], json.dumps(data).encode("utf-8"))
 
 
-def publish(gh, tag, commit, title, body, zip_path, dry_run):
-    build = build_of(tag)
-    name = zip_name(build)
+def publish(gh, tag, commit, title, body, zip_path, dry_run, prerelease=False):
+    _, release = builds_of(tag, prerelease)
+    name = zip_name(release)
     if Path(zip_path).name != name:
         raise Stop(f"the zip is {Path(zip_path).name}, but {tag} needs {name}")
     zip_sha = sha256_file(zip_path)
@@ -223,14 +265,15 @@ def publish(gh, tag, commit, title, body, zip_path, dry_run):
                    f"{existing.get('html_url')}); delete a stray draft by hand first")
     steps = [f"create tag {tag} on {commit} and a draft release \"{title}\"",
              f"attach {name} (sha256 {zip_sha})",
-             "publish it as Latest, not a pre-release"]
+             "publish it as a pre-release, never Latest (make_latest false)" if prerelease
+             else "publish it as Latest, not a pre-release"]
     if dry_run:
         for s in steps:
             print(f"would {s}")
         return None
     if not gh.token:
         raise Stop("no GITHUB_TOKEN: can't publish")
-    draft = gh.create_draft(tag, commit, title, body)
+    draft = gh.create_draft(tag, commit, title, body, prerelease)
     print(f"created draft {draft.get('html_url')}")
     gh.upload(draft, zip_path, name)
     draft = gh.get(draft)
@@ -239,10 +282,10 @@ def publish(gh, tag, commit, title, body, zip_path, dry_run):
     if digest != f"sha256:{zip_sha}":
         raise Stop(f"GitHub shows {digest or 'no digest'} for {name}, not sha256:{zip_sha}; the draft is left "
                    "unpublished for a person to look at")
-    published = gh.publish(draft)
-    if published.get("draft") or published.get("prerelease"):
-        raise Stop("the release didn't publish as a full release")
-    print(f"published {published.get('html_url')} (Latest), {name} sha256 {zip_sha}")
+    published = gh.publish(draft, prerelease)
+    if published.get("draft") or bool(published.get("prerelease")) != prerelease:
+        raise Stop("the release didn't publish as a " + ("pre-release" if prerelease else "full release"))
+    print(f"published {published.get('html_url')} ({'pre-release' if prerelease else 'Latest'}), {name} sha256 {zip_sha}")
     return published
 
 
@@ -269,8 +312,10 @@ def run(argv=None, gh=None):
     p.add_argument("--tag", required=True)
     p.add_argument("--commit", required=True)
     p.add_argument("--out", required=True)
+    p.add_argument("--prerelease", action="store_true")
     p = sub.add_parser("notes")
-    p.add_argument("--notes", required=True)
+    p.add_argument("--notes", help="the release notes file (not used for a pre-release)")
+    p.add_argument("--prerelease", action="store_true")
     p.add_argument("--tag", required=True)
     p.add_argument("--zip", required=True)
     p.add_argument("--out", required=True)
@@ -281,19 +326,25 @@ def run(argv=None, gh=None):
     p.add_argument("--body", required=True)
     p.add_argument("--zip", required=True)
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--prerelease", action="store_true")
     a = ap.parse_args(argv)
     try:
         if a.command == "package":
-            target, digest = package(a.artifact, a.tag, a.commit, a.out)
+            target, digest = package(a.artifact, a.tag, a.commit, a.out, a.prerelease)
             print(f"{target.name} sha256 {digest}")
             output(zip=str(target), zip_sha256=digest)
         elif a.command == "notes":
-            body = release_body(Path(a.notes).read_text(encoding="utf-8"), build_of(a.tag), sha256_file(a.zip))
+            if a.prerelease:
+                body = prerelease_body(builds_of(a.tag, True)[1], sha256_file(a.zip))
+            elif not a.notes:
+                raise Stop("notes needs --notes for a final release")
+            else:
+                body = release_body(Path(a.notes).read_text(encoding="utf-8"), build_of(a.tag), sha256_file(a.zip))
             Path(a.out).write_text(body, encoding="utf-8", newline="\n")
             print(f"notes written to {a.out} ({len(body)} characters)")
         else:
             publish(gh or GitHub(), a.tag, a.commit, a.title, Path(a.body).read_text(encoding="utf-8"), a.zip,
-                    a.dry_run)
+                    a.dry_run, a.prerelease)
         return 0
     except Stop as e:
         notice("error", "Nothing was published", str(e))

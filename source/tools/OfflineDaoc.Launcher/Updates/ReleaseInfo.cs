@@ -27,10 +27,19 @@ public sealed class ReleaseInfo
     /// <summary>The build the tag names ("v1.1.2-beta" is 1.1.2-beta), or null for a tag that isn't a build.</summary>
     public BuildVersion? Version => BuildVersion.Parse(TagName);
 
-    /// <summary>A published, final release whose tag is a build: the only kind an update is offered from.</summary>
-    public bool IsUsable => !Draft && !Prerelease && Version != null;
+    /// <summary>A published, final release whose tag is a final build: the only kind the normal channel offers.</summary>
+    public bool IsUsable => !Draft && !Prerelease && Version is { IsCandidate: false };
 
-    /// <summary>The package a release of this build carries: OfflineDAoC-LivingServer-&lt;build&gt;.zip.</summary>
+    /// <summary>
+    /// A published pre-release whose tag is a release candidate (v1.2.3-rc.1): what the test-build channel offers, only
+    /// with "Offer test builds" on (issue #637). GitHub never lists one as /releases/latest.
+    /// </summary>
+    public bool IsTestBuild => !Draft && Prerelease && Version is { IsCandidate: true };
+
+    /// <summary>
+    /// The package a release of this build carries: OfflineDAoC-LivingServer-&lt;build&gt;.zip, named by the tag's build
+    /// (OfflineDAoC-LivingServer-1.2.3-rc.1.zip for a candidate, whose package inside is build 1.2.3).
+    /// </summary>
     public static string PackageName(BuildVersion build) => "OfflineDAoC-LivingServer-" + build.Name + ".zip";
 
     /// <summary>The release's package asset, or null when it has none.</summary>
@@ -62,6 +71,29 @@ public sealed class ReleaseInfo
         {
             return null;
         }
+    }
+
+    /// <summary>
+    /// Reads the API's list of releases (GET /repos/{owner}/{repo}/releases). Entries that aren't releases are left out;
+    /// an answer that isn't a list gives an empty one.
+    /// </summary>
+    public static List<ReleaseInfo> ParseList(string? json)
+    {
+        var result = new List<ReleaseInfo>();
+        if (string.IsNullOrWhiteSpace(json))
+            return result;
+        try
+        {
+            var serializer = new DataContractJsonSerializer(typeof(List<ReleaseInfo>));
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json!.TrimStart('\uFEFF')));
+            if (serializer.ReadObject(stream) is List<ReleaseInfo> list)
+                result.AddRange(list.Where(r => r != null && r.TagName != null));
+        }
+        catch (Exception e) when (e is SerializationException || e is InvalidCastException || e is ArgumentException || e is FormatException)
+        {
+            // Not a list of releases (an error message, a rate limit): nothing to offer.
+        }
+        return result;
     }
 
     /// <summary>

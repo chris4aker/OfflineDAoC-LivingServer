@@ -2,6 +2,8 @@
 
     python tools/release/check_versions.py            # exit 0 when they agree, 1 with a list of what disagrees
     python tools/release/check_versions.py --tag v1.2 # also: this tag is the newest release, and BuildName is its build
+    python tools/release/check_versions.py --tag v1.2.3-rc.1  # a test build (pre-release, issue #637): 1.2.3 is the
+                                                    # version in development and BuildName is 1.2.3
 
 What has to agree (audit 2026-11-03, section 8.6: main said Beta 1.1 after Beta 1.1.1 was out):
 - the newest released CHANGELOG-LIVING-SERVER.md heading. Up to 1.1.4 the releases were betas ("## Beta 1.1.4 —
@@ -50,6 +52,7 @@ FORK_BUILD_NAME = re.compile(rf"FORK_BUILD name=({BUILD}){END}")
 BUILD_NAME = re.compile(r'const string BuildName = "([^"]+)"')
 BASE_RELEASE = re.compile(r'const string BaseRelease = "([^"]+)"')
 DISPLAY_VERSION = re.compile(r'const string DisplayVersion = "([^"]+)"')
+CANDIDATE_TAG = re.compile(rf"^v({VERSION})-rc\.[1-9]\d*$")
 DISPLAY_FROM_BUILD = re.compile(r'string DisplayVersion\s*=>[^;]*\bLauncherBuild\.Name\b')
 
 
@@ -138,7 +141,17 @@ def check(root=ROOT, tag=None):
         problems.append(f"{FORK_BUILD_INFO}: BuildName is {name.group(1)}, expected {' or '.join(allowed)} "
                         f"(the newest released or in-development heading of {CHANGELOG})")
 
-    if tag is not None:
+    candidate = CANDIDATE_TAG.match(tag or "")
+    if candidate:
+        # A test build of the version in development: its package is that build (BUILD-INFO.txt BuildName).
+        final = candidate.group(1)
+        if final not in development:
+            problems.append(f"the test-build tag {tag} is not of a version in development in {CHANGELOG} "
+                            f"(in development: {', '.join(development) or 'none'})")
+        elif name and name.group(1) != final:
+            problems.append(f"{FORK_BUILD_INFO}: BuildName is {name.group(1)}, but the test build {tag} needs {final} "
+                            "(its package folder and BUILD-INFO.txt are named from it)")
+    elif tag is not None:
         if tag != f"v{build}":
             problems.append(f"the tag {tag} is not the newest release in {CHANGELOG}: {display(build)} is tagged v{build}")
         elif name and name.group(1) != build:
