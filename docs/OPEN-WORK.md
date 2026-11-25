@@ -53,6 +53,10 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   tests only.** Companions unchanged. Open: the fight harness rows (#520) before/after, the PC checks P-mech 1-7
   (mechanics.md) on a named build, and the realm-ability gaps (finding 6) and companion RvR jobs (finding 10), which
   are not part of this change.
+- [#520](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/520) An end-to-end RvR fight harness in CI.
+  **Built, tests only** (`UT_RvrFightRehearsal`): three report rows in the CI log, none a gate until a PC log agrees
+  (evidence.md 5.3). Open: the two fight scenarios do not yet repeat exactly by seed (`Random.Shared` in the server's
+  fight code); the world database's spells, specs and keeps are stood in.
 
 ## 1.3
 
