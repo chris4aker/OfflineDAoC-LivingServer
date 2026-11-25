@@ -142,7 +142,7 @@ public static class BgTargetPickRows
     public const string Marker = "BG_TARGET_PICK";
     public const int PerMinute = 10;
 
-    internal static readonly LivingRowSampler Sampler = new();
+    public static readonly LivingRowSampler Sampler = new();
 
     /// <summary>Whether this pick is sampled (a counter, nothing else, when it is not).</summary>
     public static bool Sample(out long sequence, out int every)

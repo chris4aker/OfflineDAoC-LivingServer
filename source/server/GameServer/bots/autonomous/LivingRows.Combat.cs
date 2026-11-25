@@ -24,7 +24,7 @@ public static class CastInterruptRows
     public const string Marker = "CAST_INTERRUPT";
     public const int PerMinute = 20;
 
-    internal static readonly LivingRowSampler Sampler = new();
+    public static readonly LivingRowSampler Sampler = new();
 
     /// <summary>Whether an interrupt timer touched a cast that began at <paramref name="castStart"/>. Pure.</summary>
     public static bool Touched(long interruptEnds, long castStart) => interruptEnds > castStart;
