@@ -27,10 +27,20 @@ namespace DOL.GS.PropertyCalc
 
         public override int CalcValue(GameLiving living, eProperty property)
         {
-            if (living.IsCrowdControlled && living.effectListComponent.GetEffects().FirstOrDefault(x => x.GetType() == typeof(SpeedOfSoundECSEffect)) == null)
+            bool hasSpeedOfSound = living.effectListComponent.ContainsEffectForEffectType(eEffect.SpeedOfSound);
+
+            // Hard CC check. Speed of Sound ignores it.
+            if (!hasSpeedOfSound && living.IsCrowdControlled)
                 return 0;
 
-            double speedIncrease = living.BuffBonusMultCategory1.Get((int)property);
+            double speedIncrease = 1.0;
+
+            // Speed of Sound forces the speed multiplier from buffs and debuffs (roots included), but gives no speed increase
+            // while stealthed (port of OpenDAoC-Core 324780db2). Snares, roots and speed buffs stay on and apply once it ends.
+            if (!hasSpeedOfSound)
+                speedIncrease = living.BuffBonusMultCategory1.Get((int) property);
+            else if (!living.IsStealthed)
+                speedIncrease = SPEED4;
             double maxSpeedBase = living.MaxSpeedBase;
 
             if (living is GamePlayer player)

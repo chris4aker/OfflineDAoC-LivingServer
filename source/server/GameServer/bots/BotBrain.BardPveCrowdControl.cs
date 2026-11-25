@@ -83,7 +83,7 @@ namespace DOL.AI.Brain
                 foreach (Spell spell in singleTargetMezzes)
                 {
                     if (bard.Mana < bard.PowerCost(spell) || bard.GetSkillDisabledDuration(spell) > 0 ||
-                        spell.CastTime > 0 && bard.IsBeingInterruptedByOther ||
+                        BotInterruptPolicy.CastWouldBeLost(bard, spell, includeSelfInterrupt: false) ||
                         !bard.IsWithinRadius(add, spell.CalculateEffectiveRange(bard)) ||
                         !NeedsOffensiveSpellApplication(add, spell) ||
                         !BotGroupSupport.HasCorpseLineOfSight(bard, add))

@@ -55,9 +55,9 @@ namespace DOL.GS.Spells
 			return new GameSpellEffect(this, CalculateEffectDuration(target), 0, effectiveness);
 		}
 
-		public override bool CasterIsAttacked(GameLiving attacker)
+		protected override bool TryInterruptCaster(GameLiving attacker)
 		{
-			if (Spell.Uninterruptible && Caster.GetDistanceTo(attacker) > 200)
+			if (Spell.Uninterruptible && (attacker == null || Caster.GetDistanceTo(attacker) > 200))
 				return false;
 
             if (Caster.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration)
@@ -67,7 +67,7 @@ namespace DOL.GS.Spells
 
 			if (IsInCastingPhase)
 			{
-				Caster.LastInterruptMessage = attacker.GetName(0, true) + " attacks you and your spell is interrupted!";
+				Caster.LastInterruptMessage = (attacker != null ? attacker.GetName(0, true) + " attacks you" : "You are attacked") + " and your spell is interrupted!";
 				MessageToLiving(Caster, Caster.LastInterruptMessage, eChatType.CT_SpellResisted);
 				InterruptCasting(false); // always interrupt at the moment
 				return true;

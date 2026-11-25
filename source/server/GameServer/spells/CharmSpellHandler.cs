@@ -431,6 +431,17 @@ namespace DOL.GS.Spells
             if (Spell.Pulse != 0 && playerCaster?.ControlledBrain != null && playerCaster.ControlledBrain.Body != target)
                 playerCaster.CommandNpcRelease();
 
+            // Stop the song if the pet was stolen during a CC or was released (port of OpenDAoC-Core f22ebbe1c).
+            // Bots cast charm too, and have no client for the message.
+            if (target is GameNPC npcTarget && npcTarget.Brain is IControlledBrain controlledBrain && controlledBrain.Owner != Caster)
+            {
+                if (playerCaster != null)
+                    MessageToCaster(LanguageMgr.GetTranslation(playerCaster.Client, "CharmSpell.EndCast.Fail.CurrentlyControlled", target.GetName(0, true)), eChatType.CT_SpellResisted);
+                ECSPulseEffect stolenSong = EffectListService.GetPulseEffectOnTarget(Caster, Spell);
+                stolenSong?.End();
+                return;
+            }
+
             // Make sure the pet is in the same region and alive
             if (target.CurrentRegion != Caster.CurrentRegion || !target.IsAlive || target.ObjectState != GameObject.eObjectState.Active)
             {

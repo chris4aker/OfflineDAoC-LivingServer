@@ -122,7 +122,12 @@ class ReleaseServerSettings(unittest.TestCase):
         self.assertEqual(SETTINGS_FILE["Settings"]["bot_schedule_mode"], "off")
         self.assertEqual(SETTINGS_FILE["Settings"]["bot_living_breaks"], "True", "breaks are a separate feature")
         source = (REPO / "source/server/GameServer/serverproperty/LivingServerSettingsUpgrade.cs").read_text(encoding="utf-8")
-        self.assertIn('public const string Version = "1.2.1";', source)
+        # The recorded build must be at least 1.2.1, so the schedule change runs; later builds (1.2.3's Bot Goals file
+        # change) raise it.
+        import re
+        found = re.search(r'public const string Version = "([0-9.]+)";', source)
+        self.assertIsNotNone(found)
+        self.assertGreaterEqual(tuple(int(part) for part in found.group(1).split(".")), (1, 2, 1))
 
     def test_the_earthmenders_mutual_heal_ships_off_with_its_upgrade_line(self):
         """Owner 2026-11-18, "Mutual heal off": off in the code, in the release world, and moved once on older worlds."""

@@ -33,6 +33,11 @@ namespace DOL.GS.ServerProperties
 	/// - 1.2.1 (owner 2026-11-21: "set the server settings so the 'bot schedule' based on time or sessions is off by
 	///   default"): the bot schedule is off again, so the whole roster is online. A world whose row the server wrote as clock
 	///   (1.2.0.1's change, or a fresh 1.2 world) moves to off; a mode the player chose in the launcher is kept.
+	/// - 1.2.3 (owner 2026-11-24, #598 option A): the Bot Goals default shares. Levels 1-19 go from 60/40/0/0 to 55/35/0/10
+	///   (solo/group/RvR/battlegrounds) and levels 20-49 from 35/35/15/15 to 30/30/15/25. They live in a file
+	///   (bot-goals.json), not a database row: a world whose saved file still holds exactly the 1.2.2 defaults moves once
+	///   (<see cref="FileChanges"/>); a file with any other values is the player's choice and is left alone, and a world with
+	///   no file already uses the new defaults.
 	/// A key can change in more than one build. The changes are applied in order, each one seeing the rows as the earlier
 	/// ones left them, so a world that skipped builds ends on the newest default (a 1.1.4 world's untouched off schedule
 	/// goes off -> clock -> off and so stays off).
@@ -42,7 +47,7 @@ namespace DOL.GS.ServerProperties
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
 		/// <summary>The newest build with a changed default (the highest <see cref="Change.Since"/>).</summary>
-		public const string Version = "1.2.1";
+		public const string Version = "1.2.3";
 
 		/// <summary>One changed default: since which build, the setting, and its old and new default as the server stores them.</summary>
 		public sealed record Change(string Since, string Key, string OldDefault, string NewDefault);
@@ -92,6 +97,23 @@ namespace DOL.GS.ServerProperties
 			// and stays on.
 			new("1.2.1", "bot_schedule_mode", "clock", "off"),
 		];
+
+		/// <summary>A changed default kept in a settings file rather than a database row: since which build, and the file.</summary>
+		public sealed record FileChange(string Since, string File, string Description);
+
+		/// <summary>One line per changed file default, oldest build first. Each runs once, on a world that recorded an older build.</summary>
+		public static readonly FileChange[] FileChanges =
+		[
+			// 1.2.3 (#598 option A): 1-19 60/40/0/0 -> 55/35/0/10, 20-49 35/35/15/15 -> 30/30/15/25 (BotGoalSettings).
+			new("1.2.3", OfflineDaoc.Configuration.BotGoalSettings.FileName, "Bot Goals default shares (battlegrounds 10% at 15-19, 25% at 20-35)"),
+		];
+
+		/// <summary>The file changes still to run on a world that recorded <paramref name="doneVersion"/>. Pure.</summary>
+		public static FileChange[] PlanFileChanges(string doneVersion)
+		{
+			System.Version done = Parse(doneVersion);
+			return FileChanges.Where(change => Parse(change.Since) > done).ToArray();
+		}
 
 		/// <summary>The 1.1 keys (switched on), kept for callers of the first version.</summary>
 		public static readonly string[] TurnedOn = Changes.Where(change => change.Since == "1.1").Select(change => change.Key).ToArray();
@@ -168,6 +190,12 @@ namespace DOL.GS.ServerProperties
 					field.SetValue(null, value);
 					log.Info($"Living Server {builds}: {planned.Key} set to the new default {last.NewDefault} (was the untouched old default " +
 					         $"{first.OldDefault}; change it in the launcher's Living Server tab)");
+				}
+				foreach (FileChange change in PlanFileChanges(version.Item3.Value))
+				{
+					if (change.File == OfflineDaoc.Configuration.BotGoalSettings.FileName && AutonomousBotGoalPolicy.UpgradeUntouchedDefaults())
+						log.Info($"Living Server {change.Since}: {change.File} set to the new defaults ({change.Description}; the file held " +
+						         "the untouched old defaults; change it in the launcher's Bot Goals Setting tab)");
 				}
 				if (version.Item3.Value != Version)
 				{

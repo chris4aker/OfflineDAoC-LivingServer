@@ -13,6 +13,22 @@ Older entries below keep the names they were written with.
 Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-11-22). **Tests only** unless an entry says
 otherwise.
 
+**Fuller battlegrounds** (#598, owner 2026-11-24: options A and C, no floor; `UT_BattlegroundFill598`). **Tests only.**
+- **New default goal shares:** Levels 1-19 go from 60/40/0/0 to 55/35/0/10 (solo/group/RvR/battlegrounds), so 10% of the
+  15-19 bots go to Abermenai, and Levels 20-49 from 35/35/15/15 to 30/30/15/25, so 25% of the 20-35 bots go to their
+  battleground. Level 50 is unchanged. The Bot Goals tab now states the defaults (read from the code), and the
+  Battlegrounds tab's text says 10% and 25%.
+- **One-time upgrade:** a saved `bot-goals.json` that still holds exactly the 1.2.2 defaults moves to the new ones once
+  (`LivingServerSettingsUpgrade` 1.2.3, its first file change; the log says "bot-goals.json set to the new defaults"). A
+  file with any other values (the owner's own) is never changed, and a world with no file already uses the new defaults.
+- **Whole bot groups go to a battleground together:** at the end of its shared PvE task a bot-only group whose members are
+  all in one bracket, alive, out of combat and without nearly full bags may take the battleground goal together. Its
+  members count against the band's battleground share: it goes only when the open slots hold the whole group, with a single
+  bot's odds. The leader leads: the members follow it to the realm teleporter and it takes the gathered party through; inside,
+  the realm's wave, rally and storm count them like any battleground bot, and while roaming they keep with the leader. The
+  trip lasts 45-120 minutes; then the group breaks up and each member sells and trains as at any task's end. Log:
+  `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP`, `..._LEADER`, `..._ENDED`.
+
 **From OpenDAoC upstream: combat, XP, crafting and items** (port package P3; GPL-3.0 code by Baptiste Marie and Telchar
 of OpenDAoC-Core, ported by hand onto our tree; `UT_UpstreamCombatPort123`). **Tests only.**
 - **Group XP when someone dings on the kill** (`6ac049c6e`): the group's highest level is taken before any XP is paid, so
@@ -123,6 +139,43 @@ DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_Upstrea
     makes the ground item and runs its handlers outside the inventory lock (`b28922b5e`).
   - Players: the /quit countdown stops during a region change (`4783841c1`); a client can no longer ask for a stealthed or far-away
     player's model (`446a99f1f`). `UT_UpstreamCorePorts`.
+
+**From OpenDAoC upstream: effects, spells and pets** (port package P2)
+- **Effects, spells and pets (package P2, branch `fix/1.2.3-upstream-effects`; tests only).** Ported by hand from
+  OpenDAoC-Core (GPL-3.0; Baptiste Marie unless noted), with Living Server's bot rules kept:
+  - **Live-like interrupts, the only behaviour** (owner, 2026-11-24: "Interrupts should be port it in and not with a switch
+    - it's foundation of the game"; `21eda0f90`, `79bba259b`, `da099207f`, `7b1fa00c7`, `46d816439`, `441b8333d`). A hit
+    starts an interrupt timer; a spell is lost only if the timer still runs at its half-cast point (then a 2.2 s self
+    interrupt), a bow shot only if it still runs at half draw or when the shot is held past full draw. Focus spells still
+    stop at once. A cast may begin while the timer runs. No server property brings the old hard interrupt back. Bots learn
+    it (`BotInterruptPolicy`): a bot begins a heal, buff, crowd control or nuke when the timer, as it stands, runs out by
+    the half-cast point, instead of giving up for the whole timer; gamebots keep #521's player timer in RvR. Critical Shot
+    and Longshot last one shot. `UT_LiveInterrupt`. **The raid sims must be re-run under docs/RAID-SIZES.md**: boss-fight
+    caster output changes. No raid size was changed.
+  - **Crowd control and stacking:** a second stun or mez keeps the target held when the first ends (`d352aa1c9`); roots
+    overwrite a DD+snare (`5356d4930`); instant stat debuffs start an interrupt timer instead of stopping the cast
+    (`c03822a01`); taunts cancel speed buffs (`7d7ec3d41`); proc spells no longer tick (`b7d4dc053`); refreshed pulsing
+    effects restart (Bonedancer focus snare on monsters; `39502cb35`, speed songs kept on our path); item haste procs
+    don't overwrite concentration buffs (`ff5449555`, partly: a weaker singer's speed song stays the fallback); a stun or mez no longer sheathes a melee
+    weapon (`52b44cb7a`).
+  - **Charm:** a charm queued three or more times in a tick can no longer stay on for good (`c928369c4`); a stolen or
+    released pet stops the song (`f22ebbe1c`).
+  - **Speed of Sound:** snares and roots land under it and apply when it ends, speed buffs wait, recast allowed, stealth
+    gives no speed (`324780db2`, `879ac3090`); gamebots get it too.
+  - **Realm abilities:** training several at once sees prerequisites trained in the same batch (`6b8f85c02`, `4b56561a1`).
+    The realm ability static leak (`84f1a46a6`) came in with P1 (#595).
+  - **Necromancer pets:** Mastery of Concentration and
+    Quickcast work through the self interrupt for every caster (`472dd93e0`), instants need LoS (`d774cacf9`), and no
+    monster interrupt extra (`25a5f6cad`).
+  - **Animist turrets:** fire-and-forget turrets prefer very close targets and enemy players and drop targets out of range
+    (`a89bfef81`, `27ec0ed7a`, `93310604a`); a point blank turret's aggro range is its radius (`3b96d0f2b`).
+  - **Smaller:** Sure Shot's effect type (`4cdce10fd`); Cure Nearsight no longer cures Bladeturn (`b9b32cf03`); stable
+    effect order (`c3d258810`); AoE edge duration only on realm enemies (`f815b1253`); helpful spells on siege weapons
+    (`bf414c248`); charmed day/night spawns stay visible (`7ab320291`); Triple Wield NRE (`01d314244`). `16fa2c467`,
+    `135d7d741`, `d0cafbd5e` and `f45f95145` came in with P3 (#592).
+  - **Skipped (owner):** `2ffc5c0ff`, `970282fba`, `e6fe1661a`, `4d486cd32`. **Held for owner:** `6e709adae` and
+    `c92f7407c` (turrets targeting at random and pets attacking rooted targets), `8457ac5d3` (pets take the monster
+    interrupt extra).
 
 **Chat**
 - **No "dunno" as the whole answer, in any channel** (realism 2a, #478; tests only). A bot no longer answers a question it

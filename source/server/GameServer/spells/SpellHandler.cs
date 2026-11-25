@@ -106,11 +106,6 @@ namespace DOL.GS.Spells
 		/// </summary>
 		protected AttackData m_lastAttackData = null;
 
-		/// <summary>
-		/// The property key for the interrupt timeout
-		/// </summary>
-		public const string INTERRUPT_TIMEOUT_PROPERTY = "CAST_INTERRUPT_TIMEOUT";
-
 		private long _lastDuringCastLosCheckTime;
 
 		/// <summary>
@@ -329,40 +324,80 @@ namespace DOL.GS.Spells
 			}
 		}
 
-		public virtual bool CasterIsAttacked(GameLiving attacker)
+		private bool _halfwayCastChecked;
+
+		private bool HasPassedHalfCastTime => _castStartTick + _calculatedCastTime * 0.5 <= GameLoop.GameLoopTime;
+
+		/// <summary>
+		/// Called by <see cref="GameLiving.StartInterruptTimer"/> on every attack. Only focus spells are interrupted at once; a
+		/// cast in progress is decided at its half-cast point instead (port of OpenDAoC-Core 21eda0f90 and 46d816439, the only
+		/// behaviour: Living Server ships no switch back to the hard interrupt).
+		/// </summary>
+		public bool PerformOnAttackedInterruptCheck(GameLiving attacker)
 		{
-			if (Spell.Uninterruptible)
+			if (CastState is not eCastState.Focusing)
+				return false;
+
+			return TryInterruptCaster(attacker);
+		}
+
+		/// <summary>
+		/// When the cast reaches its half-cast point while an attacker's interrupt timer is still running, the cast is lost and
+		/// a short self interrupt starts. Before and after that point, being hit only starts or extends the timer.
+		/// </summary>
+		private bool PerformDuringCastInterruptCheck()
+		{
+			if (_halfwayCastChecked || !IsInCastingPhase || !HasPassedHalfCastTime)
+				return false;
+
+			_halfwayCastChecked = true;
+
+			if (!Caster.IsBeingInterruptedByOther || !TryInterruptCaster(Caster.LastInterrupter))
+				return false;
+
+			Caster.StartInterruptTimer(Caster.SpellSelfInterruptDuration, AttackData.eAttackType.Spell, Caster);
+			return true;
+		}
+
+		/// <summary>Interrupts the cast unless the spell, Mastery of Concentration, Facilitate Painworking or Quickcast prevents it.
+		/// <paramref name="attacker"/> may be null (the last interrupter left the world).</summary>
+		/// <summary>Mastery of Concentration, Quickcast or (for a Necromancer pet) its owner's Mastery of Concentration or its own
+		/// Facilitate Painworking make the cast immune to interrupts (port of OpenDAoC-Core 472dd93e0).</summary>
+		private bool IsInterruptImmune()
+		{
+			if (Caster is NecromancerPet necromancerPet)
+			{
+				// MoC isn't given to the Necromancer pet.
+				if (necromancerPet.Owner?.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration) == true)
+					return true;
+
+				return necromancerPet.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking);
+			}
+
+			return Caster.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration) ||
+				Caster.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking) ||
+				IsQuickCasting;
+		}
+
+		protected virtual bool TryInterruptCaster(GameLiving attacker)
+		{
+			if (Spell.Uninterruptible || IsInterruptImmune())
 				return false;
 
 			NecromancerPet necromancerPet = Caster as NecromancerPet;
 
-			// MoC isn't given to the Necromancer pet.
-			if (necromancerPet != null)
-			{
-				if (necromancerPet.Owner?.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration) == true)
-					return false;
-			}
-
-			if (Caster.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration)
-				|| Caster.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking)
-				|| IsQuickCasting)
-				return false;
-
-			if (CastState is not eCastState.Focusing)
-			{
-				// Only interrupt if we're under 50% of the way through the cast.
-				if (!IsInCastingPhase || GameLoop.GameLoopTime >= _castStartTick + _calculatedCastTime * 0.5)
-					return false;
-			}
-
 			if (Caster is GameSummonedPet petCaster && petCaster.Owner is GamePlayer casterOwner)
 			{
-				casterOwner.LastInterruptMessage = $"Your {Caster.Name} was attacked by {attacker.Name} and their spell was interrupted!";
+				casterOwner.LastInterruptMessage = attacker != null
+					? $"Your {Caster.Name} was attacked by {attacker.Name} and their spell was interrupted!"
+					: $"Your {Caster.Name} was attacked and their spell was interrupted!";
 				MessageToLiving(casterOwner, casterOwner.LastInterruptMessage, eChatType.CT_SpellResisted);
 			}
 			else if (Caster is GamePlayer playerCaster)
 			{
-				playerCaster.LastInterruptMessage = $"{attacker.GetName(0, true)} attacks you and your spell is interrupted!";
+				playerCaster.LastInterruptMessage = attacker != null
+					? $"{attacker.GetName(0, true)} attacks you and your spell is interrupted!"
+					: "You are attacked and your spell is interrupted!";
 				MessageToLiving(playerCaster, playerCaster.LastInterruptMessage, eChatType.CT_SpellResisted);
 			}
 
@@ -591,33 +626,21 @@ namespace DOL.GS.Spells
 			{
 				long interruptRemainingDuration = Caster.InterruptRemainingDuration;
 
-				if (interruptRemainingDuration > 0)
+				// Mastery of Concentration and Quickcast (a Necromancer pet: its owner's Mastery of Concentration, or Facilitate
+				// Painworking) let any caster start through the self interrupt, bots included (OpenDAoC-Core 472dd93e0).
+				if (interruptRemainingDuration > 0 && !IsInterruptImmune())
 				{
 					interruptRemainingDuration = (interruptRemainingDuration + 999) / 1000; // whole seconds, rounded up ("/= 1000 + 1" divided by 1001: "wait 0 seconds")
 
-					if (playerCaster != null)
+					if (!quiet && (playerCaster != null || m_caster is NecromancerPet))
 					{
-						if (!IsQuickCasting &&
-							!m_caster.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration))
-						{
-							if (!quiet)
-								MessageToCaster($"You must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
-
-							return false;
-						}
+						if (m_caster is NecromancerPet necroPet)
+							MessageToCaster($"Your {necroPet.Name} must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
+						else
+							MessageToCaster($"You must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
 					}
-					else if (m_caster is NecromancerPet necroPet && necroPet.Brain is NecromancerPetBrain)
-					{
-						if (!necroPet.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking))
-						{
-							if (!quiet)
-								MessageToCaster($"Your {necroPet.Name} must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
 
-							return false;
-						}
-					}
-					else
-						return false;
+					return false;
 				}
 			}
 
@@ -1019,7 +1042,7 @@ namespace DOL.GS.Spells
 
 		public virtual bool CheckDuringCast(GameLiving target, bool quiet)
 		{
-			if (m_interrupted)
+			if (m_interrupted || PerformDuringCastInterruptCheck())
 				return false;
 
 			if (Caster is GameNPC npcOwner)
@@ -1141,10 +1164,10 @@ namespace DOL.GS.Spells
 				case eCastState.Casting:
 				case eCastState.CastingRetry:
 				{
+					// A cast lost during this tick (its half-cast check included) must not also finish on it.
 					if (!CheckDuringCast(Target))
 						CastState = eCastState.Interrupted;
-
-					if (GameServiceUtils.ShouldTick(_castEndTick))
+					else if (GameServiceUtils.ShouldTick(_castEndTick))
 					{
 						if (!CheckEndCast(Target))
 						{
@@ -1986,7 +2009,9 @@ namespace DOL.GS.Spells
 
 		private bool IsTargetAffectedBySpellType(GameLiving target)
 		{
-			if (target is GameKeepDoor or GameKeepComponent && Spell.SpellType is not eSpellType.SiegeDirectDamage and not eSpellType.SiegeArrow && !IsSummoningSpell)
+			// Helpful spells have no effect on siege weapons either (OpenDAoC-Core bf414c248).
+			if ((target is GameKeepDoor or GameKeepComponent && Spell.SpellType is not eSpellType.SiegeDirectDamage and not eSpellType.SiegeArrow && !IsSummoningSpell) ||
+				(target is GameSiegeWeapon && !Spell.IsHarmful))
 			{
 				MessageToCaster($"Your spell has no effect on the {target.Name}.", eChatType.CT_SpellResisted);
 				return false;
@@ -2245,7 +2270,8 @@ namespace DOL.GS.Spells
 			double effectiveness = CasterEffectiveness;
 
 			// Duration is reduced for AoE spells based on the distance from the center, but only in RvR combat and if the spell doesn't have a damage component.
-			if (DistanceFallOff > 0 && Spell.Damage == 0 && (target is GamePlayer || (target is GameNPC npcTarget && npcTarget.Brain is IControlledBrain)))
+			// Realm enemies only (OpenDAoC-Core f815b1253): players and keep guards, not pets. Gamebots keep it, as players.
+			if (DistanceFallOff > 0 && Spell.Damage == 0 && target is GamePlayer or Keeps.GameKeepGuard or GameBot)
 				effectiveness *= 1 - DistanceFallOff / 2;
 
 			double duration = Spell.Duration * (1.0 + m_caster.GetModified(eProperty.SpellDuration) * 0.01);

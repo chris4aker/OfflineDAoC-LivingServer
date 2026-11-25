@@ -88,7 +88,7 @@ namespace DOL.AI.Brain
                 foreach (Spell spell in roots)
                 {
                     if (shaman.Mana < shaman.PowerCost(spell) || shaman.GetSkillDisabledDuration(spell) > 0 ||
-                        spell.CastTime > 0 && shaman.IsBeingInterrupted ||
+                        BotInterruptPolicy.CastWouldBeLost(shaman, spell) ||
                         !shaman.IsWithinRadius(add, spell.CalculateEffectiveRange(shaman)) ||
                         !NeedsOffensiveSpellApplication(add, spell) ||
                         !BotGroupSupport.HasCorpseLineOfSight(shaman, add))

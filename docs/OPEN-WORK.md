@@ -123,6 +123,13 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   and after; the owner's call on the See Hidden cut's shape and on whether every guard should use the rubric's short range
   (it would weaken `GuardStealther`, so it is not done); Rapid Fire, Camouflage, Vanish and True Sight for bots (#531);
   the duo's edge-gone retreat (only soloers run); the fight harness rows (#520).
+- **OpenDAoC upstream, package P2 (effects, spells, pets):** branch `fix/1.2.3-upstream-effects`, **tests only**. The
+  live-like interrupt is the only behaviour (owner, 2026-11-24). Open: re-run the raid sims under
+  [RAID-SIZES.md](RAID-SIZES.md) (caster output on boss fights changes; no size was changed); a PC check of casting under
+  melee (player and gamebot), bow draws under fire, Bonedancer focus snare on a monster, Speed of Sound with a snare, and a
+  Minstrel charm under recast. Held for the owner: `6e709adae` / `c92f7407c` (turrets at random, pets on rooted targets),
+  `8457ac5d3` (pet interrupt extra). Left for later: `1713a0e8f` + `9f0bd91b1` (savage buffs, resist buff cap),
+  `42024abdc` (failed spells and cooldowns; check bot retries first), `3374caf2c` (needs a world data change).
 
 - **OpenDAoC upstream, server core (P1):** database save safety, the memory-leak bundle (#540), game-loop drift, the
   trade deadlock and small core fixes, on `fix/1.2.3-upstream-core`. **In review, tests only.** Left: the quest-list
@@ -205,6 +212,7 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
   its owner). Left for later: True165's role sheet (only the main tank sets the kill target, the off-tank peels; d2fc3fe3d
   needs its BotBrain.MainAssist), its Mag Mell release spots (needs its BesideBindstone) and the Trollheim pillar follow
   fix (b390827f, a spot fix in core movement).
+- [#598](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/598) Battlegrounds feel under-populated. **A and C built in 1.2.3, tests only** (branch `feature/1.2.3-bg-fill`): new default shares (1-19: 55/35/0/10, 20-49: 30/30/15/25) with a one-time upgrade of an untouched 1.2.2 `bot-goals.json`, and whole bot groups taking a battleground trip together at their task's end (`AUTONOMOUS_GROUP_BATTLEGROUND_TRIP`). Expected on a world like the owner's 11/24 roster (bracket counts from #598): Abermenai about 14/20/46 (A/M/H) on both the installer defaults and the owner's own file; Thidranki 3-6 per realm on installer defaults (2-5 on the owner's 20%), against 2-3 on 1.2.2's installer defaults. Owed on the PC: the Battlegrounds tab after 1-2 hours shows those counts, and `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP` rows with whole groups arriving. Not built (owner): the per-realm floor (B).
 - [#544](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/544) Hibernian bots level about twice as fast as Albion's. **Open.** Albion has the fewest camps per band from 5 to 19 (world data, owner decision); the 10-19 group XP gap is not explained yet. 1.2.3 adds the sampled `AUTONOMOUS_KILL_XP` row and `source/tools/kill_xp_report.py` (tests only); next: one played hour at 10-19 to tell shared kills from off-target kills.
 - [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491) Buffers waste buffs on targets that can't use them; split base and spec buffs between healers and spec buffers. **Fixed in 1.2.3, tests only** (`BotBuffTargetPolicy`, `UT_BotBuffTargets491`); open until a PC log shows a group buffed without power regen or acuity on melee.
 - [#535](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/535) Solo bots below 50 plan camps that are grey on arrival. **Fixed in 1.2.3, tests only** (`AutonomousSoloCampFloor`, `UT_CampChoiceAndDeaths123`); open until a played log shows `AUTONOMOUS_CAMP_OUTLEVELED` well under the 1.2.2 rate (about 1,040/h with about 2,930 bots).

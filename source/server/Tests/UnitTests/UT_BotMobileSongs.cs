@@ -299,11 +299,16 @@ namespace DOL.UnitTests
                 Assert.That(second.Start(), Is.True);
                 target.effectListComponent.BeginTick();
                 Assert.That(Bonus(), Is.EqualTo(6), "one song, one bonus");
+                // Since the P2 port of OpenDAoC-Core 39502cb35 a refreshed pulsing buff is stopped and restarted silently, so
+                // the first copy is already ended here; only a copy replaced in place (speed songs, a re-enabled copy)
+                // still goes through the stale-copy retirement.
+                bool endedOnRefresh = first.IsEnded;
                 first.End();
                 target.effectListComponent.BeginTick();
                 Assert.That(second.IsActive, Is.True);
                 Assert.That(Bonus(), Is.EqualTo(6), "the replaced copy must not take the live song's bonus away");
-                Assert.That(EffectListComponent.StaleCopiesRetired, Is.GreaterThan(retiredBefore));
+                Assert.That(endedOnRefresh || EffectListComponent.StaleCopiesRetired > retiredBefore, Is.True,
+                    "the first copy was either ended on the refresh or retired as a stale copy");
                 second.End();
                 target.effectListComponent.BeginTick();
                 Assert.That(Bonus(), Is.Zero, "the live copy takes it away once");

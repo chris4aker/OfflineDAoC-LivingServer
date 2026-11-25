@@ -415,8 +415,87 @@ public static class AutonomousObjectiveAssignments
                     }
                     Assign(bot, kind, bucket.Key, _epoch);
                 }
+                // #598 C: what this pass left open, for a bot group that finishes its task before the next pass.
+                PublishOpenSlots(bucket.Key, new OpenSlots(Math.Max(0, target.Battlegrounds - assignedBattleground),
+                    Math.Max(0, target.SoloPve - assignedSolo) + Math.Max(0, target.GroupPve - assignedGroup) +
+                    Math.Max(0, target.RvR - assignedRvr)));
             }
         }
+    }
+
+    /// <summary>
+    /// The goal slots a realm and level band still had open after the last one-minute pass: battleground slots, and the
+    /// other goals' (solo, group, RvR) open slots together.
+    /// </summary>
+    public readonly record struct OpenSlots(int Battlegrounds, int Other);
+
+    private static readonly object OpenSlotsSync = new();
+    private static readonly Dictionary<(eRealm Realm, int Band), OpenSlots> LastOpenSlots = new();
+
+    private static void PublishOpenSlots((eRealm Realm, int Band) bucket, OpenSlots open)
+    {
+        lock (OpenSlotsSync) LastOpenSlots[bucket] = open;
+    }
+
+    /// <summary>The level band the allocator files a bot level under (0: 1-19, 20: 20-49, 50).</summary>
+    public static int BandOf(int level) => level >= 50 ? 50 : level >= 20 ? 20 : 0;
+
+    /// <summary>
+    /// #598 C, pure: does a bot group of <paramref name="size"/> take the battleground goal together? Only when the band's
+    /// open battleground slots hold the whole group (its members count against the share, as single bots do), and then
+    /// with the same odds the pass gives a single bot: the battleground's open slots against all open slots.
+    /// </summary>
+    public static bool GroupTakesBattleground(OpenSlots open, int size, double roll) =>
+        size >= 2 && open.Battlegrounds >= size && roll >= 0 && roll < 1 &&
+        roll < open.Battlegrounds / (double)(open.Battlegrounds + Math.Max(0, open.Other));
+
+    /// <summary>
+    /// #598 C: reserves <paramref name="size"/> battleground slots of the realm's band for a bot group when
+    /// <see cref="GroupTakesBattleground"/> says it goes (so two groups in one minute cannot both take the last slots). The
+    /// next pass counts the group's members as battleground goals, as it counts any group's members. Never takes the
+    /// allocation lock (the coordinator calls it).
+    /// </summary>
+    public static bool TryReserveGroupBattleground(eRealm realm, int band, int size, double roll)
+    {
+        lock (OpenSlotsSync)
+        {
+            if (!LastOpenSlots.TryGetValue((realm, band), out OpenSlots open) || !GroupTakesBattleground(open, size, roll))
+                return false;
+            LastOpenSlots[(realm, band)] = open with { Battlegrounds = open.Battlegrounds - size };
+            return true;
+        }
+    }
+
+    /// <summary>Test seam: the open slots a pass would have published.</summary>
+    public static void SetOpenSlotsForTest(eRealm realm, int band, OpenSlots open) => PublishOpenSlots((realm, band), open);
+
+    /// <summary>
+    /// #598 C: a member of a bot group that goes to a battleground together. One battleground task for the whole group (one
+    /// assignment id and one end), kept by the group coordinator like any group's clock.
+    /// </summary>
+    public static void AssignGroupBattleground(GameBot bot, string tripId, DateTime expiresUtc, string leaderName, string bracketName)
+    {
+        OfflineWorldBotRecord record = bot?.PersistentRecord;
+        if (record == null) return;
+        AssignGroupBattleground(record, tripId, expiresUtc, leaderName, bracketName);
+        GroupWaits.TryRemove(bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID, out _);
+        bot.MarkAutonomousStateDirty();
+        AutonomousBotStatusPersistence.Queue(bot);
+    }
+
+    /// <summary>The record side of <see cref="AssignGroupBattleground(GameBot, string, DateTime, string, string)"/>. Pure.</summary>
+    public static void AssignGroupBattleground(OfflineWorldBotRecord record, string tripId, DateTime expiresUtc, string leaderName, string bracketName)
+    {
+        record.ObjectiveKind = eAutonomousObjectiveKind.Battleground.ToString();
+        record.ObjectiveAssignmentId = tripId;
+        record.ObjectiveAssignedUtc = DateTime.UtcNow.ToString("O");
+        record.ObjectiveExpiresUtc = expiresUtc.ToString("O");
+        record.ObjectivePveMode = eAutonomousPveCompletionMode.Time.ToString();
+        record.ObjectivePveKills = 0;
+        record.ObjectivePveKillTarget = 0;
+        record.CurrentCampId = record.TargetName = record.TravelDestination = string.Empty;
+        record.ObjectivePhase = $"Battleground trip with {leaderName}'s group";
+        record.ObjectiveProgress = $"Group battleground trip to {bracketName} ends {record.ObjectiveExpiresUtc}";
     }
 
     private static void BeginPveIntermission(GameBot bot)

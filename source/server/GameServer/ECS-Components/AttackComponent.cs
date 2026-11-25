@@ -765,13 +765,9 @@ namespace DOL.GS
             if (owner.IsEngaging)
                 owner.CancelEngageEffect();
 
+            // A bow can always be drawn; being interrupted only costs the shot at half draw (AttackAction).
             if (owner.ActiveWeaponSlot is eActiveWeaponSlot.Distance)
-            {
-                if (owner.rangeAttackComponent.RangedAttackState is not eRangedAttackState.Aim && attackAction.CheckInterruptTimer())
-                    return false;
-
                 owner.rangeAttackComponent.AttackStartTime = GameLoop.GameLoopTime;
-            }
 
             AttackState = true;
             return true;

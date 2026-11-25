@@ -72,6 +72,8 @@ public static partial class AutonomousBotGroupCoordinator
         public bool RecoveringBetweenPulls { get; init; }
         /// <summary>The real player this party hosts (bot-led groups); null for a bot-only party. The bots lead.</summary>
         public GamePlayer HostedPlayer { get; init; }
+        /// <summary>#598 C: the whole group is on a battleground trip, led by <see cref="Leader"/> (not a dynamic PvE/RvR party).</summary>
+        public bool BattlegroundTrip { get; init; }
     }
 
     public sealed class StoredMetadata
@@ -304,6 +306,10 @@ public static partial class AutonomousBotGroupCoordinator
                     return null;
                 }
             }
+
+            // #598 C: a group on a battleground trip (or one left with battleground goals and no trip).
+            if (TryPulseBattlegroundTrip(group, members, out Directive tripDirective))
+                return tripDirective;
 
             // Player-led parties are visible in the launcher, but the human is
             // deliberately not serialized or included in the bot count. A party
@@ -1611,6 +1617,9 @@ public static partial class AutonomousBotGroupCoordinator
         using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             ClearMetadata(bot, true);
+            // #598 C: a member who leaves a battleground trip keeps its battleground task alone.
+            if (group != null && Trips.TryGetValue(group, out BattlegroundTrip leftTrip))
+                BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, leftTrip.Id, DutyLeaseReason.LeftGroup);
             if (group != null && Sessions.TryGetValue(group, out Session session))
             {
                 BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, session.Id, DutyLeaseReason.LeftGroup);
@@ -1718,10 +1727,12 @@ public static partial class AutonomousBotGroupCoordinator
             if (ending?.HostedPlayer != null)
                 EndHosting(ending, ending.HostedPlayer, "party_disbanded");
             BotLedGroups.ClearHosted(group);
+            Trips.Remove(group, out BattlegroundTrip trip);
             foreach (GameBot bot in AllBotMembers(group))
             {
                 ClearMetadata(bot, true);
                 if (ending != null) BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, ending.Id);
+                if (trip != null) BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, trip.Id);
             }
             Sessions.Remove(group);
         }
@@ -1786,7 +1797,7 @@ public static partial class AutonomousBotGroupCoordinator
                      !(session.ObjectiveKind == eAutonomousObjectiveKind.RvR &&
                        AutonomousRvrEventLayer.IsForceCommitted(session.Id, GameLoop.GameLoopTime))).ToArray())
             FinishGroupTask(expired, AutonomousRealmRaid.TryConsumeRelease(expired.Group, out string releaseReason)
-                ? releaseReason : "Shared group task expired");
+                ? releaseReason : SharedTaskExpiredReason);
 
         GameBot[] activeRoster = AutonomousBotRegistry.Snapshot()
             .Where(bot => !bot.IsTemporaryGroupHelper && AutonomousObjectiveAssignments.Is(bot, objectiveKind) && !AutonomousBeggars.Is(bot))
@@ -2089,7 +2100,7 @@ public static partial class AutonomousBotGroupCoordinator
             !(session.ObjectiveKind == eAutonomousObjectiveKind.RvR &&
               AutonomousRvrEventLayer.IsForceCommitted(session.Id, GameLoop.GameLoopTime)))
         {
-            FinishGroupTask(session, "Shared group task expired");
+            FinishGroupTask(session, SharedTaskExpiredReason);
             return false;
         }
         if (raidView == null && session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve &&
@@ -2763,6 +2774,9 @@ public static partial class AutonomousBotGroupCoordinator
     private static void FinishGroupTask(Session session, string reason)
     {
         if (session == null || session.Ending)
+            return;
+        // #598 C: at the shared task's natural end a bot group may go to a battleground together instead of breaking up.
+        if (TryStartBattlegroundTrip(session, reason))
             return;
         // Bot-led groups (B2): a party hosting the player with one gamebot left asks the player to lead instead.
         if (TryOfferLeadToLastBot(session, reason))

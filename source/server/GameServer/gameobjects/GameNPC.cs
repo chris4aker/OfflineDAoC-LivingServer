@@ -3149,25 +3149,12 @@ namespace DOL.GS
 			// so that they don't start attacking immediately after the attacker's melee swing interval.
 			// It makes repositioning them easier without having to constantly attack them.
 			// #521: not for an autonomous gamebot hit by an enemy-realm player character (it is interrupted as a player is).
-			if (attacker != this)
+			// Necromancer pets never take the longer monster timer (OpenDAoC-Core 25a5f6cad): a gamebot's pet too.
+			if (attacker != this && this is not NecromancerPet)
 				duration += DOL.GS.ServerRules.PvpRules.InterruptExtraMs(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(this, attacker),
 					Brain is IControlledBrain controlledBrain && controlledBrain.GetPlayerOwner() != null);
 
 			base.StartInterruptTimer(duration, attackType, attacker);
-		}
-
-		protected override bool CheckRangedAttackInterrupt(GameLiving attacker, AttackData.eAttackType attackType)
-		{
-			// Immobile NPCs can only be interrupted by their own target, and in melee range.
-			if (MaxSpeedBase == 0 && (attacker != TargetObject || !IsWithinRadius(attacker, MeleeAttackRange)))
-				return false;
-
-			bool interrupted = base.CheckRangedAttackInterrupt(attacker, attackType);
-
-			if (interrupted)
-				attackComponent.attackAction.OnAimInterrupt(attacker);
-
-			return interrupted;
 		}
 
 		public override int SelfInterruptDurationOnMeleeAttack => AttackSpeed(ActiveWeapon);

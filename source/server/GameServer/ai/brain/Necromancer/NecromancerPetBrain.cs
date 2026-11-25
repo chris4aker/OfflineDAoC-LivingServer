@@ -277,7 +277,8 @@ namespace DOL.AI.Brain
             {
                 SpellQueueEntry entry = GetSpellFromAttackQueue();
 
-                if (entry == null || !CastSpell(entry.Spell, entry.SpellLine, entry.Target, false))
+                // Instant spells need line of sight too (OpenDAoC-Core d774cacf9).
+                if (entry == null || !CastSpell(entry.Spell, entry.SpellLine, entry.Target, true))
                     continue;
 
                 RemoveSpellFromAttackQueue();
@@ -360,20 +361,6 @@ namespace DOL.AI.Brain
         /// Fetches a spell from the queue without removing it; the spell is removed *after* the spell has finished casting.
         /// </summary>
         /// <returns>The next spell or null, if no spell is in the queue.</returns>
-        private SpellQueueEntry GetSpellFromQueue()
-        {
-            m_spellQueue.TryPeek(out SpellQueueEntry spellQueueEntry);
-
-            if (!m_spellQueue.IsEmpty)
-                DebugMessageToOwner(string.Format("Grabbing spell '{0}' from the start of the queue in order to cast it", spellQueueEntry.Spell.Name));
-
-            return spellQueueEntry;
-        }
-
-        /// <summary>
-        /// Fetches a spell from the queue without removing it; the spell is removed *after* the spell has finished casting.
-        /// </summary>
-        /// <returns>The next spell or null, if no spell is in the queue.</returns>
         private SpellQueueEntry GetSpellFromAttackQueue()
         {
             m_attackSpellQueue.TryPeek(out SpellQueueEntry spellQueueEntry);
@@ -393,6 +380,15 @@ namespace DOL.AI.Brain
 
             if (spellQueueEntry != null)
                 DebugMessageToOwner(string.Format("Removing spell '{0}' from the start of the queue", spellQueueEntry.Spell.Name));
+        }
+
+        /// <summary>
+        /// Fetches a spell from the queue without removing it; the spell is removed *after* the spell has started to cast.
+        /// </summary>
+        private SpellQueueEntry GetSpellFromQueue()
+        {
+            m_spellQueue.TryPeek(out SpellQueueEntry spellQueueEntry);
+            return spellQueueEntry;
         }
 
         /// <summary>

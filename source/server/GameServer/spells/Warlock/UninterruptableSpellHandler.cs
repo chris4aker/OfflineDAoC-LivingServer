@@ -47,7 +47,7 @@ namespace DOL.GS.Spells
             base.FinishSpellCast(target);
         }
 
-		public override bool CasterIsAttacked(GameLiving attacker)
+		protected override bool TryInterruptCaster(GameLiving attacker)
 		{
 			return false;
 		}

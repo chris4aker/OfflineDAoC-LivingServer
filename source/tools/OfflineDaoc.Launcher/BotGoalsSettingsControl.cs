@@ -59,6 +59,9 @@ internal sealed class BotGoalsSettingsControl : UserControl
             Text = "Levels 1–19 cannot do RvR. Saved settings replace forced PvE after RvR, allowing back-to-back RvR.\n" +
                 "Battlegrounds % sends bots to the battleground of their level: Abermenai 15–19, Thidranki 20–24, Murdaigean 25–29,\n" +
                 "Caledonia 30–35. Bots outside those levels (1–14 and 36–49) do solo or group PvE with that share instead. Level 50 cannot.\n" +
+                "A bot group whose members all fit one battleground can go there together at the end of its group task; its members count\n" +
+                "toward the Battlegrounds %.\n" +
+                DefaultsText() + "\n" +
                 "Percentages are population targets, not exact head counts at every moment. Existing allowed tasks finish normally.\n" +
                 "Group-only bots wait for a complete eight-member role roster; they never fall back to a 0% goal.\n" +
                 "Normal training, selling, recovery and town breaks remain. Player characters, /spawn helpers and hired companions are unchanged." });
@@ -73,6 +76,16 @@ internal sealed class BotGoalsSettingsControl : UserControl
         LoadSettings();
         _poll.Tick += (_, _) => UpdateState();
         _poll.Start();
+    }
+
+    /// <summary>The defaults as the help text states them, read from <see cref="BotGoalSettings.Defaults"/> so they always match.</summary>
+    internal static string DefaultsText()
+    {
+        BotGoalSettings d = BotGoalSettings.Defaults;
+        static string Row(BotGoalWeights w) => $"{w.SoloPve}/{w.GroupPve}/{w.RvR}/{w.Battlegrounds}";
+        return $"Defaults (solo/group/RvR/battlegrounds): Levels 1–19 {Row(d.Levels1To19)}, Levels 20–49 {Row(d.Levels20To49)}, " +
+               $"Level 50 {Row(d.Level50)}. So {d.Levels1To19.Battlegrounds}% of the bots at 15–19 and {d.Levels20To49.Battlegrounds}% at 20–35 " +
+               "go to the battlegrounds.";
     }
 
     private BotGoalSettings ReadValues() => new()

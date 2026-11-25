@@ -9,11 +9,15 @@ public static class AutonomousBotGoalPolicy
     public static BotGoalSettings Settings { get; private set; } = BotGoalSettings.Defaults;
     public const string OverrideVariable = "OFFLINE_DAOC_BOT_GOALS";
     public static bool IsConfigured { get; private set; }
+    /// <summary>The server's own goals file (bot-goals.json), as the last Initialize found it; null before.</summary>
+    public static string ServerFilePath { get; private set; }
+    private static string _loadedPath;
 
     // One startup read only. Never poll settings or query the database on AI turns.
     public static void Initialize(string serverDirectory)
     {
         string path = Path.Combine(serverDirectory, BotGoalSettings.FileName);
+        ServerFilePath = path;
         // Test runs may point at their own goals file so the owner's saved launcher setting
         // (bot-goals.json) is never edited for a test.
         string overridePath = Environment.GetEnvironmentVariable(OverrideVariable);
@@ -22,8 +26,24 @@ public static class AutonomousBotGoalPolicy
             path = overridePath;
             DOL.Logging.LoggerManager.Create(typeof(AutonomousBotGoalPolicy)).Warn($"BOT_GOALS_OVERRIDE using {overridePath} instead of {BotGoalSettings.FileName}");
         }
+        _loadedPath = path;
         Settings = BotGoalSettings.Load(path); // Reject corruption rather than silently ignoring 0% exclusions.
         IsConfigured = File.Exists(path);
+    }
+
+    /// <summary>
+    /// 1.2.3 (#598, LivingServerSettingsUpgrade): the server's own bot-goals.json moves to the new default shares when it
+    /// still holds exactly the 1.2.2 defaults, then the policy reloads it. A test override file is never touched, nor any
+    /// file with other values (the player's own). Runs at start-up before any bot plays. True when the file was rewritten.
+    /// </summary>
+    public static bool UpgradeUntouchedDefaults()
+    {
+        if (ServerFilePath == null || !string.Equals(_loadedPath, ServerFilePath, StringComparison.Ordinal) ||
+            !BotGoalSettings.UpgradeUntouchedDefaults(ServerFilePath))
+            return false;
+        Settings = BotGoalSettings.Load(ServerFilePath);
+        IsConfigured = true;
+        return true;
     }
 
     public static eAutonomousObjectiveKind Choose(int level, Random random = null, bool excludeGroup = false,
