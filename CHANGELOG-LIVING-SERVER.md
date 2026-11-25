@@ -331,6 +331,24 @@ otherwise.
   `starting_keep_level` stays). Only raises. Log `KEEP_LEVEL_DEFAULT_RAISED`. `UT_FrontierKeepLevelRepair526` pins
   every claimable keep at 5. **Tests only.**
 
+**Tests**
+- **An RvR fight rehearsal in CI** (#520; docs/rvr-audit-1.2.3/evidence.md F2, F6, 5.2). Until now no RvR test ran a
+  fight: every tactics test used hand-made boards. `UT_RvrFightRehearsal` (fixture in `source/server/Tests/Rehearsal`,
+  `RvrFightWorld` and its helpers) runs real gamebots (built from their records: real class, stats, property calculators,
+  their own `BotBrain`, the coordinator and controller) in one real `Region`, with the game loop's own services ticked in
+  the loop's order for 120 simulated seconds, and the server's own spell handlers, attack component, effect list, crowd
+  control and interrupts. `RvrFightBoards.Get`/`BuildBoard` is exercised from the live bots. Three scenarios print one
+  `RVR_REHEARSAL` row each to the CI log: two eights from `RvrRosterTemplates` meeting in the open (notice, first crowd
+  control, mez refusals, first three deaths by role, called-target share of damage, who held the field, duration); a
+  24-bot storm on a battleground lord's floor (the lord's health every 10 s); a player stand-in in range of a bot eight
+  with the lookers' cap on (time to notice against the perception table), plus the planted defect of #521: the same mez
+  is refused on a gamebot under 75% health and lands on a player at the same health. **Rows are reports, not gates**
+  (evidence.md 5.3). Stood in, because CI has no world database or navmesh: a flat zone and flat navmesh
+  (`FlatNavmesh`), the spells (`RvrFightKits`: a heal, a nuke, a 60 s mez per class), the melee classes' weapon abilities,
+  the keep (a battleground keep with its doors down) and the frontier scan's dice (`RvrFightScan`: the server's own
+  perception rules with seeded rolls). Scenario 3 repeats by seed; the two fight scenarios repeat closely but not yet
+  exactly (the server's fight code still draws from `Random.Shared`). Runs in a few seconds. **Tests only.**
+
 ## 1.2.2 — 2026-11-23
 
 The raid release (owner, 2026-11-22: 1.2.2 is the raids only; Uthgard's drop tables and the PC-check fixes come in
