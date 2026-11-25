@@ -137,10 +137,30 @@ namespace DOL.UnitTests
             Field(typeof(GameObject), "_objectsInRadiusCaches").SetValue(monster, Field(typeof(GameObject), "_objectsInRadiusCaches").FieldType
                 .GetConstructor(Type.EmptyTypes).Invoke(null));
             typeof(GameLiving).GetProperty("LastInterrupter").SetValue(monster, other);
+            typeof(GameLiving).GetProperty("InterruptTime").SetValue(monster, GameLoop.GameLoopTime + 60_000);
 
             monster.ForgetDeparted();
 
-            Assert.That(monster.LastInterrupter, Is.SameAs(other));
+            Assert.That(monster.LastInterrupter, Is.SameAs(other), "an interrupt still running keeps its interrupter");
+        }
+
+        /// <summary>Port of OpenDAoC-Core 08c896ac0: an expired interrupt no longer holds its interrupter.</summary>
+        [Test]
+        public void AnExpiredInterruptForgetsItsInterrupter()
+        {
+            GameNPC monster = Bare<GameNPC>(GameObject.eObjectState.Active);
+            GameNPC other = Bare<GameNPC>(GameObject.eObjectState.Active);
+            Field(typeof(GameLiving), "XpGainersLock").SetValue(monster, new System.Threading.Lock());
+            Field(typeof(GameLiving), "m_xpGainers").SetValue(monster, new Dictionary<GameLiving, double>());
+            Field(typeof(GameObject), "_objectInRadiusCachesLock").SetValue(monster, new System.Threading.Lock());
+            Field(typeof(GameObject), "_objectsInRadiusCaches").SetValue(monster, Field(typeof(GameObject), "_objectsInRadiusCaches").FieldType
+                .GetConstructor(Type.EmptyTypes).Invoke(null));
+            typeof(GameLiving).GetProperty("LastInterrupter").SetValue(monster, other);
+            typeof(GameLiving).GetProperty("InterruptTime").SetValue(monster, GameLoop.GameLoopTime - 1);
+
+            monster.ForgetDeparted();
+
+            Assert.That(monster.LastInterrupter, Is.Null);
         }
 
         [Test]

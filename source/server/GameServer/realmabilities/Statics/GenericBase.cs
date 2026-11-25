@@ -37,12 +37,39 @@ namespace DOL.GS.RealmAbilities.Statics
             this.Realm = caster.Realm;
             this.AddToWorld();
 		}
+		// Port of OpenDAoC-Core 84f1a46a6 (memory leak): the handler on the caster was never removed, so every static a
+		// player or bot ever cast stayed reachable from them, and a failed AddToWorld still started a timer and the handler.
+		// Pulse timing is unchanged here.
+		private ECSGameTimer m_pulseTimer;
+		private bool m_casterHandlerAdded;
+
 		public override bool AddToWorld() 
         {
-			new ECSGameTimer(this, new ECSGameTimer.ECSTimerCallback(PulseTimer),1000);
-			GameEventMgr.AddHandler(m_caster, GamePlayerEvent.RemoveFromWorld, new DOLEventHandler(PlayerLeftWorld));
-			return base.AddToWorld();
+			if (!base.AddToWorld())
+				return false;
+
+			m_pulseTimer = new ECSGameTimer(this, new ECSGameTimer.ECSTimerCallback(PulseTimer), 1000);
+			if (m_caster != null)
+			{
+				GameEventMgr.AddHandler(m_caster, GamePlayerEvent.RemoveFromWorld, new DOLEventHandler(PlayerLeftWorld));
+				m_casterHandlerAdded = true;
+			}
+			return true;
 		}
+
+		public override bool RemoveFromWorld(int respawnSeconds)
+		{
+			if (!base.RemoveFromWorld(respawnSeconds))
+				return false;
+
+			m_pulseTimer?.Stop();
+			m_pulseTimer = null;
+			if (m_casterHandlerAdded && m_caster != null)
+				GameEventMgr.RemoveHandler(m_caster, GamePlayerEvent.RemoveFromWorld, new DOLEventHandler(PlayerLeftWorld));
+			m_casterHandlerAdded = false;
+			return true;
+		}
+
 		protected virtual int PulseTimer(ECSGameTimer timer)
         {
 			if (currentTick >= m_lifeTime || m_caster == null) 

@@ -745,7 +745,9 @@ namespace DOL.GS
 		/// </summary>
 		public virtual void ForgetDeparted()
 		{
-			if (HasDeparted(LastInterrupter))
+			// Port of OpenDAoC-Core 08c896ac0 (memory leak): the last interrupter is only read while the interrupt lasts
+			// (IsBeingInterruptedByOther), so once it has expired the reference is dropped too, not only once it left the world.
+			if (HasDeparted(LastInterrupter) || LastInterrupter != null && !IsBeingInterruptedByOther)
 				LastInterrupter = null;
 			attackComponent?.ForgetDeparted();
 			// Damage credit decides XP, loot and realm points, so only what can never earn any is dropped: departed neutral
