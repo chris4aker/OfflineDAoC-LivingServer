@@ -264,10 +264,10 @@ namespace DOL.UnitTests
         private static string GameServerSource =>
             Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "GameServer"));
 
-        /// <summary>The 17 wire exits (issue #475, structure.md finding 1), by file: the gate calls each file holds.</summary>
+        /// <summary>The 17 wire exits (issue #475, structure.md finding 1) plus the bot emote text (#487), by file: the gate calls each file holds.</summary>
         private static readonly Dictionary<string, int> Exits = new()
         {
-            ["bots/GameBot.cs"] = 2,
+            ["bots/GameBot.cs"] = 3,
             ["bots/autonomous/AutonomousBotChatCoordinator.cs"] = 3,
             ["bots/autonomous/AutonomousBotGroupChatter.cs"] = 1,
             ["bots/autonomous/AutonomousLivingServer.cs"] = 2,
@@ -298,7 +298,7 @@ namespace DOL.UnitTests
                 Assert.That(found, Is.EqualTo(count), file);
                 exits += found;
             }
-            Assert.That(exits, Is.EqualTo(17));
+            Assert.That(exits, Is.EqualTo(18));
         }
     }
 }

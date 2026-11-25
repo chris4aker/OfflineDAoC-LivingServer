@@ -359,23 +359,32 @@ namespace DOL.GS
                 GamePlayer targetPlayer = target as GamePlayer;
                 if (targetPlayer != null && !IsWithinRadius(targetPlayer, WorldMgr.VISIBILITY_DISTANCE))
                     targetPlayer = null;
-                if (targetPlayer != null)
-                    Send(targetPlayer, viewerIsTarget: true);
-                foreach (GamePlayer player in GetPlayersInRadius(DOL.GS.Commands.EmoteCommandHandler.EMOTE_RANGE_TO_OTHERS))
-                    if (player != targetPlayer)
-                        Send(player, viewerIsTarget: false);
+                // One emote, one line through the say gate (#475): each viewer sees it with the names as they know them.
+                string generic = BotIdleLife.EmoteLine(messages, Name, target?.Name, false);
+                BotSayGate.Say(new BotSayGate.Utterance("emote", Name, Realm, generic ?? string.Empty) { Body = this }, _ =>
+                {
+                    string shown = null;
+                    var viewers = new List<(GamePlayer Viewer, bool IsTarget)>();
+                    if (targetPlayer != null)
+                        viewers.Add((targetPlayer, true));
+                    foreach (GamePlayer player in GetPlayersInRadius(DOL.GS.Commands.EmoteCommandHandler.EMOTE_RANGE_TO_OTHERS))
+                        if (player != targetPlayer)
+                            viewers.Add((player, false));
+                    foreach ((GamePlayer viewer, bool isTarget) in viewers)
+                    {
+                        string line = BotIdleLife.EmoteLine(messages, AutonomousNameMask.NameFor(viewer, this, 0, true),
+                            target == null ? null : AutonomousNameMask.NameFor(viewer, target, 0, false), isTarget);
+                        if (line == null)
+                            continue;
+                        viewer.Out.SendMessage(line, eChatType.CT_Emote, eChatLoc.CL_SystemWindow);
+                        shown ??= line;
+                    }
+                    return shown;
+                });
             }
             catch (Exception)
             {
                 // an emote's text is cosmetic: never let it break the bot's turn
-            }
-
-            void Send(GamePlayer viewer, bool viewerIsTarget)
-            {
-                string line = BotIdleLife.EmoteLine(messages, AutonomousNameMask.NameFor(viewer, this, 0, true),
-                    target == null ? null : AutonomousNameMask.NameFor(viewer, target, 0, false), viewerIsTarget);
-                if (line != null)
-                    viewer.Out.SendMessage(line, eChatType.CT_Emote, eChatLoc.CL_SystemWindow);
             }
         }
 
