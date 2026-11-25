@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Offline DAoC Living Server launcher icon (Linux). Original generic artwork: a sword and shield with a "live" light.
+     It uses no game art. The PNG sizes beside it are rendered from this file by render_icons.py. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3a67"/>
+      <stop offset="1" stop-color="#141a33"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#5b7bd5" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#5b7bd5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f4f6fb"/>
+      <stop offset="0.5" stop-color="#c9d1e3"/>
+      <stop offset="0.5" stop-color="#9aa6c2"/>
+      <stop offset="1" stop-color="#7d89a6"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6d27a"/>
+      <stop offset="1" stop-color="#c08a2e"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b3363f"/>
+      <stop offset="1" stop-color="#6e1a23"/>
+    </linearGradient>
+    <radialGradient id="live" cx="0.4" cy="0.35" r="0.65">
+      <stop offset="0" stop-color="#b9ffcf"/>
+      <stop offset="0.6" stop-color="#2fd36b"/>
+      <stop offset="1" stop-color="#14873f"/>
+    </radialGradient>
+  </defs>
+
+  <!-- tile -->
+  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#bg)"/>
+  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#glow)"/>
+  <rect x="10" y="10" width="236" height="236" rx="42" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="3"/>
+
+  <!-- sword behind the shield: blade above, grip and pommel below -->
+  <path d="M128 26 L140 46 L140 150 L116 150 L116 46 Z" fill="url(#blade)" stroke="#3a4466" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="121" y="196" width="14" height="26" rx="3" fill="#5a3a22" stroke="#2c1c10" stroke-width="2"/>
+  <circle cx="128" cy="228" r="9" fill="url(#gold)" stroke="#6b4a14" stroke-width="2"/>
+
+  <!-- shield -->
+  <path d="M128 72 C108 82 86 86 64 84 L64 134 C64 178 92 206 128 222 C164 206 192 178 192 134 L192 84 C170 86 148 82 128 72 Z"
+        fill="url(#gold)" stroke="#5e4212" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M128 86 C111 94 94 97 77 96 L77 134 C77 170 99 193 128 207 C157 193 179 170 179 134 L179 96 C162 97 145 94 128 86 Z"
+        fill="url(#face)"/>
+  <!-- chevron -->
+  <path d="M84 150 L128 118 L172 150 L172 168 L128 136 L84 168 Z" fill="url(#gold)" stroke="#5e4212" stroke-width="2" stroke-linejoin="round"/>
+  <!-- crossguard over the shield top -->
+  <rect x="92" y="62" width="72" height="14" rx="7" fill="url(#gold)" stroke="#5e4212" stroke-width="3"/>
+
+  <!-- "live" light: the server is running -->
+  <circle cx="204" cy="204" r="25" fill="#141a33"/>
+  <circle cx="204" cy="204" r="18" fill="url(#live)" stroke="#0b4a22" stroke-width="2"/>
+</svg>

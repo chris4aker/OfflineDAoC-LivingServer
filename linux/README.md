@@ -29,6 +29,23 @@ What it adds on Linux:
   Set `ODAOC_FULLSCREEN=once` to make each client window fullscreen one time and then leave it alone, or
   `ODAOC_FULLSCREEN=off` to not touch the window at all.
 
+## App menu and dock icon
+
+To start the game from GNOME's app grid or dock instead of a terminal, run once:
+
+```bash
+WINEPREFIX=~/OfflineDAoC/wineprefix linux/install-desktop-entry.sh ~/OfflineDAoC/game
+```
+
+It writes `~/.local/share/applications/offline-daoc-living-server.desktop` and the icon into
+`~/.local/share/icons/hicolor` (nothing needs root). The entry runs this clone's `start-offline-daoc.sh` with that game
+folder, and keeps `WINEPREFIX` if you set it. Press Super, type "Offline DAoC", and right-click it to add it to the dock.
+Run it again after moving the clone or the game folder; `linux/install-desktop-entry.sh --uninstall` removes it.
+
+The icon (`icons/`, an original sword-and-shield drawing with no game art) is drawn in
+`icons/hicolor/scalable/apps/offline-daoc-living-server.svg`; after editing it, `python3 linux/icons/render_icons.py`
+renders the PNG sizes.
+
 Server memory is set by the launcher's **Lean server memory** option, not by this script.
 
 Logs go to `runtime/logs/linux-launcher.log` and `runtime/logs/linux-fullscreen.log` in the game folder. Both are
