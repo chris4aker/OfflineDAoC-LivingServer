@@ -237,6 +237,7 @@ public sealed class UT_LiveInterrupt
     {
         GameLiving caster = gamebot ? Actor<CasterBot>() : Actor<CasterPlayer>();
         caster.Name = "Castertest";
+        caster.Health = 50; // Uninitialized objects skip the property initializers.
         Set(typeof(GameObject), caster, "<Realm>k__BackingField", eRealm.Albion);
 
         if (gamebot)
