@@ -13,6 +13,42 @@ Older entries below keep the names they were written with.
 Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-11-22). **Tests only** unless an entry says
 otherwise.
 
+**From OpenDAoC upstream: combat, XP, crafting and items** (port package P3; GPL-3.0 code by Baptiste Marie and Telchar
+of OpenDAoC-Core, ported by hand onto our tree; `UT_UpstreamCombatPort123`). **Tests only.**
+- **Group XP when someone dings on the kill** (`6ac049c6e`): the group's highest level is taken before any XP is paid, so
+  a member levelling up on that kill no longer cuts the others' share; the challenge code can match a level 1 NPC. Players
+  and autonomous gamebots share one helper (`AbstractServerRules.ChallengeEquivalentNpcLevel`); the AUTONOMOUS_KILL_XP row
+  is unchanged.
+- **Damage formulas** (`d0cafbd5e`, `16fa2c467`, `e142cbdb1`, `57a8584ff` + `6e2d36b9e`, `8274b06c1`): style damage
+  procs get their `stat / 23` term (it was integer 0); item and style heal procs heal their full amount; an arrow uses
+  the archery crit chance even after a weapon swap; damage adds, damage shields, Triple Wield and Mark of Prey use each
+  hand's own weapon speed; MeleeDamage / RangedDamage (ToA, Savage and Cleric self buffs) raise the unstyled damage cap
+  and StyleDamage the styled cap.
+- **Crafting:** a primary craft chosen at a Master is saved even when no skill changes with it (`20a563b05`).
+- **Defense** (`a36db6f43`, `50027c4f7`, `c284dd9d8`, `34519baf5`, `f589c15dc`, `135d7d741`): a player's or gamebot's evade
+  drops with the number of melee attackers (each one past the first counts a third) and works in a 120 degree arc;
+  players and gamebots guard through the block rules (shield, Shield ability, quality and condition, the arrow bonus,
+  Engage, 120 degrees); a zero evade or parry chance no longer uses a card of the defense deck; a guard against a bolt
+  now stops its physical half. Ordinary NPCs keep their evade arc, attacker rule and guard rule.
+- **Block rounds** (`a0f6fa4df`, `469c9b7a1`): one round per attacker, so a multi-hit attack uses one, a dual wield
+  offhand that is blocked alone uses one, and an archer whose target closes in extends its round.
+- **Hand to hand and Reflex Attack** (`068076224`, `9add26a8f`, `a0f6fa4df`, `ce965da78`, `706847173`, `e9fdfdd2a`,
+  `410f1d9bb`): triples and quads at every spec (no unlock at 25 and 40), Dualist's Reflexes trickles down to triples and
+  quads, any left hand weapon enables the multi-hit, multi-hits get the offhand's speed, and the combat log says
+  "Triple attack!" and "Quad attack!". Reflex Attack counters only frontal attacks that hit (1.65).
+- **Attack speed** (`dda75528c`, `99e18b6b2`, `4c05debd6`, `ca9effdf6`, `e1fdc0090`): haste, Mastery of Arms and the ToA
+  item bonus are three multiplicative layers; buffs on NPCs (gamebots included) are no longer halved; quickness counts
+  from 50; a dual wield round's interval (interrupts, damage adds) uses both weapons.
+- **Resists** (`58bc5cdff`, `738f82fa1`; owner's decision on #506): the constitution buff layer of NPC and gamebot resists
+  counts for magic damage only, and not for crowd control duration.
+- **Smaller ones:** strafing players miss NPCs too (`8ad486e27`); the variance range of an unspecced attack on a low level
+  target is clamped (`f55b1534f`); a spell attacker's tracking time uses the spell duration (`3c1a424cb`); the realm
+  ability cast message names the caster (`f45f95145`); Volley's portal keep check runs and its roof check needs a navmesh
+  (`36b74205d`, `302e8a8f3`); swapping an equipped weapon with one in the backpack keeps the weapon slot active
+  (`905ad857c`).
+- **Living Server parity:** a gamebot's dual wield swings are dual wield attacks, as a player's are (they were never
+  counted as such, because gamebots are NPCs without a left hand swing chance).
+
 **Chat**
 - **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,
   the bot's "in avalon marsh atm, inv me when ur close :)", the player's "I'm by camp station", and the bot's "lol"). The

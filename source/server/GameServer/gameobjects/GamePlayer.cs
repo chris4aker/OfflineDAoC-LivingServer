@@ -11854,6 +11854,19 @@ namespace DOL.GS
         }
 
         /// <summary>
+        /// Changes the primary craft and queues the crafting save, so the choice survives a relog even when no skill
+        /// changes with it (OpenDAoC-Core 20a563b05).
+        /// </summary>
+        public virtual void ChangeCraftingPrimarySkill(eCraftingSkill craftingSkill)
+        {
+            lock (_craftingLock)
+            {
+                CraftingPrimarySkill = craftingSkill;
+                CraftingProgressMgr.TrackChange(this, m_craftingSkills);
+            }
+        }
+
+        /// <summary>
         /// This is the timer used to count time when a player craft
         /// </summary>
         private ECSGameTimer m_crafttimer;

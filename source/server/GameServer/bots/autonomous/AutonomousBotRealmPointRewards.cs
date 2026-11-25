@@ -333,8 +333,7 @@ public static class AutonomousBotRealmPointRewards
         {
             value.Count++;
             value.Damage += damage;
-            if (value.HighestLevelPlayer.Level < participant.Level)
-                value.HighestLevelPlayer = participant;
+            value.Track(participant);
         }
         else
         {

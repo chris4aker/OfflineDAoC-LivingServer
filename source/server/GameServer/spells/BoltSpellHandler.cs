@@ -62,27 +62,27 @@ namespace DOL.GS.Spells
             double halfBaseDamage = damage * 0.5;
             damage = base.ModifyDamageWithTargetResist(ad, halfBaseDamage);
 
-            if (!ad.Target.attackComponent.CheckBlock(ad) || ad.Target.attackComponent.CheckGuard(ad, false))
-            {
-                // This is normally set in 'AttackComponent.CalculateEnemyAttackResult', but we don't call it.
-                if (ad.Target is GamePlayer playerTarget)
-                    ad.ArmorHitLocation = playerTarget.CalculateArmorHitLocation(ad);
-                else if (ad.Target is GameBot botTarget)
-                    ad.ArmorHitLocation = botTarget.CalculateArmorHitLocation(ad);
-
-                // We need a fake weapon skill for the target's armor to have something to be compared with.
-                // Since 'damage' is already modified by intelligence, power relics, spell variance, and everything else; we can use a constant only modified by the caster's level.
-                double weaponSkill = Caster.Level * 2.5;
-                double targetArmor = AttackComponent.CalculateTargetArmor(ad.Target, ad.ArmorHitLocation, out _, out _);
-                damage += weaponSkill / targetArmor * halfBaseDamage;
-            }
-            else
+            // A block or a guard stops the physical half (OpenDAoC-Core 135d7d741: the old test let a successful guard
+            // through as an unblocked hit and never tried Guard when the block failed).
+            if (ad.Target.attackComponent.CheckBlock(ad) || ad.Target.attackComponent.CheckGuard(ad, false))
             {
                 ad.AttackResult = eAttackResult.Blocked;
                 MessageToLiving(ad.Target, $"You partially block {AutonomousNameMask.NameFor(ad.Target as GamePlayer, Caster, 0, false)}'s spell!", eChatType.CT_Missed);
                 MessageToCaster($"{ad.Target.GetName(0, true)} blocks!", eChatType.CT_YouHit);
+                return damage;
             }
 
+            // This is normally set in 'AttackComponent.CalculateEnemyAttackResult', but we don't call it.
+            if (ad.Target is GamePlayer playerTarget)
+                ad.ArmorHitLocation = playerTarget.CalculateArmorHitLocation(ad);
+            else if (ad.Target is GameBot botTarget)
+                ad.ArmorHitLocation = botTarget.CalculateArmorHitLocation(ad);
+
+            // We need a fake weapon skill for the target's armor to have something to be compared with.
+            // Since 'damage' is already modified by intelligence, power relics, spell variance, and everything else; we can use a constant only modified by the caster's level.
+            double weaponSkill = Caster.Level * 2.5;
+            double targetArmor = AttackComponent.CalculateTargetArmor(ad.Target, ad.ArmorHitLocation, out _, out _);
+            damage += weaponSkill / targetArmor * halfBaseDamage;
             return damage;
         }
 
