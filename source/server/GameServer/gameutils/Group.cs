@@ -145,6 +145,7 @@ namespace DOL.GS
             {
                 player.Duel?.Stop();
                 player.Out.SendGroupMembersUpdate(true, true);
+                EnsureMemberPositionUpdates();
 
                 // Part of the hack to make friendly pets untargetable (or targetable again) with TAB on a PvP server.
                 // We could also check for non controlled pets (turrets for example) around the player, but it isn't very important.
@@ -488,6 +489,7 @@ namespace DOL.GS
             AutonomousBotGroupCoordinator.OnDisbanding(this);
             _ = GroupMgr.RemoveGroup(this);
             Mission?.ExpireMission();
+            StopMemberPositionUpdates();
 
             List<GameBot> temporaryHelpers;
             List<GamePlayer> players;
@@ -528,11 +530,24 @@ namespace DOL.GS
 
         private void UpdateGroupIndexes()
         {
+            // Port of OpenDAoC-Core 10d3897f0: members whose slot moved (someone above them left) are sent again, or their
+            // buff icons stayed on the old slot.
+            List<GameLiving> shiftedMembers = GameLoop.GetListForTick<GameLiving>();
+
             lock (_groupMembersLock)
             {
                 for (int i = 0; i < _groupMembers.Count; i++)
+                {
+                    if (_groupMembers[i].GroupIndex == (byte) i)
+                        continue;
+
                     _groupMembers[i].GroupIndex = (byte) i;
+                    shiftedMembers.Add(_groupMembers[i]);
+                }
             }
+
+            if (shiftedMembers.Count > 0)
+                UpdateMembers(System.Runtime.InteropServices.CollectionsMarshal.AsSpan(shiftedMembers), true, true);
         }
 
         public bool MakeLeader(GameLiving living)
@@ -862,6 +877,65 @@ namespace DOL.GS
 
             return text.ToString();
         }
+
+        #region Minimap positions (ports of OpenDAoC-Core f3943156a and 7b7d11f2a)
+
+        // Group members' dots on the minimap moved only when a group packet happened to be sent (and only while the member was
+        // moving). A timer now sends every player in the group its group-mates' positions every 2.5 s. It runs only while a
+        // player is in the group: the many bot-only groups of the living world get none.
+        private GroupMemberPositionUpdateTimer _memberPositionUpdateTimer;
+        private readonly Lock _memberPositionUpdateTimerLock = new();
+
+        private void EnsureMemberPositionUpdates()
+        {
+            lock (_memberPositionUpdateTimerLock)
+            {
+                if (_memberPositionUpdateTimer?.IsAlive == true)
+                    return;
+
+                _memberPositionUpdateTimer = new(this);
+            }
+        }
+
+        private void StopMemberPositionUpdates()
+        {
+            lock (_memberPositionUpdateTimerLock)
+            {
+                _memberPositionUpdateTimer?.Stop();
+                _memberPositionUpdateTimer = null;
+            }
+        }
+
+        private sealed class GroupMemberPositionUpdateTimer : ECSGameTimerWrapperBase
+        {
+            public const int POSITION_UPDATE_INTERVAL = 2500;
+
+            private readonly Group _group;
+
+            public GroupMemberPositionUpdateTimer(Group group) : base(null)
+            {
+                _group = group;
+                Start(POSITION_UPDATE_INTERVAL);
+            }
+
+            protected override int OnTick(ECSGameTimer timer)
+            {
+                if (_group.LivingLeader == null)
+                    return 0;
+
+                List<GamePlayer> players = _group.GetPlayersInTheGroup();
+
+                if (players.Count == 0)
+                    return 0; // AddMember starts a new one when a player joins.
+
+                foreach (GamePlayer player in players)
+                    player.Out.SendGroupMembersUpdate(false, true);
+
+                return POSITION_UPDATE_INTERVAL;
+            }
+        }
+
+        #endregion
 
         public string GroupMemberClassString()
         {

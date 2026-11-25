@@ -820,7 +820,7 @@ namespace DOL.GS.PacketHandler
 			pak.WriteByte(living.EndurancePercent); // new in 1.69
 
 			byte playerStatus = 0;
-			if (!living.IsAlive)
+			if (living.Health <= 0) // OpenDAoC-Core a9e0c3af2: IsAlive is false while zoning
 				playerStatus |= 0x01;
 			if (living.IsMezzed)
 				playerStatus |= 0x02;
@@ -861,21 +861,6 @@ namespace DOL.GS.PacketHandler
 			}
 			if (updateMap)
 				WriteGroupMemberMapUpdate(pak, living);
-		}
-
-		protected override void WriteGroupMemberMapUpdate(GSTCPPacketOut pak, GameLiving living)
-		{
-			if (living.CurrentSpeed != 0)
-			{
-				Zone zone = living.CurrentZone;
-				if (zone == null)
-					return;
-				pak.WriteByte((byte)(0x40 | living.GroupIndex));
-				//Dinberg - ZoneSkinID for group members aswell.
-				pak.WriteShort(zone.ZoneSkinID);
-				pak.WriteShort((ushort)(living.X - zone.XOffset));
-				pak.WriteShort((ushort)(living.Y - zone.YOffset));
-			}
 		}
 
 		protected override void WriteItemData(GSTCPPacketOut pak, DbInventoryItem item)

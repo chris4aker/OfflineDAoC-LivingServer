@@ -355,10 +355,30 @@ namespace DOL.GS.ServerRules
                 if ((attacker as GameNPC).Brain is IControlledBrain)
                     playerAttacker = ((attacker as GameNPC).Brain as IControlledBrain).GetPlayerOwner();
 
-            if (playerDefender != null && (playerDefender.Client.ClientState == GameClient.eClientState.WorldEnter || playerDefender.IsInvulnerableToAttack))
+            // Loading screen protection: invulnerable to everything.
+            if (playerDefender != null && playerDefender.Client?.ClientState == GameClient.eClientState.WorldEnter)
             {
                 if (!quiet)
-                    MessageToLiving(attacker, defender.Name + " is entering the game and is temporarily immune to PvP attacks!");
+                    MessageToLiving(attacker, defender.Name + " is entering the game and cannot be attacked!");
+                return false;
+            }
+
+            // Ports of OpenDAoC-Core 9a665b536 and d73447af2: the login/zoning invulnerability timer is a PvP rule. Monsters,
+            // guards and pets no longer wait for it to run out, and a player under it may fight monsters. An autonomous
+            // gamebot in RvR (PvpRules.TakesPlayerRules) counts as a player here, on either side.
+            if (playerAttacker == null && playerDefender != null && PvpRules.TakesPlayerRules(attacker, defender) &&
+                playerDefender.IsInvulnerableToAttack)
+            {
+                if (!quiet)
+                    MessageToLiving(attacker, defender.Name + " is temporarily immune to PvP attacks!");
+                return false;
+            }
+
+            if (playerAttacker != null && playerDefender == null && PvpRules.TakesPlayerRules(defender, attacker) &&
+                playerAttacker.IsInvulnerableToAttack)
+            {
+                if (!quiet)
+                    MessageToLiving(attacker, "You can't attack players until your PvP invulnerability timer wears off!");
                 return false;
             }
 
@@ -386,16 +406,6 @@ namespace DOL.GS.ServerRules
             if (defender is GameNPC)
                 if ((((GameNPC)defender).Flags & GameNPC.eFlags.PEACE) != 0)
                     return false;
-            // Players can't attack mobs while they have immunity
-            if (playerAttacker != null && defender != null)
-            {
-                if ((defender is GameNPC) && (playerAttacker.IsInvulnerableToAttack))
-                {
-                    if (quiet == false) MessageToLiving(attacker, "You can't attack until your PvP invulnerability timer wears off!");
-                    return false;
-                }
-            }
-
             // GMs can't be attacked
             if (playerDefender != null && playerDefender.Client.Account.PrivLevel > 1)
                 return false;
@@ -581,9 +591,8 @@ namespace DOL.GS.ServerRules
             if (player.Client.Account.PrivLevel > 1)
                 return false;
 
-            if (player.IsInvulnerableToAttack)
-                return false;
-
+            // Port of OpenDAoC-Core 2e791235f: the invulnerability timer no longer cancels fall damage (GMs above still take
+            // none, observer flight included).
             if (player.CurrentRegion.IsHousing)
                 return false; // Workaround: falling from houses should not produce damage
 
