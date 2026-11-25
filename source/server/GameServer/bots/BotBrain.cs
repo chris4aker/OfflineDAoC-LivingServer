@@ -2275,6 +2275,13 @@ namespace DOL.AI.Brain
             AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Objective);
         }
 
+        /// <summary>#617: no maintenance or self-buff pulse for an autonomous gamebot in a battleground that saw an enemy person
+        /// in the last few seconds (AutonomousBattlegroundTargets.HoldsMaintenance). Companions and the player are unchanged.</summary>
+        private bool HoldsMaintenanceForBattlegroundEnemy() => AutonomousBattlegroundTargets.HoldsMaintenance(
+            BotBody is { IsAutonomousWorldBot: true, IsPlayerLedGroup: false, IsTemporaryGroupHelper: false, IsHiredCompanion: false },
+            Body != null && BattlegroundBrackets.IsBattlegroundRegion(Body.CurrentRegionID),
+            _autonomousWorldController?.BattlegroundEnemyInSight == true);
+
         private bool TryMaintainTravelAndClassBuffs()
         {
             GameBot bot = BotBody;
@@ -2285,6 +2292,9 @@ namespace DOL.AI.Brain
                 bot.IsAttacking || bot.IsCasting || bot.IsStunned || bot.IsMezzed || bot.IsSilenced ||
                 bot.castingComponent?.HasPendingSkillRequests == true ||
                 GameLoop.GameLoopTime < _nextMaintenanceBuffTick)
+                return false;
+            // #617: an autonomous gamebot in a battleground with an enemy in sight neither buffs itself nor pulses its upkeep.
+            if (HoldsMaintenanceForBattlegroundEnemy())
                 return false;
 
             bool autonomousPetUpkeep = bot.CharacterClass != null &&

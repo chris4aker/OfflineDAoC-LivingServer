@@ -170,6 +170,10 @@ namespace DOL.GS
                 // 539 under Lady Thidranki with her as its target, attacking=False and moving=False; StrikesFromHere).
                 if (_battlegroundStorming && target != null && !StrikesFromHere(bot, target))
                     target = null;
+                // #617 / #600 (FarmVibes): never a mezzed or breakably rooted enemy while a free one is in the fight, and no
+                // aggro pushed onto it (BotBrain.CrowdControlRespect): the bot takes the free one instead, never the gate
+                // while someone is free (FarmVibes' review 2).
+                target = BattlegroundPickPastControl(bot, target);
                 target ??= FindReachableEnemyDoor(bot, central);
                 // A caster, archer or healer in the lord's fight takes its formation spot behind the melee first (1.2.2).
                 if (target is GuardLord formationLord && TakeLordFormation(bot, formationLord))
@@ -196,7 +200,20 @@ namespace DOL.GS
                 if (nearLord)
                 {
                     // #416: from near enough that the hits count (GuardLord takes nothing from beyond 400); farther, walk on to him.
-                    if (!rally.Hold && bot.IsWithinRadius(lord, (int)AutonomousBattlegroundKeepRally.LordStrikeReach(lord,
+                    // #617: a controlled lord with a free enemy in the fight: that enemy, not the lord.
+                    if (!rally.Hold && SkipsControlledPick(bot, lord, out GameLiving freeNearLord) &&
+                        GameServer.ServerRules.IsAllowedToAttack(bot, freeNearLord, true))
+                    {
+                        bot.StopMovingOnPath();
+                        bot.StopMoving();
+                        bot.TargetObject = freeNearLord;
+                        brain.AddToAggroList(freeNearLord, Math.Max(100, freeNearLord.EffectiveLevel * 12));
+                        brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
+                        SetBattlegroundStatus(bot, bracket, "Assaulting the keep", $"{central.Name} is held by {Holder(central)}", freeNearLord.Name);
+                        return false;
+                    }
+                    if (!rally.Hold && !SkipsControlledPick(bot, lord) &&
+                        bot.IsWithinRadius(lord, (int)AutonomousBattlegroundKeepRally.LordStrikeReach(lord,
                             RvrLordFormation.StandsBack(LordFormationRole(bot)))) &&
                         Math.Abs(bot.Z - lord.Z) <= AutonomousBattlegroundKeepRally.StrikeFloorHeight &&
                         GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
@@ -392,6 +409,16 @@ namespace DOL.GS
             if (!AutonomousBattlegroundKeepRally.GateClear(bot.CurrentRegionID, bot.Realm, central, out GameKeepGuard called) ||
                 !GameServer.ServerRules.IsAllowedToAttack(bot, called, true))
                 return null;
+            // #617: the called guard mezzed or rooted while someone is free: the free one, here at the gate.
+            if (SkipsControlledPick(bot, called, out GameLiving freeAtGate))
+            {
+                bot.TargetObject = freeAtGate;
+                brain.AddToAggroList(freeAtGate, Math.Max(100, freeAtGate.EffectiveLevel * 12));
+                brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
+                TraceStorm(this, bot, central, lord, BrokenMainGate(bot, central), "clear-free");
+                SetBattlegroundStatus(bot, bracket, "Clearing the keep gate", $"{central.Name}: {called.Name} is held", freeAtGate.Name);
+                return true;
+            }
             bool healer = AutonomousGroupSupply.IsHealer(bot);
             bool ranged = AutonomousRvrDefense.IsRangedDefender(bot);
             switch (AutonomousBattlegroundKeepRally.ClearAction(healer, ranged, bot.GetDistanceTo(called)))
@@ -726,7 +753,7 @@ namespace DOL.GS
             if (_battlegroundStormLord is { IsAlive: true } stormLord && AutonomousBattlegroundKeepRally.InLordFight(bot, stormLord) &&
                 LordFightTarget(bot, StormKeep(), stormLord, bot.TargetObject as GameLiving) is { } pick &&
                 // #416: the lord only from near enough that the hits count; farther, the bot walks on to him (not a cast from 900).
-                !ReferenceEquals(bot.TargetObject, pick) && StrikesFromHere(bot, pick))
+                !ReferenceEquals(bot.TargetObject, pick) && StrikesFromHere(bot, pick) && !SkipsControlledPick(bot, pick))
             {
                 bot.TargetObject = pick;
                 brain.AddToAggroList(pick, Math.Max(100, pick.EffectiveLevel * 12));
@@ -754,6 +781,17 @@ namespace DOL.GS
             if (dropped > 0) NoteBattlegroundHeldBack(bot, rally: true, dropped: true);
             TraceStorm(this, bot, StormKeep(), _battlegroundStormLord, BrokenMainGate(bot, StormKeep()), "march-under-fire");
             return true;
+        }
+
+        /// <summary>
+        /// #617 / #600: a battleground controller pick past crowd control. A mezzed or breakably rooted pick with a free enemy
+        /// in the fight becomes that free enemy (AutonomousBattlegroundTargets.ReplaceControlledPick), so the bot neither
+        /// breaks the mez nor walks off to the gate; otherwise the pick stands. Public for the fight-harness test.
+        /// </summary>
+        public static GameLiving BattlegroundPickPastControl(GameBot bot, GameLiving pick)
+        {
+            bool controlled = SkipsControlledPick(bot, pick, out GameLiving free);
+            return AutonomousBattlegroundTargets.ReplaceControlledPick(pick, controlled, free);
         }
 
         /// <summary>The keep this stormer storms (its lord's).</summary>
@@ -785,6 +823,9 @@ namespace DOL.GS
             if (BattlegroundGatherHold(bot, out Vector3 staging, out atRally))
             {
                 if (GathererMayEngage(bot, target, staging)) return false;
+                // #617: a contact the rally posted is the whole rally's fight, wherever it was first seen.
+                if (AutonomousBattlegroundRallyContact.Has(bot.CurrentRegionID, bot.Realm, staging, target, GameLoop.GameLoopTime))
+                    return false;
             }
             else if (BattlegroundStormHold(bot))
             {
