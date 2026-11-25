@@ -180,7 +180,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -200,7 +200,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -313,7 +313,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -333,7 +333,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -355,7 +355,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -375,7 +375,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -383,6 +383,14 @@ namespace DOL.GS
         {
             // Only used by players.
             return null;
+        }
+
+        /// <summary>Oldest first; effects started on the same tick keep a stable order by icon (OpenDAoC-Core c3d258810), so they
+        /// no longer jump around in the effect list.</summary>
+        private static int CompareByStartTick(ECSGameEffect e1, ECSGameEffect e2)
+        {
+            int tickCompare = e1.StartTick.CompareTo(e2.StartTick);
+            return tickCompare != 0 ? tickCompare : e1.Icon.CompareTo(e2.Icon);
         }
 
         public bool ContainsEffectForEffectType(eEffect effectType)
@@ -702,16 +710,16 @@ namespace DOL.GS
                             return AddEffectResult.Failed;
                     }
 
-                    // How effects are refreshed is very badly implemented. New instances are created every time and we need to use them.
-                    // Most of the time, we want to stop the current effect and let the new one be started normally but silently.
-                    // Not calling `OnStopEffect` on the current effect and `OnStartEffect` on the new effect means some initialization may not be performed.
-                    // To give some examples:
+                    // How effects are refreshed is very badly implemented. New instances are created every time, and we need to use them.
+                    // Unless this is an effect being re-enabled, we generally want to stop the current instance and start the new one (but silently),
+                    // because not calling OnStopEffect / OnStartEffect means some initialization may not be performed. For example:
+                    // * Champion debuffs being forced to spec debuffs in OnStartEffect.
                     // * Effectiveness changes from resurrection illness expiring.
-                    // * Champion debuffs being forced to spec debuffs in `OnStartEffect`.
-                    // This doesn't work will pulsing charm spells, and it's probably safer to exclude every pulsing spell for now.
-                    // This should also ignore effects being re-enabled.
-                    // For those, we replace the instance directly, both in our list and in `ServiceObjectStore`.
-                    if (!existingEffect.IsDisabled && !effect.IsEnabling && !newSpell.IsPulsing)
+                    // Effects that don't want to be stopped and restarted are expected to check IsBeingReplaced themselves. For example:
+                    // * Pulsing charms.
+                    // Living Server keeps pulsing speed songs on the instance-replace path below: its IsSuperseded
+                    // ownership fix for two singers refreshing the same song relies on it.
+                    if (!existingEffect.IsDisabled && !effect.IsEnabling && !(newSpell.IsPulsing && effect is SpeedEnhancementECSEffect))
                     {
                         existingEffect.IsBeingReplaced = true;
 
@@ -728,8 +736,9 @@ namespace DOL.GS
                     }
                     else
                     {
+                        // Replace the instance both in our list and in ServiceObjectStore.
                         ServiceObjectStore.Remove(existingEffect);
-                        existingEffect.IsBeingReplaced = true; // Will be checked by the parent pulse effect so that it doesn't call `Stop` on it.
+                        existingEffect.IsBeingReplaced = true;
                         ServiceObjectStore.Add(effect);
                         existingEffects[i] = effect;
                         result = existingEffect.IsActive ? AddEffectResult.RenewedActive : AddEffectResult.RenewedDisabled;
@@ -877,12 +886,15 @@ namespace DOL.GS
                 if (effectA.IsConcentrationEffect() && effectB.IsConcentrationEffect())
                     return false;
 
+                // Upstream (ff5449555) also forbids two movement speed buffs from coexisting. Living Server keeps a weaker singer's
+                // speed song as the disabled fallback (UT_BotMobileSongs): combat cancels every speed buff anyway.
+
                 if (!effectA.SpellHandler.Spell.IsHelpful || !effectB.SpellHandler.Spell.IsHelpful)
                     return false;
 
                 return effectA.SpellHandler.Caster != effectB.SpellHandler.Caster ||
-                    effectA.SpellHandler.SpellLine.KeyName is GlobalSpellsLines.Potions_Effects ||
-                    effectB.SpellHandler.SpellLine.KeyName is GlobalSpellsLines.Potions_Effects;
+                    effectA.SpellHandler.SpellLine.KeyName is GlobalSpellsLines.Potions_Effects or GlobalSpellsLines.Item_Effects ||
+                    effectB.SpellHandler.SpellLine.KeyName is GlobalSpellsLines.Potions_Effects or GlobalSpellsLines.Item_Effects;
             }
 
             static bool HandleConcentration(ECSGameSpellEffect spellEffect)
@@ -1077,16 +1089,23 @@ namespace DOL.GS
             private readonly ECSGameEffect _effect;
             private readonly Action<ECSGameEffect, bool> _action;
             private readonly bool _state;
+            private readonly bool _isBeingReplaced;
 
             public PendingEffect(ECSGameEffect effect, Action<ECSGameEffect, bool> action, bool state)
             {
                 _effect = effect;
                 _action = action;
                 _state = state;
+                // Snapshot at enqueue time (port of OpenDAoC-Core c928369c4). Several entries for one effect in a
+                // tick (a charm cast and broken three times) otherwise read a sibling's value, which could leave
+                // the NPC charmed for good.
+                _isBeingReplaced = effect.IsBeingReplaced;
             }
 
             public void Process()
             {
+                // Restore the value as it was when this transition was decided.
+                _effect.IsBeingReplaced = _isBeingReplaced;
                 _action(_effect, _state);
                 // Its original start callback may have been queued before a
                 // second singer refreshed it. Do not re-register that old child.

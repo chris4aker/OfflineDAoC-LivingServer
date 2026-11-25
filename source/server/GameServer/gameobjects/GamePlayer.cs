@@ -5284,7 +5284,7 @@ namespace DOL.GS
                 {
                     // If attacked by a non-damaging spell, we should not show damage numbers.
                     // We need to check the damage on the spell here, not in the AD, since this could in theory be a damaging spell that had its damage modified to 0.
-                    if (ad.AttackType is AttackData.eAttackType.Spell && ad.SpellHandler.Spell?.Damage == 0)
+                    if (ad.AttackType is AttackData.eAttackType.Spell && ad.SpellHandler?.Spell?.Damage == 0)
                         break;
 
                     string hitLocName = null;
@@ -5358,22 +5358,6 @@ namespace DOL.GS
                 CraftTimer = null;
                 Out.SendCloseTimerWindow();
             }
-        }
-        /// <summary>
-        /// Does needed interrupt checks and interrupts if needed
-        /// </summary>
-        /// <param name="attacker">the attacker that is interrupting</param>
-        /// <param name="attackType">The attack type</param>
-        /// <returns>true if interrupted successfully</returns>
-        protected override bool CheckRangedAttackInterrupt(GameLiving attacker, AttackData.eAttackType attackType)
-        {
-            if (base.CheckRangedAttackInterrupt(attacker, attackType))
-            {
-                attackComponent.attackAction.OnAimInterrupt(attacker);
-                return true;
-            }
-
-            return false;
         }
 
         public override void TakeDamage(GameObject source, eDamageType damageType, int damageAmount, int criticalAmount)

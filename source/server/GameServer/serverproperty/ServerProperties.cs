@@ -2418,6 +2418,11 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("spells", "spell_interrupt_duration", "", 3000)]
 		public static int SPELL_INTERRUPT_DURATION;
 
+		/// <summary>The self interrupt a cast starts when it reaches its half-cast point while an attacker's interrupt timer is still
+		/// running (port of OpenDAoC-Core 21eda0f90; the live-like interrupt has no switch back).</summary>
+		[ServerProperty("spells", "spell_self_interrupt_duration", "How long the self interrupt lasts when a cast reaches its half-cast point while interrupted", 2200)]
+		public static int SPELL_SELF_INTERRUPT_DURATION;
+
 		[ServerProperty("spells", "spell_charm_named_check", "Prevents charm spell to work on Named Mobs, 0 = disable, 1 = enable", 1)]
 		public static int SPELL_CHARM_NAMED_CHECK;
 

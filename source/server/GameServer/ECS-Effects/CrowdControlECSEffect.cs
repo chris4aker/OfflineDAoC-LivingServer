@@ -25,14 +25,17 @@ namespace DOL.GS
 
         protected void OnHardCCStart()
         {
-            Owner.attackComponent.StopAttack();
+            // A stun or mez no longer sheathes a melee weapon (OpenDAoC-Core 52b44cb7a); attacks are already prevented while
+            // crowd controlled and resume after. A bow draw is still dropped.
+            if (Owner.ActiveWeaponSlot is eActiveWeaponSlot.Distance)
+                Owner.attackComponent.StopAttack();
             Owner.StopCurrentSpellcast();
             Owner.DisableTurning(true);
 
             if (Owner is GameNPC npc)
                 npc.StopMoving();
 
-            if (Owner.effectListComponent.GetEffects().FirstOrDefault(x => x.GetType() == typeof(SpeedOfSoundECSEffect)) == null)
+            if (!Owner.effectListComponent.ContainsEffectForEffectType(eEffect.SpeedOfSound))
                 UpdatePlayerStatus();
         }
 
@@ -100,7 +103,7 @@ namespace DOL.GS
 
         public override void OnStopEffect()
         {
-            Owner.IsStunned = false;
+            Owner.IsStunned = Owner.effectListComponent.ContainsEffectForEffectType(eEffect.Stun);
             OnHardCCStop();
             UpdatePlayerStatus();
 
@@ -138,7 +141,7 @@ namespace DOL.GS
 
         public override void OnStopEffect()
         {
-            Owner.IsMezzed = false;
+            Owner.IsMezzed = Owner.effectListComponent.ContainsEffectForEffectType(eEffect.Mez);
             OnHardCCStop();
             UpdatePlayerStatus();
 

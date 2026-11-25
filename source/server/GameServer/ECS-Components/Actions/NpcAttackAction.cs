@@ -32,8 +32,17 @@ namespace DOL.GS
                 _losCheckTarget = null;
         }
 
-        public override void OnAimInterrupt(GameObject attacker)
+        protected override void InterruptAim(GameLiving attacker)
         {
+            // Immobile NPCs (keep lords among them) can only be interrupted by their own target, and in melee range.
+            if (_npcOwner.MaxSpeedBase == 0 &&
+                (attacker == null || attacker != _npcOwner.TargetObject || !_npcOwner.IsWithinRadius(attacker, _npcOwner.MeleeAttackRange)))
+            {
+                return;
+            }
+
+            base.InterruptAim(attacker);
+
             // Use the follow target or current target (maybe redundant) instead of the interrupter.
             // We really don't want guards to move because a pet attacked them in melee.
             GameObject target = _npcOwner.TargetObject ?? _npcOwner.FollowTarget;
@@ -299,7 +308,7 @@ namespace DOL.GS
 
         /// <summary>A bot that may fight its target only with its distance weapon (an epic rule: Funus, whom a melee swing heals
         /// to full) keeps it.</summary>
-        // CheckInterruptTimer stops the attack (CleanUp forgets _target) before OnAimInterrupt asks this, so the bot's own
+        // InterruptAim stops the attack (CleanUp forgets _target) before it asks this, so the bot's own
         // target counts too. Play test duo14: with only _target asked, every interrupted draw on Funus still went to melee.
         private bool KeepsDistanceWeapon => _npcOwner is GameBot bot && KeepsDistanceWeaponFor(bot, _target, _npcOwner.TargetObject);
 
@@ -311,7 +320,7 @@ namespace DOL.GS
 
         /// <summary>The NPC drops its distance weapon for its melee one (pure): only from the distance weapon, and never when it
         /// may fight its target with the distance weapon only. Play test duo4, 2026-11-07: the scout Funus fought had every
-        /// draw interrupted by his hits, switched to her sword on each interrupt (OnAimInterrupt) and healed him to full 128
+        /// draw interrupted by his hits, switched to her sword on each interrupt (InterruptAim) and healed him to full 128
         /// times in seven minutes; the raid could not take him below 89%.</summary>
         public static bool MaySwitchToMelee(eActiveWeaponSlot slot, bool fightsAtRangeOnly) =>
             slot is eActiveWeaponSlot.Distance && !fightsAtRangeOnly;

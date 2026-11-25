@@ -115,7 +115,7 @@ namespace DOL.AI.Brain
                         continue;
                     if (spell.HasRecastDelay && spell.RecastDelay >= EmergencyRecastMilliseconds && !emergency)
                         continue;
-                    if (spell.CastTime > 0 && !spell.Uninterruptible && bot.IsBeingInterrupted ||
+                    if (BotInterruptPolicy.CastWouldBeLost(bot, spell) ||
                         !bot.IsWithinRadius(add, spell.CalculateEffectiveRange(bot)) ||
                         !NeedsOffensiveSpellApplication(add, spell) ||
                         !BotGroupSupport.HasCorpseLineOfSight(bot, add))
@@ -168,7 +168,7 @@ namespace DOL.AI.Brain
             if (bot == null || target is not { IsAlive: true } || EpicEncounterTactics.HoldRank(spell) < 0 || spell.Level > bot.Level ||
                 bot.IsIncapacitated || bot.IsCasting || bot.castingComponent?.HasPendingSkillRequests == true ||
                 bot.GetSkillDisabledDuration(spell) > 0 || bot.Mana < bot.PowerCost(spell) ||
-                spell.CastTime > 0 && !spell.Uninterruptible && bot.IsBeingInterrupted)
+                BotInterruptPolicy.CastWouldBeLost(bot, spell))
                 return false;
             GameObject previous = bot.TargetObject;
             bot.TargetObject = target;

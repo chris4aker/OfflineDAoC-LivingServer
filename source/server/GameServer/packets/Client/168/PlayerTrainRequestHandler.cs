@@ -125,8 +125,8 @@ namespace DOL.GS.PacketHandler.Client.v168
             {
                 uint val = packet.ReadInt();
 
-                if (!amounts.ContainsKey(code) && val > 1)
-                    amounts.Add(code, val);
+                if (val > 1)
+                    amounts.TryAdd(code, val);
             }
 
             List<Specialization> specs = client.Player.GetSpecList().Where(e => e.Trainable).ToList();
@@ -145,31 +145,40 @@ namespace DOL.GS.PacketHandler.Client.v168
                 skillCount++;
             }
 
+            amounts.Clear();
+
             // Realm abilities.
             packet.Seek(position + 64, System.IO.SeekOrigin.Begin);
             size = 50;
-            amounts.Clear();
+            List<(int Index, uint Value)> raAmounts = new();
 
-            for (uint i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 uint val = packet.ReadInt();
 
-                if (val > 0 && !amounts.ContainsKey(i))
-                    amounts.Add(i, val);
+                if (val > 0)
+                    raAmounts.Add((i, val));
             }
 
-            if (amounts != null && amounts.Count > 0)
+            if (raAmounts.Count > 0)
             {
-                // Realm abilities.
-                var raList = SkillBase.GetClassRealmAbilities(client.Player.CharacterClass.ID).Where(ra => ra is not RR5RealmAbility);
+                var raList = SkillBase.GetClassRealmAbilities(client.Player.CharacterClass.ID).Where(ra => ra is not RR5RealmAbility).ToArray();
+                List<(int Index, uint Value)> pending = raAmounts;
+                bool shouldRetry;
 
-                foreach (var pair in amounts)
+                do
                 {
-                    RealmAbility ra = raList.ElementAtOrDefault((int) pair.Key);
+                    bool progressMadeThisRound = false;
+                    List<(int Index, uint Value)> retryNextRound = new();
 
-                    if (ra != null)
+                    foreach (var pair in pending)
                     {
-                        RealmAbility playerRA = (RealmAbility) client.Player.GetAbility(ra.KeyName);
+                        RealmAbility ra = raList.ElementAtOrDefault(pair.Index);
+
+                        if (ra == null)
+                            continue;
+
+                        RealmAbility playerRA = client.Player.GetAbility(ra.KeyName) as RealmAbility;
 
                         if (playerRA != null && (playerRA.Level >= ra.MaxLevel || playerRA.Level >= pair.Value))
                             continue;
@@ -188,7 +197,8 @@ namespace DOL.GS.PacketHandler.Client.v168
 
                         if (!ra.CheckRequirement(client.Player))
                         {
-                            client.Out.SendMessage($"You are not experienced enough to get {ra.Name} now. Come back later.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                            // Might just be waiting on a prerequisite trained this same batch.
+                            retryNextRound.Add(pair);
                             continue;
                         }
 
@@ -201,12 +211,32 @@ namespace DOL.GS.PacketHandler.Client.v168
                         }
 
                         trained = true;
+                        progressMadeThisRound = true;
                     }
+
+                    pending = retryNextRound;
+                    shouldRetry = progressMadeThisRound && pending.Count > 0;
+
+                    // Let CheckRequirement see what we just trained.
+                    if (shouldRetry)
+                        client.Player.RefreshSpecDependantSkills(true);
+                } while (shouldRetry);
+
+                // Whatever's left genuinely failed CheckRequirement.
+                foreach (var pair in pending)
+                {
+                    RealmAbility ra = raList.ElementAtOrDefault(pair.Index);
+
+                    if (ra != null)
+                        client.Out.SendMessage($"You are not experienced enough to get {ra.Name} now. Come back later.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 }
             }
 
             if (trained)
-                TrainCommandHandler.OnTrained(client);
+            {
+                client.Player.RefreshSpecDependantSkills(true);
+                TrainCommandHandler.SendUpdates(client);
+            }
         }
     }
 

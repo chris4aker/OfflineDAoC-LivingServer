@@ -23,6 +23,7 @@ namespace DOL.GS
         private long _nextMeleeTick;
         private long _nextRangedTick;
         private bool _firstTick = true;
+        private bool _halfwayDrawChecked; // Live-like ranged interrupt: the interrupt timer is checked once, at half draw.
 
         // Set to current time when a round doesn't result in an attack. Used to prevent combat log spam and kept until reset in AttackComponent.SendAttackingCombatMessages().
         public long RoundWithNoAttackTime { get; set; }
@@ -98,7 +99,9 @@ namespace DOL.GS
             if (PrepareRangedAttack())
             {
                 PerformRangedAttack();
-                FinalizeRangedAttack();
+
+                if (FinalizeRangedAttack())
+                    PrepareRangedAttack(); // Immediately prepare the next attack if we can.
             }
 
             if (AttackComponent.AttackState)
@@ -127,6 +130,7 @@ namespace DOL.GS
 
             rangeAttackComponent.RangedAttackType = eRangedAttackType.Normal;
             rangeAttackComponent.RangedAttackState = eRangedAttackState.None;
+            _halfwayDrawChecked = false;
         }
 
         public void OnHeadingUpdate()
@@ -142,18 +146,6 @@ namespace DOL.GS
             if (ad.Target != null && _owner.IsObjectInFront(ad.Target, 120) && _owner.IsWithinRadius(ad.Target, AttackComponent.AttackRange))
                 _firstTick = true;
         }
-
-        public virtual bool CheckInterruptTimer()
-        {
-            if (!_owner.IsBeingInterruptedByOther)
-                return false;
-
-            _owner.attackComponent.StopAttack();
-            OnAimInterrupt(_owner.LastInterrupter);
-            return true;
-        }
-
-        public virtual void OnAimInterrupt(GameObject attacker) { }
 
         public virtual void OnForcedWeaponSwitch() { }
 
@@ -245,21 +237,47 @@ namespace DOL.GS
 
         protected virtual bool PrepareRangedAttack()
         {
-            int attackSpeed = _owner.attackComponent.AttackSpeed(_weapon);
+            int attackSpeed;
 
-            if (_owner.rangeAttackComponent.RangedAttackState == eRangedAttackState.None)
+            // Live-like ranged interrupt (port of OpenDAoC-Core 79bba259b and 441b8333d; the only behaviour): a bow can always be
+            // drawn. An attack starts the interrupt timer; the shot is lost if the timer still runs at half draw, or at once
+            // when the shot is held past full draw (PerformOnAttackedInterruptCheck).
+            if (_owner.rangeAttackComponent.RangedAttackState is eRangedAttackState.None)
             {
                 _owner.rangeAttackComponent.RangedAttackState = eRangedAttackState.Aim;
+                _owner.rangeAttackComponent.AttackStartTime = GameLoop.GameLoopTime;
+                _halfwayDrawChecked = false;
+
+                // Critical Shot is set by its ability before the draw and kept; PerformRangedAttack resets the type after each shot.
+                if (_owner.effectListComponent.ContainsEffectForEffectType(eEffect.SureShot))
+                    _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.SureShot;
+                else if (_owner.effectListComponent.ContainsEffectForEffectType(eEffect.RapidFire))
+                    _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.RapidFire;
+                else if (_owner.effectListComponent.ContainsEffectForEffectType(eEffect.TrueShot))
+                    _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.Long;
+
+                // Must be done after changing RangedAttackType to account for Rapid Fire.
+                attackSpeed = AttackComponent.AttackSpeed(_weapon);
 
                 if (_owner is not GamePlayer || !_owner.effectListComponent.ContainsEffectForEffectType(eEffect.Volley))
                 {
                     // The 'stance' parameter appears to be used to tell whether or not the animation should be held, and doesn't seem to be related to the weapon speed.
                     foreach (GamePlayer player in _owner.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
                         player.Out.SendCombatAnimation(_owner, null, (ushort) (_weapon != null ? _weapon.Model : 0), 0, player.Out.BowPrepare, 0x1A, 0x00, 0x00);
-
-                    _interval = attackSpeed;
                 }
 
+                _interval = attackSpeed / 2;
+                return false;
+            }
+
+            attackSpeed = _owner.attackComponent.AttackSpeed(_weapon);
+
+            if (!_halfwayDrawChecked)
+            {
+                if (PerformDuringDrawInterruptCheck())
+                    return false;
+
+                _interval = attackSpeed - attackSpeed / 2;
                 return false;
             }
 
@@ -357,10 +375,11 @@ namespace DOL.GS
                 _owner.rangeAttackComponent.RemoveEnduranceAndAmmoOnShot(); // Unlimited ammo, normal endurance cost.
             AttackComponent.weaponAction = new WeaponAction(_owner, _target, _weapon, _effectiveness, _attackInterval, _owner.rangeAttackComponent.RangedAttackType, _owner.rangeAttackComponent.Ammo);
 
-            if (_owner.rangeAttackComponent.RangedAttackType is eRangedAttackType.Critical)
-                _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.Normal;
-            else if (_owner.rangeAttackComponent.RangedAttackType is eRangedAttackType.Long)
+            if (_owner.rangeAttackComponent.RangedAttackType is eRangedAttackType.Long)
                 (EffectListService.GetEffectOnTarget(_owner, eEffect.TrueShot) as TrueShotECSGameEffect)?.Cancel(true);
+
+            // Critical Shot and Longshot last one shot (OpenDAoC-Core 441b8333d); the next draw picks its type again.
+            _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.Normal;
 
             // A positive ticksToTarget means the effects of our attack will be delayed. Typically used for ranged attacks.
             if (_ticksToTarget > 0)
@@ -405,29 +424,39 @@ namespace DOL.GS
 
         protected virtual bool FinalizeRangedAttack()
         {
-            if (CheckInterruptTimer())
+            _owner.rangeAttackComponent.RangedAttackState = eRangedAttackState.None;
+            _halfwayDrawChecked = false;
+            return true;
+        }
+
+        /// <summary>Stops the draw after an interrupt. <paramref name="attacker"/> may be null (the last interrupter left the world).</summary>
+        protected virtual void InterruptAim(GameLiving attacker)
+        {
+            AttackComponent.StopAttack();
+        }
+
+        /// <summary>Called by <see cref="GameLiving.StartInterruptTimer"/> on every attack: a shot held past full draw is lost at once.</summary>
+        public bool PerformOnAttackedInterruptCheck(GameLiving attacker)
+        {
+            if (_owner.rangeAttackComponent.RangedAttackState is not eRangedAttackState.ReadyToFire)
                 return false;
 
-            _owner.rangeAttackComponent.AttackStartTime = GameLoop.GameLoopTime;
-            _owner.rangeAttackComponent.RangedAttackState = eRangedAttackState.Aim;
+            InterruptAim(attacker);
+            return true;
+        }
 
-            if (_owner.effectListComponent.ContainsEffectForEffectType(eEffect.SureShot))
-                _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.SureShot;
-            else if (_owner.effectListComponent.ContainsEffectForEffectType(eEffect.RapidFire))
-                _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.RapidFire;
-            else if (_owner.effectListComponent.ContainsEffectForEffectType(eEffect.TrueShot))
-                _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.Long;
-            else
-                _owner.rangeAttackComponent.RangedAttackType = eRangedAttackType.Normal;
+        /// <summary>At half draw, an interrupt timer still running costs the shot.</summary>
+        private bool PerformDuringDrawInterruptCheck()
+        {
+            if (_halfwayDrawChecked)
+                return false;
 
+            _halfwayDrawChecked = true;
 
-            // Must be done after changing `RangedAttackType`.
-            _interval = AttackComponent.AttackSpeed(_weapon);
+            if (!_owner.IsBeingInterruptedByOther)
+                return false;
 
-            // The 'stance' parameter appears to be used to tell whether or not the animation should be held, and doesn't seem to be related to the weapon speed.
-            foreach (GamePlayer player in _owner.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
-                player.Out.SendCombatAnimation(_owner, null, (ushort) (_weapon != null ? _weapon.Model : 0), 0x00, player.Out.BowPrepare, 0x1A, 0x00, 0x00);
-
+            InterruptAim(_owner.LastInterrupter);
             return true;
         }
 
@@ -436,6 +465,7 @@ namespace DOL.GS
             LastAttackData = null;
             _target = null;
             _firstTick = true;
+            _halfwayDrawChecked = false;
         }
 
         /// <summary>Forgets a remembered target that has left the world (see <see cref="GameLiving.ForgetDeparted"/>).</summary>

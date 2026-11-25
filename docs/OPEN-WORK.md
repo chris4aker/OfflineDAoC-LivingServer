@@ -105,6 +105,13 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   and after; the owner's call on the See Hidden cut's shape and on whether every guard should use the rubric's short range
   (it would weaken `GuardStealther`, so it is not done); Rapid Fire, Camouflage, Vanish and True Sight for bots (#531);
   the duo's edge-gone retreat (only soloers run); the fight harness rows (#520).
+- **OpenDAoC upstream, package P2 (effects, spells, pets):** branch `fix/1.2.3-upstream-effects`, **tests only**. The
+  live-like interrupt is the only behaviour (owner, 2026-11-24). Open: re-run the raid sims under
+  [RAID-SIZES.md](RAID-SIZES.md) (caster output on boss fights changes; no size was changed); a PC check of casting under
+  melee (player and gamebot), bow draws under fire, Bonedancer focus snare on a monster, Speed of Sound with a snare, and a
+  Minstrel charm under recast. Held for the owner: `6e709adae` / `c92f7407c` (turrets at random, pets on rooted targets),
+  `8457ac5d3` (pet interrupt extra). Left for later: `1713a0e8f` + `9f0bd91b1` (savage buffs, resist buff cap),
+  `42024abdc` (failed spells and cooldowns; check bot retries first), `3374caf2c` (needs a world data change).
 
 - **OpenDAoC upstream, server core (P1):** database save safety, the memory-leak bundle (#540), game-loop drift, the
   trade deadlock and small core fixes, on `fix/1.2.3-upstream-core`. **In review, tests only.** Left: the quest-list

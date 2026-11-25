@@ -294,11 +294,17 @@ namespace DOL.GS
             // https://playphoenix.online/forum/bug-tracker/resolved-issues/casting-speed-formula-is-wrong-01CHWTCXSGYS4TZ96DEF7FM55F#p01CHWTCXSGX4057FQ9VF0DSM6K
             // https://docs.google.com/spreadsheets/d/1BFbHYz_smxP8KPGoytb4SqQnEOoPqUc8SIKmSqQF4BI
 
-            double castTime = spell.CastTime;
-            double dexterityModifier = 1 - (GetModified(eProperty.Dexterity) - 60) / 600.0;
-            double bonusModifier = 1 - GetModified(eProperty.CastingSpeed) * 0.01;
+            return ScaleCastTime(spell.CastTime, GetModified(eProperty.Dexterity), GetModified(eProperty.CastingSpeed));
+        }
+
+        /// <summary>A delve cast time after dexterity and casting speed bonuses (pure; the formula of <see cref="CalculateCastingTime"/>).</summary>
+        public static int ScaleCastTime(int delveCastTime, int dexterity, int castingSpeedBonus)
+        {
+            double castTime = delveCastTime;
+            double dexterityModifier = 1 - (dexterity - 60) / 600.0;
+            double bonusModifier = 1 - castingSpeedBonus * 0.01;
             castTime *= dexterityModifier * bonusModifier;
-            return (int) Math.Max(castTime, spell.CastTime * 0.4); // Capped at 40% of the delve speed.
+            return (int) Math.Max(castTime, delveCastTime * 0.4); // Capped at 40% of the delve speed.
         }
 
         public virtual int MeleeAttackRange => 200 + DragonCombatGeometry.TargetReach(TargetObject);
@@ -679,6 +685,7 @@ namespace DOL.GS
 		}
 
 		private readonly Lock _interruptTimerLock = new();
+		private readonly Lock _interruptCallbackLock = new();
 
 		/// <summary>
 		/// Starts the interrupt timer on this living.
@@ -693,44 +700,64 @@ namespace DOL.GS
 				return;
 			}
 
+			// Sure Shot: only melee attacks interrupt the shot.
+			if (rangeAttackComponent.RangedAttackType is eRangedAttackType.SureShot)
+			{
+				if (attackType is not eAttackType.MeleeOneHand and
+					not eAttackType.MeleeTwoHand and
+					not eAttackType.MeleeDualWield)
+				{
+					return;
+				}
+			}
+
 			// 3% reduced interrupt chance per level difference.
 			if (!Util.Chance(100 + (attacker.EffectiveLevel - EffectiveLevel) * 3))
 				return;
 
+			// Live-like interrupt (port of OpenDAoC-Core 21eda0f90, 79bba259b, da099207f; the only behaviour, no switch back):
+			// an attack starts or extends this timer. A spell is lost only if the timer is still running at its half-cast
+			// point (SpellHandler.PerformDuringCastInterruptCheck), and a bow shot only if it is still running at half draw
+			// (AttackAction.PerformDuringDrawInterruptCheck). Only focus spells and a held shot (past full draw) are stopped
+			// at once, below. Players, companions, gamebots and monsters all go through this.
 			lock (_interruptTimerLock)
 			{
-				bool wasAlreadyInterrupted = IsBeingInterrupted;
-
 				// Don't update the interrupt time if it's shorter than the current one.
-				// If that's the case, we can assume the target is still being interrupted and isn't able to attack.
-				if (InterruptTime >= newInterruptTime)
-					return;
-
-				InterruptTime = newInterruptTime;
-				LastInterrupter = attacker;
-
-				// If the time is updated, we also check if the target was already interrupted.
-				// This should prevent multiple threads from executing the interrupt code, without expanding the lock.
-				if (wasAlreadyInterrupted)
-					return;
+				if (InterruptTime < newInterruptTime)
+				{
+					InterruptTime = newInterruptTime;
+					LastInterrupter = attacker;
+				}
 			}
 
-			// Perform the actual interrupt.
-			if (castingComponent.SpellHandler?.CasterIsAttacked(attacker) == true)
-				return;
-			else if (ActiveWeaponSlot is eActiveWeaponSlot.Distance)
+			// An interrupt timer already running no longer means the immediate checks ran (a held shot can start meanwhile),
+			// so they run on every attack; this lock keeps two threads from running them at once.
+			if (_interruptCallbackLock.TryEnter())
 			{
-				if (attackComponent.AttackState)
-					CheckRangedAttackInterrupt(attacker, attackType);
-				else
+				try
 				{
-					AtlasOF_VolleyECSEffect volley = EffectListService.GetEffectOnTarget(this, eEffect.Volley) as AtlasOF_VolleyECSEffect;
-					volley?.OnAttacked();
+					if (castingComponent.SpellHandler?.PerformOnAttackedInterruptCheck(attacker) == true)
+						return;
+
+					if (ActiveWeaponSlot is eActiveWeaponSlot.Distance)
+					{
+						if (attackComponent.AttackState)
+							attackComponent.attackAction.PerformOnAttackedInterruptCheck(attacker);
+						else
+						{
+							AtlasOF_VolleyECSEffect volley = EffectListService.GetEffectOnTarget(this, eEffect.Volley) as AtlasOF_VolleyECSEffect;
+							volley?.OnAttacked();
+						}
+					}
+				}
+				finally
+				{
+					_interruptCallbackLock.Exit();
 				}
 			}
 		}
 
-		public GameObject LastInterrupter { get; private set; }
+		public GameLiving LastInterrupter { get; private set; }
 
 		/// <summary>True for an object that has left the world (deleted, or removed until it comes back).</summary>
 		public static bool HasDeparted(GameObject obj) => obj != null && obj.ObjectState != eObjectState.Active;
@@ -772,7 +799,15 @@ namespace DOL.GS
 		}
 		public long InterruptTime { get; private set; }
 		public long SelfInterruptTime { get; private set; }
-		public long InterruptRemainingDuration => Math.Max(0, Math.Max(InterruptTime, SelfInterruptTime) - GameLoop.GameLoopTime);
+		/// <summary>How long before a new cast may begin: the self interrupt only. An attacker's interrupt timer doesn't stop a cast
+		/// from starting; it costs the cast if still running at the half-cast point.</summary>
+		public long InterruptRemainingDuration => Math.Max(0, SelfInterruptTime - GameLoop.GameLoopTime);
+
+		/// <summary>True when an attacker's interrupt timer, as it stands, would still run at the half-cast point of a cast of
+		/// <paramref name="castTimeMs"/> begun now, so the cast would be lost unless it can't be interrupted. Further hits can
+		/// still extend the timer.</summary>
+		public bool InterruptWouldStopCast(long castTimeMs) =>
+			IsBeingInterruptedByOther && InterruptTime > GameLoop.GameLoopTime + castTimeMs / 2;
 		public virtual int SelfInterruptDurationOnMeleeAttack => 3000;
 		public virtual bool IsBeingInterrupted => IsBeingInterruptedByOther || IsBeingSelfInterrupted;
 		public bool IsBeingInterruptedByOther => InterruptTime > GameLoop.GameLoopTime;
@@ -783,30 +818,8 @@ namespace DOL.GS
 		/// </summary>
 		public virtual int SpellInterruptDuration => Properties.SPELL_INTERRUPT_DURATION;
 
-		protected virtual bool CheckRangedAttackInterrupt(GameLiving attacker, eAttackType attackType)
-		{
-			if (rangeAttackComponent.RangedAttackType == eRangedAttackType.SureShot)
-			{
-				if (attackType is not eAttackType.MeleeOneHand
-					and not eAttackType.MeleeTwoHand
-					and not eAttackType.MeleeDualWield)
-					return false;
-			}
-
-			long rangeAttackHoldStart = rangeAttackComponent.AttackStartTime;
-
-			if (rangeAttackHoldStart > 0)
-			{
-				long elapsedTime = GameLoop.GameLoopTime - rangeAttackHoldStart;
-				long halfwayPoint = attackComponent.AttackSpeed(ActiveWeapon) / 2;
-				
-				if (rangeAttackComponent.RangedAttackState is not eRangedAttackState.ReadyToFire and not eRangedAttackState.None && elapsedTime > halfwayPoint)
-					return false;
-			}
-
-			attackComponent.StopAttack();
-			return true;
-		}
+		/// <summary>The self interrupt a cast loses at its half-cast point to an attacker's interrupt timer.</summary>
+		public int SpellSelfInterruptDuration => Properties.SPELL_SELF_INTERRUPT_DURATION;
 
 		/// <summary>
 		/// Check if we can make a proc on a weapon go off.  Weapon Procs
@@ -1947,9 +1960,9 @@ namespace DOL.GS
 
 			static bool ShouldBeCancelled(AttackData attackData, ECSGameSpellEffect effect)
 			{
-				// Cancel most movement speed buffs if the attack did any damage.
-				// Otherwise, only cancel non-pulsing ones.
-				return attackData.Damage > 0 || !effect.SpellHandler.Spell.IsPulsing;
+				// Cancel movement speed buffs if the attack did any damage or is a taunt spell.
+				// Non-pulsing movement speed buffs are always canceled.
+				return attackData.Damage > 0 || !effect.SpellHandler.Spell.IsPulsing || attackData.SpellHandler?.Spell.SpellType is eSpellType.Taunt;
 			}
 		}
 

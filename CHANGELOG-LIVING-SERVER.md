@@ -124,6 +124,43 @@ DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_Upstrea
   - Players: the /quit countdown stops during a region change (`4783841c1`); a client can no longer ask for a stealthed or far-away
     player's model (`446a99f1f`). `UT_UpstreamCorePorts`.
 
+**From OpenDAoC upstream: effects, spells and pets** (port package P2)
+- **Effects, spells and pets (package P2, branch `fix/1.2.3-upstream-effects`; tests only).** Ported by hand from
+  OpenDAoC-Core (GPL-3.0; Baptiste Marie unless noted), with Living Server's bot rules kept:
+  - **Live-like interrupts, the only behaviour** (owner, 2026-11-24: "Interrupts should be port it in and not with a switch
+    - it's foundation of the game"; `21eda0f90`, `79bba259b`, `da099207f`, `7b1fa00c7`, `46d816439`, `441b8333d`). A hit
+    starts an interrupt timer; a spell is lost only if the timer still runs at its half-cast point (then a 2.2 s self
+    interrupt), a bow shot only if it still runs at half draw or when the shot is held past full draw. Focus spells still
+    stop at once. A cast may begin while the timer runs. No server property brings the old hard interrupt back. Bots learn
+    it (`BotInterruptPolicy`): a bot begins a heal, buff, crowd control or nuke when the timer, as it stands, runs out by
+    the half-cast point, instead of giving up for the whole timer; gamebots keep #521's player timer in RvR. Critical Shot
+    and Longshot last one shot. `UT_LiveInterrupt`. **The raid sims must be re-run under docs/RAID-SIZES.md**: boss-fight
+    caster output changes. No raid size was changed.
+  - **Crowd control and stacking:** a second stun or mez keeps the target held when the first ends (`d352aa1c9`); roots
+    overwrite a DD+snare (`5356d4930`); instant stat debuffs start an interrupt timer instead of stopping the cast
+    (`c03822a01`); taunts cancel speed buffs (`7d7ec3d41`); proc spells no longer tick (`b7d4dc053`); refreshed pulsing
+    effects restart (Bonedancer focus snare on monsters; `39502cb35`, speed songs kept on our path); item haste procs
+    don't overwrite concentration buffs (`ff5449555`, partly: a weaker singer's speed song stays the fallback); a stun or mez no longer sheathes a melee
+    weapon (`52b44cb7a`).
+  - **Charm:** a charm queued three or more times in a tick can no longer stay on for good (`c928369c4`); a stolen or
+    released pet stops the song (`f22ebbe1c`).
+  - **Speed of Sound:** snares and roots land under it and apply when it ends, speed buffs wait, recast allowed, stealth
+    gives no speed (`324780db2`, `879ac3090`); gamebots get it too.
+  - **Realm abilities:** training several at once sees prerequisites trained in the same batch (`6b8f85c02`, `4b56561a1`).
+    The realm ability static leak (`84f1a46a6`) came in with P1 (#595).
+  - **Necromancer pets:** Mastery of Concentration and
+    Quickcast work through the self interrupt for every caster (`472dd93e0`), instants need LoS (`d774cacf9`), and no
+    monster interrupt extra (`25a5f6cad`).
+  - **Animist turrets:** fire-and-forget turrets prefer very close targets and enemy players and drop targets out of range
+    (`a89bfef81`, `27ec0ed7a`, `93310604a`); a point blank turret's aggro range is its radius (`3b96d0f2b`).
+  - **Smaller:** Sure Shot's effect type (`4cdce10fd`); Cure Nearsight no longer cures Bladeturn (`b9b32cf03`); stable
+    effect order (`c3d258810`); AoE edge duration only on realm enemies (`f815b1253`); helpful spells on siege weapons
+    (`bf414c248`); charmed day/night spawns stay visible (`7ab320291`); Triple Wield NRE (`01d314244`). `16fa2c467`,
+    `135d7d741`, `d0cafbd5e` and `f45f95145` came in with P3 (#592).
+  - **Skipped (owner):** `2ffc5c0ff`, `970282fba`, `e6fe1661a`, `4d486cd32`. **Held for owner:** `6e709adae` and
+    `c92f7407c` (turrets targeting at random and pets attacking rooted targets), `8457ac5d3` (pets take the monster
+    interrupt extra).
+
 **Chat**
 - **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,
   the bot's "in avalon marsh atm, inv me when ur close :)", the player's "I'm by camp station", and the bot's "lol"). The
