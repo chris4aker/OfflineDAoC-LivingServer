@@ -29,7 +29,7 @@ public static class RealmExchangeSaleLedger
     /// be counted. Neither is a stored column yet: the ledger's subscribers (EconomySeams.SaleCommitted) read them.</param>
     public sealed record Sale(int Realm, string ItemName, int Quantity, long PriceCopper,
         string SellerId, string SellerName, string BuyerId, string BuyerName, DateTime SoldUtc,
-        long TaxCopper = 0, bool Crafted = false);
+        long TaxCopper = 0, bool Crafted = false, int ItemType = 0);
 
     [GameServerStartedEvent]
     public static void OnServerStarted(DOLEvent e, object sender, EventArgs args)

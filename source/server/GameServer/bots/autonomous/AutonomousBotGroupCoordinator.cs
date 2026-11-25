@@ -164,6 +164,13 @@ public static partial class AutonomousBotGroupCoordinator
         public List<BotPveGroupRole> ReleasedRaidRoles { get; } = new();
         public GameBot Puller { get; set; }
         public bool Ending { get; set; }
+        // Issue #625 (GROUP_ENDED): when the session formed, its size then, the members who left on the way (by how they
+        // left) and whether its end row was written.
+        public long FormedTick { get; } = GameLoop.GameLoopTime;
+        public int StartSize { get; init; }
+        public Dictionary<string, int> LeftBy { get; } = new(StringComparer.Ordinal);
+        public string LastLeft { get; set; } = "-";
+        public bool EndLogged { get; set; }
         public long SharedWatchdogProgressTick { get; set; }
         public long SharedWatchdogSampleTick { get; set; }
         public long SharedWatchdogExperience { get; set; }
@@ -1625,6 +1632,7 @@ public static partial class AutonomousBotGroupCoordinator
                 BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, leftTrip.Id, DutyLeaseReason.LeftGroup);
             if (group != null && Sessions.TryGetValue(group, out Session session))
             {
+                NoteMemberLeft(session, bot);
                 BotDutyLeases.Release(bot, eDutyLeaseKind.BotGroupSession, session.Id, DutyLeaseReason.LeftGroup);
                 if (!session.ProcessingAttendanceRemovals && !session.Ending &&
                     session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
@@ -1727,6 +1735,8 @@ public static partial class AutonomousBotGroupCoordinator
                 AutonomousRvrEventLayer.RemoveForce(ending.Id);
             if (ending?.DungeonBoss is { } boss)
                 LogDungeonBossResult(ending, boss, "party disbanded");
+            if (ending is { EndLogged: false })
+                LogGroupEnded(ending, AllBotMembers(group), "Party disbanded", "disbanded/" + ending.LastLeft);
             if (ending?.HostedPlayer != null)
                 EndHosting(ending, ending.HostedPlayer, "party_disbanded");
             BotLedGroups.ClearHosted(group);
@@ -1799,8 +1809,10 @@ public static partial class AutonomousBotGroupCoordinator
                      AutonomousRealmRaid.GetView(session.Group) == null &&
                      !(session.ObjectiveKind == eAutonomousObjectiveKind.RvR &&
                        AutonomousRvrEventLayer.IsForceCommitted(session.Id, GameLoop.GameLoopTime))).ToArray())
-            FinishGroupTask(expired, AutonomousRealmRaid.TryConsumeRelease(expired.Group, out string releaseReason)
-                ? releaseReason : SharedTaskExpiredReason);
+        {
+            bool released = AutonomousRealmRaid.TryConsumeRelease(expired.Group, out string releaseReason);
+            FinishGroupTask(expired, released ? releaseReason : SharedTaskExpiredReason, released ? "released/raid" : null);
+        }
 
         GameBot[] activeRoster = AutonomousBotRegistry.Snapshot()
             .Where(bot => !bot.IsTemporaryGroupHelper && AutonomousObjectiveAssignments.Is(bot, objectiveKind) && !AutonomousBeggars.Is(bot))
@@ -2052,6 +2064,7 @@ public static partial class AutonomousBotGroupCoordinator
             Group = group,
             Leader = leader,
             Id = SessionId(leader.Realm, ++_nextGroupNumber),
+            StartSize = BotMembers(group).Length,
             Rendezvous = center,
             RendezvousName = rendezvousName,
             TaskClock = new AutonomousGroupTaskClock(objectiveKind),
@@ -2087,7 +2100,7 @@ public static partial class AutonomousBotGroupCoordinator
     {
         if (AutonomousRealmRaid.TryConsumeRelease(session.Group, out string raidReason))
         {
-            FinishGroupTask(session, raidReason);
+            FinishGroupTask(session, raidReason, "released/raid");
             return false;
         }
         var raidView = AutonomousRealmRaid.GetView(session.Group);
@@ -2095,7 +2108,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR &&
             AutonomousRvrEventLayer.TryConsumeRelease(session.Id, GameLoop.GameLoopTime, out string eventReason))
         {
-            FinishGroupTask(session, eventReason);
+            FinishGroupTask(session, eventReason, "released/rvr_event");
             return false;
         }
         if (session.TaskClock.HasExpired(GameLoop.GameLoopTime) &&
@@ -2774,7 +2787,7 @@ public static partial class AutonomousBotGroupCoordinator
         WriteSessionMetadata(session, remaining);
     }
 
-    private static void FinishGroupTask(Session session, string reason)
+    private static void FinishGroupTask(Session session, string reason, string endCode = null)
     {
         if (session == null || session.Ending)
             return;
@@ -2789,6 +2802,7 @@ public static partial class AutonomousBotGroupCoordinator
         GameBot[] members = AllBotMembers(session.Group);
         if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR)
             AutonomousRvrEventLayer.RemoveForce(session.Id);
+        LogGroupEnded(session, members, reason, endCode);
         Log.Info($"AUTONOMOUS_GROUP_TASK_ENDED group={session.Id} objective={session.ObjectiveKind} " +
                  $"size={members.Length} members=\"{string.Join(",", members.Select(member => member.Name))}\" reason=\"{reason}\"");
         Log.Info("AUTONOMOUS_GROUP_OUTCOME " + JsonSerializer.Serialize(new
@@ -3605,7 +3619,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (AutonomousRealmRaid.TryConsumeRelease(group, out string releaseReason))
         {
             bool wasEnding = session.Ending;
-            FinishGroupTask(session, releaseReason);
+            FinishGroupTask(session, releaseReason, "released/raid");
             return !wasEnding;
         }
         GameBot[] members = BotMembers(group);

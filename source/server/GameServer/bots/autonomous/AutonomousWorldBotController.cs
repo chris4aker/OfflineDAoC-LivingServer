@@ -480,7 +480,7 @@ namespace DOL.GS
                     // Group assignment supersedes the bot's private task at
                     // once.  No stale solo destination survives matchmaking.
                     _activeDynamicGroupId = _groupDirective.GroupId;
-                    AutonomousGoalDiagnostics.End(bot, GoalAttemptEnd.GroupChanged, "Joined a new autonomous group");
+                    AutonomousGoalDiagnostics.EndGroupChanged(bot, GroupChangeCause.Joined, _groupDirective.GroupId, "Joined a new autonomous group");
                     // The party is the force now; a solo siege reservation must not outlive it.
                     AutonomousRvrEventLayer.RemoveForce($"rvr-{bot.DatabaseID}");
                     _camp = null;
@@ -697,7 +697,7 @@ namespace DOL.GS
                 if (_groupDirective?.IsDynamic == true && _groupDirective.Camp == null &&
                     _groupDirective.Phase == "Choosing group target" && _camp != null)
                 {
-                    AutonomousGoalDiagnostics.End(bot, GoalAttemptEnd.GroupChanged, "Group size changed; choosing a suitable target");
+                    AutonomousGoalDiagnostics.EndGroupChanged(bot, GroupChangeCause.Resized, _groupDirective.GroupId, "Group size changed; choosing a suitable target");
                     _camp = null;
                     _nextPlanTick = 0;
                 }
@@ -726,7 +726,7 @@ namespace DOL.GS
                     // camp even when the group ID itself has not changed.
                     if (_camp != null)
                     {
-                        AutonomousGoalDiagnostics.End(bot, GoalAttemptEnd.GroupChanged, "Group assembling for a fresh shared goal");
+                        AutonomousGoalDiagnostics.EndGroupChanged(bot, GroupChangeCause.Assembling, _groupDirective.GroupId, "Group assembling for a fresh shared goal");
                         _camp = null;
                         _nextPlanTick = 0;
                         if (bot.PersistentRecord != null)
@@ -743,7 +743,7 @@ namespace DOL.GS
                         AutonomousBotGroupCoordinator.SharedCamp planned = _camp != null ? ToSharedCamp(_camp) : null;
                         if (_camp != null)
                         {
-                            AutonomousGoalDiagnostics.End(bot, GoalAttemptEnd.GroupChanged, "Camp planned for the party meetup");
+                            AutonomousGoalDiagnostics.EndGroupChanged(bot, GroupChangeCause.MeetupPlan, _groupDirective.GroupId, "Camp planned for the party meetup");
                             _camp = null;
                             _nextPlanTick = 0;
                         }
@@ -1742,7 +1742,7 @@ namespace DOL.GS
             if (!_regroupRouteCleared)
             {
                 _regroupRouteCleared = true;
-                AutonomousGoalDiagnostics.End(bot, GoalAttemptEnd.GroupChanged, "Party casualty; regroup before new pulls");
+                AutonomousGoalDiagnostics.EndGroupChanged(bot, GroupChangeCause.Casualty, _groupDirective?.GroupId, "Party casualty; regroup before new pulls");
                 ReleaseOwnedSiegeRams(bot);
                 AutonomousPetSupport.ReleaseFieldTurrets(bot);
                 _camp = null;
@@ -5496,6 +5496,7 @@ namespace DOL.GS
                         _lastSeamStep = null;
                         _resolvedBoundaryStep = null;
                         _resolvedBoundaryZone = null;
+                        StuckHotspots.NoteShared("seam", bot);
                         Log.Warn($"AUTONOMOUS_ZONE_SEAM_CYCLE bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
                                  $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} zone={currentZone.ID} " +
                                  $"position={bot.X},{bot.Y},{bot.Z} goalZone={destinationZone.ID} goal={(int)destination.X},{(int)destination.Y},{(int)destination.Z} " +
