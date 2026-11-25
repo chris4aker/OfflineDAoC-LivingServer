@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Runs every Python check of .github/workflows/build-and-test.yml locally, in parallel (issue #615).
 
-Required before every push (AGENTS.md). The checks need no dotnet, no game files and no network, and finish in about a
-minute on a 4-core PC. Each unittest folder runs one process per test file, so the slow lore and bot-voice suites spread
+Required before every push (AGENTS.md). The checks need no dotnet, no game files and no network. They take about 175 CPU
+seconds: about 90 s on a 2-core box, under a minute with 4 cores or more. Each unittest folder runs one process per test file, so the slow lore and bot-voice suites spread
 over the cores.
 
     python3 tools/check.py              # every check (tools/check.sh calls this)
