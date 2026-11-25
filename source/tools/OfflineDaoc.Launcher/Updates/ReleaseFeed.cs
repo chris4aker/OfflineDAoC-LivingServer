@@ -26,6 +26,8 @@ public static class ReleaseFeed
     public const string Repository = "chris4aker/OfflineDAoC-LivingServer";
     /// <summary>The newest final release (GitHub leaves drafts and prereleases out of /latest).</summary>
     public const string LatestUrl = "https://api.github.com/repos/" + Repository + "/releases/latest";
+    /// <summary>The newest releases, pre-releases included (read only with "Offer test builds" on, issue #637).</summary>
+    public const string ReleasesUrl = "https://api.github.com/repos/" + Repository + "/releases?per_page=30";
     /// <summary>Packages are downloaded only from this repository's own release files.</summary>
     public const string DownloadPrefix = "https://github.com/" + Repository + "/releases/download/";
     public static readonly TimeSpan CheckTimeout = TimeSpan.FromSeconds(10);
@@ -46,6 +48,27 @@ public static class ReleaseFeed
         }
     }
 
+    /// <summary>The newest releases (pre-releases included), or null with the reason. Never throws.</summary>
+    public static List<ReleaseInfo>? TryGetReleases(IReleaseWeb web, out string? problem)
+    {
+        try
+        {
+            string text = web.GetText(ReleasesUrl, CheckTimeout);
+            if (!text.TrimStart('\uFEFF', ' ', '\r', '\n', '\t').StartsWith("[", StringComparison.Ordinal))
+            {
+                problem = "GitHub's answer wasn't a list of releases";
+                return null;
+            }
+            problem = null;
+            return ReleaseInfo.ParseList(text);
+        }
+        catch (Exception e)
+        {
+            problem = Innermost(e).Message;
+            return null;
+        }
+    }
+
     /// <summary>
     /// Downloads the release's package into folder and checks it: the SHA-256 digest GitHub publishes for the file,
     /// then the package itself (PackageCheck). A file that fails either is deleted. A package already there that
@@ -55,6 +78,11 @@ public static class ReleaseFeed
         Action<long, long>? progress, CancellationToken cancel)
     {
         BuildVersion build = release.Version ?? throw new PackageRefusedException("The release's tag " + release.TagName + " isn't a Living Server build.");
+        // A candidate's tag must be marked a pre-release on GitHub, and a pre-release must be a candidate: anything
+        // else is a mislabelled release and isn't installed.
+        if (build.IsCandidate != release.Prerelease)
+            throw new PackageRefusedException("The " + build.Tag + " release is " + (release.Prerelease ? "" : "not ") +
+                                              "marked a pre-release on GitHub, which doesn't match its tag. Nothing was downloaded.");
         ReleaseAsset asset = release.Package ?? throw new PackageRefusedException("The " + build.Tag + " release has no " + ReleaseInfo.PackageName(build) + ".");
         // Fail closed before spending the download: without GitHub's digest the file couldn't be checked.
         if (PackageDigest.Sha256Of(asset.Digest) == null)
@@ -84,7 +112,7 @@ public static class ReleaseFeed
         PackageContents contents;
         try
         {
-            contents = PackageCheck.Inspect(final, build);
+            contents = PackageCheck.Inspect(final, build.PackageBuild);
         }
         catch (PackageRefusedException)
         {

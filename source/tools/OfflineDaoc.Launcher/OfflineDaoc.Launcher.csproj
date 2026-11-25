@@ -19,6 +19,10 @@
     <AssemblyMetadata Include="LivingServerBuild" Value="$(LivingServerBuild)" />
     <!-- Written to runtime\updates when an update is applied: it runs INSTALL.cmd once the launcher has closed. -->
     <EmbeddedResource Include="Updates\apply-update.ps1" LogicalName="OfflineDaoc.Updates.apply-update.ps1" />
+    <!-- "Install into a new test folder" (issue #637) cleans the test world by the release builder's own lists. -->
+    <EmbeddedResource Include="../OfflineDaoc.ProgressImport/progress-policy.json" LogicalName="OfflineDaoc.Updates.progress-policy.json" />
+    <EmbeddedResource Include="../release-world-defaults.json" LogicalName="OfflineDaoc.Updates.release-world-defaults.json" />
+    <EmbeddedResource Include="../release-server-settings.json" LogicalName="OfflineDaoc.Updates.release-server-settings.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />

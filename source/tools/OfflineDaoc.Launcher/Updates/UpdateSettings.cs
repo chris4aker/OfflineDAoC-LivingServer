@@ -11,6 +11,13 @@ public sealed class UpdateSettings
     /// <summary>Look for a new Living Server when the launcher starts (at most once a day).</summary>
     public bool CheckAutomatically { get; set; } = true;
 
+    /// <summary>
+    /// Also offer test builds: release candidates published as GitHub pre-releases (v1.2.3-rc.1, issue #637). Off by
+    /// default: it's a test switch for contributors, not a player feature (AGENTS.md, "Living Server features are on by
+    /// default": test-only switches stay off).
+    /// </summary>
+    public bool OfferTestBuilds { get; set; }
+
     /// <summary>The build the player chose "Skip this version" for; it isn't offered again until a newer one.</summary>
     public string? SkippedVersion { get; set; }
 
@@ -77,5 +84,39 @@ public static class UpdatePolicy
         if (!version.IsNewerThan(installed))
             return false;
         return asked || !version.SameBuildAs(BuildVersion.Parse(settings.SkippedVersion));
+    }
+
+    /// <summary>
+    /// Whether this pre-release is a test build to offer: only with "Offer test builds" on, a release candidate marked
+    /// pre-release on GitHub, newer than the installed build, with a package, and not skipped (unless asked).
+    /// </summary>
+    public static bool ShouldOfferTest(ReleaseInfo? release, BuildVersion? installed, UpdateSettings settings, bool asked)
+    {
+        if (!settings.OfferTestBuilds || release is not { IsTestBuild: true } || installed == null || release.Package == null)
+            return false;
+        BuildVersion version = release.Version!;
+        if (!version.IsNewerThan(installed))
+            return false;
+        return asked || !version.SameBuildAs(BuildVersion.Parse(settings.SkippedVersion));
+    }
+
+    /// <summary>
+    /// The release to offer: the newest final (ShouldOffer) and, with "Offer test builds" on, the newest test build
+    /// among releases (ShouldOfferTest); whichever is the newer build. A final outranks the candidates of its numbers
+    /// (1.2.3 over 1.2.3-rc.2), so a tester moves on to the final when it is out. Null when there is nothing to offer.
+    /// </summary>
+    public static ReleaseInfo? Choose(ReleaseInfo? latest, IEnumerable<ReleaseInfo>? releases, BuildVersion? installed,
+        UpdateSettings settings, bool asked)
+    {
+        ReleaseInfo? final = ShouldOffer(latest, installed, settings, asked) ? latest : null;
+        ReleaseInfo? test = !settings.OfferTestBuilds || releases == null ? null : releases
+            .Where(r => ShouldOfferTest(r, installed, settings, asked))
+            .OrderByDescending(r => r.Version!)
+            .FirstOrDefault();
+        if (final == null)
+            return test;
+        if (test == null)
+            return final;
+        return test.Version!.IsNewerThan(final.Version) ? test : final;
     }
 }

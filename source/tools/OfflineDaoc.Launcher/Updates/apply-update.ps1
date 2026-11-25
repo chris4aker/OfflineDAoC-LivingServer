@@ -17,6 +17,8 @@ param(
     [Parameter(Mandatory = $true)][string]$Log,
     [Parameter(Mandatory = $true)][string]$Result,
     [string]$Restart = '',
+    # The release's tag build when it isn't the package's (a test build: v1.2.3-rc.1 carries build 1.2.3).
+    [string]$Release = '',
     [switch]$NoPause
 )
 $ErrorActionPreference = 'Stop'
@@ -29,7 +31,7 @@ function Say([string]$text) {
 function Sha([string]$path) { (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() }
 function Finish([string]$state, [string]$detail) {
     Set-Content -LiteralPath $Result -Encoding UTF8 -Value @(
-        "Build=$Build", "Result=$state", "Detail=$detail", "Time=$((Get-Date).ToUniversalTime().ToString('o'))")
+        "Build=$Build", "Release=$(if ($Release) { $Release } else { $Build })", "Result=$state", "Detail=$detail", "Time=$((Get-Date).ToUniversalTime().ToString('o'))")
     Say "$state`: $detail"
     if ($Restart -and (Test-Path -LiteralPath $Restart)) {
         if (!$NoPause) { Write-Host ''; Read-Host 'Press Enter to open the launcher again' | Out-Null }
