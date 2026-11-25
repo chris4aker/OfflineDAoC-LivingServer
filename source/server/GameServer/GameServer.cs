@@ -1286,7 +1286,16 @@ namespace DOL.GS
 		/// Function called at X interval to write the database to disk
 		/// </summary>
 		/// <param name="sender">Object that generated the event</param>
+		// Port of OpenDAoC-Core 8e3cfb833: the periodic save and the final save at Stop could run at the same time.
+		private readonly Lock _saveTimerLock = new();
+
 		protected void SaveTimerProc(object sender)
+		{
+			lock (_saveTimerLock)
+				SaveTimerProcLocked();
+		}
+
+		private void SaveTimerProcLocked()
 		{
 			ThreadPriority oldPriority = Thread.CurrentThread.Priority;
 

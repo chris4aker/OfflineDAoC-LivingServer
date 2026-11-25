@@ -12,7 +12,6 @@ namespace DOL.Database
         private DataObject _snapshot;
         private bool _allowAdd = true;
         private bool _allowDelete = true;
-        private DateTime _lastTimeRowUpdated;
         private string _objectId;
         private int? _cachedHash;
 
@@ -55,12 +54,14 @@ namespace DOL.Database
         [Browsable(false)]
         public virtual bool IsDeleted { get; set; }
 
+        /// <summary>
+        /// Port of OpenDAoC-Core 19123fffd: only stamped when the row is about to be written with a real change
+        /// (GetDirtyBindings) or inserted. Before, a Dirty object always read "now" here, so every flagged object (every
+        /// item of a loaded inventory, every slot move) differed from its snapshot and was written even when nothing
+        /// changed.
+        /// </summary>
         [DataElement(AllowDbNull = false, Index = false)]
-        public DateTime LastTimeRowUpdated
-        {
-            get => Dirty ? DateTime.UtcNow : _lastTimeRowUpdated;
-            set => _lastTimeRowUpdated = value;
-        }
+        public DateTime LastTimeRowUpdated { get; set; }
 
         protected DataObject()
         {
@@ -91,36 +92,41 @@ namespace DOL.Database
             if (!saved.IsPersisted || saved.Dirty || saved.IsDeleted) return;
             _snapshot = saved._snapshot ?? (DataObject)saved.MemberwiseClone();
             _snapshot._snapshot = null;
+            // The detached copy was stamped when it was written; only the save path sets this column, so carrying it
+            // over cannot hide an actor change, and the next flush does not rewrite the row for the stamp alone.
+            LastTimeRowUpdated = _snapshot.LastTimeRowUpdated;
         }
 
         public List<ElementBinding> GetDirtyBindings(DataTableHandler tableHandler)
         {
             // If there's no snapshot, we can't know what changed.
             if (_snapshot == null)
-                return tableHandler.FieldElementBindings.Where(Predicate).ToList();
+            {
+                LastTimeRowUpdated = DateTime.UtcNow;
+                return tableHandler.UpdateElementBindings.ToList();
+            }
 
             List<ElementBinding> dirtyBindings = new();
 
-            // Iterate through all columns that can be part of an UPDATE statement.
-            foreach (ElementBinding binding in tableHandler.FieldElementBindings.Where(bind => bind.PrimaryKey == null && bind.ReadOnly == null))
+            foreach (ElementBinding binding in tableHandler.UpdateElementBindings)
             {
-                if (!Predicate(binding))
+                if (ReferenceEquals(binding, tableHandler.LastUpdatedBinding))
                     continue;
 
                 object currentValue = binding.GetValue(this);
                 object originalValue = binding.GetValue(_snapshot);
 
-                // If the values are not equal, this property is dirty.
                 if (!Equals(currentValue, originalValue))
                     dirtyBindings.Add(binding);
             }
 
-            return dirtyBindings;
-
-            static bool Predicate(ElementBinding binding)
+            if (dirtyBindings.Count > 0 && tableHandler.LastUpdatedBinding != null)
             {
-                return binding.PrimaryKey == null && binding.ReadOnly == null;
+                LastTimeRowUpdated = DateTime.UtcNow;
+                dirtyBindings.Add(tableHandler.LastUpdatedBinding);
             }
+
+            return dirtyBindings;
         }
 
         public object Clone()

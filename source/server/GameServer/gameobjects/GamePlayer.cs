@@ -752,7 +752,8 @@ namespace DOL.GS
 
             protected override int OnTick(ECSGameTimer timer)
             {
-                if (!_owner.IsAlive || _owner.ObjectState is not eObjectState.Active)
+                // Port of OpenDAoC-Core 4783841c1: a tick during a region change (client not Playing) desynced the countdown.
+                if (!_owner.IsAlive || _owner.ObjectState is not eObjectState.Active || _owner.Client?.ClientState is not GameClient.eClientState.Playing)
                     return _onQuitTimerEnd();
 
                 if (_owner.CraftTimer != null && _owner.CraftTimer.IsAlive)
@@ -9627,31 +9628,38 @@ namespace DOL.GS
         public virtual bool DropItem(eInventorySlot slot_pos, out WorldInventoryItem droppedItem)
         {
             droppedItem = null;
-            if (slot_pos >= eInventorySlot.FirstBackpack && slot_pos <= eInventorySlot.LastBackpack)
+
+            if (slot_pos < eInventorySlot.FirstBackpack || slot_pos > eInventorySlot.LastBackpack)
+                return false;
+
+            DbInventoryItem item;
+
+            // Port of OpenDAoC-Core b28922b5e (lock part): only the removal needs the inventory lock. Creating the item on
+            // the ground and the ItemDropped handlers ran under it before, and those take other locks.
+            lock (Inventory.Lock)
             {
-                lock (Inventory.Lock)
+                item = Inventory.GetItem(slot_pos);
+
+                if (item == null)
+                    return false;
+
+                if (!item.IsDropable)
                 {
-                    DbInventoryItem item = Inventory.GetItem(slot_pos);
-                    if (!item.IsDropable)
-                    {
-                        Out.SendMessage(item.GetName(0, true) + " can not be dropped!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                        return false;
-                    }
-
-                    if (!Inventory.RemoveItem(item)) return false;
-                    InventoryLogging.LogInventoryAction(this, "(ground)", eInventoryActionType.Other, item.Template, item.Count);
-
-                    droppedItem = CreateItemOnTheGround(item);
-
-                    if (droppedItem != null)
-                    {
-                        Notify(PlayerInventoryEvent.ItemDropped, this, new ItemDroppedEventArgs(item, droppedItem));
-                    }
-
-                    return true;
+                    Out.SendMessage(item.GetName(0, true) + " can not be dropped!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    return false;
                 }
+
+                if (!Inventory.RemoveItem(item))
+                    return false;
             }
-            return false;
+
+            InventoryLogging.LogInventoryAction(this, "(ground)", eInventoryActionType.Other, item.Template, item.Count);
+            droppedItem = CreateItemOnTheGround(item);
+
+            if (droppedItem != null)
+                Notify(PlayerInventoryEvent.ItemDropped, this, new ItemDroppedEventArgs(item, droppedItem));
+
+            return true;
         }
 
         /// <summary>

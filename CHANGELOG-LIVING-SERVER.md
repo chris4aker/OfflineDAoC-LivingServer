@@ -104,6 +104,26 @@ DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_Upstrea
   d73447af2, 2e791235f); Distraction lasts 6 s and fools only
   monsters that aren't fighting or casting (7a8ae3661).
 
+**From OpenDAoC upstream: server core** (port package P1)
+- Hand ports of upstream OpenDAoC-Core fixes (GPL-3.0; Baptiste Marie unless named),
+  each credited in its commit. **Tests only.**
+  - Saves: an object is marked saved only once its write is durable, so a failed or rolled-back batch is retried on the
+    next flush instead of being lost (`b49257e7f`); single-row saves skip BEGIN/COMMIT (`4198e9bc4`); an object flagged
+    Dirty with no real change (every item of a loaded inventory, a slot moved and back) is no longer rewritten, and
+    `LastTimeRowUpdated` is stamped only on a real change or an insert (`19123fffd`, `b141b28fd`). The bot inventory's
+    detached saves keep the stamp of the copy they wrote. `UT_UpstreamSaveSafety`.
+  - Memory: the attack component drops its last weapon action, start target and observer list when it stops
+    (`c707d057f`); an expired interrupt no longer holds its interrupter (`08c896ac0`, on top of the departed-reference
+    sweep); a deleted static item removes its event handlers (`e04fb3af8`); realm-ability statics (Static Tempest,
+    Thornweed, Wall of Flame, traps) remove their caster handler and timer (`84f1a46a6`, pulse timing unchanged).
+  - Game loop: ticks run on an absolute deadline, so timers, buffs and respawns no longer drift behind the clock over a
+    long session; catch-up stays capped at one tick (`c955cc64c`, `7b31c6910`). `UT_GameLoopTickPacer`.
+  - Threads: trading takes both inventories, then the window, and closes after (Josh L, `662f315fd`), ending a deadlock
+    between two players' packet handlers; the periodic and final saves can't overlap (`8e3cfb833`); dropping an item
+    makes the ground item and runs its handlers outside the inventory lock (`b28922b5e`).
+  - Players: the /quit countdown stops during a region change (`4783841c1`); a client can no longer ask for a stealthed or far-away
+    player's model (`446a99f1f`). `UT_UpstreamCorePorts`.
+
 **Chat**
 - **No "dunno" as the whole answer, in any channel** (realism 2a, #478; tests only). A bot no longer answers a question it
   can't answer with "no clue sry", "not sure, try /advice", "Dunno", a bare "where?", a bare "lol", "true" or "k". Before,
