@@ -517,6 +517,7 @@ namespace DOL.AI.Brain
                 // Damage is an event, so wake combat immediately without
                 // increasing the ordinary idle/travel AI cadence.
                 NextThinkTick = GameLoop.GameLoopTime;
+                WakeForAdd(ad.Attacker, Body);   // an add on this bot is looked at now, not at the next 1 s check (True165 8abbc61a8)
             }
         }
 
@@ -581,6 +582,8 @@ namespace DOL.AI.Brain
             // Record the encounter synchronously so even a very short roadside
             // fight pauses autonomous travel for whole-party recovery afterward.
             AutonomousBotGroupCoordinator.MarkCombatObserved(group);
+            // A groupmate dropping low wakes the group's healers at once (True165 8abbc61a8).
+            WakeHealersIfLow(group, victim, ad);
 
             foreach (GameLiving member in group.GetMembersInTheGroup())
             {
@@ -594,6 +597,7 @@ namespace DOL.AI.Brain
                     continue;
 
                 brain.OnGroupMemberAttacked(victim, ad);
+                brain.WakeForAdd(attacker, victim);   // an add joined the fight (True165 8abbc61a8)
             }
             if (groupMember is GameBot raidVictim)
                 foreach (GameLiving member in AutonomousRealmRaid.ClaimNearbyDefenseBroadcast(raidVictim, GameLoop.GameLoopTime))
@@ -733,13 +737,57 @@ namespace DOL.AI.Brain
                 GameEventMgr.RemoveHandler(_subscribedAssistedPlayer, GameLivingEvent.AttackedByEnemy, new DOLEventHandler(OnOwnerAttacked));
             _subscribedAssistedPlayer = null;
 
-            if (base.Stop())
+            eFSMStateType? before = FSM?.GetCurrentState()?.StateType;
+            bool stopped = base.Stop();
+            // ABrain.Stop sets WAKING_UP, which a bot brain has no state for, so the FSM is left with none. Remember the
+            // state for the next Think (a state from an earlier stop is kept when this one finds none: two stops in a row).
+            if (FSM?.GetCurrentState() == null)
+                _stateBeforeStop = before is eFSMStateType.WAKING_UP or null ? _stateBeforeStop : before;
+
+            if (stopped)
             {
                 ClearAggroList();
                 return true;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// The FSM state this brain had when it was last stopped. GameObject.MoveTo stops and restarts the brain, so every
+        /// bot moved through a keep door or teleported came out with no state: FSM.Think did nothing and a bot in a
+        /// player's group, a /spawn helper or a bot-led party stood frozen until it was attacked, ordered or invited
+        /// again. The next Think puts the bot back in a state. Port of DetShaft/OfflineDAoC-LivingServer a303aefaf.
+        /// </summary>
+        private eFSMStateType? _stateBeforeStop;
+
+        /// <summary>
+        /// Pure rule: the state a bot brain resumes in after a stop and restart that left its FSM with no state. Its aggro
+        /// list was cleared by the stop, so a fight resumes as following its leader (the follow state re-enters a fight the
+        /// leader is still in). A bot told to stay stays; passive stays passive; with no live leader, idle (the state every
+        /// bot brain starts in, and the one an autonomous gamebot's own controller drives from).
+        /// </summary>
+        public static eFSMStateType ResumeStateAfterRestart(eFSMStateType before, bool hasLiveLeader, bool toldToStay)
+        {
+            if (before == eFSMStateType.PASSIVE)
+                return eFSMStateType.PASSIVE;
+            if (toldToStay || !hasLiveLeader)
+                return eFSMStateType.IDLE;
+            return before is eFSMStateType.FOLLOW or eFSMStateType.AGGRO ? eFSMStateType.FOLLOW : eFSMStateType.IDLE;
+        }
+
+        /// <summary>From Think: a brain restarted with no FSM state gets one back.</summary>
+        private void ResumeStateAfterRestart()
+        {
+            if (_stateBeforeStop is not eFSMStateType before)
+                return;
+            if (FSM.GetCurrentState() != null)
+            {
+                _stateBeforeStop = null;
+                return;
+            }
+            _stateBeforeStop = null;
+            FSM.SetCurrentState(ResumeStateAfterRestart(before, AssistedPlayer?.IsAlive == true, WalkState == eWalkState.Stay));
         }
 
         /// <summary>
@@ -1361,12 +1409,15 @@ namespace DOL.AI.Brain
 
         public override void Think()
         {
+            // A move or a keep-door pass (MoveTo stops and restarts the brain) left the FSM with no state: resume one.
+            ResumeStateAfterRestart();
             // A No Lifer's buffbot (Living Server 1.2) runs its own short turn and nothing else: follow or park, buff its main.
             if (NoLiferBuffBots.Think(this)) return;
             if (BotGroupRelease.TryUnstick(BotBody)) return; // Fork: first, whatever below would keep a released bot from its player
             // Living Server linkdead (bot_living_breaks): the bot stands still and does nothing until it
             // "reconnects" (30-90 s) or is attacked (AutonomousBotSchedule.OnAttacked wakes it).
-            if (AutonomousBotSchedule.IsFrozen(BotBody))
+            // #485: a bot logging out sits (or stands still) for the game's twenty seconds after its goodbye.
+            if (AutonomousBotSchedule.IsFrozen(BotBody) || AutonomousBotSchedule.IsQuitting(BotBody))
             {
                 if (BotBody.IsMoving)
                     BotBody.StopMoving();
@@ -1417,6 +1468,8 @@ namespace DOL.AI.Brain
             if (AutonomousBotCombatCalls.ObservesFight(BotBody))
                 AutonomousBotCombatCalls.Observe(BotBody);
             CompanionStealth.Maintain(BotBody);
+            // #522: a gamebot stealther travels hidden (and a duo's follower copies its leader).
+            BotStealthTravel.Maintain(BotBody);
             WatchPetFocusShield();
             WatchHarmfulAura();
             BotBody?.WakeRecoveryRestIfCombatBlocked();
@@ -2510,8 +2563,11 @@ namespace DOL.AI.Brain
                                     !IsUnderImmediateMeleePressure();
             if (immediateCombat && !minstrelAtRange)
             {
-                StopTwistedSong();
-                SwitchToUsableMeleeWeapon();
+                // A combat song (not the speed song) plays on through the fight; a grouped performer whose song needs
+                // its instrument keeps it in hand (port of True165 48b20439).
+                StopTwistedSong(preserveCombatSongs: true);
+                if (!HasActiveCombatSongInstrument())
+                    SwitchToUsableMeleeWeapon();
                 _nextSongTwistTick = GameLoop.GameLoopTime + 1_000;
                 return false;
             }
@@ -2705,7 +2761,7 @@ namespace DOL.AI.Brain
             AggroList.Keys.Any(attacker => attacker?.IsAlive == true &&
                                            Body.IsWithinRadius(attacker, Body.MeleeAttackRange + 35));
 
-        private void StopTwistedSong()
+        private void StopTwistedSong(bool preserveCombatSongs = false)
         {
             if (Body == null)
                 return;
@@ -2713,16 +2769,46 @@ namespace DOL.AI.Brain
             // End the maintained pulse, not the short-duration child buffs it
             // already applied. Scanning also adopts/corrects a song that was
             // started before this brain began tracking its rotation.
+            // preserveCombatSongs: a melee hit or the start of a fight keeps a combat song playing, as a player does
+            // (port of zomboden/OfflineDAoC-True165 48b20439); only the speed song and the rest stop.
+            _activeTwistedSongId = 0;
             foreach (ECSPulseEffect active in Body.effectListComponent.GetPulseEffects()
                          .Where(effect => effect?.SpellHandler?.Spell is Spell spell &&
                                           spell.IsPulsing && !spell.IsHarmful &&
                                           IsMaintainableClassBuff(spell))
                          .ToList())
             {
-                active.End();
+                if (preserveCombatSongs && !active.IsEnding && !active.IsEnded && PreserveCombatSong(active.SpellHandler.Spell))
+                    _activeTwistedSongId = active.SpellHandler.Spell.ID;
+                else
+                    active.End();
             }
-            _activeTwistedSongId = 0;
         }
+
+        /// <summary>A Bard's, Minstrel's or Skald's managed song, other than the speed song, plays on in a fight.</summary>
+        private bool PreserveCombatSong(Spell spell) => PreservesCombatSong(BotBody, spell);
+
+        public static bool PreservesCombatSong(GameBot bot, Spell spell) =>
+            IsClassicSongClass(bot) && spell != null && spell.SpellType != eSpellType.SpeedEnhancement &&
+            BotSongTwistPolicy.IsManagedSong(bot, spell);
+
+        /// <summary>
+        /// A song that needs its instrument stops on the next pulse once the instrument is put away (SpellHandler pulse
+        /// check). A grouped performer keeps it in hand and plays on; a solo one has nobody else to fight for it, so it
+        /// still draws its weapon (Living Server adaptation of True165 48b20439, which held the instrument solo too).
+        /// </summary>
+        private bool KeepsCombatSongInstrument(Spell spell) =>
+            spell?.NeedInstrument == true && PreserveCombatSong(spell) && BotBody?.Group?.MemberCount > 1 &&
+            Body.ActiveWeapon is { Object_Type: (int)eObjectType.Instrument };
+
+        private bool HasActiveCombatSongInstrument() =>
+            IsClassicSongClass(BotBody) &&
+            Body.effectListComponent.GetPulseEffects().Any(effect => !effect.IsEnding && !effect.IsEnded &&
+                KeepsCombatSongInstrument(effect.SpellHandler?.Spell));
+
+        /// <summary>Paladins and Wardens chant while they melee: a hit never stops the chant (True165 v0.7 f68cc75).</summary>
+        public static bool KeepsChantInMelee(GameBot bot) => bot?.CharacterClass != null &&
+            (eCharacterClass)bot.CharacterClass.ID is eCharacterClass.Paladin or eCharacterClass.Warden;
 
         private static bool IsClassicSongClass(GameBot bot) => bot?.CharacterClass != null &&
             IsClassicSongClass((eCharacterClass)bot.CharacterClass.ID);
@@ -3568,6 +3654,14 @@ namespace DOL.AI.Brain
                 }
                 else
                 {
+                    // The performer can still heal, control or shout above. A grouped performer's instrument song needs
+                    // the instrument in hand, so it doesn't take the weapon or unarmed fallback (True165 48b20439).
+                    if (HasActiveCombatSongInstrument())
+                    {
+                        Body.StopAttack();
+                        return;
+                    }
+
                     if (rangedCaster && Body.TargetObject is GameLiving spellTarget)
                     {
                         // Try casts (including instant spells) first.
@@ -3690,16 +3784,20 @@ namespace DOL.AI.Brain
             // Idle is not a reason to hide (and slow travel). Stealth belongs to
             // the approach to a legal enemy player/bot, not random PvE pauses,
             // or to a companion hidden with its hidden player (CompanionStealth).
-            if (Body.IsStealthed && !CompanionStealth.HoldsStealth(BotBody)) Body.Stealth(false);
+            // A gamebot stealther travelling hidden (BotStealthTravel, #522) is not idling in stealth either.
+            if (Body.IsStealthed && !CompanionStealth.HoldsStealth(BotBody) && !BotStealthTravel.HoldsStealth(BotBody))
+                Body.Stealth(false);
         }
 
         private bool TryApproachAmbush(GameLiving target)
         {
             if (!BotRvrAmbush.CanApproach(BotBody, target)) return false;
             int range = Body.MeleeAttackRange;
+            // #522: with the stealth openers on, a hidden archer stops at its bow's opener range (1,500-2,300 when the bow
+            // reaches; BotStealthArcher), not at 1,000.
             if (BotRangedCombat.IsDedicatedArcher((eCharacterClass)BotBody.CharacterClass.ID) &&
                 BotRangedCombat.CanUse(BotBody, BotBody.Inventory.GetItem(eInventorySlot.DistanceWeapon)))
-                range = 1_000;
+                range = BotStealthArcher.ApproachRange(BotBody, GS.ServerProperties.Properties.RVR_BOT_STEALTH_OPENERS && RvrTacticsActive());
             if (Body.IsWithinRadius(target, range)) return false;
             Body.Stealth(true);
             if (!Body.IsStealthed) return false; // A running song can legally prevent stealth.
@@ -3807,7 +3905,8 @@ namespace DOL.AI.Brain
             bool actuallyUnderAttack = Body.IsBeingInterruptedByOther ||
                 target == _recentDirectAttacker &&
                 GameLoop.GameLoopTime - _recentDirectAttackTick <= 5_000;
-            if (!actuallyUnderAttack)
+            // A grouped performer holding the instrument its combat song needs plays on (it can still heal and control).
+            if (!actuallyUnderAttack || HasActiveCombatSongInstrument())
                 return false;
 
             // A player cannot repeatedly begin an interruptible cast while a mob
@@ -3816,7 +3915,10 @@ namespace DOL.AI.Brain
             if (Body.IsCasting)
                 Body.StopCurrentSpellcast();
 
-            StopTwistedSong();
+            // A Paladin's or Warden's chant pulses on while it fights, and a performer's combat song survives a hit
+            // (port of True165 48b20439 and its v0.7 KeepsChantInMelee): they used to drop at every hit.
+            if (!KeepsChantInMelee(BotBody))
+                StopTwistedSong(preserveCombatSongs: true);
             SwitchToUsableMeleeWeapon();
 
             CheckOffensiveAbilities();
@@ -3905,7 +4007,7 @@ namespace DOL.AI.Brain
                 !OutOfPowerForOffense())
                 return false;
 
-            StopTwistedSong();
+            StopTwistedSong(preserveCombatSongs: true);
             SwitchToUsableMeleeWeapon();
             CheckOffensiveAbilities();
             CommandPetAttack(target);

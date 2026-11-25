@@ -197,6 +197,9 @@ namespace DOL.AI.Brain
         public override void Enter()
         {
             _brain.ClearAggroList();
+            // Port of OpenDAoC-Core d53eceb0c: start home at once, not after the movement under way ends.
+            if (!_brain.Body.IsNearSpawn)
+                _brain.Body.ReturnToSpawnPoint(Speed);
             base.Enter();
         }
 
@@ -209,7 +212,9 @@ namespace DOL.AI.Brain
                 return;
             }
 
-            if (!_brain.Body.IsReturningToSpawnPoint)
+            // Port of OpenDAoC-Core 9f3d5c6da: a mob stunned, rooted or stopped on its way home kept its "returning" flag
+            // and stood where it was. It starts again whenever it isn't moving.
+            if (!_brain.Body.IsReturningToSpawnPoint || !_brain.Body.IsMoving)
                 _brain.Body.ReturnToSpawnPoint(Speed);
 
             base.Think();

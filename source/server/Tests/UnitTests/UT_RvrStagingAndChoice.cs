@@ -4,62 +4,11 @@ using NUnit.Framework;
 
 namespace DOL.GS.Tests;
 
+/// <summary>Border-keep staging, warband size rolls and the event layer's intent choice. The dead RvR director and its
+/// tests were deleted (#530); these tests lived in its file and test live code.</summary>
 [TestFixture]
-public sealed class UT_AutonomousRvrDirector
+public sealed class UT_RvrStagingAndChoice
 {
-    [Test]
-    public void ObjectivePhase_UsesAuthoritativeBreachLordAndRelicFallbackOrder()
-    {
-        Assert.Multiple(() =>
-        {
-            Assert.That(AutonomousRvrObjectiveState.Next(false, false, false, false, false), Is.EqualTo(eAutonomousRvrPhase.Traveling));
-            Assert.That(AutonomousRvrObjectiveState.Next(true, true, true, true, true), Is.EqualTo(eAutonomousRvrPhase.BreachingDoor));
-            Assert.That(AutonomousRvrObjectiveState.Next(true, false, true, true, true), Is.EqualTo(eAutonomousRvrPhase.AssaultingLord));
-            Assert.That(AutonomousRvrObjectiveState.Next(true, false, false, true, true), Is.EqualTo(eAutonomousRvrPhase.HuntingEnemy));
-            Assert.That(AutonomousRvrObjectiveState.Next(true, false, false, false, true), Is.EqualTo(eAutonomousRvrPhase.TakingRelic));
-        });
-    }
-
-    [Test]
-    public void HumanPresenceIsNotPartOfRvrSelection()
-    {
-        var force = new AutonomousRvrDirector.Warband(eRealm.Albion, 8, 50, 2, 0, false);
-        var choices = new List<AutonomousRvrDirector.Objective>
-        {
-            new("keep:1", "Dun Crauchon", eAutonomousRvrObjective.AssaultKeep, eRealm.Hibernia, 163, true, 1, 0, 3, 2, false, 8),
-        };
-
-        var result = AutonomousRvrDirector.Choose(force, choices);
-
-        Assert.That(result.Kind, Is.EqualTo(eAutonomousRvrObjective.AssaultKeep));
-        Assert.That(result.TargetId, Is.EqualTo("keep:1"));
-    }
-
-    [Test]
-    public void RealmDefenseTakesPriorityOverKeepRaid()
-    {
-        var force = new AutonomousRvrDirector.Warband(eRealm.Midgard, 8, 50, 2, 0, false);
-        var choices = new List<AutonomousRvrDirector.Objective>
-        {
-            new("defend:1", "Bledmeer Faste", eAutonomousRvrObjective.DefendKeep, eRealm.Midgard, 163, true, 7, 2, 0, 0, true, 4),
-            new("keep:2", "Caer Benowyc", eAutonomousRvrObjective.AssaultKeep, eRealm.Albion, 163, true, 0, 0, 1, 1, false, 2),
-        };
-
-        Assert.That(AutonomousRvrDirector.Choose(force, choices).Kind, Is.EqualTo(eAutonomousRvrObjective.DefendKeep));
-    }
-
-    [Test]
-    public void UndersizedForceDoesNotAttemptKeep()
-    {
-        var force = new AutonomousRvrDirector.Warband(eRealm.Hibernia, 4, 50, 1, 0, false);
-        var choices = new List<AutonomousRvrDirector.Objective>
-        {
-            new("keep:3", "Nottmoor Faste", eAutonomousRvrObjective.AssaultKeep, eRealm.Midgard, 163, true, 0, 0, 0, 1, false, 1),
-        };
-
-        Assert.That(AutonomousRvrDirector.Choose(force, choices).Kind, Is.EqualTo(eAutonomousRvrObjective.Regroup));
-    }
-
     [Test]
     public void EveryRealmStagesAtItsClassicSafeBorderKeep()
     {

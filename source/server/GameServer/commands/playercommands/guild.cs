@@ -370,7 +370,7 @@ namespace DOL.GS.Commands
 							obj = ClientService.Instance.GetPlayerByExactName(args[2]);
 						}
 
-						// A gamebot joins at once; a /spawn companion is refused (it is temporary and only wears the
+						// A gamebot joins after a few seconds (#485); a /spawn companion is refused (it is temporary and only wears the
 						// owner's guild name and emblem). AutonomousBotGuilds.
 						if (obj == null)
 						{
@@ -389,11 +389,8 @@ namespace DOL.GS.Commands
 									client.Out.SendMessage(refusal, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 									return;
 								}
-								string leftGuild = AutonomousBotRealmGuilds.BotGuildNameOf(invitedBot);
-								if (!AutonomousBotGuilds.Join(client.Player, invitedBot))
-									client.Out.SendMessage($"{invitedBot.Name} could not join the guild.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-								else
-									AutonomousBotRealmGuilds.LeaveForPlayerGuild(invitedBot, leftGuild, client.Player);
+								// #485: the bot answers as a player would, a few seconds later and after its fight, not at once.
+								AutonomousBotGuilds.JoinAfterAThought(client.Player, invitedBot);
 								break;
 							}
 						}
@@ -2861,7 +2858,7 @@ namespace DOL.GS.Commands
 							client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.NoPrivileges"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 							return 1;
 						}
-						client.Player.Guild.GetRankByID(number).Release = reponse;
+						client.Player.Guild.GetRankByID(number).Dues = reponse;
 						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.RankDuesSet", (reponse ? "enabled" : "disabled"), number.ToString()), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 					}
 					break;
@@ -2872,7 +2869,7 @@ namespace DOL.GS.Commands
 							client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.NoPrivileges"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 							return 1;
 						}
-						client.Player.Guild.GetRankByID(number).Release = reponse;
+						client.Player.Guild.GetRankByID(number).Withdraw = reponse;
 						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.RankWithdrawSet", (reponse ? "enabled" : "disabled"), number.ToString()), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 					}
 					break;

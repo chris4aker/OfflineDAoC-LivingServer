@@ -42,7 +42,9 @@ namespace DOL.GS.PropertyCalc
             result += (int) ((1 - result * 0.01) * abilityBonus); // Secondary resists.
 
             // Treat NPC resists from constitution buffs as another layer of resists for now.
-            if (living is GameNPC)
+            // Only magical resists, and not for crowd control duration (OpenDAoC-Core 58bc5cdff, 738f82fa1; owner's
+            // decision on #506). Players never had this layer; GameNPCs, gamebots included, keep it for magic damage.
+            if (AddsConstitutionResistLayer(living is GameNPC, property, forCrowdControlDuration))
             {
                 double resistanceFromConstitution = StatCalculator.CalculateBuffContributionToAbsorbOrResist(living, eProperty.Constitution) / 8 * 100;
                 result += (int) ((1 - result * 0.01) * resistanceFromConstitution);
@@ -52,6 +54,10 @@ namespace DOL.GS.PropertyCalc
             result += racialBonus;
             return Math.Min(result, HardCap);
         }
+
+        public static bool AddsConstitutionResistLayer(bool isNpc, eProperty property, bool forCrowdControlDuration) =>
+            isNpc && !forCrowdControlDuration && property is eProperty.Resist_Heat or eProperty.Resist_Cold or eProperty.Resist_Matter or
+                eProperty.Resist_Energy or eProperty.Resist_Spirit or eProperty.Resist_Body;
 
         /// <summary>
         /// Calculate modified resists from buffs and debuffs.

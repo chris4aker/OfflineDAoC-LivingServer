@@ -3148,11 +3148,10 @@ namespace DOL.GS
 			// Increase substantially the base interrupt timer duration for non player controlled NPCs
 			// so that they don't start attacking immediately after the attacker's melee swing interval.
 			// It makes repositioning them easier without having to constantly attack them.
+			// #521: not for an autonomous gamebot hit by an enemy-realm player character (it is interrupted as a player is).
 			if (attacker != this)
-			{
-				if (Brain is not IControlledBrain controlledBrain || controlledBrain.GetPlayerOwner() == null)
-					duration += 2500;
-			}
+				duration += DOL.GS.ServerRules.PvpRules.InterruptExtraMs(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(this, attacker),
+					Brain is IControlledBrain controlledBrain && controlledBrain.GetPlayerOwner() != null);
 
 			base.StartInterruptTimer(duration, attackType, attacker);
 		}

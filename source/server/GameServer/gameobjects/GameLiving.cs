@@ -991,7 +991,9 @@ namespace DOL.GS
 			}
 		}
 
-		public virtual double TryEvade(AttackData ad, AttackData lastAD)
+		public double TryEvade(AttackData ad, AttackData lastAD) => TryEvade(ad, lastAD, 0);
+
+		public virtual double TryEvade(AttackData ad, AttackData lastAD, int attackerCount)
 		{
 			// 1. A: It isn't possible to give a simple answer. The formula includes such elements
 			// as your level, your target's level, your level of evade, your QUI, your DEX, your
@@ -1015,7 +1017,7 @@ namespace DOL.GS
 					player.EffectList.GetOfType<CombatAwarenessEffect>() != null ||
 					player.EffectList.GetOfType<RuneOfUtterAgilityEffect>() != null)
 					evadeChance = GetModified(eProperty.EvadeChance);
-				else if (IsObjectInFront(ad.Attacker, 180) && (evadeBuff != null || player.HasAbility(Abilities.Evade)))
+				else if (IsObjectInFront(ad.Attacker, PlayerDefenseFormula.PlayerEvadeArc) && (evadeBuff != null || player.HasAbility(Abilities.Evade)))
 					evadeChance = Math.Max(GetModified(eProperty.EvadeChance), 0);
 			}
 			else if (this is GameBot)
@@ -1024,10 +1026,10 @@ namespace DOL.GS
 				// ability (all directions with Advanced/Enhanced Evade) or a Savage evade buff.
 				if (HasAbility(Abilities.Advanced_Evade) || HasAbility(Abilities.Enhanced_Evade))
 					evadeChance = GetModified(eProperty.EvadeChance);
-				else if (IsObjectInFront(ad.Attacker, 180) && (evadeBuff != null || HasAbility(Abilities.Evade)))
+				else if (IsObjectInFront(ad.Attacker, PlayerDefenseFormula.PlayerEvadeArc) && (evadeBuff != null || HasAbility(Abilities.Evade)))
 					evadeChance = Math.Max(GetModified(eProperty.EvadeChance), 0);
 			}
-			else if (this is GameNPC && IsObjectInFront(ad.Attacker, 180))
+			else if (this is GameNPC && IsObjectInFront(ad.Attacker, PlayerDefenseFormula.NpcEvadeArc))
 				evadeChance = GetModified(eProperty.EvadeChance);
 
 			if (evadeChance > 0)
@@ -1037,6 +1039,10 @@ namespace DOL.GS
 				// Kelgor's Claw 15% evade.
 				if (lastAD != null && lastAD.Style != null && lastAD.Style.ID == 380)
 					evadeChance += 15 * 0.01;
+
+				// Several melee attackers reduce a player's or gamebot's evade chance (OpenDAoC-Core a36db6f43).
+				if (PlayerDefenseFormula.UsesPlayerDefense(this))
+					evadeChance /= PlayerDefenseFormula.EvadeAttackerDivisor(attackerCount);
 
 				// Reduce chance by attacker's defense penetration.
 				evadeChance *= 1 - ad.DefensePenetration;
@@ -1174,8 +1180,17 @@ namespace DOL.GS
 			(eObjectType) weapon.Object_Type is not eObjectType.Crossbow &&
 			(eObjectType) weapon.Object_Type is not eObjectType.Fired;
 
-		public virtual double TryBlock(AttackData ad, out int shieldSize)
+		public double TryBlock(AttackData ad, out int shieldSize) => TryBlock(ad, false, out shieldSize);
+
+		/// <summary>
+		/// Block chance, or with <paramref name="isGuard"/> the chance for this living (a player or gamebot) to guard
+		/// the attack for someone else: Guard is block plus 5% per Guard level, and it benefits from Engage and the arrow
+		/// bonus too, but ignores shield size, attacker count and Overwhelm (OpenDAoC-Core c284dd9d8; 120 degree arc for
+		/// both, 34519baf5). Ordinary NPC guards keep their own rule in AttackComponent.CheckGuard.
+		/// </summary>
+		public virtual double TryBlock(AttackData ad, bool isGuard, out int shieldSize)
 		{
+			// Shield size (block rounds) isn't used by Guard.
 			shieldSize = 0;
 
 			if (IsCrowdControlled || IsSitting || IsCasting)
@@ -1216,7 +1231,8 @@ namespace DOL.GS
 				if ((eObjectType) shield.Object_Type is not eObjectType.Shield)
 					return 0;
 
-				shieldSize = Math.Max(shield.Type_Damage, 1);
+				if (!isGuard)
+					shieldSize = Math.Max(shield.Type_Damage, 1);
 			}
 			else if (this is GameNPC npc)
 			{
@@ -1232,7 +1248,7 @@ namespace DOL.GS
 			if (!IsObjectInFront(ad.Attacker, 120))
 				return 0;
 
-			double blockChance = CalculateBaseBlockChance(player, shield, ad);
+			double blockChance = CalculateBaseBlockChance(player, shield, ad, isGuard);
 
 			if (blockChance <= 0)
 				return 0;
@@ -1243,7 +1259,7 @@ namespace DOL.GS
 				blockChance *= ad.Attacker.DualWieldDefensePenetrationFactor;
 
 			// Infiltrator RR5.
-			if (player != null)
+			if (player != null && !isGuard)
 			{
 				OverwhelmEffect Overwhelm = player.EffectList.GetOfType<OverwhelmEffect>();
 
@@ -1293,7 +1309,7 @@ namespace DOL.GS
 			player?.Out.SendMessage("You concentrate on blocking the blow!", eChatType.CT_Skill, eChatLoc.CL_SystemWindow);
 		}
 
-		private double CalculateBaseBlockChance(GamePlayer player, DbInventoryItem shield, AttackData ad)
+		private double CalculateBaseBlockChance(GamePlayer player, DbInventoryItem shield, AttackData ad, bool isGuard)
 		{
 			// From Prima guide:
 			// "Your chance to block arrows from a same-level
@@ -1345,6 +1361,10 @@ namespace DOL.GS
 			if (ad.AttackType is eAttackType.Ranged)
 				baseBlockChance += 0.25;
 
+			// 5% additional chance to guard with each Guard level.
+			if (isGuard)
+				baseBlockChance += GetAbilityLevel(Abilities.Guard) * 0.05;
+
 			// Engage mechanics are not fully known, but traditionally people would sometimes put only a few points in Shield to get it, hinting that it provided a good block chance even at low spec.
 			if (IsEngaging)
 			{
@@ -1358,6 +1378,7 @@ namespace DOL.GS
 					{
 						// This is a guess, and is based on the patch notes stating that the base block chance against arrows is 30% (so +25% from the normal base), and is 95% with engage.
 						// 65% is the difference between both, and gives a base block chance of 70% against melee attacks, before spec and stats.
+						// It works with Guard too (OpenDAoC-Core c284dd9d8).
 						baseBlockChance += 0.65;
 						ConsumeEngageEndurance(player);
 					}

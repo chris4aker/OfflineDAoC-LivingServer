@@ -1,0 +1,48 @@
+# Weekly upstream watch: lists what OpenDAoC-Core (and any repo in .github/upstream-watch.json) gained since our
+# last review, and keeps one open issue per repo up to date. Reading only; nothing is ported automatically.
+name: upstream-watch
+on:
+  schedule:
+    - cron: "17 11 * * 1"   # Mondays, 11:17 UTC
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: List new upstream commits
+        run: python3 source/tools/upstream_watch.py --out upstream-report
+      - name: Post or update one issue per repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          gh label create upstream --repo "$REPO" --color 5319e7 --description "Upstream watch" 2>/dev/null || true
+          python3 - <<'EOF'
+          import json, os, subprocess
+          repo = os.environ["REPO"]
+          for entry in json.load(open("upstream-report/summary.json")):
+              title = f"Upstream watch: {entry['name']}"
+              body = open(f"upstream-report/{entry['slug']}.md", encoding="utf-8").read()
+              found = subprocess.run(["gh", "issue", "list", "--repo", repo, "--label", "upstream", "--state", "open",
+                                      "--search", f'"{title}" in:title', "--json", "number", "--jq", ".[0].number"],
+                                     capture_output=True, text=True).stdout.strip()
+              if entry["count"] == 0 and not found:
+                  continue
+              if found:
+                  subprocess.run(["gh", "issue", "edit", found, "--repo", repo, "--body", body], check=True)
+                  if entry["count"] > 0:
+                      subprocess.run(["gh", "issue", "comment", found, "--repo", repo, "--body",
+                                      f"Weekly watch: {entry['count']} new commits since the last review."], check=True)
+              else:
+                  subprocess.run(["gh", "issue", "create", "--repo", repo, "--title", title, "--label", "upstream",
+                                  "--body", body], check=True)
+          EOF

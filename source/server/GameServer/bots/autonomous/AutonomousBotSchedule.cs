@@ -356,28 +356,83 @@ public static class AutonomousBotSchedule
     public static readonly TimeSpan OverstayGrace = TimeSpan.FromMinutes(15);
     public static volatile int RecentOverstays;
 
+    #region Logging out as a player does (#485)
+
+    /// <summary>A bot that said its goodbye says it again only after this long (one that was attacked while quitting leaves quietly later).</summary>
+    public const long GoodbyeRepeatMs = 10 * 60_000L;
+    /// <summary>The line first, then it sits (or stands still) this long after it: 1.5 to 3 s.</summary>
+    public const int SitAfterLineMinMs = 1_500, SitAfterLineSpreadMs = 1_500;
+
+    /// <summary>The classic /quit: seated (or still) 18 to 24 seconds before the character leaves. From a 0..1 roll. Pure.</summary>
+    public static int QuitSeatedMs(double roll) => 18_000 + (int)Math.Round(Math.Clamp(roll, 0, 1) * 6_000);
+
+    /// <summary>Whether the bot says its goodbye line this time (not when it already said one in the last ten minutes). Pure.</summary>
+    public static bool SaysGoodbye(long? lastSaidAt, long now) => lastSaidAt is not { } at || now - at >= GoodbyeRepeatMs || now < at;
+
+    // Bots counting down a /quit: they hold still (the brain does nothing) until they leave or are attacked.
+    private static readonly ConcurrentDictionary<long, (GameBot Bot, long Until)> Quitting = new();
+    private static readonly ConcurrentDictionary<long, long> SaidGoodbyeAt = new();
+
+    /// <summary>True while a bot counts down its logout: it sits or stands still and does nothing (checked by the bot's brain).</summary>
+    public static bool IsQuitting(GameBot bot) => bot != null && !Quitting.IsEmpty && Quitting.TryGetValue(bot.DatabaseID, out var entry) &&
+                                                  ReferenceEquals(entry.Bot, bot) && entry.Until > GameLoop.GameLoopTime;
+
+    // An attack stops the countdown, as in the game: the bot stands and fights, and leaves at a later scan without a second goodbye.
+    private static void CancelQuit(GameBot bot)
+    {
+        if (bot != null && Quitting.TryRemove(bot.DatabaseID, out var entry) && ReferenceEquals(entry.Bot, bot))
+        {
+            bot.StandFromHabit();
+            LeavingNow.TryRemove(bot.DatabaseID, out _);
+            Log.Info($"LIVING_SERVER_LOGOUT_CANCELLED bot=\"{bot.Name}\" id={bot.DatabaseID} reason=attacked");
+        }
+    }
+
     private static void LogOut(GameBot bot, string topic)
     {
         LeavingNow[bot.DatabaseID] = 0;
-        if (AutonomousBotVoices.TryEventLine(bot, "session", out string line, topic))
+        long now = GameLoop.GameLoopTime;
+        // The goodbye first ("brb", "gn all"); the bot leaves only after it, seated for the game's twenty seconds.
+        if (SaysGoodbye(SaidGoodbyeAt.TryGetValue(bot.DatabaseID, out long said) ? said : null, now) &&
+            AutonomousBotVoices.TryEventLine(bot, "session", out string line, topic))
         {
+            SaidGoodbyeAt[bot.DatabaseID] = now;
             if (bot.Guild != null && AutonomousBotGuildSocial.HasListener(bot.Guild) && Random.Shared.NextDouble() < 0.6)
                 AutonomousLivingServer.Speak(bot, AutonomousLivingServer.Channel.Guild, line);
             else
                 AutonomousLivingServer.Speak(bot, AutonomousLivingServer.Channel.Say, line);
         }
+        int seated = QuitSeatedMs(Random.Shared.NextDouble());
+        int sitAfter = SitAfterLineMinMs + Random.Shared.Next(SitAfterLineSpreadMs);
+        Quitting[bot.DatabaseID] = (bot, now + sitAfter + seated + 5_000);
+        bot.StopMoving();
+        bot.StopFollowing();
+        _ = new ECSGameTimer(bot, _ =>
+        {
+            if (IsQuitting(bot))
+            {
+                bot.StopMoving();
+                bot.SitByHabit();   // stands still where sitting can't show
+            }
+            return 0;
+        }, sitAfter);
         _ = new ECSGameTimer(bot, timer =>
         {
             try
             {
+                if (!Quitting.TryRemove(bot.DatabaseID, out _))
+                    return 0;   // attacked meanwhile (CancelQuit)
                 if (CanLogOut(bot) && !WantsOnline(bot.PersistentRecord, DateTime.UtcNow))
                 {
                     // Only a bot that really left on a break says "back" when it returns.
                     if (topic == "brb")
                         ReturningFromBreak[bot.DatabaseID] = 0;
-                    Log.Info($"LIVING_SERVER_LOGOUT bot=\"{bot.Name}\" id={bot.DatabaseID} reason={topic} mode={CurrentMode}");
+                    SaidGoodbyeAt.TryRemove(bot.DatabaseID, out _);
+                    Log.Info($"LIVING_SERVER_LOGOUT bot=\"{bot.Name}\" id={bot.DatabaseID} reason={topic} mode={CurrentMode} seated_s={seated / 1000}");
                     bot.Delete();
                 }
+                else
+                    bot.StandFromHabit();
             }
             catch (Exception exception)
             {
@@ -388,8 +443,10 @@ public static class AutonomousBotSchedule
                 LeavingNow.TryRemove(bot.DatabaseID, out _);
             }
             return 0;
-        }, 2_500 + Random.Shared.Next(2_000));
+        }, sitAfter + seated);
     }
+
+    #endregion
 
     private static void RollBreaks(DateTime nowUtc)
     {
@@ -453,6 +510,7 @@ public static class AutonomousBotSchedule
     /// <summary>Anything that hits a "linkdead" bot wakes it at once (its connection "comes back").</summary>
     public static void OnAttacked(GameBot bot)
     {
+        CancelQuit(bot);
         if (bot != null && Frozen.TryGetValue(bot.DatabaseID, out var entry) && ReferenceEquals(entry.Bot, bot))
             Unfreeze(bot.DatabaseID, true);
     }

@@ -22,7 +22,7 @@ public sealed partial class AutonomousWorldBotController
 
     /// <summary>What one frontier scan knows about the rules that apply to it (see RvrFieldRules).</summary>
     private readonly record struct RvrScanContext(bool AtObjective, RvrFieldRules Rules, RvrBotAwareness Awareness,
-        RvrAwarenessProfile Profile);
+        RvrAwarenessProfile Profile, bool StealthNotice = false);
 
     private static RvrScanContext RvrContext(BotBrain brain, GameBot bot, bool committed)
     {
@@ -32,8 +32,19 @@ public sealed partial class AutonomousWorldBotController
         RvrFieldRules rules = Properties.RVR_BOT_PERCEPTION && !atObjective && Properties.RVR_BOT_FIELD_TACTICS
             ? RvrFieldRules.For(true, brain.RvrTacticsActive(), RvrTacticsSwitches.Current)
             : RvrFieldRules.None;
-        return new(atObjective, rules, awareness, AutonomousRvrPerception.Profile(awareness));
+        return new(atObjective, rules, awareness, AutonomousRvrPerception.Profile(awareness),
+            StealthNoticeApplies(Properties.RVR_BOT_PERCEPTION, Properties.RVR_BOT_PERCEPTION_BOTS, rules.Stealth));
     }
+
+    /// <summary>
+    /// #522: whether this scan may notice a stealthed enemy close up by RvrStealthNotice. In the field it is the field
+    /// rule (rvr_bot_perception_bots); now also at an objective and out of the tactics' scope (keep defenders, siege
+    /// fighters, battleground assaults), because those bots no longer uncover a stealthed player like monsters (the base
+    /// uncover timer leaves gamebots out, StealthRules.MayUncover): the same cap, chance and line of sight as in the field
+    /// instead of no stealth rule at all. Pure.
+    /// </summary>
+    public static bool StealthNoticeApplies(bool perception, bool perceptionBots, bool fieldStealthRule) =>
+        fieldStealthRule || perception && perceptionBots;
 
     /// <summary>What kind of target this is for the perception rule.</summary>
     public static RvrPerceivedKind PerceivedKind(GameLiving target) => target switch
@@ -136,11 +147,24 @@ public sealed partial class AutonomousWorldBotController
     /// </summary>
     private GameLiving[] PerceiveRvrTargets(GameBot bot, GameLiving[] visible, in RvrScanContext context)
     {
-        if (!Properties.RVR_BOT_PERCEPTION || context.AtObjective || visible.Length == 0)
+        if (visible.Length == 0)
             return visible;
-        RvrAwarenessProfile profile = context.Profile;
         long now = GameLoop.GameLoopTime;
         double interval = _frontierThreat.LastIntervalMilliseconds;
+        if (!Properties.RVR_BOT_PERCEPTION || context.AtObjective)
+        {
+            // #522: at an objective (or with the perception rule off) visible targets are engaged as before, and a stealthed
+            // one only once the stealth rule notices it (the scan let it through only within RvrStealthNotice.MaxRange).
+            if (!visible.Any(target => target.IsStealthed))
+                return visible;
+            Func<int> noDelay = () => 0;
+            var kept = new List<GameLiving>(visible.Length);
+            foreach (GameLiving target in visible)
+                if (!target.IsStealthed || context.StealthNotice && PerceiveStealthed(bot, target, context, now, interval, noDelay))
+                    kept.Add(target);
+            return kept.ToArray();
+        }
+        RvrAwarenessProfile profile = context.Profile;
         bool mayAnswerCall = MayAnswerRvrCall(bot);
         Func<int> reactionDelay = () => RvrReactionDelay(bot, profile);
         var engage = new List<GameLiving>(visible.Length);
@@ -251,7 +275,8 @@ public sealed partial class AutonomousWorldBotController
             target is GamePlayer vanisher && vanisher.EffectList.GetOfType<VanishEffect>() != null,
         ObserverStealthBonus: bot.BaseBuffBonusCategory[eProperty.Skill_Stealth],
         ObserverInCombatWithOther: bot.InCombat && bot.TargetObject != target,
-        LineOfSight: lineOfSight);
+        LineOfSight: lineOfSight,
+        TargetArcher: DOL.GS.ServerRules.StealthRules.IsArcher(target));
 
     /// <summary>
     /// A stealthed enemy in line of sight (the scan cast the ray): engaged once noticed by the close-range stealth rule

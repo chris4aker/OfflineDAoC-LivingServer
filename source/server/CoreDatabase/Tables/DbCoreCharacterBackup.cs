@@ -83,6 +83,12 @@ namespace DOL.Database
 			this.HairColor = character.HairColor;
 			this.HairStyle = character.HairStyle;
 			this.HasGravestone = character.HasGravestone;
+			this.GravestoneX = character.GravestoneX;
+			this.GravestoneY = character.GravestoneY;
+			this.GravestoneZ = character.GravestoneZ;
+			this.GravestoneHeading = character.GravestoneHeading;
+			this.GravestoneXp = character.GravestoneXp;
+			this.GravestoneCreated = character.GravestoneCreated;
 			this.Health = character.Health;
             this.IgnoreStatistics = character.IgnoreStatistics;
             this.Intelligence = character.Intelligence;

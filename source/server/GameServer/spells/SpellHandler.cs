@@ -470,7 +470,8 @@ namespace DOL.GS.Spells
 			else if (Caster is GameNPC npcOwner)
 			{
 				// NPCs initial LoS checks are handled by the casting component before ticking the spell handler.
-				HasLos = true;
+				// #521: nobody's client checks a gamebot's cast at another bot; the navmesh does (BotCastSight).
+				HasLos = !BotCastSight.Blocked(Caster, Target, Spell);
 
 				// Instrument songs are legal while moving. A bot is an NPC-backed
 				// player actor, so do not apply the generic NPC cast-stop rule to a
@@ -929,6 +930,10 @@ namespace DOL.GS.Spells
 						return false;
 					}
 
+					// #521: a gamebot's cast at another bot is checked again on the navmesh as it ends (BotCastSight).
+					if (BotCastSight.Blocked(m_caster, target, m_spell))
+						HasLos = false;
+
 					if (!HasLos)
 					{
 						if (verbose)
@@ -938,7 +943,9 @@ namespace DOL.GS.Spells
 					}
 				}
 
-				if (!m_caster.IsWithinRadius(target, Spell.CalculateEffectiveRange(m_caster)))
+				// Port of OpenDAoC-Core cbe604ce1 (live): a monster, guard or pet lands the spell it started; gamebots keep the check.
+				if (DOL.GS.ServerRules.NpcFinishRules.ChecksRangeAtCastEnd(m_caster) &&
+					!m_caster.IsWithinRadius(target, Spell.CalculateEffectiveRange(m_caster)))
 				{
 					if (verbose)
 						MessageToCaster("That target is too far away!", eChatType.CT_SpellResisted);
@@ -1029,7 +1036,9 @@ namespace DOL.GS.Spells
 					npcOwner.TurnTo(Target);
 			}
 
-			if (Properties.CHECK_LOS_DURING_CAST && GameLoop.GameLoopTime > _lastDuringCastLosCheckTime + Properties.CHECK_LOS_DURING_CAST_MINIMUM_INTERVAL)
+			// Port of OpenDAoC-Core cbe604ce1: monsters, guards and pets don't check during the cast (check_los_during_npc_cast).
+			if (DOL.GS.ServerRules.NpcFinishRules.ChecksLosDuringCast(m_caster) &&
+				GameLoop.GameLoopTime > _lastDuringCastLosCheckTime + Properties.CHECK_LOS_DURING_CAST_MINIMUM_INTERVAL)
 			{
 				_lastDuringCastLosCheckTime = GameLoop.GameLoopTime;
 
@@ -1115,6 +1124,8 @@ namespace DOL.GS.Spells
 							SendCastAnimation();
 							CastState = eCastState.Casting;
 							NotifyCompanionsOfHarmfulCast();
+							// The bots fighting this caster react to the cast at once: stun, interrupt (True165 8abbc61a8).
+							DOL.AI.Brain.BotBrain.NotifyEnemyCastStarted(Caster, Target, Spell);
 						}
 					}
 					else
@@ -2424,7 +2435,13 @@ namespace DOL.GS.Spells
 			if (m_spellLine.KeyName is GlobalSpellsLines.Item_Effects && m_spellItem != null)
 				spellLevel = m_spellItem.Template.LevelRequirement > 0 ? m_spellItem.Template.LevelRequirement : m_spellItem.Level;
 			else if (m_spellLine.KeyName is GlobalSpellsLines.Realm_Spells or GlobalSpellsLines.Reserved_Spells || playerCaster == null)
-				spellLevel = m_caster.EffectiveLevel; // NPCs go there too.
+			{
+				// NPCs go there too. #521: an autonomous gamebot casting at an enemy-realm player character rolls with the
+				// spell's level, as a player does.
+				spellLevel = m_caster is GameBot && m_spellLine.KeyName is not (GlobalSpellsLines.Realm_Spells or GlobalSpellsLines.Reserved_Spells)
+					? DOL.GS.ServerRules.PvpRules.SpellLevelForToHit(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(m_caster, target), Spell.Level, m_caster.EffectiveLevel)
+					: m_caster.EffectiveLevel;
+			}
 			else
 			{
 				if (m_spellLine.KeyName is GlobalSpellsLines.Combat_Styles_Effect || m_spellLine.KeyName.StartsWith(GlobalSpellsLines.Champion_Lines_StartWith))
@@ -3069,7 +3086,8 @@ namespace DOL.GS.Spells
 				else
 					spec = 0;
 
-				spellDamage = stat * (spellDamage / 124 + 1 / 23) * (1 + spec * 0.004);
+				// 23.0: integer 1 / 23 was always 0 (OpenDAoC-Core d0cafbd5e).
+				spellDamage = stat * (spellDamage / 124 + 1 / 23.0) * (1 + spec * 0.004);
 				return Math.Max(0, spellDamage);
 			}
 
@@ -3227,7 +3245,7 @@ namespace DOL.GS.Spells
 			if (Caster.Chance(RandomDeckEvent.CriticalChance, criticalChance))
 			{
 				double min = 0.1;
-				double max = ad.Target is GamePlayer ? 0.5 : 1.0;
+				double max = DOL.GS.ServerRules.PvpRules.CriticalCap(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(ad.Target, Caster)); // #521
 				double criticalMod = min + Caster.GetPseudoDoubleIncl(RandomDeckEvent.CriticalVariance) * (max - min);
 				criticalDamage = (int) (finalDamage * criticalMod);
 			}

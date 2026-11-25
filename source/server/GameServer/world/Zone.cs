@@ -677,6 +677,11 @@ namespace DOL.GS
 
         #endregion
 
+        /// <summary>Whether the point lies in this zone's bounds (port of OpenDAoC-Core 21443ebd6; Region.GetZone's test).</summary>
+        public bool IsPointInZone(System.Numerics.Vector3 position) => IsPointInZone((int) position.X, (int) position.Y);
+
+        public bool IsPointInZone(int x, int y) => XOffset <= x && YOffset <= y && XOffset + Width > x && YOffset + Height > y;
+
         public bool IsUnderwater(int x, int y, int z)
         {
             // Special land areas below the waterlevel in NF

@@ -174,7 +174,9 @@ These are mostly the bots' own diagnostics, counted over about six hours:
 | 103 | SQL queries over the time budget | |
 
 **Memory:** no leak seen. Live heap stayed at 1.6-1.8 GB from 05:48 to 11:48 across restarts, and working set at
-5.8-7.0 GB.
+5.8-7.0 GB. Correction (#540, 1.2.2 `868a82d`, 2026-11-24): handles grew 2,134 to 5,260 in 4.5 hours with threads flat, the
+live heap about 75 MB an hour, and 49 blocking gen-2 collections froze the server 1.1-2.4 s. See #540 and the 1.2.3
+changelog.
 
 ## Open from the in-game checks (2026-10-27)
 

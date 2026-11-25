@@ -235,6 +235,8 @@ namespace DOL.GS
         /// <summary>A tactic's hold that began at <paramref name="since"/> no longer holds (pure; long.MinValue = already expired).</summary>
         public static bool PullWaitExpired(long since, long now) => since == long.MinValue || now - since >= PullWaitLimitMilliseconds;
         private readonly Dictionary<string, GameNPC> _finals = new();
+        /// <summary>The named the period's order last pointed to (RaidNamedOrder), for its log line.</summary>
+        private string _namedOrderNext;
         private GameNPC _target;
         private int _probeCursor;
         // From rambodolphin13/DividedRealms (RealmRaidDungeonRoute.cs, DR-dev-0.1g), whose overnight 4,500-bot run saw the
@@ -3457,6 +3459,10 @@ namespace DOL.GS
             if (zone == null || !nav.IsAvailable || !nav.HasNavmesh(zone))
             { Hold = true; Status = "Blocked: dungeon navigation unavailable"; return; }
             GameNPC[] encounters = live.Where(n => n is IGameEpicNpc && n.IsAlive && n.ObjectState == GameObject.eObjectState.Active).ToArray();
+            // A dungeon whose named are fought in the period's order (RaidNamedOrder, 1.2.3 #414: Fomor City): a later named is no
+            // target while an earlier one lives, unless it fights the raid.
+            string[] namedOrder = RaidNamedOrder.For(_region);
+            string[] aliveNamed = namedOrder.Length == 0 ? [] : encounters.Select(n => n.GetType().Name).ToArray();
             // Monsters that would join a boss's fight (EpicEncounterTactics.ClearFirst: Spindler Broodmother's adult spindlers)
             // are killed before that boss: each is a target although another of its name is already dead, and although a play
             // test's focus names only the boss.
@@ -3479,6 +3485,7 @@ namespace DOL.GS
                 !((n is IGameEpicNpc || _objectives != null && RealmRaidNeutralEvents.IsObjective(_objectives, n.Name)) &&
                   _clearedNames.Contains(n.Name) && !_finalTypes.Contains(n.GetType().Name) && !clearFirst.ContainsKey(n)) &&
                 !LeftForTheFinal(n, now) &&
+                (namedOrder.Length == 0 || RaidNamedOrder.WaitsFor(namedOrder, n.GetType().Name, n.InCombat, aliveNamed) == null) &&
                 // A neutral expedition goes for its named encounters only; monsters on the way are
                 // fought when they attack (Darkness Falls holds 2,465 spawns).
                 // A play test's focus leaves out the other named encounters (and the final, unless named) while they are out of
@@ -3501,6 +3508,16 @@ namespace DOL.GS
                 // everything else: High Lord Baln's Dukes would have drawn the Darkness Falls raid straight to his wing.
                 .ThenBy(n => IsEncounterAdd(n, Front, encounters) || _objectives == null && clearFirst.ContainsKey(n) ? 0 : 1)
                 .ThenBy(n => WalkEstimate(Front, new(n.X, n.Y, n.Z))).ToArray();
+            if (namedOrder.Length > 0)
+            {
+                string next = RaidNamedOrder.Next(namedOrder, aliveNamed);
+                if (next != _namedOrderNext)
+                {
+                    _namedOrderNext = next;
+                    int heldBack = aliveNamed.Count(t => RaidNamedOrder.WaitsFor(namedOrder, t, false, aliveNamed) != null);
+                    log.Info(RaidNamedOrder.Line(_region, next, heldBack));
+                }
+            }
             // Once a minute while the sweep runs: the monsters it left out because they came back (SweepTarget).
             if (_objectives == null && now >= _nextRespawnsLeftLog && now - _routeStartTick < EpicTrashPhaseMilliseconds)
             {

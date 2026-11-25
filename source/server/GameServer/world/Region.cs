@@ -1181,11 +1181,9 @@ namespace DOL.GS
         /// <returns>The zone you're retrieving or null if it couldn't be found</returns>
         public Zone GetZone(int x, int y)
         {
-            int varX = x;
-            int varY = y;
             foreach (Zone zone in m_zones)
             {
-                if (zone.XOffset <= varX && zone.YOffset <= varY && (zone.XOffset + zone.Width) > varX && (zone.YOffset + zone.Height) > varY)
+                if (zone.IsPointInZone(x, y))
                     return zone;
             }
             return null;

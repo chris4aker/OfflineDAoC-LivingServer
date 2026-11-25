@@ -667,8 +667,22 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("world", "check_los_during_ranged_attack_minimum_interval", "The minimum interval (milliseconds) between two LoS checks performed during a ranged attack.", 200)]
 		public static int CHECK_LOS_DURING_RANGED_ATTACK_MINIMUM_INTERVAL;
 
-		[ServerProperty("world", "check_los_during_cast", "Should we perform LoS checks during spell casts.", true)]
+		[ServerProperty("world", "check_los_during_cast", "Should we perform LoS checks during spell casts (players and gamebots; see check_los_during_npc_cast for other NPCs).", true)]
 		public static bool CHECK_LOS_DURING_CAST;
+
+		// Port of OpenDAoC-Core cbe604ce1 and 978b991fc (live): a monster, guard or pet lands what it started unless crowd
+		// controlled. Gamebots keep the player's checks (NpcFinishRules).
+		[ServerProperty("world", "check_los_during_npc_cast", "Should NPCs other than gamebots perform LoS checks during spell casts.", false)]
+		public static bool CHECK_LOS_DURING_NPC_CAST;
+
+		[ServerProperty("world", "check_range_at_npc_cast_end", "Should NPCs other than gamebots check range at the end of a spell cast.", false)]
+		public static bool CHECK_RANGE_AT_NPC_CAST_END;
+
+		[ServerProperty("world", "check_los_during_npc_ranged_attack", "Should NPCs other than gamebots perform LoS checks during a bow draw.", false)]
+		public static bool CHECK_LOS_DURING_NPC_RANGED_ATTACK;
+
+		[ServerProperty("world", "check_range_at_npc_ranged_attack_end", "Should NPCs other than gamebots check range at the end of a bow draw.", false)]
+		public static bool CHECK_RANGE_AT_NPC_RANGED_ATTACK_END;
 
 		[ServerProperty("world", "check_los_during_cast_minimum_interval", "The minimum interval (milliseconds) between two LoS checks performed during a spell cast.", 200)]
 		public static int CHECK_LOS_DURING_CAST_MINIMUM_INTERVAL;
@@ -2123,6 +2137,10 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("pve", "pve_exp_loss_level", "Which level should players killed in PvE start losing experience?", (byte)6)]
 		public static byte PVE_EXP_LOSS_LEVEL;
 
+		// After OpenDAoC-Core e10348f31: a saved gravestone (it survives a restart) is removed this many days after it was made.
+		[ServerProperty("world", "gravestone_decay_time", "Minimum time (days) before a gravestone is removed from the world. 0 means no gravestones will be removed.", 7)]
+		public static int GRAVESTONE_DECAY_TIME;
+
 		/// <summary>
 		/// PvE Conn Loss Start Level
 		/// </summary>
@@ -2948,6 +2966,10 @@ namespace DOL.GS.ServerProperties
 		/// back when raised or released. The new client is not affected; it shows the fall already.</summary>
 		[ServerProperty("bots", "bot_death_animation", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new.", true)]
 		public static bool BOT_DEATH_ANIMATION;
+
+		/// <summary>Realism 3a (#485, owner decision 2026-11-24): bots look like players unless this is switched on.</summary>
+		[ServerProperty("bots", "bot_show_as_bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines.", false)]
+		public static bool BOT_SHOW_AS_BOTS = false;
 
 		[ServerProperty("bots", "epic_armor_counts_bots", "Gamebots (autonomous and companions) count when an epic boss's or epic NPC's armor drops with the number of attackers, at epic_armor_bot_strength_percent of a player: by default each bot takes off half a player's step (0.02 instead of 0.04), and bots alone take off at most half of the full range (an epic boss from 1.6 to 1.0, never to the 0.4 floor). Real players and pets keep their own rule on top, down to 0.4. False is the stock rule: only players and pets count.", true)]
 		public static bool EPIC_ARMOR_COUNTS_BOTS = true;

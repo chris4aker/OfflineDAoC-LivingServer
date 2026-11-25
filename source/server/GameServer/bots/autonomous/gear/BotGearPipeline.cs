@@ -217,6 +217,8 @@ namespace DOL.GS
             BotGearSet.Context context = BotGearSet.For(bot);
             DbInventoryItem[] worn = BotGearSet.Worn(bot);
             var fills = new List<Fill>();
+            // Issue #540: TryGetEquipmentUpgrade's set check reuses one context and worn score for the whole scan.
+            using BotGearSet.ScanScope gearScan = BotGearSet.BeginScan(bot);
             foreach (DbInventoryItem item in AutonomousBotEconomy.FindAffordableExchangeItems(bot, int.MaxValue))
             {
                 if (item.SellPrice > budget || item.SellPrice > ItemValuePriceIndex.Instance.Bid(item, ItemValue165.MoodHigh) ||

@@ -169,6 +169,7 @@ public static class RvrFieldReader
             NoteKilled(groupKey, previousCall, now);
 
         int mezDuration = 0, stunDuration = 0;
+        GameLiving boardCaster = null;
         var members = ImmutableDictionary.CreateBuilder<long, RvrMemberFacts>();
         int lowestZ = int.MaxValue;
         foreach (RvrCombatant member in board.Members)
@@ -176,6 +177,7 @@ public static class RvrFieldReader
             if (member?.Living == null || member.IsPet)
                 continue;
             lowestZ = Math.Min(lowestZ, member.Z);
+            boardCaster ??= member.Living;   // #521: the immunity reads below are for a caster of this side
             RvrMemberFacts facts = ReadMember(member.Living, ref mezDuration, ref stunDuration);
             long controlledSince = 0;
             lock (memory.Lock)
@@ -218,8 +220,8 @@ public static class RvrFieldReader
                     OnWall = lowestZ != int.MaxValue && enemy.Z > lowestZ + WallHeight && OnKeepWall(living),
                     BigSpell = living.effectListComponent?.ContainsEffectForEffectType(eEffect.MasteryOfConcentration) == true,
                     JustResurrected = resurrected || RecentResurrectionIllness(living, now),
-                    MezImmune = !enemy.IsPet && RvrCrowdControlPlan.MezImmune(living, mezDuration),
-                    StunImmune = !enemy.IsPet && RvrCrowdControlPlan.StunImmune(living, stunDuration),
+                    MezImmune = !enemy.IsPet && RvrCrowdControlPlan.MezImmune(living, mezDuration, boardCaster),
+                    StunImmune = !enemy.IsPet && RvrCrowdControlPlan.StunImmune(living, stunDuration, boardCaster),
                     RootImmune = !enemy.IsPet && RvrCrowdControlPlan.RootImmune(living),
                 };
             }

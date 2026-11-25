@@ -291,13 +291,22 @@ namespace DOL.AI.Brain
             if (!brain.Body.IsAlive)
                 return;
 
+            // Port of OpenDAoC-Core 33774a6d8: only entities the other brain doesn't hold yet. Called in tight loops (bring a
+            // friend, scouts), it piled up aggro until it overflowed.
             foreach (var pair in AggroList)
+            {
+                if (brain.AggroList.ContainsKey(pair.Key))
+                    continue;
+
                 brain.AddToAggroList(pair.Key, pair.Value.Base);
+            }
         }
 
         public virtual void AddToAggroList(GameLiving living, long aggroAmount = 0)
         {
-            if (Body.IsConfused || !Body.IsAlive || living == null)
+            // Port of OpenDAoC-Core 40fa0f68f: a dead living (a LoS reply that came back after it died, then released)
+            // never enters the list; a ranged mob shot or cast at a player who had just released.
+            if (Body.IsConfused || !Body.IsAlive || living == null || !living.IsAlive)
                 return;
 
             ForceAddToAggroList(living, aggroAmount);
@@ -346,26 +355,9 @@ namespace DOL.AI.Brain
             AggroList.AddOrUpdate(living, Add, Update, aggroAmount);
             (living as GameNPC)?.NoteAggroHolder(this);
 
-            if (living is GamePlayer player)
-            {
-                AddPetAndSubPetsToAggroList(player);
-
-                // Add the whole group to the aggro list.
-                // This is done on every attack, but we may consider doing it only once per group, somehow.
-                if (player.Group != null)
-                {
-                    foreach (GamePlayer playerInGroup in player.Group.GetPlayersInTheGroup())
-                    {
-                        if (playerInGroup != living)
-                        {
-                            if (!AggroList.ContainsKey(playerInGroup))
-                                AggroList.TryAdd(playerInGroup, new(0));
-
-                            AddPetAndSubPetsToAggroList(playerInGroup);
-                        }
-                    }
-                }
-            }
+            // Port of OpenDAoC-Core f5afdcc52: the player's pets and group are added when the player attacks
+            // (PropagateAggroToGroupMembers), no longer when the mob merely notices the player. A body pull brings the mob to
+            // the one who pulled it, as in 1.65.
 
             // Change state and reschedule the next think tick to improve responsiveness.
             if (FSM.GetCurrentState() != FSM.GetState(eFSMStateType.AGGRO) && HasAggro)
@@ -385,6 +377,47 @@ namespace DOL.AI.Brain
             {
                 oldValue.Base = Math.Max(0, oldValue.Base + arg);
                 return oldValue;
+            }
+        }
+
+        /// <summary>
+        /// The aggro an attack spreads (OpenDAoC-Core f5afdcc52 and abb7aecd0): a player attacker adds its pets and its group's
+        /// players and pets at zero; a pet attacker adds its owner at zero, so a pet pull that does no damage (a debuff)
+        /// still sends the mob to the pet first and then to its owner. Body pulls (proximity aggro) spread nothing.
+        /// </summary>
+        protected void PropagateAggroToGroupMembers(GameLiving attacker)
+        {
+            if (attacker == null || Body.IsConfused || !Body.IsAlive || !AggroList.ContainsKey(attacker))
+                return;
+
+            if (attacker is GamePlayer player)
+            {
+                AddPetAndSubPetsToAggroList(player);
+
+                // This is done on every attack, but we may consider doing it only once per group, somehow.
+                if (player.Group != null)
+                {
+                    foreach (GamePlayer playerInGroup in player.Group.GetPlayersInTheGroup())
+                    {
+                        if (playerInGroup == attacker)
+                            continue;
+
+                        if (!AggroList.ContainsKey(playerInGroup))
+                            AggroList.TryAdd(playerInGroup, new(0));
+
+                        AddPetAndSubPetsToAggroList(playerInGroup);
+                    }
+                }
+            }
+            else if (attacker is GameNPC npc && npc.Brain is IControlledBrain brain)
+            {
+                // The owner may be a player or a gamebot (a pet's owner is the living that would have been attacked
+                // next either way); upstream reads the player owner only, and a gamebot's pet left it null.
+                GameLiving owner = brain.GetLivingOwner();
+
+                if (owner != null && owner.IsAlive && owner != Body && !AggroList.ContainsKey(owner) &&
+                    CompanionEngagementMode.Allows(Body, owner) && AggroList.TryAdd(owner, new(0)))
+                    (owner as GameNPC)?.NoteAggroHolder(this);
             }
         }
 
@@ -777,10 +810,14 @@ namespace DOL.AI.Brain
                 // A pet generates 100% of the aggro from its damage; the owner receives 30% additional aggro as a tag, without reducing the pet's contribution.
                 // The pet should be added first to the aggro list in case the attack does no damage (see `AddToAggroList` implementation).
                 AddToAggroList(NpcAttacker, damage);
+                PropagateAggroToGroupMembers(NpcAttacker);
                 AddToAggroList(controlledBrain.Owner, (int) (damage * 0.3));
+                PropagateAggroToGroupMembers(controlledBrain.Owner);
+                return;
             }
-            else
-                AddToAggroList(attacker, damage);
+
+            AddToAggroList(attacker, damage);
+            PropagateAggroToGroupMembers(attacker);
         }
 
         #endregion

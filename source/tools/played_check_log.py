@@ -127,6 +127,7 @@ RAID_DUNGEON_REGIONS = {
     "dungeon-albion-krondon": "61", "dungeon-albion-avalon": "50", "dungeon-albion-crystal": "62",
     "dungeon-albion-corrupt": "277", "dungeon-midgard-trollheim": "150", "dungeon-midgard-iarnvidiur": "161",
     "dungeon-midgard-dodens": "246", "dungeon-hibernia-tursuil": "190", "dungeon-hibernia-marfach": "276",
+    "dungeon-hibernia-fomor": "180",
 }
 WAY_IN_REGIONS = {"dungeon-albion-crystal": "50", "summoners-albion": "277", "summoners-midgard": "246",
                   "summoners-hibernia": "276"}
@@ -589,7 +590,8 @@ simple("CUSTOM_CLASS_REFUSED", "REALM_RAID_TALE_FIRST", "REALM_RAID_TALE",
        "EPIC_SWEEP_ADD", "EPIC_SWEEP_RAID_START", "EPIC_SWEEP_RAID_DONE", "EPIC_SWEEP_RAID_NOT_STARTED",
        "EPIC_SWEEP_HELD", "RVR_SPOT", "RVR_ROAM_CHECK", "RVR_ROAM_HUNT", "RVR_ROAM_MOVE_ON", "RVR_LANE_FALLBACK",
        "RVR_LANE_REJECTED", "RVR_ASSIST_CALL", "RVR_ASSIST_SWITCH", "RVR_CC_ASSIGN", "RVR_INTERRUPT", "RVR_PEEL",
-       "RVR_KITE", "RVR_STEALTH_OPEN", "CRAFT_SESSION_START", "ECON_SUPPLY",
+       "RVR_KITE", "RVR_STEALTH_OPEN", "RVR_STEALTH_ARCHER_OPEN", "RVR_STEALTH_TRAVEL", "RVR_STEALTH_UNCOVER",
+       "CRAFT_SESSION_START", "ECON_SUPPLY",
        "HIRE_WORD_165", "HIRED_COMPANION", "HIRED_COMPANION_SUMMONED", "HIRED_COMPANION_DISMISSED",
        "HIRED_COMPANION_REVIVED", "HIRED_COMPANION_RELEASED", "HIRED_COMPANION_ORPHAN",
        "HIRED_COMPANION_DELETE_FAILED", "BOT_PEOPLE_SUMMARY", "BOT_SKILL_BUDGET",

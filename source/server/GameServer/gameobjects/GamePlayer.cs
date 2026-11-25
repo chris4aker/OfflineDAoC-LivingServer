@@ -22,6 +22,7 @@ using DOL.GS.PlayerTitles;
 using DOL.GS.Quests;
 using DOL.GS.RealmAbilities;
 using DOL.GS.ServerProperties;
+using DOL.GS.ServerRules;
 using DOL.GS.SkillHandler;
 using DOL.GS.Spells;
 using DOL.GS.Styles;
@@ -1701,8 +1702,8 @@ namespace DOL.GS
 
                     GameGravestone gravestone = new GameGravestone(this, lostExp);
                     gravestone.AddToWorld();
-                    character.GravestoneRegion = gravestone.CurrentRegionID;
-                    character.HasGravestone = true;
+                    // 1.2.3: saved, so a server restart keeps it (GameGravestone.RestoreFor).
+                    GameGravestone.Remember(character, gravestone);
                     Out.SendMessage(LanguageMgr.GetTranslation(Client.Account.Language, "GamePlayer.Release.GraveErected"), eChatType.CT_YouDied, eChatLoc.CL_SystemWindow);
                     Out.SendMessage(LanguageMgr.GetTranslation(Client.Account.Language, "GamePlayer.Release.ReturnToPray"), eChatType.CT_YouDied, eChatLoc.CL_SystemWindow);
                 }
@@ -1926,6 +1927,7 @@ namespace DOL.GS
 
                 gravestone.XPValue = 0;
                 gravestone.Delete();
+                GameGravestone.Forget(DBCharacter);
                 m_prayAction = null;
                 return 0;
             }), 5000);
@@ -11099,6 +11101,9 @@ namespace DOL.GS
             /// <param name="actionSource">The action source</param>
             public UncoverStealthAction(GamePlayer actionSource) : base(actionSource) { }
 
+            /// <summary>The sight checks asked of the client: the monster's object id, its distance and when (for the log row).</summary>
+            private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (double Distance, long At)> _pending = new();
+
             /// <summary>
             /// Called on every timer tick
             /// </summary>
@@ -11109,73 +11114,19 @@ namespace DOL.GS
                 if (player.Client.Account.PrivLevel > 1)
                     return 0;
 
-                foreach (GameNPC npc in player.GetNPCsInRadius(1024))
+                // #522: the one uncover rule (StealthRules.Look): only monsters and guards uncover. Enemy gamebots, companions
+                // and the pets of any of them see a stealther by the player rule (RvrStealthNotice) instead; before, every
+                // enemy gamebot and its pets uncovered the player as if they were monsters.
+                StealthRules.Look(player, roll =>
                 {
-                    // Friendly mobs do not uncover stealthed players
-                    if (!GameServer.ServerRules.IsAllowedToAttack(npc, player, true))
-                        continue;
-
-                    // Npc with player owner don't uncover
-                    if (npc.Brain != null
-                        && (npc.Brain as IControlledBrain) != null
-                        && (npc.Brain as IControlledBrain).GetPlayerOwner() != null)
-                        continue;
-
-                    double npcLevel = Math.Max(npc.Level, 1.0);
-                    double stealthLevel = player.GetModifiedSpecLevel(Specs.Stealth);
-                    double detectRadius = 125.0 + ((npcLevel - stealthLevel) * 20.0);
-
-                    // we have detect hidden and enemy don't = higher range
-                    if (npc.HasAbility(Abilities.DetectHidden) &&
-                        !player.HasAbility(Abilities.DetectHidden) &&
-                        !player.effectListComponent.ContainsEffectForEffectType(eEffect.Camouflage) &&
-                        !player.effectListComponent.ContainsEffectForEffectType(eEffect.Vanish))
+                    if (roll.Sense == UncoverSense.Sight)
                     {
-                        detectRadius += 125;
+                        _pending[roll.By.ObjectID] = (roll.Distance, GameLoop.GameLoopTime);
+                        player.Out.SendLosCheckRequest(player, roll.By, this);
                     }
-
-                    if (detectRadius < 126) detectRadius = 126;
-
-                    double distanceToPlayer = npc.GetDistanceTo(player);
-
-                    if (distanceToPlayer > detectRadius)
-                        continue;
-
-                    double fieldOfView = 90.0;  //90 degrees  = standard FOV
-                    double fieldOfListen = 120.0; //120 degrees = standard field of listening
-
-                    if (npc.Level > 50)
-                        fieldOfListen += (npc.Level - player.Level) * 3;
-
-                    double angle = npc.GetAngle(player);
-
-                    //player in front
-                    fieldOfView /= 2.0;
-                    bool canSeePlayer = (angle >= 360 - fieldOfView || angle < fieldOfView);
-
-                    //If npc can not see nor hear the player, continue the loop
-                    fieldOfListen /= 2.0;
-                    if (canSeePlayer == false &&
-                        !(angle >= (45 + 60) - fieldOfListen && angle < (45 + 60) + fieldOfListen) &&
-                        !(angle >= (360 - 45 - 60) - fieldOfListen && angle < (360 - 45 - 60) + fieldOfListen))
-                        continue;
-
-                    double chanceMod = 1.0;
-
-                    //Chance to detect player decreases after 125 coordinates!
-                    if (distanceToPlayer > 125)
-                        chanceMod = 1f - (distanceToPlayer - 125.0) / (detectRadius - 125.0);
-
-                    double chanceToUncover = 0.1 + (npc.Level - stealthLevel) * 0.01 * chanceMod;
-
-                    if (Util.Chance(chanceToUncover))
-                    {
-                        if (canSeePlayer)
-                            player.Out.SendLosCheckRequest(player, npc, this);
-                        else
-                            npc.TurnTo(player, 10000);
-                    }
-                }
+                    else
+                        roll.By.TurnTo(player, StealthRules.HearingTurnMilliseconds);
+                });
 
                 return Interval;
             }
@@ -11187,10 +11138,14 @@ namespace DOL.GS
                 if (target == null || !player.IsStealthed)
                     return;
 
+                _pending.TryRemove(targetId, out var asked);
                 if (response is LosCheckResponse.True)
                 {
                     player.Out.SendMessage($"{target.GetName(0, true)} uncovers you!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                     player.Stealth(false);
+                    // #522 (#505's measuring): every uncover of the player is logged, so the change is measured.
+                    if (target is GameNPC by)
+                        RvrStealthRecord.Uncovered(player, by, asked.Distance > 0 ? asked.Distance : by.GetDistanceTo(player), UncoverSense.Sight);
                 }
             }
         }
@@ -11202,19 +11157,11 @@ namespace DOL.GS
                 return true;
             if (effectListComponent.ContainsEffectForEffectType(eEffect.TrueSight))
                 return true;
-            int stealthLevel = Math.Min(50, bot.GetModifiedSpecLevel(Specs.Stealth));
-            int levelDiff = Math.Max(0, Level - stealthLevel);
-            bool camouflage = bot.effectListComponent.ContainsEffectForEffectType(eEffect.Camouflage);
-            bool vanish = bot.effectListComponent.ContainsEffectForEffectType(eEffect.Vanish);
-            if (vanish)
+            // #522: the one "see a stealther" rule (StealthRules.SeeRange), the same as against a stealthed player.
+            StealthLook look = StealthRules.LookOf(this, bot);
+            if (look.Vanish)
                 return false;
-            int range = HasAbility(Abilities.DetectHidden) && !bot.HasAbility(Abilities.DetectHidden) && !camouflage
-                ? levelDiff * 50 + 250
-                : levelDiff * 20 + 125;
-            if (HasAbilityType(typeof(AtlasOF_SeeHidden)) && bot.CharacterClass?.IsAssassin != true && !camouflage)
-                range = Math.Max(range, 2700 - 36 * stealthLevel);
-            range += BaseBuffBonusCategory[eProperty.Skill_Stealth];
-            return IsWithinRadius(bot, Math.Min(range, 1900));
+            return IsWithinRadius(bot, StealthRules.SeeRange(look));
         }
 
         public virtual bool CanDetect(GameObject enemy)
@@ -11252,86 +11199,10 @@ namespace DOL.GS
                      * -See Hidden range = 2700 - (38 * your stealth spec)
                      */
 
-                    int enemyStealthLevel = Math.Min(50, enemyPlayer.GetModifiedSpecLevel(Specs.Stealth));
-                    int levelDiff = Math.Max(0, Level - enemyStealthLevel);
-                    int range = 0;
-
-                    // Detect Hidden works only if the enemy doesn't have it or camouflage or vanish.
-                    // According to https://disorder.dk/daoc/stealth/, it's possible that the range per level difference is supposed to be 50 even when Detect Hidden is cancelled out.
-                    if (HasAbility(Abilities.DetectHidden) &&
-                        !enemyPlayer.HasAbility(Abilities.DetectHidden) &&
-                        !enemyPlayer.effectListComponent.ContainsEffectForEffectType(eEffect.Camouflage) &&
-                        !enemyPlayer.effectListComponent.ContainsEffectForEffectType(eEffect.Vanish))
-                    {
-                        range = levelDiff * 50 + 250;
-                    }
-                    else
-                        range = levelDiff * 20 + 125;
-
-                    // See Hidden only works against non assassin classes, if they don't have Camouflage enabled.
-                    if (HasAbilityType(typeof(AtlasOF_SeeHidden)) &&
-                        !enemyPlayer.CharacterClass.IsAssassin &&
-                        !enemyPlayer.effectListComponent.ContainsEffectForEffectType(eEffect.Camouflage))
-                    {
-                        // https://forums.freddyshouse.com/threads/scouts-and-stealth.139740/
-                        range = Math.Max(range, 2700 - 36 * enemyStealthLevel);
-                    }
-
-                    // Mastery of Stealth
-                    // Disabled. This is NF MoS. OF Version does not add range, only movement speed.
-                    /*RAPropertyEnhancer mos = GetAbility<MasteryOfStealthAbility>();
-                    if (mos != null && !enemyHasCamouflage)
-                    {
-                        if (!HasAbility(Abilities.DetectHidden) || !enemy.HasAbility(Abilities.DetectHidden))
-                            range += mos.GetAmountForLevel(CalculateSkillLevel(mos));
-                    }*/
-
-                    range += BaseBuffBonusCategory[eProperty.Skill_Stealth];
-
-                    // //Buff (Stealth Detection)
-                    // //Increases the target's ability to detect stealthed players and monsters.
-                    // GameSpellEffect iVampiirEffect = SpellHandler.FindEffectOnTarget((GameLiving)this, "VampiirStealthDetection");
-                    // if (iVampiirEffect != null)
-                    //     range += (int)iVampiirEffect.Spell.Value;
-                             //
-                    // //Infill Only - Greater Chance to Detect Stealthed Enemies for 1 minute
-                    // //after executing a klling blow on a realm opponent.
-                    // GameSpellEffect HeightenedAwareness = SpellHandler.FindEffectOnTarget((GameLiving)this, "HeightenedAwareness");
-                    // if (HeightenedAwareness != null)
-                    //     range += (int)HeightenedAwareness.Spell.Value;
-                    //
-                    // //Nightshade Only - Greater chance of remaining hidden while stealthed for 1 minute
-                    // //after executing a killing blow on a realm opponent.
-                    // GameSpellEffect SubtleKills = SpellHandler.FindEffectOnTarget((GameLiving)enemy, "SubtleKills");
-                    // if (SubtleKills != null)
-                    // {
-                    //     range -= (int)SubtleKills.Spell.Value;
-                    //     if (range < 0) range = 0;
-                    // }
-                    //
-                    // // Apply Blanket of camouflage effect
-                    // GameSpellEffect iSpymasterEffect1 = SpellHandler.FindEffectOnTarget((GameLiving)enemy, "BlanketOfCamouflage");
-                    // if (iSpymasterEffect1 != null)
-                    // {
-                    //     range -= (int)iSpymasterEffect1.Spell.Value;
-                    //     if (range < 0) range = 0;
-                    // }
-                    //
-                    // // Apply Lookout effect
-                    // GameSpellEffect iSpymasterEffect2 = SpellHandler.FindEffectOnTarget((GameLiving)this, "Loockout");
-                    // if (iSpymasterEffect2 != null)
-                    //     range += (int)iSpymasterEffect2.Spell.Value;
-                    //
-                    // // Apply Prescience node effect
-                    // GameSpellEffect iConvokerEffect = SpellHandler.FindEffectOnTarget((GameLiving)enemy, "Prescience");
-                    // if (iConvokerEffect != null)
-                    //     range += (int)iConvokerEffect.Spell.Value;
-
-                    // Hard cap.
-                    if (range > 1900)
-                        range = 1900;
-
-                    return IsWithinRadius(enemy, range);
+                    // #522: the one "see a stealther" rule (StealthRules.SeeRange): normal, Detect Hidden, See Hidden at its
+                    // 1.62 strength, the stealth-detection bonus and the 1,900 cap. The pre-#522 lines (critshot thread 3142;
+                    // freddyshouse "scouts and stealth") are in git history. Mastery of Stealth (OF) adds speed only.
+                    return IsWithinRadius(enemy, StealthRules.SeeRange(StealthRules.LookOf(this, enemyPlayer)));
                 }
                 case eGameObjectType.NPC:
                 {
@@ -11851,6 +11722,19 @@ namespace DOL.GS
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Changes the primary craft and queues the crafting save, so the choice survives a relog even when no skill
+        /// changes with it (OpenDAoC-Core 20a563b05).
+        /// </summary>
+        public virtual void ChangeCraftingPrimarySkill(eCraftingSkill craftingSkill)
+        {
+            lock (_craftingLock)
+            {
+                CraftingPrimarySkill = craftingSkill;
+                CraftingProgressMgr.TrackChange(this, m_craftingSkills);
+            }
         }
 
         /// <summary>

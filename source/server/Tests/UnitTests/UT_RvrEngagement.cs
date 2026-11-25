@@ -593,7 +593,7 @@ namespace DOL.UnitTests
                 Assert.That(RvrEngagement.RetreatThreshold(2, 0.5), Is.GreaterThan(RvrEngagement.RetreatThreshold(0, 0.5)));
                 Assert.That(RvrEngagement.EngageThreshold(0, 1.0), Is.LessThan(RvrEngagement.EngageThreshold(0, 0.0)), "a bold leader engages sooner");
                 Assert.That(RvrEngagement.WipedRepeatedly(2), Is.False);
-                Assert.That(RvrEngagement.WipedRepeatedly(3), Is.True, "AutonomousRvrDirector's rule: three wipes");
+                Assert.That(RvrEngagement.WipedRepeatedly(3), Is.True, "the old director's rule (deleted, #530): three wipes");
             });
             // The same just-fair fight (odds 0.51, a veteran group misreads by 0.03 at most): a fresh group engages, one with
             // three wipes kites.

@@ -237,7 +237,9 @@ namespace DOL.GS
             if (_target is GamePlayer playerTarget && playerTarget.IsSitting)
                 _effectiveness *= 2;
 
-            _attackInterval = AttackComponent.AttackSpeed(_weapon);
+            // Both hands, like the round's own interval: interrupts, damage adds and shields used the main hand alone
+            // when dual wielding a slower main hand (OpenDAoC-Core e1fdc0090).
+            _attackInterval = AttackComponent.AttackSpeed(_weapon, _leftWeapon);
             return true;
         }
 

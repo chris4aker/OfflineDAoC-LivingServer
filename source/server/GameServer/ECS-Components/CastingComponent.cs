@@ -139,16 +139,20 @@ namespace DOL.GS
             GameLiving target = null, // Always null for players.
             bool checkLos = true)
         {
-            GamePlayer losChecker = checkLos && spell.RequiresLosCheck() ? GetLosChecker(target) : null;
-            return RequestCastSpellInternal(spell, spellLine, spellCastingAbilityHandler, target, losChecker);
+            bool wantsLos = checkLos && spell.RequiresLosCheck();
+            GamePlayer losChecker = wantsLos ? GetLosChecker(target) : null;
+            return RequestCastSpellInternal(spell, spellLine, spellCastingAbilityHandler, target, losChecker, wantsLos);
         }
 
+        /// <param name="wantsLos">The caller asked for a line-of-sight check (NpcCastingComponent judges one on the navmesh
+        /// when no client can be asked, 1.2.3).</param>
         protected virtual bool RequestCastSpellInternal(
             Spell spell,
             SpellLine spellLine,
             ISpellCastingAbilityHandler spellCastingAbilityHandler,
             GameLiving target,
-            GamePlayer losChecker)
+            GamePlayer losChecker,
+            bool wantsLos = false)
         {
             if (Owner.IsIncapacitated)
                 Owner.Notify(GameLivingEvent.CastFailed, this, new CastFailedEventArgs(null, CastFailedEventArgs.Reasons.CrowdControlled));

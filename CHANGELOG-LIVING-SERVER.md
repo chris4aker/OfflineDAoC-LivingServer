@@ -13,6 +13,97 @@ Older entries below keep the names they were written with.
 Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-11-22). **Tests only** unless an entry says
 otherwise.
 
+**From OpenDAoC upstream: combat, XP, crafting and items** (port package P3; GPL-3.0 code by Baptiste Marie and Telchar
+of OpenDAoC-Core, ported by hand onto our tree; `UT_UpstreamCombatPort123`). **Tests only.**
+- **Group XP when someone dings on the kill** (`6ac049c6e`): the group's highest level is taken before any XP is paid, so
+  a member levelling up on that kill no longer cuts the others' share; the challenge code can match a level 1 NPC. Players
+  and autonomous gamebots share one helper (`AbstractServerRules.ChallengeEquivalentNpcLevel`); the AUTONOMOUS_KILL_XP row
+  is unchanged.
+- **Damage formulas** (`d0cafbd5e`, `16fa2c467`, `e142cbdb1`, `57a8584ff` + `6e2d36b9e`, `8274b06c1`): style damage
+  procs get their `stat / 23` term (it was integer 0); item and style heal procs heal their full amount; an arrow uses
+  the archery crit chance even after a weapon swap; damage adds, damage shields, Triple Wield and Mark of Prey use each
+  hand's own weapon speed; MeleeDamage / RangedDamage (ToA, Savage and Cleric self buffs) raise the unstyled damage cap
+  and StyleDamage the styled cap.
+- **Crafting:** a primary craft chosen at a Master is saved even when no skill changes with it (`20a563b05`).
+- **Defense** (`a36db6f43`, `50027c4f7`, `c284dd9d8`, `34519baf5`, `f589c15dc`, `135d7d741`): a player's or gamebot's evade
+  drops with the number of melee attackers (each one past the first counts a third) and works in a 120 degree arc;
+  players and gamebots guard through the block rules (shield, Shield ability, quality and condition, the arrow bonus,
+  Engage, 120 degrees); a zero evade or parry chance no longer uses a card of the defense deck; a guard against a bolt
+  now stops its physical half. Ordinary NPCs keep their evade arc, attacker rule and guard rule.
+- **Block rounds** (`a0f6fa4df`, `469c9b7a1`): one round per attacker, so a multi-hit attack uses one, a dual wield
+  offhand that is blocked alone uses one, and an archer whose target closes in extends its round.
+- **Hand to hand and Reflex Attack** (`068076224`, `9add26a8f`, `a0f6fa4df`, `ce965da78`, `706847173`, `e9fdfdd2a`,
+  `410f1d9bb`): triples and quads at every spec (no unlock at 25 and 40), Dualist's Reflexes trickles down to triples and
+  quads, any left hand weapon enables the multi-hit, multi-hits get the offhand's speed, and the combat log says
+  "Triple attack!" and "Quad attack!". Reflex Attack counters only frontal attacks that hit (1.65).
+- **Attack speed** (`dda75528c`, `99e18b6b2`, `4c05debd6`, `ca9effdf6`, `e1fdc0090`): haste, Mastery of Arms and the ToA
+  item bonus are three multiplicative layers; buffs on NPCs (gamebots included) are no longer halved; quickness counts
+  from 50; a dual wield round's interval (interrupts, damage adds) uses both weapons.
+- **Resists** (`58bc5cdff`, `738f82fa1`; owner's decision on #506): the constitution buff layer of NPC and gamebot resists
+  counts for magic damage only, and not for crowd control duration.
+- **Smaller ones:** strafing players miss NPCs too (`8ad486e27`); the variance range of an unspecced attack on a low level
+  target is clamped (`f55b1534f`); a spell attacker's tracking time uses the spell duration (`3c1a424cb`); the realm
+  ability cast message names the caster (`f45f95145`); Volley's portal keep check runs and its roof check needs a navmesh
+  (`36b74205d`, `302e8a8f3`); swapping an equipped weapon with one in the backpack keeps the weapon slot active
+  (`905ad857c`).
+- **Living Server parity:** a gamebot's dual wield swings are dual wield attacks, as a player's are (they were never
+  counted as such, because gamebots are NPCs without a left hand swing chance).
+**Bosses**
+- **Fomor City has a raid** (#414; owner, 2026-11-24: "Start it now"). `dungeon-hibernia-fomor`: Hibernia, 56 raiders
+  (the period's seven groups), from Droighaid or Aalid Feie. Usable by the sweep (`/epictest sweep start
+  dungeon-hibernia-fomor`). The shipped `zone180.nav` was three islands: the builder made the three climb ladders north
+  of Krackenschtein, but cracks of 21-33 units cut them from the floors beside them, and a fourth cut the second ring
+  from the inner one. Four walk links close them, with nothing rebuilt: a byte patch in
+  `tools/fork-build/content-patches.json` (the Lord Gildas pattern, `add_offmesh.py`). On the patched mesh `dfprobe`
+  reaches every Fomor named from the entrance, and the server's corridor check is complete to each and back. The named
+  come in the period's order: Krackenschtein, Nogoribando, Anurigunda, then Myrddraxis (`RaidNamedOrder`,
+  `REALM_EXPEDITION_NAMED_ORDER`; Thredh's Fomor guide: each ring's one passage is guarded by a named). Their tactic
+  rules are unchanged and no boss is changed. Myrddraxis's tale is now the raid's. `UT_FomorCityRaid123` and the
+  explicit probe `UT_RaidDungeonRoutesProbe` (Fomor cases). **Tests only.**
+- **Behemoth stays unfought, by design** (#414). Mythic's Grab Bag (11 January 2008): "This mob is not killable. It has
+  no loot. You have to be sent there." The Camelot Herald (April 2002): "The Behemoth will now stay in his own area." No
+  raid is built; the bots keep away from him as before.
+- **Morgana stays a quest host** (#414). She is not a fight in the period either ("Do not attack Morgana": the Albion
+  level 50 epic, a fight for one group). No raid.
+**From OpenDAoC upstream: NPC AI, pathing, keeps and world (port package P4)**
+
+Ported by hand from OpenDAoC-Core (GPL-3.0; Baptiste Marie, Joe Judge, TTom03) and DOLSharp (GPL-2.0-or-later;
+DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_UpstreamAiWorld123`, `UT_HookPointInventory`.
+**Tests only.**
+- **Monsters, guards and pets land what they started** (cbe604ce1, 978b991fc, live rule): line of sight and range are
+  checked when a spell or bow draw starts, not during it or at its end; four server properties turn each check back on.
+  Autonomous gamebots and companions keep the player's checks (`NpcFinishRules`).
+- **No more casting or shooting through walls away from the player** (DOL sweep X1): with no player near enough for the
+  client to check, a monster's, guard's, pet's or gamebot's cast or arrow is checked on the navmesh, on one floor only
+  (`NavmeshSight`; a wall archer keeps its shots at the ground). #521's bot-to-bot rule (`BotCastSight`) is reused.
+- **Caster guards turn to a target they can see** instead of staring at one behind a wall (678b8f16f).
+- **Town and border guards see stealthed and mounted enemies** who walk into their range (99c97fbd9), as they already saw
+  gamebots.
+- **Pulling as in 1.65** (f5afdcc52, abb7aecd0): a body pull brings the monster to the puller only; an attack still adds
+  the attacker's group and pets, and a pet's pull adds its owner (a gamebot owner too). Dead targets never enter an aggro
+  list (40fa0f68f); bring-a-friend no longer piles up aggro (33774a6d8).
+- **Monsters go home after a stun or root on the way** (9f3d5c6da, d53eceb0c), and scouts that can't reach a friend fight
+  (4376f3c9b); unlimited follows no longer overflow (c59f4ba94).
+- **Ladders and zone borders** (monsters, guards and pets; gamebots keep their own link and seam handling): no replot
+  while crossing an off-mesh link, committed only at its foot, released after 10 s at most (9071ad689, c2ab4a2e6,
+  b693fee89); NPCs on ladders "fly" on the client (f01e9fc33); chases over a zone border path to the border and on
+  (799b4f507, 152b87aec, 21443ebd6). NPCs passing an open door keep it open (15e7e3196).
+- **Keeps and doors**: keep doors, tower doors and relic doors move you to the right side (63e1162b8: the 32-unit
+  "always in front" range picked the side wrongly); side doors 3-6 move you 175 units (DOL 2239176); border keep doors no
+  longer flap open and shut (2fecd64f0); a captured keep without hookpoint 97 no longer throws before it is saved and
+  `KeepTaken` fires, and gamebots on the walls are set down with the players (DOL 0554bfb0); empty hookpoint stores are
+  not offered and hookpoint requests find components by ID (686c895f2, 6c41d67b3, ffb6c9569); ballista bolts don't hit
+  dead or friendly targets (d79a497e6).
+- **Gravestones survive a restart** (after 25c8e9c5e and e10348f31): kept on the character row, set up again when the
+  player enters the game, removed when prayed at or after `gravestone_decay_time` days (7).
+- **Group minimap**: group-mates' dots update every 2.5 s whether or not they move, leave the map in another region, and
+  members aren't shown dead while zoning; slots that move after someone leaves are sent again (f3943156a, 7b7d11f2a,
+  1a97fbde9, 5725446af, a9e0c3af2, 10d3897f0).
+- **Small classic touches**: the login/zoning invulnerability timer is a PvP rule only (monsters don't wait for it, a
+  player under it may fight monsters, gamebots in RvR count as players; it no longer cancels fall damage) (9a665b536,
+  d73447af2, 2e791235f); Distraction lasts 6 s and fools only
+  monsters that aren't fighting or casting (7a8ae3661).
+
 **Chat**
 - **No "dunno" as the whole answer, in any channel** (realism 2a, #478; tests only). A bot no longer answers a question it
   can't answer with "no clue sry", "not sure, try /advice", "Dunno", a bare "where?", a bare "lol", "true" or "k". Before,
@@ -150,6 +241,30 @@ otherwise.
   (27%), fight calls that end on a laugh (9%) and your party lines left unanswered (5.5 of 20). None of these may get
   worse. No bot behaviour changed. **Tests only.**
 **The server**
+- **Much less garbage from the bots' gear checks, and no Windows handle kept per stat table** (#540, against the
+  owner's 1.2.2 session on `868a82d`, 2026-11-24: 49 `SERVER_STALL` lines in 5 hours, every one a blocking gen-2
+  collection of 1.1-2.4 s; handles 2,134 to 5,260 in 4.5 hours with threads flat at 64; live heap about +75 MB an hour).
+  - The log's own allocation sample named the gear checks: `ValueTuple`2[Int32,Int32][]` at 540-940 MB a minute (27-35% of
+    everything the server allocated), then `Int32[]` (9-10%), `DbInventoryItem[]` and the sort arrays and iterators of
+    `Specialization` (about 10% together). The Exchange purchase and gap-fill scans score every affordable listing, and
+    each check built an 11-pair bonus array per worn piece (twice per score), a 256-entry weight table, two copies of the
+    worn set, and a sorted copy of the spec list for every skill bonus. Now the bonus pairs are read in place
+    (`BotGearValue165.ItemBonuses`), the moved-piece score is read without copying the loadout, the trained-line check
+    walks the spec table without sorting it (`GameBot.HasTrainedSpecRaising`), and a scan keeps one context, one worn set
+    and one worn score for all its candidates (`BotGearSet.BeginScan`). Every score and every decision is the same as
+    before (`UT_Issue540GcHandles` compares 3,000 random loadouts, the scan against one context per candidate, and checks
+    that a score allocates nothing; `UT_NoUndress` still passes). **Tests only.**
+  - The stat tables every monster, guard, pet and bot carries (seven each, `PropertyIndexer`) used a .NET `Lock`. On .NET
+    10 a Lock makes a Windows event the first time two threads meet on it and keeps it for its whole life; the owner's
+    lock census of 2026-10-22 found these tables two thirds of the Locks holding one. They now take a short spin flag
+    that never makes a kernel object. Not yet proven to be what grew in 1.2.2: see the handle row below. **Tests only.**
+  - **New log rows for the next check:** `SERVER_HANDLE_CENSUS` every 10 minutes in every session on Windows (was a
+    test-run census only): the server's handles by kernel type and which types grew, read on a background thread.
+    `SERVER_MEMORY` adds `memoryLoadPct` and `highLoadPct` (the PC's memory in use against the GC's high-load line, 90%
+    by default) and `lastBlockingGen2` (whether the last blocking collection compacted, and the memory load it saw);
+    `SERVER_GC_PAUSE` adds the same. In 1.2.2 the PC sat at 87-91% memory in use (28-29 GB of 31.8 GB, no client
+    running), right on the line where the GC turns to blocking compacting collections. Server GC and background
+    (concurrent) GC were already on; no GC setting is changed until these rows show which cause it is.
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after
   "Berermund casts a spell!" and "Squishywizard casts a spell!", about ten lines of "XxEvilxX's weapon returns to normal.",
   "Kate's...", "Your weapon returns to normal.", XxEvilxX twice). Two group damage adds from different casters coexist
@@ -196,6 +311,21 @@ otherwise.
   and `RVR_SIEGE` rows. `test_rvr_hour.py`. **Tests only.**
 
 **Bots and companions**
+- **A sampled per-kill XP row for gamebot kills** (#544: at levels 10-19 the same kill paid Hibernian groups 2-4x what
+  Albion's got, and the logs could not say why). `AUTONOMOUS_GOAL_ATTEMPT` was on but never in the analysed logs: it is one
+  line per camp attempt, not per kill, and since the 2026-11-13 log audit `logconfig.xml` sends it to `detail.log` only
+  (kept 2 days); the analysis read `server.log`. It stays there (its volume is why it moved). New:
+  `AUTONOMOUS_KILL_XP` in `server.log` (`AutonomousKillXpDiagnostics`, called from `OnNpcKilled` around the bot awards):
+  realm, zone, monster level, its XP value and con to the party's highest member, the party (group/solo), group size and
+  contributors, min/max/average level and the level gap, the camp and its target, `onTarget`/`sameName`, the XP each
+  contributing member got, the killer party's damage share, the other parties' shares (`shares=` kind/realm/count/share)
+  and the share that paid nobody (`lost=`). Sampled: every 25th autonomous PvE kill server-wide, at most 120 rows a minute
+  (`dropped=` counts the capped ones); raid expedition kills left out. New server property
+  `autonomous_diagnostics.bot_kill_xp_sample_every` (25; 0 turns it off): on, as the row is a counter per kill and
+  capped. No random numbers, no state written: it reads the XP before and after the award. Report:
+  `source/tools/kill_xp_report.py server.log [detail.log] --since "MM/DD HH:MM" --hours 1` (per realm and zone: XP per
+  member per kill, cons, split and lost shares, off-target share; and attempt XP not from the camp target from
+  `detail.log`). `UT_KillXpRow123`, `UT_LogConfig`, `test_kill_xp_report.py`. **Tests only.**
 - **Buffers no longer waste buffs on groupmates who can't use them** (#491). A buffer bot spent power regen and acuity on
   melee classes with no power, and regen buffs on pets, so its concentration and power ran out before a critical buff (a
   shaman's endurance regen) was cast. Now (`BotBuffTargetPolicy`, every target path of `BotBrain` and
@@ -232,6 +362,133 @@ otherwise.
   party gives the camp up and picks another (`AUTONOMOUS_GROUP_CAMP_UNREACHABLE_PULLS`). Replayed on the 11/24 and 11/23
   logs, no target gets more than two ranged tries. `AutonomousDefensivePull.UnreachableBench`, `UT_PartyStalls123`.
   **Tests only.**
+
+**RvR: autonomous gamebots follow the player's PvP rules** (#521; owner decision 2026-11-24; mechanics.md findings 1-5,
+7-9)
+- One check, `PvpRules.TakesPlayerRules`, replaces the `is GamePlayer` test at every PvP rule site, so an autonomous
+  gamebot (never a companion, monster, guard or boss) takes the player's rule in RvR. "In RvR": for a rule with two sides
+  (crowd control, interrupts, crits, facing, cast line of sight, spell level) the other side, its pets and companions
+  resolved to their controller, is an enemy-realm player character (the player or a gamebot); a bot fighting a monster,
+  guard or boss keeps today's rule everywhere. For a rule about the bot alone (speed, sprint, regeneration, rez sickness)
+  the bot is in a frontier zone or battleground (New Frontiers, Cathal Valley, the battleground regions, the frontier
+  dungeon; not Darkness Falls, Summoner's Hall or Demons' Breach) or fought an enemy realm in the last 10 s.
+- Crowd control: no "enraged" refusal below 75% health; the player's 60 s immunity after a mez or stun wears off, roots,
+  snares and nearsight included; no refresh by the same spell (`ECSGameEffect.AppliedImmunityType`). The spell handlers
+  and the bots' planner read one copy of the refusals (`CrowdControlImmunity`); the older bot CC path now skips immune
+  targets.
+- Interrupts: no extra 2.5 s (3 s for a spell, as the player). Crits on a bot are capped at half the damage, melee and
+  spells. A bot must face an enemy player character to swing (it turns for the next swing). A bot's spell rolls to hit
+  with the spell's level.
+- Line of sight: a bot's cast at another bot or its pet is checked on the navmesh at the start and the end of the cast
+  (`BotCastSight`); casts at the player are still checked by his client.
+- Speed in RvR: no low-health slow; stealth slows a bot by the player's formula (`PvpRules.StealthSpeedFactor`, shared
+  with the player); sprint is +30% and drains endurance as the player's does.
+- Rez sickness: a bot raised or released after an RvR death at or above `RESS_SICKNESS_LEVEL` carries the RvR
+  resurrection illness (a full raise halves it, Perfect Recovery removes it) and its effectiveness drops with it.
+- Regeneration: in RvR a bot regenerates as the player does (6 s ticks standing, 3 s on its rest seat); the fast rest
+  floor (`BotRestRecovery`, 10% a second) stays in PvE and for companions.
+- Realm points: bots are paid for the player's death only past the player's repeat-kill window (`RP_WORTH_SECONDS`).
+  No grey floor: the player's own path has none, and the rule is parity.
+- `UT_PvpRuleParity`: the same scenario against a player and a gamebot gives the same outcome at every site; monsters,
+  guards, companions and PvE keep theirs. **Tests only.**
+
+**RvR: one set of stealth rules for the player and the gamebots, and stealthers that play like 2003** (#522;
+stealth.md findings 1-3 and 5-10, defense.md 7)
+- One module, `StealthRules`, holds the stealth rules that `GamePlayer`, `StealthSpecHandler`, `MaxSpeedCalculator`,
+  `GameBot`, `CompanionStealth`, `KeepGuardBrain` and `RvrStealthNotice` used to copy: the speed (#521's
+  `PvpRules.StealthSpeedFactor`, called in one place), the "too close to hide" circle, the monster and guard uncover
+  timer and the detection range.
+- **Gamebots no longer uncover a stealthed player like monsters.** The base uncover timer takes only monsters and guards;
+  enemy gamebots, companions and all their pets were in it ("X uncovers you!" from a visible Armsman, at keeps too).
+  Bots now find a stealther only by `RvrStealthNotice` (350 at most, chance, line of sight), which now also applies at an
+  objective and out of the field tactics' scope, so keep defenders are not left blind. Every uncover is logged:
+  `RVR_STEALTH_UNCOVER` (hider, by kind, distance, sense, near a keep).
+- **Bot stealth has the player's costs.** A gamebot cannot hide inside a live enemy's "too close" circle; monsters and
+  guards uncover a gamebot stealther by the player's timer (sight checked on the navmesh); a stealther guard
+  (`GuardStealther`) sees stealthed gamebots as it sees stealthed players. An enemy gamebot's Detect Hidden now doubles
+  the circle against the player too, as an enemy player's always did. Companions keep their rules (they already kept
+  the circle).
+- **See Hidden at its 1.62 strength against archers** (1.62 notes: "anywhere from 1/4 to 3/4 of the current range
+  depending on the archer's stealth spec vs the assassin's level ... on average about 1/2"): 1/4 of the old 2,700 - 36 x
+  spec range at a spec at or above the assassin's level, rising to 3/4 at 25 levels below (the straight line and the
+  span are ours), for the player and the bots' notice alike. Minstrels keep the old range (the notes cut archers only).
+- **Stealthers travel hidden.** A gamebot Infiltrator, Nightshade, Shadowblade, Scout, Hunter or Ranger in a soloer or
+  duo party hides once out of the portal keep's or bind's safe area and walks to its camp at stealth speed; it comes out
+  only to fight, ride a stablemaster route or use a porter (`BotStealthTravel`, `RVR_STEALTH_TRAVEL`). It no longer
+  unhides to walk on from a camp. A duo's second copies its leader's stealth.
+- **The planner never hunts a hidden stealther**: stealthed bots are out of the RvR planning view's hunt targets.
+- **The ambush approach has a scope**: only an autonomous gamebot in the open-field scope stalks from stealth, so keep
+  defenders keep their posts and companions don't flicker.
+- **Archer opener**: a hidden bot archer stops at its bow's range (1,500-2,300 when the bow reaches) and draws a Critical
+  Shot from stealth when the target may be critical-shot, keeping stealth on the nock by the player's chance
+  (`BotStealthArcher`, `RVR_STEALTH_ARCHER_OPEN`).
+- **"My edge is gone"**: a solo stealther whose opener did not take its target below half health within 4 s, or that a
+  second enemy joined, runs at once (`BotStealthEdge`, `BOT_SOLO_BAIL reason=edge...`) and hides again out of combat.
+- `UT_StealthRules`. **Tests only.**
+
+**Invites, joins and logouts** (realism plan step 3a, #485; the interactions audit's items 1, 7 and 10, the movement
+audit's tells 11 and 12; seen on 1.2.2 `868a82d`, the owner's game of 2026-11-23: an /lfg invite the same second from
+58,420 units away, the "want in?" box before the words, 6 brb/afk lines with no logout)
+- **A gamebot answers your /invite as a player would.** One decision (`BotInviteDecision`) gives both the act and the
+  words, so what a bot says by tell to "inv?" is what your invite then does:
+  - more than 8 levels apart: it says no and why ("im 48 lol, way too high for you"); a friend it outlevels comes along
+    ("ill pl u for a bit");
+  - fighting alone: "sec, fighting", and it joins when the fight ends (it says so if the fight runs past a minute);
+  - in its own bot group (owner, 2026-11-24): sometimes it leaves for you, more often the less its group is doing (about
+    half while meeting up, a third on the road, a fifth at camp, more for a friend), never mid-fight; otherwise it
+    declines with its reason ("in a grp already, sry", "mid pull with my grp"). Asking again within ten minutes gets the
+    same answer;
+  - otherwise it accepts after a pause that fits what it is doing: 2-6 s standing about, 3-9 s in town, 4-10 s on the
+    move, 6.5-15 s when it leaves its group. "You have invited X", then the game's own "X has joined the group." (the
+    "leaves their group to answer" and "starts moving to you" narration is gone for gamebots).
+  - Hired companions, /spawn helpers and a bot whose own invite you accepted still join at once.
+- **Bot-led invites:** the leader reads your /lfg and answers 3.5-7.5 s later (was 1-2.5 s; the box still comes within the
+  owner's 15 seconds); no party whose leader and camp are both more than 40,000 units away invites you (`too_far`); an
+  unasked "want in?" waits for your answer by tell and the box comes only after a yes (no answer in a minute: it lets it go).
+- **/gc invite of a gamebot:** it answers 3-10 s later, or after its fight (declines after a minute), instead of at once.
+- **Logging out:** the goodbye first, then the bot sits (or stands still where it can't sit) 18-24 s before it leaves, as the
+  game's /quit does; an attack stops it, and it leaves later without saying goodbye twice.
+- **After a wipe** each gamebot with nobody to rez it releases after its own 15-45 s (from its id and death count) instead of
+  all in one 3 s beat; the 60 and 90 s waits beside a healer and the siege wait are unchanged.
+- **New setting `bot_show_as_bots`** (launcher: "Mark bots as bots in /who", Bot-led groups card), **off by default** (owner,
+  2026-11-24): bots look like players. On, /who tags every gamebot "[Playerbot]" and a refused invite says "gamebot" or
+  "buffbot". A new key, so worlds from earlier builds take the hidden default without an upgrade line.
+- Not here: "brb"/"afk" said in chat with no break behind it (#486). `UT_InvitesLogouts485`. **Tests only.**
+**From the Offline DAoC forks** (fork package P5; sources and SHAs in each commit and the PR). **Tests only.**
+- **Two singers on one song no longer leave the group at 0 endurance.** A pulsing song or chant renewed by a second Bard,
+  Minstrel, Skald or Paladin replaces the old copy in place; when the first singer's pulse later ended that stale copy, it
+  took the bonus away a second time, so endurance regeneration (or any stat song) sat at 0 with the song up. A stale copy
+  is now retired without touching the bonus (`EffectListComponent.RetireStaleCopies`, `EFFECT_STALE_COPY_RETIRED`, first
+  20 logged). This is a second cause of the r/daoc "no endurance regeneration" report, beside the server-property cause
+  fixed above (#465). FelixGagnonB 471b04186 (True165 3615e416d found the same). `UT_BotMobileSongs`.
+- **Heals cast their sub-spells** (a heal-over-time, cleanse or damage reduction carried in `SubSpellID`); the shared
+  sub-spell path skipped any spell that has one. Every caster, players and bots. DividedRealms 8fda4493, cfad6c50.
+- **Bots fire only their class's style proc**, as players do, not both it and the shared one; Doom Hammer damages its
+  target instead of the Thane. DividedRealms bebdbb71.
+- **Bots don't freeze after a keep door or any move.** `MoveTo` stops and restarts the brain and left a bot brain with no
+  state; every bot (not only hired companions) now resumes following, idling or passive. DetShaft a303aefaf.
+- **Performers keep their song and Paladins and Wardens their chant when hit in melee.** The speed song still stops. A
+  grouped performer whose song needs its instrument keeps it in hand (it still heals and controls); a solo one draws its
+  weapon as before. True165 48b20439 and its v0.7 `KeepsChantInMelee`.
+- **Jailer Vifil's tunnel guardians no longer stack** after kills, missed resets and respawns: his brain owns its two and
+  clears them when he resets out of combat or leaves the world. The encounter keeps its two guardians a pull; nothing
+  about Vifil or the guardians is weaker. True165 78526630, with its test.
+- **`/gc edit <rank> dues|withdraw`** sets that permission, not Release. True165 bc2440ca.
+- **A party gives up a ranged pull the monster ignores:** a pull that times out with the target alive and never at the
+  party counts toward the #539 bench like a pull with no firing point; the second benches it and the party pulls it the
+  ordinary way (`AUTONOMOUS_DEFENSIVE_PULL_IGNORED`). DividedRealms 1d18f864 (our #539 already had its 7e736ca8 half).
+- **Gamebots leave a monster another side is fighting or has just pulled** (no "sry ks", no shared XP): a pull claims
+  the monster for the bot's group, realm raid or warband for 30 s, and the camp search skips a monster that is claimed,
+  hit by, or fighting a bot, player or pet of another side. Self-defense is unchanged. True165 e4d2498ca, 927018e.
+- **Bots react at once**: an add wakes the group's mezzers and rooters, a groupmate about to drop under 75% wakes its
+  healers, and an enemy starting a cast wakes the bots fighting it, instead of waiting for their next think (at most one
+  wake per 250 ms per brain; the walk is the victim's group only). True165 8abbc61a8.
+- **Party roles follow spec**: real healers (Rejuvenation Cleric, Mending Healer, Regrowth Druid...) are offered first
+  and take the Healer slots over a Smite Cleric or a Paladin, a shield tank is main tank and puller over a two-hander,
+  and the ranged puller order is shield tank, two-hander tank, the crowd-control slot, the rest, healers last. True165
+  d2fc3fe3d (ranking only; its kill-target and peel sheet needs code we don't have). `UT_VeteranGroupRoles`.
+- **A damaged navmesh file is refused** with a log line instead of crashing the native loader when a path reaches it.
+  DividedRealms a5f19f5c. `UT_NavMeshFileCheck`.
 
 **Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
 - **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again
@@ -276,6 +533,115 @@ otherwise.
   taken on `43c43aa`.
 - The real-mesh RvR probes are run once per release on the PC (`docs/RELEASE-TRAIN.md`); the #506 fixes get blind
   scenarios (`docs/rvr-audit-1.2.3/README.md`).
+- **Gamebots pick camps the way players did, and remember what killed them** (#535, #536, #537; the 1.2.2 logs of
+  11/23 and 11/24: about one bot death per bot-hour, 41% to purple monsters, 97% of those before the camp). Gamebots only;
+  companions and real players are unchanged, and monsters are as strong as before.
+  - *Solo camps are no longer grey on arrival* (#535). The "half of the spawns, at least 3" rule that 1.2 gave level 50
+    solo camps now holds at every level (a smaller camp qualifies below 50 when all its spawns do): at low levels a con
+    band is a level or two wide, so a camp of grey spawns with one green qualified (5,176 `AUTONOMOUS_CAMP_OUTLEVELED`
+    in five hours on 11/24; 5,265 level 4 bots at level 1 skeletal pawns on 11/23). At the camp a solo bot takes a grey
+    only when nothing else is near, and an outleveled camp is not re-picked for 15 minutes.
+  - *Group camps sit at the party's level* (#536). A party took camps +3 to +10 raw levels over its average, a level-50
+    rule that is red to purple at levels 10-15 (75% of grouped deaths were to purple monsters). The band is now set in
+    cons against the members (`AutonomousGroupCampBand`): at most orange to the lowest member (red for a full eight), at
+    least yellow to it, never grey to the highest, and never above the old raw roll; one con step lower after a wipe. At
+    level 50 a full eight keeps its +10 top (red 56-60).
+  - *The killer is remembered, not the camp* (#537). A death to a monster purple to the bot, or red to a bot alone, now
+    marks the killer and its spot (it took ten levels before: 18% of the 11/24 monster deaths marked a spot, 51% would
+    now); the spot warns every bot the killer still cons red or purple to, deaths at one place refresh one spot, and a
+    new spot logs `AUTONOMOUS_KILLER_DANGER_SPOT`. A solo death to a red or purple monster that was not the camp's no
+    longer benches the camp's monster, no longer counts as a failed target and no longer lowers the bot's camp con (8,149
+    of 10,303 death replans had dropped to green); `AUTONOMOUS_DEATH_ROUTE_REPLAN` names the killer
+    (`AutonomousDeathBlame`). `UT_CampChoiceAndDeaths123`. **Tests only.**
+
+**RvR**
+- **Every claimable frontier keep starts at level 5** (#526, owner 2026-11-24). Dun nGed, Dun Da Behnn and Dun Ailinne
+  shipped at level 1 and Dun Crauchon at 4, so their doors were a fifth (four fifths) of every other keep's and their
+  guards and lord lower, at the two keeps that guard Hibernia's relics among them (siege.md 9). They are at 5 in
+  `release-world-defaults.json`. A world from an earlier build is raised once at start (`FrontierKeepLevelRepair`, after
+  the relic manager): only a keep that still holds its old shipped level and that no guild holds, so a level a player
+  changed is left alone. The doors of such a keep that still hold the old level's full health (the shipped rows, which
+  a fresh 1.2.3 world also has) are made whole at level 5; a hurt door keeps its share. Recorded as
+  `hib-keep-levels-1.2.3` in `living_server_world_repairs`, so it never runs again (a later capture's reset to
+  `starting_keep_level` stays). Only raises. Log `KEEP_LEVEL_DEFAULT_RAISED`. `UT_FrontierKeepLevelRepair526` pins
+  every claimable keep at 5. **Tests only.**
+- **One intent per RvR force, owned by the event layer** (#530, RvR work 12 piece C, steps 1-4; structure.md findings 2
+  and 6). Autonomous gamebots only; companions and real players are untouched, and no keep, guard or lord changes.
+  - *The dead layer is gone.* `AutonomousRvrDirector` (no production caller) and its four tests are deleted, with
+    `AutonomousRvrObjectiveState.Next` (no caller). The live tests that sat in its file moved to `UT_RvrStagingAndChoice`.
+    A CI test (`UT_RvrForceIntent530.Every_Rvr_type_in_the_bots_has_a_caller`) fails on any production type in an
+    `Rvr*`/`AutonomousRvr*` file that nothing uses.
+  - *One siege rule.* "Can this force siege" was written three times (35 in the controller, 40/5/a healer in the dead
+    director, 50/4 in the event layer); only the event layer's held. It is now `ForceStrength.CanSiege` (4 members,
+    average 50) and `Force.SiegeCapable`, read at every site; the controller's level-35 rule, which never decided
+    anything, is gone. `Force.HealerCount` became `Healers` from `ForceStrength.Of`, by `RvrRoles.For`: Shaman, Friar and
+    Warden now count (the old class-name substring missed them; nothing reads the count yet).
+  - *The event layer decides every intent.* The committed plan, the plan, the roam override, a chat promise, the
+    battleground and the release of an ended objective each propose an `IntentProposal`; the layer's rules
+    (`AcceptsRoamOverride`, `AcceptsChatPromise`, moved unchanged from the controller) decide, and the force's
+    `ForceIntent` (objective, role, slots, since, source, rule, why) is written once per turn (`ForceTurn`), logged as
+    `RVR_DECIDE layer=event what=force` with the winning rule and `over=` the proposals it overruled. The roam override is
+    decided with its plan (one proposal, not a second write).
+  - *Followers read the force's intent* (`IntentOf`) instead of the leader's `RvrWarbandIntent`/`RvrDefendingKeep`
+    TempProperties (kept as a mirror for their other readers, and as the fallback before the force has a record).
+  - *Shadow.* Each turn compares the bot's own intent with its force's record: `RVR_DECIDE what=shadow` with
+    `shadow.mismatch` or `shadow.match`, for the PC check that the mismatch count falls to 0.
+  - What a bot decides is unchanged: the same rules in one place. Step 5 (the battleground keep, the small strike and the
+    slow realm force as objective kinds) is not in this change. `UT_RvrForceIntent530` pins one write per turn, the rules
+    and the source (every `_rvrIntent` write goes through `ProposeRvrIntent`). **Tests only.**
+
+**Tests**
+- **An RvR fight rehearsal in CI** (#520; docs/rvr-audit-1.2.3/evidence.md F2, F6, 5.2). Until now no RvR test ran a
+  fight: every tactics test used hand-made boards. `UT_RvrFightRehearsal` (fixture in `source/server/Tests/Rehearsal`,
+  `RvrFightWorld` and its helpers) runs real gamebots (built from their records: real class, stats, property calculators,
+  their own `BotBrain`, the coordinator and controller) in one real `Region`, with the game loop's own services ticked in
+  the loop's order for 120 simulated seconds, and the server's own spell handlers, attack component, effect list, crowd
+  control and interrupts. `RvrFightBoards.Get`/`BuildBoard` is exercised from the live bots. Three scenarios print one
+  `RVR_REHEARSAL` row each to the CI log: two eights from `RvrRosterTemplates` meeting in the open (notice, first crowd
+  control, mez refusals, first three deaths by role, called-target share of damage, who held the field, duration); a
+  24-bot storm on a battleground lord's floor (the lord's health every 10 s); a player stand-in in range of a bot eight
+  with the lookers' cap on (time to notice against the perception table), plus the planted defect of #521: the same mez
+  is refused on a gamebot under 75% health and lands on a player at the same health. **Rows are reports, not gates**
+  (evidence.md 5.3). Stood in, because CI has no world database or navmesh: a flat zone and flat navmesh
+  (`FlatNavmesh`), the spells (`RvrFightKits`: a heal, a nuke, a 60 s mez per class), the melee classes' weapon abilities,
+  the keep (a battleground keep with its doors down) and the frontier scan's dice (`RvrFightScan`: the server's own
+  perception rules with seeded rolls). Scenario 3 repeats by seed; the two fight scenarios repeat closely but not yet
+  exactly (the server's fight code still draws from `Random.Shared`). Runs in a few seconds. **Tests only.**
+- **Siegecraft: engines are built, doors are repaired, operators hold their engines, the player's ram gets a crew** (#525;
+  siege.md 4-5, defense.md 4-5; owner decisions 2026-11-24). **Tests only.**
+  - **Engines are built in sight.** A gamebot with no siege kit (the owner's 2026-10-07 "skip the shopping trips") no longer
+    makes an engine appear the moment it reaches its spot: it stands there and builds it (an emote every 5 s, "X begins to
+    build a siege ram" to the area), and the engine appears when the build is done. Build time is half the period time,
+    one constant (`AutonomousSiegeBuild.BuildTimeMultiplier` 0.5 on `PeriodBuildSeconds`): ram 30 s, ballista 20 s,
+    catapult 45 s, trebuchet 60 s. No period figure was found, so the period times (60/40/90/120 s) are chosen. Being
+    attacked, killed or pulled away interrupts the build, which starts again from nothing (`RVR_SIEGE
+    action=build_started|build_interrupted`). A destroyed engine is replaced only by a new build (played 1.2.2 `868a82d`:
+    replacements 6-301 s after the loss, median 43 s, all instant). A carried kit is still set up at once.
+  - **A finite stock of engines per siege**, sized to the army: one per engine place plus max(2, present/12) replacements
+    (100 present: 14), per realm and keep, renewed after ten quiet minutes. Spent: `RVR_SIEGE action=stock_spent`.
+  - **The status text is true**: "Siege engines built on the spot (n of m left this siege)" or "Carried siege kit", not
+    "Real siege equipment, finite inventory".
+  - **The player's ram gets a crew.** Friendly gamebots within 300 (and the operator's own group) crew any friendly ram,
+    the player's included; before, only a bot-operated ram counted them, so a player's ram hit for about a seventh of a bot
+    ram. Damage and reload are the same for either operator (`GameSiegeRam.CountCrew`), and the reload follows the crew at
+    each arming. A player-operated engine no longer takes one of the bots' two ram places, and the native two-rams-per-door
+    limit counts bot rams and player rams apart, so neither refuses the other.
+  - **Ram output in the log**: `RVR_SIEGE_OUTPUT` once a minute per hitting ram (owner, operator kind, crew, hits, damage,
+    door), player rams included; the `RVR_SIEGE action=hit` line now names its target.
+  - **Defending operators hold their engines.** A defender working a ballista or catapult leaves it only for an enemy
+    within 450 or one attacking its engine, as attackers do (before: any enemy it saw), and keeps its job through the
+    fight (`SiegeOperatorMayEngage`).
+  - **Defenders repair doors with wood** (owner: "bots repair doors the way players did"). Gamebots defending a keep when
+    its defense ends with the keep still theirs, and still within 4,000 of it, take a repair job for up to 15 minutes:
+    at most two on a door, the most damaged first. They follow the player's `/repair` rules (shared with the command): a
+    20-second repair, 5% of the door on success, the keep level's wood units (3,576 at level 5) taken from the backpack
+    on success only, the chance woodworking skill against (level + 1) x 50, no repair while in combat or while the door
+    is hit, and none with an enemy within 3,000. Wood comes from the bot's own backpack, else it buys boards for real coin
+    from a merchant of its realm in the same region (cheapest per unit, six repairs' worth a trip). No seller, coin or
+    room: no repair. A bot that never trained woodworking repairs at skill 100 (owner check). `RVR_DOOR_REPAIR
+    action=start|repaired|failed|wood_bought|end`. The door's slow self-repair (5% per 30 minutes) stays as the backstop.
+  - Boiling oil is left out: the rubric's tension (1.2: no hookpoint defences in Old Frontiers; 5.2: oil from the
+    gatehouse) is not settled. `UT_Siegecraft525`.
 
 ## 1.2.2 — 2026-11-23
 

@@ -163,11 +163,17 @@ namespace DOL.GS
                 FormattableString.Invariant($"privateMB={process.PrivateMemorySize64 / 1048576} nativeMB={(process.PrivateMemorySize64 - info.TotalCommittedBytes) / 1048576} ") +
                 FormattableString.Invariant($"threads={ThreadCount(process)} poolThreads={ThreadPool.ThreadCount} handles={process.HandleCount} ") +
                 FormattableString.Invariant($"memoryLoadMB={info.MemoryLoadBytes / 1048576} availableMB={info.TotalAvailableMemoryBytes / 1048576} pauseTimePct={info.PauseTimePercentage:F1} ") +
+                // Issue #540: the PC's memory load against the GC's high-load line (90% by default). At or above it the GC
+                // compacts gen 2 in a blocking collection, which is what every 1.2.2 freeze was.
+                FormattableString.Invariant($"memoryLoadPct={Percent(info.MemoryLoadBytes, info.TotalAvailableMemoryBytes)} highLoadPct={Percent(info.HighMemoryLoadThresholdBytes, info.TotalAvailableMemoryBytes)} ") +
+                FormattableString.Invariant($"lastBlockingGen2={BlockingGen2Summary()} ") +
                 FormattableString.Invariant($"allocMBperMin={allocMbPerMin:F0} gcs={gen0 - _lastGen0}/{gen1 - _lastGen1}/{gen2 - _lastGen2} {pauses} reasons=\"{reasons}\" ") +
                 FormattableString.Invariant($"pinned={info.PinnedObjectsCount} finalizable={info.FinalizationPendingCount} caches=\"{caches}\" ") +
                 $"roadSearches={AutonomousZoneRoads.TakeStats()} " +
                 FormattableString.Invariant($"topAllocations=\"{top}\""));
             _lastGen0 = gen0; _lastGen1 = gen1; _lastGen2 = gen2;
+            // Handles by type (issue #540), every ten minutes on a background thread: a small row in every session.
+            try { ServerHandleCensus.MaybeRun(); } catch (Exception exception) { Log.Warn("SERVER_HANDLE_CENSUS failed", exception); }
             // Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: test runs, never a release.
             if (!File.Exists(Path.Combine(AppContext.BaseDirectory, CensusEnableFileName))) return;
             try { LogNpcCensus(); } catch (Exception exception) { Log.Warn("SERVER_NPC_CENSUS failed", exception); }
@@ -175,7 +181,6 @@ namespace DOL.GS
             try { LogBotFieldCensus(); } catch (Exception exception) { Log.Warn("SERVER_BOT_FIELD_CENSUS failed", exception); }
             try { ServerHolderCensus.MaybeRun(DetachedNpcs, ActiveNpcs); } catch (Exception exception) { Log.Warn("SERVER_HOLDER_CENSUS failed", exception); }
             try { ServerHolderCensus.LogOrphans(); } catch (Exception exception) { Log.Warn("SERVER_ORPHAN_TIMERS failed", exception); }
-            try { ServerHandleCensus.MaybeRun(); } catch (Exception exception) { Log.Warn("SERVER_HANDLE_CENSUS failed", exception); }
             try { ServerLockEventCensus.MaybeRun(() => ServerLockEventCensus.DefaultRoots(CensusNpcs())); }
             catch (Exception exception) { Log.Warn("SERVER_LOCK_EVENTS failed", exception); }
         }
@@ -204,6 +209,22 @@ namespace DOL.GS
             foreach (var entry in NpcCensus)
                 if (entry.Key.ObjectState == GameObject.eObjectState.Active) active.Add(entry.Key);
             return active;
+        }
+
+        private static int Percent(long part, long whole) => whole <= 0 ? -1 : (int)Math.Round(100.0 * part / whole);
+
+        /// <summary>
+        /// The last blocking full collection: its index, whether it compacted, the memory load when it ran and its pause
+        /// ("none" before the first). Issue #540: tells a high-memory-load compaction from an ordinary one.
+        /// </summary>
+        public static string BlockingGen2Summary()
+        {
+            GCMemoryInfo blocking = GC.GetGCMemoryInfo(GCKind.FullBlocking);
+            if (blocking.Index == 0) return "none";
+            ReadOnlySpan<TimeSpan> pauses = blocking.PauseDurations;
+            double pauseMs = pauses.Length > 0 ? pauses[0].TotalMilliseconds : 0;
+            return FormattableString.Invariant(
+                $"gc{blocking.Index}/compacted={blocking.Compacted}/loadPct={Percent(blocking.MemoryLoadBytes, blocking.TotalAvailableMemoryBytes)}/ms={pauseMs:F0}");
         }
 
         private static int ThreadCount(Process process)
@@ -455,7 +476,7 @@ namespace DOL.GS
                                 Log.Warn(FormattableString.Invariant(
                                     $"SERVER_GC_PAUSE ms={ms:F0} gc={_gcNumber} gen={_gcDepth} reason={ReasonName(_gcReason)} kind={TypeName(_gcType)} ") +
                                     FormattableString.Invariant($"lastHeapMB={_lastHeapStats[0] / 1048576}/{_lastHeapStats[1] / 1048576}/{_lastHeapStats[2] / 1048576}/{_lastHeapStats[3] / 1048576}/{_lastHeapStats[4] / 1048576} ") +
-                                    $"totalMemoryMB={GC.GetTotalMemory(false) / 1048576}");
+                                    $"totalMemoryMB={GC.GetTotalMemory(false) / 1048576} last={BlockingGen2Summary()}");
                             break;
                         case 10: // GCAllocationTick
                         {

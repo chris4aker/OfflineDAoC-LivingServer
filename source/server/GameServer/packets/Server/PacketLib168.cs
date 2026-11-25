@@ -796,7 +796,9 @@ namespace DOL.GS.PacketHandler
 				if (npc.IsUnderwater)
 					flags |= 0x10;
 
-				if ((npc.Flags & GameNPC.eFlags.FLYING) != 0)
+				// Port of OpenDAoC-Core f01e9fc33: an NPC crossing an off-mesh link (a ladder) "flies", so the client doesn't clamp
+				// it to the ground under the ladder.
+				if ((npc.Flags & GameNPC.eFlags.FLYING) != 0 || npc.movementComponent.IsCrossingOffMeshLink)
 					flags |= 0x20;
 
 				if (!npc.IsMoving || npc.IsAtDestination)
@@ -4032,7 +4034,7 @@ namespace DOL.GS.PacketHandler
 				pak.WriteByte(living.ManaPercent);
 
 				byte playerStatus = 0;
-				if (!living.IsAlive)
+				if (living.Health <= 0) // OpenDAoC-Core a9e0c3af2: IsAlive is false while zoning
 					playerStatus |= 0x01;
 				if (living.IsMezzed)
 					playerStatus |= 0x02;

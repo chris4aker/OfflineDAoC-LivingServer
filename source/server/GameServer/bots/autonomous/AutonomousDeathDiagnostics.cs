@@ -68,8 +68,22 @@ namespace DOL.GS
         {
             if (bot?.IsAutonomousWorldBot != true)
                 return;
-            if (killer is GameLiving deadly && AutonomousPveBossDanger.Marks(KillerKind(killer), deadly.Level, bot.Level))
-                AutonomousPveBossDanger.Record(bot.CurrentRegionID, bot.X, bot.Y, deadly.Level, DateTime.UtcNow);
+            // 1.2.3 (#537): the killer and its spot, by con (purple, or red to a bot alone); the controller reads
+            // LastAutonomousKiller to blame the killer, not the camp it was heading to.
+            bool alone = bot.Group == null || bot.Group.MemberCount <= 1;
+            if (killer is GameLiving deadly)
+            {
+                bot.LastAutonomousKiller = new AutonomousDeathBlame.Killer(deadly.Name, deadly.Level, KillerKind(killer),
+                    bot.CurrentRegionID, bot.X, bot.Y);
+                if (AutonomousPveBossDanger.Marks(KillerKind(killer), deadly.Level, bot.Level, alone) &&
+                    AutonomousPveBossDanger.Record(bot.CurrentRegionID, bot.X, bot.Y, deadly.Level, DateTime.UtcNow, deadly.Name) &&
+                    Log.IsInfoEnabled)
+                    Log.Info($"AUTONOMOUS_KILLER_DANGER_SPOT killer=\"{deadly.Name}\" killerLevel={deadly.Level} " +
+                             $"victim=\"{bot.Name}\" victimLevel={bot.Level} con={AutonomousPveBossDanger.ConTo(bot.Level, deadly.Level)} " +
+                             $"alone={alone} region={bot.CurrentRegionID} at={bot.X},{bot.Y} spots={AutonomousPveBossDanger.Count}");
+            }
+            else
+                bot.LastAutonomousKiller = null;
             if (string.Equals(KillerKind(killer), "monster", StringComparison.Ordinal))
                 AutonomousRepeatDeathSpots.Record(bot.DatabaseID, bot.CurrentRegionID, bot.X, bot.Y, DateTime.UtcNow);
             if (BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID))

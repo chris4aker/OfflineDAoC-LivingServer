@@ -20,7 +20,7 @@ namespace DOL.UnitTests
         [TestCase(50, 5, 10, ExpectedResult = true, TestName = "Half of the camp")]
         [TestCase(50, 2, 3, ExpectedResult = false, TestName = "Fewer than three")]
         [TestCase(50, 3, 3, ExpectedResult = true, TestName = "Small full camp")]
-        [TestCase(40, 1, 10, ExpectedResult = true, TestName = "Not level 50")]
+        [TestCase(40, 1, 10, ExpectedResult = false, TestName = "Below 50 too (1.2.3, #535)")]
         public bool Level50SoloCampsNeedEnoughRealTargets(int botLevel, int qualifying, int total) =>
             AutonomousSoloCampFloor.CampQualifies(botLevel, qualifying, total);
 

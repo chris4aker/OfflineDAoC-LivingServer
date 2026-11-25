@@ -451,7 +451,7 @@ def report(lines: list[Line]) -> dict:
                 seen[f.get("realm")].add(f.get("victim"))
                 if f.get("killerType") == "GameBot":
                     seen[f.get("killerRealm")].add(f.get("killer"))
-            elif l.tag in ("BG_STORM_TRACE", "BG_LORD_PATH", "RVR_STEALTH_OPEN", "RVR_LORD_FORMATION", "RVR_KEEP_TRAVEL_STALL",
+            elif l.tag in ("BG_STORM_TRACE", "BG_LORD_PATH", "RVR_STEALTH_OPEN", "RVR_STEALTH_ARCHER_OPEN", "RVR_LORD_FORMATION", "RVR_KEEP_TRAVEL_STALL",
                            "RVR_BORDER_STAGING", "RVR_DECIDE", "RVR_ENGAGE"):
                 seen[f.get("realm")].add(f.get("bot"))
         # perception

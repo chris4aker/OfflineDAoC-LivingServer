@@ -65,6 +65,7 @@
   "bot_raid_invite_player": "True",
   "bot_role_formation": "True",
   "bot_schedule_mode": "off",
+  "bot_show_as_bots": "False",
   "bot_siege_supply": "True",
   "bot_skill_growth": "True",
   "bot_skill_profiles": "True",
@@ -152,6 +153,7 @@
   "xp_rate_by_level": ""
  },
  "KeptOff": {
+  "bot_show_as_bots": "owner decision 2026-11-24 (#485): bots look like players; the [Playerbot] tag in /who and the words gamebot/buffbot in refused invites only when the player switches it on",
   "craft_made_lines": "diagnostics: one log line per gamebot craft",
   "crafting_classic_losses": "a classic crafting rule for real players (a choice of rule, not a feature; design decision 11)",
   "crafting_classic_quality": "a classic crafting rule for real players (a choice of rule, not a feature; design decision 11)",

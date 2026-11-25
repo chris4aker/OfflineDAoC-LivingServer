@@ -159,22 +159,12 @@ namespace DOL.GS.Spells
             bool isImmune = false;
             string message = string.Empty;
 
-            if (target.effectListComponent.ContainsEffectForEffectType(eEffect.MezImmunity) || target.HasAbility(Abilities.MezzImmunity))
-                isImmune = true;
-            else
+            // #521: one reading of the refusals (CrowdControlImmunity), shared with the bots' planner. An autonomous gamebot
+            // mezzed by an enemy-realm player character takes the player's branch: no "enraged" refusal, player immunity.
+            if (CrowdControlImmunity.MezRefused(Caster, target, base.CalculateEffectDuration(target), out bool enraged))
             {
-                if (target is GamePlayer)
-                    isImmune = target.effectListComponent.ContainsEffectForEffectType(eEffect.Mez);
-                else if (EffectListService.GetEffectOnTarget(target, eEffect.NPCMezImmunity) is NpcMezImmunityEffect immunityEffect)
-                    isImmune = !immunityEffect.CanApplyNewEffect(base.CalculateEffectDuration(target));
-            }
-
-            if (isImmune)
-                message = "Your target is immune to this effect!";
-            else if (target is GameNPC && target.HealthPercent < 75)
-            {
-                message = "Your target is enraged and resists the spell!";
                 isImmune = true;
+                message = enraged ? "Your target is enraged and resists the spell!" : "Your target is immune to this effect!";
             }
 
             GameSpellEffect mezblock = FindEffectOnTarget(target, "CeremonialBracerMezz");
@@ -273,15 +263,10 @@ namespace DOL.GS.Spells
         {
             bool isImmune = false;
 
-            if ((this is not UnresistableStunSpellHandler && target.effectListComponent.ContainsEffectForEffectType(eEffect.StunImmunity)) || target.HasAbility(Abilities.StunImmunity))
+            // #521: shared with the bots' planner (CrowdControlImmunity); a gamebot stunned by an enemy player character
+            // takes the player's branch.
+            if (CrowdControlImmunity.StunRefused(Caster, target, base.CalculateEffectDuration(target), this is UnresistableStunSpellHandler))
                 isImmune = true;
-            else
-            {
-                if (target is GamePlayer)
-                    isImmune = target.effectListComponent.ContainsEffectForEffectType(eEffect.Stun);
-                else if (EffectListService.GetEffectOnTarget(target, eEffect.NPCStunImmunity) is NpcStunImmunityEffect immunityEffect)
-                    isImmune = !immunityEffect.CanApplyNewEffect(base.CalculateEffectDuration(target));
-            }
 
             if (isImmune)
             {

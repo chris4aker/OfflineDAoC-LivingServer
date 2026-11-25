@@ -30,10 +30,21 @@ namespace DOL.GS
         public virtual string Name => "Default Effect Name";
         public virtual string OwnerName => Owner != null ? Owner.Name : string.Empty;
         public virtual bool HasPositiveEffect => false;
-        public ImmunityType AppliedImmunityType => !TriggersImmunity ? ImmunityType.None : (Owner is GamePlayer ? ImmunityType.Player : ImmunityType.Npc);
+        // #521: an autonomous gamebot crowd-controlled by an enemy-realm player character takes the player's immunity (60 s
+        // after the effect, roots and snares too, no same-spell refresh); against a monster or guard it keeps the NPC rule.
+        public ImmunityType AppliedImmunityType => DOL.GS.ServerRules.PvpRules.ImmunityTypeFor(TriggersImmunity,
+            Owner is GamePlayer || DOL.GS.ServerRules.PvpRules.TakesPlayerRules(Owner, SpellHandler?.Caster));
         public bool TriggersImmunity { get; set; }
         public int ImmunityDuration { get; protected set; } = 60000;
         public bool IsBeingReplaced { get; set; } // Used externally to force an effect to be silent (no message, no immunity) when being refreshed.
+
+        /// <summary>
+        /// Set when this instance is ended after a newer copy of the same pulsing spell took its place in its owner's
+        /// effect list (EffectListComponent replaces a pulsing spell's effect in place, without stopping the old
+        /// instance or starting the new one). The copy in the list carries the effect on; this one is retired without
+        /// its <see cref="OnStopEffect"/>. Port of FelixGagnonB/OfflineDAoC 471b04186.
+        /// </summary>
+        public bool IsStaleCopy { get; set; }
 
         /// <summary>
         /// The current start or stop only hands the effect over to another of the same kind on the same owner (1.2.3): a buff

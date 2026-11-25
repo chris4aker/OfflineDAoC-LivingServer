@@ -387,6 +387,8 @@ namespace DOL.UnitTests
             Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 30) with { ObserverSeeHidden = true }), Is.EqualTo(1_620));
             Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 30) with { ObserverSeeHidden = true, TargetAssassin = true }), Is.EqualTo(525));
             Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 5) with { ObserverSeeHidden = true }), Is.EqualTo(1_900), "the server's hard cap");
+            // Against an archer See Hidden has its 1.62 strength (#522, StealthRules.SeeHiddenRange): 65% of 1,620 here.
+            Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 30) with { ObserverSeeHidden = true, TargetArcher = true }), Is.EqualTo(1_053));
 
             // Over many random cases: a chance only where a player in the bot's place sees the stealther, falling with distance.
             var random = new Random(5);

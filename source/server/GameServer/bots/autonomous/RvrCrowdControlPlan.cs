@@ -173,37 +173,16 @@ public static class RvrCrowdControlPlan
     // ---- the server's immunity rules, read as its spell handlers read them --------------------------------------------
 
     /// <summary>
-    /// The server would refuse a mez of <paramref name="duration"/> ms (MesmerizeSpellHandler.CheckSpellResist): a mez
-    /// immunity effect or ability, a bot's NPC immunity that refuses a new mez, or a bot below
-    /// 75% health ("enraged"). Not pure (reads effects).
+    /// The server would refuse a mez of <paramref name="duration"/> ms from <paramref name="caster"/>: the spell handler's
+    /// own reading (CrowdControlImmunity.MezRefused, #521; the planner's copy is gone). A target already mezzed is held,
+    /// not free: the plan does not ask. Not pure (reads effects).
     /// </summary>
-    public static bool MezImmune(GameLiving target, int duration)
-    {
-        if (target?.effectListComponent == null)
-            return false;
-        if (target.effectListComponent.ContainsEffectForEffectType(eEffect.MezImmunity) || target.HasAbility(Abilities.MezzImmunity))
-            return true;
-        // A player already mezzed is refused too, but that one is held, not free: the plan does not ask.
-        if (target is GamePlayer)
-            return false;
-        if (EffectListService.GetEffectOnTarget(target, eEffect.NPCMezImmunity) is NpcMezImmunityEffect immunity &&
-            !immunity.CanApplyNewEffect(Math.Max(1, duration)))
-            return true;
-        return target is GameNPC && target.HealthPercent < 75;
-    }
+    public static bool MezImmune(GameLiving target, int duration, GameLiving caster = null) =>
+        CrowdControlImmunity.MezRefused(caster, target, duration, out _, stillMezzedCounts: false);
 
-    /// <summary>The server would refuse a stun of <paramref name="duration"/> ms (StunSpellHandler.CheckSpellResist). Not pure.</summary>
-    public static bool StunImmune(GameLiving target, int duration)
-    {
-        if (target?.effectListComponent == null)
-            return false;
-        if (target.effectListComponent.ContainsEffectForEffectType(eEffect.StunImmunity) || target.HasAbility(Abilities.StunImmunity))
-            return true;
-        if (target is GamePlayer)
-            return false;
-        return EffectListService.GetEffectOnTarget(target, eEffect.NPCStunImmunity) is NpcStunImmunityEffect immunity &&
-            !immunity.CanApplyNewEffect(Math.Max(1, duration));
-    }
+    /// <summary>The server would refuse a stun of <paramref name="duration"/> ms (CrowdControlImmunity.StunRefused). Not pure.</summary>
+    public static bool StunImmune(GameLiving target, int duration, GameLiving caster = null) =>
+        CrowdControlImmunity.StunRefused(caster, target, duration, stillStunnedCounts: false);
 
     /// <summary>The server would refuse a root (SpeedDecreaseSpellHandler.ApplyEffectOnTarget). Not pure.</summary>
     public static bool RootImmune(GameLiving target)

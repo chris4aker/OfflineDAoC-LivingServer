@@ -2027,10 +2027,63 @@ namespace DOL.GS
         private bool ExecuteRvr(BotBrain brain, GameBot bot)
         {
             _rvrRuleHint = null;
-            bool result = ExecuteRvrTurn(brain, bot);
+            string forceId = RvrForceId(bot);
+            bool result;
+            // #530: the turn's intent proposals are decided as they come and written to the force once, at the end.
+            _forceTurn.Begin(forceId, IsRvrForceWriter(bot));
+            try
+            {
+                result = ExecuteRvrTurn(brain, bot);
+            }
+            finally
+            {
+                _forceTurn.End(bot, GameLoop.GameLoopTime);
+            }
+            AutonomousRvrEventLayer.Shadow(bot, forceId, _rvrIntent, _rvrSharedEvent);
             RvrDecide.Change(bot, "controller", "destination", _rvrDestination?.Id ?? "-",
                 _rvrRuleHint ?? _rvrLastStatusRule ?? "exec.none", _rvrDestination?.MonsterName);
             return result;
+        }
+
+        /// <summary>This bot's turn of intent proposals (#530): the event layer decides each, and writes the force once.</summary>
+        private readonly AutonomousRvrEventLayer.ForceTurn _forceTurn = new();
+
+        /// <summary>The force a frontier bot belongs to: its dynamic RvR warband, else itself (as ExecuteRvrTurn names it).</summary>
+        private string RvrForceId(GameBot bot) =>
+            _groupDirective?.IsDynamic == true && _groupDirective.ObjectiveKind == eAutonomousObjectiveKind.RvR
+                ? _groupDirective.GroupId : $"rvr-{bot.DatabaseID}";
+
+        /// <summary>Whose turn writes the force's intent: a solo bot, or the warband's leader. Followers read it.</summary>
+        private bool IsRvrForceWriter(GameBot bot) =>
+            !(_groupDirective?.IsDynamic == true && _groupDirective.ObjectiveKind == eAutonomousObjectiveKind.RvR) ||
+            _groupDirective.Leader == null || _groupDirective.Leader == bot;
+
+        /// <summary>
+        /// The one way this controller changes its intent (#530): propose to the event layer and take what it decided.
+        /// <paramref name="mirrorIntent"/> and <paramref name="mirrorKeep"/> copy the decision into the bot's
+        /// RvrWarbandIntent and RvrDefendingKeep TempProperties where the old writer did (their other readers are kept).
+        /// Outside a turn the proposal is written at once. Null: refused, nothing changed.
+        /// </summary>
+        private AutonomousRvrEventLayer.ForceIntent ProposeRvrIntent(GameBot bot, AutonomousRvrEventLayer.IntentProposal proposal,
+            bool mirrorIntent, bool mirrorKeep, string forceId = null)
+        {
+            bool outside = !_forceTurn.Open;
+            if (outside)
+                _forceTurn.Begin(forceId ?? RvrForceId(bot), IsRvrForceWriter(bot));
+            AutonomousRvrEventLayer.ForceIntent decided =
+                _forceTurn.Propose(new(_rvrIntent, _rvrSharedEvent), proposal, GameLoop.GameLoopTime);
+            if (decided != null)
+            {
+                _rvrIntent = decided.Intent;
+                _rvrSharedEvent = decided.Shared;
+                if (mirrorIntent)
+                    bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+                if (mirrorKeep)
+                    bot.TempProperties.SetProperty("RvrDefendingKeep", decided.DefendingKeep);
+            }
+            if (outside)
+                _forceTurn.End(bot, GameLoop.GameLoopTime);
+            return decided;
         }
 
         /// <summary>The rule code a destination write names for the trace (#505); read and cleared by <see cref="ExecuteRvr"/>.</summary>
@@ -2084,9 +2137,8 @@ namespace DOL.GS
                 _rvrRuleHint = "exec.committed";
                 _rvrDestination = new(committedPlan.TargetId, committedPlan.Name, committedPlan.Name,
                     committedPlan.RegionId, committedPlan.X, committedPlan.Y, committedPlan.Z, 1, false, true);
-                _rvrSharedEvent = true;
-                _rvrIntent = committedPlan.Intent;
-                bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+                ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Committed, committedPlan.Intent,
+                    committedPlan.TargetId, true, null, "exec.committed", committedPlan.Reason), mirrorIntent: true, mirrorKeep: false);
                 RvrAtObjective.Remember(bot, committedPlan.RegionId, committedPlan.X, committedPlan.Y, true);
             }
             var rally = AutonomousRvrEventLayer.GetRallyOrder(forceId, bot.Realm, GameLoop.GameLoopTime);
@@ -2095,8 +2147,12 @@ namespace DOL.GS
             // after the battle started, and no bot had ever deployed a siege weapon (logs since 2026-10-02).
             if (rally != null && !rally.HomeMuster && bot.Realm == rally.Attacker && TryRunSiegeJob(bot)) return true;
             if (rally != null) return HandleSiegeRally(bot, forceId, rally);
+            // #525: defenders still at a keep they held repair its doors with wood (owner 2026-11-24); new orders come first.
+            if (committedPlan == null && !GameRelic.IsPlayerCarryingRelic(bot) && TryRunDoorRepair(bot)) return true;
+            // #530 step 3: a follower reads its force's intent from the event layer (the leader's TempProperty only
+            // until the force has a record).
             if (committedPlan == null && dynamicWarband && _groupDirective.Leader != bot && _groupDirective.Leader != null)
-                _rvrIntent = (AutonomousRvrEventLayer.Intent)_groupDirective.Leader.TempProperties
+                _rvrIntent = AutonomousRvrEventLayer.IntentOf(forceId)?.Intent ?? (AutonomousRvrEventLayer.Intent)_groupDirective.Leader.TempProperties
                     .GetProperty<int>("RvrWarbandIntent", (int)AutonomousRvrEventLayer.Intent.Roam);
             bool carrying = GameRelic.IsPlayerCarryingRelic(bot);
             if (RvrTacticsTravelHold(brain, bot)) return true;
@@ -2111,9 +2167,12 @@ namespace DOL.GS
             if (_rvrSharedEvent && _rvrDestination != null &&
                 !AutonomousRvrEventLayer.IsTargetActive(_rvrDestination.Id, GameLoop.GameLoopTime))
             {
+                // #525: a defense that ended leaves its defenders a door-repair job (only if the keep is still theirs).
+                if (_rvrIntent == AutonomousRvrEventLayer.Intent.DefendEvent) NoteDefenseEnded(bot, _rvrDestination, GameLoop.GameLoopTime);
                 _rvrDestination = null;
                 _rvrApproachDestination = null;
-                _rvrSharedEvent = false;
+                ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Released, _rvrIntent, null, false, null,
+                    "event.ended", "the event's objective resolved or timed out"), mirrorIntent: false, mirrorKeep: false);
                 _nextRvrPlanReview = 0;
             }
 
@@ -2154,7 +2213,8 @@ namespace DOL.GS
             // warband together around that leader.
             if (!battleActive && dynamicWarband && _groupDirective.Leader != bot && !GameRelic.IsPlayerCarryingRelic(bot))
             {
-                int defendingId = _groupDirective.Leader?.TempProperties.GetProperty<int>("RvrDefendingKeep", -1) ?? -1;
+                int defendingId = AutonomousRvrEventLayer.IntentOf(forceId)?.DefendingKeep ??
+                                  _groupDirective.Leader?.TempProperties.GetProperty<int>("RvrDefendingKeep", -1) ?? -1;
                 AbstractGameKeep wallKeep = defendingId >= 0
                     ? GameServer.KeepManager.GetKeepsOfRegion(bot.CurrentRegionID).FirstOrDefault(keep =>
                         keep.KeepID == defendingId && keep.Realm == bot.Realm &&
@@ -2721,34 +2781,46 @@ namespace DOL.GS
                 .ToArray() ?? [];
             if (warband.Length == 0)
                 warband = [bot];
-            int averageLevel = (int)Math.Round(warband.Average(member => member.Level));
-            int healers = warband.Count(member => member.ClassName.Contains("cleric", StringComparison.OrdinalIgnoreCase) ||
-                                                    member.ClassName.Contains("healer", StringComparison.OrdinalIgnoreCase) ||
-                                                    member.ClassName.Contains("druid", StringComparison.OrdinalIgnoreCase) ||
-                                                    member.ClassName.Contains("bard", StringComparison.OrdinalIgnoreCase));
+            // #530: one strength (ForceStrength, healers by RvrRoles); the size and level rule for a siege is the event
+            // layer's only (the controller's old level-35 rule never decided anything behind the layer's 50).
+            ForceStrength strength = ForceStrength.Of(warband);
             // 1.2 WP6: a roaming eight walks its circuits; it answers defence calls but opens no siege.
-            bool siegeReady = warband.Length >= 4 && averageLevel >= 35 && !RvrTacticsIsRoamingEight(bot) && CanSupplySiege(bot);
+            bool siegeReady = !RvrTacticsIsRoamingEight(bot) && CanSupplySiege(bot);
             AutonomousRvrEventLayer.Plan plan = AutonomousRvrEventLayer.ChooseOrJoin(
                 new AutonomousRvrEventLayer.Force(_groupDirective?.GroupId ?? $"rvr-{bot.DatabaseID}", bot.Realm,
-                    warband.Length, averageLevel, healers, siegeReady,
+                    strength.Members, strength.AverageLevel, strength.Healers, siegeReady,
                     (unchecked((ulong)(_groupDirective?.Leader?.DatabaseID ?? bot.DatabaseID)) * 2654435761UL % 100) < 30,
-                    warband.Select(member => member.DatabaseID).ToArray(), warband.Min(member => member.Level),
+                    warband.Select(member => member.DatabaseID).ToArray(), strength.MinimumLevel,
                     RecentWipes: RvrEngagement.RecentWipes(bot.Group, GameLoop.GameLoopTime), RoamingEight: RvrTacticsIsRoamingEight(bot)),
                 objectives, GameLoop.GameLoopTime, Random.Shared.NextDouble());
-            _rvrSharedEvent = plan?.IsSharedEvent == true;
-            _rvrIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;
-            bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+            bool planShared = plan?.IsSharedEvent == true;
+            AutonomousRvrEventLayer.Intent planIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;
             RvrAtObjective.Remember(bot, plan?.RegionId ?? 0, plan?.X ?? 0, plan?.Y ?? 0, plan != null);
-            bot.TempProperties.SetProperty("RvrDefendingKeep",
-                _rvrIntent == AutonomousRvrEventLayer.Intent.DefendEvent && plan.TargetId.StartsWith("rvr-keep-") &&
-                int.TryParse(plan.TargetId.Substring(9), out int defendingKeep) ? defendingKeep : -1);
+            int defendingKeepId = planIntent == AutonomousRvrEventLayer.Intent.DefendEvent && plan.TargetId.StartsWith("rvr-keep-") &&
+                int.TryParse(plan.TargetId.Substring(9), out int defendingKeep) ? defendingKeep : -1;
             CampDestination chosen = choices.FirstOrDefault(destination => destination.Id == plan?.TargetId) ??
                 (plan == null ? null : new CampDestination(plan.TargetId, plan.Name, plan.Name,
                     plan.RegionId, plan.X, plan.Y, plan.Z, 1, false, true));
             CampDestination planned = chosen;
-            chosen = RvrTacticsRoamDestination(bot, chosen) ?? chosen;
+            // #530 step 4: the roam override proposes beside the plan; the event layer decides, and the force is written once.
+            CampDestination roam;
+            _rvrPlanView = new(planIntent, planShared);
+            try
+            {
+                roam = RvrTacticsRoamDestination(bot, chosen);
+            }
+            finally
+            {
+                _rvrPlanView = null;
+            }
+            string basePlanRule = plan == null ? "plan.none" : "plan." + ToCamel(plan.Intent.ToString());
+            AutonomousRvrEventLayer.ForceIntent decided = ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Plan, planIntent,
+                    planned?.Id, planShared, defendingKeepId, basePlanRule, plan?.Reason, roam?.Id, "roam.override"),
+                mirrorIntent: true, mirrorKeep: true);
+            if (roam != null && decided?.Source == AutonomousRvrEventLayer.IntentSource.RoamOverride)
+                chosen = roam;
             // #505: RVR_PLAN and the destination decision (logging only).
-            string planRule = !ReferenceEquals(planned, chosen) ? "roam.override" : plan == null ? "plan.none" : "plan." + ToCamel(plan.Intent.ToString());
+            string planRule = !ReferenceEquals(planned, chosen) ? "roam.override" : basePlanRule;
             _rvrRuleHint = planRule;
             RvrRecordRows.Plan(bot, chosen?.Id, plan?.Intent.ToString() ?? "none", planRule, choices.Count, rejected, plan?.Reason);
             RvrDecide.Change(bot, "plan", "destination", chosen?.Id ?? "-", planRule, plan?.Reason);
@@ -3180,6 +3252,8 @@ namespace DOL.GS
             {
                 Log.Info($"AUTONOMOUS_CAMP_OUTLEVELED bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
                          $"class=\"{bot.ClassName}\" camp=\"{_camp.Id}\" target=\"{target.Name}\" targetLevel={target.Level}");
+                // 1.2.3 (#535): not re-picked for a while (Pwnage1337 outleveled the same four camps 28 times)
+                _recentFailedSoloCamps[_camp.Id] = GameLoop.GameLoopTime + AutonomousDeathRecoveryPolicy.FailureMemoryMilliseconds;
                 AbandonCamp(bot, $"Outleveled {_camp.MonsterName}; the camp no longer gives experience");
                 return true;
             }
@@ -3187,6 +3261,7 @@ namespace DOL.GS
             {
                 if (AutonomousDefensivePull.TryBeginFlyingHandoff(bot, target))
                 {
+                    AutonomousMobClaims.Take(bot, target);
                     SetStatus(bot, $"Ranged pulling {target.Name}", GoalText(),
                         "The designated puller handed an unreachable flying target to a ranged party member",
                         target.Name, _camp.ZoneName);
@@ -3212,12 +3287,16 @@ namespace DOL.GS
                 if (!SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
                     AutonomousDefensivePull.TryBegin(bot, target))
                 {
+                    // Claimed only once the shot is under way, not while the party waits out a retry.
+                    if (AutonomousDefensivePull.IsPulling(bot.Group, target))
+                        AutonomousMobClaims.Take(bot, target);
                     SetStatus(bot, $"Ranged pulling {target.Name}", GoalText(),
                         "Party holds formation; the ranged puller brings the target back before everyone engages",
                         target.Name, _camp.ZoneName);
                     return true;
                 }
                 bot.TargetObject = target;
+                AutonomousMobClaims.Take(bot, target);   // this side's monster now (AutonomousMobClaims)
                 _lastEngagedCon = ConLevels.GetConColor(bot.GetConLevel(target));
                 AutonomousBotGroupCoordinator.MarkCombatObserved(bot.Group);
                 brain.AddToAggroList(target, Math.Max(25, target.EffectiveLevel * 10));
@@ -3564,9 +3643,18 @@ namespace DOL.GS
                 // other melee classes. Only dungeons and audited risky camps
                 // require the extra reversible approach proof below.
                 .Where(npc => GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
+                // A monster already fighting someone outside the bot's side (its group, or its realm raid) is theirs,
+                // as players left it; and one another bot or player outside it has pulled or hit, even before it turns on
+                // them. No "sry ks" and no shared XP (port of True165 e4d2498ca). Self-defense is handled elsewhere.
+                .Where(npc => !npc.InCombat || npc.TargetObject == bot ||
+                              npc.TargetObject is GameLiving fighting && AutonomousMobClaims.SameFight(bot, fighting) ||
+                              npc.TargetObject is not GameLiving)
+                .Where(npc => !AutonomousMobClaims.TakenByOther(bot, npc))
                 // a party pulls the monster standing apart first, then the highest level (AutonomousGroupPullOrder);
                 // a careless puller now and then takes one with an add (Bots as people WP2, its skill)
                 .OrderForPull(_groupDirective?.IsDynamic == true, bot)
+                // 1.2.3 (#535): a solo bot takes a grey only when nothing else is near, so a grey pick really means outleveled
+                .ThenBy(npc => _groupDirective?.IsDynamic != true && AutonomousSoloCampFloor.IsGrey(bot.EffectiveLevel, npc.EffectiveLevel) ? 1 : 0)
                 .ThenBy(npc => bot.GetDistanceTo(npc) + Math.Abs((int)ConLevels.GetConColor(bot.GetConLevel(npc))) * 220)
                 // Run native checks only after cheap filters and sorting, and
                 // stop at the first reachable target. Self-defense is handled
@@ -3724,6 +3812,13 @@ namespace DOL.GS
             int planningLevel = sharedGroup ? _groupDirective.AverageLevel : bot.Level;
             int highestMemberLevel = sharedGroup
                 ? bot.Group.GetMembersInTheGroup().Max(member => member.EffectiveLevel) : bot.EffectiveLevel;
+            int lowestMemberLevel = sharedGroup
+                ? bot.Group.GetMembersInTheGroup().Min(member => member.EffectiveLevel) : bot.EffectiveLevel;
+            // 1.2.3 (#536): group camps in con steps against the members (AutonomousGroupCampBand)
+            AutonomousGroupCampBand.Band groupBand = sharedGroup
+                ? AutonomousGroupCampBand.For(lowestMemberLevel, highestMemberLevel, planningLevel,
+                    _groupDirective.PreferredLevelBonus, groupSize, _groupDirective.WipePenalty)
+                : default;
             ConColor maximumTargetCon = MaximumTargetCon(groupSize);
             ConColor naturalMaximumTargetCon = NaturalMaximumTargetCon(groupSize);
             // Normal groups start at yellow-or-better, but every death retry is
@@ -3803,7 +3898,7 @@ namespace DOL.GS
                     !sharedGroup && !AutonomousSoloCampFloor.CampQualifies(bot.Level, validCount, cell.Levels.Length))
                     continue;
                 // No camp beside a spot where a monster far above this bot killed one recently (stefanrows' boss danger).
-                if (AutonomousPveBossDanger.IsNear(cell.RegionId, cell.X, cell.Y, planningLevel, dangerUtc))
+                if (AutonomousPveBossDanger.IsNear(cell.RegionId, cell.X, cell.Y, sharedGroup ? lowestMemberLevel : planningLevel, dangerUtc))
                     continue;
                 // Nor beside a place where this bot itself died again and again (AutonomousRepeatDeathSpots).
                 if (ownDeathSpots.Length > 0 && AutonomousRepeatDeathSpots.IsNear(ownDeathSpots, cell.RegionId, cell.X, cell.Y))
@@ -3813,9 +3908,7 @@ namespace DOL.GS
                 bool IsValidCampLevel(int level)
                     {
                         if (sharedGroup)
-                            return level >= planningLevel + 3 &&
-                                level <= planningLevel + _groupDirective.PreferredLevelBonus &&
-                                ConLevels.GetConColor(ConLevels.GetConLevel(highestMemberLevel, level)) > ConColor.GREY;
+                            return groupBand.Allows(level);
                         ConColor con = ConLevels.GetConColor(ConLevels.GetConLevel(bot.EffectiveLevel, level));
                         // Retain every naturally valid non-grey option in the
                         // catalog. The requested death ceiling is applied below,
@@ -3865,8 +3958,7 @@ namespace DOL.GS
                         sharedGroup ? planningLevel : bot.Level, groupSize))
                     continue;
                 int averageLevel = sharedGroup
-                    ? AutonomousGroupTargetPolicy.SelectFixedEightManLevel(validLevels, planningLevel,
-                        _groupDirective.PreferredLevelBonus)
+                    ? AutonomousGroupCampBand.SelectLevel(validLevels, groupBand)
                     : (int)Math.Round(validLevels.Average());
 
                 destinations[cell.Id] = new(cell.Id, cell.MonsterName, cell.ZoneName, cell.RegionId,
@@ -3933,9 +4025,8 @@ namespace DOL.GS
                     region: camp => camp.RegionId,
                     position: camp => new Vector3(destinations[camp.Id].X,
                         destinations[camp.Id].Y, destinations[camp.Id].Z));
-                int selectedLevel = AutonomousGroupTargetPolicy.SelectFixedEightManLevel(
-                    legal.Select(camp => camp.AverageMobLevel), planningLevel,
-                    _groupDirective.PreferredLevelBonus);
+                int selectedLevel = AutonomousGroupCampBand.SelectLevel(
+                    legal.Select(camp => camp.AverageMobLevel), groupBand);
                 legal = legal.Where(camp => camp.AverageMobLevel == selectedLevel);
             }
             else
@@ -4681,16 +4772,23 @@ namespace DOL.GS
             _routeCautionUntilTick = nowTick + RouteCautionAfterDeathMilliseconds;
             _recoverAfterSoloDeath = true;
 
+            // 1.2.3 (#537): blame the killer, not the camp the bot was heading to (AutonomousDeathBlame).
+            AutonomousDeathBlame.Killer? killer = bot.LastAutonomousKiller;
+            bot.LastAutonomousKiller = null;
+            bool dangerOnTheWay = AutonomousDeathBlame.IsDangerOnTheWay(killer, _camp?.MonsterName, bot.Level);
             ConColor failedCon = _lastEngagedCon ?? MaximumTargetCon(groupSize);
             // crowd widening never sends it back to the con it died to (null: no pull since the last death)
             _lastDeathCon = _lastEngagedCon;
             _lastDeathConTick = nowTick;
             ConColor saferCon = (ConColor)Math.Max((int)ConColor.GREEN, (int)failedCon - 1);
             int requiredSteps = (int)naturalMaximum - (int)saferCon;
-            _deathDifficultySteps = Math.Clamp(
-                Math.Max(_deathDifficultySteps + deathCount - _observedDeathCount, requiredSteps),
-                0,
-                maximumSafetySteps);
+            // A red or purple monster met on the way is remembered by its spot; it is no reason to hunt greens
+            // (in the 1.2.2 log 8,149 of 10,303 death replans dropped to green, onto camps grey on arrival, #535).
+            if (!dangerOnTheWay)
+                _deathDifficultySteps = Math.Clamp(
+                    Math.Max(_deathDifficultySteps + deathCount - _observedDeathCount, requiredSteps),
+                    0,
+                    maximumSafetySteps);
             _observedDeathCount = deathCount;
             _lastEngagedCon = null;
 
@@ -4703,12 +4801,12 @@ namespace DOL.GS
             if (AutonomousCampDangerBench.RecordDeath(_lastFailedCampId, bot.DatabaseID) is TimeSpan bench)
                 Log.Warn($"AUTONOMOUS_CAMP_DANGER_BENCH camp=\"{_lastFailedCampId}\" target=\"{failedTarget}\" " +
                          $"bots={AutonomousCampDangerBench.DistinctBotsToBench} hours={bench.TotalHours:0}");
-            string species = _camp == null ? null : AutonomousCampDangerBench.SpeciesKey(_camp.RegionId, _camp.MonsterName);
+            string species = _camp == null ? null : AutonomousDeathBlame.SpeciesToBench(killer, _camp.RegionId, _camp.MonsterName);
             if (AutonomousCampDangerBench.RecordDeath(species, bot.DatabaseID) is TimeSpan speciesBench)
                 Log.Warn($"AUTONOMOUS_SPECIES_DANGER_BENCH species=\"{species}\" " +
                          $"bots={AutonomousCampDangerBench.DistinctBotsToBench} hours={speciesBench.TotalHours:0}");
             if (_recentSoloDeathsWithoutExperience >= 2 && _camp != null &&
-                !string.IsNullOrWhiteSpace(_camp.MonsterName))
+                AutonomousDeathBlame.BlamesCampMonster(killer, _camp.MonsterName))
                 _recentFailedSoloTargets[_camp.MonsterName] = nowTick + AutonomousDeathRecoveryPolicy.FailureMemoryMilliseconds;
             _camp = null;
             _campStartedTick = 0;
@@ -4719,7 +4817,8 @@ namespace DOL.GS
                 bot.PersistentRecord.CurrentCampId = string.Empty;
             Log.Warn($"AUTONOMOUS_DEATH_ROUTE_REPLAN bot={bot.Name} id={bot.DatabaseID} " +
                      $"level={bot.Level} realm={GlobalConstants.RealmToName(bot.Realm)} class=\"{bot.ClassName}\" deaths={deathCount} " +
-                     $"failed_target=\"{failedTarget}\" new_max_con={MaximumTargetCon(groupSize)} " +
+                     $"failed_target=\"{failedTarget}\" killer=\"{killer?.Name}\" killerLevel={killer?.Level ?? 0} " +
+                     $"killer_off_camp={dangerOnTheWay} new_max_con={MaximumTargetCon(groupSize)} " +
                      $"no_xp_death_streak={_recentSoloDeathsWithoutExperience} " +
                      $"recovery_wait_ms={Math.Max(0, _soloDeathRecoveryUntilTick - nowTick)} " +
                      $"region={bot.CurrentRegionID} position={bot.X},{bot.Y},{bot.Z}");

@@ -42,6 +42,7 @@ public static class LoreChronicle
         ["dungeon-midgard-dodens"] = ["SpiritmasterAros"],
         ["dungeon-hibernia-tursuil"] = ["Balor"],
         ["dungeon-hibernia-marfach"] = ["BlackLady", "ChieftainCaimheul", "Avartack"],
+        ["dungeon-hibernia-fomor"] = ["Myrddraxis"],
         // The open-world big bosses (Living Server 1.2, RealmRaidOpenWorld).
         ["openworld-albion-greenknight"] = ["OFGreenKnight"],
         ["openworld-albion-coliath"] = ["Colialt"],

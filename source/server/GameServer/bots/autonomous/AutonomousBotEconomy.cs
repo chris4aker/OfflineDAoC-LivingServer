@@ -170,6 +170,8 @@ namespace DOL.GS;
             return null;
 
         bool hasCraft = !string.IsNullOrWhiteSpace(bot.PersistentRecord?.SerializedCraftingSkills);
+        // Issue #540: one gear context and worn score for the whole scan (nothing is worn until it ends).
+        using BotGearSet.ScanScope gearScan = BotGearSet.BeginScan(bot);
         // Appraise matching goods before limiting results. Cheap unusable bot
         // wares must not hide a useful player listing beyond the first 48 rows.
         return FindAffordableExchangeItems(bot, int.MaxValue)
@@ -277,7 +279,7 @@ namespace DOL.GS;
         /// lowers it).</summary>
         public static long GearImprovement(GameBot bot, DbInventoryItem item, eInventorySlot slot) =>
             item == null || !BotGearSet.IsScoredSlot(slot) ? 0
-                : BotGearSet.Delta(BotGearSet.For(bot), BotGearSet.Worn(bot), slot, item);
+                : BotGearSet.ScanDelta(bot, slot, item);
 
         /// <summary>
         /// A Savage's melee weapon is an upgrade (pure): its weapon policy gains (SavageBotWeaponPolicy.UpgradeGain > 0) and,

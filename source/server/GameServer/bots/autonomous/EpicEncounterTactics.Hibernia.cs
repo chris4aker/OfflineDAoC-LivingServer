@@ -11,8 +11,8 @@ namespace DOL.GS
     /// <item>Avartack the Champion swings his back style at a target that turns its back on him: the raider he fights faces
     /// him.</item>
     /// </list>
-    /// Fomor City has no raid of its own (its navmesh has no way in, AutonomousRealmRaid.RaidDungeons), so these steer the
-    /// autonomous gamebots that fight there; companion bots fight as their player orders.
+    /// Since 1.2.3 (#414) Fomor City has its raid (dungeon-hibernia-fomor, AutonomousRealmRaid.RaidDungeons): these rules steer
+    /// its raiders and the autonomous gamebots that fight there; companion bots fight as their player orders.
     /// </summary>
     public static partial class EpicEncounterTactics
     {

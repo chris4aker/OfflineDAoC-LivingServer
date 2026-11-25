@@ -28,8 +28,8 @@ namespace DOL.GS
     /// - the item level counts up to the bot's level, a weapon's DPS up to its cap (1.2 + 0.3 x level) and armour's AF up
     ///   to its cap (level for cloth, 2 x level otherwise).
     /// Untyped bonuses, a bot without a class (tests) or without item bonuses keep today's value. Pure arithmetic on the
-    /// item's 11 bonus slots and the bot's item-bonus table (kept by RefreshItemBonuses): no allocation beyond the pair
-    /// array FitValue already makes, no scan.
+    /// item's 11 bonus slots and the bot's item-bonus table (kept by RefreshItemBonuses): no allocation (the pairs are read
+    /// in place since issue #540), no scan.
     /// </summary>
     public static class BotGearValue165
     {
@@ -83,15 +83,12 @@ namespace DOL.GS
         {
             try
             {
-                foreach (Specialization spec in bot.GetSpecList())
-                    if (spec != null && spec.Level > 0 && SkillBase.SpecToSkill(spec.KeyName) == property)
-                        return true;
+                return bot.HasTrainedSpecRaising(property);
             }
             catch (Exception)
             {
                 return true;   // no spec table (tests, a bot still loading): value it as today
             }
-            return false;
         }
 
         /// <summary>The bot's item cap for a bonus of this property, or int.MaxValue when there is none to respect.</summary>
@@ -124,14 +121,14 @@ namespace DOL.GS
         /// class, over cap, or its level and DPS/AF beyond what the bot can use). bonuses = the item's 11 typed bonus pairs.
         /// </summary>
         public static int Adjustment(GameBot bot, int itemLevel, int dpsAf, int objectType,
-            (int Type, int Value)[] bonuses, DbInventoryItem currentInSlot)
+            ItemBonuses bonuses, DbInventoryItem currentInSlot)
         {
             if (bot == null || bot.Level <= 0)
                 return 0;
             int level = bot.Level;
             int adjustment = CapAdjustment(level, itemLevel, dpsAf, objectType);
 
-            if (bot.CharacterClass == null || bonuses == null)
+            if (bot.CharacterClass == null || bonuses.IsEmpty)
                 return adjustment;
             PropertyIndexer worn = bot.ItemBonus;
             foreach ((int bonusType, int value) in bonuses)
@@ -183,21 +180,107 @@ namespace DOL.GS
             return adjustment;
         }
 
-        /// <summary>The item's typed bonus pairs (the 10 numbered bonuses and the extra bonus).</summary>
-        public static (int Type, int Value)[] Bonuses(DbInventoryItem item) => item == null ? null :
-        [
-            (item.Bonus1Type, item.Bonus1), (item.Bonus2Type, item.Bonus2), (item.Bonus3Type, item.Bonus3),
-            (item.Bonus4Type, item.Bonus4), (item.Bonus5Type, item.Bonus5), (item.Bonus6Type, item.Bonus6),
-            (item.Bonus7Type, item.Bonus7), (item.Bonus8Type, item.Bonus8), (item.Bonus9Type, item.Bonus9),
-            (item.Bonus10Type, item.Bonus10), (item.ExtraBonusType, item.ExtraBonus),
-        ];
+        /// <summary>
+        /// The item's typed bonus pairs (the 10 numbered bonuses and the extra bonus), read in place. Issue #540: this used
+        /// to build an 11-pair array on every call, and the Exchange and loot gear checks call it for every worn piece of
+        /// every candidate (the 1.2.2 PC log's largest allocation, ValueTuple`2[Int32,Int32][] at 540-940 MB a minute,
+        /// 27-35% of everything the server allocated, feeding the gen-2 collections behind the 1.1-2.4 s freezes).
+        /// </summary>
+        public static ItemBonuses Bonuses(DbInventoryItem item) => new(item, null);
 
-        public static (int Type, int Value)[] Bonuses(DbItemTemplate t) => t == null ? null :
-        [
-            (t.Bonus1Type, t.Bonus1), (t.Bonus2Type, t.Bonus2), (t.Bonus3Type, t.Bonus3), (t.Bonus4Type, t.Bonus4),
-            (t.Bonus5Type, t.Bonus5), (t.Bonus6Type, t.Bonus6), (t.Bonus7Type, t.Bonus7), (t.Bonus8Type, t.Bonus8),
-            (t.Bonus9Type, t.Bonus9), (t.Bonus10Type, t.Bonus10), (t.ExtraBonusType, t.ExtraBonus),
-        ];
+        public static ItemBonuses Bonuses(DbItemTemplate t) => new(null, t);
+
+        /// <summary>An item's or template's 11 typed bonus pairs, without a copy: foreach gives (Type, Value).</summary>
+        public readonly struct ItemBonuses
+        {
+            public const int Count = 11;
+            private readonly DbInventoryItem _item;
+            private readonly DbItemTemplate _template;
+            private readonly (int Type, int Value)[] _pairs;
+
+            internal ItemBonuses(DbInventoryItem item, DbItemTemplate template)
+            {
+                _item = item;
+                _template = item == null ? template : null;
+                _pairs = null;
+            }
+
+            private ItemBonuses((int Type, int Value)[] pairs)
+            {
+                _item = null;
+                _template = null;
+                _pairs = pairs;
+            }
+
+            /// <summary>Tests and callers that hold their own pairs.</summary>
+            public static implicit operator ItemBonuses((int Type, int Value)[] pairs) => new(pairs);
+
+            /// <summary>No item, no template and no pairs (the old null array).</summary>
+            public bool IsEmpty => _item == null && _template == null && _pairs == null;
+
+            public int Length => _pairs?.Length ?? (IsEmpty ? 0 : Count);
+
+            public (int Type, int Value) this[int index]
+            {
+                get
+                {
+                    if (_pairs != null)
+                        return _pairs[index];
+                    if (_item != null)
+                        return index switch
+                        {
+                            0 => (_item.Bonus1Type, _item.Bonus1), 1 => (_item.Bonus2Type, _item.Bonus2),
+                            2 => (_item.Bonus3Type, _item.Bonus3), 3 => (_item.Bonus4Type, _item.Bonus4),
+                            4 => (_item.Bonus5Type, _item.Bonus5), 5 => (_item.Bonus6Type, _item.Bonus6),
+                            6 => (_item.Bonus7Type, _item.Bonus7), 7 => (_item.Bonus8Type, _item.Bonus8),
+                            8 => (_item.Bonus9Type, _item.Bonus9), 9 => (_item.Bonus10Type, _item.Bonus10),
+                            10 => (_item.ExtraBonusType, _item.ExtraBonus),
+                            _ => throw new ArgumentOutOfRangeException(nameof(index))
+                        };
+                    if (_template != null)
+                        return index switch
+                        {
+                            0 => (_template.Bonus1Type, _template.Bonus1), 1 => (_template.Bonus2Type, _template.Bonus2),
+                            2 => (_template.Bonus3Type, _template.Bonus3), 3 => (_template.Bonus4Type, _template.Bonus4),
+                            4 => (_template.Bonus5Type, _template.Bonus5), 5 => (_template.Bonus6Type, _template.Bonus6),
+                            6 => (_template.Bonus7Type, _template.Bonus7), 7 => (_template.Bonus8Type, _template.Bonus8),
+                            8 => (_template.Bonus9Type, _template.Bonus9), 9 => (_template.Bonus10Type, _template.Bonus10),
+                            10 => (_template.ExtraBonusType, _template.ExtraBonus),
+                            _ => throw new ArgumentOutOfRangeException(nameof(index))
+                        };
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+            }
+
+            /// <summary>A copy as an array (tests and logs; the gear checks never need one).</summary>
+            public (int Type, int Value)[] ToArray()
+            {
+                if (IsEmpty)
+                    return null;
+                var pairs = new (int Type, int Value)[Length];
+                for (int i = 0; i < pairs.Length; i++)
+                    pairs[i] = this[i];
+                return pairs;
+            }
+
+            public Enumerator GetEnumerator() => new(this);
+
+            public struct Enumerator
+            {
+                private readonly ItemBonuses _bonuses;
+                private int _index;
+
+                internal Enumerator(ItemBonuses bonuses)
+                {
+                    _bonuses = bonuses;
+                    _index = -1;
+                }
+
+                public bool MoveNext() => ++_index < _bonuses.Length;
+
+                public (int Type, int Value) Current => _bonuses[_index];
+            }
+        }
 
         /// <summary>The item's bonus of this type (all slots added), 0 for none or no item.</summary>
         public static int BonusOf(DbInventoryItem item, int bonusType)
