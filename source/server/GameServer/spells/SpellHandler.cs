@@ -2268,7 +2268,8 @@ namespace DOL.GS.Spells
 			double effectiveness = CasterEffectiveness;
 
 			// Duration is reduced for AoE spells based on the distance from the center, but only in RvR combat and if the spell doesn't have a damage component.
-			if (DistanceFallOff > 0 && Spell.Damage == 0 && (target is GamePlayer || (target is GameNPC npcTarget && npcTarget.Brain is IControlledBrain)))
+			// Realm enemies only (OpenDAoC-Core f815b1253): players and keep guards, not pets. Gamebots keep it, as players.
+			if (DistanceFallOff > 0 && Spell.Damage == 0 && target is GamePlayer or Keeps.GameKeepGuard or GameBot)
 				effectiveness *= 1 - DistanceFallOff / 2;
 
 			double duration = Spell.Duration * (1.0 + m_caster.GetModified(eProperty.SpellDuration) * 0.01);

@@ -25,7 +25,10 @@ namespace DOL.GS
 
         protected void OnHardCCStart()
         {
-            Owner.attackComponent.StopAttack();
+            // A stun or mez no longer sheathes a melee weapon (OpenDAoC-Core 52b44cb7a); attacks are already prevented while
+            // crowd controlled and resume after. A bow draw is still dropped.
+            if (Owner.ActiveWeaponSlot is eActiveWeaponSlot.Distance)
+                Owner.attackComponent.StopAttack();
             Owner.StopCurrentSpellcast();
             Owner.DisableTurning(true);
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DOL.GS.Effects;
 
@@ -48,16 +49,27 @@ namespace DOL.GS.Spells
 			// RR4: we remove all the effects
 			foreach (string toRemove in SpellTypesToRemove)
 			{
-				//GameSpellEffect effect = target.FindEffectOnTarget(toRemove);
-				eEffect.TryParse(toRemove, out eEffect effectType);
-				ECSGameEffect effect = EffectListService.GetEffectOnTarget(target, effectType);
-				if (toRemove == "Mesmerize")
-					effect = EffectListService.GetEffectOnTarget(target, eEffect.Mez);
-				if (effect != null)
-					effect.End();
-					//effect.Cancel(false);
+				if (!TryGetEffectType(toRemove, out eEffect effectType))
+					continue;
+
+				// Every instance, not just the first (OpenDAoC-Core b9b32cf03).
+				foreach (ECSGameEffect effect in target.effectListComponent.GetEffects(effectType))
+					effect?.End();
 			}
 			SendEffectAnimation(target, 0, false, 1);
+		}
+
+		/// <summary>The effect a removal name stands for (pure). A name with no effect behind it (Cure Nearsight's "Silence")
+		/// removes nothing: it used to parse to the enum's first value and cure Bladeturn (OpenDAoC-Core b9b32cf03).</summary>
+		public static bool TryGetEffectType(string toRemove, out eEffect effectType)
+		{
+			if (toRemove == "Mesmerize")
+			{
+				effectType = eEffect.Mez;
+				return true;
+			}
+
+			return Enum.TryParse(toRemove, out effectType) && !int.TryParse(toRemove, out _);
 		}
 
 		// constructor

@@ -180,7 +180,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -200,7 +200,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -313,7 +313,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -333,7 +333,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -355,7 +355,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -375,7 +375,7 @@ namespace DOL.GS
                 }
             }
 
-            temp.Sort(static (e1, e2) => e1.StartTick.CompareTo(e2.StartTick));
+            temp.Sort(CompareByStartTick);
             return temp;
         }
 
@@ -383,6 +383,14 @@ namespace DOL.GS
         {
             // Only used by players.
             return null;
+        }
+
+        /// <summary>Oldest first; effects started on the same tick keep a stable order by icon (OpenDAoC-Core c3d258810), so they
+        /// no longer jump around in the effect list.</summary>
+        private static int CompareByStartTick(ECSGameEffect e1, ECSGameEffect e2)
+        {
+            int tickCompare = e1.StartTick.CompareTo(e2.StartTick);
+            return tickCompare != 0 ? tickCompare : e1.Icon.CompareTo(e2.Icon);
         }
 
         public bool ContainsEffectForEffectType(eEffect effectType)
