@@ -23,11 +23,19 @@ namespace DOL.GS.PacketHandler.Client.v168
                 return;
             }
 
-            if (target.IsPlaying && target.Player != null && target.Player.ObjectState == GameObject.eObjectState.Active)
-            {
-                client.Out.SendPlayerCreate(target.Player);
-                client.Out.SendLivingEquipmentUpdate(target.Player);
-            }
+            if (!target.IsPlaying || target.Player == null || target.Player.ObjectState != GameObject.eObjectState.Active)
+                return;
+
+            // Port of OpenDAoC-Core 446a99f1f: a client could ask for any player by session ID and so see a stealthed or
+            // far-away player (Play with friends).
+            GamePlayer playerTarget = target.Player;
+            GamePlayer player = client.Player;
+
+            if (player == null || !player.CanDetect(playerTarget) || !player.IsWithinRadius(playerTarget, WorldMgr.VISIBILITY_DISTANCE))
+                return;
+
+            client.Out.SendPlayerCreate(playerTarget);
+            client.Out.SendLivingEquipmentUpdate(playerTarget);
         }
     }
 }

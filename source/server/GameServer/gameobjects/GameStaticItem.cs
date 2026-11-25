@@ -166,6 +166,10 @@ namespace DOL.GS
             Notify(GameObjectEvent.Delete, this);
             RemoveFromWorld(0);
             ObjectState = eObjectState.Deleted;
+            // Port of OpenDAoC-Core e04fb3af8: this override skipped the base cleanup, so handlers registered for a deleted
+            // static item (realm-ability statics, gravestones, loot) kept it alive.
+            ClearObjectsInRadiusCache();
+            GameEventMgr.RemoveAllHandlersForObject(this);
         }
 
         public override void DeleteFromDatabase()

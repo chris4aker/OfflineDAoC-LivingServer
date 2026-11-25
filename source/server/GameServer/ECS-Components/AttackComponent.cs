@@ -57,7 +57,7 @@ namespace DOL.GS
             if (owner.ObjectState is not eObjectState.Active)
             {
                 attackAction.CleanUp();
-                ServiceObjectStore.Remove(this);
+                Stop();
                 return;
             }
 
@@ -68,7 +68,19 @@ namespace DOL.GS
             }
 
             if (!attackAction.Tick())
-                ServiceObjectStore.Remove(this);
+                Stop(); // AttackAction.Tick already cleaned up before returning false.
+        }
+
+        /// <summary>
+        /// Port of OpenDAoC-Core c707d057f (memory leak): once the component leaves the service, drop the last weapon action
+        /// and the start-of-attack target, which otherwise kept a dead or deleted target alive until the next fight.
+        /// </summary>
+        private void Stop()
+        {
+            weaponAction = null;
+            if (!_startAttackRequested)
+                _startAttackTarget = null;
+            ServiceObjectStore.Remove(this);
         }
 
         public void AddAttacker(AttackData attackData)
@@ -2149,6 +2161,10 @@ namespace DOL.GS
 
             if (!string.IsNullOrEmpty(message))
                 Message.SystemToArea(ad.Attacker, message, eChatType.CT_OthersCombat, _broadcastExcludes);
+
+            // Port of OpenDAoC-Core c707d057f: the exclusion list was never cleared after use, so it kept the last fight's
+            // attacker, target and pet owner alive.
+            Array.Clear(_broadcastExcludes);
 
             ad.BroadcastMessage = message;
 
