@@ -45,6 +45,14 @@ namespace DOL.Database
 			get { return ElementBindings.Where(bind => bind.Relation == null); }
 		}
 		/// <summary>
+		/// Element Bindings that can be part of an UPDATE statement (no primary key, not read-only)
+		/// </summary>
+		public ElementBinding[] UpdateElementBindings { get; }
+		/// <summary>
+		/// Element Binding representing the LastTimeRowUpdated column, if present
+		/// </summary>
+		public ElementBinding LastUpdatedBinding { get; }
+		/// <summary>
 		/// Data Table Handled
 		/// </summary>
 		public DataTable Table { get; }
@@ -98,6 +106,10 @@ namespace DOL.Database
 					                                         }).ToArray();
 			}
 			
+			// Port of OpenDAoC-Core b141b28fd and 19123fffd: cache the UPDATE bindings used by DataObject.GetDirtyBindings.
+			UpdateElementBindings = FieldElementBindings.Where(static bind => bind.PrimaryKey == null && bind.ReadOnly == null).ToArray();
+			LastUpdatedBinding = UpdateElementBindings.FirstOrDefault(static bind => bind.ColumnName == nameof(DataObject.LastTimeRowUpdated));
+
 			// Prepare Table
 			Table = new DataTable(TableName);
 			var multipleUnique = new List<ElementBinding>();
