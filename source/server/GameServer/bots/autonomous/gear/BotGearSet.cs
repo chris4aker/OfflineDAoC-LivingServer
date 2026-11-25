@@ -141,16 +141,33 @@ namespace DOL.GS
         }
 
         /// <summary>The set score of a slot-indexed loadout (see the class summary).</summary>
-        public static long Score(Context context, DbInventoryItem[] worn)
+        public static long Score(Context context, DbInventoryItem[] worn) =>
+            Score(context, worn, eInventorySlot.Invalid, null);
+
+        /// <summary>
+        /// The set score of <paramref name="worn"/> as <see cref="With"/> would change it (<paramref name="wearSlot"/> =
+        /// Invalid: unchanged), read in place without the copy (issue #540: the copies were the Exchange scan's
+        /// DbInventoryItem[] allocations).
+        /// </summary>
+        private static long Score(Context context, DbInventoryItem[] worn, eInventorySlot wearSlot, DbInventoryItem wear)
         {
             if (context == null || worn == null)
                 return 0;
+            bool wearing = (int)wearSlot is >= 0 and < LoadoutLength;
             Span<int> totals = stackalloc int[PropertyCount];
             totals.Clear();
             long score = 0;
             foreach (eInventorySlot slot in ScoredSlots)
             {
                 DbInventoryItem item = (int)slot < worn.Length ? worn[(int)slot] : null;
+                if (wearing)
+                {
+                    // With: a piece moved from another worn slot leaves that slot, and the slot worn takes it.
+                    if (slot == wearSlot)
+                        item = wear;
+                    else if (wear != null && ReferenceEquals(item, wear))
+                        item = null;
+                }
                 if (item == null)
                     continue;
                 long piece = PieceValue(context, item, slot);
@@ -191,7 +208,63 @@ namespace DOL.GS
 
         /// <summary>How much wearing <paramref name="item"/> in <paramref name="slot"/> changes the set score.</summary>
         public static long Delta(Context context, DbInventoryItem[] worn, eInventorySlot slot, DbInventoryItem item) =>
-            Score(context, With(worn, slot, item)) - Score(context, worn);
+            worn == null ? Score(context, With(null, slot, item)) : Score(context, worn, slot, item) - Score(context, worn);
+
+        [ThreadStatic] private static GameBot _scanBot;
+        [ThreadStatic] private static Context _scanContext;
+        [ThreadStatic] private static DbInventoryItem[] _scanWorn;
+        [ThreadStatic] private static long _scanWornScore;
+        [ThreadStatic] private static int _scanDepth;
+
+        /// <summary>
+        /// Issue #540: one context, one worn loadout and one score of it for a whole read-only scan of candidates (the
+        /// Exchange purchase and gap-fill scans score every affordable listing, and each <see cref="ScanDelta"/> used to
+        /// build its own context (a 256-entry weight table), copy the worn set twice and score it again). Use it only
+        /// where nothing is worn or taken off before the scope ends. Scopes nest; only the outermost one sets the bot.
+        /// </summary>
+        public static ScanScope BeginScan(GameBot bot)
+        {
+            if (_scanDepth++ == 0)
+            {
+                _scanBot = bot;
+                _scanContext = null;
+                _scanWorn = null;
+            }
+            return new ScanScope();
+        }
+
+        public readonly struct ScanScope : IDisposable
+        {
+            public void Dispose()
+            {
+                if (_scanDepth > 0 && --_scanDepth == 0)
+                {
+                    _scanBot = null;
+                    _scanContext = null;
+                    _scanWorn = null;
+                }
+            }
+        }
+
+        /// <summary>Whether a scan for this bot is open on this thread (tests).</summary>
+        public static bool ScanOpenFor(GameBot bot) => _scanDepth > 0 && bot != null && ReferenceEquals(_scanBot, bot);
+
+        /// <summary>
+        /// <see cref="Delta"/> for the bot's own worn set: inside a <see cref="BeginScan"/> for this bot, its context,
+        /// worn set and worn score are made once; outside, exactly as before.
+        /// </summary>
+        public static long ScanDelta(GameBot bot, eInventorySlot slot, DbInventoryItem item)
+        {
+            if (!ScanOpenFor(bot))
+                return Delta(For(bot), Worn(bot), slot, item);
+            if (_scanContext == null)
+            {
+                _scanContext = For(bot);
+                _scanWorn = Worn(bot);
+                _scanWornScore = Score(_scanContext, _scanWorn);
+            }
+            return Score(_scanContext, _scanWorn, slot, item) - _scanWornScore;
+        }
     }
 
     /// <summary>

@@ -104,6 +104,30 @@ otherwise.
   (27%), fight calls that end on a laugh (9%) and your party lines left unanswered (5.5 of 20). None of these may get
   worse. No bot behaviour changed. **Tests only.**
 **The server**
+- **Much less garbage from the bots' gear checks, and no Windows handle kept per stat table** (#540, against the
+  owner's 1.2.2 session on `868a82d`, 2026-11-24: 49 `SERVER_STALL` lines in 5 hours, every one a blocking gen-2
+  collection of 1.1-2.4 s; handles 2,134 to 5,260 in 4.5 hours with threads flat at 64; live heap about +75 MB an hour).
+  - The log's own allocation sample named the gear checks: `ValueTuple`2[Int32,Int32][]` at 540-940 MB a minute (27-35% of
+    everything the server allocated), then `Int32[]` (9-10%), `DbInventoryItem[]` and the sort arrays and iterators of
+    `Specialization` (about 10% together). The Exchange purchase and gap-fill scans score every affordable listing, and
+    each check built an 11-pair bonus array per worn piece (twice per score), a 256-entry weight table, two copies of the
+    worn set, and a sorted copy of the spec list for every skill bonus. Now the bonus pairs are read in place
+    (`BotGearValue165.ItemBonuses`), the moved-piece score is read without copying the loadout, the trained-line check
+    walks the spec table without sorting it (`GameBot.HasTrainedSpecRaising`), and a scan keeps one context, one worn set
+    and one worn score for all its candidates (`BotGearSet.BeginScan`). Every score and every decision is the same as
+    before (`UT_Issue540GcHandles` compares 3,000 random loadouts, the scan against one context per candidate, and checks
+    that a score allocates nothing; `UT_NoUndress` still passes). **Tests only.**
+  - The stat tables every monster, guard, pet and bot carries (seven each, `PropertyIndexer`) used a .NET `Lock`. On .NET
+    10 a Lock makes a Windows event the first time two threads meet on it and keeps it for its whole life; the owner's
+    lock census of 2026-10-22 found these tables two thirds of the Locks holding one. They now take a short spin flag
+    that never makes a kernel object. Not yet proven to be what grew in 1.2.2: see the handle row below. **Tests only.**
+  - **New log rows for the next check:** `SERVER_HANDLE_CENSUS` every 10 minutes in every session on Windows (was a
+    test-run census only): the server's handles by kernel type and which types grew, read on a background thread.
+    `SERVER_MEMORY` adds `memoryLoadPct` and `highLoadPct` (the PC's memory in use against the GC's high-load line, 90%
+    by default) and `lastBlockingGen2` (whether the last blocking collection compacted, and the memory load it saw);
+    `SERVER_GC_PAUSE` adds the same. In 1.2.2 the PC sat at 87-91% memory in use (28-29 GB of 31.8 GB, no client
+    running), right on the line where the GC turns to blocking compacting collections. Server GC and background
+    (concurrent) GC were already on; no GC setting is changed until these rows show which cause it is.
 - **No "weapon returns to normal" burst when a stronger buff takes over** (the owner's 1.2.2 game, 2026-11-23: after
   "Berermund casts a spell!" and "Squishywizard casts a spell!", about ten lines of "XxEvilxX's weapon returns to normal.",
   "Kate's...", "Your weapon returns to normal.", XxEvilxX twice). Two group damage adds from different casters coexist
