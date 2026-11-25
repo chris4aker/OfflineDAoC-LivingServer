@@ -2147,6 +2147,8 @@ namespace DOL.GS
             // after the battle started, and no bot had ever deployed a siege weapon (logs since 2026-10-02).
             if (rally != null && !rally.HomeMuster && bot.Realm == rally.Attacker && TryRunSiegeJob(bot)) return true;
             if (rally != null) return HandleSiegeRally(bot, forceId, rally);
+            // #525: defenders still at a keep they held repair its doors with wood (owner 2026-11-24); new orders come first.
+            if (committedPlan == null && !GameRelic.IsPlayerCarryingRelic(bot) && TryRunDoorRepair(bot)) return true;
             // #530 step 3: a follower reads its force's intent from the event layer (the leader's TempProperty only
             // until the force has a record).
             if (committedPlan == null && dynamicWarband && _groupDirective.Leader != bot && _groupDirective.Leader != null)
@@ -2165,6 +2167,8 @@ namespace DOL.GS
             if (_rvrSharedEvent && _rvrDestination != null &&
                 !AutonomousRvrEventLayer.IsTargetActive(_rvrDestination.Id, GameLoop.GameLoopTime))
             {
+                // #525: a defense that ended leaves its defenders a door-repair job (only if the keep is still theirs).
+                if (_rvrIntent == AutonomousRvrEventLayer.Intent.DefendEvent) NoteDefenseEnded(bot, _rvrDestination, GameLoop.GameLoopTime);
                 _rvrDestination = null;
                 _rvrApproachDestination = null;
                 ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Released, _rvrIntent, null, false, null,

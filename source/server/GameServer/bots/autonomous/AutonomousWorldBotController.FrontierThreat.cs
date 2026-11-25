@@ -120,6 +120,21 @@ public sealed partial class AutonomousWorldBotController
         return true;
     }
 
+    /// <summary>How close an enemy must be to pull a siege operator off its engine.</summary>
+    public const int SiegeOperatorEngageRadius = 450;
+
+    /// <summary>
+    /// #525: whether a bot holding a siege job may take this enemy as a fight target. A bot with no siege job may take
+    /// any. An operator takes only a person within 450 (never an enemy engine: its own engine answers those); a
+    /// defending operator also answers an enemy attacking the engine it works. Before, a defending operator dropped its
+    /// engine for any enemy it saw (defense.md finding 4).
+    /// </summary>
+    public static bool SiegeOperatorMayEngage(bool assigned, bool defending, bool withinRadius, bool isEngine, bool attacksOperatedEngine) =>
+        !assigned || !isEngine && (withinRadius || defending && attacksOperatedEngine);
+
+    private static bool AttacksOperatedEngine(GameBot bot, GameLiving target) =>
+        target.IsAttacking && target.TargetObject is GameSiegeWeapon engine && engine.Owner == bot;
+
     /// <summary>An enemy attacking this bot or a friend near it: it has a line of fire, so it can be fired back at
     /// (wall archers stand where the navmesh ray cannot reach).</summary>
     private static bool FiringOnRealm(GameBot bot, GameLiving target) =>
@@ -187,7 +202,10 @@ public sealed partial class AutonomousWorldBotController
                     (siegeFighter ? AutonomousRvrDefense.IsCombatant(npc) :
                         npc.Brain is IControlledBrain pet && pet.GetLivingOwner() is IGamePlayer)) && Eligible(npc)))
             .Where(target => bot.GetDistanceTo(target) <= searchRadius)
-            .Where(target => defending || !BotSiegeRuntime.Assigned(bot) || bot.IsWithinRadius(target, 450) && target is not GameSiegeWeapon)
+            // #525: a siege operator, attacking or defending, keeps its engine unless the enemy is within 450 or is
+            // attacking its engine (defense.md finding 4: defenders dropped their engines at the first sighting).
+            .Where(target => SiegeOperatorMayEngage(BotSiegeRuntime.Assigned(bot), defending, bot.IsWithinRadius(target, SiegeOperatorEngageRadius),
+                target is GameSiegeWeapon, AttacksOperatedEngine(bot, target)))
             .OrderBy(target => target.TargetObject is GameBot friendly && friendly.Realm == bot.Realm &&
                 bot.IsWithinRadius(friendly, 1000) && BotSiegeRuntime.HoldingPosition(friendly) ? 0 : 1)
             .ThenBy(bot.GetDistanceTo).ToArray();
@@ -247,10 +265,10 @@ public sealed partial class AutonomousWorldBotController
 
         if (defending)
         {
-            // Combat wins over buying, deploying or operating a siege engine.
-            // Release control without deleting the deployed equipment; normal
-            // abandoned-engine reclamation remains available after combat.
-            if (BotSiegeRuntime.Assigned(bot) || _siegeJobKeep != null) ReleaseSiegeJob(bot);
+            // Combat wins over buying siege supplies. #525: an operator (only an enemy within 450 or on its engine gets
+            // here, SiegeOperatorMayEngage) keeps its job and engine as attackers do, and goes back to it after the
+            // fight; a bot with no engine yet releases its job without deleting anything, and reclamation stays open.
+            if ((BotSiegeRuntime.Assigned(bot) || _siegeJobKeep != null) && !BotSiegeRuntime.HoldingPosition(bot)) ReleaseSiegeJob(bot);
             _siegeNextAttempt = GameLoop.GameLoopTime + 10_000;
             if (previousEngine != null)
             {
