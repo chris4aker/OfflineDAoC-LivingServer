@@ -155,6 +155,19 @@ def seed(game: Path, record: Path) -> dict:
     return data
 
 
+CONTENT_PATCHES = HERE.parents[1] / "tools" / "fork-build" / "content-patches.json"
+
+
+def content_patch_fixes(path: Path = CONTENT_PATCHES) -> dict[tuple[str, str], str]:
+    """(path, released sha256) -> fixed sha256 for every shipped content patch with both hashes."""
+    if not path.is_file():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    entries = data if isinstance(data, list) else data.get("Patches", data.get("patches", []))
+    return {(e["Path"], e["Released"].lower()): e["Fixed"].lower()
+            for e in entries if isinstance(e, dict) and e.get("Path") and e.get("Released") and e.get("Fixed")}
+
+
 def check(game: Path, record: Path, db: Path | None = None) -> list[str]:
     """What differs from the seed (empty: everything kept)."""
     data = json.loads(record.read_text(encoding="utf-8"))
@@ -167,12 +180,18 @@ def check(game: Path, record: Path, db: Path | None = None) -> list[str]:
     finally:
         con.close()
     problems = []
+    fixes = content_patch_fixes()
     for part, seeded in want.items():
         if part == "files" and db is not None:
             continue
         got = now.get(part)
         if isinstance(seeded, dict) and isinstance(got, dict):
             for key, value in seeded.items():
+                # A shipped content patch (tools/fork-build/content-patches.json) may turn the released file into its
+                # fixed one, for example game.dll's era creation text (#634): that is the install's own change, not a
+                # lost player file.
+                if part == "files" and got.get(key) == fixes.get((key, value)):
+                    continue
                 if got.get(key) != value:
                     problems.append(f"{part} {key}: seeded {value!r}, now {got.get(key)!r}")
         elif got != seeded:
