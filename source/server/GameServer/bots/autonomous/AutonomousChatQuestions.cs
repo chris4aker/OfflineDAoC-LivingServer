@@ -594,6 +594,10 @@ public static class AutonomousChatQuestions
         {
             if (level < low - 2)
                 return theirs + $"a bit high for {level}, mobs there are mostly {Range(low, high)}";
+            // Realism 2e (#482; the audit's wrong-fact table: "can i do muire tomb at 11" drew "fine at 11, mobs are 13-18"): a
+            // level or two under the range is doable, but not "fine".
+            if (level < low)
+                return theirs + $"bit high at {level}, its {Range(low, high)}. take a group or wait a couple levels";
             if (level > high + 3)
                 return theirs + $"itll be mostly grey for you at {level}, its {Range(low, high)}";
             return theirs + (random.Next(2) == 0 ? $"{level} is fine there, its mostly {Range(low, high)}" : $"fine at {level}, mobs are {Range(low, high)}");

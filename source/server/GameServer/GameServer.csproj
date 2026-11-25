@@ -67,6 +67,8 @@
         <EmbeddedResource Include=".\bots\autonomous\data\chat\corpus.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\voices.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\places.json" />
+        <!-- Realism 2e (#482): the written guide of the knowledge lookup (AutonomousChatLookup). -->
+        <EmbeddedResource Include=".\bots\autonomous\data\chat\game_guide.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\chat-budget.json" />
         <!-- Living Server 1.2: the lore bible (docs/LORE.md), read by the lore engine and the lore channels. Keep one include (CS1508). -->
         <EmbeddedResource Include=".\bots\autonomous\data\lore\**\*.json" />

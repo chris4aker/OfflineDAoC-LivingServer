@@ -95,13 +95,29 @@ public static class AutonomousChatKnowledge
         _draw = random;
         try
         {
-            return TryAnswerInOrder(ports, query, random, out answer);
+            // Realism 2e (#482): the grounded lookup first. A question of one of its topics is answered by that topic's providers
+            // alone (precedence by question type, and an answer of another subject is never said); any other question takes the
+            // order below, on the line with its typos folded.
+            AutonomousChatLookup.Fact fact = AutonomousChatLookup.Ask(ports, query, random, out bool handled);
+            LastFact = fact;
+            if (fact != null)
+            {
+                answer = fact.Text;
+                return true;
+            }
+            if (handled)
+                return false;
+            return TryAnswerInOrder(ports, AutonomousChatLookup.Fold(query), random, out answer);
         }
         finally
         {
             _draw = outer;
         }
     }
+
+    /// <summary>The grounded lookup's last fact on this thread (its source and topic), or null when the earlier order answered
+    /// or nothing did: for the tests and the why log.</summary>
+    [ThreadStatic] public static AutonomousChatLookup.Fact LastFact;
 
     private static bool TryAnswerInOrder(KnowledgePorts ports, string query, Random random, out string answer)
     {

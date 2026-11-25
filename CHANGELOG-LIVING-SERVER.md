@@ -28,6 +28,24 @@ otherwise.
   guild 32, named in guild 78; follow-ups 18 and 33; lines of the moment 4-8 per channel); fresh lines 157 of 262 (59.9%,
   was 59.2%); no good share fell. Silence where an answer was due rose by the same lines (tell 0 to 71, /group 42 to 86):
   those questions need knowledge the bots don't have yet (#482).
+- **What a new player asks gets an answer, from one lookup** (realism 2e, #482; tests only). Before, "where do i go first",
+  "what does blue con mean", "how do i send a tell", "i died, now what", "how do i get my constitution back", "how do i respec",
+  "how do i hire a companion" and "whats the realm exchange" drew silence, and some questions drew a confident answer to
+  another question ("can i salvage dropped armor" -> "blademasters wear reinforced", "how do i stop getting group invites" ->
+  "/invite their name", "how many rps to hit rr3?" -> "gz!! nice", "stuck on the last epic step" -> "/stuck"). Now the
+  knowledge lookup (`AutonomousChatLookup`) reads a question once, with typos and period shorthand folded ("wher do i trian",
+  "ne1 no where 2 xp @ 20", "any1 kno wher the wepon merchent is"), decides what it is about and asks only that subject's
+  providers, so precedence is by question type and an answer about another subject is not said. Every answer carries its
+  source. Providers: the class tree (the class choice at 5 in the words players use: "trainer wont train me past 5", "stuck
+  at 5", "what can a mystic turn into", "can a mage be a necromancer"), con colours, the death rules (no loss before
+  `pve_exp_loss_level`, none in RvR, /release, /pray, the healer for lost con), realm ranks from the server's table, relics
+  (`relic_owning_bonus`) and keeps, the battlegrounds by level, where to hunt at a level (leaving out the zone the player is
+  done with), the dragons by name, a named place's levels whatever the wording, and a written guide
+  (`data/chat/game_guide.json`, each line with its source) for respecs, salvage, spellcraft, pets, stealth, buffs, guilds,
+  groups, money, item terms, typing how-tos, binding, the vault, kill tasks, realm abilities, crafting, what to do at 50, and
+  Living Server's own features (/hire, how many companions, the Realm Exchange and /tc, /spawn, /raid, /invites, /stables,
+  /lswhy, the realm raids, the launcher's bot buttons). "can i do muire tomb at 11" no longer says "fine" two levels under its
+  range. `UT_ChatKnowledgeLookup`. Bench (this branch, local Release build): BENCH_LINE
 - **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,
   the bot's "in avalon marsh atm, inv me when ur close :)", the player's "I'm by camp station", and the bot's "lol"). The
   tell read as a grinding remark (the word "camp"), no grinding reply fitted, and the short answer for a tell ended on a

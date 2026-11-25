@@ -98,7 +98,12 @@ public static class AutonomousChatReplyPath
     /// general "long chain"). Pure.
     /// </summary>
     public static bool KnowledgeFirst(string message, eAutonomousChatIntent intent, bool helpCall, bool directed) =>
-        !IsShortTalk(message, intent) && !helpCall && !(directed && AutonomousChatQuestions.SelfQuestion(message) != null);
+        (!IsShortTalk(message, intent) || AsksWhatNext(message)) && !helpCall && !(directed && AutonomousChatQuestions.SelfQuestion(message) != null);
+
+    /// <summary>"just dinged 50, now what": a ding that asks what comes next is a question (Realism 2e, #482: it drew "Ooh nice"). Pure.</summary>
+    public static bool AsksWhatNext(string message) =>
+        !string.IsNullOrWhiteSpace(message) &&
+        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(message) + " ", @" (now what|what now|whats next|what next|then what|what do i do now) ");
 
     /// <summary>What a player's line draws, decided once for the line (<see cref="Plan"/>).</summary>
     public enum Step
