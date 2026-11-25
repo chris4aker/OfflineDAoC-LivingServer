@@ -18,32 +18,41 @@ sys.path.insert(0, str(REPO / "tools" / "fork-build"))
 import make_content_patch  # noqa: E402
 import patch_era_creation_text as era  # noqa: E402
 
-DESCRIPTIONS = {
-    "Heretic": "Heretics are the zealots of the old faith who bend the body's blood and fire to their will.",
-    "Warlock": "Warlocks are Midgard's dark casters, binding their own life force into devastating chambers.",
-    "Valkyrie": "Valkyries are the shieldmaidens of Midgard, warriors blessed by Odin's own hand.",
-    "Vampiir": "Vampiirs are the cursed Shar warriors who feed upon the strength of their foes.",
-    "Bainshee": "Bainshees are spirits of the dead who wail to break the minds of the living.",
-    "Mauler": "Maulers are martial artists who draw power from the earth and the moon to strike.",
-    "Frostalf": "Frostalf are the elves of the frozen deep, kin to the Svartalf of the old tales.",
+# Made-up texts laid out as the 1.127e client lays out its creation block (#634): class descriptions on their own,
+# naming the class somewhere; each race's description followed by NUL padding and the race's name.
+CLASS_TEXTS = {
+    "Heretic": "Heretics are zealots of an old and forbidden faith, who bend blood and fire to their will in battle.",
+    "Warlock": "Born of a cult in the deep caves of the north, Warlocks bind their own life into devastating chambers.",
+    "Valkyrie": "Valkyries are shieldmaidens of the north, warriors blessed by the hand of the gods to fight and heal.",
+    "Vampiir": "The Vampiir class is a fighter of the underworld who feeds upon the strength of the foes it strikes.",
+    "Bainshee": "The Bainshee is a spirit of the dead whose wailing voice breaks the minds of the living around her.",
+    "Mauler": "Maulers are martial artists who draw their power from the earth and the moon to strike their foes.",
 }
-LONG_RACE = "Minotaur"     # a race with a short slot: gets the short text
+RACE_TEXTS = {
+    "Shar": "The Shar came up from below at their queen's word, and the elves have never trusted them since then.",
+    "Frostalf": "The Frostalf are distant kin of the dark elves, sent into exile long ago into the frozen deep caves.",
+    "Minotaur": "The Minotaur, with their bull-like heads on powerful bodies, are the last of an ancient proud people.",
+    "HalfOgre": "Hailing from an isle of mists, this half-breed race is as clever as it is strong and fears nothing.",
+}
 
 
 def fake_dll(extra: bytes = b"", seed: bytes = b"1.127e") -> bytes:
-    """A small x86 PE image with the target strings laid out as build_class_lore.py reads them."""
+    """A small x86 PE image with the creation block laid out as in the real client."""
     head = bytearray(0x200)
     head[:2] = b"MZ"
     struct.pack_into("<I", head, 0x3C, 0x80)
     head[0x80:0x84] = b"PE\0\0"
     struct.pack_into("<H", head, 0x84, 0x14C)
     head[0x100:0x100 + len(seed)] = seed
-    body = bytearray(b"\0\0Briton\0\0Britons are the people of Albion, steady and many and strong.\0")
-    for name, text in DESCRIPTIONS.items():
-        body += name.encode() + b"\0" * (4 - len(name) % 4 or 4) + text.encode() + b"\0" * 3
-    body += b"Minotaur\0\0\0\0Minotaurs came from the labyrinth below.\0\0"   # 40 bytes exactly
-    body += b"Shar\0\0Shardak\0Shar\0x\0"                  # a name with no description: not a target
-    body += b"Sluaghbinder\0\0\0\0Sluaghbinders are Hibernian battle-mystics who bind the dead.\0"
+    body = bytearray(b"\0Mauler\0\0Warlock\0Vampiir\0Bainshee\0Valkyrie\0Heretic\0%s+%d Vampiir Bonus\0Mauler Staff\0")
+    for text in CLASS_TEXTS.values():
+        body += text.encode() + b"\0" * 3
+    body += b"The basic fighting class of the realm, who can use almost every weapon and armor that there is.\0\0"
+    for name, text in RACE_TEXTS.items():
+        body += text.encode() + b"\0" * 4 + name.encode() + b"\0" * 4
+    body += b"The Britons are the people of Albion, steady and many and strong, and fear no foe at all.\0\0Briton\0\0"
+    body += b"Sluaghbinder\0\0\0\0Sluaghbinders are Hibernian battle-mystics who bind the dead to their will.\0"
+    body += b"Minotaur (Korazh)\0Half-Ogre\0Shar\0Frostalf\0"
     return bytes(head + body + extra)
 
 
@@ -85,7 +94,7 @@ class EraTextTest(unittest.TestCase):
     def test_patch_preserves_lengths_and_offsets(self):
         patched, slots = era.patch_bytes(self.original, self.released)
         self.assertEqual(len(patched), len(self.original))
-        self.assertEqual({s.target.label for s in slots}, set(DESCRIPTIONS) | {LONG_RACE})
+        self.assertEqual({s.target.label for s in slots}, set(CLASS_TEXTS) | {"Shar", "Frostalf", "Minotaur", "Half Ogre"})
         for slot in slots:
             new = patched[slot.offset:slot.offset + slot.length]
             self.assertEqual(len(new), slot.length)
@@ -93,14 +102,13 @@ class EraTextTest(unittest.TestCase):
             text = new.rstrip(b"\0").decode("ascii")
             self.assertIn(text, era.TEXTS)
             self.assertEqual(new, text.encode() + b"\0" * (slot.length - len(text)), "NUL-padded")
-            name = slot.target.names[0].encode()
-            self.assertEqual(patched[slot.name_offset:slot.name_offset + len(name)], name, "name kept")
-        long_ = next(s for s in slots if s.target.label == "Heretic")
-        self.assertTrue(patched[long_.offset:].startswith(b"Not available in this era (Classic and Shrouded Isles)."))
-        short = next(s for s in slots if s.target.label == LONG_RACE)
-        self.assertTrue(patched[short.offset:].startswith(b"Not available in this era.\0"))
-        # Era classes, races and the Sluaghbinder text are untouched.
-        for keep in (b"Britons are the people", b"Sluaghbinders are Hibernian"):
+            self.assertTrue(patched[slot.offset:].startswith(b"Not available in this era (Classic and Shrouded Isles)."))
+            if slot.target.kind == "race":
+                name = slot.target.names[0].encode()
+                self.assertEqual(patched[slot.name_offset:slot.name_offset + len(name)], name, "name kept")
+        # Era classes and races, the name strings and the Sluaghbinder text are untouched.
+        for keep in (b"The Britons are the people", b"Sluaghbinders are Hibernian", b"The basic fighting class",
+                     b"\0Mauler\0", b"Vampiir Bonus", b"Mauler Staff", b"Minotaur (Korazh)", b"\0Shar\0"):
             self.assertIn(keep, patched)
         # Only the descriptions and the PE checksum changed.
         changed = era.changed_ranges(self.original, patched)
@@ -142,13 +150,13 @@ class EraTextTest(unittest.TestCase):
 
     def test_unexpected_counts_refuse(self):
         # A second Heretic description: the layout is not the one expected.
-        extra = b"\0Heretic\0\0Heretics again, a second copy of the zealot description text.\0"
+        extra = b"\0A second text about Heretics, long enough to be taken for a creation description by the finder.\0"
         data = fake_dll(extra)
         with self.assertRaises(era.Refused) as e:
             era.patch_bytes(data, hashlib.sha256(data).hexdigest())
         self.assertIn("Heretic: found 2", str(e.exception))
         # A missing class description refuses too.
-        data = fake_dll().replace(b"Warlocks are", b"Wxrlocks are")
+        data = fake_dll().replace(b"Warlocks bind", b"Wxrlocks bind")
         with self.assertRaises(era.Refused) as e:
             era.patch_bytes(data, hashlib.sha256(data).hexdigest())
         self.assertIn("Warlock: found 0", str(e.exception))

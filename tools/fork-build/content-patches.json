@@ -1490,5 +1490,460 @@
   ],
   "Keep": true,
   "File": "content/pregame-splash.mpk"
+ },
+ {
+  "Path": "runtime/client-opendaoc/app/game.dll",
+  "Released": "f55ed6b068e22ce8e1106871c2fad6ee10c18390bbb8b5dc772219ad8c8b83bb",
+  "Fixed": "3b32bfc377e06fab01048dd0a4b9f20fa7e90fcdeffd0a3fb0e8ab5dbaeef931",
+  "Size": 5967872,
+  "Ops": [
+   {
+    "copy": [
+     0,
+     432
+    ]
+   },
+   {
+    "data": "DgNc"
+   },
+   {
+    "copy": [
+     435,
+     5619997
+    ]
+   },
+   {
+    "data": "Tm90"
+   },
+   {
+    "copy": [
+     5620435,
+     1
+    ]
+   },
+   {
+    "data": "YXZhaWxhYmxlIGluIHRoaXMgZXJhIChDbGFzc2ljIGFuZCBTaHJvdWRlZCBJc2xlcykuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+   },
+   {
+    "copy": [
+     5620686,
+     850
+    ]
+   },
+   {
+    "data": "Tm90"
+   },
+   {
+    "copy": [
+     5621539,
+     1
+    ]
+   },
+   {
+    "data": "YXZhaWxhYmxlIGluIHRoaXMgZXJhIChDbGFzc2lj"
+   },
+   {
+    "copy": [
+     5621570,
+     1
+    ]
+   },
+   {
+    "data": "YW5kIFNocm91ZGVkIElzbGVzKS4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+   },
+   {
+    "copy": [
+     5621701,
+     475
+    ]
+   },
+   {
+    "data": "Tm90"
+   },
+   {
+    "copy": [
+     5622179,
+     1
+    ]
+   },
+   {
+    "data": "YXY="
+   },
+   {
+    "copy": [
+     5622182,
+     1
+    ]
+   },
+   {
+    "data": "aWxhYmw="
+   },
+   {
+    "copy": [
+     5622188,
+     2
+    ]
+   },
+   {
+    "data": "aW4gdGhpcw=="
+   },
+   {
+    "copy": [
+     5622197,
+     1
+    ]
+   },
+   {
+    "data": "ZXJh"
+   },
+   {
+    "copy": [
+     5622201,
+     1
+    ]
+   },
+   {
+    "data": "KENsYXNzaWMgYW5kIFNocm91ZGVkIElzbGVzKS4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+   },
+   {
+    "copy": [
+     5622460,
+     2740
+    ]
+   },
+   {
+    "data": "Tm90IGF2"
+   },
+   {
+    "copy": [
+     5625206,
+     1
+    ]
+   },
+   {
+    "data": "aWxhYmxlIGlu"
+   },
+   {
+    "copy": [
+     5625216,
+     1
+    ]
+   },
+   {
+    "data": "dGhpcyBlcmEgKENsYXNzaWM="
+   },
+   {
+    "copy": [
+     5625234,
+     1
+    ]
+   },
+   {
+    "data": "YQ=="
+   },
+   {
+    "copy": [
+     5625236,
+     2
+    ]
+   },
+   {
+    "data": "IFNo"
+   },
+   {
+    "copy": [
+     5625241,
+     3
+    ]
+   },
+   {
+    "data": "ZGVkIElzbGVzKS4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+   },
+   {
+    "copy": [
+     5625504,
+     360
+    ]
+   },
+   {
+    "data": "Tm90IGF2YWlsYWJs"
+   },
+   {
+    "copy": [
+     5625876,
+     2
+    ]
+   },
+   {
+    "data": "aW4gdGhpcw=="
+   },
+   {
+    "copy": [
+     5625885,
+     1
+    ]
+   },
+   {
+    "data": "ZXJhIChDbGFzc2ljIGFuZCBT"
+   },
+   {
+    "copy": [
+     5625904,
+     1
+    ]
+   },
+   {
+    "data": "cm91ZA=="
+   },
+   {
+    "copy": [
+     5625909,
+     1
+    ]
+   },
+   {
+    "data": "ZA=="
+   },
+   {
+    "copy": [
+     5625911,
+     1
+    ]
+   },
+   {
+    "data": "SXNsZXMpLgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+   },
+   {
+    "copy": [
+     5626121,
+     1015
+    ]
+   },
+   {
+    "data": "Tm90"
+   },
+   {
+    "copy": [
+     5627139,
+     1
+    ]
+   },
+   {
+    "data": "YXZhaWw="
+   },
+   {
+    "copy": [
+     5627145,
+     1
+    ]
+   },
+   {
+    "data": "YmxlIGlu"
+   },
+   {
+    "copy": [
+     5627152,
+     1
+    ]
+   },
+   {
+    "data": "dGhpcyBlcmEgKENsYXNzaWM="
+   },
+   {
+    "copy": [
+     5627170,
+     1
+    ]
+   },
+   {
+    "data": "YW5kIFNocm91ZGVkIElzbGVzKS4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+   },
+   {
+    "copy": [
+     5627435,
+     2693
+    ]
+   },
+   {
+    "data": "Tm90IGF2YWls"
+   },
+   {
+    "copy": [
+     5630137,
+     1
+    ]
+   },
+   {
+    "data": "YmxlIGluIHRo"
+   },
+   {
+    "copy": [
+     5630147,
+     1
+    ]
+   },
+   {
+    "data": "cw=="
+   },
+   {
+    "copy": [
+     5630149,
+     1
+    ]
+   },
+   {
+    "data": "ZXI="
+   },
+   {
+    "copy": [
+     5630152,
+     1
+    ]
+   },
+   {
+    "data": "IChDbGFzc2ljIGFuZCBTaHJvdWRlZCBJc2xlcykuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+   },
+   {
+    "copy": [
+     5630363,
+     581
+    ]
+   },
+   {
+    "data": "Tm90IGF2YWlsYWJsZQ=="
+   },
+   {
+    "copy": [
+     5630957,
+     1
+    ]
+   },
+   {
+    "data": "aW4gdGhpcyBlcmEgKENsYXNz"
+   },
+   {
+    "copy": [
+     5630976,
+     1
+    ]
+   },
+   {
+    "data": "YyBhbmQgU2g="
+   },
+   {
+    "copy": [
+     5630985,
+     1
+    ]
+   },
+   {
+    "data": "b3VkZWQgSXNsZXMpLgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+   },
+   {
+    "copy": [
+     5631177,
+     695
+    ]
+   },
+   {
+    "data": "Tm90"
+   },
+   {
+    "copy": [
+     5631875,
+     1
+    ]
+   },
+   {
+    "data": "YXZhaWw="
+   },
+   {
+    "copy": [
+     5631881,
+     1
+    ]
+   },
+   {
+    "data": "Ymxl"
+   },
+   {
+    "copy": [
+     5631885,
+     1
+    ]
+   },
+   {
+    "data": "aW4g"
+   },
+   {
+    "copy": [
+     5631889,
+     1
+    ]
+   },
+   {
+    "data": "aGlzIGVyYSAoQ2xhc3NpYyBhbmQ="
+   },
+   {
+    "copy": [
+     5631910,
+     1
+    ]
+   },
+   {
+    "data": "U2hyb3VkZWQgSXNsZXMpLgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+   },
+   {
+    "copy": [
+     5632227,
+     13
+    ]
+   },
+   {
+    "data": "Tm90IGF2YWlsYWJsZSBpbg=="
+   },
+   {
+    "copy": [
+     5632256,
+     1
+    ]
+   },
+   {
+    "data": "dGhpcw=="
+   },
+   {
+    "copy": [
+     5632261,
+     1
+    ]
+   },
+   {
+    "data": "ZXJhIChD"
+   },
+   {
+    "copy": [
+     5632268,
+     1
+    ]
+   },
+   {
+    "data": "YXNzaWMgYW5kIFNocm91ZA=="
+   },
+   {
+    "copy": [
+     5632285,
+     1
+    ]
+   },
+   {
+    "data": "ZCBJc2xlcykuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+   },
+   {
+    "copy": [
+     5632421,
+     335451
+    ]
+   }
+  ]
  }
 ]

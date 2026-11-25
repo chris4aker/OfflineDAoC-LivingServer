@@ -8,11 +8,12 @@ it isn't available in this era. Buttons, class names, class IDs and the server's
 
 What it changes, and only in the verified 1.x client game.dll (SHA-256 RELEASED_SHA256, the 0.37 edition's client):
 - Classes: Heretic, Warlock, Valkyrie, Vampiir and Bainshee (Catacombs), Mauler (Labyrinth of the Minotaur).
-- Races: Half Ogre, Frostalf and Shar (Catacombs), Minotaur (Labyrinth), when game.dll holds their description.
+- Races: Half Ogre, Frostalf and Shar (Catacombs), Minotaur (Labyrinth): their creation descriptions in game.dll.
   The race and base-class texts of charman/summary.mpk are a stock mpk and are not touched (owner, #634).
-- Each description is found by searching the bytes, the way source/new-client/pipeline/build_class_lore.py reads the
-  Sluaghbinder's: the name as its own NUL-terminated string, NUL padding, then a description of 40+ printable bytes
-  that starts with the name. Each target has an expected count; any surprise refuses the whole patch.
+- Each description is found by searching the bytes (find_slots): a class's is a NUL-bounded string of 80+ bytes that
+  names the class as a word; a race's is such a string followed, after NUL padding, by the race's name string. The
+  class and race name strings themselves are never changed. Each target has an expected count; any surprise refuses
+  the whole patch.
 - The new text is written over the old one in place, NUL-padded to the old length, so every string keeps its address
   and byte length. The PE checksum is recomputed (as patch_sluaghbinder_client_races.py does).
 
@@ -61,8 +62,8 @@ BACKUP = Path("backups") / "era-creation-text-20261125" / "game.dll"
 
 ERA = "Classic and Shrouded Isles"
 TEXTS = (f"Not available in this era ({ERA}).", "Not available in this era.")
-MIN_DESCRIPTION = 40          # build_class_lore.py: a description is longer than 40 bytes
-MAX_PADDING = 16              # NUL bytes between the name string and its description
+MIN_DESCRIPTION = 80          # the shortest creation description in the 1.127e client is about 100 bytes
+MAX_PADDING = 16              # NUL bytes between a race description and its name string
 
 
 @dataclass(frozen=True)
@@ -83,14 +84,14 @@ TARGETS = (
     Target("class", "Bainshee", ("Bainshee",), "Catacombs", 1, 1),
     # One Mauler per realm (classes 60-62): one shared description or one each.
     Target("class", "Mauler", ("Mauler",), "Labyrinth of the Minotaur", 1, 3),
-    # The race texts are in charman/summary.mpk (the #634 research); game.dll may hold none of them.
-    Target("race", "Half Ogre", ("Half Ogre", "Half-Ogre", "HalfOgre"), "Catacombs", 0, 1),
-    Target("race", "Frostalf", ("Frostalf",), "Catacombs", 0, 1),
-    Target("race", "Shar", ("Shar",), "Catacombs", 0, 1),
-    Target("race", "Minotaur", ("Minotaur",), "Labyrinth of the Minotaur", 0, 1),
+    # The 1.127e game.dll holds each race's creation description too, before the race's name (#634, checked on f55ed6b0).
+    Target("race", "Half Ogre", ("HalfOgre", "Half Ogre", "Half-Ogre"), "Catacombs", 1, 1),
+    Target("race", "Frostalf", ("Frostalf",), "Catacombs", 1, 1),
+    Target("race", "Shar", ("Shar",), "Catacombs", 1, 1),
+    Target("race", "Minotaur", ("Minotaur",), "Labyrinth of the Minotaur", 1, 1),
 )
 
-PRINTABLE = re.compile(rb"[\x09\x0a\x0d\x20-\x7e\x80-\xff]+")
+STRING = re.compile(rb"[\x09\x0a\x0d\x20-\x7e\x80-\xff]+")
 
 
 class Refused(Exception):
@@ -117,34 +118,47 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _starts_with_name(text: bytes, name: str) -> bool:
-    low, n = text.lower(), name.lower().encode("latin1")
-    return any(low.startswith(p + n) for p in (b"", b"the ", b"a ", b"an "))
+def _strings(data: bytes):
+    """Every NUL-bounded printable string: (offset, bytes)."""
+    for m in STRING.finditer(data):
+        start, end = m.start(), m.end()
+        if (start == 0 or data[start - 1] == 0) and end < len(data) and data[end] == 0:
+            yield start, m.group()
 
 
 def find_slots(data: bytes) -> list[Slot]:
-    """Every out-of-era description in data, checked against each target's expected count."""
+    """Every out-of-era description in data, checked against each target's expected count.
+
+    The 1.127e client keeps the creation texts as one block of NUL-padded strings, per realm (checked on the real
+    f55ed6b0 game.dll, #634): class descriptions on their own (they mention the class but don't all start with its
+    name: "The Bainshee is ...", "Originating from a cult ..., Warlocks are ..."), and each race's description followed
+    by its name ("<description>", NUL padding, "Frostalf"). So a class description is a string of MIN_DESCRIPTION+
+    bytes that names the class as a word; a race description is such a string followed, after NUL padding only, by the
+    race's name string. No text of the client is kept here."""
+    strings = [(o, t) for o, t in _strings(data) if len(t) >= MIN_DESCRIPTION]
     slots, problems = [], []
     for target in TARGETS:
         found = []
-        for name in target.names:
-            raw = name.encode("latin1")
-            pattern = re.compile(rb"(?:(?<=\x00)|^)" + re.escape(raw) + rb"\x00{1,%d}" % MAX_PADDING)
-            for m in pattern.finditer(data):
-                start = m.end()
-                end = data.find(b"\0", start)
-                if end < 0:
+        for offset, text in strings:
+            if target.kind == "class":
+                word = re.compile(rb"\b" + re.escape(target.names[0].encode("latin1")) + rb"(?:s|es)?\b")
+                if word.search(text) is None:
                     continue
-                text = data[start:end]
-                if len(text) < MIN_DESCRIPTION or PRINTABLE.fullmatch(text) is None:
+                found.append(Slot(target, -1, offset, len(text), text))
+            else:
+                after = offset + len(text)
+                pad = after
+                while pad < len(data) and pad - after <= MAX_PADDING and data[pad] == 0:
+                    pad += 1
+                if pad - after > MAX_PADDING:
                     continue
-                if not _starts_with_name(text, name):
-                    continue
-                found.append(Slot(target, m.start(), start, end - start, text))
+                end = data.find(b"\0", pad)
+                if end > pad and data[pad:end].decode("latin1") in target.names:
+                    found.append(Slot(target, pad, offset, len(text), text))
         if not target.least <= len(found) <= target.most:
             expected = (f"{target.least}" if target.least == target.most else f"{target.least} to {target.most}")
             problems.append(f"{target.label}: found {len(found)} descriptions, expected {expected}"
-                            + "".join(f"\n    at {s.offset:#x}: {s.text[:60]!r}" for s in found))
+                            + "".join(f"\n    at {s.offset:#x}: {s.text[:40]!r}" for s in found))
         slots += found
     offsets = sorted(s.offset for s in slots)
     if len(set(offsets)) != len(offsets):
@@ -345,7 +359,8 @@ def do_restore(dll: Path, released_sha256: str = RELEASED_SHA256) -> None:
 def _report(slots: list[Slot]) -> None:
     seen = {s.target.label for s in slots}
     for slot in slots:
-        print(f"  {slot.target.kind} {slot.target.label} ({slot.target.expansion}): name at {slot.name_offset:#x}, "
+        name = f"name at {slot.name_offset:#x}, " if slot.name_offset >= 0 else ""
+        print(f"  {slot.target.kind} {slot.target.label} ({slot.target.expansion}): {name}"
               f"description at {slot.offset:#x}, {slot.length} bytes")
         print(f"    old: {slot.text[:100].decode('latin1')!r}{'...' if slot.length > 100 else ''}")
         print(f"    new: {slot.replacement().rstrip(bytes(1)).decode('ascii')!r}")
