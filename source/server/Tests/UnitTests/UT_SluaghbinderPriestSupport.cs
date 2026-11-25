@@ -277,7 +277,9 @@ public sealed class UT_SluaghbinderPriestSupport
         SpellHandler handler = priest.castingComponent.SpellHandler;
         Assert.That(handler, Is.Not.Null);
         Assert.That(handler.Spell.ID, Is.EqualTo(ownerHealth < 50 ? 59038 : 59037));
-        Assert.That(handler.CasterIsAttacked(enemy), Is.True);
+        // Live-like interrupt: the hit starts the timer, and the heal is lost at its half-cast point while it still runs.
+        Set(typeof(GameLiving), priest, "<InterruptTime>k__BackingField", GameLoop.GameLoopTime + 5_500);
+        Set(typeof(GameLiving), priest, "<LastInterrupter>k__BackingField", enemy);
         SetTime(103_050);
         priest.castingComponent.Tick();
         Assert.That(owner.Health, Is.EqualTo(ownerHealth), "interrupted healing must not land");

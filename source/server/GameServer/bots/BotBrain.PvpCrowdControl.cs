@@ -30,7 +30,7 @@ namespace DOL.AI.Brain
             foreach (Spell spell in BotBody.CrowdControlSpells.OrderByDescending(s=>s.SpellType==eSpellType.Mesmerize).ThenByDescending(s=>s.Radius).ThenByDescending(s=>s.Level))
             {
                 if (spell.Level>Body.Level || Body.GetSkillDisabledDuration(spell)>0 || Body.Mana<BotBody.PowerCost(spell) ||
-                    spell.CastTime>0 && Body.IsBeingInterrupted && !spell.Uninterruptible) continue;
+                    BotInterruptPolicy.CastWouldBeLost(Body, spell)) continue;
                 int range = spell.Target==eSpellTarget.SELF || spell.Range<=0 ? spell.Radius : spell.CalculateEffectiveRange(Body);
                 // #521: the older path reads the server's immunity too (it wasted casts on immune targets).
                 GameLiving candidate=enemies.Where(t=>Body.IsWithinRadius(t,range) && !LivingHasEffect(t,spell) &&
@@ -84,7 +84,7 @@ namespace DOL.AI.Brain
             foreach ((Spell spell, RvrControlKind spellKind) in spells)
             {
                 if (spell.Level > Body.Level || Body.GetSkillDisabledDuration(spell) > 0 || Body.Mana < BotBody.PowerCost(spell) ||
-                    spell.CastTime > 0 && Body.IsBeingInterrupted && !spell.Uninterruptible)
+                    BotInterruptPolicy.CastWouldBeLost(Body, spell))
                     continue;
                 bool immune = spellKind switch
                 {

@@ -106,11 +106,6 @@ namespace DOL.GS.Spells
 		/// </summary>
 		protected AttackData m_lastAttackData = null;
 
-		/// <summary>
-		/// The property key for the interrupt timeout
-		/// </summary>
-		public const string INTERRUPT_TIMEOUT_PROPERTY = "CAST_INTERRUPT_TIMEOUT";
-
 		private long _lastDuringCastLosCheckTime;
 
 		/// <summary>
@@ -329,7 +324,44 @@ namespace DOL.GS.Spells
 			}
 		}
 
-		public virtual bool CasterIsAttacked(GameLiving attacker)
+		private bool _halfwayCastChecked;
+
+		private bool HasPassedHalfCastTime => _castStartTick + _calculatedCastTime * 0.5 <= GameLoop.GameLoopTime;
+
+		/// <summary>
+		/// Called by <see cref="GameLiving.StartInterruptTimer"/> on every attack. Only focus spells are interrupted at once; a
+		/// cast in progress is decided at its half-cast point instead (port of OpenDAoC-Core 21eda0f90 and 46d816439, the only
+		/// behaviour: Living Server ships no switch back to the hard interrupt).
+		/// </summary>
+		public bool PerformOnAttackedInterruptCheck(GameLiving attacker)
+		{
+			if (CastState is not eCastState.Focusing)
+				return false;
+
+			return TryInterruptCaster(attacker);
+		}
+
+		/// <summary>
+		/// When the cast reaches its half-cast point while an attacker's interrupt timer is still running, the cast is lost and
+		/// a short self interrupt starts. Before and after that point, being hit only starts or extends the timer.
+		/// </summary>
+		private bool PerformDuringCastInterruptCheck()
+		{
+			if (_halfwayCastChecked || !IsInCastingPhase || !HasPassedHalfCastTime)
+				return false;
+
+			_halfwayCastChecked = true;
+
+			if (!Caster.IsBeingInterruptedByOther || !TryInterruptCaster(Caster.LastInterrupter))
+				return false;
+
+			Caster.StartInterruptTimer(Caster.SpellSelfInterruptDuration, AttackData.eAttackType.Spell, Caster);
+			return true;
+		}
+
+		/// <summary>Interrupts the cast unless the spell, Mastery of Concentration, Facilitate Painworking or Quickcast prevents it.
+		/// <paramref name="attacker"/> may be null (the last interrupter left the world).</summary>
+		protected virtual bool TryInterruptCaster(GameLiving attacker)
 		{
 			if (Spell.Uninterruptible)
 				return false;
@@ -348,21 +380,18 @@ namespace DOL.GS.Spells
 				|| IsQuickCasting)
 				return false;
 
-			if (CastState is not eCastState.Focusing)
-			{
-				// Only interrupt if we're under 50% of the way through the cast.
-				if (!IsInCastingPhase || GameLoop.GameLoopTime >= _castStartTick + _calculatedCastTime * 0.5)
-					return false;
-			}
-
 			if (Caster is GameSummonedPet petCaster && petCaster.Owner is GamePlayer casterOwner)
 			{
-				casterOwner.LastInterruptMessage = $"Your {Caster.Name} was attacked by {attacker.Name} and their spell was interrupted!";
+				casterOwner.LastInterruptMessage = attacker != null
+					? $"Your {Caster.Name} was attacked by {attacker.Name} and their spell was interrupted!"
+					: $"Your {Caster.Name} was attacked and their spell was interrupted!";
 				MessageToLiving(casterOwner, casterOwner.LastInterruptMessage, eChatType.CT_SpellResisted);
 			}
 			else if (Caster is GamePlayer playerCaster)
 			{
-				playerCaster.LastInterruptMessage = $"{attacker.GetName(0, true)} attacks you and your spell is interrupted!";
+				playerCaster.LastInterruptMessage = attacker != null
+					? $"{attacker.GetName(0, true)} attacks you and your spell is interrupted!"
+					: "You are attacked and your spell is interrupted!";
 				MessageToLiving(playerCaster, playerCaster.LastInterruptMessage, eChatType.CT_SpellResisted);
 			}
 
@@ -1019,7 +1048,7 @@ namespace DOL.GS.Spells
 
 		public virtual bool CheckDuringCast(GameLiving target, bool quiet)
 		{
-			if (m_interrupted)
+			if (m_interrupted || PerformDuringCastInterruptCheck())
 				return false;
 
 			if (Caster is GameNPC npcOwner)
@@ -1141,10 +1170,10 @@ namespace DOL.GS.Spells
 				case eCastState.Casting:
 				case eCastState.CastingRetry:
 				{
+					// A cast lost during this tick (its half-cast check included) must not also finish on it.
 					if (!CheckDuringCast(Target))
 						CastState = eCastState.Interrupted;
-
-					if (GameServiceUtils.ShouldTick(_castEndTick))
+					else if (GameServiceUtils.ShouldTick(_castEndTick))
 					{
 						if (!CheckEndCast(Target))
 						{

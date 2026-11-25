@@ -4566,7 +4566,7 @@ namespace DOL.AI.Brain
                         ? TemporaryCompanionBalance.HighestSpell(spellsToCast)
                         : BotSpellPower.WithSkill(BotBody, spellsToCast, spellsToCast[Util.Random(spellsToCast.Count - 1)]));
 
-                    if (spellToCast.Uninterruptible || !Body.IsBeingInterrupted)
+                    if (!BotInterruptPolicy.CastWouldBeLost(Body, spellToCast))
                         casted = CheckOffensiveSpells(spellToCast);
                     else if (shamanHybrid && ShamanBotCombatPolicy.HoldMeleeForCast(true,
                                  Body.IsBeingInterruptedByOther, Body.IsBeingSelfInterrupted))
@@ -4738,7 +4738,7 @@ namespace DOL.AI.Brain
                 Body.Mana < BotBody.PowerCost(spell))
                 return false;
 
-            if (spell.CastTime > 0 && Body.IsBeingInterrupted && !spell.Uninterruptible)
+            if (BotInterruptPolicy.CastWouldBeLost(Body, spell))
                 return false;
 
             if (Body.GetSkillDisabledDuration(spell) > 0)
@@ -5199,7 +5199,7 @@ namespace DOL.AI.Brain
                 if (spell.Level > Body.Level || Body.Mana < BotBody.PowerCost(spell) ||
                     !BotBody.CanAffordConcentration(spell) ||
                     BotSongTwistPolicy.IsReservedPulse(BotBody, spell) ||
-                    spell.NeedInstrument || (!spell.Uninterruptible && Body.IsBeingInterrupted) ||
+                    spell.NeedInstrument || BotInterruptPolicy.CastWouldBeLost(Body, spell) ||
                     (spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0))
                 {
                     return false;
@@ -5359,7 +5359,7 @@ namespace DOL.AI.Brain
         bool CheckHealSpell(Spell spell)
         {
             return spell != null
-                && (!BotBody.IsBeingInterruptedByOther || spell.IsInstantCast)
+                && !BotInterruptPolicy.CastWouldBeLost(BotBody, spell, includeSelfInterrupt: false)
                 && (!spell.HasRecastDelay || BotBody.GetSkillDisabledDuration(spell) <= 0)
                 && BotBody.Mana >= BotBody.PowerCost(spell);
         }
@@ -5677,7 +5677,10 @@ namespace DOL.AI.Brain
             bool canCastInstantHeal = CheckHealSpell(BotBody.HealInstant);
             bool canCastInstantGroupHeal = CheckHealSpell(BotBody.HealInstantGroup);
 
-            if (BotBody.IsBeingInterruptedByOther && !canCastInstantHeal && !canCastInstantGroupHeal)
+            // A hit only costs a heal still casting at its half-cast point (BotInterruptPolicy): give up only when no heal can land.
+            if (BotBody.IsBeingInterruptedByOther && !canCastInstantHeal && !canCastInstantGroupHeal &&
+                !CheckHealSpell(BotBody.HealBig) && !CheckHealSpell(BotBody.HealEfficient) && !CheckHealSpell(BotBody.HealGroup) &&
+                !CheckHealSpell(BotBody.HealOverTime) && !CheckHealSpell(BotBody.HealOverTimeGroup))
                 return false;
 
             bool isCastingHeal = BotBody.IsCasting && BotBody.castingComponent.SpellHandler.Spell.IsHealing &&

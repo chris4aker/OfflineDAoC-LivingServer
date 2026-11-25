@@ -3156,20 +3156,6 @@ namespace DOL.GS
 			base.StartInterruptTimer(duration, attackType, attacker);
 		}
 
-		protected override bool CheckRangedAttackInterrupt(GameLiving attacker, AttackData.eAttackType attackType)
-		{
-			// Immobile NPCs can only be interrupted by their own target, and in melee range.
-			if (MaxSpeedBase == 0 && (attacker != TargetObject || !IsWithinRadius(attacker, MeleeAttackRange)))
-				return false;
-
-			bool interrupted = base.CheckRangedAttackInterrupt(attacker, attackType);
-
-			if (interrupted)
-				attackComponent.attackAction.OnAimInterrupt(attacker);
-
-			return interrupted;
-		}
-
 		public override int SelfInterruptDurationOnMeleeAttack => AttackSpeed(ActiveWeapon);
 
 		/// <summary>
