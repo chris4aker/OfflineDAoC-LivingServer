@@ -95,6 +95,16 @@ In a playable folder:
     suggest and push that too". When a better test or rule is found or becomes feasible (a closer model, a real PC run, a
     sharper control), propose it to the owner and push it as a change to this rule. Don't set it aside because it isn't
     the current rule.
+- **Research first, and an issue before building** (owner, 2026-11-24: "Before building any of the new tactics or
+  encounter mechanics, you need to check all period sources possible and upstream code to get an understanding. Before
+  building new, log each issue or fix needed as an issue on the GitHub repo so we don't lose memory or context or
+  direction of your limit hits").
+  - Before building a new tactic, encounter mechanic or behaviour, read every period source you can reach (Camelot
+    Herald and Wayback archives, period guides, guild sites, patch notes, the repo's research docs) and the upstream
+    code that already handles it (OpenDAoC-Core, DOL, the Offline DAoC forks; see docs/UPSTREAM-WATCH.md and
+    docs/upstream/). Write down what you found, with sources, before you code.
+  - Before building, file each fix or piece of work as a GitHub issue (or comment on the existing one) with the plan,
+    the sources and the acceptance test, so the direction survives a usage limit or a lost session. Link the PR to it.
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**
