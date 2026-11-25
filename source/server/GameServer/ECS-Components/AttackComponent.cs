@@ -2426,11 +2426,33 @@ namespace DOL.GS
         }
 
         /// <summary>
+        /// True for a monster (a GameNPC that is not a gamebot or companion and not anyone's pet): its second attack per
+        /// round comes from LeftHandSwingChance alone, with or without an offhand item.
+        /// </summary>
+        public static bool MakesSecondaryAttackWithoutOffhandItem(GameLiving living) =>
+            living is GameNPC npc &&
+            living is not IGamePlayer &&
+            npc.Brain is not IControlledBrain;
+
+        /// <summary>
         /// Calculates how many times left hand swings
         /// </summary>
         public int CalculateLeftHandSwingCount(DbInventoryItem mainWeapon, DbInventoryItem leftWeapon)
         {
-            // Let's make NPCs require an actual weapon too. It looks silly otherwise.
+            // A monster's second attack is its own stat, not an offhand item: Prima's 1.6x monster tables give every
+            // monster a "Secondary Attack" and a "Secondary Attack Chance", "the percent chance (per round) that a Monster
+            // will make two attacks" (OpenDAoC-Core 5090fa4fc). Gamebots and companions (IGamePlayer) and pets (any
+            // controlled brain) keep the item rule below.
+            if (MakesSecondaryAttackWithoutOffhandItem(owner))
+            {
+                if (((GameNPC) owner).LeftHandSwingChance <= 0)
+                    return 0;
+
+                double monsterRandom = owner.GetPseudoDouble(RandomDeckEvent.DualWield) * 100;
+                return monsterRandom < ((GameNPC) owner).LeftHandSwingChance ? 1 : 0;
+            }
+
+            // Everyone else needs an actual offhand weapon.
             if (!CanUseLefthandedWeapon || leftWeapon == null || (eObjectType) leftWeapon.Object_Type is eObjectType.Shield)
                 return 0;
 
