@@ -25,4 +25,12 @@ fixing combat, spells, pathing, saves and leaks, so we check it every week inste
 - 2026-11-24: full harvest of 632 upstream commits from our base (about `d51233cb`, 2026-03-13) to `428927b33`
   (2026-11-23); the ranked picks and the issues filed from them are linked from the harvest issue.
 
-To watch another repo (a fork, shadowofze's projects), add an entry to `.github/upstream-watch.json`.
+- 2026-11-24: the combined harvest of OpenDAoC-Core, 51 Offline DAoC repos and DOL, ranked in
+  [upstream/HARVEST-2026-11.md](upstream/HARVEST-2026-11.md) (issues #567-#582). The watch now also follows
+  zomboden/OfflineDAoC-True165 (`main`), rambodolphin13/DividedRealms (`feature/bot-ai-trips`; its `main` is stale),
+  DetShaft/OfflineDAoC-LivingServer (`main`) and FelixGagnonB/OfflineDAoC (`main` and `pvp-8v8-m11`), each reviewed to
+  the tip the harvest read.
+
+To watch another repo (a fork, shadowofze's projects), add an entry to `.github/upstream-watch.json`. Two entries may
+watch two branches of one repo; give each its own `name`. Felix's 8v8 work moves to a new `pvp-8v8-m*` branch per
+milestone: when the watch can't read the branch, point the entry at the newest one.
