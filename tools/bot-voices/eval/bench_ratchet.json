@@ -1,15 +1,15 @@
 {
  "note": "The chat bench ratchet (score_bench.py ratchet): no good share may fall and no capped count may grow, for the whole bench, each set and kind (\"groups\"), and each channel of the side benches. The headline is the fresh set. Tighten it with score_bench.py ratchet ... --write after a fix; never loosen it to pass.",
  "headline": "set:fresh",
- "ok_share": 0.8935,
- "ok": 705,
+ "ok_share": 0.8948,
+ "ok": 706,
  "total": 789,
  "counts": {
   "WRONG": 0,
   "NON_ANSWER": 0,
   "OFF_TOPIC": 23,
   "FLUFF": 3,
-  "SILENT": 48,
+  "SILENT": 47,
   "STUB": 10,
   "CLUNKY": 0,
   "ECHO": 0,
@@ -33,15 +33,15 @@
    }
   },
   "set:fresh": {
-   "ok": 215,
+   "ok": 216,
    "total": 262,
-   "ok_share": 0.8206,
+   "ok_share": 0.8244,
    "counts": {
     "WRONG": 0,
     "NON_ANSWER": 0,
     "OFF_TOPIC": 10,
     "FLUFF": 2,
-    "SILENT": 33,
+    "SILENT": 32,
     "STUB": 2,
     "CLUNKY": 0,
     "ECHO": 0,
@@ -81,15 +81,15 @@
    }
   },
   "kind:statement": {
-   "ok": 85,
+   "ok": 86,
    "total": 102,
-   "ok_share": 0.8333,
+   "ok_share": 0.8431,
    "counts": {
     "WRONG": 0,
     "NON_ANSWER": 0,
     "OFF_TOPIC": 5,
     "FLUFF": 1,
-    "SILENT": 10,
+    "SILENT": 9,
     "STUB": 1,
     "CLUNKY": 0,
     "ECHO": 0,

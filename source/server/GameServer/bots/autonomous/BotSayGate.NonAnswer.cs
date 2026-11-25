@@ -141,6 +141,18 @@ public static partial class BotSayGate
         return NonAnswerKind.None;
     }
 
+    private static readonly Regex OpensDunno = new(
+        @"^\W*(dunno|idk|no idea|not sure|no clue|hmm dunno|never (got|camped|did) it|havent (camped|been|seen))\b",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    /// <summary>
+    /// Whether a line opens on a dunno ("dunno, check lfg", "idk, not me"). It is no non-answer when something follows the hedge,
+    /// but a bot answering another bot from a pool of lines doesn't open on one (1.2.2's F4, and field talk's rule before #478):
+    /// <see cref="AutonomousChatFieldTalk.IsNonAnswer"/> leaves such a line unsaid too. Without it, 18 sim evenings carried 176
+    /// "dunno, ..." lines in /faction instead of 4 (the evening ratchet, PR #614). Pure.
+    /// </summary>
+    public static bool OpensWithDunno(string line) => !string.IsNullOrWhiteSpace(line) && OpensDunno.IsMatch(line);
+
     /// <summary>Whether <paramref name="reply"/> is a non-answer as the whole reply to <paramref name="answered"/>. Pure.</summary>
     public static bool IsNonAnswer(string reply, string answered = null) => KindOf(reply, answered) != NonAnswerKind.None;
 

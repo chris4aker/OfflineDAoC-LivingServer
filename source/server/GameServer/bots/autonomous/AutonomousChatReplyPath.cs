@@ -458,8 +458,10 @@ public static class AutonomousChatReplyPath
         AutonomousChatReplyBudget.Moment moment = ports.Moment?.Invoke(message, moments, addressed) ??
             new AutonomousChatReplyBudget.Moment(message, moments, addressed, AutonomousChatIntentModel.Predict(message), ports.ClassName, false, false, false);
         // Never take thanks for heals or a rez the bot can't give.
-        if (AutonomousChatReplyBudget.CreditFor(message) != null && AutonomousChatReplyBudget.ClaimsCredit(message, choice.Text, moment.CanHeal, moment.CanRez))
-            choice = new ReplyChoice(null, "none credit");
+        // #482 (the evening ratchet's party_unanswered): a bot that would have said "np" but can't take the credit says it wasn't
+        // it, glad of the outcome, instead of leaving the player's thanks unanswered.
+        if (AutonomousChatReplyBudget.CreditFor(message) is { } credit && AutonomousChatReplyBudget.ClaimsCredit(message, choice.Text, moment.CanHeal, moment.CanRez))
+            return new ReplyChoice(ports.Styled(AutonomousChatReplyBudget.CreditAside(credit, random)), "credit aside");
         // Conversation memory (DESIGN-040): a bot never asks what the conversation already holds.
         if (ports.Holds != null && ports.Holds(choice.Text, channel ?? (addressed ? "tell" : "faction"), addressed))
             choice = new ReplyChoice(null, "none known (" + choice.Route + ")");

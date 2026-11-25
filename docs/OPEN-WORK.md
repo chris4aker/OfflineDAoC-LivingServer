@@ -82,7 +82,9 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
 - [#482](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/482) Realism 2e: knowledge a new player needs, as one
   grounded lookup. **Built, tests only** (branch `fix/1.2.3-knowledge`, on top of #585). `AutonomousChatLookup` (typo fold,
   question type, providers per type, every answer with its source) and `data/chat/game_guide.json`. Bench (local Release
-  build): fresh 82.1% (was 59.9%), holdout 75.6% (was 43.6%), code set 93.0% (was 89.8%), ratchet tightened. Merges with
+  build): fresh 82.4% (was 59.9%), holdout 75.6% (was 43.6%), code set 93.0% (was 89.8%), ratchet tightened.
+  Evening ratchet: party_unanswered 5.5 to 5.0; three counts re-baselined after the evening's random stream shifted (PR
+  #614 comment). Merges with
   #585 (its PR holds #585's commits). Open: see it in a PC log (new-player questions in
   `session-chat.log` answered with what was asked; `CHAT_PLAYER_REPLY_PLAN ... knowledge=True` for them).
 - **The honest chat bench** ([#477](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/477), realism 1b): done

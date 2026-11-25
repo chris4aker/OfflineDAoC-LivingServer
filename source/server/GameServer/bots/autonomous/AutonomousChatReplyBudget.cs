@@ -260,6 +260,16 @@ public static class AutonomousChatReplyBudget
     /// A reply that takes credit the bot can't have: "np" or "anytime" to thanks for heals from a bot with no heals, or for a rez
     /// from one with no rez (round 3). Pure.
     /// </summary>
+    /// <summary>What a bot says to thanks it can't take ("ty for the rez" to a bot with no rez): it wasn't it, and it is glad of
+    /// the outcome. Never claims the credit (ClaimsCredit is false for each line). Pure.</summary>
+    public static string CreditAside(string credit, Random random)
+    {
+        string[] lines = credit == "rez"
+            ? ["wasnt me, but glad ur up", "not me lol, good to have u back", "wasnt me, but phew"]
+            : ["thats our healer, not me", "not me, the healer is earning it tonight", "wasnt me, heals were solid tho"];
+        return lines[(random ?? Random.Shared).Next(lines.Length)];
+    }
+
     public static bool ClaimsCredit(string message, string reply, bool canHeal, bool canRez)
     {
         string credit = CreditFor(message);

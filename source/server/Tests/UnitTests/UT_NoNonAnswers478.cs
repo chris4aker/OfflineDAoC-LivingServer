@@ -201,6 +201,20 @@ public class UT_NoNonAnswers478
     }
 
     [Test]
+    public void FieldTalkDoesNotOpenOnADunno()
+    {
+        // PR #614 (the evening ratchet): "dunno, check lfg" holds something past its hedge, so the gate lets it through, but a bot
+        // answering another bot from its pool doesn't open on a dunno (field talk's rule before #478).
+        foreach (string text in new[] { "dunno, check lfg", "dunno, ask in guild", "idk, not me", "Dunno, quiet tonight" })
+        {
+            Assert.That(Gate.IsNonAnswer(text), Is.False, text);
+            Assert.That(AutonomousChatFieldTalk.IsNonAnswer(text), Is.True, text);
+        }
+        Assert.That(AutonomousChatFieldTalk.IsNonAnswer("check lfg, was a couple"), Is.False);
+        Assert.That(AutonomousChatFieldTalk.IsNonAnswer("not that i know"), Is.False);
+    }
+
+    [Test]
     public void TheCorpusHasNoDunnoSetLeft()
     {
         IEnumerable<VC.Line> replies = AutonomousBotVoices.Corpus.Lines.Where(line => line.Kind == "reply" && line.Answers != null && line.Answers.Contains("ask"));
