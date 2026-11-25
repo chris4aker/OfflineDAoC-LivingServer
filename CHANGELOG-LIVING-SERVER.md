@@ -139,8 +139,8 @@ DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_Upstrea
   - **Crowd control and stacking:** a second stun or mez keeps the target held when the first ends (`d352aa1c9`); roots
     overwrite a DD+snare (`5356d4930`); instant stat debuffs start an interrupt timer instead of stopping the cast
     (`c03822a01`); taunts cancel speed buffs (`7d7ec3d41`); proc spells no longer tick (`b7d4dc053`); refreshed pulsing
-    effects restart (Bonedancer focus snare on monsters; `39502cb35`, speed songs kept on our path); one speed buff at a
-    time and item haste procs don't overwrite concentration buffs (`ff5449555`); a stun or mez no longer sheathes a melee
+    effects restart (Bonedancer focus snare on monsters; `39502cb35`, speed songs kept on our path); item haste procs
+    don't overwrite concentration buffs (`ff5449555`, partly: a weaker singer's speed song stays the fallback); a stun or mez no longer sheathes a melee
     weapon (`52b44cb7a`).
   - **Charm:** a charm queued three or more times in a tick can no longer stay on for good (`c928369c4`); a stolen or
     released pet stops the song (`f22ebbe1c`).

@@ -29,6 +29,7 @@ public sealed class UT_LiveInterrupt
     private long _oldTime;
     private Region _region;
     private PetTestLanguageScope _language;
+    private int _oldSelfInterrupt;
 
     private sealed class EmptyServer : GameServer
     {
@@ -96,6 +97,9 @@ public sealed class UT_LiveInterrupt
         _region = new Region(new RegionData { Id = 201, Name = "Interrupt test", Description = "Interrupt test", Mobs = [] });
         SetTime(100_000);
         ScriptMgr.ClearSpellHandlerCache();
+        // The server reads it from the database (default 2,200 ms); a test world has no database.
+        _oldSelfInterrupt = GS.ServerProperties.Properties.SPELL_SELF_INTERRUPT_DURATION;
+        GS.ServerProperties.Properties.SPELL_SELF_INTERRUPT_DURATION = 2_200;
     }
 
     [TearDown]
@@ -109,6 +113,7 @@ public sealed class UT_LiveInterrupt
 
         _actors.Clear();
         _language.Dispose();
+        GS.ServerProperties.Properties.SPELL_SELF_INTERRUPT_DURATION = _oldSelfInterrupt;
         GameServer.LoadTestDouble(_oldServer);
         SetTime(_oldTime);
     }
@@ -245,6 +250,7 @@ public sealed class UT_LiveInterrupt
             var client = (GameClient) RuntimeHelpers.GetUninitializedObject(typeof(GameClient));
             client.Account = new DbAccount { PrivLevel = 1, Language = "EN" };
             Set(typeof(GamePlayer), caster, "m_client", client);
+            Set(typeof(GamePlayer), caster, "m_steed", new WeakReference(null));
         }
 
         Enemy enemy = Actor<Enemy>();
