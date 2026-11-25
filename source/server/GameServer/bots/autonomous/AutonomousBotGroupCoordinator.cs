@@ -678,6 +678,9 @@ public static partial class AutonomousBotGroupCoordinator
                          $"level={(party.Length == 0 ? 0 : (int)party.Average(member => member.Level))} camp=\"{session.Camp.Id}\" " +
                          $"target=\"{session.Camp.MonsterName}\" zone=\"{session.Camp.ZoneName}\" region={session.Camp.RegionId} " +
                          $"travelMinutes={(session.CampAssignedTick == 0 ? -1 : (GameLoop.GameLoopTime - session.CampAssignedTick) / 60_000.0):0.0}");
+                // GitHub #544: the members' camp attempts arrive with the party (followers trail the leader and seldom
+                // reach the arrival radius themselves). Diagnostic only.
+                AutonomousGoalDiagnostics.GroupArrived(party, session.Camp.Id, DateTime.UtcNow);
             }
             WriteSessionMetadata(session, BotMembers(bot.Group));
         }

@@ -807,7 +807,7 @@ namespace DOL.GS
                 {
                     _camp = FromSharedCamp(_groupDirective.Camp);
                     _reportedEmptySharedCampId = string.Empty;
-                    BeginCampDiagnostics(bot);
+                    BeginCampDiagnostics(bot, _camp.TargetLevel);
                 }
 
                 if (_camp == null && GameServiceUtils.ShouldTick(_nextPlanTick))
@@ -4137,7 +4137,7 @@ namespace DOL.GS
             // for this camp only; never silently reject it as an empty camp.
             _camp = sharedGroup ? selected with { TargetLevel = chosen.AverageMobLevel }
                 : usedDeathFallback ? selected with { FallbackMaximumCon = chosen.TypicalCon } : selected;
-            BeginCampDiagnostics(bot);
+            BeginCampDiagnostics(bot, chosen.AverageMobLevel);
             _lastFailedCampId = string.Empty;
             _lastFailedTargetName = string.Empty;
             _campStartedTick = GameLoop.GameLoopTime;
@@ -4151,7 +4151,8 @@ namespace DOL.GS
                 selected.MonsterName, selected.ZoneName, true);
         }
 
-        private void BeginCampDiagnostics(GameBot bot)
+        // targetLevel: the camp's average monster level when chosen (GitHub #544, logged only; 0 when unknown).
+        private void BeginCampDiagnostics(GameBot bot, int targetLevel = 0)
         {
             try
             {
@@ -4162,7 +4163,8 @@ namespace DOL.GS
             AutonomousGoalDiagnostics.Begin(bot, _camp.Id, _camp.MonsterName, _camp.ZoneName,
                 _camp.RegionId, _camp.X, _camp.Y, _camp.Z, _groupDirective?.GroupId ?? string.Empty,
                 members.Length, members.Average(member => member.Level),
-                string.Join(",", members.Select(member => member is GameBot other ? other.ClassName : "Player")));
+                string.Join(",", members.Select(member => member is GameBot other ? other.ClassName : "Player")),
+                targetLevel);
             }
             catch { } // Observability must never replan a working route.
         }

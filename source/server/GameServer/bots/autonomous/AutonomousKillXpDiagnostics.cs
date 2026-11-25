@@ -139,7 +139,9 @@ namespace DOL.GS
                 Contributors = killer.Contributors,
                 MinLevel = members.Min(bot => bot.Level), MaxLevel = highest.Level,
                 AverageLevel = members.Average(bot => (double)bot.Level),
-                CampId = campId, CampTarget = attempt?.Target ?? string.Empty, OnTarget = onTarget, SameName = sameName,
+                CampId = campId, CampTarget = attempt?.Target ?? string.Empty,
+                CampLevel = attempt is { TargetLevel: > 0 } ? attempt.TargetLevel : null,
+                OnTarget = onTarget, SameName = sameName,
                 XpPerMember = members.Select(bot => snapshot.ExperienceBefore.TryGetValue(bot, out long before)
                     ? Math.Max(0, bot.Experience - before) : 0).ToArray(),
                 TotalDamage = totalDamage,
@@ -186,6 +188,7 @@ namespace DOL.GS
                 $"party={row.PartyKind} size={row.GroupSize} contributors={row.Contributors} minLevel={row.MinLevel} " +
                 $"maxLevel={row.MaxLevel} avgLevel={row.AverageLevel:0.0} levelDiff={row.NpcLevel - row.MaxLevel} " +
                 $"camp=\"{Clean(row.CampId)}\" campTarget=\"{Clean(row.CampTarget)}\" " +
+                $"campLevel={(row.CampLevel?.ToString(c) ?? "?")} " +
                 $"onTarget={(row.OnTarget?.ToString(c) ?? "?")} sameName={(row.SameName?.ToString(c) ?? "?")} " +
                 $"xpPerMember={(xp.Length == 0 ? "0" : string.Join("/", xp))} xpSum={xp.Sum()} " +
                 $"share={Share(row.Killer?.Damage ?? 0):0.000} otherParties={Math.Max(0, row.Parties.Count - 1)} " +
@@ -222,6 +225,9 @@ namespace DOL.GS
         public double AverageLevel { get; init; }
         public string CampId { get; init; } = string.Empty;
         public string CampTarget { get; init; } = string.Empty;
+        /// <summary>GitHub #544: the camp's target level when chosen; null when unknown (printed "?"). The report's
+        /// target con is campLevel minus maxLevel.</summary>
+        public int? CampLevel { get; init; }
         public int? OnTarget { get; init; }
         public int? SameName { get; init; }
         public long[] XpPerMember { get; init; } = [];

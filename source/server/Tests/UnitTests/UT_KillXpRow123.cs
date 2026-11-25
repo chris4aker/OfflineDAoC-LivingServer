@@ -19,7 +19,7 @@ namespace DOL.GS.Tests
                 Sequence = 50, Every = 25, Dropped = 2, Realm = "Albion", Zone = "Salisbury Plains", Region = 1,
                 Npc = "bandit \"lieutenant\"", NpcLevel = 14, NpcXp = 52000, Con = "ORANGE", PartyKind = "group",
                 GroupSize = 5, Contributors = 4, MinLevel = 11, MaxLevel = 13, AverageLevel = 12.25,
-                CampId = "classic165-restored:1:2:3", CampTarget = "giant frog", OnTarget = 0, SameName = 0,
+                CampId = "classic165-restored:1:2:3", CampTarget = "giant frog", CampLevel = 15, OnTarget = 0, SameName = 0,
                 XpPerMember = [8061, 8061, 8061, 0], TotalDamage = 1000, Killer = killer, Parties = [killer, other]
             };
         }
@@ -33,7 +33,7 @@ namespace DOL.GS.Tests
                 Assert.That(line, Does.StartWith("AUTONOMOUS_KILL_XP seq=50 every=25 dropped=2 realm=Albion zone=\"Salisbury Plains\" region=1 "));
                 Assert.That(line, Does.Contain("npc=\"bandit 'lieutenant'\" npcLevel=14 npcXp=52000 con=ORANGE"));
                 Assert.That(line, Does.Contain("party=group size=5 contributors=4 minLevel=11 maxLevel=13 avgLevel=12.3 levelDiff=1"));
-                Assert.That(line, Does.Contain("camp=\"classic165-restored:1:2:3\" campTarget=\"giant frog\" onTarget=0 sameName=0"));
+                Assert.That(line, Does.Contain("camp=\"classic165-restored:1:2:3\" campTarget=\"giant frog\" campLevel=15 onTarget=0 sameName=0"));
                 Assert.That(line, Does.Contain("xpPerMember=8061/8061/8061/0 xpSum=24183"));
                 Assert.That(line, Does.Contain("share=0.620 otherParties=1 lost=0.080"));
                 Assert.That(line, Does.EndWith("shares=\"group/Albion/4/0.620/killer;solo/Albion/1/0.300;lost/0.080\""));
@@ -49,7 +49,7 @@ namespace DOL.GS.Tests
             {
                 Realm = "Hibernia", PartyKind = "solo", TotalDamage = 50, Killer = solo, Parties = [solo], XpPerMember = [1200]
             });
-            Assert.That(line, Does.Contain("onTarget=? sameName=?"));
+            Assert.That(line, Does.Contain("campLevel=? onTarget=? sameName=?"), "an unknown camp level reads ?");
             Assert.That(line, Does.Contain("share=1.000 otherParties=0 lost=0.000 shares=\"solo/Hibernia/1/1.000/killer\""));
         }
 

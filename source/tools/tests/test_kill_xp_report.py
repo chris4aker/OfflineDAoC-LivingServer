@@ -14,18 +14,31 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import kill_xp_report as kxr  # noqa: E402
 
 ROW = ('{t} | INF | DOL.GS.AutonomousKillXpDiagnostics | AUTONOMOUS_KILL_XP seq={seq} every=25 dropped={dropped} '
-       'realm={realm} zone="{zone}" region=1 npc="bandit" npcLevel=14 npcXp=52000 con={con} party=group size=5 '
-       'contributors=4 minLevel=11 maxLevel=13 avgLevel=12.3 levelDiff={diff} camp="c:1" campTarget="giant frog" '
-       'onTarget={on} sameName=0 xpPerMember={xp} xpSum=0 share={share} otherParties={others} lost={lost} '
+       'realm={realm} zone="{zone}" region=1 npc="bandit" npcLevel=14 npcXp=52000 con={con} party={party} size=5 '
+       'contributors=4 minLevel=11 maxLevel={maxlevel} avgLevel=12.3 levelDiff={diff} camp="c:1" campTarget="giant frog" '
+       '{camplevel}onTarget={on} sameName=0 xpPerMember={xp} xpSum=0 share={share} otherParties={others} lost={lost} '
        'shares="group/{realm}/4/{share}/killer"')
 GOAL = ('{t} | INF | DOL.GS.AutonomousGoalDiagnostics | AUTONOMOUS_GOAL_ATTEMPT '
         '{{"schema":1,"realm":{realm},"zone":"Domnann","xp":{xp},"targetXp":{target},"bot":"Someone"}}')
+GOAL2 = ('{t} | INF | DOL.GS.AutonomousGoalDiagnostics | AUTONOMOUS_GOAL_ATTEMPT ' + '{body}')
 
 
 def row(t="11/24 10:40:00", seq=25, dropped=0, realm="Albion", zone="Salisbury Plains", con="ORANGE", diff=1, on=1,
-        xp="10000/10000", share="1.000", others=0, lost="0.000"):
+        xp="10000/10000", share="1.000", others=0, lost="0.000", party="group", maxlevel=13, camplevel=None):
+    # camplevel=None: a row from before #544's campLevel field (old logs stay readable)
     return ROW.format(t=t, seq=seq, dropped=dropped, realm=realm, zone=zone, con=con, diff=diff, on=on, xp=xp,
-                      share=share, others=others, lost=lost)
+                      share=share, others=others, lost=lost, party=party, maxlevel=maxlevel,
+                      camplevel="" if camplevel is None else f"campLevel={camplevel} ")
+
+
+def goal(realm=1, level=20, target_level=None, bot=7, started="2026-11-24T10:00:00Z", group="", size=1,
+         arrived=None, xp=1000, seconds=3600):
+    body = {"schema": 1, "realm": realm, "level": level, "botId": bot, "bot": "Someone", "startedUtc": started,
+            "groupId": group, "groupSize": size, "arrivedUtc": arrived, "xp": xp, "targetXp": xp,
+            "elapsedSeconds": seconds, "zone": "Domnann"}
+    if target_level is not None:
+        body["targetLevel"] = target_level
+    return GOAL2.format(t="11/24 10:40:00", body=json.dumps(body))
 
 
 class KillXpReportTest(unittest.TestCase):
@@ -92,6 +105,73 @@ class KillXpReportTest(unittest.TestCase):
         empty = self.write("11/24 10:41:00 | INF | DOL.GS.Other | nothing")
         with contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(kxr.main([str(empty)]), 2)
+
+
+    # GitHub #544 follow-up (FarmVibes): target con, zone names, level bands, re-rolls, arrival.
+    def test_target_con_per_realm_solo_and_group(self):
+        log = self.write(
+            row(party="solo", maxlevel=20, camplevel=19, xp="54000"),
+            row(party="solo", maxlevel=21, camplevel=20, xp="55000"),
+            row(party="group", maxlevel=22, camplevel=24, xp="30000/30000"),
+            row(party="solo", maxlevel=20, xp="1"),  # an old row without campLevel: not counted as con 0
+            row(realm="Hibernia", zone="Domnann", party="solo", maxlevel=20, camplevel=21, xp="73000"),
+        )
+        kills, goals = kxr.read_logs([log], year=2026)
+        report = kxr.build_report(kills, goals, min_rows=1)
+        alb = report["realmParties"]["Albion"]
+        self.assertEqual(alb["solo"]["targetConMedian"], -1)
+        self.assertEqual(alb["solo"]["targetConRows"], 2, "the row without campLevel is left out")
+        self.assertEqual(alb["group"]["targetConMedian"], 2)
+        self.assertEqual(report["realmParties"]["Hibernia"]["solo"]["targetConMedian"], 1)
+        self.assertIsNone(kxr.kill_row(kxr.parse_fields("campLevel=? maxLevel=5"))["targetCon"])
+        text = kxr.render(report)
+        self.assertIn("tcon", text)
+        self.assertRegex(text, r"  solo .* -1 ")
+        self.assertRegex(text, r"  group .* \+2 ")
+
+    def test_zone_spellings_merge(self):
+        for a, b in (("Black Mtns. North", "Black Mtns North"), ("Silvermine Mts", "Silvermine Mts."),
+                     ("Aegirs Landing", "Aegir's Landing")):
+            self.assertEqual(kxr.zone_key(a), kxr.zone_key(b), (a, b))
+        self.assertNotEqual(kxr.zone_key("Black Mtns North"), kxr.zone_key("Black Mtns South"))
+        log = self.write(row(realm="Midgard", zone="Aegirs Landing"), row(realm="Midgard", zone="Aegir's Landing"),
+                         row(realm="Midgard", zone="Aegir's Landing"), row(zone="Black Mtns. North"),
+                         row(zone="Black Mtns North"))
+        kills, goals = kxr.read_logs([log], year=2026)
+        zones = {(z["realm"], z["zone"]): z["rows"] for z in kxr.build_report(kills, goals, min_rows=1)["zones"]}
+        self.assertEqual(zones, {("Midgard", "Aegir's Landing"): 3, ("Albion", "Black Mtns. North"): 2})
+
+    def test_level_bands_and_rerolled_bots(self):
+        log = self.write(
+            row(maxlevel=12, xp="9000/9000"), row(maxlevel=23, camplevel=23, xp="70000/70000"),
+            goal(bot=1, level=24, target_level=23, started="2026-11-24T09:00:00Z", xp=2000, seconds=1800),
+            goal(bot=2, level=26, started="2026-11-24T09:00:00Z"),
+            goal(bot=2, level=1, started="2026-11-24T11:00:00Z", xp=500),   # re-rolled: level dropped
+            goal(bot=2, level=2, started="2026-11-24T12:00:00Z", xp=500),
+            goal(realm=3, bot=3, level=21, target_level=22),
+        )
+        kills, goals = kxr.read_logs([log], year=2026)
+        report = kxr.build_report(kills, goals, min_rows=1)
+        self.assertEqual(set(report["killBands"]["Albion"]), {"10-14", "20-24"})
+        self.assertEqual(report["killBands"]["Albion"]["20-24"]["targetConMedian"], 0)
+        self.assertEqual(report["rerolledBots"], {"Albion": 1})
+        alb = report["goalBands"]["Albion"]
+        self.assertEqual(set(alb), {"20-24"}, "the re-rolled bot's attempts are left out of every band")
+        self.assertEqual(alb["20-24"], {"attempts": 1, "xpPerHour": 4000, "targetConMedian": -1})
+        self.assertEqual(report["goalBands"]["Hibernia"]["20-24"]["targetConMedian"], 1)
+        self.assertEqual(kxr.band_of(0), "00-04")
+        self.assertEqual(kxr.band_of(29), "25-29")
+        self.assertIn("re-rolled bots (level dropped): Albion 1", kxr.render(report))
+
+    def test_arrival_share_solo_and_group(self):
+        log = self.write(goal(bot=1, arrived="2026-11-24T10:03:00Z"), goal(bot=2),
+                         goal(bot=3, group="g1", size=3, arrived="2026-11-24T10:05:00Z"),
+                         goal(bot=4, group="g1", size=3), goal(bot=5, group="g1", size=3))
+        _, goals = kxr.read_logs([log], year=2026)
+        alb = kxr.build_report([], goals)["goalAttempts"]["Albion"]
+        self.assertEqual(alb["solo"]["arrivedShare"], 0.5)
+        self.assertEqual(alb["group"]["arrivedShare"], 0.333)
+        self.assertIsNone(alb["solo"]["targetConMedian"], "attempts from before targetLevel read as unknown")
 
 
 if __name__ == "__main__":
