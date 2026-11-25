@@ -109,6 +109,53 @@ public class UT_CompanionEquipmentDispatch
         }
     }
 
+    private sealed class RecordingInventory : BotInventory
+    {
+        public readonly List<eInventorySlot> OccupiedAdds = new();
+        public override bool AddItem(eInventorySlot slot, DbInventoryItem item)
+        {
+            if (GetItem(slot) != null)
+            {
+                OccupiedAdds.Add(slot); // The live inventory logs "Destination slot is not empty" here.
+                return false;
+            }
+            return base.AddItem(slot, item);
+        }
+    }
+
+    private static readonly eInventorySlot[] JewelrySlots = { eInventorySlot.Jewelry, eInventorySlot.Cloak, eInventorySlot.Neck,
+        eInventorySlot.Waist, eInventorySlot.LeftBracer, eInventorySlot.RightBracer, eInventorySlot.LeftRing, eInventorySlot.RightRing };
+
+    // #541: a /spawn helper whose neck was already filled earlier in EquipBot got a second neck item
+    // from SetJewelryROG and an ERR "Destination slot is not empty (29)".
+    [TestCase(false)] [TestCase(true)]
+    public void JewelryNeverAddsIntoAFilledSlot(bool temporary)
+    {
+        var bot = Make(eRealm.Albion, eCharacterClass.Cleric, 20, temporary);
+        var inventory = new RecordingInventory();
+        bot.Inventory = inventory;
+        var neck = GameInventoryItem.Create(BotEquipment.CreateCompanionItem(eRealm.Albion, eCharacterClass.Cleric, 20,
+            eObjectType.Magical, eInventorySlot.Neck));
+        var ring = GameInventoryItem.Create(BotEquipment.CreateCompanionItem(eRealm.Albion, eCharacterClass.Cleric, 20,
+            eObjectType.Magical, eInventorySlot.LeftRing));
+        Assert.That(inventory.AddItem(eInventorySlot.Neck, neck), Is.True);
+        Assert.That(inventory.AddItem(eInventorySlot.LeftRing, ring), Is.True);
+
+        BotEquipment.SetJewelryROG(bot, eRealm.Albion, eCharacterClass.Cleric, 20, eObjectType.Magical);
+
+        Assert.That(inventory.OccupiedAdds, Is.Empty);
+        Assert.That(inventory.GetItem(eInventorySlot.Neck), Is.SameAs(neck));
+        Assert.That(inventory.GetItem(eInventorySlot.LeftRing), Is.SameAs(ring));
+        foreach (var slot in JewelrySlots)
+            Assert.That(inventory.GetItem(slot), Is.Not.Null, slot.ToString());
+
+        // A repeated request (EquipBot runs again on the endgame upgrade) changes nothing and fails nothing.
+        var before = JewelrySlots.Select(s => inventory.GetItem(s)).ToArray();
+        BotEquipment.SetJewelryROG(bot, eRealm.Albion, eCharacterClass.Cleric, 20, eObjectType.Magical);
+        Assert.That(inventory.OccupiedAdds, Is.Empty);
+        Assert.That(JewelrySlots.Select(s => inventory.GetItem(s)).ToArray(), Is.EqualTo(before));
+    }
+
     [Test]
     public void ShieldFallbackAndRepeatedRequestsPreserveTheLoadout()
     {

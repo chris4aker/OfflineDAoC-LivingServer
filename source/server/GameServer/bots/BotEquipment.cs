@@ -161,6 +161,12 @@ namespace DOL.GS
                     continue;
 
                 eInventorySlot slot = (eInventorySlot)i;
+                // Rings and bracers take whichever of the pair is free; every other
+                // jewelry slot is single. Skip a slot an earlier EquipBot step already
+                // filled (#541: /spawn helpers logged "Destination slot is not empty (29)").
+                eInventorySlot target = JewelryTargetSlot(living.Inventory, i);
+                if (target == eInventorySlot.Invalid)
+                    continue;
                 if (!ShouldEquipRegularSlot(living as IGamePlayer))
                     continue;
                 DbItemTemplate itemToCreate = living is GameBot { IsEndgameCompanion: true }
@@ -168,14 +174,19 @@ namespace DOL.GS
                     : new GeneratedUniqueItem(false, realm, charClass, level, objectType, slot);
                 PrepareEndgameItem(living as IGamePlayer, itemToCreate);
                 GameInventoryItem item = GameInventoryItem.Create(itemToCreate);
-
-                if (i == Slot.RIGHTRING || i == Slot.LEFTRING)
-                    living.Inventory.AddItem(living.Inventory.FindFirstEmptySlot(eInventorySlot.LeftRing, eInventorySlot.RightRing), item);
-                else if (i == Slot.LEFTWRIST || i == Slot.RIGHTWRIST)
-                    living.Inventory.AddItem(living.Inventory.FindFirstEmptySlot(eInventorySlot.LeftBracer, eInventorySlot.RightBracer), item);
-                else
-                    living.Inventory.AddItem(slot, item);
+                living.Inventory.AddItem(target, item);
             }
+        }
+
+        // The free slot a generated jewelry piece for slot i would go to, or Invalid when it is filled.
+        private static eInventorySlot JewelryTargetSlot(IGameInventory inventory, int i)
+        {
+            if (i == Slot.RIGHTRING || i == Slot.LEFTRING)
+                return inventory.FindFirstEmptySlot(eInventorySlot.LeftRing, eInventorySlot.RightRing);
+            if (i == Slot.LEFTWRIST || i == Slot.RIGHTWRIST)
+                return inventory.FindFirstEmptySlot(eInventorySlot.LeftBracer, eInventorySlot.RightBracer);
+            eInventorySlot slot = (eInventorySlot)i;
+            return inventory.GetItem(slot) == null ? slot : eInventorySlot.Invalid;
         }
 
         public static void SetInstrumentROG(GameLiving living, eRealm realm, eCharacterClass charClass, byte level, eObjectType objectType, eInventorySlot slot, eInstrumentType instrumentType)
