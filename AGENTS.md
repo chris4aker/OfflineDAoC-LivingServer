@@ -41,6 +41,8 @@ original client version, and I'm about to leave the .37 in the past"):
 | `source/tools/*_035.py`, `*_02.py` | Earlier releases' pipelines, kept for reference |
 | `tools/pet-art` | Art pipeline for the private pet models and skins, pet weapons and spell effects. Each install step has a rollback. |
 | `docs/` | Player and developer guides; `docs/history/` holds earlier versions' notes |
+| `tools/check.sh`, `tools/check.py` | Every Python check of build-and-test, run locally in parallel; required before a push |
+| `changelog.d/` | Changelog fragments, one per pull request ([changelog.d/README.md](changelog.d/README.md)) |
 
 In a playable folder:
 - `runtime/server`: the server binaries and navigation meshes
@@ -105,6 +107,40 @@ In a playable folder:
     docs/upstream/). Write down what you found, with sources, before you code.
   - Before building, file each fix or piece of work as a GitHub issue (or comment on the existing one) with the plan,
     the sources and the acceptance test, so the direction survives a usage limit or a lost session. Link the PR to it.
+- **Owner decisions come before the code** (owner, 2026-11-25, #615: the 1.2.3 push had "owner decisions after the
+  code").
+  - When a change needs an owner decision (a gameplay rule, a default, a size, a trade-off), ask it on the issue and add
+    the `needs-owner` label before building. Build that part only after the owner answers; build the rest meanwhile.
+  - The pull request template's "Owner decisions this needs" lists them; any listed means the issue carries `needs-owner`.
+- **Agents: build little, push early, check before pushing** (owner, 2026-11-25, #615: "fix the project fundamentals
+  1-5 today, then 6 and 8"; in the 1.2.3 push about 10 agents queued 28 builds behind one lock on a 2-CPU box, and
+  work that was committed but never pushed was nearly lost to a restart).
+  - **At most 3-4 build-heavy agents at once** (agents that run `dotnet build` or `dotnet test`). Docs, research and
+    Python-only agents don't count.
+  - **Locally, run the build and the targeted tests only** (`dotnet test --filter` on the classes you touched). The full
+    suite is CI's job: every push runs it. Don't run the dotnet build at all unless you changed C#.
+  - Share the build machine: `flock /tmp/dotnet.lock dotnet build ... -nodeReuse:false -p:UseSharedCompilation=false`.
+  - **Push early.** Open a draft pull request at your first commit and push every checkpoint after it, so nothing
+    lives only on a workspace disk. Mark it ready when done.
+  - **`tools/check.sh` before every push** (`python tools\check.py` on Windows). It runs every Python check CI runs
+    (encounter catalog, command reference, say-gate ratchet, lore lints, `source/tools/tests`, the versions job, the
+    changelog fragments) so fast checks don't fail only in CI. A check added to the workflow must be added to
+    `tools/check.py` (`source/tools/tests/test_check.py` fails otherwise).
+  - **Changelog fragments, not changelog edits.** Each pull request adds `changelog.d/<issue-or-branch>.md` (front
+    matter `version` and `section`; [changelog.d/README.md](changelog.d/README.md)) and leaves
+    `CHANGELOG-LIVING-SERVER.md` alone. `source/tools/assemble_changelog.py` folds them in at release.
+  - **OPEN-WORK.md:** a pull request edits it only to add or remove its own line; anything more goes on the issue.
+  - Fill in the pull request template (`.github/pull_request_template.md`): issue link, period sources, owner
+    decisions, tests vs in-game, reruns owed.
+- **Triage labels and milestone** (owner, 2026-11-25, #615). Every open issue of the release carries its milestone
+  (`1.2.3` now) and the labels that fit:
+  - `needs-owner`: waits on an owner decision; ask before building that part.
+  - `needs-PC`: needs a check on the owner's PC (a log, a playtest) before it counts as working.
+  - `tests-only`: built and green in tests, not yet seen in a PC log (the "tests only" of "Be honest in reports").
+  - `blocked`: waits on something else (another issue, an upstream fix, a repo setting); say what in a comment.
+  - `reruns-owed`: a simulation, sweep or bench must be run again on the current build before its numbers can be
+    quoted (e.g. after a rule changed under it).
+  - Labels change as the issue moves: drop `tests-only` once a PC log shows it working, drop `needs-owner` once answered.
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**
@@ -164,6 +200,10 @@ In a playable folder:
   - No game terms and no real companies in any player-visible lore, fight advice included (owner, 2026-11-21;
     `tools/lore/fourth_wall.py`, strict in CI). Without dotnet, run `python3 tools/lore/schema_mirror.py` for the C# schema
     checks (`UT_LoreBible`).
+    - What the ban covers (owner, 2026-11-25: "Yes allow the how to answers, my restriction was really around lore only
+      and role play character bots, and fight advice when discussing lore related mechanics"): lore, role-play
+      character bots, and fight advice about lore-related mechanics. Ordinary how-to answers in bot chat (for example
+      `data/chat/game_guide.json`) may use game terms such as npc, server and the launcher's tab names.
 - **Client art, spells and sounds:** read [docs/CLIENT-MODDING-GUIDE.txt](docs/CLIENT-MODDING-GUIDE.txt)
   before changing models, meshes, skins, spell effects, icons or NPC sounds. It lists the client's
   catalog rules (no blank lines, terminators, Expansion Only, ID order), confirmed and unconfirmed
