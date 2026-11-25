@@ -77,6 +77,18 @@ public static class AutonomousBattlegroundTargets
     public static bool SiegeCrewReleases(bool battleground, bool crew, bool defending, bool isPerson, double distance) =>
         battleground && crew && !defending && isPerson && distance <= CrewFightRadius;
 
+    /// <summary>#617 (FarmVibes' review 1): whether a battleground attacker already hitting an enemy engine still runs the
+    /// scan (past the "already fighting" gate), so an enemy person in reach takes it off the engine. Defenders keep their
+    /// own engine rule; outside a battleground nothing changes.</summary>
+    public static bool EngineAttackerScans(bool battleground, bool defending, bool onEnemyEngine) =>
+        battleground && !defending && onEnemyEngine;
+
+    /// <summary>#617 (FarmVibes' review 2): what a controller pick becomes. A controlled pick with a free enemy in the
+    /// fight becomes that free enemy (never null, so the bot does not fall back to the gate while someone is free);
+    /// otherwise the pick stands.</summary>
+    public static T ReplaceControlledPick<T>(T pick, bool controlled, T freeEnemy) where T : class =>
+        controlled && freeEnemy != null ? freeEnemy : pick;
+
     /// <summary>Whether a controller pick passes over this target: it is crowd-controlled and an uncontrolled enemy is in
     /// the fight (BotBrain.PassOverControlled).</summary>
     public static bool SkipsControlledPick(bool controlled, bool freeEnemyInFight) =>

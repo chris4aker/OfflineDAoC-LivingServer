@@ -140,16 +140,28 @@ public sealed partial class AutonomousWorldBotController
     /// #617 / #600: whether a controller pick in a battleground passes over <paramref name="target"/>: it is crowd-controlled
     /// and an uncontrolled enemy (player, gamebot, pet or keep guard) is in the fight near this bot.
     /// </summary>
-    private static bool SkipsControlledPick(GameBot bot, GameLiving target)
+    private static bool SkipsControlledPick(GameBot bot, GameLiving target) => SkipsControlledPick(bot, target, out _);
+
+    /// <summary>As above, with the nearest free enemy that made the pick pass over (null when it does not).</summary>
+    private static bool SkipsControlledPick(GameBot bot, GameLiving target, out GameLiving freeEnemy)
     {
+        freeEnemy = null;
         if (target == null || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) || !HeldByCrowdControl(bot, target))
             return false;
-        bool Free(GameLiving enemy) => enemy != target && enemy.IsAlive && !enemy.IsStealthed &&
+        freeEnemy = NearestFreeEnemy(bot, target);
+        return AutonomousBattlegroundTargets.SkipsControlledPick(true, freeEnemy != null);
+    }
+
+    /// <summary>The nearest enemy in the fight (within FreeEnemyRadius) that is not crowd-controlled and may be attacked.</summary>
+    public static GameLiving NearestFreeEnemy(GameBot bot, GameLiving except)
+    {
+        bool Free(GameLiving enemy) => enemy != except && enemy.IsAlive && !enemy.IsStealthed &&
+            bot.IsWithinRadius(enemy, AutonomousBattlegroundTargets.FreeEnemyRadius) &&
             !BotBrain.IsBreakablyControlled(enemy) && BotSiegeRuntime.LegalEnemy(bot, enemy);
-        bool free = bot.GetPlayersInRadius(AutonomousBattlegroundTargets.FreeEnemyRadius).Cast<GameLiving>().Any(Free) ||
-            bot.GetNPCsInRadius(AutonomousBattlegroundTargets.FreeEnemyRadius)
-                .Where(npc => BotPvpCrowdControl.PlayerLike(npc) || npc is GameKeepGuard).Any(Free);
-        return AutonomousBattlegroundTargets.SkipsControlledPick(true, free);
+        return bot.GetPlayersInRadius(AutonomousBattlegroundTargets.FreeEnemyRadius).Cast<GameLiving>()
+            .Concat(bot.GetNPCsInRadius(AutonomousBattlegroundTargets.FreeEnemyRadius)
+                .Where(npc => BotPvpCrowdControl.PlayerLike(npc) || npc is GameKeepGuard))
+            .Where(Free).OrderBy(bot.GetDistanceTo).FirstOrDefault();
     }
 
     /// <summary>
@@ -217,10 +229,16 @@ public sealed partial class AutonomousWorldBotController
         bool defending = AutonomousRvrDefense.IsCommittedDefender(bot);
         bool siegeFighter = AutonomousRvrDefense.IsCommittedSiegeFighter(bot);
         GameLiving previousEngine = defending ? bot.TargetObject as GameSiegeWeapon ?? _siegeWeapon?.TargetObject as GameSiegeWeapon : null;
+        // #617 (FarmVibes' review 1): a battleground attacker already hitting an enemy engine scans on, as a defender on an
+        // engine does, so an enemy person walking up takes it off the engine (the brain's own pick is only highest aggro).
+        bool battleground = bot != null && BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID);
+        GameSiegeWeapon engineInHand = AutonomousBattlegroundTargets.EngineAttackerScans(battleground, defending,
+            bot?.TargetObject is GameSiegeWeapon onEngine && onEngine.Realm != bot.Realm && onEngine.IsAlive)
+            ? (GameSiegeWeapon)bot.TargetObject : null;
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
             !bot.IsAlive || bot.ObjectState != GameObject.eObjectState.Active || bot.IsReturningAfterRelease ||
             bot.IsOnStableMasterRoute || !IsBattleground(bot) ||
-            (brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null ||
+            (brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null && engineInHand == null ||
             brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE ||
             !_frontierThreat.Due(GameLoop.GameLoopTime, bot.DatabaseID) || IsSafeArea(bot)) return false;
         // AI_PROFILE: only the scan itself is timed, not the cheap checks above that skip it.
@@ -233,6 +251,12 @@ public sealed partial class AutonomousWorldBotController
         RvrScanRole scanRole = RvrScanTurn(brain, bot, rvr, scanNow);
         RvrScanBudget.Add(bot.Realm, scanRole);
         LogRvrScanBudget(scanNow);
+        // #617 (FarmVibes' review 4): a bot holding at a rally whose board holds a contact scans even when it is not one of
+        // its group's lookers this turn, so the whole rally engages within one scan of the post.
+        if (scanRole == RvrScanRole.Idle && battleground && !defending && !siegeFighter &&
+            BattlegroundGatherHold(bot, out Vector3 heldRally, out _) &&
+            AutonomousBattlegroundRallyContact.Contacts(bot.CurrentRegionID, bot.Realm, heldRally, scanNow).Count > 0)
+            scanRole = RvrScanRole.Woken;
         if (!RvrScanRoster.Scans(scanRole)) return false;
 
         var nav = PathfindingProvider.Instance;
@@ -255,7 +279,6 @@ public sealed partial class AutonomousWorldBotController
 
         // #617: battleground scans only (field RvR keeps its picks): people before engines, an attacking crew answers an
         // enemy person within fight range, and crowd-controlled enemies wait while a free one is in the fight.
-        bool battleground = BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID);
         bool crew = BotSiegeRuntime.Assigned(bot) || _siegeJobKeep != null;
         GameLiving[] nearby = bot.GetPlayersInRadius((ushort)searchRadius).Where(Eligible).Cast<GameLiving>()
             .Concat(bot.GetNPCsInRadius((ushort)searchRadius)
@@ -296,9 +319,6 @@ public sealed partial class AutonomousWorldBotController
         // RvR perception (owner 2026-11-01; enemy gamebots and stealth since 1.2 work package 1): perceived targets only
         // once noticed and after a reaction delay. At its objective (near the keep it holds or besieges) as before.
         visibleTargets = PerceiveRvrTargets(bot, visibleTargets, rvr);
-        // #617: an enemy person in sight holds this battleground bot's maintenance and self-buff pulse (BotBrain).
-        if (battleground && visibleTargets.Any(BotPvpCrowdControl.PlayerLike))
-            _battlegroundEnemySeenUntil = scanNow + AutonomousBattlegroundTargets.EnemyInSightMilliseconds;
         // A bot gathering for its realm's battleground wave fights only what comes at it (owner's PC, build 3d67b6f: the
         // gatherers saw the keep's Albion defenders and other realms within 5,000 and were pulled into the guards).
         // The same for a bot holding at its realm's keep rally once the doors are down, and a stormer going up to the lord
@@ -335,6 +355,10 @@ public sealed partial class AutonomousWorldBotController
                 visibleTargets = allowed;
             }
         }
+        // #617 (FarmVibes' review 3): only an enemy person this bot may engage (after the gather and storm filters) holds its
+        // maintenance and self-buff pulse; a gatherer with the keep's distant defenders in sight still buffs.
+        if (battleground && visibleTargets.Any(BotPvpCrowdControl.PlayerLike))
+            _battlegroundEnemySeenUntil = scanNow + AutonomousBattlegroundTargets.EnemyInSightMilliseconds;
         visibleTargets = RvrTacticsGateThreats(brain, bot, RvrStanceGateThreats(brain, bot, visibleTargets));
         // #617 / #600 (FarmVibes): in a battleground, people before engines, then mezzed or breakably rooted enemies passed
         // over while a free one is in the fight. Outside a battleground the array is the same one.
@@ -345,6 +369,14 @@ public sealed partial class AutonomousWorldBotController
         GameLiving enemy = SelectDistributedRvrTarget(bot, operatorThreats.Length>0 ? operatorThreats : visibleTargets);
         if (enemy == null || !Eligible(enemy)) return false;
         if (previousEngine != null && enemy is GameSiegeWeapon) return false;
+        // #617: on an engine already, the bot stays on it unless the pick is a person; then it leaves the engine for him.
+        if (engineInHand != null)
+        {
+            if (enemy is GameSiegeWeapon) return false;
+            bot.StopAttack();
+            brain.RemoveFromAggroList(engineInHand);
+            RvrDecide.Event(bot, "scan", "switch", RvrRecordText.Who(enemy), "scan.engine-to-person", $"engine={engineInHand.Name}");
+        }
         // #617: an attacking crew leaves its engine for an enemy person within fight range, and takes no job for 10 s.
         if (AutonomousBattlegroundTargets.SiegeCrewReleases(battleground, crew, defending, BotPvpCrowdControl.PlayerLike(enemy),
                 bot.GetDistanceTo(enemy)))
