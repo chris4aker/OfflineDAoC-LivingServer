@@ -13,7 +13,8 @@ namespace DOL.GS.ServerRules
         bool TargetAssassin = false,
         bool Camouflage = false,
         bool Vanish = false,
-        int ObserverStealthBonus = 0);
+        int ObserverStealthBonus = 0,
+        bool TargetArcher = false);
 
     /// <summary>Which sense lets a monster or guard uncover a stealther (the base server's uncover timer).</summary>
     public enum UncoverSense : byte
@@ -222,22 +223,31 @@ namespace DOL.GS.ServerRules
         /// <summary>See Hidden before 1.62: 2,700 - 36 x the archer's stealth spec. Pure.</summary>
         public static int SeeHiddenPre162(int stealthSpec) => 2700 - 36 * Math.Min(50, Math.Max(0, stealthSpec));
 
+        /// <summary>The level gap (assassin level - archer stealth spec) over which the 1.62 share goes from 1/4 to 3/4.</summary>
+        public const int SeeHidden162Span = 25;
+
         /// <summary>
-        /// The 1.62 cut of See Hidden (June 2003; rubric reference.md 4.1: "a quarter to three quarters of before, by archer
-        /// spec and assassin level"): the share of the old range left, from 75% against a stealth spec far below the
-        /// assassin's level down to 25% against a spec at or above it. The shape between is ours (a straight line), not a
-        /// period figure. Pure.
+        /// The 1.62 cut of See Hidden against archers (1.62 live notes, June 2003: "We've varied the range that an assassin
+        /// can see a non camouflaged hidden archer anywhere from 1/4 to 3/4 of the current range depending on the archer's
+        /// stealth spec vs the assassin's level. On average this means that an assassin will have to be within about 1/2 the
+        /// range"). The share of the old range left: 1/4 against a spec at or above the assassin's level, rising in a straight
+        /// line to 3/4 at 25 levels or more below it, so a typical level-50 archer's spec (35-40) lands near the note's 1/2.
+        /// The straight line and the 25-level span are ours; the notes give only the ends and the average. Pure.
         /// </summary>
         public static double SeeHidden162Share(int observerLevel, int stealthSpec)
         {
-            int level = Math.Max(1, observerLevel);
-            double gap = Math.Clamp((level - Math.Min(50, Math.Max(0, stealthSpec))) / (double)level, 0, 1);
+            double gap = Math.Clamp((Math.Max(1, observerLevel) - Math.Min(50, Math.Max(0, stealthSpec))) / (double)SeeHidden162Span, 0, 1);
             return 0.25 + 0.5 * gap;
         }
 
-        /// <summary>See Hidden's range on this 1.65 server: the pre-1.62 range cut by <see cref="SeeHidden162Share"/>. Pure.</summary>
-        public static int SeeHiddenRange(int observerLevel, int stealthSpec) =>
-            (int)(SeeHiddenPre162(stealthSpec) * SeeHidden162Share(observerLevel, stealthSpec));
+        /// <summary>
+        /// See Hidden's range on this 1.65 server: against an archer (Scout, Hunter, Ranger), the pre-1.62 range cut by
+        /// <see cref="SeeHidden162Share"/>; against another non-assassin stealther (a Minstrel) the pre-1.62 range, since the
+        /// 1.62 notes changed only "how the See Hidden ability interacts with Archer classes" (later accounts disagree on
+        /// whether See Hidden saw Minstrels at all; the base server's rule, which does, is kept). Pure.
+        /// </summary>
+        public static int SeeHiddenRange(int observerLevel, int stealthSpec, bool targetArcher = true) =>
+            targetArcher ? (int)(SeeHiddenPre162(stealthSpec) * SeeHidden162Share(observerLevel, stealthSpec)) : SeeHiddenPre162(stealthSpec);
 
         /// <summary>
         /// How far a player character sees this stealther (the player case of GamePlayer.CanDetect): 0 through Vanish;
@@ -255,7 +265,7 @@ namespace DOL.GS.ServerRules
                 ? levelDiff * 50 + 250
                 : levelDiff * 20 + 125;
             if (look.ObserverSeeHidden && !look.TargetAssassin && !look.Camouflage)
-                range = Math.Max(range, SeeHiddenRange(look.ObserverLevel, stealthLevel));
+                range = Math.Max(range, SeeHiddenRange(look.ObserverLevel, stealthLevel, look.TargetArcher));
             range += look.ObserverStealthBonus;
             return Math.Clamp(range, 0, SeeHardCap);
         }
@@ -275,6 +285,12 @@ namespace DOL.GS.ServerRules
             Camouflage: target.effectListComponent.ContainsEffectForEffectType(eEffect.Camouflage),
             Vanish: target.effectListComponent.ContainsEffectForEffectType(eEffect.Vanish) ||
                 target is GamePlayer vanisher && vanisher.EffectList.GetOfType<VanishEffect>() != null,
-            ObserverStealthBonus: observer.BaseBuffBonusCategory[eProperty.Skill_Stealth]);
+            ObserverStealthBonus: observer.BaseBuffBonusCategory[eProperty.Skill_Stealth],
+            TargetArcher: IsArcher(target));
+
+        /// <summary>The archer classes 1.62's See Hidden cut names: Scout, Hunter, Ranger.</summary>
+        public static bool IsArcher(GameLiving living) =>
+            (living switch { GamePlayer p => p.CharacterClass?.ID, GameBot b => b.CharacterClass?.ID, _ => null }) is { } id &&
+            (eCharacterClass)id is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger;
     }
 }

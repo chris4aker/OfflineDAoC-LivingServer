@@ -15,7 +15,8 @@ public readonly record struct RvrStealthSighting(
     bool Vanish = false,
     int ObserverStealthBonus = 0,
     bool ObserverInCombatWithOther = false,
-    bool LineOfSight = true);
+    bool LineOfSight = true,
+    bool TargetArcher = false);
 
 /// <summary>
 /// Minimal stealth detection for bots (owner decision 5, 2026-11-16; docs/RVR-FIELD-1.2.md, layer "Eyes"; work package
@@ -52,7 +53,7 @@ public static class RvrStealthNotice
     /// </summary>
     public static int HumanRange(in RvrStealthSighting s) => DOL.GS.ServerRules.StealthRules.SeeRange(new(
         s.ObserverLevel, s.StealthSpec, s.ObserverDetectHidden, s.TargetDetectHidden, s.ObserverSeeHidden, s.TargetAssassin,
-        s.Camouflage, s.Vanish, s.ObserverStealthBonus));
+        s.Camouflage, s.Vanish, s.ObserverStealthBonus, s.TargetArcher));
 
     /// <summary>The farthest this bot may notice this stealther: the human's range, never beyond 350. Pure.</summary>
     public static int Limit(in RvrStealthSighting s) => Math.Min(MaxRange, HumanRange(s));

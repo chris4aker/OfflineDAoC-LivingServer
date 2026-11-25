@@ -275,7 +275,8 @@ public sealed partial class AutonomousWorldBotController
             target is GamePlayer vanisher && vanisher.EffectList.GetOfType<VanishEffect>() != null,
         ObserverStealthBonus: bot.BaseBuffBonusCategory[eProperty.Skill_Stealth],
         ObserverInCombatWithOther: bot.InCombat && bot.TargetObject != target,
-        LineOfSight: lineOfSight);
+        LineOfSight: lineOfSight,
+        TargetArcher: DOL.GS.ServerRules.StealthRules.IsArcher(target));
 
     /// <summary>
     /// A stealthed enemy in line of sight (the scan cast the ray): engaged once noticed by the close-range stealth rule

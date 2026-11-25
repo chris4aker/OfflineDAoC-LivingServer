@@ -204,23 +204,24 @@ namespace DOL.UnitTests
             Assert.That(StealthRules.SeeHiddenPre162(50), Is.EqualTo(900));
             Assert.That(StealthRules.SeeHidden162Share(50, 50), Is.EqualTo(0.25).Within(1e-9), "a quarter against a spec at the assassin's level");
             Assert.That(StealthRules.SeeHidden162Share(50, 0), Is.EqualTo(0.75).Within(1e-9), "three quarters against no spec");
-            Assert.That(StealthRules.SeeHiddenRange(50, 35), Is.EqualTo(576));
-            Assert.That(StealthRules.SeeHiddenRange(50, 20), Is.EqualTo(1089));
+            Assert.That(StealthRules.SeeHidden162Share(50, 38), Is.EqualTo(0.49).Within(1e-9), "a typical archer: about 1/2");
+            Assert.That(StealthRules.SeeHiddenRange(50, 35), Is.EqualTo(792));
+            Assert.That(StealthRules.SeeHiddenRange(50, 20), Is.EqualTo(1485));
+            Assert.That(StealthRules.SeeHiddenRange(50, 20, targetArcher: false), Is.EqualTo(1980), "a Minstrel: the 1.62 notes cut archers only");
 
-            var archer35 = new StealthLook(50, 35, ObserverDetectHidden: true, ObserverSeeHidden: true);
-            Assert.That(StealthRules.SeeRange(archer35), Is.EqualTo(Math.Max(15 * 50 + 250, 576)));
-            Assert.That(StealthRules.SeeRange(archer35 with { StealthSpec = 20 }), Is.EqualTo(1750), "Detect Hidden's 30 x 50 + 250 beats See Hidden there");
-            Assert.That(StealthRules.SeeRange(new StealthLook(50, 20, ObserverSeeHidden: true)), Is.EqualTo(1089));
-            Assert.That(StealthRules.SeeRange(new StealthLook(50, 20, ObserverSeeHidden: true, Camouflage: true)), Is.EqualTo(725),
-                "Camouflage cancels See Hidden");
+            var archer35 = new StealthLook(50, 35, ObserverDetectHidden: true, ObserverSeeHidden: true, TargetArcher: true);
+            Assert.That(StealthRules.SeeRange(archer35), Is.EqualTo(1000), "Detect Hidden's 15 x 50 + 250 beats the cut See Hidden");
+            Assert.That(StealthRules.SeeRange(new StealthLook(50, 20, ObserverSeeHidden: true, TargetArcher: true)), Is.EqualTo(1485));
+            Assert.That(StealthRules.SeeRange(new StealthLook(50, 20, ObserverSeeHidden: true, TargetArcher: true, Camouflage: true)),
+                Is.EqualTo(725), "Camouflage cancels See Hidden");
             Assert.That(StealthRules.SeeRange(new StealthLook(50, 20, ObserverSeeHidden: true, TargetAssassin: true)), Is.EqualTo(725),
                 "See Hidden never works on assassins");
             Assert.That(StealthRules.SeeRange(new StealthLook(50, 0, ObserverDetectHidden: true)), Is.EqualTo(1900), "the cap");
             Assert.That(StealthRules.SeeRange(new StealthLook(50, 0, Vanish: true)), Is.Zero);
 
             // The bots' notice reads the same rule as the player's client.
-            var sighting = new RvrStealthSighting(100, 50, 20, ObserverSeeHidden: true);
-            Assert.That(RvrStealthNotice.HumanRange(sighting), Is.EqualTo(1089));
+            var sighting = new RvrStealthSighting(100, 50, 20, ObserverSeeHidden: true, TargetArcher: true);
+            Assert.That(RvrStealthNotice.HumanRange(sighting), Is.EqualTo(1485));
             Assert.That(RvrStealthNotice.Limit(sighting), Is.EqualTo(RvrStealthNotice.MaxRange), "a bot never notices beyond 350");
             string player = Src("gameobjects", "GamePlayer.cs");
             Assert.That(player, Does.Not.Contain("2700 - 36 *"), "no second copy of the pre-1.62 range");

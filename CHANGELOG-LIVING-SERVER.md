@@ -321,8 +321,10 @@ stealth.md findings 1-3 and 5-10, defense.md 7)
   (`GuardStealther`) sees stealthed gamebots as it sees stealthed players. An enemy gamebot's Detect Hidden now doubles
   the circle against the player too, as an enemy player's always did. Companions keep their rules (they already kept
   the circle).
-- **See Hidden at its 1.62 strength**: 25%-75% of the old 2,700 - 36 x spec range by archer spec against assassin level
-  (the straight line between is ours), for the player and the bots' notice alike.
+- **See Hidden at its 1.62 strength against archers** (1.62 notes: "anywhere from 1/4 to 3/4 of the current range
+  depending on the archer's stealth spec vs the assassin's level ... on average about 1/2"): 1/4 of the old 2,700 - 36 x
+  spec range at a spec at or above the assassin's level, rising to 3/4 at 25 levels below (the straight line and the
+  span are ours), for the player and the bots' notice alike. Minstrels keep the old range (the notes cut archers only).
 - **Stealthers travel hidden.** A gamebot Infiltrator, Nightshade, Shadowblade, Scout, Hunter or Ranger in a soloer or
   duo party hides once out of the portal keep's or bind's safe area and walks to its camp at stealth speed; it comes out
   only to fight, ride a stablemaster route or use a porter (`BotStealthTravel`, `RVR_STEALTH_TRAVEL`). It no longer
