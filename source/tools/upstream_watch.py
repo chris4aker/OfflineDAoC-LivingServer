@@ -41,7 +41,8 @@ def classify(subject: str, paths: list[str]) -> str:
 
 
 def commits_since(url: str, branch: str, reviewed: str, work: Path) -> tuple[str, list[dict]]:
-    dest = work / re.sub(r"\W+", "-", url)
+    # One clone per repo and branch: two entries may watch two branches of one repo.
+    dest = work / re.sub(r"\W+", "-", f"{url}-{branch}")
     git(["clone", "--quiet", "--filter=blob:none", "--no-checkout", "--branch", branch, url, str(dest)])
     head = git(["rev-parse", "HEAD"], dest).strip()
     rng = f"{reviewed}..HEAD" if reviewed else "HEAD~50..HEAD"

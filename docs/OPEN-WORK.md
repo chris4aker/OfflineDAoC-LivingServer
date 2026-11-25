@@ -54,6 +54,12 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   (mechanics.md) on a named build, and the realm-ability gaps (finding 6) and companion RvR jobs (finding 10), which
   are not part of this change.
 
+- **The 2026-11 upstream harvest** ([upstream/HARVEST-2026-11.md](upstream/HARVEST-2026-11.md)): one ranked list from
+  the OpenDAoC-Core, Offline DAoC family and DOL sweeps. In progress: port packages P1-P5 (`fix/1.2.3-upstream-core`,
+  `-effects`, `-combat`, `-ai-world`, `fix/1.2.3-fork-bot-fixes`) and the ledger issues #562-#565. To do, **nothing
+  started**: #567-#574 (bot behaviour from True 1.65, DividedRealms, DetShaft and FelixGagnonB), #575-#580 (world data
+  audits and checks), #581 (geometry line of sight) and #582 (single-zone navmesh tooling); #581 and #582 need the PC.
+
 ## 1.3
 
 - [#437](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/437) Language selector, German and French (original client only). **Open, not started.** Moved from 1.2.2
