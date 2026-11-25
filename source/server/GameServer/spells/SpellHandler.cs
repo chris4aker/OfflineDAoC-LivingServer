@@ -470,7 +470,8 @@ namespace DOL.GS.Spells
 			else if (Caster is GameNPC npcOwner)
 			{
 				// NPCs initial LoS checks are handled by the casting component before ticking the spell handler.
-				HasLos = true;
+				// #521: nobody's client checks a gamebot's cast at another bot; the navmesh does (BotCastSight).
+				HasLos = !BotCastSight.Blocked(Caster, Target, Spell);
 
 				// Instrument songs are legal while moving. A bot is an NPC-backed
 				// player actor, so do not apply the generic NPC cast-stop rule to a
@@ -928,6 +929,10 @@ namespace DOL.GS.Spells
 
 						return false;
 					}
+
+					// #521: a gamebot's cast at another bot is checked again on the navmesh as it ends (BotCastSight).
+					if (BotCastSight.Blocked(m_caster, target, m_spell))
+						HasLos = false;
 
 					if (!HasLos)
 					{
@@ -2424,7 +2429,13 @@ namespace DOL.GS.Spells
 			if (m_spellLine.KeyName is GlobalSpellsLines.Item_Effects && m_spellItem != null)
 				spellLevel = m_spellItem.Template.LevelRequirement > 0 ? m_spellItem.Template.LevelRequirement : m_spellItem.Level;
 			else if (m_spellLine.KeyName is GlobalSpellsLines.Realm_Spells or GlobalSpellsLines.Reserved_Spells || playerCaster == null)
-				spellLevel = m_caster.EffectiveLevel; // NPCs go there too.
+			{
+				// NPCs go there too. #521: an autonomous gamebot casting at an enemy-realm player character rolls with the
+				// spell's level, as a player does.
+				spellLevel = m_caster is GameBot && m_spellLine.KeyName is not (GlobalSpellsLines.Realm_Spells or GlobalSpellsLines.Reserved_Spells)
+					? DOL.GS.ServerRules.PvpRules.SpellLevelForToHit(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(m_caster, target), Spell.Level, m_caster.EffectiveLevel)
+					: m_caster.EffectiveLevel;
+			}
 			else
 			{
 				if (m_spellLine.KeyName is GlobalSpellsLines.Combat_Styles_Effect || m_spellLine.KeyName.StartsWith(GlobalSpellsLines.Champion_Lines_StartWith))
@@ -3227,7 +3238,7 @@ namespace DOL.GS.Spells
 			if (Caster.Chance(RandomDeckEvent.CriticalChance, criticalChance))
 			{
 				double min = 0.1;
-				double max = ad.Target is GamePlayer ? 0.5 : 1.0;
+				double max = DOL.GS.ServerRules.PvpRules.CriticalCap(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(ad.Target, Caster)); // #521
 				double criticalMod = min + Caster.GetPseudoDoubleIncl(RandomDeckEvent.CriticalVariance) * (max - min);
 				criticalDamage = (int) (finalDamage * criticalMod);
 			}

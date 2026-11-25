@@ -145,6 +145,13 @@ namespace DOL.GS
         /// <summary>Autonomous gamebots only: what killed this bot last, and where (AutonomousDeathDiagnostics, #537).</summary>
         public AutonomousDeathBlame.Killer? LastAutonomousKiller { get; set; }
         private ushort _deathRegionId;
+        // #521: the last death was an RvR death by the player's rule (GamePlayer.Die: an enemy realm's kill, PvP combat or a
+        // keep guard), so a raise gives the RvR resurrection illness (ApplyRvrResurrectionIllness).
+        private bool _lastDeathRvr;
+        // #521: the effectiveness the RvR resurrection illness takes away while it lasts (ResurrectionIllnessECSGameEffect).
+        private double _resurrectionIllnessPenalty;
+        internal void AddResurrectionIllnessPenalty(double amount) =>
+            _resurrectionIllnessPenalty = Math.Max(0, _resurrectionIllnessPenalty + amount);
         private Point3D _deathLocation;
         private long _nextReturnRoleplayTick;
         private AutonomousStableRoutePlanner.Choice _stableReturnPlan;
@@ -496,6 +503,9 @@ namespace DOL.GS
             // GameBots recover through the internal recovery lock; never expose
             // GameLiving.IsSitting to clients. Outside enhanced recovery they
             // use ordinary standing/combat timing.
+            // #521: in RvR an autonomous gamebot regenerates as the player does, and its rest seat counts as sitting (3 s).
+            if (UsesPlayerRegeneration)
+                return DOL.GS.ServerRules.PvpRules.PlayerRegenerationIntervalMs(IsRecoveryResting && !IsMoving, InCombat);
             return ClassicRestRegeneration.HealthAndPowerInterval(false, InCombat);
         }
 
@@ -507,9 +517,13 @@ namespace DOL.GS
 
         public bool IsRecoveryResting => _recoveryRestLocked;
 
-        public bool IsEnhancedResting =>
-            (IsRecoveryResting && !IsMoving && !BotRestRecovery.BlocksRest(this)) ||
-            BotRestRecovery.ShouldAutonomousPlayerBotRecover(this, GameLoop.GameLoopTime);
+        /// <summary>#521 (owner 2026-11-24): an autonomous gamebot in RvR (PvpRules.InRvr) regenerates as the player does; the
+        /// fast rest floor (BotRestRecovery) stays for PvE and for companions.</summary>
+        public bool UsesPlayerRegeneration => !DOL.GS.ServerRules.PvpRules.UsesFastRest(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(this));
+
+        public bool IsEnhancedResting => !UsesPlayerRegeneration &&
+            ((IsRecoveryResting && !IsMoving && !BotRestRecovery.BlocksRest(this)) ||
+            BotRestRecovery.ShouldAutonomousPlayerBotRecover(this, GameLoop.GameLoopTime));
 
         /// <summary>
         /// Moves an already-running ordinary regeneration timer onto the
@@ -627,16 +641,33 @@ namespace DOL.GS
             // GameBots have lightweight free-running travel. Endurance is a
             // combat resource for styles/abilities and is never consumed merely
             // because a persistent bot or /spawn companion is moving quickly.
+            // #521: except sprint in RvR, which is real for an autonomous gamebot (+30%, MaxSpeedCalculator) and drains as
+            // the player's does (GamePlayer.EnduranceRegenerationTimerCallback).
+            bool sprintDrains = IsSprinting && DOL.GS.ServerRules.PvpRules.TakesPlayerRules(this);
             if (Endurance >= maxEndurance)
             {
                 Endurance = maxEndurance;
-                return 0;
+                if (!sprintDrains)
+                    return 0;
             }
 
             int regen = GetModified(eProperty.EnduranceRegenerationAmount);
             if (IsEnhancedResting) regen = BotRestRecovery.RecoveryAmount(regen, maxEndurance);
+            if (sprintDrains && IsMoving && EffectListService.GetEffectOnTarget(this, eEffect.Charge) == null)
+            {
+                RealmAbilities.AtlasOF_LongWindAbility longWind = GetAbility<RealmAbilities.AtlasOF_LongWindAbility>();
+                int drain = DOL.GS.ServerRules.PvpRules.SprintDrainPerTick(longWind != null ? longWind.GetAmountForLevel(longWind.Level) : 0);
+                regen -= drain;
+                int endChant = GetModified(eProperty.FatigueConsumption);
+                if (endChant > 1)
+                    regen = (int)Math.Ceiling(regen * endChant * 0.01);
+                if (Endurance + regen > maxEndurance - drain)
+                    regen -= Endurance + regen - (maxEndurance - drain);
+            }
             if (regen != 0)
                 ChangeEndurance(this, eEnduranceChangeType.Regenerate, regen);
+            if (sprintDrains && Endurance - 5 <= 0)
+                Sprint(false);
 
             WakeAfterRecovery();
 
@@ -1178,6 +1209,9 @@ namespace DOL.GS
             _deathTick = GameLoop.GameLoopTime;
             _deathRegionId = CurrentRegionID;
             _deathLocation = new Point3D(X, Y, Z);
+            GameLiving killerSide = killer is GameLiving killerLiving ? DOL.GS.ServerRules.PvpRules.Controller(killerLiving) : null;
+            _lastDeathRvr = DOL.GS.ServerRules.PvpRules.IsAutonomousGamebot(this) && (InCombatPvP || killer is Keeps.GameKeepGuard ||
+                killerSide != null && killerSide.Realm != eRealm.None && killerSide.Realm != Realm);
             IsReturningAfterRelease = false;
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
@@ -1405,6 +1439,7 @@ namespace DOL.GS
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             ShowStandingToViewers();
+            ApplyRvrResurrectionIllness();   // #521: a release after an RvR death gives it too, as GamePlayer.Release does
             if (returnToParty && !toldGroup)
                 TellOwnGroup(ReturnDialogue("release"));
 
@@ -1462,6 +1497,7 @@ namespace DOL.GS
             if (IsTemporaryGroupHelper)
                 TryReturnTemporaryCompanionToLeader(true);
             HiredCompanions165.OnRaised(this);   // back in its player's group and at their side
+            ApplyRvrResurrectionIllness();
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             if (IsAutonomousWorldBot && AutonomousLivingServer.OnBotResurrected(this, caster))
@@ -6015,10 +6051,41 @@ namespace DOL.GS
 
         #region Effectiveness
 
+        // 1.0, less the RvR resurrection illness while an autonomous gamebot carries it (#521); nothing else sets it.
         public override double Effectiveness
         {
-            get => 1.0;
+            get => Math.Max(0, 1.0 - _resurrectionIllnessPenalty);
             set { }
+        }
+
+        /// <summary>
+        /// #521 (owner 2026-11-24: rez sickness by the player's rule in RvR): an autonomous gamebot raised after an RvR death
+        /// at or above RESS_SICKNESS_LEVEL carries the RvR resurrection illness (spell 8181) as the player does
+        /// (GamePlayer.OnRevive); a full raise halves it and Perfect Recovery removes it (ResurrectSpellHandler). PvE deaths
+        /// and companions: none, as before.
+        /// </summary>
+        private void ApplyRvrResurrectionIllness()
+        {
+            bool rvrDeath = _lastDeathRvr;
+            _lastDeathRvr = false;
+            if (!rvrDeath)
+            {
+                TempProperties?.RemoveProperty(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS);
+                return;
+            }
+            double rezSick = TempProperties.GetAllProperties().Contains(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS)
+                ? TempProperties.GetProperty<double>(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS) : 1.0;
+            if (!DOL.GS.ServerRules.PvpRules.RvrRezSicknessApplies(DOL.GS.ServerRules.PvpRules.IsAutonomousGamebot(this), rvrDeath,
+                    Level, ServerProperties.Properties.RESS_SICKNESS_LEVEL, rezSick))
+            {
+                TempProperties.RemoveProperty(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS);
+                return;
+            }
+            SpellLine line = SkillBase.GetSpellLine(GlobalSpellsLines.Realm_Spells);
+            Spell illness = line == null ? null : SkillBase.FindSpell(8181, line);
+            if (illness == null)
+                return;
+            ScriptMgr.CreateSpellHandler(this, illness, line)?.StartSpell(this);
         }
 
         double IGamePlayer.Effectiveness

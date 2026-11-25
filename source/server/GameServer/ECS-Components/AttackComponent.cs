@@ -1074,10 +1074,15 @@ namespace DOL.GS
             }
 
             // LoS / in front check.
-            if (!ignoreLOS && ad.AttackType is not AttackData.eAttackType.Ranged && owner is GamePlayer &&
+            // #521: an autonomous gamebot swinging at an enemy-realm player character must face it too; it turns for the next swing.
+            if (!ignoreLOS && ad.AttackType is not AttackData.eAttackType.Ranged &&
+                (owner is GamePlayer || owner is GameBot && DOL.GS.ServerRules.PvpRules.MustFaceToSwing(
+                    DOL.GS.ServerRules.PvpRules.TakesPlayerRules(owner, ad.Target))) &&
                 ad.Target is not GameKeepComponent &&
                 !(owner.IsObjectInFront(ad.Target, 120) && owner.TargetInView))
             {
+                if (owner is GameBot facingBot)
+                    facingBot.TurnTo(ad.Target);
                 ad.AttackResult = eAttackResult.TargetNotVisible;
                 SendAttackingCombatMessages(action, ad);
                 return ad;
@@ -2208,10 +2213,10 @@ namespace DOL.GS
                     max = Math.Min(1.0, level * 0.25);
                 }
                 else
-                    max = ad.Target is GamePlayer ? 0.5 : 1.0;
+                    max = DOL.GS.ServerRules.PvpRules.CriticalCap(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(ad.Target, owner));
             }
             else
-                max = ad.Target is GamePlayer ? 0.5 : 1.0;
+                max = DOL.GS.ServerRules.PvpRules.CriticalCap(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(ad.Target, owner)); // #521
 
             double criticalMod = min + owner.GetPseudoDoubleIncl(RandomDeckEvent.CriticalVariance) * (max - min);
             return (int) (ad.Damage * criticalMod);
