@@ -62,11 +62,15 @@ namespace DOL.GS
             {
                 _rvrDestination = null;
             }
-            _rvrSharedEvent = false;
             // Too few of the realm here for a wave: fight in the field instead of standing at the staging point or
             // feeding single bots to the keep's guards (Thidranki, 2026-10-17).
             bool tooFew = assault && AutonomousBattlegroundWave.TooFewForAssault(bot.Realm, bracket);
-            _rvrIntent = assault && !tooFew ? AutonomousRvrEventLayer.Intent.AssaultKeep : AutonomousRvrEventLayer.Intent.Roam;
+            // #530: the battleground proposes its intent to the event layer, as a force of its own ("bg:" ids, so a frontier
+            // follower never reads it). No event here: not shared, and the TempProperties stay as they were.
+            ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Battleground,
+                assault && !tooFew ? AutonomousRvrEventLayer.Intent.AssaultKeep : AutonomousRvrEventLayer.Intent.Roam,
+                _rvrDestination?.Id, false, null, assault && !tooFew ? "bg.wave" : "bg.roam"),
+                mirrorIntent: false, mirrorKeep: false, forceId: "bg:" + RvrForceId(bot));
             if (tooFew)
                 return RoamBattleground(bot, bracket, central);
 

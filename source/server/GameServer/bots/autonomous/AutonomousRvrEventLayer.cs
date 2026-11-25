@@ -41,9 +41,17 @@ public static partial class AutonomousRvrEventLayer
 
     /// <summary>A warband choosing its next objective. RecentWipes: its group's wipes in the last ten minutes (1.2 WP4,
     /// RvrEngagement.RecentWipes); with <see cref="RvrEngagement.RepeatedWipes"/> or more it does not go hunting.</summary>
-    public sealed record Force(string GroupId, eRealm Realm, int MemberCount, int AverageLevel, int HealerCount,
+    /// <remarks><c>Healers</c>: healers and support healers by <see cref="RvrRoles.For"/> (<see cref="ForceStrength.Of"/>).
+    /// <c>CanSupplySiege</c> is the force's own say (not a roaming eight, a siege crew it can supply); the size and level
+    /// rule is <see cref="ForceStrength.CanSiege"/>, here only (#530).</remarks>
+    public sealed record Force(string GroupId, eRealm Realm, int MemberCount, int AverageLevel, int Healers,
         bool CanSupplySiege = true, bool RoamingReserve = false, long[] MemberIds = null, int MinimumMemberLevel = 50,
-        int RecentWipes = 0, bool RoamingEight = false);
+        int RecentWipes = 0, bool RoamingEight = false)
+    {
+        public ForceStrength Strength => new(MemberCount, AverageLevel, MinimumMemberLevel, Healers);
+        /// <summary>The one "can this force open a siege" rule: <see cref="ForceStrength.CanSiege"/> and its own say.</summary>
+        public bool SiegeCapable => Strength.CanSiege && CanSupplySiege;
+    }
     public sealed record LiveObjective(string Id, string Name, Intent Kind, eRealm OwningRealm, ushort RegionId,
         int X, int Y, int Z, bool IsRelicKeep, int EnemyCount, int FriendlyCount, int GuardStrength, int ClosedDoors,
         bool IsRelicCarrier = false, bool IsPortalKeep = false, bool UnderAttack = false);
@@ -408,14 +416,14 @@ public static partial class AutonomousRvrEventLayer
     public static Intent ChooseIntent(Force force, bool hasEnemy, bool hasOrdinaryKeep, bool hasRelicKeep, double roll)
     {
         roll = Math.Clamp(roll, 0d, 1d);
-        // AutonomousRvrDirector's wipe rule (1.2 WP4): a force that wiped repeatedly regroups (roams) before it hunts again.
+        // The old director's wipe rule (1.2 WP4): a force that wiped repeatedly regroups (roams) before it hunts again.
         if (RvrEngagement.WipedRepeatedly(force.RecentWipes))
             return Intent.Roam;
-        if (force.MemberCount < 4 || force.AverageLevel < 50 || !force.CanSupplySiege)
+        if (!force.SiegeCapable)
             return hasEnemy ? Intent.HuntEnemy : Intent.Roam;
 
         double weight = MajorAssaultWeight(force.MemberCount, force.AverageLevel);
-        if (hasRelicKeep && force.MemberCount >= 6 && force.AverageLevel >= 50 && roll < weight * 0.15d)
+        if (hasRelicKeep && force.MemberCount >= RelicSiegeMinimumMembers && force.Strength.CanSiege && roll < weight * 0.15d)
             return Intent.AssaultRelicKeep;
         if (hasOrdinaryKeep && roll < weight)
             return Intent.AssaultKeep;
@@ -423,6 +431,8 @@ public static partial class AutonomousRvrEventLayer
     }
 
     public const double RelicSiegeShare = 0.12;
+    /// <summary>A relic siege needs a bigger force than a keep siege (six, beside <see cref="ForceStrength.CanSiege"/>).</summary>
+    public const int RelicSiegeMinimumMembers = 6;
 
     // Chance-based concurrent sieges (one attack per realm). Off in the legacy event-layer tests, which
     // document the one-siege-at-a-time ChooseIntent rules.
@@ -505,7 +515,7 @@ public static partial class AutonomousRvrEventLayer
         using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             Cleanup(nowTick, objectives);
-            if (force.AverageLevel < 50 || force.MinimumMemberLevel < 50)
+            if (!force.Strength.AtSiegeLevel)
                 return ReservePlan(force, objectives.Where(o => !o.IsRelicCarrier && o.Kind is not Intent.AssaultKeep and not Intent.AssaultRelicKeep).ToArray());
             if (ReleasedForces.ContainsKey(force.GroupId)) return null;
 
@@ -553,7 +563,7 @@ public static partial class AutonomousRvrEventLayer
                     continue;
                 if (force.Realm == active.AttackerRealm)
                 {
-                    if (force.AverageLevel >= 50 && (!active.BattleStarted || active.Attackers.ContainsKey(force.GroupId) ||
+                    if (force.AverageLevel >= ForceStrength.SiegeMinimumLevel && (!active.BattleStarted || active.Attackers.ContainsKey(force.GroupId) ||
                         ShouldJoinActiveEvent(force, active.Attackers.Values.Sum(), AttackerCapFor(active), active.RelicKeep, false, roll)) &&
                         TryJoin(active.Attackers, force, AttackerCapFor(active)))
                         return ToPlan(Intent: active.RelicKeep ? Intent.AssaultRelicKeep : Intent.AssaultKeep, target, true,
@@ -562,7 +572,7 @@ public static partial class AutonomousRvrEventLayer
                 }
                 if (force.Realm == active.DefenderRealm)
                 {
-                    if (force.AverageLevel >= 50 && (!active.BattleStarted || active.Defenders.ContainsKey(force.GroupId) ||
+                    if (force.AverageLevel >= ForceStrength.SiegeMinimumLevel && (!active.BattleStarted || active.Defenders.ContainsKey(force.GroupId) ||
                         ShouldJoinActiveEvent(force, active.Defenders.Values.Sum(), Capacity(active), active.RelicKeep, true, roll)) &&
                         TryJoin(active.Defenders, force, DefenderCapFor(active)))
                     {
@@ -575,7 +585,7 @@ public static partial class AutonomousRvrEventLayer
                 }
                 // The third realm contests the same event under its own cap;
                 // it must never overwrite the first attacker's registration.
-                if (force.AverageLevel >= 50 && (!active.BattleStarted || active.ThirdRealm.ContainsKey(force.GroupId) ||
+                if (force.AverageLevel >= ForceStrength.SiegeMinimumLevel && (!active.BattleStarted || active.ThirdRealm.ContainsKey(force.GroupId) ||
                     ShouldJoinActiveEvent(force, active.ThirdRealm.Values.Sum(), Capacity(active), active.RelicKeep, false, roll)) &&
                     TryJoin(active.ThirdRealm, force, SiegeScheduling ? RealmEventPolicy.ThirdRealmCap(active.RelicKeep) : Capacity(active)))
                     return ToPlan(active.RelicKeep ? Intent.AssaultRelicKeep : Intent.AssaultKeep,
@@ -615,13 +625,13 @@ public static partial class AutonomousRvrEventLayer
                     keep = feeder;
                 relic = null;
             }
-            bool siegeCapable = force.MemberCount >= 4 && force.AverageLevel >= 50 && force.CanSupplySiege;
+            bool siegeCapable = force.SiegeCapable;
             if (SiegeScheduling && (keep != null || relic != null) && siegeCapable && !SiegeStartAllowed(nowTick, force.Realm))
                 return ReservePlan(force, objectives);
             // Relic sieges are the larger, rarer event: about one new siege in eight, strong warbands only.
             Intent intent = !SiegeScheduling ? ChooseIntent(force, hasEnemy, keep != null, relic != null, roll)
                 : !siegeCapable || keep == null && relic == null ? ChooseIntent(force, hasEnemy, false, false, roll)
-                : relic != null && force.MemberCount >= 6 && force.AverageLevel >= 50 && (keep == null || Random.Shared.NextDouble() < RelicSiegeShare)
+                : relic != null && force.MemberCount >= RelicSiegeMinimumMembers && force.Strength.CanSiege && (keep == null || Random.Shared.NextDouble() < RelicSiegeShare)
                     ? Intent.AssaultRelicKeep : keep != null ? Intent.AssaultKeep : ChooseIntent(force, hasEnemy, false, false, roll);
             LiveObjective selected = intent switch
             {
@@ -944,7 +954,7 @@ public static partial class AutonomousRvrEventLayer
 
     private static Plan HomeDefenseBreakOff(Force force, IReadOnlyCollection<LiveObjective> objectives, long nowTick)
     {
-        if (!SiegeScheduling || force.AverageLevel < 50) return null;
+        if (!SiegeScheduling || force.AverageLevel < ForceStrength.SiegeMinimumLevel) return null;
         ActiveEvent attack = Events.Values.FirstOrDefault(active => active.Attackers.ContainsKey(force.GroupId));
         if (attack == null) return null;
         ActiveEvent home = HomeDefenseTarget(attack, force.Realm, force.MemberCount);

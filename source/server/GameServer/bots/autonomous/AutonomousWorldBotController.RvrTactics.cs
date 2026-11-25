@@ -47,7 +47,7 @@ public sealed partial class AutonomousWorldBotController
     }
 
     /// <summary>
-    /// Hook: ChooseRvrDestination, after the event layer chose (_rvrIntent and _rvrSharedEvent are set; a siege or a
+    /// Hook: ChooseRvrDestination, after the event layer chose (its plan is in _rvrPlanView, #530; a siege or a
     /// defense call comes first). <paramref name="chosen"/> is today's destination, null when there is none. Returns
     /// the destination the tactics want instead (the next check spot of the group's circuit, a lane's end), or null
     /// for no opinion. Work packages 5 (rvr_roam_lanes) and 6 (rvr_roaming_parties, rvr_roam_checks:
@@ -58,8 +58,11 @@ public sealed partial class AutonomousWorldBotController
         if (!(Properties.RVR_ROAM_LANES || Properties.RVR_ROAMING_PARTIES || Properties.RVR_ROAM_CHECKS) ||
             !BotBrain.RvrTacticsApplyTo(bot))
             return null;
-        return RvrRoamersDestination(bot, chosen);
+        return RvrRoamersDestination(bot, chosen, _rvrPlanView ?? new(_rvrIntent, _rvrSharedEvent));
     }
+
+    /// <summary>The plan the event layer just chose, while ChooseRvrDestination asks the roam override for its proposal (#530).</summary>
+    private AutonomousRvrEventLayer.IntentView? _rvrPlanView;
 
     // ---- work package 6: roaming eights, soloers, duos and stealthers ---------------------------------------------------
 
@@ -111,13 +114,12 @@ public sealed partial class AutonomousWorldBotController
     /// enemy levelling bots on it; a soloer or duo takes a chokepoint or camp, a stealther a chokepoint where its realm's
     /// stealthers camp. Sieges, defence calls, relic hunts and warbands are left as chosen. Null for no opinion.
     /// </summary>
-    private CampDestination RvrRoamersDestination(GameBot bot, CampDestination chosen)
+    private CampDestination RvrRoamersDestination(GameBot bot, CampDestination chosen, AutonomousRvrEventLayer.IntentView plan)
     {
         if (!Properties.RVR_ROAM_CHECKS || !AutonomousBotGroupCoordinator.RvrRoamSplitActive)
             return null;
-        if (_rvrSharedEvent || _rvrIntent is AutonomousRvrEventLayer.Intent.DefendEvent or AutonomousRvrEventLayer.Intent.AssaultKeep or
-                AutonomousRvrEventLayer.Intent.AssaultRelicKeep ||
-            _rvrIntent == AutonomousRvrEventLayer.Intent.HuntEnemy && chosen != null && !chosen.Id.StartsWith("rvr-enemy-", StringComparison.Ordinal))
+        // #530: the event layer's rule for a roam proposal (sieges, defence calls, events and non-force hunts stay as chosen).
+        if (!AutonomousRvrEventLayer.AcceptsRoamOverride(plan.Intent, plan.Shared, chosen?.Id))
             return null;
         // The old frontiers only: a bot in a battleground or a battle dungeon, with no frontier goal, keeps its own.
         if (bot.CurrentRegionID is not (1 or 100 or 200) && chosen?.RegionId is not (1 or 100 or 200))
@@ -127,7 +129,7 @@ public sealed partial class AutonomousWorldBotController
             return null;
         // #417: an eight goes after the live enemy force the planner found near it (its circuit waits); before, the
         // circuit replaced every such hunt and the eights walked past the fights.
-        if (kind == RvrPartyKind.Eight && _rvrIntent == AutonomousRvrEventLayer.Intent.HuntEnemy &&
+        if (kind == RvrPartyKind.Eight && plan.Intent == AutonomousRvrEventLayer.Intent.HuntEnemy &&
             chosen?.Id.StartsWith("rvr-enemy-", StringComparison.Ordinal) == true &&
             RvrRoamCircuits.EightFollowsHunt(chosen.RegionId == bot.CurrentRegionID, Vector2.Distance(new(bot.X, bot.Y), new(chosen.X, chosen.Y))))
         {
