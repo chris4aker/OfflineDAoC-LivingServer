@@ -31,6 +31,7 @@ namespace DOL.UnitTests
 
                 goals.Info("AUTONOMOUS_GOAL_ATTEMPT bot=\"Probe\" goal=camp");
                 raid.Info("REALM_RAID_ENDED event=probe outcome=\"Boss defeated\"");
+                factory.GetLogger("DOL.GS.AutonomousKillXpDiagnostics").Info("AUTONOMOUS_KILL_XP seq=25 realm=Albion");
                 goals.Warn("AUTONOMOUS_GOAL_ATTEMPT a warning still reaches warn.log");
                 factory.Flush();
                 factory.Shutdown();
@@ -41,6 +42,8 @@ namespace DOL.UnitTests
                 Assert.That(server, Does.Not.Contain("goal=camp"), "routine lines stay out of server.log");
                 Assert.That(detail, Does.Contain("goal=camp"));
                 Assert.That(detail, Does.Not.Contain("REALM_RAID_ENDED"));
+                Assert.That(server, Does.Contain("AUTONOMOUS_KILL_XP seq=25"), "#544: the sampled kill row is in server.log");
+                Assert.That(detail, Does.Not.Contain("AUTONOMOUS_KILL_XP"));
                 Assert.That(File.ReadAllText(Path.Combine(folder, "warn.log")), Does.Contain("a warning still reaches warn.log"));
             }
             finally

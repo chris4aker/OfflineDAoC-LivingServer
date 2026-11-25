@@ -16,6 +16,14 @@ namespace DOL.GS
 
         [ServerProperty("autonomous_diagnostics", "bot_training_tracking", "One log record after successful persistent bot trainer training.", true)]
         public static bool Training = true;
+
+        /// <summary>
+        /// GitHub #544: one AUTONOMOUS_KILL_XP row (server.log) for every Nth autonomous-gamebot PvE kill, server-wide,
+        /// at most AutonomousKillXpDiagnostics.MaxRowsPerMinute a minute. 0 turns it off. On by default: the row is cheap
+        /// (a counter per kill; work only on the sampled kill) and capped, and the realm-pace question needs it.
+        /// </summary>
+        [ServerProperty("autonomous_diagnostics", "bot_kill_xp_sample_every", "Log one AUTONOMOUS_KILL_XP row for every Nth autonomous gamebot PvE kill (at most 120 a minute). 0 turns it off. Diagnostic only.", 25)]
+        public static int KillXpSampleEvery = 25;
     }
 
     public enum GoalAttemptEnd
