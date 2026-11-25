@@ -11,6 +11,9 @@ namespace OfflineDaoc.Launcher.Tests;
 internal sealed class FakeReleaseWeb : IReleaseWeb
 {
     public string? Json;
+    /// <summary>The answer to /releases (the test-build channel); asking for it without one set fails the test.</summary>
+    public string? ReleasesJson;
+    public int ReleasesCalls;
     public Exception? GetFails;
     public byte[] File = [];
     public int GetCalls;
@@ -18,9 +21,15 @@ internal sealed class FakeReleaseWeb : IReleaseWeb
 
     public string GetText(string url, TimeSpan timeout)
     {
+        Assert.That(timeout, Is.EqualTo(TimeSpan.FromSeconds(10)));
+        if (url == ReleaseFeed.ReleasesUrl)
+        {
+            ReleasesCalls++;
+            Assert.That(ReleasesJson, Is.Not.Null, "the list of releases was asked for");
+            return ReleasesJson!;
+        }
         GetCalls++;
         Assert.That(url, Is.EqualTo(ReleaseFeed.LatestUrl));
-        Assert.That(timeout, Is.EqualTo(TimeSpan.FromSeconds(10)));
         if (GetFails != null)
             throw GetFails;
         return Json ?? "";
