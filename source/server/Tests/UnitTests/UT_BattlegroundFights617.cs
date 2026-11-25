@@ -15,6 +15,15 @@ namespace DOL.GS.Tests
     [TestFixture]
     public sealed class UT_BattlegroundFights617
     {
+        // The fight harness reads every server logger (RvrFightWorld's error capture touches each type's static Logger).
+        // Logging must be up first: a logger made before it is a null one, and every later fixture that logs through it
+        // throws (CI on 5b4e9f990: 53 unrelated tests). Same set-up as the other fixtures that need logging.
+        [OneTimeSetUp]
+        public void Logging() => DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null, DOL.Logging.LogLibrary.None);
+
+        [SetUp, TearDown]
+        public void ForgetRallyContacts() => AutonomousBattlegroundRallyContact.Clear();
+
         private sealed record Candidate(string Name, bool Engine = false, bool Controlled = false);
 
         private static readonly Candidate Ram = new("ram", Engine: true);
