@@ -127,6 +127,7 @@ RAID_DUNGEON_REGIONS = {
     "dungeon-albion-krondon": "61", "dungeon-albion-avalon": "50", "dungeon-albion-crystal": "62",
     "dungeon-albion-corrupt": "277", "dungeon-midgard-trollheim": "150", "dungeon-midgard-iarnvidiur": "161",
     "dungeon-midgard-dodens": "246", "dungeon-hibernia-tursuil": "190", "dungeon-hibernia-marfach": "276",
+    "dungeon-hibernia-fomor": "180",
 }
 WAY_IN_REGIONS = {"dungeon-albion-crystal": "50", "summoners-albion": "277", "summoners-midgard": "246",
                   "summoners-hibernia": "276"}

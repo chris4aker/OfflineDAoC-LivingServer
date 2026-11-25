@@ -53,9 +53,14 @@
       "source": "docs/encounters/epic-encounters.json"
     },
     {
-      "text": "The navmesh path from the entrance stops 3,000-3,600 units short of the central chamber on both sides (zone180.nav, 2026-10-20), which is why the realm raid does not go there.",
+      "text": "Until 1.2.3 the navmesh path from the entrance stopped 3,000-3,600 units short of the central chamber on both sides (zone180.nav, 2026-10-20), which is why the realm raid did not go there. Since 1.2.3 four walk links join the climb ladders north of Krackenschtein and the way from the second ring to the inner one, and Fomor's raid is dungeon-hibernia-fomor, suggested size 56, its named fought in the period's order: Krackenschtein, Nogoribando, Anurigunda, then Myrddraxis.",
       "provenance": "game",
-      "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs"
+      "source": "source/server/GameServer/bots/autonomous/AutonomousRealmRaid.cs; source/server/GameServer/bots/autonomous/RaidNamedOrder.cs; tools/fork-build/content-patches.json"
+    },
+    {
+      "text": "Fomor is two rings, one inside the other, and a broken inner ring with the hydra at its end; each ring's one passage is guarded by a great one, and the way to the second ring is a climb in two stages north of Krackenschtein's circle of tall stones.",
+      "provenance": "game",
+      "source": "Thredh's Fomor guide (Clan of the Dragonfly), Italian translation by Valmerwolf, 2003, revised 2005: http://www.valmerwolf.com/mappe/guide/fomor.htm"
     },
     {
       "text": "In Irish myth the Fomorians were a race of sea and underworld beings, often monstrous, who fought the Tuatha Dé Danann.",

@@ -48,6 +48,23 @@ of OpenDAoC-Core, ported by hand onto our tree; `UT_UpstreamCombatPort123`). **T
   (`905ad857c`).
 - **Living Server parity:** a gamebot's dual wield swings are dual wield attacks, as a player's are (they were never
   counted as such, because gamebots are NPCs without a left hand swing chance).
+**Bosses**
+- **Fomor City has a raid** (#414; owner, 2026-11-24: "Start it now"). `dungeon-hibernia-fomor`: Hibernia, 56 raiders
+  (the period's seven groups), from Droighaid or Aalid Feie. Usable by the sweep (`/epictest sweep start
+  dungeon-hibernia-fomor`). The shipped `zone180.nav` was three islands: the builder made the three climb ladders north
+  of Krackenschtein, but cracks of 21-33 units cut them from the floors beside them, and a fourth cut the second ring
+  from the inner one. Four walk links close them, with nothing rebuilt: a byte patch in
+  `tools/fork-build/content-patches.json` (the Lord Gildas pattern, `add_offmesh.py`). On the patched mesh `dfprobe`
+  reaches every Fomor named from the entrance, and the server's corridor check is complete to each and back. The named
+  come in the period's order: Krackenschtein, Nogoribando, Anurigunda, then Myrddraxis (`RaidNamedOrder`,
+  `REALM_EXPEDITION_NAMED_ORDER`; Thredh's Fomor guide: each ring's one passage is guarded by a named). Their tactic
+  rules are unchanged and no boss is changed. Myrddraxis's tale is now the raid's. `UT_FomorCityRaid123` and the
+  explicit probe `UT_RaidDungeonRoutesProbe` (Fomor cases). **Tests only.**
+- **Behemoth stays unfought, by design** (#414). Mythic's Grab Bag (11 January 2008): "This mob is not killable. It has
+  no loot. You have to be sent there." The Camelot Herald (April 2002): "The Behemoth will now stay in his own area." No
+  raid is built; the bots keep away from him as before.
+- **Morgana stays a quest host** (#414). She is not a fight in the period either ("Do not attack Morgana": the Albion
+  level 50 epic, a fight for one group). No raid.
 
 **Chat**
 - **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,

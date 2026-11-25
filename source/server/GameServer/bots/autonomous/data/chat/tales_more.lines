@@ -406,8 +406,8 @@ B: the fishers say warm him faster than she cools him. and no charm holds her
 F: so heal the tank and ignore the grandmothers. ok | warm him faster. thats the whole fight
 C: the fomorians left her twice the catch they left balere, flann of howth wrote | i will never fish that shore again
 
-# Myrddraxis, under Fomor. Fomor has no raid in this world (its navmesh has no path to the chamber): his tale is told on
-# its own, and the rumour after it is lore, never a raid.
+# Myrddraxis, under Fomor. Until 1.2.3 Fomor had no raid in this world (its navmesh had no path to the chamber) and this tale
+# was told on its own; since 1.2.3 (#414) it is the Fomor City raid's tale (dungeon-hibernia-fomor).
 
 @topic tale_myrddraxis
 @levels 1-50
