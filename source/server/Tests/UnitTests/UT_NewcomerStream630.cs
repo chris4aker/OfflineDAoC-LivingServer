@@ -135,22 +135,65 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void TheLongestIdleFiftyRetiresFirstThenTheOldest()
+        public void TheLeastPlayedAndLeastConnectedRetireFirstWeightedTowardTheLongestIdle()
+        {
+            // Owner decision 2026-11-25: "least-played and least-connected first, weighted toward the longest-idle".
+            DateTime now = new(2026, 11, 25, 20, 0, 0, DateTimeKind.Utc);
+            Stream.Candidate C(long id, int level, double idleHours, int friends = 0, Stream.GuildRole guild = Stream.GuildRole.None,
+                Stream.Exclusion ex = Stream.Exclusion.None, eRealm realm = eRealm.Albion) =>
+                new(id, realm, 2, level, now.AddHours(-idleHours), false, ex, friends, guild);
+            Assert.That(Stream.PickRetiree([C(1, 30, 10), C(2, 30, 300)], eRealm.Albion, now).BotId, Is.EqualTo(2), "the longer idle");
+            Assert.That(Stream.PickRetiree([C(1, 30, 100, friends: 3), C(2, 30, 100)], eRealm.Albion, now).BotId, Is.EqualTo(2), "fewer friends");
+            Assert.That(Stream.PickRetiree([C(1, 30, 100, guild: Stream.GuildRole.Member), C(2, 30, 100)], eRealm.Albion, now).BotId,
+                Is.EqualTo(2), "no guild role");
+            Assert.That(Stream.PickRetiree([C(1, 30, 100, guild: Stream.GuildRole.Officer), C(2, 30, 100, guild: Stream.GuildRole.Member)],
+                eRealm.Albion, now).BotId, Is.EqualTo(2), "an officer stays longer than a member");
+            Assert.That(Stream.PickRetiree([C(1, 48, 100), C(2, 22, 100)], eRealm.Albion, now).BotId, Is.EqualTo(2), "less played");
+            Assert.That(Stream.PickRetiree([C(1, 30, 100), C(2, 30, 100)], eRealm.Albion, now).BotId, Is.EqualTo(2), "a tie: the newer character");
+            Assert.That(Stream.PickRetiree([C(1, 50, 700, friends: 1), C(2, 25, 24)], eRealm.Albion, now).BotId, Is.EqualTo(1),
+                "weighted toward the longest idle: a month away outweighs being played and having a friend");
+            Assert.That(Stream.RetireScore(C(1, 20, 0), now), Is.EqualTo(0));
+            Assert.That(Stream.RetireScore(C(1, 20, 5000), now), Is.EqualTo(Stream.IdleHoursCap), "idle capped at 30 days");
+            Assert.That(Stream.RetireScore(new Stream.Candidate(1, eRealm.Albion, 2, 20, DateTime.MinValue, false, Stream.Exclusion.None), now),
+                Is.EqualTo(Stream.IdleHoursCap), "no recorded activity counts as idle the whole cap");
+            Assert.That(Stream.PickRetiree([C(6, 50, 900, realm: eRealm.Midgard)], eRealm.Albion, now), Is.Null, "its own realm only");
+            Assert.That(Stream.ParseUtc(now.ToString("O")), Is.EqualTo(now));
+            Assert.That(Stream.ParseUtc(""), Is.EqualTo(DateTime.MinValue));
+        }
+
+        [Test]
+        public void ABotBelowTwentyNeverRetires()
         {
             DateTime now = DateTime.UtcNow;
-            Stream.Candidate C(long id, int level, double idleHours, Stream.Exclusion ex = Stream.Exclusion.None, eRealm realm = eRealm.Albion) =>
-                new(id, realm, 2, level, now.AddHours(-idleHours), false, ex);
+            var lows = Enumerable.Range(1, 19).Select(level =>
+                new Stream.Candidate(level, eRealm.Hibernia, 47, level, DateTime.MinValue, false, Stream.Exclusion.None)).ToArray();
+            Assert.That(Stream.PickRetiree(lows, eRealm.Hibernia, now), Is.Null, "the band the stream refills stays put");
+            var withTwenty = lows.Append(new Stream.Candidate(99, eRealm.Hibernia, 47, 20, now, false, Stream.Exclusion.None));
+            Assert.That(Stream.PickRetiree(withTwenty, eRealm.Hibernia, now).BotId, Is.EqualTo(99), "20 is the lowest that may retire");
+            Assert.That(Stream.RetireMinLevel, Is.EqualTo(20));
+        }
+
+        [Test]
+        public void EveryProtectionHoldsAtAnyLevel()
+        {
+            DateTime now = DateTime.UtcNow;
+            foreach ((Stream.Exclusion flag, string name) in Stream.ExclusionNames)
+                foreach (int level in new[] { 20, 35, 50 })
+                {
+                    var protectedBot = new Stream.Candidate(1, eRealm.Albion, 2, level, DateTime.MinValue, false, flag);
+                    var other = new Stream.Candidate(2, eRealm.Albion, 2, 30, now, false, Stream.Exclusion.None, Friends: 5,
+                        Guild: Stream.GuildRole.Officer);
+                    Assert.That(Stream.PickRetiree([protectedBot], eRealm.Albion, now), Is.Null, $"{name} at {level}");
+                    Assert.That(Stream.PickRetiree([protectedBot, other], eRealm.Albion, now).BotId, Is.EqualTo(2),
+                        $"{name} at {level}: protected even when it scores far higher");
+                }
             var candidates = new[]
             {
-                C(1, 50, 10), C(2, 50, 200, Stream.Exclusion.GuildLeader), C(3, 49, 500), C(4, 50, 100), C(5, 50, 100),
-                C(6, 50, 900, realm: eRealm.Midgard),
+                new Stream.Candidate(1, eRealm.Albion, 2, 40, now, false, Stream.Exclusion.GuildLeader),
+                new Stream.Candidate(2, eRealm.Albion, 2, 40, now, false, Stream.Exclusion.Grouped | Stream.Exclusion.PlayerFriend),
+                new Stream.Candidate(3, eRealm.Albion, 2, 12, now, false, Stream.Exclusion.Grouped),
             };
-            Assert.That(Stream.PickRetiree(candidates, eRealm.Albion).BotId, Is.EqualTo(4), "idle longest, then the lowest id");
-            Assert.That(Stream.PickRetiree(candidates, eRealm.Midgard).BotId, Is.EqualTo(6));
-            Assert.That(Stream.PickRetiree(candidates, eRealm.Hibernia), Is.Null);
-            Assert.That(Stream.PickRetiree([C(7, 50, 1, Stream.Exclusion.Grouped)], eRealm.Albion), Is.Null);
-            Assert.That(Stream.ExcludedSummary(candidates, eRealm.Albion), Is.EqualTo("leader:1"));
-            Assert.That(Stream.ParseUtc(""), Is.EqualTo(DateTime.MinValue), "no recorded progress counts as idle longest");
+            Assert.That(Stream.ExcludedSummary(candidates, eRealm.Albion), Is.EqualTo("leader:1,friend:1,group:1"), "below 20 is not a candidate");
         }
 
         [Test]
@@ -186,25 +229,26 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void ADayKeepsEachRealmsRosterTheSameSizeAtTheCappedRate()
+        public void AFreshWorldOfTwentyToThirtyFivesKeepsEachRealmsRosterTheSameSizeAtTheCappedRate()
         {
             var random = new Random(2026);
             var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var world = new List<Bot>();
             long nextId = 1;
             DateTime start = new(2026, 11, 25, 0, 0, 0, DateTimeKind.Utc);
-            // Per realm 1,000 gamebots: 20 in levels 1-19 (floor 50), 680 in between, 300 at 50 (a third of them excluded).
+            // Owner 2026-11-25: a fresh world has almost no 50s. Per realm 1,000 gamebots: 20 in levels 1-19 (floor 50) and
+            // 980 at 20-35, none at 50; a third of the 20-35s protected.
             foreach (eRealm realm in Stream.Realms)
                 for (int i = 0; i < 1000; i++)
                 {
-                    int level = i < 20 ? 1 + i % 19 : i < 700 ? 20 + i % 30 : 50;
+                    int level = i < 20 ? 1 + i % 19 : 20 + i % 16;
                     var exclusions = new[] { Stream.Exclusion.GuildLeader, Stream.Exclusion.Grouped, Stream.Exclusion.PlayerFriend, Stream.Exclusion.CraftOrder };
                     world.Add(new Bot
                     {
                         Row = new OfflineWorldBotRecord { BotId = nextId++, Realm = (int)realm, Level = level, ClassId = 2, ClassName = "x", Name = "B" + nextId,
                             LastMeaningfulProgressUtc = start.AddHours(-random.Next(1, 1000)).ToString("O") },
                         Items = 20,
-                        Excluded = level == 50 && i % 3 == 0 ? exclusions[i % exclusions.Length] : Stream.Exclusion.None,
+                        Excluded = level >= 20 && i % 3 == 0 ? exclusions[i % exclusions.Length] : Stream.Exclusion.None,
                     });
                 }
             int rows = world.Count;
@@ -220,9 +264,9 @@ namespace DOL.GS.Tests
                     Stream.RealmCount count = Stream.Count(realm, live.Select(b => (b.Row.Realm, b.Row.Level)));
                     if (!Stream.Due(count, On, lastAdded.TryGetValue(realm, out DateTime last) ? last : null, now))
                         continue;
-                    Stream.Candidate retiree = Stream.PickRetiree(live.Where(b => b.Row.Level >= 50).Select(b =>
+                    Stream.Candidate retiree = Stream.PickRetiree(live.Select(b =>
                         new Stream.Candidate(b.Row.BotId, (eRealm)b.Row.Realm, b.Row.ClassId, b.Row.Level,
-                            Stream.ParseUtc(b.Row.LastMeaningfulProgressUtc), false, b.Excluded)), realm);
+                            Stream.ParseUtc(b.Row.LastMeaningfulProgressUtc), false, b.Excluded)), realm, now);
                     Assert.That(retiree, Is.Not.Null);
                     Bot old = world.Single(b => b.Row.BotId == retiree.BotId);
                     Assert.That(old.Excluded, Is.EqualTo(Stream.Exclusion.None));
@@ -249,7 +293,9 @@ namespace DOL.GS.Tests
             Assert.That(world.Where(b => retiredIds.Contains(b.Row.BotId)).All(b => b.Items == 20 && b.Row.IsRetired), Is.True,
                 "retirees keep their items and stay in the records");
             Assert.That(world.Where(b => b.Excluded != Stream.Exclusion.None).Any(b => b.Row.IsRetired), Is.False, "no excluded bot retired");
-            Assert.That(world.Where(b => b.Row.IsRetired).All(b => b.Row.Level == 50), Is.True, "only level 50s retire");
+            Assert.That(world.Where(b => b.Row.IsRetired).All(b => b.Row.Level is >= 20 and <= 35), Is.True,
+                "with no 50s, 20-35s retire, one per newcomer; never below 20");
+            Assert.That(retiredIds, Has.Count.EqualTo(90), "one retirement per newcomer");
         }
 
         // ---- rows ----------------------------------------------------------------------------------------------------
@@ -265,10 +311,11 @@ namespace DOL.GS.Tests
             Assert.That(addedRow, Is.EqualTo($"POPULATION_NEWCOMER realm=Albion outcome=added id=77 class={identity.CharacterClass} " +
                                              $"race={identity.Race} level=1 low=31 floor=50 roster=1000 per_hour=6 retired=12"));
             Assert.That(addedRow, Does.Not.Contain(identity.Name));
-            var retiree = new Stream.Candidate(12, eRealm.Albion, 7, 50, DateTime.UtcNow.AddHours(-30), true, Stream.Exclusion.None);
+            var retiree = new Stream.Candidate(12, eRealm.Albion, 7, 50, DateTime.UtcNow.AddHours(-30), true, Stream.Exclusion.None, 1,
+                Stream.GuildRole.Member);
             string retiredRow = Stream.RetiredRow(retiree, 77, 300, "leader:3,group:10", DateTime.UtcNow);
             Assert.That(retiredRow, Does.StartWith("POPULATION_RETIRED realm=Albion id=12 class=Wizard level=50 online=1 idle_h=").And
-                .EndWith(" newcomer=77 candidates=300 excluded=leader:3,group:10 order=idle_then_oldest"));
+                .EndWith(" friends=1 guild=member score=-330 newcomer=77 candidates=300 excluded=leader:3,group:10 order=least_played_connected_idle"));
             Assert.That(Stream.HeldRow(count, On, "no_retiree", "0"),
                 Is.EqualTo("POPULATION_NEWCOMER realm=Albion outcome=held reason=no_retiree low=31 floor=50 roster=1000 per_hour=6 excluded=0"));
         }

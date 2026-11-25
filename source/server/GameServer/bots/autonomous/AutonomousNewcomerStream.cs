@@ -26,8 +26,10 @@ namespace DOL.GS
     /// (<see cref="AutonomousBotIdentityGenerator"/>: the era class shares, never class 63, the same name mix), the row
     /// fields of <see cref="NewBotRow"/> (shared with the launcher), level 1, no coin, no items (gamebots start without
     /// armour and earn it), placed at its first login by the server's own Classic/SI start placement.</item>
-    /// <item>With <c>population_retire</c> on, each newcomer is paired with one level-50 gamebot of its realm that retires
-    /// (longest idle first, then the oldest character), so the realm's roster stays the same size. A retiree keeps its
+    /// <item>With <c>population_retire</c> on, each newcomer is paired with one gamebot of its realm at level 20 or above
+    /// that retires (owner decision 2026-11-25: the least-played and least-connected first, weighted toward the longest
+    /// idle; <see cref="RetireScore"/>), so the realm's roster stays the same size. Never below 20, the band the stream
+    /// refills. A retiree keeps its
     /// record, items and coin; it is marked IsRetired with the <see cref="RetiredFromPlayMarker"/> Activity and never logs
     /// in again. Nothing is ever deleted.</item>
     /// </list>
@@ -44,7 +46,9 @@ namespace DOL.GS
         public const int RosterBasis = 1000;
         /// <summary>The highest level counted as low (levels 1-19).</summary>
         public const int LowTop = 19;
-        public const int RetireLevel = 50;
+        /// <summary>The lowest level that may retire (owner decision 2026-11-25: "gamebots at any level 20 or above, and never
+        /// below 20").</summary>
+        public const int RetireMinLevel = 20;
         public const int RowsPerMinute = 10;
         public static readonly TimeSpan CheckInterval = TimeSpan.FromMinutes(1);
         public static readonly TimeSpan HeldRowInterval = TimeSpan.FromHours(1);
@@ -109,7 +113,7 @@ namespace DOL.GS
 
         // ---- Who may retire (pure) -----------------------------------------------------------------------------------
 
-        /// <summary>Why a level-50 gamebot may not retire now (issue #630's "never retire" list, plus the bots that are not
+        /// <summary>Why a gamebot at level 20 or above may not retire now (issue #630's "never retire" list, plus the bots that are not
         /// ordinary gamebots).</summary>
         [Flags]
         public enum Exclusion
@@ -162,26 +166,51 @@ namespace DOL.GS
             return found;
         }
 
-        /// <summary>A level-50 gamebot of the realm that might retire.</summary>
+        /// <summary>A guild role, for the retire order (a bot guild's leader never retires: Exclusion.GuildLeader).</summary>
+        public enum GuildRole { None = 0, Member = 1, Officer = 2 }
+
+        /// <summary>A gamebot of the realm at level 20 or above that might retire. <paramref name="Friends"/> is how many
+        /// gamebots count it a friend (AutonomousBotBonds).</summary>
         public sealed record Candidate(long BotId, eRealm Realm, int ClassId, int Level, DateTime LastProgressUtc, bool Online,
-            Exclusion Excluded);
+            Exclusion Excluded, int Friends = 0, GuildRole Guild = GuildRole.None);
+
+        public const int IdleHoursCap = 720;
+        public const int PointsPerFriend = 60, FriendsCounted = 5;
+        public const int PointsGuildMember = 120, PointsGuildOfficer = 240;
+        public const int PointsPerLevelPlayed = 6;
 
         /// <summary>
-        /// The retiree for a realm: a level-50 gamebot of that realm with no exclusion, the one idle longest
-        /// (LastMeaningfulProgressUtc oldest; none recorded counts as oldest), then the oldest character (the lowest id, the
-        /// longest played). Null when none may retire. Pure. Owner decision: which 50s retire first (proposed default).
+        /// How soon a candidate retires; higher goes first. Owner decision 2026-11-25: "least-played and least-connected
+        /// first, weighted toward the longest-idle. Use fewer friends, no guild role and the least recent activity." Idle
+        /// hours (capped at 30 days, 720) carry the most weight; each bot friend takes 60 off (at most 5 counted), a guild
+        /// member 120 and an officer 240; each level above 20 (the time played) takes 6 off (180 at 50). A bot with no
+        /// recorded activity counts as idle the whole cap. Pure.
         /// </summary>
-        public static Candidate PickRetiree(IEnumerable<Candidate> candidates, eRealm realm) =>
+        public static int RetireScore(Candidate candidate, DateTime nowUtc)
+        {
+            double idle = candidate.LastProgressUtc == DateTime.MinValue ? IdleHoursCap
+                : Math.Clamp((nowUtc - candidate.LastProgressUtc).TotalHours, 0, IdleHoursCap);
+            int guild = candidate.Guild switch { GuildRole.Officer => PointsGuildOfficer, GuildRole.Member => PointsGuildMember, _ => 0 };
+            return (int)Math.Round(idle) - PointsPerFriend * Math.Clamp(candidate.Friends, 0, FriendsCounted) - guild -
+                   PointsPerLevelPlayed * Math.Clamp(candidate.Level - RetireMinLevel, 0, 30);
+        }
+
+        /// <summary>
+        /// The retiree for a realm: a gamebot of that realm at level 20 or above with no exclusion and the highest
+        /// <see cref="RetireScore"/>; on a tie the newer character (the higher id, less played). Never below 20. Null when
+        /// none may retire. Pure.
+        /// </summary>
+        public static Candidate PickRetiree(IEnumerable<Candidate> candidates, eRealm realm, DateTime nowUtc) =>
             (candidates ?? [])
-                .Where(c => c != null && c.Realm == realm && c.Level >= RetireLevel && c.Excluded == Exclusion.None)
-                .OrderBy(c => c.LastProgressUtc)
-                .ThenBy(c => c.BotId)
+                .Where(c => c != null && c.Realm == realm && c.Level >= RetireMinLevel && c.Excluded == Exclusion.None)
+                .OrderByDescending(c => RetireScore(c, nowUtc))
+                .ThenByDescending(c => c.BotId)
                 .FirstOrDefault();
 
-        /// <summary>"leader:2,group:10" over the realm's level-50 candidates, "0" when none was excluded. Pure.</summary>
+        /// <summary>"leader:2,group:10" over the realm's candidates (level 20 or above), "0" when none was excluded. Pure.</summary>
         public static string ExcludedSummary(IEnumerable<Candidate> candidates, eRealm realm)
         {
-            Candidate[] mine = (candidates ?? []).Where(c => c != null && c.Realm == realm && c.Level >= RetireLevel).ToArray();
+            Candidate[] mine = (candidates ?? []).Where(c => c != null && c.Realm == realm && c.Level >= RetireMinLevel).ToArray();
             var parts = new List<string>();
             foreach ((Exclusion flag, string name) in ExclusionNames)
             {
@@ -194,8 +223,9 @@ namespace DOL.GS
 
         /// <summary>The time a row's LastMeaningfulProgressUtc stands for (MinValue when it has none). Pure.</summary>
         public static DateTime ParseUtc(string text) =>
-            DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind | DateTimeStyles.AdjustToUniversal,
-                out DateTime value) ? value : DateTime.MinValue;
+            DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTime value)
+                ? value.Kind == DateTimeKind.Local ? value.ToUniversalTime() : value
+                : DateTime.MinValue;
 
         // ---- The newcomer's row and the retirement (pure) ------------------------------------------------------------
 
@@ -276,7 +306,8 @@ namespace DOL.GS
             $"{RetiredTag} realm={RvrRecordText.Realm(retiree.Realm)} id={retiree.BotId} class={(eCharacterClass)retiree.ClassId} " +
             $"level={retiree.Level} online={(retiree.Online ? 1 : 0)} " +
             $"idle_h={(retiree.LastProgressUtc == DateTime.MinValue ? "-" : Math.Max(0, (int)(nowUtc - retiree.LastProgressUtc).TotalHours).ToString(CultureInfo.InvariantCulture))} " +
-            $"newcomer={newcomerId} candidates={candidates} excluded={excluded} order=idle_then_oldest";
+            $"friends={retiree.Friends} guild={retiree.Guild.ToString().ToLowerInvariant()} score={RetireScore(retiree, nowUtc)} " +
+            $"newcomer={newcomerId} candidates={candidates} excluded={excluded} order=least_played_connected_idle";
 
         // ---- Runtime -------------------------------------------------------------------------------------------------
 
@@ -345,10 +376,10 @@ namespace DOL.GS
                 if (request.Settings.Retire)
                 {
                     candidates = RetireCandidates(realm, request.FriendNames);
-                    retiree = PickRetiree(candidates, realm);
+                    retiree = PickRetiree(candidates, realm, request.NowUtc);
                     if (retiree == null)
                     {
-                        // The roster stays the same size: no newcomer until a level 50 can make room (owner decision).
+                        // The roster stays the same size: no newcomer until a bot at level 20 or above can make room.
                         if (!LastHeldRow.TryGetValue(realm, out DateTime held) || request.NowUtc - held >= HeldRowInterval)
                         {
                             LastHeldRow[realm] = request.NowUtc;
@@ -367,7 +398,7 @@ namespace DOL.GS
                 LastAdded[realm] = request.NowUtc;
                 Emit(NewcomerTag, AddedRow(request.Count, request.Settings, newcomer, retiree?.BotId));
                 if (retiree != null && RetireOnGameLoop(retiree))
-                    Emit(RetiredTag, RetiredRow(retiree, newcomer.BotId, candidates.Count(c => c.Realm == realm && c.Level >= RetireLevel),
+                    Emit(RetiredTag, RetiredRow(retiree, newcomer.BotId, candidates.Count(c => c.Realm == realm && c.Level >= RetireMinLevel),
                         ExcludedSummary(candidates, realm), request.NowUtc));
                 AutonomousPopulationController.RequestRosterRefresh();
             }
@@ -418,7 +449,7 @@ namespace DOL.GS
             return record;
         }
 
-        /// <summary>The realm's level-50 roster gamebots with what keeps each from retiring now (game loop).</summary>
+        /// <summary>The realm's roster gamebots at level 20 or above with what keeps each from retiring now (game loop).</summary>
         private static Candidate[] RetireCandidates(eRealm realm, HashSet<string> friendNames)
         {
             var list = new List<Candidate>();
@@ -428,10 +459,16 @@ namespace DOL.GS
                     continue;
                 GameBot live = AutonomousBotRegistry.TryGet(record.BotId, out GameBot bot) ? bot : null;
                 int level = live?.Level ?? record.Level;
-                if (level < RetireLevel)
+                if (level < RetireMinLevel)
                     continue;
+                GuildRole guild = AutonomousBotRealmGuilds.TryGetMembership(record.BotId, out AutonomousBotRealmGuilds.Membership m)
+                    ? m.RankLevel <= 2 ? GuildRole.Officer : GuildRole.Member
+                    : AutonomousBotGuilds.GuildOf(record.BotId) != null ? GuildRole.Member : GuildRole.None;
+                int friends;
+                try { friends = AutonomousBotBonds.Friends(record.BotId).Length; }
+                catch (Exception) { friends = 0; }
                 list.Add(new Candidate(record.BotId, realm, record.ClassId, level, ParseUtc(record.LastMeaningfulProgressUtc),
-                    live != null, Exclusions(FactsOf(record, live, friendNames))));
+                    live != null, Exclusions(FactsOf(record, live, friendNames)), friends, guild));
             }
             return list.ToArray();
         }

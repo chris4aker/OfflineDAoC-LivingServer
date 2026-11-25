@@ -34,7 +34,7 @@ namespace OfflineDaoc.Shared
 
         /// <summary>The Activity of a retired gamebot.</summary>
         public static string ActivityFor(int level) =>
-            $"{ActivityPrefix}a level {Math.Clamp(level, 1, 50)} who made room for a newcomer (kept, never logs in)";
+            $"{ActivityPrefix}level {Math.Clamp(level, 1, 50)}, made room for a newcomer (kept, never logs in)";
 
         /// <summary>A retiree: IsRetired and the server's Activity marker. Any other IsRetired row is a deletion request (or a
         /// buffbot copy, BuffBotCopyMarker).</summary>
