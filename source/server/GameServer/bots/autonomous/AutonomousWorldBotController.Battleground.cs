@@ -170,6 +170,10 @@ namespace DOL.GS
                 // 539 under Lady Thidranki with her as its target, attacking=False and moving=False; StrikesFromHere).
                 if (_battlegroundStorming && target != null && !StrikesFromHere(bot, target))
                     target = null;
+                // #617 / #600 (FarmVibes): never a mezzed or breakably rooted enemy while a free one is in the fight, and no
+                // aggro pushed onto it (BotBrain.CrowdControlRespect); the brain's own list takes the free one.
+                if (SkipsControlledPick(bot, target))
+                    target = null;
                 target ??= FindReachableEnemyDoor(bot, central);
                 // A caster, archer or healer in the lord's fight takes its formation spot behind the melee first (1.2.2).
                 if (target is GuardLord formationLord && TakeLordFormation(bot, formationLord))
@@ -196,7 +200,8 @@ namespace DOL.GS
                 if (nearLord)
                 {
                     // #416: from near enough that the hits count (GuardLord takes nothing from beyond 400); farther, walk on to him.
-                    if (!rally.Hold && bot.IsWithinRadius(lord, (int)AutonomousBattlegroundKeepRally.LordStrikeReach(lord,
+                    if (!rally.Hold && !SkipsControlledPick(bot, lord) &&
+                        bot.IsWithinRadius(lord, (int)AutonomousBattlegroundKeepRally.LordStrikeReach(lord,
                             RvrLordFormation.StandsBack(LordFormationRole(bot)))) &&
                         Math.Abs(bot.Z - lord.Z) <= AutonomousBattlegroundKeepRally.StrikeFloorHeight &&
                         GameServer.ServerRules.IsAllowedToAttack(bot, lord, true))
@@ -390,7 +395,7 @@ namespace DOL.GS
                 return true;
             }
             if (!AutonomousBattlegroundKeepRally.GateClear(bot.CurrentRegionID, bot.Realm, central, out GameKeepGuard called) ||
-                !GameServer.ServerRules.IsAllowedToAttack(bot, called, true))
+                !GameServer.ServerRules.IsAllowedToAttack(bot, called, true) || SkipsControlledPick(bot, called))
                 return null;
             bool healer = AutonomousGroupSupply.IsHealer(bot);
             bool ranged = AutonomousRvrDefense.IsRangedDefender(bot);
@@ -726,7 +731,7 @@ namespace DOL.GS
             if (_battlegroundStormLord is { IsAlive: true } stormLord && AutonomousBattlegroundKeepRally.InLordFight(bot, stormLord) &&
                 LordFightTarget(bot, StormKeep(), stormLord, bot.TargetObject as GameLiving) is { } pick &&
                 // #416: the lord only from near enough that the hits count; farther, the bot walks on to him (not a cast from 900).
-                !ReferenceEquals(bot.TargetObject, pick) && StrikesFromHere(bot, pick))
+                !ReferenceEquals(bot.TargetObject, pick) && StrikesFromHere(bot, pick) && !SkipsControlledPick(bot, pick))
             {
                 bot.TargetObject = pick;
                 brain.AddToAggroList(pick, Math.Max(100, pick.EffectiveLevel * 12));
@@ -785,6 +790,9 @@ namespace DOL.GS
             if (BattlegroundGatherHold(bot, out Vector3 staging, out atRally))
             {
                 if (GathererMayEngage(bot, target, staging)) return false;
+                // #617: a contact the rally posted is the whole rally's fight, wherever it was first seen.
+                if (AutonomousBattlegroundRallyContact.Has(bot.CurrentRegionID, bot.Realm, staging, target, GameLoop.GameLoopTime))
+                    return false;
             }
             else if (BattlegroundStormHold(bot))
             {
