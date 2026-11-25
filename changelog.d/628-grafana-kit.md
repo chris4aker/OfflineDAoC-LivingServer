@@ -5,7 +5,8 @@ section: Tests
 - **Grafana kit for playtest rows** (#628; owner, 2026-11-25: "Can you integrate tools for GCX and hook it all up?").
   `tools/grafana/` is for contributors who chart the structured log rows in Grafana. It holds:
   - a privacy-first Grafana Alloy pipeline: only allowlisted rows ship, and fields that could carry a player's,
-    a bot's, a guild's or an account's name are removed, as is free text;
+    a bot's, a guild's or an account's name are removed, as are free text and file paths. The field rules fail
+    closed: a name is kept only when it is reviewed world data;
   - a localhost Docker stack (Grafana, Loki, Alloy);
   - a portable Windows setup with no installer, service or admin rights;
   - nine dashboards as gcx resources.

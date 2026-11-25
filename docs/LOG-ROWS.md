@@ -24,11 +24,11 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BG_TARGET_PICK` | pending #625 | `logs/1.2.3-set-a` | server.log | `seq`, `every`, `t`, `bg`, `realm`, `src`, `pick`, `target`, `skippedControlled`, `skippedEngines`, `rally`, `list`, `candidates` | every 10th battleground pick, at most 10 a minute | A sampled battleground target pick: the kind picked, controlled enemies and engines skipped, rally board or not (#621). |
 | `CAST_INTERRUPT` | pending #625 | `logs/1.2.3-set-a` | server.log | `seq`, `every`, `t`, `caster`, `pet`, `realm`, `spell`, `castMs`, `leftMs`, `outcome`, `why`, `attacker`, `attackerPet`, `region`, `bg` | every 10th cast an attacker's interrupt timer reached, at most 20 a minute | A sampled cast an interrupting hit reached: caster kind, spell type, time left, kept or lost (#596). |
 | `CC_BREAK` | pending #625 | `logs/1.2.3-set-a` | server.log | `t`, `cc`, `target`, `breaker`, `breakerPet`, `caster`, `side`, `ms`, `attack`, `region`, `bg` | each break of a mez or breakable root, at most 20 a minute | A mez or breakable root broken: breaker kind, ally or enemy of the caster, ms since it landed (#621). |
-| `ECONOMY_PULSE` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only) | hourly, per realm (spec) | Exchange listings, sales and median price by slot band, and gamebot coin earned and spent. |
-| `GROUP_ENDED` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only) | one per gamebot group (spec) | Why a gamebot group ended, how long it ran, its size at start and end, and its task (#544). |
+| `ECONOMY_PULSE` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only); ships its marker and realm only | hourly, per realm (spec) | Exchange listings, sales and median price by slot band, and gamebot coin earned and spent. |
+| `GROUP_ENDED` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only); ships its marker and realm only | one per gamebot group (spec) | Why a gamebot group ended, how long it ran, its size at start and end, and its task (#544). |
 | `PLAYER_LINE_OUTCOME` | pending #625 | `logs/1.2.3-set-a` | server.log | `seq`, `t`, `ch`, `realm`, `intent`, `answered`, `latencyMs`, `kind`, `bots`, `replies`, `window` | each line the player types to bots, at most 30 a minute | Whether any bot answered the player's line within 30 s, how fast, and how. |
-| `REALM_LEVEL_SPREAD` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only) | hourly, per realm and 5-level band (spec) | Gamebot count and levels gained per realm and band, re-rolled or new bots flagged (#544). |
-| `STUCK_HOTSPOT` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only) | hourly (spec) | The top stuck or recovery spots by region and a rounded position grid, merged across bots and recovery kinds (#555). |
+| `REALM_LEVEL_SPREAD` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only); ships its marker and realm only | hourly, per realm and 5-level band (spec) | Gamebot count and levels gained per realm and band, re-rolled or new bots flagged (#544). |
+| `STUCK_HOTSPOT` | pending #625 | `logs/1.2.3-set-b` | server.log | not on a branch yet (spec only); ships its marker and realm only | hourly (spec) | The top stuck or recovery spots by region and a rounded position grid, merged across bots and recovery kinds (#555). |
 
 ## Rows in code
 
@@ -55,7 +55,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_CAPITAL_TRANSIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotCapitalRouting.cs` | `bot`, `entry`, `exit`, `goal`, `id`, `level`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_CAPITAL_TRANSIT_ARRIVE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotCapitalRouting.cs` | `bot`, `exit`, `id`, `level`, `position`, `realm`, `region` | `bot` | - | - |
 | `AUTONOMOUS_CROSSING_SOURCE_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `edge`, `from`, `goal`, `id`, `to` | `bot` | - | - |
-| `AUTONOMOUS_DANGER_BYPASS` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RouteThreats.cs` | `at`, `bend`, `bot`, `danger`, `dangerLevel`, `dangers`, `id`, `level`, `radius`, `zone` | `bot` | - | - |
+| `AUTONOMOUS_DANGER_BYPASS` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RouteThreats.cs` | `at`, `bend`, `bot`, `danger`, `dangerLevel`, `dangers`, `id`, `level`, `radius`, `zone` | `bot`, `danger` | - | - |
 | `AUTONOMOUS_DB_WRITE_DEFERRED` | server.log | **ships** | `bots/autonomous/AutonomousBotStatusPersistence.cs` | `action`, `bot`, `deferredLastMinute`, `holder`, `id`, `waitMs` | `bot` | - | - |
 | `AUTONOMOUS_DEATH_ROUTE_REPLAN` | detail.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `class`, `deaths`, `failed_target`, `id`, `killer`, `killerLevel`, `killer_off_camp`, `level`, `new_max_con`, `no_xp_death_streak`, `position`, `realm`, `recovery_wait_ms`, `region` | `bot`, `killer` | - | - |
 | `AUTONOMOUS_DEATH_TARGET_FALLBACK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `available_con`, `bot`, `camp`, `failed_target`, `id`, `level`, `requested_max`, `selected` | `bot`, `failed_target` | - | - |
@@ -67,12 +67,12 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_DUNGEON_BOSS_GOAL` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `boss`, `from`, `group`, `level`, `party`, `partyLevel`, `reason`, `region`, `zone` | - | - | - |
 | `AUTONOMOUS_DUNGEON_BOSS_RESULT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `back`, `boss`, `group`, `minutes`, `region`, `result` | - | - | - |
 | `AUTONOMOUS_DUNGEON_EPIC_AVOIDED` | server.log | **ships** | `bots/autonomous/AutonomousDungeonTraversal.cs` | `action`, `aggro`, `at`, `bot`, `group`, `id`, `level`, `region`, `target`, `targetLevel` | `bot`, `target` | - | - |
-| `AUTONOMOUS_DUNGEON_HOLD_LONG` | server.log | **ships** | `bots/autonomous/AutonomousDungeonTraversal.cs` | `at`, `blocker`, `blockerLevel`, `bot`, `class`, `distance`, `id`, `isPuller`, `longest_gap_ms`, `mayPull`, `puller`, `pullerHealth`, `pullerRegion`, `raid`, `raidCrossing`, `raidHold`, `raidMuster`, `raidState`, `raidTrash`, `region`, `restarts`, `resting`, `separated`, `total_s`, `unbroken_s` | `bot`, `puller` | - | - |
-| `AUTONOMOUS_DUNGEON_PULLER_AWAY` | server.log | **ships** | `bots/autonomous/AutonomousDungeonTraversal.cs` | `blocker`, `bot`, `id`, `puller`, `pullerRegion`, `raidTrash`, `reason`, `region` | `bot` | - | - |
+| `AUTONOMOUS_DUNGEON_HOLD_LONG` | server.log | **ships** | `bots/autonomous/AutonomousDungeonTraversal.cs` | `at`, `blocker`, `blockerLevel`, `bot`, `class`, `distance`, `id`, `isPuller`, `longest_gap_ms`, `mayPull`, `puller`, `pullerHealth`, `pullerRegion`, `raid`, `raidCrossing`, `raidHold`, `raidMuster`, `raidState`, `raidTrash`, `region`, `restarts`, `resting`, `separated`, `total_s`, `unbroken_s` | `blocker`, `bot`, `puller` | - | - |
+| `AUTONOMOUS_DUNGEON_PULLER_AWAY` | server.log | **ships** | `bots/autonomous/AutonomousDungeonTraversal.cs` | `blocker`, `bot`, `id`, `puller`, `pullerRegion`, `raidTrash`, `reason`, `region` | `blocker`, `bot`, `puller` | - | - |
 | `AUTONOMOUS_DUNGEON_SEPARATED_DETOUR` | server.log | **ships** | `bots/autonomous/AutonomousDungeonTraversal.cs` | `aggro`, `at`, `bot`, `id`, `reason`, `region`, `target`, `targetLevel` | `bot`, `target` | - | - |
 | `AUTONOMOUS_EQUIPMENT_UPGRADE` | server.log | **ships** | `bots/autonomous/AutonomousBotEconomy.cs` | `bot`, `class`, `id`, `item`, `itemId`, `level`, `replaced`, `slot`, `source` | `bot` | - | The move has already succeeded. |
 | `AUTONOMOUS_EXCHANGE_SOLD` | server.log | **ships** | `craft/economy/market/MarketSeams.cs` | `buyer`, `buyerId`, `crafted`, `item`, `price`, `quantity`, `realm`, `seller`, `sellerId`, `tax` | `buyer`, `seller` | - | - |
-| `AUTONOMOUS_FIRST_LOOT` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `count`, `equipped`, `id`, `item`, `level` | - | - | - |
+| `AUTONOMOUS_FIRST_LOOT` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `count`, `equipped`, `id`, `item`, `level` | `bot` | - | - |
 | `AUTONOMOUS_FLOOR_STEP` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `distance`, `from`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_FOCUS_RELEASE` | server.log | **ships** | `spells/SpellHandler.cs` | `bot`, `id`, `level`, `reason`, `spellId` | `bot` | - | - |
 | `AUTONOMOUS_GOAL_ATTEMPT` | detail.log | **ships** | `bots/autonomous/AutonomousGoalDiagnostics.cs` | JSON | - | one per finished gamebot goal attempt (detail.log) | - |
@@ -122,14 +122,14 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_KILL_XP` | server.log | **ships** | `bots/autonomous/AutonomousKillXpDiagnostics.cs` | `avgLevel`, `camp`, `campLevel`, `campTarget`, `con`, `contributors`, `dropped`, `every`, `levelDiff`, `lost`, `maxLevel`, `minLevel`, `npc`, `npcLevel`, `npcXp`, `onTarget`, `otherParties`, `party`, `realm`, `region`, `sameName`, `seq`, `share`, `shares`, `size`, `xpPerMember`, `xpSum`, `zone` | - | every 25th autonomous gamebot PvE kill, at most 120 a minute (bot_kill_xp_sample_every) | - |
 | `AUTONOMOUS_LOCAL_SURFACE_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `bot`, `from`, `id`, `reason`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_LOGIN_MOVED_FROM_BOSS` | server.log | **ships** | `bots/autonomous/AutonomousPopulationController.cs` | `at`, `bot`, `region` | `bot` | - | Morning 2026-10-19: level 50s saved inside the Hall of the Corrupt logged in beside Aidon the Archwizard and his illusions and died within seconds, 41 times in 41 minutes. |
-| `AUTONOMOUS_LOOT_APPRAISAL_FAILED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `item`, `retainedInInventory` | - | - | - |
-| `AUTONOMOUS_LOOT_REJECTED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `dropRetained`, `id`, `item`, `level`, `reason` | - | - | - |
+| `AUTONOMOUS_LOOT_APPRAISAL_FAILED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `item`, `retainedInInventory` | `bot` | - | - |
+| `AUTONOMOUS_LOOT_REJECTED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `dropRetained`, `id`, `item`, `level`, `reason` | `bot` | - | - |
 | `AUTONOMOUS_NECRO_PET_RELEASE` | server.log | **ships** | `spells/Necromancer/SummonNecromancerPet.cs` | `bot`, `distance`, `hp`, `id`, `level`, `pet`, `petLevel`, `petObjectId`, `reason`, `region`, `spellId` | `bot` | - | - |
 | `AUTONOMOUS_POCKET_NUDGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `casting`, `class`, `distance`, `level`, `manaPercent`, `moving`, `pendingCast`, `pet`, `region`, `resting`, `target`, `targetLevel`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `AUTONOMOUS_PVP_STALEMATE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `id`, `position`, `realm`, `region`, `seconds`, `target`, `targetRealm` | `bot`, `target` | - | - |
 | `AUTONOMOUS_RAID_STUCK_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `class`, `from`, `id`, `instead`, `level`, `near`, `realm`, `reason`, `snapped`, `to`, `why` | `bot` | - | Inside its raid's dungeon with every regroup point by a resting boss: |
-| `AUTONOMOUS_RESURRECTION_BLOCKED` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `corpse`, `distance`, `inCombat`, `mana`, `reason`, `spell` | `bot` | - | - |
+| `AUTONOMOUS_RESURRECTION_BLOCKED` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `corpse`, `distance`, `inCombat`, `mana`, `reason`, `spell` | `bot`, `corpse` | - | - |
 | `AUTONOMOUS_ROUTE_FLOOR_CORRECTION` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_ROUTE_GOAL_FIX` | server.log | **ships** | `bots/autonomous/AutonomousRouteGoalFix.cs` | `campRepickBlocked`, `crossingFallback`, `crossingSteered`, `floorStepGated`, `floorStepHeld`, `foreignFailureSkipped`, `gatedSkipped`, `pocketEscapeSkipped`, `repickBlocked`, `snapDzRejected`, `snapFailed`, `snapRefailed`, `snapped`, `window_s` | - | - | - |
 | `AUTONOMOUS_ROUTE_ORDER_KEPT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `callers`, `total` | - | - | - |
@@ -146,16 +146,16 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_SERVICE_SURFACE_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `id`, `service`, `to` | `bot` | - | - |
 | `AUTONOMOUS_SERVICE_UNREACHABLE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `at`, `bot`, `from`, `id`, `region`, `service`, `skippedByAll` | `bot` | - | - |
 | `AUTONOMOUS_SIEGE_RAISE_CHECKS` | server.log | **ships** | `bots/autonomous/AutonomousSiegeResurrection.cs` | `cannotCast`, `corpseClaimed`, `enemyAboveOrBelow`, `enemyBots`, `enemyByCorpse`, `enemyFighting`, `enemyOther`, `noCorpse`, `notAttackerWithDeadNear`, `underAttack` | - | - | - |
-| `AUTONOMOUS_SIEGE_RESURRECTION` | server.log | **ships** | `bots/BotBrain.cs` | `at`, `corpse`, `healer`, `realm`, `region` | `healer` | - | - |
+| `AUTONOMOUS_SIEGE_RESURRECTION` | server.log | **ships** | `bots/BotBrain.cs` | `at`, `corpse`, `healer`, `realm`, `region` | `corpse`, `healer` | - | - |
 | `AUTONOMOUS_SPECIES_DANGER_BENCH` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bots`, `hours`, `species` | - | - | - |
 | `AUTONOMOUS_SPEC_REFUND` | server.log | **ships** | `bots/GameBot.cs` | `bots`, `classes`, `points`, `shown` | - | - | - |
 | `AUTONOMOUS_STABLE_APPROACH_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `group`, `id`, `level`, `master`, `position`, `realm`, `reason`, `region`, `retryAfterSeconds`, `ticket` | `bot` | - | - |
-| `AUTONOMOUS_STABLE_LANDING_CORRECTION` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `region`, `to` | - | - | - |
-| `AUTONOMOUS_STABLE_ROUTE_ARRIVE` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `level`, `position`, `realm` | - | - | - |
-| `AUTONOMOUS_STABLE_ROUTE_BOARD` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `endpoint`, `id`, `level`, `realm`, `ticket` | - | - | - |
-| `AUTONOMOUS_STABLE_ROUTE_FAIL` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `level`, `realm`, `reason` | - | - | - |
-| `AUTONOMOUS_STABLE_ROUTE_RESUME` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `position`, `recovery` | - | - | - |
-| `AUTONOMOUS_STARTER_GEAR` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `coin`, `id`, `items`, `level`, `path`, `pieces`, `realm`, `reason`, `retry` | - | - | - |
+| `AUTONOMOUS_STABLE_LANDING_CORRECTION` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
+| `AUTONOMOUS_STABLE_ROUTE_ARRIVE` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `level`, `position`, `realm` | `bot` | - | - |
+| `AUTONOMOUS_STABLE_ROUTE_BOARD` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `endpoint`, `id`, `level`, `realm`, `ticket` | `bot` | - | - |
+| `AUTONOMOUS_STABLE_ROUTE_FAIL` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `level`, `realm`, `reason` | `bot` | - | - |
+| `AUTONOMOUS_STABLE_ROUTE_RESUME` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `position`, `recovery` | `bot` | - | - |
+| `AUTONOMOUS_STARTER_GEAR` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `coin`, `id`, `items`, `level`, `path`, `pieces`, `realm`, `reason`, `retry` | `bot`, `path` | - | - |
 | `AUTONOMOUS_STATUS_BATCH_SLOW` | server.log | **ships** | `bots/autonomous/AutonomousBotStatusPersistence.cs` | `bots`, `gen2`, `heapMB`, `heldMs`, `inventoryBots`, `inventoryMs`, `items`, `largest`, `saved`, `statusMs` | - | - | - |
 | `AUTONOMOUS_STATUS_PERSISTENCE` | server.log | **ships** | `bots/autonomous/AutonomousBotStatusPersistence.cs` | `inventory`, `pending`, `priority`, `saved_last_5m` | - | - | This runs on the flush timer thread, where an exception would end the process; |
 | `AUTONOMOUS_STATUS_SAVE_DROPPED` | server.log | **ships** | `bots/autonomous/AutonomousBotStatusPersistence.cs` | `bot`, `id` | `bot` | - | a bot whose row was deleted can never save: |
@@ -169,15 +169,15 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_TOWN_TELEPORT_DROPPED` | detail.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TownTeleport.cs` | `activity`, `at`, `bot`, `destination`, `follow`, `group`, `id`, `lastTarget`, `moverDest`, `phase`, `porter`, `reason`, `region`, `seconds`, `startDistance`, `toPorter`, `turns`, `walk` | `bot`, `follow` | - | - |
 | `AUTONOMOUS_TOWN_TELEPORT_FAILED` | detail.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TownTeleport.cs` | `activity`, `at`, `bestDistance`, `bot`, `destination`, `gathering`, `id`, `inCombat`, `lastTarget`, `plannedSeconds`, `porter`, `porterAt`, `reason`, `region`, `seconds`, `startDistance`, `stillSeconds`, `toPorter`, `turns` | `bot` | - | - |
 | `AUTONOMOUS_TOWN_TELEPORT_PLANNED` | detail.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TownTeleport.cs` | `bot`, `destination`, `group`, `id`, `porter`, `realm`, `seconds`, `walkSeconds` | `bot` | - | - |
-| `AUTONOMOUS_TRAINING` | server.log | **ships** | `bots/GameBot.cs` | `abilities`, `bot`, `class`, `id`, `level`, `specializations`, `trainedFrom`, `trainedThrough`, `trainer`, `unspent` | - | - | - |
-| `AUTONOMOUS_TRANSFER_REQUEUE` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `moved`, `target_region` | - | - | - |
+| `AUTONOMOUS_TRAINING` | server.log | **ships** | `bots/GameBot.cs` | `abilities`, `bot`, `class`, `id`, `level`, `specializations`, `trainedFrom`, `trainedThrough`, `trainer`, `unspent` | `bot` | - | - |
+| `AUTONOMOUS_TRANSFER_REQUEUE` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `moved`, `target_region` | `bot` | - | - |
 | `AUTONOMOUS_UNREACHABLE_TARGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `heightAbove`, `id`, `position`, `realm`, `region`, `target`, `targetRealm` | `bot`, `target` | - | - |
-| `AUTONOMOUS_XP_PROGRESS` | server.log | **ships** | `bots/GameBot.cs` | `amount`, `bot`, `class`, `id`, `level`, `xp` | - | - | - |
+| `AUTONOMOUS_XP_PROGRESS` | server.log | **ships** | `bots/GameBot.cs` | `amount`, `bot`, `class`, `id`, `level`, `xp` | `bot` | - | - |
 | `AUTONOMOUS_ZONE_SEAM_CYCLE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `activity`, `bot`, `goal`, `goalZone`, `id`, `level`, `position`, `realm`, `region`, `step`, `zone` | `bot` | - | - |
 | `BEGGARS_CHOSEN` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `count` | - | - | - |
 | `BEGGAR_CHASE_END` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `beggar`, `player`, `reason` | `beggar`, `player` | - | - |
 | `BEGGAR_CORNER` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `at`, `bot`, `near`, `region` | `bot` | - | - |
-| `BEGGAR_GIFT` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `beggar`, `copper`, `count`, `from_bot`, `from_player`, `item` | `beggar`, `from_player` | - | - |
+| `BEGGAR_GIFT` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `beggar`, `copper`, `count`, `from_bot`, `from_player`, `item` | `beggar`, `from_bot`, `from_player` | - | - |
 | `BEGGAR_HOSTILE` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `beggar`, `how`, `player` | `beggar`, `player` | - | - |
 | `BEGGAR_LISTED` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `bot`, `copper`, `item` | `bot` | - | - |
 | `BEGGAR_LOGIN` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `bot`, `capital` | `bot` | - | - |
@@ -187,7 +187,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BG_KEEP_BASE_LEVEL_REPAIRED` | server.log | **ships** | `keeps/BattlegroundKeepLevels.cs` | `baseLevel`, `battleground`, `bracket`, `guards`, `id`, `keep`, `lord` | - | - | - |
 | `BG_KEEP_LEVEL_RESTORED` | server.log | **ships** | `keeps/AbstractGameKeep.cs` | `baseLevel`, `from`, `id`, `keep`, `realm`, `reason`, `to` | - | - | - |
 | `BG_KEEP_STATUS` | server.log | **ships** | `bots/autonomous/AutonomousRvrDashboard.cs` | `activities`, `atLord`, `attackersAtLord`, `attackersOnLordFloor`, `battleground`, `doorHealth`, `doors`, `guardLevel`, `guards`, `holder`, `inCombat`, `inside`, `keep`, `keepLevel`, `lord`, `lordLevel`, `medianToKeep`, `moving`, `near`, `onLord` | - | - | - |
-| `BG_LORD_PATH` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `at`, `attempt`, `bot`, `dest`, `goalSnap`, `heightToLord`, `inCombat`, `keep`, `lordAt`, `moving`, `path`, `realm`, `sample`, `target`, `walkKind`, `walkTo` | `bot`, `target` | - | - |
+| `BG_LORD_PATH` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `at`, `attempt`, `bot`, `dest`, `goalSnap`, `heightToLord`, `inCombat`, `keep`, `lordAt`, `moving`, `path`, `realm`, `sample`, `target`, `walkKind`, `walkTo` | `bot`, `path`, `target` | - | - |
 | `BG_RALLY_BARREN` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `barren`, `battleground`, `bearing`, `inside`, `joint`, `keep`, `minutes`, `needed`, `peakRallied`, `point`, `realm` | - | - | - |
 | `BG_RALLY_CANDIDATES` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `candidates`, `gate`, `keep`, `realm`, `reason` | - | - | - |
 | `BG_RALLY_CONTACT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `approaching`, `bot`, `fight`, `id`, `realm`, `region`, `target`, `toRally` | `bot`, `target` | - | - |
@@ -198,15 +198,15 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BG_RALLY_STATUS` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `apart`, `atLord`, `battleground`, `bearing`, `bestBelowLord`, `bestToLord`, `chasesDropped`, `clear`, `climbOpen`, `climbs`, `committed`, `diedOther`, `diedToGuards`, `engaged`, `fightsRefused`, `floorArrivals`, `gate`, `gateGuards`, `guardClear`, `inLordReach`, `inside`, `keep`, `lord`, `modelled`, `musterNeeded`, `needed`, `onLordFloor`, `otherStorming`, `passedGate`, `peakRallied`, `plan`, `players`, `point`, `rallying`, `readySeconds`, `realm`, `share`, `state`, `waitedSeconds` | - | - | Once a minute per realm (3b808b4: |
 | `BG_RALLY_STORM` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `foot`, `gate`, `going`, `heldSeconds`, `inside`, `keep`, `lord`, `lordLevel`, `minutes`, `modelled`, `needed`, `otherStormSeconds`, `otherWaiting`, `players`, `rally`, `realm`, `rule`, `share`, `withOtherRealm` | - | - | - |
 | `BG_SIEGE_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `attacker`, `holder`, `keep`, `region` | - | - | - |
-| `BG_STORM_TRACE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `alive`, `at`, `bot`, `dest`, `gate`, `inCombat`, `issued`, `keep`, `lordAt`, `moving`, `orderIn`, `path`, `pending`, `realm`, `recovery`, `stallReplans`, `state`, `step`, `target`, `toGate`, `toLord`, `wave` | `bot`, `target` | - | pending=True: the order was given this turn and the mover has not taken it yet, so moving, path and dest are still those of the previous order (build ea882e6: |
+| `BG_STORM_TRACE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `alive`, `at`, `bot`, `dest`, `gate`, `inCombat`, `issued`, `keep`, `lordAt`, `moving`, `orderIn`, `path`, `pending`, `realm`, `recovery`, `stallReplans`, `state`, `step`, `target`, `toGate`, `toLord`, `wave` | `bot`, `path`, `target` | - | pending=True: the order was given this turn and the mover has not taken it yet, so moving, path and dest are still those of the previous order (build ea882e6: |
 | `BG_TOWER_CLIMB` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `atFoot`, `battleground`, `climb`, `comingInside`, `footHeldSeconds`, `keep`, `lord`, `realm`, `second`, `standing`, `upTheTower` | - | - | Who went up and why (4d48f42: |
-| `BG_TOWER_FOOT` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `belowLord`, `foot`, `footIndex`, `guardClear`, `keep`, `nodes`, `path`, `realm`, `status` | - | - | - |
+| `BG_TOWER_FOOT` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `belowLord`, `foot`, `footIndex`, `guardClear`, `keep`, `nodes`, `path`, `realm`, `status` | `path` | - | - |
 | `BG_WAVE_ASSAULT` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundWave.cs` | `battleground`, `gathered`, `inside`, `keep`, `minutes`, `needed`, `patienceNeeded`, `realm`, `withOtherRealm` | - | - | - |
 | `BG_WAVE_SPENT` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundWave.cs` | `battleground`, `diedOther`, `diedToGuards`, `inside`, `nearKeep`, `realm` | - | - | - |
 | `BG_WAVE_STATUS` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundWave.cs` | `battleground`, `chasesDropped`, `diedOther`, `diedToGuards`, `fightsRefused`, `gathered`, `gatheredInCombat`, `going`, `goingSeconds`, `holderNearKeep`, `inside`, `keep`, `nearKeep`, `needed`, `patienceNeeded`, `realm`, `staging`, `waitedSeconds` | - | - | Once a minute per realm (owner's PC, build 3d67b6f: |
 | `BOND_FRIENDS` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `score` | `bot`, `other` | - | - |
 | `BOND_GRUDGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `score` | `bot`, `other` | - | - |
-| `BOND_TALK` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `topic` | `bot` | - | - |
+| `BOND_TALK` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `topic` | `bot`, `other` | - | - |
 | `BOT_ADD_CONTROL` | server.log | **ships** | `bots/BotBrain.PveAddControl.cs` | `add`, `adds`, `bot`, `class`, `companion`, `radius`, `region`, `spell`, `type` | `bot` | - | - |
 | `BOT_AREA_SPELL` | detail.log | **ships** | `bots/BotBrain.AreaSpells.cs` | `at`, `bot`, `class`, `companion`, `hits`, `kind`, `radius`, `region`, `spell` | `bot` | - | - |
 | `BOT_BODY_LANGUAGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBodyLanguage.cs` | `cheers`, `emotes`, `greets`, `looks`, `minutes`, `steps` | - | - | - |
@@ -214,7 +214,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_BUFFBOT_COPY_RETIRED` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `bot`, `class`, `id`, `level`, `main`, `mainId`, `realm` | `bot`, `main` | - | - |
 | `BOT_BUFFBOT_COPY_SUSPECTED` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `bot`, `class`, `id`, `level`, `realm` | `bot` | - | - |
 | `BOT_COMBAT_MOVEMENT` | server.log | **ships** | `bots/BotCombatMovement.cs` | `blocked`, `casterSteps`, `circles`, `crowded`, `heldSteps`, `legs`, `minutes` | - | - | - |
-| `BOT_CORPSE_MOVE_REFUSED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `to` | - | - | - |
+| `BOT_CORPSE_MOVE_REFUSED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `to` | `bot` | - | - |
 | `BOT_COSMETIC` | server.log | **ships** | `bots/autonomous/AutonomousBotCosmetics.cs` | `bot`, `bought`, `colours`, `copper`, `id`, `item`, `kind`, `level`, `moneyLeft`, `realm`, `slot`, `value`, `vanity` | `bot` | - | - |
 | `BOT_COSMETIC_CATALOG` | server.log | **ships** | `bots/autonomous/AutonomousBotCosmetics.cs` | `cloth`, `dyes`, `enamel`, `leather`, `lusters` | - | - | - |
 | `BOT_DEATH_ANIM` | server.log | **ships** | `bots/BotDeathAnimation.cs` | `bot`, `id`, `original_clients` | `bot` | - | - |
@@ -230,8 +230,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_GUILDS` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs`<br>`bots/autonomous/AutonomousBotRealmGuilds.cs` | `members`, `removedStale` | - | - | - |
 | `BOT_GUILD_BUFF` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildEconomy.cs` | `buff`, `guild`, `leader` | `guild`, `leader` | - | - |
 | `BOT_GUILD_CLAIM` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildKeeps.cs` | `guild`, `keep`, `present`, `realm` | `guild` | - | - |
-| `BOT_GUILD_JOIN` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `guild`, `id`, `invitedBy` | `bot`, `guild` | - | - |
-| `BOT_GUILD_JOIN_DECLINED` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `id`, `invitedBy`, `reason` | `bot` | - | - |
+| `BOT_GUILD_JOIN` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `guild`, `id`, `invitedBy` | `bot`, `guild`, `invitedBy` | - | - |
+| `BOT_GUILD_JOIN_DECLINED` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `id`, `invitedBy`, `reason` | `bot`, `invitedBy` | - | - |
 | `BOT_GUILD_REMOVE` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `by`, `guild`, `id` | `bot`, `guild` | - | - |
 | `BOT_INCOMING_FIRE` | detail.log | **ships** | `bots/BotBrain.IncomingFire.cs` | `attacker`, `bot`, `hold`, `kind` | `attacker`, `bot` | - | - |
 | `BOT_INVITE_RESULT` | server.log | **ships** | `bots/BotGroupInvite.cs`<br>`bots/autonomous/AutonomousLivingServer.Engage.cs`<br>`bots/autonomous/AutonomousLivingServer.Tells.cs` | `bot`, `duty`, `from`, `other_group`, `player`, `result`, `zone` | `bot`, `from`, `player` | - | - |
@@ -247,11 +247,11 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_MILESTONE_PROGRESS` | server.log | **ships** | `bots/autonomous/BotMilestonesRuntime.cs` | `arc`, `count`, `point`, `progress` | - | - | - |
 | `BOT_MILESTONE_REACHED` | server.log | **ships** | `bots/autonomous/BotMilestonesRuntime.cs` | `announce`, `arc`, `dry_kills`, `sought`, `source`, `started`, `trophy` | - | - | - |
 | `BOT_MILESTONE_SUMMARY` | server.log | **ships** | `bots/autonomous/BotMilestones.cs` | `active`, `busy`, `chosen`, `dropped`, `folded`, `held`, `lines`, `points`, `raidKills`, `reached`, `seconds`, `silent`, `suppressed`, `talks`, `trophies`, `unsought`, `waiting` | - | - | - |
-| `BOT_MILESTONE_TALK` | server.log | **ships** | `bots/autonomous/BotMilestonesRuntime.cs` | `arc`, `channel`, `line`, `point`, `source`, `topic`, `tries`, `trophy` | - | - | - |
+| `BOT_MILESTONE_TALK` | server.log | **ships** | `bots/autonomous/BotMilestonesRuntime.cs` | `arc`, `channel`, `line`, `point`, `source`, `topic`, `tries`, `trophy` | `line` | - | - |
 | `BOT_MOVE_HABITS` | server.log | **ships** | `bots/autonomous/BotMovementHabits.cs`<br>`bots/autonomous/BotMovementHabitsRuntime.cs` | `seconds` | - | - | A habit is cosmetic: never let it break a bot's turn. |
 | `BOT_MOVE_OVERSHOOT` | server.log | **ships** | `bots/autonomous/BotMovementHabitsRuntime.cs` | `bot`, `id`, `past`, `region`, `tier` | `bot` | - | - |
 | `BOT_MOVE_SIT` | server.log | **ships** | `bots/autonomous/BotMovementHabitsRuntime.cs` | `bot`, `id`, `region`, `waited_s`, `where` | `bot` | - | - |
-| `BOT_MOVE_STICK_LOST` | server.log | **ships** | `bots/autonomous/AutonomousGroupFormationFollow.cs` | `ahead`, `bot`, `gap`, `id`, `leader`, `lost_ms`, `region` | `bot`, `leader` | - | - |
+| `BOT_MOVE_STICK_LOST` | server.log | **ships** | `bots/autonomous/AutonomousGroupFormationFollow.cs` | `ahead`, `bot`, `gap`, `id`, `leader`, `lost_ms`, `region` | `ahead`, `bot`, `leader` | - | - |
 | `BOT_MOVE_STRAFE` | server.log | **ships** | `bots/BotBrain.MovementHabits.cs` | `attacker`, `attackerKind`, `bot`, `class`, `id`, `kind`, `legs`, `refuge`, `region`, `skill`, `sweep`, `target`, `targetKind` | `attacker`, `bot`, `target` | - | - |
 | `BOT_MOVE_WALL` | server.log | **ships** | `bots/autonomous/BotMovementHabitsRuntime.cs` | `bot`, `id`, `keep`, `region`, `waited_s`, `where`, `x`, `y`, `z` | `bot` | - | - |
 | `BOT_PEOPLE_SUMMARY` | server.log | **ships** | `bots/autonomous/BotPeopleStore.cs` | `logouts`, `rows`, `seconds` | - | - | - |
@@ -262,27 +262,27 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_REALM_ABILITY_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmAbilities.cs` | `bot`, `class`, `restoring` | `bot` | - | - |
 | `BOT_REALM_ABILITY_TRAINED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmAbilities.cs` | `archetype`, `bot`, `class`, `gained`, `points`, `realmLevel` | `bot` | - | - |
 | `BOT_REALM_ABILITY_USED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmAbilities.cs` | `ability`, `bot`, `endurance`, `health`, `region` | `bot` | - | A purge that removed nothing only blocks itself for 5 ms; |
-| `BOT_RELEASE_RETRY` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `region` | - | - | - |
+| `BOT_RELEASE_RETRY` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `region` | `bot` | - | - |
 | `BOT_RETREAT_ENDED` | server.log | **ships** | `bots/BotBrain.Retreat.cs` | `alive`, `bot`, `health`, `kind` | `bot` | - | - |
 | `BOT_SKILL_BUDGET` | server.log | **ships** | `bots/autonomous/BotSkillGrowth.cs` | `alb`, `credits`, `hib`, `mid`, `minutes`, `online`, `profile_lines`, `promotions`, `seconds`, `shares`, `start`, `suppressed` | - | - | - |
-| `BOT_SKILL_GROWTH` | server.log | **ships** | `bots/autonomous/BotSkillGrowth.cs` | `from`, `name`, `person`, `realm`, `start`, `to`, `xp_h` | - | - | - |
-| `BOT_SKILL_MISTAKE` | server.log | **ships** | `bots/autonomous/BotSkillMistakes.cs` | `chance`, `kind`, `name`, `person`, `realm`, `spared`, `tier` | - | - | - |
-| `BOT_SKILL_PROFILE` | server.log | **ships** | `bots/autonomous/BotSkillGrowth.cs` | `awareness`, `level`, `name`, `person`, `realm` | - | - | - |
+| `BOT_SKILL_GROWTH` | server.log | **ships** | `bots/autonomous/BotSkillGrowth.cs` | `from`, `name`, `person`, `realm`, `start`, `to`, `xp_h` | `name` | - | - |
+| `BOT_SKILL_MISTAKE` | server.log | **ships** | `bots/autonomous/BotSkillMistakes.cs` | `chance`, `kind`, `name`, `person`, `realm`, `spared`, `tier` | `name` | - | - |
+| `BOT_SKILL_PROFILE` | server.log | **ships** | `bots/autonomous/BotSkillGrowth.cs` | `awareness`, `level`, `name`, `person`, `realm` | `name` | - | - |
 | `BOT_SOLO_BAIL` | server.log | **ships** | `bots/BotBrain.Retreat.cs` | `attackers`, `bot`, `class`, `health`, `level`, `reason`, `target`, `targetHealth`, `to` | `bot`, `target` | - | - |
 | `BOT_WAY_ASK` | server.log | **ships** | `bots/autonomous/BotWayFinding.cs` | `bot`, `channel`, `dest`, `id`, `level`, `realm`, `said`, `test`, `tier` | `bot` | - | - |
 | `BOT_WAY_FOLLOW` | server.log | **ships** | `bots/autonomous/BotWayTrip.cs` | `at`, `bot`, `dest`, `distance`, `ended`, `id`, `leader`, `leaderId`, `leaderLevel`, `level`, `realm` | `bot`, `leader` | - | - |
 | `BOT_WAY_SUMMARY` | server.log | **ships** | `bots/autonomous/BotWayFinding.cs` | `asks`, `choices`, `deaths_60s`, `follow_deaths_60s`, `follows`, `lines`, `minutes_lost`, `refused`, `seconds`, `suppressed`, `told`, `trips`, `unknown`, `wrong_roads` | - | - | - |
-| `BOT_WAY_TOLD` | server.log | **ships** | `bots/autonomous/BotWayFinding.cs` | `answerer`, `answererId`, `asker`, `dest`, `id`, `place`, `realm` | `answerer` | - | - |
+| `BOT_WAY_TOLD` | server.log | **ships** | `bots/autonomous/BotWayFinding.cs` | `answerer`, `answererId`, `asker`, `dest`, `id`, `place`, `realm` | `answerer`, `asker` | - | - |
 | `BOT_WAY_WRONG_ROAD` | server.log | **ships** | `bots/autonomous/BotWayTrip.cs` | `at`, `bot`, `cost_s`, `dest`, `id`, `length`, `level`, `look_s`, `realm`, `result`, `tier`, `zone` | `bot` | - | - |
 | `BUFFBOT_BUFFED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `conc`, `distance`, `main`, `spell`, `timed`, `type`, `zone` | `buffbot`, `main` | - | - |
 | `BUFFBOT_BUFFED_ALL` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `buffs`, `concUsed`, `main`, `set` | `buffbot`, `main`, `set` | - | - |
 | `BUFFBOT_CREATED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `at`, `buffbot`, `class`, `id`, `level`, `main`, `mainId`, `percent`, `race`, `realm`, `region`, `spec` | `buffbot`, `main` | - | - |
-| `BUFFBOT_DIED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `killer`, `main`, `zone` | `buffbot`, `killer` | - | - |
+| `BUFFBOT_DIED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `killer`, `main`, `zone` | `buffbot`, `killer`, `main` | - | - |
 | `BUFFBOT_GEAR` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `items`, `level`, `main`, `pieces`, `reason` | `bot` | - | - |
 | `BUFFBOT_INVITE_DECLINED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `player` | `buffbot`, `player` | - | - |
-| `BUFFBOT_LOGOUT` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `id`, `main`, `reason` | `buffbot` | - | - |
-| `BUFFBOT_RELOCATED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `from`, `main`, `to`, `why`, `x`, `y` | `buffbot` | - | - |
-| `CABALIST_REST` | server.log | **ships** | `bots/CabalistRestDiagnostics.cs` | `aggro`, `blocked`, `cast`, `end`, `hp`, `lastAttempt`, `lastMessage`, `leaderDistance`, `level`, `mana`, `moving`, `name`, `pending`, `pet`, `petCast`, `petCombat`, `petMoving`, `petTarget` | `name` | - | - |
+| `BUFFBOT_LOGOUT` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `id`, `main`, `reason` | `buffbot`, `main` | - | - |
+| `BUFFBOT_RELOCATED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `from`, `main`, `to`, `why`, `x`, `y` | `buffbot`, `main` | - | - |
+| `CABALIST_REST` | server.log | **ships** | `bots/CabalistRestDiagnostics.cs` | `aggro`, `blocked`, `cast`, `end`, `hp`, `lastAttempt`, `lastMessage`, `leaderDistance`, `level`, `mana`, `moving`, `name`, `pending`, `pet`, `petCast`, `petCombat`, `petMoving`, `petTarget` | `lastMessage`, `name`, `pending`, `petTarget` | - | - |
 | `CHAT_EMOTE` | server.log | **ships** | `bots/autonomous/BotChatTranscript.cs` | `emote`, `from`, `kind`, `realm` | `from` | - | - |
 | `CHAT_FLAG` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `at`, `ch`, `lines`, `note`, `realm`, `seq`, `t`, `to`, `zone` | - | - | - |
 | `CHAT_HEAR` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `ch`, `from`, `grouped`, `heard`, `intent`, `realm`, `room`, `seq`, `t`, `text`, `to`, `zone` | - | - | - |
@@ -290,7 +290,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `CHAT_LINE` | server.log | **ships** | `bots/autonomous/BotChatTranscript.cs` | `ch`, `from`, `intent`, `realm`, `text`, `to`, `via`, `who`, `zone` | `from`, `text`, `to` | every chat line a player can see from bots, and every line the player says | Issue #475: guarded, so a line can be traced through its exit where the server log is off (tests); |
 | `CHAT_NEWS` | server.log | **ships** | `bots/autonomous/AutonomousChatNews.cs` | `keep`, `loser`, `raid`, `realm`, `relic`, `topic`, `winner` | - | - | - |
 | `CHAT_PLAYER_REPLY_DROPPED` | server.log | **ships** | `bots/autonomous/AutonomousBotChatCoordinator.cs` | `bot`, `channel`, `directed`, `id`, `player`, `reason`, `retriedMs` | `bot`, `player` | - | - |
-| `CHAT_PLAYER_REPLY_PLAN` | server.log | **ships** | `bots/autonomous/AutonomousBotChatCoordinator.cs` | `channel`, `count`, `directed`, `eligible`, `intent`, `knowledge`, `planned`, `player`, `shape` | `player` | - | One line per player line, so a question that drew no answer in game can be traced (play test 2026-10-27: |
+| `CHAT_PLAYER_REPLY_PLAN` | server.log | **ships** | `bots/autonomous/AutonomousBotChatCoordinator.cs` | `channel`, `count`, `directed`, `eligible`, `intent`, `knowledge`, `planned`, `player`, `shape` | `player`, `shape` | - | One line per player line, so a question that drew no answer in game can be traced (play test 2026-10-27: |
 | `CHAT_PROMISE` | server.log | **ships** | `bots/autonomous/ChatPromises.cs` | `after`, `asker`, `bot`, `deadline`, `eta`, `id`, `kind`, `mode`, `place`, `promise`, `realm`, `reason`, `region`, `target`, `why` | `bot`, `target` | - | - |
 | `CHAT_SAY` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `act`, `ch`, `contract`, `from`, `heard`, `id`, `kind`, `line`, `re`, `realm`, `room`, `seq`, `styled`, `t`, `text`, `to`, `via` | - | - | - |
 | `CHAT_SCREEN` | server.log | **ships** | `bots/autonomous/BotChatTranscript.cs` | `kind`, `realm`, `text`, `to` | `text` | - | - |
@@ -305,26 +305,26 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANION_REPAIR_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `companions`, `paid`, `pieces`, `player` | `player` | - | - |
 | `COMPANION_RIDE_BACK` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
 | `COMPANION_RIDE_STOWED` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
-| `COMPANION_SKILLS_165` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `specs`, `spells`, `styles` | - | - | - |
+| `COMPANION_SKILLS_165` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `specs`, `spells`, `styles` | `bot` | - | - |
 | `COMPANION_STALE_COPY_165` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `grouped`, `id`, `player`, `state` | `bot`, `player` | - | - |
 | `COMPANION_STATS_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `player`, `row`, `slot40`, `summoned` | `player` | - | diagnostics for the original client's STATS button (2026-10-30): |
 | `COMPANION_STUCK_165` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `at`, `bot`, `casting`, `distance`, `follow`, `fsm`, `id`, `led`, `moving`, `player`, `player_at`, `region`, `resting`, `stable_route` | `bot`, `follow`, `player` | - | - |
 | `COMPANION_SURVIVE_TO_REZ` | server.log | **ships** | `bots/BotBrain.Retreat.cs` | `bot`, `fighters`, `monsters`, `player`, `region` | `bot`, `player` | - | - |
 | `CRAFT_ENROLL` | server.log | **ships** | `bots/autonomous/crafting/AutonomousBotCrafting.cs`<br>`bots/autonomous/crafting/BotCrafterTypes.cs` | `bot`, `cohort`, `id`, `legacyBots`, `level`, `master`, `order`, `outcome`, `realm`, `reason`, `sharePercent`, `type`, `zone` | `bot` | - | - |
-| `CRAFT_ERA_JOIN` | server.log | **ships** | `craft/PlayerCraftingRules.cs` | `era`, `event`, `order`, `player`, `realm` | `player` | - | - |
+| `CRAFT_ERA_JOIN` | server.log | **ships** | `craft/PlayerCraftingRules.cs` | `era`, `event`, `order`, `player`, `realm` | `event`, `player` | - | - |
 | `CRAFT_FIRST` | server.log | **ships** | `bots/autonomous/crafting/AutonomousBotCrafting.cs` | `bot`, `id`, `order`, `realm`, `title` | `bot` | - | - |
 | `CRAFT_MADE` | server.log | **ships** | `bots/autonomous/crafting/AutonomousBotCrafting.cs` | `bot`, `craft`, `gained`, `id`, `item`, `itemId`, `level`, `quality`, `recipeLevel`, `skill` | `bot` | - | - |
 | `CRAFT_PLAYER_TITLE` | server.log | **ships** | `craft/PlayerCraftingRules.cs` | `player`, `primary`, `realm`, `skill`, `value` | `player` | - | - |
 | `CRAFT_RECIPE_AUDIT` | server.log | **ships** | `craft/RecipeCatalog.cs` | `albion`, `hibernia`, `hidden`, `match`, `materials`, `midgard`, `norealm`, `recipes`, `skill`, `valid` | - | - | - |
 | `CRAFT_RECIPE_BROKEN` | server.log | **ships** | `craft/RecipeCatalog.cs` | `detail`, `level`, `problem`, `product`, `recipe`, `skill` | - | - | - |
-| `CRAFT_SESSION_END` | server.log | **ships** | `bots/autonomous/crafting/AutonomousBotCrafting.cs` | `attempts`, `best`, `bestQuality`, `bot`, `craft`, `enchant`, `id`, `level`, `made`, `masterpieces`, `realm`, `reason`, `recipe`, `seconds`, `skill` | `bot` | - | - |
+| `CRAFT_SESSION_END` | server.log | **ships** | `bots/autonomous/crafting/AutonomousBotCrafting.cs` | `attempts`, `best`, `bestQuality`, `bot`, `craft`, `enchant`, `id`, `level`, `made`, `masterpieces`, `realm`, `reason`, `recipe`, `seconds`, `skill` | `best`, `bot` | - | - |
 | `CRAFT_SESSION_START` | server.log | **ships** | `bots/autonomous/crafting/AutonomousBotCrafting.cs` | `bot`, `copies`, `craft`, `id`, `level`, `materials`, `order`, `realm`, `recipe`, `recipeLevel`, `skill`, `station`, `zone` | `bot` | - | - |
 | `CRAFT_TITLE` | server.log | **ships** | `bots/autonomous/crafting/AutonomousBotCrafting.cs` | `bot`, `id`, `level`, `order`, `realm`, `skill`, `title` | `bot` | - | - |
 | `CRAFT_WORLD_AUDIT` | server.log | **ships** | `craft/RecipeCatalog.cs` | `bySkill`, `forges`, `lathes`, `masters`, `materials`, `materialsOnSale`, `onSale`, `realm`, `sellers`, `tables` | - | - | - |
 | `CUSTOM_CLASS_REFUSED` | server.log | no: account= is the account name | `packets/Client/168/CharacterCreateRequestHandler.cs` | `account`, `class`, `name`, `race` | - | - | Warn level so the owner's log shows it even when set to warnings only (like FORK_BUILD). |
-| `DB_BACKUP` | server.log | **ships** | `gameutils/WorldDatabaseSafety.cs` | `error`, `keep`, `ms`, `path`, `reason`, `removed`, `result`, `size_mb`, `why` | - | - | - |
+| `DB_BACKUP` | server.log | **ships** | `gameutils/WorldDatabaseSafety.cs` | `error`, `keep`, `ms`, `path`, `reason`, `removed`, `result`, `size_mb`, `why` | `error`, `path` | - | - |
 | `DB_INTEGRITY` | server.log | **ships** | `gameutils/WorldDatabaseSafety.cs` | `mode`, `ms`, `problems`, `result`, `size_mb` | - | - | - |
-| `DB_SAFETY` | server.log | **ships** | `gameutils/WorldDatabaseSafety.cs` | `changed`, `database`, `journal`, `journal_mode`, `pooling`, `synchronous` | - | - | - |
+| `DB_SAFETY` | server.log | **ships** | `gameutils/WorldDatabaseSafety.cs` | `changed`, `database`, `journal`, `journal_mode`, `pooling`, `synchronous` | `journal` | - | - |
 | `DF_STAIR_CLIMB` | server.log | **ships** | `ECS-Components/NpcMovementComponent.cs` | `bot`, `from`, `kind`, `lip`, `region`, `steps`, `to` | `bot` | - | - |
 | `DF_STAIR_LANDING` | server.log | **ships** | `ECS-Components/NpcMovementComponent.cs` | `bot`, `from`, `kind`, `region`, `to` | `bot` | - | - |
 | `DOOR_NOT_IN_DATABASE` | server.log | **ships** | `packets/Client/168/DoorRequestHandler.cs` | `at`, `id`, `player`, `region`, `state`, `zone` | `player` | - | - |
@@ -337,38 +337,38 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `DRAGON_RESET` | server.log | **ships** | `scripts/namedmobs/Dragons/DragonDiagnostics.cs` | `health`, `healthPercent`, `name`, `position`, `reason` | `name` | - | - |
 | `DRAGON_TAKEOFF` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `name`, `position` | `name` | - | - |
 | `DUTY_LEASE` | detail.log | **ships** | `bots/autonomous/BotDutyLeases.cs` | `bot`, `held`, `heldOwner`, `id`, `kind`, `outcome`, `owner`, `reason` | `bot`, `owner` | - | - |
-| `ECON_COMMISSION` | server.log | **ships** | `craft/economy/market/QuartermasterCommissions.cs` | `craft`, `crafter`, `crafterId`, `delivered`, `expired`, `governor`, `item`, `materials`, `mode`, `order`, `outcome`, `paid`, `pay`, `posted`, `quality`, `realm`, `recipeLevel`, `seconds`, `skill`, `withdrawn` | - | - | - |
+| `ECON_COMMISSION` | server.log | **ships** | `craft/economy/market/QuartermasterCommissions.cs` | `craft`, `crafter`, `crafterId`, `delivered`, `expired`, `governor`, `item`, `materials`, `mode`, `order`, `outcome`, `paid`, `pay`, `posted`, `quality`, `realm`, `recipeLevel`, `seconds`, `skill`, `withdrawn` | `crafter` | - | - |
 | `ECON_CONSUMABLE` | server.log | **ships** | `bots/BotPoisonSupply.cs`<br>`craft/economy/sinks/BotPotions.cs`<br>`craft/economy/sinks/SinkSeams.cs` | `bot`, `coatChecksWithoutVial`, `coats`, `copper`, `count`, `id`, `item`, `kind`, `level`, `potionCopper`, `potionsBought`, `potionsDrunk`, `realm`, `vialCopper`, `vialsBought` | `bot` | - | - |
 | `ECON_FLOWS` | server.log | no: free text, no key=value fields | `craft/economy/ledger/EconomyLedgerSnapshot.cs` | - | - | - | - |
-| `ECON_GEAR_CHECK` | server.log | **ships** | `bots/autonomous/gear/BotGearPipeline.cs` | `below`, `bot`, `bought`, `checks`, `copper`, `craft`, `empty`, `event`, `gaps`, `id`, `item`, `level`, `minQuality`, `order`, `realm`, `reason`, `routed`, `slot`, `template`, `template_bought`, `wtb_no_board`, `wtb_no_recipe`, `wtb_open`, `wtb_posted`, `wtb_refused`, `wtb_unaffordable` | `bot` | - | The hourly ECON_GEAR_CHECK line (null when nothing was checked). |
+| `ECON_GEAR_CHECK` | server.log | **ships** | `bots/autonomous/gear/BotGearPipeline.cs` | `below`, `bot`, `bought`, `checks`, `copper`, `craft`, `empty`, `event`, `gaps`, `id`, `item`, `level`, `minQuality`, `order`, `realm`, `reason`, `routed`, `slot`, `template`, `template_bought`, `wtb_no_board`, `wtb_no_recipe`, `wtb_open`, `wtb_posted`, `wtb_refused`, `wtb_unaffordable` | `bot`, `copper` | - | The hourly ECON_GEAR_CHECK line (null when nothing was checked). |
 | `ECON_GOVERNOR` | server.log | **ships** | `craft/economy/sinks/SinkGovernor.cs` | `botCoin`, `bots`, `commissions`, `hour`, `luxury`, `netCopper`, `over`, `perBotHourGoldMax`, `ratio`, `realm`, `smoothed`, `target`, `weekPercentMax` | - | - | - |
 | `ECON_GUILD_SPEND` | server.log | **ships** | `craft/economy/commerce/BotGuildCommerce.cs` | `bank`, `copper`, `for`, `guild`, `member`, `memberId`, `realm`, `what` | `for`, `guild`, `member` | - | - |
 | `ECON_HAGGLE` | server.log | **ships** | `craft/economy/commerce/CrafterCommerce.cs` | `asked`, `craft_haggle_`, `crafter`, `crafterId`, `item`, `now`, `player`, `realm`, `result`, `round`, `standing` | `crafter`, `player` | - | - |
 | `ECON_INDEX` | server.log | **ships** | `craft/economy/market/MarketPriceIndex.cs` | `bands`, `craftedListed`, `craftedListed20`, `craftedPosted`, `demand`, `flooded`, `medianFactor`, `realm`, `sales`, `starved`, `stock` | - | - | - |
 | `ECON_LIST` | server.log | **ships** | `craft/economy/market/MarketSeams.cs` | `band`, `bot`, `crafted`, `id`, `item`, `itemId`, `level`, `price`, `quality`, `realm` | `bot` | - | - |
 | `ECON_LUXURY` | server.log | **ships** | `craft/economy/sinks/BotLuxury.cs`<br>`craft/economy/sinks/SinkSeams.cs` | `bot`, `budget`, `copper`, `draughtCopper`, `draughts`, `id`, `intensity`, `level`, `realm`, `servicesCopper`, `spends` | `bot` | - | - |
-| `ECON_ORDER` | server.log | **ships** | `craft/economy/market/AutonomousBotCraftOrders.cs`<br>`craft/economy/market/MilestoneCraftSets.cs` | `buyer`, `buyerId`, `coin`, `copper`, `craft`, `crafter`, `crafterId`, `item`, `itemId`, `level`, `milestone`, `order`, `outcome`, `paid`, `pieces`, `quality`, `realm`, `reason`, `recipeLevel`, `refunded`, `source`, `state`, `total`, `worn` | `buyer` | - | - |
+| `ECON_ORDER` | server.log | **ships** | `craft/economy/market/AutonomousBotCraftOrders.cs`<br>`craft/economy/market/MilestoneCraftSets.cs` | `buyer`, `buyerId`, `coin`, `copper`, `craft`, `crafter`, `crafterId`, `item`, `itemId`, `level`, `milestone`, `order`, `outcome`, `paid`, `pieces`, `quality`, `realm`, `reason`, `recipeLevel`, `refunded`, `source`, `state`, `total`, `worn` | `buyer`, `crafter` | - | - |
 | `ECON_PLAYER_DELIVERY` | server.log | **ships** | `craft/economy/commerce/BotTrades.cs`<br>`craft/economy/commerce/CrafterCommerce.cs` | `copper`, `crafter`, `crafterId`, `guildFee`, `item`, `order`, `paid`, `pay`, `player`, `quality`, `realm`, `source` | `crafter`, `player` | - | - |
-| `ECON_PLAYER_ORDER` | server.log | **ships** | `craft/economy/commerce/CrafterCommerce.cs` | `atBreak`, `copper`, `craft`, `crafter`, `crafterId`, `guildmate`, `item`, `near`, `order`, `outcome`, `pay`, `player`, `quality`, `realm`, `recipeLevel`, `standing`, `state`, `until`, `why` | `player` | - | - |
+| `ECON_PLAYER_ORDER` | server.log | **ships** | `craft/economy/commerce/CrafterCommerce.cs` | `atBreak`, `copper`, `craft`, `crafter`, `crafterId`, `guildmate`, `item`, `near`, `order`, `outcome`, `pay`, `player`, `quality`, `realm`, `recipeLevel`, `standing`, `state`, `until`, `why` | `crafter`, `player` | - | - |
 | `ECON_PLAYER_SELL` | server.log | **ships** | `craft/economy/commerce/BotTrades.cs` | `bot`, `copper`, `id`, `item`, `itemLevel`, `level`, `order`, `player`, `quality`, `realm`, `worn` | `bot`, `player` | - | - |
 | `ECON_PLAYER_TRADE` | server.log | no: free text, no key=value fields | `craft/economy/commerce/BotTrades.cs` | - | - | - | - |
 | `ECON_RECLAIM` | server.log | **ships** | `craft/economy/commerce/BotTrades.cs`<br>`craft/economy/market/MarketSeams.cs` | `bot`, `id`, `item`, `outcome`, `price`, `quality`, `realm` | `bot` | - | - |
 | `ECON_REPAIR` | server.log | **ships** | `craft/economy/sinks/BotGearWear.cs` | `bot`, `by`, `copper`, `id`, `left`, `level`, `own_skill`, `paid`, `realm`, `smith`, `upkeep`, `worst` | `bot` | - | - |
 | `ECON_SC_JOB` | server.log | **ships** | `craft/economy/commerce/BotTrades.cs` | `bot`, `copper`, `id`, `item`, `job`, `player`, `realm`, `result` | `bot`, `player` | - | - |
-| `ECON_SIEGE_SUPPLY` | server.log | **ships** | `bots/BotSiegeRuntime.cs`<br>`craft/economy/sinks/SinkSeams.cs` | `bot`, `copper`, `id`, `kind`, `margin`, `materials`, `merchantCopper`, `realm`, `supplier`, `supplierId`, `supplies` | `bot` | - | - |
+| `ECON_SIEGE_SUPPLY` | server.log | **ships** | `bots/BotSiegeRuntime.cs`<br>`craft/economy/sinks/SinkSeams.cs` | `bot`, `copper`, `id`, `kind`, `margin`, `materials`, `merchantCopper`, `realm`, `supplier`, `supplierId`, `supplies` | `bot`, `supplier` | - | - |
 | `ECON_SUPPLY` | server.log | no: free text, no key=value fields | `craft/economy/ledger/EconomyLedgerSnapshot.cs` | - | - | - | - |
 | `ECON_TEMPLATE_BUY` | server.log | **ships** | `bots/autonomous/gear/BotGearPipeline.cs` | `bot`, `copper`, `crafted`, `creator`, `equipped`, `id`, `item`, `level`, `quality`, `realm`, `scoreAfter`, `scoreBefore`, `seller`, `slot`, `template` | `bot`, `seller` | - | - |
 | `ECON_UNDRESS_GUARD` | server.log | **ships** | `bots/autonomous/gear/BotGearPipeline.cs` | `blocked`, `blocked_since_start`, `checked`, `event` | - | - | - |
 | `ECON_WEAR` | server.log | **ships** | `craft/economy/sinks/SinkSeams.cs` | `below88`, `conditionLost`, `realm`, `repairCopper`, `repaired`, `toCrafters`, `wearRolls` | - | - | - |
 | `EFFECT_STALE_COPY_RETIRED` | server.log | **ships** | `ECS-Components/EffectListComponent.cs` | `caster`, `owner`, `spell` | `caster`, `owner` | - | - |
 | `EPIC_BLAST_CALL` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.RaidCalls.cs` | `boss`, `caller`, `exposed`, `familiarity`, `health`, `late`, `lead`, `parties`, `planned`, `plannedCaller`, `raid`, `seed`, `threshold` | `caller` | - | - |
-| `EPIC_BLAST_LANDED` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.RaidCalls.cs` | `afterCross`, `boss`, `castMs`, `center`, `died`, `exposedAtCall`, `exposedDied`, `exposedShare`, `familiarity`, `holdingPartyDied`, `holdingPartyWithin`, `late`, `lead`, `realLead`, `share`, `source`, `threshold`, `within` | - | - | - |
+| `EPIC_BLAST_LANDED` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.RaidCalls.cs` | `afterCross`, `boss`, `castMs`, `center`, `died`, `exposedAtCall`, `exposedDied`, `exposedShare`, `familiarity`, `holdingPartyDied`, `holdingPartyWithin`, `late`, `lead`, `realLead`, `share`, `source`, `threshold`, `within` | `center` | - | - |
 | `EPIC_BLAST_PATH` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.cs` | `boss`, `nodes`, `rally` | - | - | - |
 | `EPIC_BLAST_REACT` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.RaidCalls.cs` | `boss`, `bot`, `class`, `delay`, `dist`, `familiarity`, `lapse`, `patience`, `reason`, `risk`, `role`, `sinceCall`, `threshold` | `bot` | - | - |
 | `EPIC_BLAST_SAY` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.RaidCalls.cs` | `caller`, `heard`, `text` | `caller`, `text` | - | - |
 | `EPIC_CALL` | server.log | **ships** | `bots/EncounterCalls.cs` | `mechanic` | - | - | - |
 | `EPIC_CHAINS` | server.log | no: free text, no key=value fields | `quests/QuestsMgr/EpicChainLinks.cs` | - | - | - | - |
-| `EPIC_DISPLACEMENT` | server.log | **ships** | `bots/EncounterDisplacementRecovery.cs`<br>`scripts/namedmobs/EncounterDisplacement.cs` | `bot`, `encounter`, `expected`, `fall`, `from`, `kind`, `landing`, `on_mesh`, `region`, `source`, `to`, `who` | `bot`, `who` | - | - |
+| `EPIC_DISPLACEMENT` | server.log | **ships** | `bots/EncounterDisplacementRecovery.cs`<br>`scripts/namedmobs/EncounterDisplacement.cs` | `bot`, `encounter`, `expected`, `fall`, `from`, `kind`, `landing`, `on_mesh`, `region`, `source`, `to`, `who` | `bot`, `source`, `who` | - | - |
 | `EPIC_DISPLACEMENT_BARRED` | server.log | **ships** | `bots/EncounterDisplacementRecovery.cs` | `at`, `back`, `bot`, `encounter`, `hold_max`, `reason` | `bot` | - | - |
 | `EPIC_DISPLACEMENT_BOT_OFF` | server.log | **ships** | `scripts/namedmobs/EncounterDisplacement.cs` | `bot`, `encounter`, `kind` | `bot` | - | - |
 | `EPIC_DISPLACEMENT_BOUNCED` | server.log | **ships** | `bots/EncounterDisplacementRecovery.cs` | `at`, `bot`, `bounces`, `encounter`, `living`, `reason`, `within` | `living` | - | - |
@@ -378,18 +378,18 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `EPIC_DISPLACEMENT_PORTAL` | server.log | **ships** | `bots/EncounterDisplacementRecovery.cs` | `after`, `bot`, `encounter`, `moved`, `to` | `bot` | - | - |
 | `EPIC_DISPLACEMENT_RECALLED` | server.log | **ships** | `bots/EncounterDisplacementRecovery.cs` | `bot`, `encounter`, `moved`, `reason`, `to` | `bot` | - | - |
 | `EPIC_DISPLACEMENT_RECOVERED` | server.log | **ships** | `bots/EncounterDisplacementRecovery.cs` | `after`, `at`, `bot`, `encounter`, `kind`, `reason` | `bot` | - | - |
-| `EPIC_ENCOUNTER_STARTED` | server.log | **ships** | `scripts/namedmobs/OFGreenKnight.cs` | `bot`, `by`, `encounter`, `how` | - | - | - |
+| `EPIC_ENCOUNTER_STARTED` | server.log | **ships** | `scripts/namedmobs/OFGreenKnight.cs` | `bot`, `by`, `encounter`, `how` | `by` | - | - |
 | `EPIC_FIGHT_LEDGER` | server.log | **ships** | `bots/autonomous/EpicFightLedger.cs` | `raid_dealt`, `raid_took`, `region`, `seconds`, `target` | `target` | - | - |
 | `EPIC_FLOOD_GUARD` | server.log | **ships** | `scripts/namedmobs/EncounterFloodGuard.cs` | `guard` | - | - | - |
-| `EPIC_FUNUS_HEALED` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `class`, `healthBefore`, `kind`, `slot`, `source`, `target`, `weapon` | - | - | - |
-| `EPIC_FUNUS_HEALED_TRACE` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `source`, `stack` | - | - | - |
+| `EPIC_FUNUS_HEALED` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `class`, `healthBefore`, `kind`, `slot`, `source`, `target`, `weapon` | `source`, `target` | - | - |
+| `EPIC_FUNUS_HEALED_TRACE` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `source`, `stack` | `source`, `stack` | - | - |
 | `EPIC_GK_TREES` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.GreenKnight.cs` | `alive`, `boss`, `health`, `held`, `onAreaCasters`, `onCasters`, `onHealers`, `onOthers`, `walking` | - | - | - |
-| `EPIC_KVASIR_HEALED` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `attack`, `class`, `damageType`, `healthBefore`, `kind`, `line`, `owner`, `ownerClass`, `ownerKind`, `skipped`, `source`, `spell`, `spellId`, `spellType`, `style`, `target`, `via`, `weapon` | `owner` | - | - |
+| `EPIC_KVASIR_HEALED` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `attack`, `class`, `damageType`, `healthBefore`, `kind`, `line`, `owner`, `ownerClass`, `ownerKind`, `skipped`, `source`, `spell`, `spellId`, `spellType`, `style`, `target`, `via`, `weapon` | `owner`, `source`, `target` | - | - |
 | `EPIC_LEECH_EXPOSURE` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.Marfoirwort.cs` | `boss`, `health`, `inside`, `pets`, `radius`, `region`, `target`, `targetToBoss` | `target` | - | - |
-| `EPIC_LOSSREN_KEPT_SOUL` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.SummonersHall.cs` | `at`, `boss`, `health`, `hers`, `id`, `region`, `soul` | - | - | - |
+| `EPIC_LOSSREN_KEPT_SOUL` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.SummonersHall.cs` | `at`, `boss`, `health`, `hers`, `id`, `region`, `soul` | `soul` | - | - |
 | `EPIC_LOSSREN_SOUL_HOLDER` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.SummonersHall.cs` | `boss`, `bot`, `rank`, `region` | `bot` | - | - |
 | `EPIC_MECHANIC_CALL` | server.log | no: free text, no key=value fields | `bots/autonomous/EncounterMechanicCalls.cs` | - | - | - | - |
-| `EPIC_MELEE_SWITCH_TRACE` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `bot`, `stack`, `target` | `bot`, `target` | - | - |
+| `EPIC_MELEE_SWITCH_TRACE` | server.log | **ships** | `scripts/namedmobs/EpicEncounterRestores.cs` | `bot`, `stack`, `target` | `bot`, `stack`, `target` | - | - |
 | `EPIC_PARTY_POSTS` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.PartyPosts.cs` | `anchor`, `boss`, `candidates`, `posts`, `region`, `spacing` | - | - | - |
 | `EPIC_PLAYTEST` | server.log | no: free text, no key=value fields | `commands/gmcommands/EpicPlaytestCommand.cs` | - | - | - | - |
 | `EPIC_PLAYTEST_HUB` | server.log | **ships** | `commands/gmcommands/EpicPlaytestCommand.cs` | `at`, `event`, `moved`, `of`, `region`, `to` | - | - | - |
@@ -400,7 +400,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `EPIC_SPREAD_TARGET` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.SummonersHall.cs` | `boss`, `dist`, `health`, `prev`, `prevHeldMs`, `target` | `prev` | - | - |
 | `EPIC_SWEEP_ADD` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `added`, `lanes`, `order`, `skipped` | - | - | - |
 | `EPIC_SWEEP_CAP` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `cap`, `event`, `lane`, `minutes` | - | - | - |
-| `EPIC_SWEEP_END` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `guest`, `guestOnline`, `guestPrivLevel`, `guestRealm`, `results`, `why` | - | - | - |
+| `EPIC_SWEEP_END` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `guest`, `guestOnline`, `guestPrivLevel`, `guestRealm`, `results`, `why` | `guest` | - | - |
 | `EPIC_SWEEP_GUEST` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `at`, `distance`, `event`, `hub`, `landing`, `level`, `player`, `realm`, `region`, `seated`, `step`, `to`, `why` | `player`, `to` | - | - |
 | `EPIC_SWEEP_GUEST_RECORD` | server.log | no: free text, no key=value fields | `bots/autonomous/EpicPlaytestSweep.cs`<br>`bots/autonomous/EpicPlaytestSweepGuestRecord.cs` | - | - | - | - |
 | `EPIC_SWEEP_GUEST_RESTORED` | server.log | no: account= is the account name | `bots/autonomous/EpicPlaytestSweep.cs`<br>`bots/autonomous/EpicPlaytestSweepGuestRecord.cs` | `account`, `character`, `privLevel`, `realm`, `unreadable`, `why` | - | - | - |
@@ -408,8 +408,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `EPIC_SWEEP_HELD` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `lane` | - | - | - |
 | `EPIC_SWEEP_RAID_DONE` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `done`, `event`, `lane`, `left`, `minutes` | - | - | - |
 | `EPIC_SWEEP_RAID_NOT_STARTED` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `again`, `event`, `lane`, `reason`, `try` | - | - | - |
-| `EPIC_SWEEP_RAID_START` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `event`, `lane`, `name`, `realm`, `reason`, `size`, `toHub`, `try` | - | - | - |
-| `EPIC_SWEEP_START` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `cap`, `guest`, `guestHomePrivLevel`, `guestLevel`, `guestPlaysAsPlayer`, `guestRealm`, `lanes`, `order`, `raids` | - | - | - |
+| `EPIC_SWEEP_RAID_START` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `event`, `lane`, `name`, `realm`, `reason`, `size`, `toHub`, `try` | `name` | - | - |
+| `EPIC_SWEEP_START` | server.log | **ships** | `bots/autonomous/EpicPlaytestSweep.cs` | `cap`, `guest`, `guestHomePrivLevel`, `guestLevel`, `guestPlaysAsPlayer`, `guestRealm`, `lanes`, `order`, `raids` | `guest` | - | - |
 | `EPIC_TACTIC` | server.log | no: free text, no key=value fields | `bots/autonomous/EpicEncounterTactics.DungeonRules.cs` | - | - | - | A monster fighting the raid is fought (RoutesInCombat: |
 | `EPIC_TACTIC_BOT` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.cs` | `action`, `bot`, `encounter`, `reason`, `region`, `target`, `to` | `bot`, `target`, `to` | - | - |
 | `EPIC_TACTIC_ERRAND` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.Errands.cs` | `at`, `boss`, `bot`, `bots`, `cleared`, `job`, `party`, `reason` | `bot`, `party` | - | - |
@@ -417,23 +417,23 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `EPIC_TACTIC_TAUNT` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.SummonersHall.cs` | `boss`, `dist`, `spell`, `style`, `tank`, `target` | - | - | - |
 | `ERA_BUILDS_INVALID` | server.log | **ships** | `bots/autonomous/EraBuildsStartup.cs` | `build`, `class`, `reason` | - | - | - |
 | `ERA_BUILDS_LOADED` | server.log | **ships** | `bots/autonomous/EraBuildsStartup.cs` | `classShares` | - | - | - |
-| `ERA_BUILD_ASSIGNED` | server.log | **ships** | `bots/EraLifetimeBuild.cs` | `bot`, `build`, `class`, `draw`, `id`, `jitter`, `label`, `level`, `role` | - | - | - |
+| `ERA_BUILD_ASSIGNED` | server.log | **ships** | `bots/EraLifetimeBuild.cs` | `bot`, `build`, `class`, `draw`, `id`, `jitter`, `label`, `level`, `role` | `bot` | - | - |
 | `ERA_BUILD_CENSUS` | server.log | no: free text, no key=value fields | `bots/autonomous/AutonomousPopulationController.cs` | - | - | - | - |
-| `ERA_BUILD_TRAINED` | server.log | **ships** | `bots/EraLifetimeBuild.cs` | `bot`, `build`, `id`, `level`, `match`, `short`, `specs`, `unspent` | - | - | - |
+| `ERA_BUILD_TRAINED` | server.log | **ships** | `bots/EraLifetimeBuild.cs` | `bot`, `build`, `id`, `level`, `match`, `short`, `specs`, `unspent` | `bot` | - | - |
 | `FORK_BUILD` | server.log | **ships** | `gameutils/ForkBuildInfo.cs` | `bot_debates`, `bot_group_invite_player`, `bot_group_player_loot_weight`, `bot_guild_parts`, `bot_guilds`, `bot_led_group_join_mode`, `bot_personalities`, `bot_player_guild_economy`, `bot_raid_invite_player`, `bot_schedule`, `bot_voices`, `bot_xp_rate_by_level`, `commit`, `living`, `mana_halved_below_50`, `mana_regen`, `name`, `quest_xp_by_level`, `sluaghbinder`, `xp_rate_by_level` | - | once at server start | - |
-| `GM_JUMP_BOT` | server.log | **ships** | `commands/gmcommands/JumpBotTargets.cs` | `bot`, `from`, `gm`, `kind`, `region_change`, `to`, `was_fighting`, `was_riding` | `bot` | - | - |
-| `GM_JUMP_BOT_REFUSED` | server.log | **ships** | `commands/gmcommands/JumpBotTargets.cs` | `at`, `bot`, `gm`, `kind`, `reason` | `bot` | - | - |
+| `GM_JUMP_BOT` | server.log | **ships** | `commands/gmcommands/JumpBotTargets.cs` | `bot`, `from`, `gm`, `kind`, `region_change`, `to`, `was_fighting`, `was_riding` | `bot`, `gm` | - | - |
+| `GM_JUMP_BOT_REFUSED` | server.log | **ships** | `commands/gmcommands/JumpBotTargets.cs` | `at`, `bot`, `gm`, `kind`, `reason` | `bot`, `gm` | - | - |
 | `GOLD_SPAMMER_BANNED` | server.log | **ships** | `bots/autonomous/AutonomousGoldSpammers.cs` | `ads`, `name`, `realm` | `name` | - | - |
 | `GOLD_SPAMMER_START` | server.log | **ships** | `bots/autonomous/AutonomousGoldSpammers.cs` | `name`, `realm`, `waited_s` | `name` | - | - |
 | `HIRED_COMPANION` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `cost`, `level`, `owner` | `owner` | - | - |
 | `HIRED_COMPANION_DELETE_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousPopulationController.cs` | `bot` | - | - | - |
 | `HIRED_COMPANION_DISMISSED` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `keepWithOwner`, `owner`, `row` | `owner` | - | - |
-| `HIRED_COMPANION_GEAR` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id` | - | - | - |
+| `HIRED_COMPANION_GEAR` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id` | `bot` | - | - |
 | `HIRED_COMPANION_LOGIN` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `owner`, `summoning` | `owner` | - | - |
 | `HIRED_COMPANION_LOGOUT` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `owner`, `parked` | `owner` | - | - |
 | `HIRED_COMPANION_ORPHAN` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `owner` | `owner` | - | - |
 | `HIRED_COMPANION_RELEASED` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `owner` | `owner` | - | - |
-| `HIRED_COMPANION_REVIVED` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `body`, `bot`, `grouped`, `owner` | `owner` | - | straight back into the party (owner 2026-10-30: |
+| `HIRED_COMPANION_REVIVED` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `body`, `bot`, `grouped`, `owner` | `body`, `owner` | - | straight back into the party (owner 2026-10-30: |
 | `HIRED_COMPANION_SUMMONED` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `grouped`, `level`, `owner`, `region`, `why` | `owner` | - | the owner's PC log proves the summon (hire, revive, login or the roster's button) and the group join |
 | `HIRE_CMD` | server.log | **ships** | `mode165/HireCommand165.cs` | `args`, `player` | `player` | - | - |
 | `HIRE_PREVIEW_165` | server.log | **ships** | `mode165/Hire165.cs` | `id`, `model`, `player` | `player` | - | - |
@@ -448,12 +448,12 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `LIVING_SERVER_LOGOUT` | server.log | **ships** | `bots/autonomous/AutonomousBotSchedule.cs` | `bot`, `id`, `mode`, `reason`, `seated_s`, `until` | `bot` | - | - |
 | `LIVING_SERVER_LOGOUT_CANCELLED` | server.log | **ships** | `bots/autonomous/AutonomousBotSchedule.cs` | `bot`, `id`, `reason` | `bot` | - | - |
 | `LIVING_SERVER_RAGEQUITS` | server.log | **ships** | `bots/autonomous/AutonomousBotRageQuits.cs` | `dropped`, `restored` | - | - | - |
-| `LIVING_SERVER_REZ` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `corpse`, `distance` | `bot` | - | - |
-| `LIVING_SERVER_REZ_ASK` | detail.log | **ships** | `bots/autonomous/AutonomousLivingServer.Events.cs` | `alive`, `bot`, `died_at`, `has_rez_spell`, `moving`, `near_rez_class`, `no_player_near`, `now_at`, `players`, `region`, `rezzer` | `bot` | - | Playtest 2026-10-18: 2,966 of these in three hours, nearly all for bots dying far from any player. |
-| `LIVING_SERVER_REZ_SKIP` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `corpse`, `distance`, `line_of_sight`, `reason` | `bot` | - | - |
+| `LIVING_SERVER_REZ` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `corpse`, `distance` | `bot`, `corpse` | - | - |
+| `LIVING_SERVER_REZ_ASK` | detail.log | **ships** | `bots/autonomous/AutonomousLivingServer.Events.cs` | `alive`, `bot`, `died_at`, `has_rez_spell`, `moving`, `near_rez_class`, `no_player_near`, `now_at`, `players`, `region`, `rezzer` | `bot`, `rezzer` | - | Playtest 2026-10-18: 2,966 of these in three hours, nearly all for bots dying far from any player. |
+| `LIVING_SERVER_REZ_SKIP` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `corpse`, `distance`, `line_of_sight`, `reason` | `bot`, `corpse` | - | - |
 | `LIVING_SESSION_START` | server.log | **ships** | `bots/autonomous/AutonomousLivingWorld.cs` | `away_minutes`, `realm` | - | - | - |
 | `LOG_CONFIG` | server.log | no: local file paths | `GameServer.cs` | - | - | - | - |
-| `LOOT_ITEMS_MISSING` | server.log | **ships** | `gameutils/LootMissingItems.cs` | `examples`, `items`, `note`, `rows`, `source`, `templates` | - | - | - |
+| `LOOT_ITEMS_MISSING` | server.log | **ships** | `gameutils/LootMissingItems.cs` | `examples`, `items`, `note`, `rows`, `source`, `templates` | `examples`, `note` | - | - |
 | `LOREMASTER_SKIPPED` | server.log | **ships** | `lorechannels/Loremasters.cs` | `realm`, `reason` | - | - | - |
 | `LOREMASTER_SPAWNED` | server.log | **ships** | `lorechannels/Loremasters.cs` | `beside`, `name`, `region`, `x`, `y`, `z` | `name` | - | - |
 | `LORE_BOOKS` | server.log | no: free text, no key=value fields | `lorechannels/LoreBooks.cs` | - | - | - | - |
@@ -464,29 +464,29 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `LORE_FIRST_KILLS` | server.log | **ships** | `lorechannels/LoreFirstKills.cs` | `loaded` | - | - | - |
 | `LORE_LINE` | server.log | **ships** | `bots/autonomous/LoreBossWatch.cs` | `boss`, `kind`, `text`, `trigger` | `text` | - | - |
 | `LORE_PLACED` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `bot`, `channel`, `place`, `player`, `pool` | `bot`, `player` | - | - |
-| `MERCHANT_ITEMS_MISSING` | server.log | **ships** | `gameutils/MerchantTradeItems.cs` | `examples`, `lists`, `note`, `rows`, `this_run` | - | - | - |
+| `MERCHANT_ITEMS_MISSING` | server.log | **ships** | `gameutils/MerchantTradeItems.cs` | `examples`, `lists`, `note`, `rows`, `this_run` | `examples`, `note` | - | - |
 | `MERCHANT_LIST_TIDIED` | server.log | **ships** | `gameutils/MerchantTradeItems.cs` | `copies_dropped`, `list`, `moved_to_free_slots`, `no_room` | - | - | Was "two merchant items on same page/slot" at error level for every slot on every page view (2,000+ a day). |
 | `NAV_LINK_LANDING` | server.log | **ships** | `ECS-Components/NpcMovementComponent.cs` | `bot`, `from`, `kind`, `region`, `to`, `zone` | `bot` | - | - |
 | `NECRO_SERVANT_COMMAND_DROPPED` | server.log | **ships** | `ai/brain/Necromancer/NecromancerPetBrain.cs` | `after`, `bot`, `region`, `servant` | `bot` | - | - |
 | `NETWORK_EXPOSURE` | server.log | no: the PC's network setup | `source/server/CoreBase/Network/BaseServer.cs` | - | - | - | - |
 | `PATH_CLOSED_DOOR_HOLD` | server.log | **ships** | `world/Pathfinding/Pathfinder.cs` | `at`, `door`, `doorAt`, `doorId`, `holdsLastMinute`, `id`, `npc`, `region`, `target` | `npc` | - | - |
 | `PLAYER_CLICK_TARGET` | server.log | **ships** | `packets/Client/168/PlayerTargetHandler.cs` | `examine`, `id`, `inView`, `kind`, `name`, `player`, `result` | `name`, `player` | - | - |
-| `PLAYER_DEED` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `forced`, `kind`, `player`, `target`, `witness` | `player`, `target` | - | - |
+| `PLAYER_DEED` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `forced`, `kind`, `player`, `target`, `witness` | `player`, `target`, `witness` | - | - |
 | `PLAYER_DEED_SKIP` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `con`, `enemies`, `killer`, `kind`, `player`, `reason` | `killer`, `player` | - | Why a death was no deed, for in-game checks (2026-10-27: |
 | `PLAYER_KEEP_DEFENSE_SIZED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `defenders`, `event`, `first`, `force`, `helpers`, `keep`, `scale` | - | - | - |
 | `PLAYER_NICKNAME` | server.log | no: the player's chosen nickname | `bots/autonomous/AutonomousPlayerDeeds.cs` | `nickname`, `player` | - | - | - |
 | `PLAYER_TAXI_DISMOUNT_REQUEST` | server.log | **ships** | `gameutils/PlayerTaxiSynchronization.cs` | `correctionRecently`, `horse`, `player`, `position` | `player` | - | One entry per actual detachment; |
 | `PLAYER_TAXI_SYNC` | server.log | **ships** | `gameutils/PlayerTaxiSynchronization.cs` | `horse`, `player`, `position`, `region`, `relocate` | `player` | - | - |
-| `QUEST_XP` | server.log | **ships** | `gameobjects/GamePlayer.cs` | `base`, `capped`, `level`, `paid`, `player`, `quest_xp_by_level`, `rate`, `scaled`, `source` | - | - | - |
+| `QUEST_XP` | server.log | **ships** | `gameobjects/GamePlayer.cs` | `base`, `capped`, `level`, `paid`, `player`, `quest_xp_by_level`, `rate`, `scaled`, `source` | `player` | - | - |
 | `RAID_BOTS_DISPERSED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `keep`, `mode`, `player`, `raid`, `squads` | `player` | - | - |
 | `RAID_BOTS_REGROUPED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `keep`, `minutes`, `mode`, `player`, `reason` | `player` | - | - |
-| `RAID_CURE_MEZZ` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `mezzedInReach`, `rank`, `spell`, `target` | `bot` | - | - |
+| `RAID_CURE_MEZZ` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `mezzedInReach`, `rank`, `spell`, `target` | `bot`, `target` | - | - |
 | `RAID_CURE_POISON` | server.log | **ships** | `bots/autonomous/RaidCureLog.cs` | `casts`, `curers`, `dots`, `groups`, `pastDanger`, `region`, `seconds`, `targets` | - | - | - |
 | `RAID_LEARN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `familiarity`, `health`, `knowledge`, `mechanic`, `newcomer`, `raid`, `raiders`, `record`, `run`, `seen`, `seenShare`, `specialForces`, `veteran` | - | - | - |
 | `RAID_LEEROY` | server.log | **ships** | `bots/autonomous/AutonomousRaidLeeroy.cs` | `boss`, `bot`, `class`, `raid`, `raiders`, `region` | `bot` | - | - |
 | `RAID_LEEROY_ROLLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event` | - | - | - |
 | `RAID_MECHANIC_SEEN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `already`, `chance`, `credited`, `firstTime`, `health`, `how`, `level50`, `mechanic`, `raid`, `realm`, `record`, `seeded` | - | - | - |
-| `RAID_PLAYER_INVITE` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.RaidGuest.cs`<br>`bots/autonomous/AutonomousRealmRaid.Players.cs`<br>`bots/autonomous/BotLedGroups.cs` | `bots`, `event`, `group`, `leader`, `level`, `outcome`, `party`, `player`, `reason`, `role`, `steppedOut` | `leader`, `player` | - | - |
+| `RAID_PLAYER_INVITE` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.RaidGuest.cs`<br>`bots/autonomous/AutonomousRealmRaid.Players.cs`<br>`bots/autonomous/BotLedGroups.cs` | `bots`, `event`, `group`, `leader`, `level`, `outcome`, `party`, `player`, `reason`, `role`, `steppedOut` | `leader`, `player`, `steppedOut` | - | - |
 | `RAID_RELIC_PICKUP` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `keep`, `player`, `relic` | `bot`, `player` | - | - |
 | `RAID_SIEGE_BLOCKED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `kind`, `player`, `target` | `bot`, `player`, `target` | - | - |
 | `RAID_SIEGE_FIRING` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `hits`, `kind`, `player`, `shots`, `target`, `targetHp` | `bot`, `player`, `target` | - | - |
@@ -512,7 +512,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_EXPEDITION_LEEROY` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `bot`, `living`, `minutes`, `mustered`, `needed`, `region`, `target` | `bot`, `target` | - | - |
 | `REALM_EXPEDITION_MUSTER_GUARDED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `from`, `reaches`, `reason`, `region`, `standOff`, `target`, `to` | `target` | - | - |
 | `REALM_EXPEDITION_MUSTER_MOVED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `from`, `reason`, `region`, `target`, `to` | `target` | - | - |
-| `REALM_EXPEDITION_MUSTER_STALLED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `best`, `body`, `living`, `minutes`, `muster`, `mustered`, `needed`, `pinned`, `pinnedBy`, `reason`, `region`, `target`, `turnsOn` | `target` | - | - |
+| `REALM_EXPEDITION_MUSTER_STALLED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `best`, `body`, `living`, `minutes`, `muster`, `mustered`, `needed`, `pinned`, `pinnedBy`, `reason`, `region`, `target`, `turnsOn` | `target`, `turnsOn` | - | - |
 | `REALM_EXPEDITION_MUSTER_UNREACHABLE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `minutes`, `reason`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_MUSTER_UNSAFE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `reaches`, `reason`, `region`, `standOff`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_MUSTER_WAITS_FOR_WAVE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `best`, `members`, `minutes`, `movedAgoS`, `muster`, `mustered`, `needed`, `reason`, `region`, `target`, `wave` | `target` | - | - |
@@ -527,8 +527,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_EXPEDITION_PULL_WAIT_GUARD_HOLDS` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `action`, `minutes`, `reason`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_REGROUP_REFUSED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `by`, `destination`, `front`, `hold`, `musterBy`, `reason`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_REGROUP_THREATENED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `boss`, `distance`, `reason`, `region`, `regroup`, `target` | `target` | - | - |
-| `REALM_EXPEDITION_RESPAWNS_LEFT` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `candidates`, `keptRespawned`, `left`, `nearest`, `reason`, `region`, `walk` | - | - | - |
-| `REALM_EXPEDITION_ROUTE_BLOCKED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `front`, `nearest`, `reason`, `region`, `remaining` | - | - | - |
+| `REALM_EXPEDITION_RESPAWNS_LEFT` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `candidates`, `keptRespawned`, `left`, `nearest`, `reason`, `region`, `walk` | `nearest` | - | - |
+| `REALM_EXPEDITION_ROUTE_BLOCKED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `front`, `nearest`, `reason`, `region`, `remaining` | `nearest` | - | - |
 | `REALM_EXPEDITION_ROUTE_GATE` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `into`, `living`, `past`, `reason`, `region` | - | - | - |
 | `REALM_EXPEDITION_ROUTE_GATE_EMPTY` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `gates`, `reason`, `region` | - | - | - |
 | `REALM_EXPEDITION_ROUTE_LOSSES` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `fallen`, `inside`, `killer`, `raid`, `reason`, `region`, `target` | `killer`, `target` | - | - |
@@ -537,12 +537,12 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_EXPEDITION_STRANDED_REGROUP` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
 | `REALM_EXPEDITION_TACTIC` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.Earthmenders.cs`<br>`bots/autonomous/RealmRaidDungeonRoute.cs` | `approach`, `assign`, `encounter`, `fights`, `from`, `front`, `heals`, `health`, `kill`, `reason`, `region`, `tactic`, `to` | `fights`, `from`, `to` | - | A boss shielded by its adds, or one that dies with another, is fought through its tactic (EpicEncounterTactics). |
 | `REALM_EXPEDITION_TACTIC_ASIDE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `minutes`, `reason`, `region`, `tactic` | - | - | - |
-| `REALM_EXPEDITION_TACTIC_KEPT` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `note`, `reason`, `region`, `tactic` | - | - | - |
+| `REALM_EXPEDITION_TACTIC_KEPT` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `note`, `reason`, `region`, `tactic` | `note` | - | - |
 | `REALM_EXPEDITION_TARGET_CALLED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `called`, `health`, `idleSeconds`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_TARGET_DEFEATED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `level`, `minutes`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_TARGET_HEALED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `aggro`, `effects`, `from`, `fromSpawn`, `inCombat`, `inReach`, `lastHitAgoMs`, `model`, `region`, `returning`, `target`, `targeting`, `to` | `target` | - | - |
 | `REALM_EXPEDITION_TARGET_SKIPPED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `front`, `health`, `inside`, `near`, `reason`, `region`, `target` | `encounter`, `target` | - | An add of a boss whose adds die in order is never swapped for the next one (each swap moved the raid's stand): |
-| `REALM_EXPEDITION_TARGET_STATUS` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `busyWith`, `health`, `inCombat`, `itsTarget`, `itsTargetKind`, `level`, `mezzedAvg`, `mezzedPeak`, `raidersWithin1000`, `region`, `samples`, `spawnDistance`, `stunnedPeak`, `target`, `targeting` | `target` | - | - |
+| `REALM_EXPEDITION_TARGET_STATUS` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `busyWith`, `health`, `inCombat`, `itsTarget`, `itsTargetKind`, `level`, `mezzedAvg`, `mezzedPeak`, `raidersWithin1000`, `region`, `samples`, `spawnDistance`, `stunnedPeak`, `target`, `targeting` | `itsTarget`, `target` | - | - |
 | `REALM_EXPEDITION_TARGET_SWITCH` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `approach`, `from`, `front`, `level`, `reason`, `region`, `to` | `from`, `to` | - | - |
 | `REALM_EXPEDITION_TRAIL_GATE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `aggro`, `at`, `from`, `kills`, `level`, `reason`, `region`, `target`, `trail` | `from`, `target` | - | - |
 | `REALM_EXPEDITION_TRAIL_GATE_PASSED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `cap`, `from`, `kills`, `level`, `reason`, `region`, `target` | `from`, `target` | - | Killed on the trail TrailGateRekillCap times with no other named down since: |
@@ -569,10 +569,10 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_RAID_HUB_FLOOR_ESCAPE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `group`, `region`, `to` | `bot` | - | - |
 | `REALM_RAID_HUB_GROUP` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `going`, `hub`, `returners`, `waited_s` | - | - | - |
 | `REALM_RAID_HUB_POCKET_ESCAPE` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `bot`, `event`, `group`, `region`, `to` | `bot` | - | - |
-| `REALM_RAID_HUB_POST_REJECTED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `at`, `event`, `hub`, `rejectedBy` | - | - | Sweep 7c: which check refused every muster post at the hub (dragon-hibernia, Innis Carthaig, twice). |
+| `REALM_RAID_HUB_POST_REJECTED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `at`, `event`, `hub`, `rejectedBy` | `rejectedBy` | - | Sweep 7c: which check refused every muster post at the hub (dragon-hibernia, Innis Carthaig, twice). |
 | `REALM_RAID_HUB_ROUTE_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `bot`, `event`, `group`, `position`, `reason`, `region` | `bot` | - | - |
 | `REALM_RAID_HUB_ROUTE_RELEASED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `bot`, `event`, `failures`, `group`, `position`, `region` | `bot` | - | - |
-| `REALM_RAID_HUB_ROUTE_VIA` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `event`, `group`, `position`, `reason`, `region`, `slot`, `to`, `via` | `bot` | - | - |
+| `REALM_RAID_HUB_ROUTE_VIA` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `event`, `group`, `position`, `reason`, `region`, `slot`, `to`, `via` | `bot`, `via` | - | - |
 | `REALM_RAID_LEEROY_START` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `bot`, `event`, `present`, `required` | `bot` | - | - |
 | `REALM_RAID_LOOT` | server.log | **ships** | `bots/autonomous/RealmRaidLootOwner.cs` | `bot`, `class`, `id`, `item`, `raiders`, `region` | `bot` | - | Raid loot is the reward the whole endgame turns on; |
 | `REALM_RAID_LOOT_MONEY` | server.log | **ships** | `bots/autonomous/RealmRaidLootOwner.cs` | `copper`, `recipients`, `region` | - | - | - |
@@ -581,9 +581,9 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_RAID_PLAYTEST_START` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `focus`, `hub`, `required`, `reserved`, `size` | - | - | - |
 | `REALM_RAID_RELEASE_POST` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `at`, `bot`, `enemies`, `event`, `id`, `post`, `reason`, `region` | `bot` | - | The party post outside the frontier is today's release: |
 | `REALM_RAID_REPLACEMENT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.ForcedRaid.cs` | `bot`, `event`, `group`, `position`, `region`, `role`, `size` | `bot` | - | - |
-| `REALM_RAID_RETURN_GATHER` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `dragon`, `event`, `fallen`, `outside`, `waiting` | - | - | - |
+| `REALM_RAID_RETURN_GATHER` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `dragon`, `event`, `fallen`, `outside`, `waiting` | `event` | - | - |
 | `REALM_RAID_RETURN_NOT_HELD` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `backInFight`, `event`, `fallen`, `outside`, `reason`, `thrownFar` | - | - | - |
-| `REALM_RAID_RETURN_WAVE` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.ReturnWalk.cs`<br>`bots/autonomous/AutonomousRealmRaid.cs` | `at`, `atStep`, `called`, `catching`, `closest`, `core`, `dragon`, `event`, `fallen`, `from`, `goal`, `health`, `helpers`, `helps`, `inside`, `joined`, `kills`, `kills_at_step`, `level`, `living`, `members`, `middle`, `minutes`, `monster`, `most`, `mustering`, `near`, `needed`, `of`, `outside`, `parties`, `reached`, `reason`, `respawned`, `sent`, `standing`, `step`, `step_at`, `steps`, `stuck_in_s`, `target`, `together`, `waited_s`, `waiting`, `waiting_s`, `walk`, `wave` | `goal`, `target` | - | Sweep 6d (G-5): in a fight too, not only while the raid musters. |
+| `REALM_RAID_RETURN_WAVE` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.ReturnWalk.cs`<br>`bots/autonomous/AutonomousRealmRaid.cs` | `at`, `atStep`, `called`, `catching`, `closest`, `core`, `dragon`, `event`, `fallen`, `from`, `goal`, `health`, `helpers`, `helps`, `inside`, `joined`, `kills`, `kills_at_step`, `level`, `living`, `members`, `middle`, `minutes`, `monster`, `most`, `mustering`, `near`, `needed`, `of`, `outside`, `parties`, `reached`, `reason`, `respawned`, `sent`, `standing`, `step`, `step_at`, `steps`, `stuck_in_s`, `target`, `together`, `waited_s`, `waiting`, `waiting_s`, `walk`, `wave` | `event`, `goal`, `target` | - | Sweep 6d (G-5): in a fight too, not only while the raid musters. |
 | `REALM_RAID_SCHEDULED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.Call.cs`<br>`bots/autonomous/AutonomousRealmRaid.cs` | `after`, `event`, `forced`, `nextMinutes`, `online`, `realm`, `recruitCap`, `required` | - | - | - |
 | `REALM_RAID_SCHEDULE_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `online`, `realm`, `reason` | - | - | - |
 | `REALM_RAID_SCHEDULE_SKIPPED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `online`, `realm`, `reason` | - | - | - |
@@ -597,7 +597,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_RAID_STAGING_OUT_OF_REACH` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `boss`, `event`, `fromSpawn`, `inner`, `monsters`, `post`, `reason` | - | - | - |
 | `REALM_RAID_STAGING_REROUTED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `from`, `hub`, `reason`, `rejected`, `slot`, `to`, `tried` | - | - | - |
 | `REALM_RAID_STALLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `headway_minutes`, `living`, `lowest`, `minutes`, `named`, `of`, `retries`, `status`, `target`, `wave`, `wipes` | - | - | - |
-| `REALM_RAID_STALL_CLOCK` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `health`, `previousLow`, `reason`, `retries`, `target`, `why`, `wipes` | - | - | - |
+| `REALM_RAID_STALL_CLOCK` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `health`, `previousLow`, `reason`, `retries`, `target`, `why`, `wipes` | `target` | - | - |
 | `REALM_RAID_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event`, `forced`, `minutes`, `playtest`, `present`, `required`, `support` | - | - | - |
 | `REALM_RAID_START_UNAVAILABLE` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `detail`, `entrance`, `event`, `hub`, `hubPost`, `reason`, `route`, `staging` | - | - | - |
 | `REALM_RAID_TALE` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.Call.cs` | `event`, `realm`, `reason`, `started` | - | - | - |
@@ -605,7 +605,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_RAID_TRAVEL_CANCEL` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `reason` | `bot` | - | - |
 | `REALM_RAID_WIPE` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `boss`, `engaged`, `event`, `failures`, `fallen`, `living`, `minutes`, `support` | - | - | - |
 | `REALM_SCREEN_NOTICE` | server.log | **ships** | `bots/autonomous/RealmEventNotices.cs` | `event`, `players`, `realm`, `sound`, `text` | `text` | - | A notice with a sound (the raid call's horn) is logged, so a play test can see it went out. |
-| `RELIC_CAPTURE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Relic.cs`<br>`keeps/Relics/GameRelic.cs` | `carrier`, `pad`, `path`, `realm`, `relic` | `carrier` | - | - |
+| `RELIC_CAPTURE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Relic.cs`<br>`keeps/Relics/GameRelic.cs` | `carrier`, `pad`, `path`, `realm`, `relic` | `carrier`, `path` | - | - |
 | `RELIC_CARRIER_CHOSEN` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Relic.cs` | `bot`, `choice`, `class`, `fromShrine`, `health`, `id`, `realm`, `relic` | `bot` | - | - |
 | `RELIC_CARRIER_CORNERED` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Relic.cs` | `bot`, `id`, `realm`, `reason`, `region`, `x`, `y`, `z` | `bot` | - | - |
 | `RELIC_CARRIER_DOOR` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Relic.cs` | `bot`, `door`, `keep`, `region`, `relic`, `x`, `y`, `z` | `bot` | - | - |
@@ -620,17 +620,17 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RELIC_TIMER_ERROR` | server.log | **ships** | `keeps/Relics/GameRelic.cs` | `carrier`, `relic`, `timer` | `carrier` | - | M2: an exception here made the timer service remove the timer's owner, the carrier, from the world (a bot carrier then dropped the relic as "bot-removed"). |
 | `ROG_LOOT_FAILED` | server.log | **ships** | `Managers/RandomObjectGeneration/AtlasMobLoot.cs` | `killer`, `killerType`, `mob` | `killer` | - | - |
 | `ROLEPLAY_AMBIENT` | server.log | **ships** | `bots/autonomous/AutonomousRoleplayers.cs` | `bot`, `realm`, `waited_s` | `bot` | - | - |
-| `ROLEPLAY_MOCK` | server.log | **ships** | `bots/autonomous/AutonomousRoleplayers.cs` | `bot`, `mocker`, `realm` | `bot` | - | - |
+| `ROLEPLAY_MOCK` | server.log | **ships** | `bots/autonomous/AutonomousRoleplayers.cs` | `bot`, `mocker`, `realm` | `bot`, `mocker` | - | - |
 | `RUMOUR_KEEP` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `guards`, `keep`, `realm` | - | - | - |
 | `RUMOUR_KEEP_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `guards`, `hearer`, `keep` | - | - | For in-game checks: how close a keep comes to "wide open" (2026-10-27: |
 | `RUMOUR_NAMED` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `forced`, `realm`, `target`, `zone` | `target` | - | - |
 | `RUMOUR_NAMED_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `caring_player`, `lands`, `level`, `target`, `zone` | `target` | - | For in-game checks (2026-10-27: |
-| `RVR_ASSIST_CALL` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `fight`, `group`, `hold`, `mainAssist`, `realm`, `region`, `rising`, `role`, `score`, `target`, `targetClass`, `targetRealm`, `tier` | `target` | - | - |
+| `RVR_ASSIST_CALL` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `fight`, `group`, `hold`, `mainAssist`, `realm`, `region`, `rising`, `role`, `score`, `target`, `targetClass`, `targetRealm`, `tier` | `mainAssist`, `target` | - | - |
 | `RVR_ASSIST_SWITCH` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `delay`, `fight`, `group`, `member`, `result`, `target`, `tier` | `member`, `target` | - | - |
 | `RVR_BACKLINE` | server.log | **ships** | `bots/BotBrain.RvrPositioning.cs` | `class`, `depth`, `group`, `member`, `moved`, `reason`, `region`, `skill` | `member` | - | - |
 | `RVR_BORDER_STAGING` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `id`, `keep`, `realm` | `bot` | - | - |
 | `RVR_BOT_KILLED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmPointRewards.cs` | `at`, `by`, `calledTarget`, `fight`, `force`, `goal`, `id`, `killer`, `killerGroup`, `killerRealm`, `killerType`, `player`, `realm`, `region`, `victim`, `victimClass`, `victimGroup`, `victimRole`, `zone` | `killer`, `player`, `victim` | - | - |
-| `RVR_CC_ASSIGN` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `action`, `fight`, `group`, `killTarget`, `kind`, `member`, `subject`, `subjectClass`, `tier` | `killTarget`, `member` | - | - |
+| `RVR_CC_ASSIGN` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `action`, `fight`, `group`, `killTarget`, `kind`, `member`, `subject`, `subjectClass`, `tier` | `killTarget`, `member`, `subject` | - | - |
 | `RVR_CHASE` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `boldness`, `bot`, `fromGroup`, `group`, `leash`, `skill`, `target`, `targetFromGroup` | `bot`, `target` | - | - |
 | `RVR_CHECKSPOT_LOADED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `circuits`, `frontiers`, `ok`, `parseRejected`, `proof`, `reason`, `reserve`, `spots`, `version` | - | - | - |
 | `RVR_CHECKSPOT_REJECTED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `check`, `id`, `kind`, `off`, `realm`, `reason`, `region` | - | - | - |
@@ -655,12 +655,12 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_FRONTIER_WAIT_LONG` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierTransport.cs` | `at`, `bot`, `ceremony`, `grouped`, `heldForWarband`, `id`, `level`, `notReady`, `notReadyMembers`, `objective`, `party`, `passage`, `phase`, `porter`, `realm`, `spotDist`, `ticket`, `to`, `waited` | `bot` | - | - |
 | `RVR_HOME_DEFENSE_BREAKOFF` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `attackLeft`, `defenders`, `force`, `from`, `realm`, `size`, `to` | - | - | - |
 | `RVR_HOUR` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `botsInWar`, `captures`, `deaths`, `dropped`, `eight`, `fights`, `keepsHeld`, `kills`, `minutes`, `realm`, `small`, `solo`, `stalls`, `t`, `topRules` | - | - | - |
-| `RVR_INTERRUPT` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `action`, `casting`, `group`, `member`, `subject`, `subjectClass`, `tier` | `member` | - | - |
+| `RVR_INTERRUPT` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `action`, `casting`, `group`, `member`, `subject`, `subjectClass`, `tier` | `member`, `subject` | - | - |
 | `RVR_KEEP_ROUTE_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.KeepTravel.cs` | `bot`, `from`, `id`, `queries`, `realm`, `reason`, `region`, `retryMs`, `target` | `bot` | - | - |
 | `RVR_KEEP_ROUTE_RESTART` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.KeepTravel.cs` | `bot`, `failures`, `from`, `id`, `queries`, `realm`, `region`, `target`, `to` | `bot` | - | - |
 | `RVR_KEEP_TAKEN` | server.log | **ships** | `bots/autonomous/AutonomousRvrDashboard.cs` | `battleground`, `id`, `keep`, `realm`, `region` | - | - | - |
 | `RVR_KEEP_TRAVEL_STALL` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.KeepTravel.cs` | `bot`, `from`, `id`, `moving`, `next`, `realm`, `region`, `segment`, `stalls`, `target` | `bot` | - | - |
-| `RVR_KITE` | server.log | **ships** | `bots/BotBrain.RvrPositioning.cs` | `attacker`, `attackerClass`, `attackerKind`, `class`, `enemyMelee`, `error`, `fight`, `group`, `guard`, `healer`, `held`, `heldReason`, `kind`, `member`, `region`, `role`, `run`, `screened`, `skill`, `standOff`, `step`, `stepped` | `attacker`, `member` | - | - |
+| `RVR_KITE` | server.log | **ships** | `bots/BotBrain.RvrPositioning.cs` | `attacker`, `attackerClass`, `attackerKind`, `class`, `enemyMelee`, `error`, `fight`, `group`, `guard`, `healer`, `held`, `heldReason`, `kind`, `member`, `region`, `role`, `run`, `screened`, `skill`, `standOff`, `step`, `stepped` | `attacker`, `guard`, `healer`, `member` | - | - |
 | `RVR_LANE_ASSIGN` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Rally.cs` | `distinct`, `force`, `from`, `group`, `heads`, `lane`, `lanes`, `leader`, `length`, `realm`, `region`, `slot`, `tagAlong`, `tier`, `to`, `trunk` | - | - | - |
 | `RVR_LANE_FALLBACK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.KeepTravel.cs`<br>`bots/autonomous/AutonomousWorldBotController.Rally.cs` | `bot`, `column`, `detail`, `force`, `from`, `lane`, `lanes`, `purpose`, `realm`, `reason`, `region`, `to` | `bot` | - | - |
 | `RVR_LANE_LOADED` | server.log | **ships** | `bots/autonomous/RvrLaneCatalog.cs` | `lanes`, `problem`, `rejected`, `trips`, `validated` | - | - | - |
@@ -675,7 +675,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_ODD` | server.log | **ships** | `bots/autonomous/RvrRecord.Player.cs` | `at`, `fight`, `inWar`, `note`, `player`, `realm`, `region`, `seq`, `siege`, `t` | `player` | - | - |
 | `RVR_PARTY_FORMED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.RvrTactics.cs` | `cc`, `census`, `classes`, `fallback`, `filled`, `group`, `kind`, `missing`, `nextBest`, `realm`, `size`, `split`, `template`, `tier` | `filled`, `missing`, `nextBest` | - | - |
 | `RVR_PARTY_WAIT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.RvrTactics.cs` | `found`, `leader`, `limitSeconds`, `minimum`, `realm`, `region`, `waitedSeconds` | `leader` | - | - |
-| `RVR_PEEL` | server.log | **ships** | `bots/BotBrain.TankPeel.cs` | `action`, `attacker`, `attackerKind`, `fight`, `group`, `protected`, `protectedClass`, `protector`, `region`, `skill` | `attacker` | - | - |
+| `RVR_PEEL` | server.log | **ships** | `bots/BotBrain.TankPeel.cs` | `action`, `attacker`, `attackerKind`, `fight`, `group`, `protected`, `protectedClass`, `protector`, `region`, `skill` | `attacker`, `protected`, `protector` | - | - |
 | `RVR_PLAN` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `bot`, `choices`, `chosen`, `id`, `intent`, `realm`, `reason`, `rejected`, `rule`, `t` | `bot` | - | - |
 | `RVR_PLAYER_KILLED` | server.log | **ships** | `bots/autonomous/RvrRecord.Player.cs` | `at`, `by`, `fight`, `killer`, `killerClass`, `killerGroup`, `killerKind`, `killerRealm`, `player`, `region`, `sinceNoticedMs`, `t` | `player` | - | - |
 | `RVR_PLAYER_NOTICED` | server.log | **ships** | `bots/autonomous/RvrRecord.Player.cs` | `called`, `distance`, `fight`, `group`, `looker`, `player`, `realm`, `region`, `seen`, `t`, `time_since_first_los_ms` | `player` | - | - |
@@ -693,13 +693,13 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_RELIC_CAMPAIGN_SIEGE` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `attacker`, `reason`, `relic`, `sentinels` | - | - | - |
 | `RVR_RELIC_CARRIER_ENDED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Relic.cs` | `carrier`, `outcome`, `winner` | - | - | - |
 | `RVR_RELIC_CARRIER_EVENT` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `attacker`, `carrier`, `defenders`, `escorts`, `from`, `third`, `windowMinutes` | - | - | - |
-| `RVR_RELIC_STATE_LOADED` | server.log | **ships** | `bots/autonomous/AutonomousRvrRelicPersistence.cs` | `file`, `raids`, `resumed`, `saved` | - | - | - |
+| `RVR_RELIC_STATE_LOADED` | server.log | **ships** | `bots/autonomous/AutonomousRvrRelicPersistence.cs` | `file`, `raids`, `resumed`, `saved` | `file` | - | - |
 | `RVR_RETAKE_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `cap`, `holder`, `keep`, `musterMinutes`, `retaker`, `target` | `keep` | - | - |
 | `RVR_RETREAT` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `enemy`, `fight`, `friendly`, `from`, `group`, `holdouts`, `odds`, `read`, `realm`, `reason`, `region`, `relay`, `relayed`, `relayedTo`, `runners`, `skill`, `slowestMs`, `to` | - | - | - |
 | `RVR_ROAM_CHASE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `distance`, `group`, `limit`, `name`, `realm`, `region`, `target` | - | - | - |
 | `RVR_ROAM_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `lap`, `preySeen`, `realm`, `region`, `reserve`, `result`, `roamersSeen`, `seconds`, `spot`, `tier`, `type`, `walk` | - | - | - |
 | `RVR_ROAM_CIRCUIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `bestEnemiesNear`, `circuit`, `circuits`, `enemiesNear`, `group`, `realm`, `region`, `reserve`, `sampleAgeSeconds` | - | - | - |
-| `RVR_ROAM_HUNT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `distance`, `group`, `kind`, `prey`, `preyLevel`, `preyRealm`, `realm`, `region`, `seen`, `spot`, `tier`, `walk` | - | - | - |
+| `RVR_ROAM_HUNT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `distance`, `group`, `kind`, `prey`, `preyLevel`, `preyRealm`, `realm`, `region`, `seen`, `spot`, `tier`, `walk` | `prey` | - | - |
 | `RVR_ROAM_MOVE_ON` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `limitSeconds`, `realm`, `secondsAfterKill`, `spot`, `tier` | - | - | - |
 | `RVR_SCAN_BUDGET` | server.log | **ships** | `bots/autonomous/RvrScanRoster.cs` | `capped`, `everyone`, `idle`, `lookers`, `notices`, `rays`, `raysPerSecond`, `realm`, `rolls`, `scans`, `scansPerSecond`, `seconds`, `solo`, `stealthRolls`, `woken` | - | - | - |
 | `RVR_SIEGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs`<br>`bots/autonomous/AutonomousWorldBotController.Siege.cs` | `action`, `bot`, `distance`, `engine`, `id`, `keep`, `realm`, `region`, `target` | `bot`, `target` | - | - |
@@ -728,11 +728,11 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `SERVER_DEPARTED_SWEEP` | server.log | **ships** | `Managers/GameLoop/DepartedReferenceSweep.cs` | `failures`, `livings`, `sweeps`, `totalMs` | - | - | - |
 | `SERVER_GC_PAUSE` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `gc`, `gen`, `kind`, `last`, `lastHeapMB`, `ms`, `reason`, `totalMemoryMB` | - | - | - |
 | `SERVER_HANDLE_CENSUS` | server.log | **ships** | `Managers/GameLoop/ServerHandleCensus.cs`<br>`Managers/GameLoop/ServerMemoryDiagnostics.cs` | `byType`, `grew`, `ms`, `status`, `total` | - | - | Handles by type (issue #540), every ten minutes on a background thread: |
-| `SERVER_HEAP_SNAPSHOT` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `exists`, `exit`, `file`, `heapMB`, `liveMB` | - | - | - |
-| `SERVER_HOLDER_CENSUS` | server.log | **ships** | `Managers/GameLoop/ServerHolderCensus.cs`<br>`Managers/GameLoop/ServerMemoryDiagnostics.cs` | `heaviestRoots`, `holders`, `outOfBudget`, `reached`, `roots`, `seconds`, `targets`, `truncatedRoots`, `unreached`, `unreachedTypes`, `visits` | - | - | Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: |
+| `SERVER_HEAP_SNAPSHOT` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `exists`, `exit`, `file`, `heapMB`, `liveMB` | `file` | - | - |
+| `SERVER_HOLDER_CENSUS` | server.log | **ships** | `Managers/GameLoop/ServerHolderCensus.cs`<br>`Managers/GameLoop/ServerMemoryDiagnostics.cs` | `heaviestRoots`, `holders`, `outOfBudget`, `reached`, `roots`, `seconds`, `targets`, `truncatedRoots`, `unreached`, `unreachedTypes`, `visits` | `holders` | - | Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: |
 | `SERVER_LOCK_EVENTS` | server.log | **ships** | `Managers/GameLoop/ServerLockEventCensus.cs`<br>`Managers/GameLoop/ServerMemoryDiagnostics.cs` | `byField`, `locks`, `outOfBudget`, `seconds`, `visits`, `withEvent` | - | - | Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: |
 | `SERVER_MEMORY` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `allocMBperMin`, `availableMB`, `caches`, `committedMB`, `finalizable`, `fragmentedMB`, `gcs`, `gen0MB`, `gen1MB`, `gen2MB`, `handles`, `heapMB`, `highLoadPct`, `lastBlockingGen2`, `liveMB`, `lohMB`, `memoryLoadMB`, `memoryLoadPct`, `nativeMB`, `pauseTimePct`, `pinned`, `pohMB`, `poolThreads`, `privateMB`, `reasons`, `roadSearches`, `threads`, `topAllocations`, `workingSetMB` | - | - | - |
-| `SERVER_MEMORY_DIAGNOSTICS` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `allocationSampling`, `heapSnapshots`, `latency`, `serverGc` | - | - | - |
+| `SERVER_MEMORY_DIAGNOSTICS` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `allocationSampling`, `heapSnapshots`, `latency`, `serverGc` | `heapSnapshots` | - | - |
 | `SERVER_NPC_CENSUS` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `detached`, `eventDetachedObjects`, `eventDetachedTargets`, `eventHolders`, `eventObjects` | - | - | Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: |
 | `SERVER_ORPHAN_EFFECTS` | server.log | **ships** | `Managers/GameLoop/ServerHolderCensus.cs` | `byEffect`, `total` | - | - | - |
 | `SERVER_ORPHAN_TIMERS` | server.log | **ships** | `Managers/GameLoop/ServerHolderCensus.cs`<br>`Managers/GameLoop/ServerMemoryDiagnostics.cs` | `byCallback`, `total` | - | - | Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: |
@@ -749,14 +749,14 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `TALE_AFTER_NOT_SAID` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `realm`, `reason`, `role` | - | - | - |
 | `TALE_ASIDE` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `player`, `realm`, `said`, `scene` | `player` | - | - |
 | `TALE_END` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `finished`, `handover`, `lines`, `realm`, `reason`, `scene`, `teller` | - | - | - |
-| `TALE_FIRESIDE` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `lines`, `listener`, `player`, `scene`, `teller` | `player`, `teller` | - | - |
-| `TALE_HANDOVER` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `beat`, `from`, `realm`, `reason`, `scene`, `to` | `to` | - | - |
+| `TALE_FIRESIDE` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `lines`, `listener`, `player`, `scene`, `teller` | `listener`, `player`, `teller` | - | - |
+| `TALE_HANDOVER` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `beat`, `from`, `realm`, `reason`, `scene`, `to` | `from`, `to` | - | - |
 | `TALE_NOT_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `kind`, `realm`, `reason`, `retry_in_s`, `scene` | - | - | - |
 | `TALE_RAID` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `event`, `opened`, `realm`, `reason` | - | - | - |
 | `TALE_REQUEST` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `about`, `player`, `realm`, `reason`, `started` | `player` | - | Owner's PC, 2026-11-12: |
 | `TALE_RUMOUR` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `about`, `event`, `kind`, `no_raid`, `opens_in_s`, `realm` | - | - | - |
 | `TALE_STANDIN` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `bot`, `level`, `realm`, `reason` | `bot` | - | - |
-| `TALE_START` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `asked_by`, `realm`, `scene`, `teller` | `teller` | - | - |
+| `TALE_START` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `asked_by`, `realm`, `scene`, `teller` | `asked_by`, `teller` | - | - |
 | `TALE_TELLER` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `bot`, `level`, `realm`, `slot`, `type` | `bot` | - | - |
 | `UNHANDLED_CLIENT_PACKET` | server.log | **ships** | `packets/Server/PacketProcessor.cs` | `code`, `length` | - | - | - |
 | `UPNP_MAPPING` | server.log | no: the PC's router and port mappings | `source/server/CoreBase/Network/UpnpPortMappings.cs` | - | - | - | - |

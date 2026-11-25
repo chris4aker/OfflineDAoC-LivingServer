@@ -122,6 +122,10 @@ class DashboardRuleTests(unittest.TestCase):
         errors = self.plant(dashboards.Panel("x", dashboards.count_by("ACCOUNT_LOGIN", "a"), ["ACCOUNT_LOGIN"]))
         self.assertTrue(any("ACCOUNT_LOGIN is not shipped" in e for e in errors), errors)
 
+    def test_a_field_of_a_row_whose_fields_are_not_known_fails(self):
+        errors = self.plant(dashboards.Panel("x", dashboards.count_by("GROUP_ENDED", "reason"), ["GROUP_ENDED"], ["reason"]))
+        self.assertTrue(any("GROUP_ENDED's fields are not known yet" in e for e in errors), errors)
+
 
 class ScanTests(unittest.TestCase):
     """The scanner finds rows in the shapes the server writes them, on planted C#."""
@@ -180,6 +184,29 @@ class NameRuleTests(unittest.TestCase):
                           ("RvrRecordText.Field(from ?? \"-\")", "from"), ("GlobalConstants.RealmToName(bot.Realm)", "realm"),
                           ("hub.Name", "hub"), ("bot.CharacterClass?.Name", "class")]:
             self.assertFalse(reads(expr, key), expr)
+
+    def test_fail_closed(self):
+        """Names and text the shape rules above miss are still dropped unless they are reviewed world data."""
+        unsafe = privacy.unreviewed_reads
+        for expr, key in [("Name", "player"), ("Name", "bot"), ("characterName", "guest"), ("gm?.Name", "gm"),
+                          ("MainOf(buffBot)?.Name", "main"), ("state?.MainName", "main"), ('askedBy?.Name ?? "a bot"', "asked_by"),
+                          ("corpse.Name", "corpse"), ("(living?.TargetObject as GameObject)?.Name", "target"),
+                          ("e.Message", "error"), ('line.Replace("a", "b")', "line"), ("System.Environment.StackTrace", "stack"),
+                          ("otherName", "other")]:
+            self.assertTrue(unsafe(expr, key), expr)
+        for expr, key in [("taken.Keep.Name", "keep"), ("Name", "relic"), ("nearest.Name", "keep"), ("bot.ClassName", "class"),
+                          ("_camp.MonsterName", "target"), ("GlobalConstants.RealmToName(bot.Realm)", "realm"),
+                          ("RvrEngagementRuntime.GroupName(bot)", "group"), ("killer?.GetType().Name", "killerType"),
+                          ("nameof(OFGreenKnight)", "encounter"), ('(faction ? "faction" : "say")', "channel"),
+                          ("reply.Deal?.Round ?? 0", "round"), ("bot.Level", "level"), ("session.Recipe.ProductName", "recipe")]:
+            self.assertFalse(unsafe(expr, key), expr)
+
+    def test_dropped_fields_fail_closed(self):
+        policy = privacy.load_policy()
+        row = rows.Row("PLANTED_ROW", fields={"player": {"Name"}, "keep": {"keep.Name"}, "level": {"Level"},
+                                              "guest": {"characterName"}, "path": {"created.Path"},
+                                              "file": {"file"}, "note": set(), "count": set()})
+        self.assertEqual(set(privacy.dropped_fields(row, policy)), {"player", "guest", "path", "file", "note"})
 
 
 if __name__ == "__main__":

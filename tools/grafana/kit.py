@@ -43,6 +43,7 @@ class Kit:
         self.ship: dict[str, bool] = {}
         self.why_not: dict[str, str] = {}
         self.drops: dict[str, dict[str, str]] = {}
+        self.marker_only: set[str] = set()  # pending rows with no known fields: only the marker and realm ship
         for marker, row in self.rows.items():
             ok, why = privacy.shipped(row, self.policy)
             self.ship[marker], self.why_not[marker] = ok, why
@@ -53,8 +54,9 @@ class Kit:
             if marker in self.policy.name_free:
                 self.drops[marker] = {}
             elif p.get("fields") is None:
-                # Fields not known yet: drop every key that names a person or holds free text.
-                self.drops[marker] = {k: "pending row, fields not known yet" for k in privacy.PERSON_KEYS | privacy.ALWAYS}
+                # Fields not known yet: nothing but the marker and the realm ships (fail closed).
+                self.marker_only.add(marker)
+                self.drops[marker] = {"*": "pending row, fields not known yet: only the marker and realm ship"}
             else:
                 fake = rowscan.Row(marker, fields={k: set() for k in p["fields"]})
                 self.drops[marker] = privacy.dropped_fields(fake, self.policy)
@@ -71,8 +73,10 @@ class Kit:
     def alloy_config(self) -> str:
         groups: dict[frozenset, list[str]] = {}
         for marker in self.allowed():
-            groups.setdefault(frozenset(self.drops[marker]), []).append(marker)
-        return alloy.generate(self.allowed(), groups, self.policy.json_keys)
+            if marker not in self.marker_only:
+                groups.setdefault(frozenset(self.drops[marker]), []).append(marker)
+        return alloy.generate(self.allowed(), groups, self.policy.json_keys,
+                              sorted(m for m in self.marker_only if self.ship[m]))
 
     def catalog(self) -> str:
         out: list[str] = []
@@ -102,7 +106,8 @@ class Kit:
             w("| Row | Issue | Branch | Log | Fields | Frequency | Meaning |")
             w("|---|---|---|---|---|---|---|")
             for marker, p in sorted(self.pending.items()):
-                fields = ", ".join(f"`{f}`" for f in p["fields"]) if p.get("fields") else "not on a branch yet (spec only)"
+                fields = ", ".join(f"`{f}`" for f in p["fields"]) if p.get("fields") else ("not on a branch yet (spec only); "
+                                                                                         "ships its marker and realm only")
                 w(f"| `{marker}` | pending #{p['issue']} | `{p['branch']}` | {p['log']} | {fields} | {p['frequency']} | "
                   f"{p['meaning']} |")
             w("")
@@ -156,6 +161,10 @@ class Kit:
                         errors.append(f"dashboard {d.slug} / {panel.title!r}: query does not read {marker}")
                     fields = self.fields_of(marker)
                     for f in panel.fields:
+                        if marker in self.marker_only and f != "realm":
+                            errors.append(f"dashboard {d.slug} / {panel.title!r}: {marker}'s fields are not known yet; "
+                                          f"only its marker and realm ship, not {f}")
+                            continue
                         if fields is not None and f not in fields:
                             errors.append(f"dashboard {d.slug} / {panel.title!r}: {marker} has no field {f}")
                         if f in self.drops.get(marker, {}):

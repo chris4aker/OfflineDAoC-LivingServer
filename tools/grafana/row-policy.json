@@ -40,6 +40,20 @@
     },
     "CHAT_LINE": {
       "who": "the speaker's kind, player or bot (a literal in BotChatTranscript)"
+    },
+    "AUTONOMOUS_KILL_XP": {
+      "sameName": "a count of kills of the same monster name (AutonomousKillXpDiagnostics: int?)"
+    },
+    "AUTONOMOUS_GROUP_RESURRECTION_TIMEOUT": {
+      "role": "the dead member's group role (BotPveGroupRole), not a name"
+    },
+    "SERVER_BOT_FIELD_CENSUS": {
+      "grew": "server field names and averages (ServerMemoryDiagnostics), no people",
+      "largest": "server field names and averages (ServerMemoryDiagnostics), no people"
+    },
+    "SERVER_STATIC_CENSUS": {
+      "grew": "static collection names and counts (ServerMemoryDiagnostics), no people",
+      "largest": "static collection names and counts (ServerMemoryDiagnostics), no people"
     }
   },
   "json_name_keys": [

@@ -22,8 +22,11 @@ AGENTS.md, "Protect player data", applies. Shipping is opt-in, it goes to your o
   - the say gate's `session-chat.log`, which is never read.
 - **No names inside a row.** A field is removed when the code that fills it reads a name: a player's, a gamebot's, a
   companion's, a guild's or an account's (`from=`, `bot=`, `seller=`, `target=` and so on). Free text such as
-  `text=`, and anything shaped like an IPv4 address, is removed too. JSON rows get their name values blanked to
-  `"-"`. LOG-ROWS.md lists the dropped fields per row.
+  `text=`, file paths (they can hold your user folder's name) and anything shaped like an IPv4 address are removed
+  too. JSON rows get their name values blanked to `"-"`. LOG-ROWS.md lists the dropped fields per row.
+  - The rules fail closed: any name the code reads is dropped unless it is reviewed world data (a keep, a zone, an
+    item, a class, a spell, a monster's name). A new way of writing a name is dropped until someone reviews it.
+  - A pending row whose fields aren't known yet ships only its marker and realm.
   - `tools/grafana/privacy.py` holds the rules.
   - `tools/grafana/row-policy.json` holds the reviewed exceptions, each with its reason.
 - **Few labels.** The labels are:
@@ -44,6 +47,7 @@ Everything runs on this PC: Grafana, Loki and Alloy are published on 127.0.0.1 o
 
 ```bash
 export OFFLINEDAOC_LOGS_DIR="/path/to/LivingServer/runtime/server/logs"
+export OFFLINEDAOC_TZ="America/New_York"   # the server PC's time zone (required)
 docker compose -f tools/grafana/docker-compose.yml up -d
 # open http://127.0.0.1:3000 (admin / admin, or the GRAFANA_ADMIN_PASSWORD you set); stop it with:
 docker compose -f tools/grafana/docker-compose.yml down        # add -v to delete the stored rows too
@@ -55,8 +59,8 @@ The logs folder, by platform:
 - **Linux, native server:** `<install>/runtime/server/logs`.
 - **Wine:** inside the prefix, for example `~/.wine/drive_c/Games/OfflineDAoC/<install>/runtime/server/logs`.
 
-Set `OFFLINEDAOC_TZ` to your IANA time zone (for example `America/New_York`). The server writes local times, and the
-container's default is UTC.
+`OFFLINEDAOC_TZ` is required: your IANA time zone (for example `America/New_York`). The server writes local times,
+and a container can't see the PC's zone, so compose refuses to start without it rather than store every row hours off.
 
 The dashboards are file-provisioned here, so they appear at the first start, but gcx can't update them. Grafana
 refuses to change a provisioned dashboard's manager. To iterate on them with gcx, comment out the two provisioning

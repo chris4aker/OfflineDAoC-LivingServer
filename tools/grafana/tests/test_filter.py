@@ -125,10 +125,31 @@ class FilterTests(unittest.TestCase):
         msg = ("PLAYER_LINE_OUTCOME seq=3 t=100 ch=say realm=Albion intent=Question answered=1 latencyMs=2400 "
                "kind=answer bots=2 replies=2 window=30000")
         self.assertEqual(self.ship(msg).line, msg)
-        out = self.ship("GROUP_ENDED realm=Albion reason=wipe leader=Aldwyn player=Sirwhatever size=5")
-        self.assertNotIn("Aldwyn", out.line)  # set B's fields are not known yet: person keys go
-        self.assertNotIn("Sirwhatever", out.line)
-        self.assertIn("reason=wipe", out.line)
+        # Set B's fields are not known yet: only the marker and the realm ship, whatever the keys are called.
+        out = self.ship('GROUP_ENDED realm=Albion reason=wipe leader=Aldwyn note="Sirwhatever left" size=5')
+        self.assertEqual(out.line, "GROUP_ENDED realm=Albion")
+        self.assertEqual(out.labels["realm"], "Albion")
+        self.assertEqual(self.ship("STUCK_HOTSPOT zone=1 who=Sirwhatever").line, "STUCK_HOTSPOT")
+
+    def test_names_the_first_filter_missed_are_dropped(self):
+        # Review of #633: these shipped a player's name before the filter failed closed.
+        for message, kept in [
+            ('QUEST_XP player="Sirwhatever" level=20 source="quest"', "level=20"),
+            ('GM_JUMP_BOT gm="Sirwhatever" bot="Aldwyn" kind=gamebot', "kind=gamebot"),
+            ('BUFFBOT_DIED buffbot="Aldwyn" main="Sirwhatever" killer="a wolf"', "BUFFBOT_DIED"),
+            ('EPIC_SWEEP_END why="done" results=1 guest="Sirwhatever" guestRealm=Albion', "results=1"),
+            ('EPIC_ENCOUNTER_STARTED encounter=OFGreenKnight by="Sirwhatever" bot=no how=x', "encounter=OFGreenKnight"),
+            ('TALE_START realm=Albion scene=1 teller="Aldwyn" asked_by="Sirwhatever"', "scene=1"),
+            ('LIVING_SERVER_REZ_ASK bot="Aldwyn" rezzer="Sirwhatever"', "LIVING_SERVER_REZ_ASK"),
+            ('RVR_ROAM_HUNT group=12 realm=Albion prey="Sirwhatever"', "group=12"),
+            ('AUTONOMOUS_XP_PROGRESS bot="Aldwyn" level=20', "level=20"),
+            ('DB_BACKUP result=failed error="C:\\Users\\Sirwhatever\\db"', "result=failed"),
+        ]:
+            out = self.ship(message)
+            self.assertIsNotNone(out, message)
+            self.assertNotIn("Sirwhatever", out.line, message)
+            self.assertNotIn("Aldwyn", out.line, message)
+            self.assertIn(kept, out.line, message)
 
     def test_realm_label_is_low_cardinality(self):
         for value, label in [("Albion", "Albion"), ("1", "Albion"), ("Midgard", "Midgard"), ("3", "Hibernia"),

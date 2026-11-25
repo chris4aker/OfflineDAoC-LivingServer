@@ -1,7 +1,7 @@
 # Offline DAoC Living Server: a local Grafana + Loki + Alloy on this PC only (issue #628). Nothing leaves the PC:
 # every port is published on 127.0.0.1, Alloy writes to this Loki, and Grafana sends no usage reports.
 #
-#   OFFLINEDAOC_LOGS_DIR=/path/to/LivingServer/runtime/server/logs docker compose -f tools/grafana/docker-compose.yml up -d
+#   OFFLINEDAOC_LOGS_DIR=/path/to/LivingServer/runtime/server/logs OFFLINEDAOC_TZ=Europe/London docker compose -f tools/grafana/docker-compose.yml up -d
 #   docker compose -f tools/grafana/docker-compose.yml down          # stop (add -v to delete the stored rows)
 #
 # Then open http://127.0.0.1:3000 (admin / the GRAFANA_ADMIN_PASSWORD you set, default admin). docs/GRAFANA.md
@@ -27,7 +27,8 @@ services:
       OFFLINEDAOC_LOGS: /offlinedaoc/logs
       LOKI_URL: http://loki:3100/loki/api/v1/push
       OFFLINEDAOC_BUILD: ${OFFLINEDAOC_BUILD:-local}
-      OFFLINEDAOC_TZ: ${OFFLINEDAOC_TZ:-UTC}
+      # The server writes local times and the container can't see the PC's zone, so it must be given (no UTC guess).
+      OFFLINEDAOC_TZ: ${OFFLINEDAOC_TZ:?set OFFLINEDAOC_TZ to the server PC's IANA time zone, for example America/New_York}
     volumes:
       - ./alloy/config.alloy:/etc/alloy/config.alloy:ro
       - ${OFFLINEDAOC_LOGS_DIR:?set OFFLINEDAOC_LOGS_DIR to the server's runtime/server/logs folder}:/offlinedaoc/logs:ro
