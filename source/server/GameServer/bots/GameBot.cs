@@ -1315,7 +1315,9 @@ namespace DOL.GS
             long releaseDelay = resurrectionPossible
                 ? IsAutonomousWorldBot && AutonomousRvrEventLayer.TrySiegeRelease(AutonomousBotGroupCoordinator.RvrForceId(this), Realm,
                     GameLoop.GameLoopTime, out _, out _) ? SiegeCorpseWaitMilliseconds : 90_000
-                : 20_000;
+                // #485: a gamebot with nobody to rez it releases after its own 15-45 s, so a wipe does not vanish in one beat;
+                // /spawn helpers keep their 20 s.
+                : IsAutonomousWorldBot ? BotReleaseTiming.WipeReleaseMs(DatabaseID, PersistentRecord?.DeathCount ?? 0) : 20_000;
             if (groupDisposition is not (AutonomousBotGroupCoordinator.PveCorpseDisposition.ReleaseAndDisband or
                 AutonomousBotGroupCoordinator.PveCorpseDisposition.ReleaseAndRejoin) &&
                 deadFor < releaseDelay)

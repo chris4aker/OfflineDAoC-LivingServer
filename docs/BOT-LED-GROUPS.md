@@ -16,9 +16,12 @@ to group with you says "invite me". In 1.2 a gamebot leading a group can invite 
 
 **When a bot invites you**
 - Only a group leader of your realm, whose group is within 3 levels of you on average and has room for your class
-  (a group short of a healer asks a healer first). It is hunting somewhere you can reach on foot or by horse.
-- First a tell, the way a 2003 leader did it: *"lf 1 more for skellies in Cursed Forest, want in?"* Then the usual
-  group invite box: *"Brannoc has invited you to join his group. Do you wish to join?"* Yes or No.
+  (a group short of a healer asks a healer first). It is hunting somewhere you can reach on foot or by horse, and its
+  leader or its camp is within 40,000 units of you (1.2.3, #485: no invite from across the map).
+- First a tell, the way a 2003 leader did it: *"lf 1 more for skellies in Cursed Forest, want in?"* Answer it by tell:
+  after a yes comes the usual group invite box (*"Brannoc has invited you to join his group. Do you wish to join?"*),
+  after a no nothing (1.2.3, #485: the box no longer comes before your answer; no answer in a minute and the leader lets
+  it go). When you asked (`/lfg`), the box follows the leader's tell without waiting.
 - **Never** while you are fighting, dead, riding, on a boat, in another yes/no box, trading, in a group, with `/spawn`
   companions out, `/afk`, or in a frontier, battleground or raid. Never unasked in your first 10 minutes online.
 - **How often:** when you ask (`/lfg`, or a tell like "lfg?" to a bot), the leader answers by tell and the invite
@@ -213,7 +216,7 @@ Branch `feature/bot-led-groups-b1`, stacked on the duty lease (`feature/duty-lea
 **Decisions (owner 2026-11-04, after the B1 review):**
 - **Asked invites come within 15 seconds.** When the player asks (`/lfg`, or "lfg?" or the like by tell), the leader
   answers first with a tell, then the invite box follows within 15 seconds of the ask (`AskedWindowMs`; the answer
-  1-2.5 s after the decision, the box 1.5-3 s after the answer, and an ask the pulse picks up later is served only
+  3.5-7.5 s after the decision since 1.2.3 (#485; it was 1-2.5 s), the box 1.5-2.5 s after the answer, and an ask the pulse picks up later is served only
   while that still fits). Asked invites skip the 10-minute start, the 45-minute gap, the 30-minute quiet after a no and
   the three-noes rule; they still respect every "never" state, a box already open and the 6 hours per leader. With
   invites off, asking still works. Unasked invites keep every rule.

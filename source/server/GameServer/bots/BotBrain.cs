@@ -1366,7 +1366,8 @@ namespace DOL.AI.Brain
             if (BotGroupRelease.TryUnstick(BotBody)) return; // Fork: first, whatever below would keep a released bot from its player
             // Living Server linkdead (bot_living_breaks): the bot stands still and does nothing until it
             // "reconnects" (30-90 s) or is attacked (AutonomousBotSchedule.OnAttacked wakes it).
-            if (AutonomousBotSchedule.IsFrozen(BotBody))
+            // #485: a bot logging out sits (or stands still) for the game's twenty seconds after its goodbye.
+            if (AutonomousBotSchedule.IsFrozen(BotBody) || AutonomousBotSchedule.IsQuitting(BotBody))
             {
                 if (BotBody.IsMoving)
                     BotBody.StopMoving();

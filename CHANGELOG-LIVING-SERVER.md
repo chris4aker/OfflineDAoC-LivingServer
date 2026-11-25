@@ -339,6 +339,35 @@ stealth.md findings 1-3 and 5-10, defense.md 7)
   second enemy joined, runs at once (`BotStealthEdge`, `BOT_SOLO_BAIL reason=edge...`) and hides again out of combat.
 - `UT_StealthRules`. **Tests only.**
 
+**Invites, joins and logouts** (realism plan step 3a, #485; the interactions audit's items 1, 7 and 10, the movement
+audit's tells 11 and 12; seen on 1.2.2 `868a82d`, the owner's game of 2026-11-23: an /lfg invite the same second from
+58,420 units away, the "want in?" box before the words, 6 brb/afk lines with no logout)
+- **A gamebot answers your /invite as a player would.** One decision (`BotInviteDecision`) gives both the act and the
+  words, so what a bot says by tell to "inv?" is what your invite then does:
+  - more than 8 levels apart: it says no and why ("im 48 lol, way too high for you"); a friend it outlevels comes along
+    ("ill pl u for a bit");
+  - fighting alone: "sec, fighting", and it joins when the fight ends (it says so if the fight runs past a minute);
+  - in its own bot group (owner, 2026-11-24): sometimes it leaves for you, more often the less its group is doing (about
+    half while meeting up, a third on the road, a fifth at camp, more for a friend), never mid-fight; otherwise it
+    declines with its reason ("in a grp already, sry", "mid pull with my grp"). Asking again within ten minutes gets the
+    same answer;
+  - otherwise it accepts after a pause that fits what it is doing: 2-6 s standing about, 3-9 s in town, 4-10 s on the
+    move, 6.5-15 s when it leaves its group. "You have invited X", then the game's own "X has joined the group." (the
+    "leaves their group to answer" and "starts moving to you" narration is gone for gamebots).
+  - Hired companions, /spawn helpers and a bot whose own invite you accepted still join at once.
+- **Bot-led invites:** the leader reads your /lfg and answers 3.5-7.5 s later (was 1-2.5 s; the box still comes within the
+  owner's 15 seconds); no party whose leader and camp are both more than 40,000 units away invites you (`too_far`); an
+  unasked "want in?" waits for your answer by tell and the box comes only after a yes (no answer in a minute: it lets it go).
+- **/gc invite of a gamebot:** it answers 3-10 s later, or after its fight (declines after a minute), instead of at once.
+- **Logging out:** the goodbye first, then the bot sits (or stands still where it can't sit) 18-24 s before it leaves, as the
+  game's /quit does; an attack stops it, and it leaves later without saying goodbye twice.
+- **After a wipe** each gamebot with nobody to rez it releases after its own 15-45 s (from its id and death count) instead of
+  all in one 3 s beat; the 60 and 90 s waits beside a healer and the siege wait are unchanged.
+- **New setting `bot_show_as_bots`** (launcher: "Mark bots as bots in /who", Bot-led groups card), **off by default** (owner,
+  2026-11-24): bots look like players. On, /who tags every gamebot "[Playerbot]" and a refused invite says "gamebot" or
+  "buffbot". A new key, so worlds from earlier builds take the hidden default without an upgrade line.
+- Not here: "brb"/"afk" said in chat with no break behind it (#486). `UT_InvitesLogouts485`. **Tests only.**
+
 **Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
 - **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again
   whenever it was more than 30 degrees off, every 400 ms, so 119 of the 120 look angles body language picks were undone

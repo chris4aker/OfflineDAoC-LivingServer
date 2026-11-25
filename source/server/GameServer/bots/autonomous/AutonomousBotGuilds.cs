@@ -176,6 +176,64 @@ namespace DOL.GS
             return null;
         }
 
+        /// <summary>#485: a gamebot answers a guild invite 3 to 10 seconds later (from a 0..1 roll). Pure.</summary>
+        public static int GuildJoinDelayMs(double roll) => 3_000 + (int)Math.Round(Math.Clamp(roll, 0, 1) * 7_000);
+
+        /// <summary>A gamebot in a fight answers when it ends, or turns the invite down after this long.</summary>
+        public const int GuildJoinFightCapMs = 60_000;
+
+        /// <summary>
+        /// /gc invite of a gamebot (#485): "You have invited X", then the bot joins 3-10 s later, or when its fight ends (at most a
+        /// minute; then it declines). Everything is checked again when it answers. A bot guild member leaving its guild says so.
+        /// </summary>
+        public static void JoinAfterAThought(GamePlayer inviter, GameBot bot)
+        {
+            if (inviter == null || bot == null)
+                return;
+            GuildNotice(inviter, bot, $"You have invited {bot.Name} to join your guild.");
+            long since = GameLoop.GameLoopTime;
+            _ = new ECSGameTimer(bot, _ =>
+            {
+                try
+                {
+                    if (bot.ObjectState != GameObject.eObjectState.Active || inviter.Client == null)
+                        return 0;
+                    if (bot.InCombat || bot.IsAttacking)
+                    {
+                        if (GameLoop.GameLoopTime - since < GuildJoinFightCapMs)
+                            return 2_000;
+                        GuildNotice(inviter, bot, $"{bot.Name} declines your guild invitation.");
+                        Log.Info($"BOT_GUILD_JOIN_DECLINED bot={bot.Name} id={bot.DatabaseID} reason=fighting invitedBy={inviter.Name}");
+                        return 0;
+                    }
+                    string refusal = JoinRefusal(inviter, bot);
+                    if (refusal != null)
+                    {
+                        GuildNotice(inviter, bot, refusal);
+                        return 0;
+                    }
+                    string leftGuild = AutonomousBotRealmGuilds.BotGuildNameOf(bot);
+                    if (!Join(inviter, bot))
+                        GuildNotice(inviter, bot, $"{bot.Name} could not join the guild.");
+                    else
+                        AutonomousBotRealmGuilds.LeaveForPlayerGuild(bot, leftGuild, inviter);
+                }
+                catch (Exception exception)
+                {
+                    Log.Warn($"BOT_GUILD_JOIN for {bot.Name} failed", exception);
+                }
+                return 0;
+            }, GuildJoinDelayMs(Random.Shared.NextDouble()));
+        }
+
+        /// <summary>The system-window line carrying a gamebot's answer to a guild invite: through the say gate (#475), to the inviter only.</summary>
+        private static void GuildNotice(GamePlayer inviter, GameBot bot, string text) =>
+            BotSayGate.Say(new BotSayGate.Utterance("system", bot.Name, bot.Realm, text, inviter.Name) { Body = bot, Listeners = [inviter] }, said =>
+            {
+                ChatUtil.SendSystemMessage(inviter, said);
+                return said;
+            });
+
         public static bool Join(GamePlayer inviter, GameBot bot)
         {
             Guild guild = inviter?.Guild;

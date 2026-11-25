@@ -370,7 +370,7 @@ namespace DOL.GS.Commands
 							obj = ClientService.Instance.GetPlayerByExactName(args[2]);
 						}
 
-						// A gamebot joins at once; a /spawn companion is refused (it is temporary and only wears the
+						// A gamebot joins after a few seconds (#485); a /spawn companion is refused (it is temporary and only wears the
 						// owner's guild name and emblem). AutonomousBotGuilds.
 						if (obj == null)
 						{
@@ -389,11 +389,8 @@ namespace DOL.GS.Commands
 									client.Out.SendMessage(refusal, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 									return;
 								}
-								string leftGuild = AutonomousBotRealmGuilds.BotGuildNameOf(invitedBot);
-								if (!AutonomousBotGuilds.Join(client.Player, invitedBot))
-									client.Out.SendMessage($"{invitedBot.Name} could not join the guild.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-								else
-									AutonomousBotRealmGuilds.LeaveForPlayerGuild(invitedBot, leftGuild, client.Player);
+								// #485: the bot answers as a player would, a few seconds later and after its fight, not at once.
+								AutonomousBotGuilds.JoinAfterAThought(client.Player, invitedBot);
 								break;
 							}
 						}

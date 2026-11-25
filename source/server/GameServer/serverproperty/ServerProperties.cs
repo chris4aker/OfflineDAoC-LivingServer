@@ -2949,6 +2949,10 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_death_animation", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new.", true)]
 		public static bool BOT_DEATH_ANIMATION;
 
+		/// <summary>Realism 3a (#485, owner decision 2026-11-24): bots look like players unless this is switched on.</summary>
+		[ServerProperty("bots", "bot_show_as_bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines.", false)]
+		public static bool BOT_SHOW_AS_BOTS = false;
+
 		[ServerProperty("bots", "epic_armor_counts_bots", "Gamebots (autonomous and companions) count when an epic boss's or epic NPC's armor drops with the number of attackers, at epic_armor_bot_strength_percent of a player: by default each bot takes off half a player's step (0.02 instead of 0.04), and bots alone take off at most half of the full range (an epic boss from 1.6 to 1.0, never to the 0.4 floor). Real players and pets keep their own rule on top, down to 0.4. False is the stock rule: only players and pets count.", true)]
 		public static bool EPIC_ARMOR_COUNTS_BOTS = true;
 
