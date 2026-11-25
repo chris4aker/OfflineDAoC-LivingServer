@@ -86,8 +86,8 @@ public class UT_ChatSecondPass
         Assert.That(Budget.ToContent(Tell("u got heal? im almost dead", "Druid", heal: true), random), Does.Contain("where"));
         Assert.That(Budget.ToContent(Tell("can u rez me pls"), random), Does.Contain("rez"));
         Assert.That(Budget.ToContent(Tell("want a res?"), random), Does.Contain("good").Or.Contain("ok").Or.Contain("ty"));
-        Assert.That(Budget.ToContent(Tell("sry to bother but where is the healer trainer here"), random),
-            Does.Contain("clue").Or.Contain("dunno").Or.Contain("sure").Or.Contain("idea"));
+        // #478: a question nothing here answers gets no "no clue sry" (the bot stays quiet).
+        Assert.That(Budget.ToContent(Tell("sry to bother but where is the healer trainer here"), random), Is.Null);
         Assert.That(Budget.ToContent(Tell("31 friar, at the barrows", last: "what lvl r u, where u at?"), random),
             Is.AnyOf("cool", "k cool", "ah ok", "nice", "k", "ok ty", "gotcha"), "an answer to the bot's own question is never acked");
     }
@@ -117,10 +117,11 @@ public class UT_ChatSecondPass
     }
 
     [Test]
-    public void AGroupOrGuildQuestionGetsADunnoAndSpamOrOthersNothing()
+    public void AGroupOrGuildQuestionGetsNoDunnoAndSpamOrOthersNothing()
     {
         var yes = new FixedRandom(0.0);
-        Assert.That(Budget.Rescue(Heard("what lvl is the named here?", "group"), "not sure", yes), Does.Contain("dunno").Or.Contain("idea").Or.Contain("sure").Or.Contain("idk").Or.Contain("clue"));
+        // #478: no "dunno" in any channel; a question nobody can answer gets silence.
+        Assert.That(Budget.Rescue(Heard("what lvl is the named here?", "group"), "not sure", yes), Is.Null);
         Assert.That(Budget.Rescue(Heard("who wants a group? im 28", "guild"), "intent grouping", yes), Is.Null, "a group post isn't a dunno question");
         Assert.That(Budget.Rescue(Heard("brb dinner, can someone hold my spot?", "group"), "not sure", yes), Is.Null);
         Assert.That(Budget.Rescue(Heard("x", "group"), "none other", yes), Is.Null);

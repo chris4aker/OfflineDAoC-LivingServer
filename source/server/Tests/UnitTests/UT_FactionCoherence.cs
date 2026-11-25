@@ -197,7 +197,8 @@ public class UT_FactionCoherence
                 Assert.That(Field.CanAnswer(said, mate.ClassName, mate.Level), Is.True, $"{said.Text} <- {mate.ClassName} {mate.Level}");
             }
         }
-        Assert.That(roleAsks, Is.GreaterThan(30), "the evening had role asks");
+        // #478: the draw moved with the deleted "dunno" replies (30 role asks in this evening); the check is that there were plenty.
+        Assert.That(roleAsks, Is.GreaterThanOrEqualTo(25), "the evening had role asks");
         Assert.That(answered, Is.GreaterThan(50));
     }
 

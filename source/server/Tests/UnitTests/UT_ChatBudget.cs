@@ -144,7 +144,9 @@ public class UT_ChatBudget
         Assert.That(AutonomousChatReplyBudget.Decide(AutonomousChatReplyFit.None, true, 2), Is.EqualTo(AutonomousChatReplyBudget.Outcome.Ack));
         var random = new Random(3);
         string[] acks = Enumerable.Range(0, 200).Select(i => AutonomousChatReplyBudget.Ack(i, false, random)).ToArray();
-        Assert.That(acks.All(a => a.Length <= 9 && a == a.ToLowerInvariant()), "short and casual");
+        Assert.That(acks.All(a => a.Length <= 22 && a == a.ToLowerInvariant()), "short and casual");
+        // #478: the bot is here and asks what's up; never a bare "?" or "ya?" (an echo).
+        Assert.That(acks.All(a => !BotSayGate.IsNonAnswer(a, "u there?")), "no echo");
         Assert.That(acks.Distinct().Count(), Is.GreaterThan(4));
         Assert.That(AutonomousChatReplyBudget.Ack(1, true, random), Does.Contain("sec").Or.EqualTo("brt"), "a busy bot says sec");
     }

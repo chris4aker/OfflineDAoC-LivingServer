@@ -370,6 +370,10 @@ public static class AutonomousChatReplyBudget
         // Group posts, trades, hellos, goodbyes and brbs aren't "dunno" questions; their own rules answer them.
         // #478: a question nobody could answer gets no "dunno" in any channel (1.2.2 took it out of /faction, 1.2.3 out of where-is
         // questions; the other channels kept it). Silence is the fallback; a reaction never answers a question either.
+        // A joke shaped as a question ("why do casters wear robes? no pockets for the loot lol") is answered as a joke: a laugh,
+        // at the channel's rate (before #478 it drew "dunno").
+        if (question && AutonomousChatMeetup.Laughs(message))
+            return random.NextDouble() < ReactionShare(moment.Channel) ? Reaction("laugh", random) : null;
         if (question)
             return null;
         if (moment.Intent == eAutonomousChatIntent.Unknown && route is "none unknown" &&
