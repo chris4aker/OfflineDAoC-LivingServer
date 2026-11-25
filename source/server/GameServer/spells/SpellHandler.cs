@@ -361,24 +361,30 @@ namespace DOL.GS.Spells
 
 		/// <summary>Interrupts the cast unless the spell, Mastery of Concentration, Facilitate Painworking or Quickcast prevents it.
 		/// <paramref name="attacker"/> may be null (the last interrupter left the world).</summary>
+		/// <summary>Mastery of Concentration, Quickcast or (for a Necromancer pet) its owner's Mastery of Concentration or its own
+		/// Facilitate Painworking make the cast immune to interrupts (port of OpenDAoC-Core 472dd93e0).</summary>
+		private bool IsInterruptImmune()
+		{
+			if (Caster is NecromancerPet necromancerPet)
+			{
+				// MoC isn't given to the Necromancer pet.
+				if (necromancerPet.Owner?.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration) == true)
+					return true;
+
+				return necromancerPet.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking);
+			}
+
+			return Caster.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration) ||
+				Caster.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking) ||
+				IsQuickCasting;
+		}
+
 		protected virtual bool TryInterruptCaster(GameLiving attacker)
 		{
-			if (Spell.Uninterruptible)
+			if (Spell.Uninterruptible || IsInterruptImmune())
 				return false;
 
 			NecromancerPet necromancerPet = Caster as NecromancerPet;
-
-			// MoC isn't given to the Necromancer pet.
-			if (necromancerPet != null)
-			{
-				if (necromancerPet.Owner?.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration) == true)
-					return false;
-			}
-
-			if (Caster.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration)
-				|| Caster.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking)
-				|| IsQuickCasting)
-				return false;
 
 			if (Caster is GameSummonedPet petCaster && petCaster.Owner is GamePlayer casterOwner)
 			{
@@ -620,33 +626,21 @@ namespace DOL.GS.Spells
 			{
 				long interruptRemainingDuration = Caster.InterruptRemainingDuration;
 
-				if (interruptRemainingDuration > 0)
+				// Mastery of Concentration and Quickcast (a Necromancer pet: its owner's Mastery of Concentration, or Facilitate
+				// Painworking) let any caster start through the self interrupt, bots included (OpenDAoC-Core 472dd93e0).
+				if (interruptRemainingDuration > 0 && !IsInterruptImmune())
 				{
 					interruptRemainingDuration = (interruptRemainingDuration + 999) / 1000; // whole seconds, rounded up ("/= 1000 + 1" divided by 1001: "wait 0 seconds")
 
-					if (playerCaster != null)
+					if (!quiet && (playerCaster != null || m_caster is NecromancerPet))
 					{
-						if (!IsQuickCasting &&
-							!m_caster.effectListComponent.ContainsEffectForEffectType(eEffect.MasteryOfConcentration))
-						{
-							if (!quiet)
-								MessageToCaster($"You must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
-
-							return false;
-						}
+						if (m_caster is NecromancerPet necroPet)
+							MessageToCaster($"Your {necroPet.Name} must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
+						else
+							MessageToCaster($"You must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
 					}
-					else if (m_caster is NecromancerPet necroPet && necroPet.Brain is NecromancerPetBrain)
-					{
-						if (!necroPet.effectListComponent.ContainsEffectForEffectType(eEffect.FacilitatePainworking))
-						{
-							if (!quiet)
-								MessageToCaster($"Your {necroPet.Name} must wait {interruptRemainingDuration} seconds to cast a spell!", eChatType.CT_SpellResisted);
 
-							return false;
-						}
-					}
-					else
-						return false;
+					return false;
 				}
 			}
 
