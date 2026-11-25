@@ -242,7 +242,11 @@ namespace DOL.GS
                     _checkLosTimer.ChangeTarget(_target);
                 }
 
-                if (!_hasLos)
+                // Port of OpenDAoC-Core 978b991fc (live): a monster, guard or pet that has started its draw on this target
+                // lands it; LoS is checked before the draw, not during it. Gamebots keep the player's check during the draw.
+                bool aiming = _npcOwner.rangeAttackComponent.RangedAttackState is not eRangedAttackState.None && _losCheckTarget == _target;
+
+                if (!_hasLos && !(aiming && !DOL.GS.ServerRules.NpcFinishRules.ChecksLosWhileAiming(_npcOwner)))
                 {
                     _interval = TICK_INTERVAL_FOR_NON_ATTACK;
                     return false;
@@ -320,15 +324,24 @@ namespace DOL.GS
             _npcOwner.StartAttackWithRangedWeapon(_target);
         }
 
-        private void ForceLos()
+        /// <summary>
+        /// No client can answer a LoS request (ownerless autonomous gamebots, monsters away from the player). Keep the
+        /// accepted target in the same field used by subsequent ranged ticks; leaving it null made every tick look like a
+        /// target change even after LOS had been accepted. 1.2.3 (DOL sweep X1): the navmesh judges a wall on the
+        /// shooter's own floor (<see cref="BotCastSight.ShotBlockedWithoutChecker"/>); before, every such shot went through
+        /// walls. Returns whether the sight is blocked; the timer then asks again and reacts as to a client's "no".
+        /// </summary>
+        private bool ForceLos(GameObject target)
         {
-            // Ownerless autonomous GameBots have no client that can answer a
-            // LOS request. Keep the accepted target in the same field used by
-            // subsequent ranged ticks; leaving it null made every tick look
-            // like a target change even after LOS had been accepted.
-            _losCheckTarget = _target;
-            _hasLos = true;
-            _npcOwner.TurnTo(_target);
+            target ??= _target;
+            _losCheckTarget = target;
+            bool blocked = BotCastSight.ShotBlockedWithoutChecker(_npcOwner, target);
+            _hasLos = !blocked;
+
+            if (!blocked)
+                _npcOwner.TurnTo(target);
+
+            return blocked;
         }
 
         public class CheckLosTimer : ECSGameTimerWrapperBase
@@ -365,10 +378,15 @@ namespace DOL.GS
                         _losChecker = targetBrain.GetPlayerOwner();
                 }
 
-                // Don't bother starting the timer if there's no one to perform the LoS check.
+                // No one to perform the LoS check: the navmesh judges it, and the timer asks it again while it is blocked.
                 if (_losChecker == null)
                 {
-                    _attackAction.ForceLos();
+                    if (_attackAction.ForceLos(_target) && !IsAlive)
+                    {
+                        Start(LosCheckInterval);
+                        Interval = LosCheckInterval;
+                    }
+
                     return;
                 }
 
@@ -389,8 +407,13 @@ namespace DOL.GS
                 // (NullReferenceException in TimerService); fall back to the forced LoS like "no checker" above.
                 if (_losChecker?.Out == null || _target == null)
                 {
-                    _attackAction.ForceLos();
-                    return 0;
+                    if (_target == null || !_attackAction.ForceLos(_target))
+                        return 0;
+
+                    // Blocked on the navmesh: the same reaction as to a client's "no" (HandleLosCheckResponse).
+                    // (A Stop() inside it, no next target, ends the timer whatever this returns.)
+                    _attackAction.OnOutOfRangeOrNoLosRangedAttack();
+                    return LosCheckInterval;
                 }
                 _losChecker.Out.SendLosCheckRequest(_npcOwner, _target, _attackAction);
                 return LosCheckInterval;

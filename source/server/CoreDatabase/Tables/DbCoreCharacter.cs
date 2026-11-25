@@ -224,6 +224,26 @@ namespace DOL.Database
 			}
 		}
 
+		/// <summary>Where the gravestone stands and the XP it holds, so it survives a server restart (1.2.3, after
+		/// OpenDAoC-Core 25c8e9c5e; kept on the character row, which is already saved progress).</summary>
+		[DataElement(AllowDbNull = false)]
+		public int GravestoneX { get; set { field = value; Dirty = true; } }
+
+		[DataElement(AllowDbNull = false)]
+		public int GravestoneY { get; set { field = value; Dirty = true; } }
+
+		[DataElement(AllowDbNull = false)]
+		public int GravestoneZ { get; set { field = value; Dirty = true; } }
+
+		[DataElement(AllowDbNull = false)]
+		public int GravestoneHeading { get; set { field = value; Dirty = true; } }
+
+		[DataElement(AllowDbNull = false)]
+		public long GravestoneXp { get; set { field = value; Dirty = true; } }
+
+		[DataElement(AllowDbNull = true)]
+		public DateTime GravestoneCreated { get; set { field = value; Dirty = true; } }
+
 		/// <summary>
 		/// Gets/sets the region id where the gravestone of the player is located
 		/// </summary>

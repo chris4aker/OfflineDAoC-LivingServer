@@ -17,12 +17,33 @@ namespace DOL.GS
                 return false;
             if (!PvpRules.BotCastNeedsNavmeshSight(PvpRules.TakesPlayerRules(caster, target), target is GamePlayer, spell.RequiresLosCheck()))
                 return false;
-            Zone zone = caster.CurrentZone;
-            if (zone == null || target.CurrentRegionID != caster.CurrentRegionID || !PathfindingProvider.Instance.IsAvailable ||
-                !PathfindingProvider.Instance.HasNavmesh(zone))
+            return NavmeshSight.Blocked(caster, target, anyHeight: true);
+        }
+
+        /// <summary>
+        /// 1.2.3 (DOL sweep X1): an NPC's cast that no client checks (no player near enough to be asked) at the start of the
+        /// cast: a monster's, a guard's, a pet's, or a gamebot's at a monster. The navmesh answers on one floor
+        /// (<see cref="NavmeshSight"/>); a gamebot's cast at another bot is left to <see cref="Blocked"/>, which the spell
+        /// handler asks at the start and the end of the cast.
+        /// </summary>
+        public static bool BlockedWithoutChecker(GameLiving caster, GameLiving target, Spell spell)
+        {
+            if (caster is not GameNPC || target == null || target == caster || spell == null || !spell.RequiresLosCheck())
                 return false;
-            return !PathfindingProvider.Instance.HasLineOfSight(zone, new(caster.X, caster.Y, caster.Z),
-                new(target.X, target.Y, target.Z), PathfindingProvider.Instance.DefaultFilters);
+            if (caster is GameBot && PvpRules.BotCastNeedsNavmeshSight(PvpRules.TakesPlayerRules(caster, target), target is GamePlayer, true))
+                return false;
+            return NavmeshSight.Blocked(caster, target);
+        }
+
+        /// <summary>
+        /// The same for an NPC's arrow that no client checks, for every shooter (gamebots included) and on one floor only: a
+        /// wall archer, a gamebot defender on a keep wall among them, keeps its shots at the ground below.
+        /// </summary>
+        public static bool ShotBlockedWithoutChecker(GameNPC shooter, GameObject target)
+        {
+            if (shooter == null || target is not GameLiving living || living == shooter)
+                return false;
+            return NavmeshSight.Blocked(shooter, living);
         }
     }
 }

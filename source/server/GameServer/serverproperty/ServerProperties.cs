@@ -667,8 +667,22 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("world", "check_los_during_ranged_attack_minimum_interval", "The minimum interval (milliseconds) between two LoS checks performed during a ranged attack.", 200)]
 		public static int CHECK_LOS_DURING_RANGED_ATTACK_MINIMUM_INTERVAL;
 
-		[ServerProperty("world", "check_los_during_cast", "Should we perform LoS checks during spell casts.", true)]
+		[ServerProperty("world", "check_los_during_cast", "Should we perform LoS checks during spell casts (players and gamebots; see check_los_during_npc_cast for other NPCs).", true)]
 		public static bool CHECK_LOS_DURING_CAST;
+
+		// Port of OpenDAoC-Core cbe604ce1 and 978b991fc (live): a monster, guard or pet lands what it started unless crowd
+		// controlled. Gamebots keep the player's checks (NpcFinishRules).
+		[ServerProperty("world", "check_los_during_npc_cast", "Should NPCs other than gamebots perform LoS checks during spell casts.", false)]
+		public static bool CHECK_LOS_DURING_NPC_CAST;
+
+		[ServerProperty("world", "check_range_at_npc_cast_end", "Should NPCs other than gamebots check range at the end of a spell cast.", false)]
+		public static bool CHECK_RANGE_AT_NPC_CAST_END;
+
+		[ServerProperty("world", "check_los_during_npc_ranged_attack", "Should NPCs other than gamebots perform LoS checks during a bow draw.", false)]
+		public static bool CHECK_LOS_DURING_NPC_RANGED_ATTACK;
+
+		[ServerProperty("world", "check_range_at_npc_ranged_attack_end", "Should NPCs other than gamebots check range at the end of a bow draw.", false)]
+		public static bool CHECK_RANGE_AT_NPC_RANGED_ATTACK_END;
 
 		[ServerProperty("world", "check_los_during_cast_minimum_interval", "The minimum interval (milliseconds) between two LoS checks performed during a spell cast.", 200)]
 		public static int CHECK_LOS_DURING_CAST_MINIMUM_INTERVAL;
@@ -2122,6 +2136,10 @@ namespace DOL.GS.ServerProperties
 		/// </summary>
 		[ServerProperty("pve", "pve_exp_loss_level", "Which level should players killed in PvE start losing experience?", (byte)6)]
 		public static byte PVE_EXP_LOSS_LEVEL;
+
+		// After OpenDAoC-Core e10348f31: a saved gravestone (it survives a restart) is removed this many days after it was made.
+		[ServerProperty("world", "gravestone_decay_time", "Minimum time (days) before a gravestone is removed from the world. 0 means no gravestones will be removed.", 7)]
+		public static int GRAVESTONE_DECAY_TIME;
 
 		/// <summary>
 		/// PvE Conn Loss Start Level

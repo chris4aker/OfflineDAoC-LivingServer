@@ -55,6 +55,15 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   a yes, seated logout, wipe releases 15-45 s apart, `bot_show_as_bots` off by default). **In review, tests only**
   (`UT_InvitesLogouts485`). PC check: /invite an idle bot, a fighting bot and a bot in its party; /lfg; watch a "brb"
   logout and a wipe.
+- **OpenDAoC upstream port P4** (NPC AI, pathing, keeps and world; branch `fix/1.2.3-upstream-ai-world`). **Tests only.**
+  Owed on the PC: a monster or guard landing a spell after its target stepped behind a wall; no monster or gamebot cast
+  through a dungeon or keep wall away from the player; a mob climbing a ladder without stalling; a mob chasing over a zone
+  border; a gravestone still standing after a restart; group dots on the minimap. Re-run the raid sims before any period
+  size decision (bosses now land started casts). Held for the owner: B1/B2/B9 (as briefed), `2ffc5c0ff` (5% interrupt step:
+  low mobs interrupt less), `44ae62e96` (stuck NPCs become immune), `76f4a6fd0` (NPCs walk up to a blocking door: changes
+  the bot door holds), `b80fae038` (door polygon registration: navmesh evidence needed). Skipped (owner): B6 `eb06c09aa`,
+  `970282fba`. Finding for #521: `BotCastSight` checks bot-to-bot casts at any height, so a bot caster on a keep wall may
+  be refused at bots below (the navmesh ray can't cross a drop); shots use the one-floor rule.
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
   heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
   below.

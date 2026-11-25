@@ -25,6 +25,7 @@ namespace DOL.GS
 
         private bool _openDead = false;
         private CloseDoorAction _closeDoorAction;
+        private long _nextAllowedStateChangeTime;
 
         public override bool CanBeOpenedViaInteraction => !Locked;
 
@@ -35,12 +36,17 @@ namespace DOL.GS
 
         public override void Open(GameLiving opener = null)
         {
-            if (!Locked)
-                State = eDoorState.Open;
-
-            if (HealthPercent > 40 || !_openDead)
+            lock (_stateLock)
             {
-                lock (_stateLock)
+                // Port of OpenDAoC-Core 2fecd64f0: a second open request that arrives (through latency) while the door is
+                // still closing is ignored. Border keep doors flapped open and shut at once.
+                if (!_openDead && !GameServiceUtils.ShouldTick(_nextAllowedStateChangeTime))
+                    return;
+
+                if (!Locked)
+                    State = eDoorState.Open;
+
+                if (HealthPercent > 40 || !_openDead)
                 {
                     _closeDoorAction ??= new(this);
 
@@ -57,12 +63,21 @@ namespace DOL.GS
 
         public override void Close(GameLiving closer = null)
         {
-            if (!_openDead)
-                State = eDoorState.Closed;
+            lock (_stateLock)
+            {
+                if (!_openDead && State != eDoorState.Closed)
+                {
+                    State = eDoorState.Closed;
+                    _nextAllowedStateChangeTime = GameLoop.GameLoopTime + StateChangeCooldown(IsBorderKeepDoor());
+                }
 
-            _closeDoorAction?.Stop();
-            _closeDoorAction = null;
+                _closeDoorAction?.Stop();
+                _closeDoorAction = null;
+            }
         }
+
+        /// <summary>How long after closing a door ignores open requests (2fecd64f0): 3 s for border keep doors, else 1 s.</summary>
+        public static int StateChangeCooldown(bool borderKeepDoor) => borderKeepDoor ? 3000 : 1000;
 
         public override int Health
         {

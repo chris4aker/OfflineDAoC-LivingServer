@@ -65,6 +65,44 @@ of OpenDAoC-Core, ported by hand onto our tree; `UT_UpstreamCombatPort123`). **T
   raid is built; the bots keep away from him as before.
 - **Morgana stays a quest host** (#414). She is not a fight in the period either ("Do not attack Morgana": the Albion
   level 50 epic, a fight for one group). No raid.
+**From OpenDAoC upstream: NPC AI, pathing, keeps and world (port package P4)**
+
+Ported by hand from OpenDAoC-Core (GPL-3.0; Baptiste Marie, Joe Judge, TTom03) and DOLSharp (GPL-2.0-or-later;
+DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_UpstreamAiWorld123`, `UT_HookPointInventory`.
+**Tests only.**
+- **Monsters, guards and pets land what they started** (cbe604ce1, 978b991fc, live rule): line of sight and range are
+  checked when a spell or bow draw starts, not during it or at its end; four server properties turn each check back on.
+  Autonomous gamebots and companions keep the player's checks (`NpcFinishRules`).
+- **No more casting or shooting through walls away from the player** (DOL sweep X1): with no player near enough for the
+  client to check, a monster's, guard's, pet's or gamebot's cast or arrow is checked on the navmesh, on one floor only
+  (`NavmeshSight`; a wall archer keeps its shots at the ground). #521's bot-to-bot rule (`BotCastSight`) is reused.
+- **Caster guards turn to a target they can see** instead of staring at one behind a wall (678b8f16f).
+- **Town and border guards see stealthed and mounted enemies** who walk into their range (99c97fbd9), as they already saw
+  gamebots.
+- **Pulling as in 1.65** (f5afdcc52, abb7aecd0): a body pull brings the monster to the puller only; an attack still adds
+  the attacker's group and pets, and a pet's pull adds its owner (a gamebot owner too). Dead targets never enter an aggro
+  list (40fa0f68f); bring-a-friend no longer piles up aggro (33774a6d8).
+- **Monsters go home after a stun or root on the way** (9f3d5c6da, d53eceb0c), and scouts that can't reach a friend fight
+  (4376f3c9b); unlimited follows no longer overflow (c59f4ba94).
+- **Ladders and zone borders** (monsters, guards and pets; gamebots keep their own link and seam handling): no replot
+  while crossing an off-mesh link, committed only at its foot, released after 10 s at most (9071ad689, c2ab4a2e6,
+  b693fee89); NPCs on ladders "fly" on the client (f01e9fc33); chases over a zone border path to the border and on
+  (799b4f507, 152b87aec, 21443ebd6). NPCs passing an open door keep it open (15e7e3196).
+- **Keeps and doors**: keep doors, tower doors and relic doors move you to the right side (63e1162b8: the 32-unit
+  "always in front" range picked the side wrongly); side doors 3-6 move you 175 units (DOL 2239176); border keep doors no
+  longer flap open and shut (2fecd64f0); a captured keep without hookpoint 97 no longer throws before it is saved and
+  `KeepTaken` fires, and gamebots on the walls are set down with the players (DOL 0554bfb0); empty hookpoint stores are
+  not offered and hookpoint requests find components by ID (686c895f2, 6c41d67b3, ffb6c9569); ballista bolts don't hit
+  dead or friendly targets (d79a497e6).
+- **Gravestones survive a restart** (after 25c8e9c5e and e10348f31): kept on the character row, set up again when the
+  player enters the game, removed when prayed at or after `gravestone_decay_time` days (7).
+- **Group minimap**: group-mates' dots update every 2.5 s whether or not they move, leave the map in another region, and
+  members aren't shown dead while zoning; slots that move after someone leaves are sent again (f3943156a, 7b7d11f2a,
+  1a97fbde9, 5725446af, a9e0c3af2, 10d3897f0).
+- **Small classic touches**: the login/zoning invulnerability timer is a PvP rule only (monsters don't wait for it, a
+  player under it may fight monsters, gamebots in RvR count as players; it no longer cancels fall damage) (9a665b536,
+  d73447af2, 2e791235f); Distraction lasts 6 s and fools only
+  monsters that aren't fighting or casting (7a8ae3661).
 
 **Chat**
 - **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,

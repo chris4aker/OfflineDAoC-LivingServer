@@ -1702,8 +1702,8 @@ namespace DOL.GS
 
                     GameGravestone gravestone = new GameGravestone(this, lostExp);
                     gravestone.AddToWorld();
-                    character.GravestoneRegion = gravestone.CurrentRegionID;
-                    character.HasGravestone = true;
+                    // 1.2.3: saved, so a server restart keeps it (GameGravestone.RestoreFor).
+                    GameGravestone.Remember(character, gravestone);
                     Out.SendMessage(LanguageMgr.GetTranslation(Client.Account.Language, "GamePlayer.Release.GraveErected"), eChatType.CT_YouDied, eChatLoc.CL_SystemWindow);
                     Out.SendMessage(LanguageMgr.GetTranslation(Client.Account.Language, "GamePlayer.Release.ReturnToPray"), eChatType.CT_YouDied, eChatLoc.CL_SystemWindow);
                 }
@@ -1927,6 +1927,7 @@ namespace DOL.GS
 
                 gravestone.XPValue = 0;
                 gravestone.Delete();
+                GameGravestone.Forget(DBCharacter);
                 m_prayAction = null;
                 return 0;
             }), 5000);

@@ -44,14 +44,24 @@ namespace DOL.GS
             SpellLine spellLine,
             ISpellCastingAbilityHandler spellCastingAbilityHandler,
             GameLiving target,
-            GamePlayer losChecker)
+            GamePlayer losChecker,
+            bool wantsLos = false)
         {
             // 1.2.1: a checker that can't be asked is no checker (see CastingComponent.StartDuringCastLosCheck). Its packet
             // sender was used unchecked here, and a refused request left the spell waiting for ever.
             var packets = losChecker?.Out;
 
             if (packets == null)
+            {
+                // 1.2.3 (DOL sweep X1): no client to ask; the navmesh judges a wall on the caster's own floor.
+                if (wantsLos && BotCastSight.BlockedWithoutChecker(_npcOwner, target, spell))
+                {
+                    OnNoLos(target);
+                    return false;
+                }
+
                 return base.RequestCastSpellInternal(spell, spellLine, spellCastingAbilityHandler, target, null);
+            }
 
             if (LeftTheWorld(_npcOwner, target))
                 return false;
@@ -173,11 +183,29 @@ namespace DOL.GS
                     if (success && spellLine != null && spell != null)
                         base.RequestCastSpellInternal(spell, spellLine, null, target as GameLiving, losChecker);
                     else
-                        _npcOwner.OnCastSpellLosCheckFail(target);
+                        OnNoLos(target);
                 }
 
             }
         }
+
+        /// <summary>
+        /// A cast refused for line of sight. Every NPC drops the queued spell and a mobile one walks into sight
+        /// (<see cref="GameNPC.OnCastSpellLosCheckFail"/>). Port of OpenDAoC-Core 678b8f16f: a caster guard or an immobile
+        /// caster, which can't walk into sight, forgets that target and turns to another, as archer guards already did
+        /// (NpcAttackAction.OnOutOfRangeOrNoLosRangedAttack); before, it stared at a wall. Gamebots keep their own handling.
+        /// </summary>
+        private void OnNoLos(GameObject target)
+        {
+            _npcOwner.OnCastSpellLosCheckFail(target);
+
+            if (ForgetsTargetOnNoLos(_npcOwner is GameBot, IsCasterGuardOrImmobile) &&
+                _npcOwner.Brain is StandardMobBrain brain && target is GameLiving living)
+                brain.RemoveFromAggroList(living);
+        }
+
+        /// <summary>Whether an NPC forgets a target it can't see to cast at (pure).</summary>
+        public static bool ForgetsTargetOnNoLos(bool isGameBot, bool casterGuardOrImmobile) => !isGameBot && casterGuardOrImmobile;
 
         private readonly struct SpellWaitingForLosCheck
         {
