@@ -20,8 +20,8 @@ namespace DOL.AI.Brain
 				if (!CanAggroTarget(player))
 					continue;
 
-				if (player.IsStealthed || player.Steed != null)
-					continue;
+				// Port of OpenDAoC-Core 99c97fbd9: realm guards see a stealthed or mounted enemy that walks into their range
+				// (their LoS check still applies), as they already saw an enemy gamebot (CheckNpcAggro).
 
 				if (player.effectListComponent.ContainsEffectForEffectType(eEffect.Shade))
 					continue;

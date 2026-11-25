@@ -943,7 +943,9 @@ namespace DOL.GS.Spells
 					}
 				}
 
-				if (!m_caster.IsWithinRadius(target, Spell.CalculateEffectiveRange(m_caster)))
+				// Port of OpenDAoC-Core cbe604ce1 (live): a monster, guard or pet lands the spell it started; gamebots keep the check.
+				if (DOL.GS.ServerRules.NpcFinishRules.ChecksRangeAtCastEnd(m_caster) &&
+					!m_caster.IsWithinRadius(target, Spell.CalculateEffectiveRange(m_caster)))
 				{
 					if (verbose)
 						MessageToCaster("That target is too far away!", eChatType.CT_SpellResisted);
@@ -1034,7 +1036,9 @@ namespace DOL.GS.Spells
 					npcOwner.TurnTo(Target);
 			}
 
-			if (Properties.CHECK_LOS_DURING_CAST && GameLoop.GameLoopTime > _lastDuringCastLosCheckTime + Properties.CHECK_LOS_DURING_CAST_MINIMUM_INTERVAL)
+			// Port of OpenDAoC-Core cbe604ce1: monsters, guards and pets don't check during the cast (check_los_during_npc_cast).
+			if (DOL.GS.ServerRules.NpcFinishRules.ChecksLosDuringCast(m_caster) &&
+				GameLoop.GameLoopTime > _lastDuringCastLosCheckTime + Properties.CHECK_LOS_DURING_CAST_MINIMUM_INTERVAL)
 			{
 				_lastDuringCastLosCheckTime = GameLoop.GameLoopTime;
 

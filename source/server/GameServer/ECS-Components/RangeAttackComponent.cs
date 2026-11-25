@@ -194,7 +194,9 @@ namespace DOL.GS
             }
             else
             {
-                if (!_owner.IsWithinRadius(target, _owner.attackComponent.AttackRange))
+                // Port of OpenDAoC-Core 978b991fc: a monster, guard or pet lands the draw it started (gamebots keep the check).
+                if (DOL.GS.ServerRules.NpcFinishRules.ChecksRangeAtShotEnd(_owner) &&
+                    !_owner.IsWithinRadius(target, _owner.attackComponent.AttackRange))
                     return eCheckRangeAttackStateResult.Stop;
 
                 return eCheckRangeAttackStateResult.Fire;
