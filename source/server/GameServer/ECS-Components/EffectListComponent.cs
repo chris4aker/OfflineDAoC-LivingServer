@@ -1078,16 +1078,23 @@ namespace DOL.GS
             private readonly ECSGameEffect _effect;
             private readonly Action<ECSGameEffect, bool> _action;
             private readonly bool _state;
+            private readonly bool _isBeingReplaced;
 
             public PendingEffect(ECSGameEffect effect, Action<ECSGameEffect, bool> action, bool state)
             {
                 _effect = effect;
                 _action = action;
                 _state = state;
+                // Snapshot at enqueue time (port of OpenDAoC-Core c928369c4). Several entries for one effect in a
+                // tick (a charm cast and broken three times) otherwise read a sibling's value, which could leave
+                // the NPC charmed for good.
+                _isBeingReplaced = effect.IsBeingReplaced;
             }
 
             public void Process()
             {
+                // Restore the value as it was when this transition was decided.
+                _effect.IsBeingReplaced = _isBeingReplaced;
                 _action(_effect, _state);
                 // Its original start callback may have been queued before a
                 // second singer refreshed it. Do not re-register that old child.
