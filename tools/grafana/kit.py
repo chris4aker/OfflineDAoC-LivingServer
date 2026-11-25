@@ -93,7 +93,8 @@ class Kit:
         w(f"- Rows in code: **{len(self.rows)}**; pending (#625, not on main yet): **{len(self.pending)}**; shipped by "
           f"the pipeline: **{len(shipped)}**.")
         w("- *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.")
-        w("- *Meaning* is the comment above the first writing site, cut to its first sentence.")
+        w("- *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,")
+        w("  cut to its first sentence.")
         w("")
         if self.pending:
             w("## Pending rows")
@@ -107,12 +108,14 @@ class Kit:
             w("")
         w("## Rows in code")
         w("")
-        w("| Row | Log | Ships | Written at | Fields | Dropped | Frequency | Meaning |")
+        w("| Row | Log | Ships | Written in | Fields | Dropped | Frequency | Meaning |")
         w("|---|---|---|---|---|---|---|---|")
         for marker, row in self.rows.items():
-            sites = "<br>".join(f"`{s.path.removeprefix('source/server/GameServer/')}:{s.line}`" for s in row.sites[:3])
-            if len(row.sites) > 3:
-                sites += f"<br>+{len(row.sites) - 3} more"
+            # Files, not line numbers: an edit elsewhere in a file must not make the catalog stale.
+            files = list(dict.fromkeys(s.path.removeprefix("source/server/GameServer/") for s in row.sites))
+            sites = "<br>".join(f"`{f}`" for f in files[:3])
+            if len(files) > 3:
+                sites += f"<br>+{len(files) - 3} more"
             fields = "JSON" if row.json and not row.fields else ", ".join(f"`{k}`" for k in sorted(row.fields)) or "-"
             if row.json and row.fields:
                 fields = "JSON, " + fields
