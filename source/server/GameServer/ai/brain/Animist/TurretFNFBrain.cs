@@ -94,6 +94,32 @@ namespace DOL.AI.Brain
 
         protected override bool CanAddToAggroListFromMultipleLosChecks => true;
 
+        // Fractions of AggroRange marking the distance buckets (OpenDAoC-Core a89bfef81): very close targets are picked first.
+        private static readonly double[] _distanceBucketThresholds = [0.4];
+        private readonly List<GameLiving>[] _filteredByBucket = [new(), new()];
+
+        /// <summary>Which distance bucket a target falls in (pure): enemy players are always in the closest one, so a player hiding
+        /// behind a wall can't draw every turret off the others (OpenDAoC-Core 27ec0ed7a).</summary>
+        public static int DistanceBucket(bool isPlayer, double distance, int aggroRange)
+        {
+            if (isPlayer)
+                return 0;
+
+            for (int i = 0; i < _distanceBucketThresholds.Length; i++)
+            {
+                if (distance < aggroRange * _distanceBucketThresholds[i])
+                    return i;
+            }
+
+            return _distanceBucketThresholds.Length;
+        }
+
+        protected override bool ShouldBeRemovedFromAggroList(GameLiving living)
+        {
+            // Targets that left the turret's range are dropped (OpenDAoC-Core 93310604a).
+            return base.ShouldBeRemovedFromAggroList(living) || !Body.IsWithinRadius(living, AggroRange);
+        }
+
         protected override bool ShouldBeIgnoredFromAggroList(GameLiving living)
         {
             // We always return true because we don't care about what `CleanUpAggroListAndGetHighestModifiedThreat` returns.
@@ -106,12 +132,17 @@ namespace DOL.AI.Brain
             }
 
             _filteredAggroList.Add(living);
+            _filteredByBucket[DistanceBucket(living is GamePlayer, Body.GetDistanceTo(living), AggroRange)].Add(living);
             return true;
         }
 
         protected override GameLiving CleanUpAggroListAndGetHighestModifiedThreat()
         {
             _filteredAggroList.Clear();
+
+            foreach (List<GameLiving> bucket in _filteredByBucket)
+                bucket.Clear();
+
             return base.CleanUpAggroListAndGetHighestModifiedThreat();
         }
 
@@ -124,8 +155,17 @@ namespace DOL.AI.Brain
 
             // Prioritize targets that don't already have our effect and aren't immune to it.
             // If there's none, allow them to be attacked again but only if our spell does damage.
+            // Among those, the closest non-empty distance bucket wins, a random target inside it.
             if (_filteredAggroList.Count > 0)
+            {
+                foreach (List<GameLiving> bucket in _filteredByBucket)
+                {
+                    if (bucket.Count > 0)
+                        return bucket[Util.Random(bucket.Count - 1)];
+                }
+
                 return _filteredAggroList[Util.Random(_filteredAggroList.Count - 1)];
+            }
             else if ((Body as TurretPet).TurretSpell.Damage > 0)
             {
                 List<GameLiving> tempAggroList = GameLoop.GetListForTick<GameLiving>();
