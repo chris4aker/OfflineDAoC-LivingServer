@@ -644,7 +644,9 @@ namespace DOL.GS
         {
             StopMoving();
             Owner.TargetObject = null;
-            Owner.attackComponent.StopAttack();
+            // Read safely: the return now starts as RETURN_TO_SPAWN is entered (d53eceb0c), which can be before an NPC's
+            // components are complete (a test double, a body set up by a script).
+            Owner.attackComponent?.StopAttack();
             (Owner.Brain as StandardMobBrain)?.ClearAggroList();
             IsReturningToSpawnPoint = true;
             PathTo(new(Owner.SpawnPoint.X, Owner.SpawnPoint.Y, Owner.SpawnPoint.Z), speed);
