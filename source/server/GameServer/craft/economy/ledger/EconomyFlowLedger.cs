@@ -49,6 +49,10 @@ namespace DOL.GS.CraftingEconomy
             internal readonly long[] SalesCopper = new long[RealmSlots];
             internal readonly long[] SalesTax = new long[RealmSlots];
             internal readonly long[] SalesCrafted = new long[RealmSlots];
+            // Issue #625 (ECONOMY_PULSE): sale prices per realm and slot band, at most MaxSalePrices each (counted beyond).
+            internal readonly List<long>[] SaleBandPrices = Enumerable.Range(0, RealmSlots * EconomyPulse.SlotBandCount)
+                .Select(_ => new List<long>()).ToArray();
+            internal readonly long[] SaleBandCount = new long[RealmSlots * EconomyPulse.SlotBandCount];
             internal readonly long[] BotPaid = new long[RealmSlots];
             internal readonly long[] BotReceived = new long[RealmSlots];
             internal readonly long[] PlayerPaid = new long[RealmSlots];
@@ -80,6 +84,15 @@ namespace DOL.GS.CraftingEconomy
             public long SalesCopper(int realm) => Sums.SalesCopper[realm];
             public long SalesTax(int realm) => Sums.SalesTax[realm];
             public long SalesCrafted(int realm) => Sums.SalesCrafted[realm];
+            /// <summary>Issue #625: sales in a slot band (EconomyPulse.SlotBands).</summary>
+            public long SaleBandCount(int realm, int band) => Sums.SaleBandCount[realm * EconomyPulse.SlotBandCount + band];
+            /// <summary>Issue #625: the median price of a slot band's sales (of the first MaxSalePrices), 0 for none.</summary>
+            public long SaleBandMedian(int realm, int band)
+            {
+                List<long> prices = Sums.SaleBandPrices[realm * EconomyPulse.SlotBandCount + band];
+                lock (prices)
+                    return SupplyBuilder.Median(new List<long>(prices));
+            }
             public long BotPaid(int realm) => Sums.BotPaid[realm];
             public long BotReceived(int realm) => Sums.BotReceived[realm];
             public long PlayerPaid(int realm) => Sums.PlayerPaid[realm];
@@ -206,6 +219,12 @@ namespace DOL.GS.CraftingEconomy
             Interlocked.Add(ref sums.SalesTax[realm], tax);
             if (sale.Crafted)
                 Interlocked.Increment(ref sums.SalesCrafted[realm]);
+            int saleBand = realm * EconomyPulse.SlotBandCount + EconomyPulse.SlotBand(sale.ItemType);
+            Interlocked.Increment(ref sums.SaleBandCount[saleBand]);
+            List<long> prices = sums.SaleBandPrices[saleBand];
+            lock (prices)
+                if (prices.Count < EconomyPulse.MaxSalePrices)
+                    prices.Add(sale.PriceCopper);
             if (AutonomousBotEconomy.TryParseOwnerId(sale.BuyerId, out long buyerBot))
             {
                 Interlocked.Add(ref sums.BotPaid[realm], sale.PriceCopper);

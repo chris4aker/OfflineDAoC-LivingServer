@@ -1314,7 +1314,7 @@ namespace DOL.GS;
             item.OwnerID = GetOwnerId(bot.DatabaseID);
             payment.Apply();
             var sale = new RealmExchangeSaleLedger.Sale((int)bot.Realm, item.Name, item.Count, price,
-                sellerId, payment.SellerName, GetOwnerId(bot.DatabaseID), bot.Name, DateTime.UtcNow, payment.TaxCopper, item.IsCrafted);
+                sellerId, payment.SellerName, GetOwnerId(bot.DatabaseID), bot.Name, DateTime.UtcNow, payment.TaxCopper, item.IsCrafted, item.Item_Type);
             if (!RealmExchangeSaleLedger.CommitSale(GameServer.Database, sale, item, bot.PersistentRecord, payment.Row))
             {
                 payment.Restore();

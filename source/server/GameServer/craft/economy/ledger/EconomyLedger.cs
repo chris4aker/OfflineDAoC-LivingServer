@@ -39,6 +39,8 @@ namespace DOL.GS.CraftingEconomy
         /// <summary>Replaceable by tests.</summary>
         public Func<DateTime> Clock { get; set; } = () => DateTime.UtcNow;
         public Action<string> Write { get; set; } = line => { if (Log.IsInfoEnabled) Log.Info(line); };
+        /// <summary>Issue #625: where the hourly ECONOMY_PULSE rows go (server.log; replaceable by tests).</summary>
+        public Action<string> PulseWrite { get; set; } = line => { if (Log.IsInfoEnabled) Log.Info(line); };
         public Func<bool> Enabled { get; set; } = () => CraftingEconomyProperties.ECONOMY_LEDGER_ENABLED;
         public IEconomySupplySource Source { get; set; } = new ServerSupplySource();
 
@@ -209,6 +211,8 @@ namespace DOL.GS.CraftingEconomy
             }
             if (rows && _previous != null)
             {
+                foreach (string line in EconomyPulse.Lines(endUtc, now, window))
+                    PulseWrite(line);
                 IReadOnlyList<OfflineEconomyLedgerRecord> records = EconomyLedgerSnapshot.Rows(hours);
                 if (records.Count > 0)
                     Source.WriteRows(records);
@@ -313,7 +317,7 @@ namespace DOL.GS.CraftingEconomy
                 };
                 if (realm == 0 || item.SellPrice <= 0 || RealmExchangeExpiry.IsExpired(item, utcNow))
                     continue;
-                builder.Listing(realm, item.SellPrice, AutonomousBotEconomy.TryParseOwnerId(item.OwnerID, out _));
+                builder.Listing(realm, item.SellPrice, AutonomousBotEconomy.TryParseOwnerId(item.OwnerID, out _), item.Item_Type);
             }
             for (int realm = 1; realm <= 3; realm++)
                 builder.Crafters(realm, BotCrafters.Roster.InRealm((eRealm)realm).Count());
