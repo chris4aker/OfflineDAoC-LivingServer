@@ -75,6 +75,12 @@ namespace DOL.GS
             bool assembledParty = _groupDirective?.IsDynamic == true &&
                                   !AutonomousBotGroupCoordinator.IsAssemblyPhase(_groupDirective.Phase);
             if (assembledParty && _groupDirective.Leader != bot) return false;
+            // #598 C: a battleground trip's leader takes the members with it; a member beside its leader is taken along
+            // (it does not plan a teleport of its own), and one away from it travels alone.
+            bool tripParty = _groupDirective?.BattlegroundTrip == true;
+            if (tripParty && TripLeaderBeside(bot) != null) return false;
+            bool tripLeader = tripParty && _groupDirective.Leader == bot;
+            assembledParty |= tripLeader;
             long now = GameLoop.GameLoopTime;
 
             if (_townPort != null && now - _townPortActiveTick > TownPortIdleDropMilliseconds)
@@ -183,8 +189,9 @@ namespace DOL.GS
             }
 
             // Everyone goes together: the assembled party gathers on the teleporter first.
-            GameBot[] party = assembledParty
-                ? bot.Group.GetMembersInTheGroup().OfType<GameBot>().Where(member => member.IsAlive).ToArray()
+            GameBot[] party = assembledParty && bot.Group != null
+                ? bot.Group.GetMembersInTheGroup().OfType<GameBot>().Where(member => member.IsAlive &&
+                    (!tripLeader || member.CurrentRegion == bot.CurrentRegion)).ToArray()
                 : [bot];
             GameBot[] present = party.Where(member => member.CurrentRegion == bot.CurrentRegion &&
                                                       member.IsWithinRadius(port.Porter, TownPortPartyRadius)).ToArray();

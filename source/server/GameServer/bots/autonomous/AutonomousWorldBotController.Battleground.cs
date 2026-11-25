@@ -40,6 +40,9 @@ namespace DOL.GS
             }
             if (bot.CurrentRegionID != bracket.RegionId)
             {
+                // #598 C: on a group's battleground trip a member walks with its leader, who takes the party through.
+                if (!BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) && TripLeaderBeside(bot) is { } tripLeader)
+                    return FollowTripLeader(bot, bracket, tripLeader, "Following {0} to the battleground");
                 GameLocation entry = BattlegroundBrackets.BotArrival(bracket, bot.Realm);
                 return TravelToBattleground(bot, bracket, new(entry.X, entry.Y, entry.Z));
             }
@@ -321,7 +324,10 @@ namespace DOL.GS
             }
 
             // Own (or no) central keep: a third of the realm's bots hold its walls, the rest roam the field.
-            if (central != null && bot.DatabaseID % 3 == 0)
+            // A battleground trip's group takes its leader's part (defend or roam) together.
+            long partId = _groupDirective?.BattlegroundTrip == true && _groupDirective.Leader != null
+                ? _groupDirective.Leader.DatabaseID : bot.DatabaseID;
+            if (central != null && partId % 3 == 0)
             {
                 if (bot.GetDistanceTo(new Point3D(central.X, central.Y, central.Z)) > 3500)
                     return TravelToDefensivePost(bot, central, new(central.X, central.Y, central.Z));
@@ -431,6 +437,9 @@ namespace DOL.GS
 
         private bool RoamBattleground(GameBot bot, BattlegroundBrackets.Bracket bracket, AbstractGameKeep central)
         {
+            // #598 C: a battleground trip's members roam with their leader.
+            if (TripLeaderBeside(bot) is { } tripLeader && bot.IsWithinRadius(tripLeader, TripRoamWithLeaderRadius))
+                return FollowTripLeader(bot, bracket, tripLeader, "Roaming the battleground with {0}");
             long now = GameLoop.GameLoopTime;
             Vector3 current = new(bot.X, bot.Y, bot.Z);
             if (!_battlegroundRoamPoint.HasValue || now >= _nextBattlegroundRoamTick ||
@@ -982,6 +991,34 @@ namespace DOL.GS
                                bot.IsWithinRadius(door, 450) && GameServer.ServerRules.IsAllowedToAttack(bot, door, true))
                 .OrderBy(bot.GetDistanceTo)
                 .FirstOrDefault();
+        }
+
+        /// <summary>A trip member farther than this from its leader in the battleground roams on its own until they meet again.</summary>
+        public const int TripRoamWithLeaderRadius = 6_000;
+
+        /// <summary>
+        /// #598 C: the bot's battleground-trip leader when the bot is a member (not the leader) and the leader is alive in the
+        /// same region; otherwise null (the bot then travels or fights on its own, as any battleground bot).
+        /// </summary>
+        private GameBot TripLeaderBeside(GameBot bot) =>
+            _groupDirective?.BattlegroundTrip == true && _groupDirective.Leader is { IsAlive: true } leader && leader != bot &&
+            leader.Group == bot.Group && leader.CurrentRegionID == bot.CurrentRegionID
+                ? leader : null;
+
+        /// <summary>Walks in the trip leader's formation, as a party member follows its leader.</summary>
+        private bool FollowTripLeader(GameBot bot, BattlegroundBrackets.Bracket bracket, GameBot leader, string activity)
+        {
+            Vector3 center = leader.IsMoving ? AutonomousGroupMotion.PredictLeader(leader) : new(leader.X, leader.Y, leader.Z);
+            Vector3 formation = AutonomousBotGroupCoordinator.FormationPoint(bot, center, false);
+            if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), formation) < FormationFollowReach * FormationFollowReach)
+            {
+                AutonomousGroupPace.CatchUp(bot, Vector3.Distance(new(bot.X, bot.Y, bot.Z), formation), GameLoop.GameLoopTime);
+                AutonomousGroupFormationFollow.Ensure(bot, leader, center, formation, false);
+            }
+            else
+                IssuePath(bot, formation, retargetWhileMoving: true);
+            SetBattlegroundStatus(bot, bracket, string.Format(activity, leader.Name), $"The group goes as one, led by {leader.Name}");
+            return true;
         }
 
         /// <summary>Teleporter trip into the bracket's battleground (walking to a realm teleporter first when needed).</summary>

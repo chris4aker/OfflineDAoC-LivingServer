@@ -287,9 +287,9 @@ public class UT_AutonomousBotDecisionEngine
 
         Assert.Multiple(() =>
         {
-            Assert.That(level20To49, Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(4, 4, 1, 1))); // 35/35/15/15 default (2026-11-16)
+            Assert.That(level20To49, Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(3, 3, 2, 2))); // 30/30/15/25 default (1.2.3, #598)
             Assert.That(level50, Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(2, 4, 4)));
-            Assert.That(AutonomousObjectiveAssignments.TargetForLowLevelPopulation(10), Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(6, 4, 0)));
+            Assert.That(AutonomousObjectiveAssignments.TargetForLowLevelPopulation(10), Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(6, 3, 0, 1))); // 55/35/0/10 (1.2.3)
             Assert.That(AutonomousObjectiveAssignments.TargetForLowLevelPopulation(3), Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(2, 1, 0)));
             Assert.That(AutonomousObjectiveAssignments.TargetForPopulation(2, false), Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(1, 1, 0)));
             Assert.That(AutonomousObjectiveAssignments.TargetForPopulation(2, true), Is.EqualTo(new AutonomousObjectiveAssignments.Allocation(0, 1, 1)));

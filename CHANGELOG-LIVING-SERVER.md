@@ -13,6 +13,22 @@ Older entries below keep the names they were written with.
 Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-11-22). **Tests only** unless an entry says
 otherwise.
 
+**Fuller battlegrounds** (#598, owner 2026-11-24: options A and C, no floor; `UT_BattlegroundFill598`). **Tests only.**
+- **New default goal shares:** Levels 1-19 go from 60/40/0/0 to 55/35/0/10 (solo/group/RvR/battlegrounds), so 10% of the
+  15-19 bots go to Abermenai, and Levels 20-49 from 35/35/15/15 to 30/30/15/25, so 25% of the 20-35 bots go to their
+  battleground. Level 50 is unchanged. The Bot Goals tab now states the defaults (read from the code), and the
+  Battlegrounds tab's text says 10% and 25%.
+- **One-time upgrade:** a saved `bot-goals.json` that still holds exactly the 1.2.2 defaults moves to the new ones once
+  (`LivingServerSettingsUpgrade` 1.2.3, its first file change; the log says "bot-goals.json set to the new defaults"). A
+  file with any other values (the owner's own) is never changed, and a world with no file already uses the new defaults.
+- **Whole bot groups go to a battleground together:** at the end of its shared PvE task a bot-only group whose members are
+  all in one bracket, alive, out of combat and without nearly full bags may take the battleground goal together. Its
+  members count against the band's battleground share: it goes only when the open slots hold the whole group, with a single
+  bot's odds. The leader leads: the members follow it to the realm teleporter and it takes the gathered party through; inside,
+  the realm's wave, rally and storm count them like any battleground bot, and while roaming they keep with the leader. The
+  trip lasts 45-120 minutes; then the group breaks up and each member sells and trains as at any task's end. Log:
+  `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP`, `..._LEADER`, `..._ENDED`.
+
 **From OpenDAoC upstream: combat, XP, crafting and items** (port package P3; GPL-3.0 code by Baptiste Marie and Telchar
 of OpenDAoC-Core, ported by hand onto our tree; `UT_UpstreamCombatPort123`). **Tests only.**
 - **Group XP when someone dings on the kill** (`6ac049c6e`): the group's highest level is taken before any XP is paid, so
