@@ -238,13 +238,13 @@ public static class BotGroupInvite
         long now = GameLoop.GameLoopTime;
         if (Considering.TryGetValue(bot.DatabaseID, out var held) && now - held.At < BotInviteDecision.AfterFightCapMs + 30_000)
         {
-            ChatUtil.SendSystemMessage(player, held.Player == player.Name
+            Notice(player, bot, held.Player == player.Name
                 ? $"You have already invited {bot.Name}."
                 : $"{bot.Name} is considering another invitation.");
             return held.Player == player.Name;
         }
         BotInviteDecision.Decision decision = Consult(bot, player, out BotInviteDecision.Activity activity, out bool friend);
-        ChatUtil.SendSystemMessage(player, $"You have invited {bot.Name} to join your group.");
+        Notice(player, bot, $"You have invited {bot.Name} to join your group.");
         AutonomousLivingServer.LogInviteResult(player, bot,
             $"considering verdict={decision.Verdict} activity={activity} delay_ms={decision.DelayMs} gap={bot.Level - player.Level}");
         switch (decision.Verdict)
@@ -258,7 +258,7 @@ public static class BotGroupInvite
                 int pause = 2_500 + Random.Shared.Next(4_000);
                 AutonomousLivingServer.Later(bot, pause, () => player.Client != null, () =>
                 {
-                    ChatUtil.SendSystemMessage(player, DeclinedMessage(bot.Name));
+                    Notice(player, bot, DeclinedMessage(bot.Name));
                     AutonomousLivingServer.LogInviteResult(player, bot, $"declined verdict={decision.Verdict}");
                 });
                 AutonomousLivingServer.InviteAnswer(bot, player, line, pause + 1_000 + Random.Shared.Next(2_500));
@@ -304,7 +304,7 @@ public static class BotGroupInvite
                 if (GameLoop.GameLoopTime - since < BotInviteDecision.AfterFightCapMs)
                     return BotInviteDecision.AfterFightPollMs;
                 Considering.TryRemove(bot.DatabaseID, out _);
-                ChatUtil.SendSystemMessage(player, DeclinedMessage(bot.Name));
+                Notice(player, bot, DeclinedMessage(bot.Name));
                 AutonomousLivingServer.LogInviteResult(player, bot, "declined verdict=FightTooLong");
                 AutonomousLivingServer.InviteAnswer(bot, player, BotInviteDecision.FightTooLongLine(Random.Shared), 500, whileFighting: true);
             }
@@ -330,13 +330,24 @@ public static class BotGroupInvite
         {
             AutonomousLivingServer.LogInviteResult(player, bot, $"failed reason={why}");
             if (why == "player_group")
-                ChatUtil.SendSystemMessage(player, $"{bot.Name} could not join your group.");
+                Notice(player, bot, $"{bot.Name} could not join your group.");
             else
-                ChatUtil.SendSystemMessage(player, DeclinedMessage(bot.Name));
+                Notice(player, bot, DeclinedMessage(bot.Name));
             return;
         }
         Join(player, bot, narrate: false);
     }
+
+    /// <summary>
+    /// The system-window line that carries a gamebot's own answer to the player's invite ("X declines your invitation."): it
+    /// leaves through the say gate like the bot's tells (#475), heard by the inviting player only.
+    /// </summary>
+    private static void Notice(GamePlayer player, GameBot bot, string text) =>
+        BotSayGate.Say(new BotSayGate.Utterance("system", bot.Name, bot.Realm, text, player.Name) { Body = bot, Listeners = [player] }, said =>
+        {
+            ChatUtil.SendSystemMessage(player, said);
+            return said;
+        });
 
     /// <summary>Forgets every invitation being answered (tests).</summary>
     public static void ResetConsidering() => Considering.Clear();
