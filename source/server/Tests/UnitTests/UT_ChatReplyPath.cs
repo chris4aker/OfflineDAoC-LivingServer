@@ -51,7 +51,9 @@ public class UT_ChatReplyPath
         };
         Assert.That(AutonomousChatKnowledge.TryAnswer(ports, "where is the warrior trainer?", out string answer), Is.True);
         Assert.That(answer, Is.EqualTo("the trainer in jordheim"));
-        Assert.That(steps, Is.EqualTo(new[] { "world", "trainer" }), "how far is asked only for a how-far question; the world before the trainer");
+        // #482: a trainer question is a question of the lookup's trainer type, so the trainer alone is asked (precedence by
+        // question type, not by call order): how far and the world are not asked for it.
+        Assert.That(steps, Is.EqualTo(new[] { "trainer" }), "a trainer question asks the trainer alone");
     }
 
     [Test]

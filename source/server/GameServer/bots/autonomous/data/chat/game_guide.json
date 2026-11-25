@@ -111,7 +111,7 @@
   {
    "id": "classadvice",
    "when": " (which|what|best|good|easiest|strongest|fun|funnest|good solo|best solo) (class|classes|caster|casters|tank|tanks|healer|healers|melee|toon|char|alt) (to|for|is|are|should|in) | (class|caster|tank|healer|melee) (is )?(the )?(best|strongest|easiest) | should i (roll|play|make|go|pick) (a |an )?[a-z]+ (or|vs) | (worth|good) (rolling|playing) | (is|are) (a |an )?[a-z]+s? (good|any good|ok|decent|strong|weak) (solo|soloers?|for solo|at solo) | (good|any good|ok|decent) solo | solo well | (best|good|easiest) (to )?solo| (class|classes) (solos|solo) (best|well|good|easiest) | solos best ",
-   "unless": " (are you|r u|are u|you play|u play|your class|ur class|you are|u are) "
+   "unless": " (are you|r u|are u|you play|u play|your class|ur class|you are|u are) | (are|is) (they|them|it|he|she|those|these|that|this) "
   },
   {
    "id": "ra",
@@ -197,7 +197,7 @@
    "lines": [
     "its the broker in {capital}, put stuff up and buy what others posted. /tc ports you there",
     "the realm's market in {capital}, /tc takes you to it",
-    "player market in {capital}, type /tc to go there"
+    "the market everyone posts to in {capital}, type /tc to go there"
    ],
    "source": "commands/playercommands/TeleportToExchangeCommand.cs (/tc); README (the Realm Exchange)"
   },
@@ -209,9 +209,9 @@
     " (where|wheres|how do i get|how to get|find) "
    ],
    "lines": [
-    "type /tc and it ports you right to the broker",
-    "/tc ports you straight there",
-    "just type /tc, it takes you to it"
+    "in {capital}, type /tc and it ports you right to it",
+    "/tc ports you there, its the broker in {capital}",
+    "its the broker in {capital}, just type /tc and it takes you there"
    ],
    "source": "commands/playercommands/TeleportToExchangeCommand.cs"
   },
@@ -1248,7 +1248,7 @@
     " (solo|solos|soloing|soloer|soloers) "
    ],
    "lines": [
-    "cabalists and necros solo best here, the pet takes the hits",
+    "a cabalist or a necro solos best here, the pet takes the hits",
     "necro or cabalist, anything with a pet",
     "pet classes, cabby or necro, theurgs are good too"
    ],
@@ -1278,7 +1278,7 @@
    "lines": [
     "enchanters and animists, the pets do it",
     "an ench or an animist, pets make it easy",
-    "mentalists can pet too, but ench is the solo king"
+    "rangers solo ok too, but ench is the solo king"
    ],
    "source": "the classes' pet spell lines (playerclasses)"
   },

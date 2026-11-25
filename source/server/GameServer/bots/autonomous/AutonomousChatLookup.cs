@@ -479,7 +479,7 @@ public static class AutonomousChatLookup
         ["bub"] = "a bubble, a tenth of your xp bar", ["bubble"] = "a tenth of the xp bar", ["bubs"] = "bubbles, tenths of the xp bar",
         ["mp"] = "masterpiece, a 100% quality craft", ["af"] = "armor factor, how much armor a piece has", ["conc"] = "concentration, what spec buffs cost",
         ["kiting"] = "running from a mob while you hit it from range", ["kite"] = "keep running and hit it from range", ["twink"] = "a lowbie in gear way above his level",
-        ["baf"] = "bring a friend, a mob that pulls its buddies with it", ["otw"] = "on the way", ["omw"] = "on my way", ["uti"] = "utility, how much the bonuses on an item add up to",
+        ["baf"] = "bring a friend, a mob that pulls its buddies with it", ["otw"] = "on the way", ["omw"] = "on my way", ["uti"] = "utility, how much the bonuses on an item add up to",   // promise: none (what "omw" means, not a promise)
         ["sc"] = "spellcraft, gems on crafted gear", ["aoe"] = "area effect, hits everything around", ["ae"] = "area effect, hits everything around",
         ["dot"] = "damage over time", ["dd"] = "direct damage, a nuke", ["cc"] = "crowd control, mez root stun", ["nuke"] = "a big direct damage spell",
         ["gtg"] = "got to go", ["ttyl"] = "talk to you later", ["wb"] = "welcome back", ["inv"] = "invite", ["rdy"] = "ready", ["debuff"] = "a spell that lowers a stat",

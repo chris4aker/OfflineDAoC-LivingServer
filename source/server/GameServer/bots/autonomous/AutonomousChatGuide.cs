@@ -158,7 +158,7 @@ public static class AutonomousChatGuide
             return Pick(random, $"spellcrafters make them. the gem bases are at {r.Gems} in {cap}",
                 $"get a spellcrafter to make them, or buy bases from {r.Gems} in {cap} and learn sc",
                 $"crafted by spellcrafters. check the exchange in {cap} too");
-        if (Has(t, @" (tools?|kits?|sewing kit|planing tool|smiths? hammers?|hammers?) "))
+        if (Has(t, @" (tools?|kits?|sewing kit|planing tool|smiths? hammers?) "))   // a bare "hammer" is a weapon (UT_ChatGuide)
             return Pick(random, $"merchant in {cap}, {r.Tools} has the kits. about 30s, a sewing kit is 2s",
                 $"{r.Tools}, a merchant in {cap}, sells the craft kits and hammers", $"the craft supply merchant in {cap}, {r.Tools}");
         if (Has(t, @" (materials?|mats|supplies|metal bars|bars|thread|boards|leather squares?|cloth squares?) "))

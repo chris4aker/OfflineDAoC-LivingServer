@@ -156,7 +156,10 @@ DigitalBox98 and the DOL team), keeping the Living Server bot rules. `UT_Upstrea
   groups, money, item terms, typing how-tos, binding, the vault, kill tasks, realm abilities, crafting, what to do at 50, and
   Living Server's own features (/hire, how many companions, the Realm Exchange and /tc, /spawn, /raid, /invites, /stables,
   /lswhy, the realm raids, the launcher's bot buttons). "can i do muire tomb at 11" no longer says "fine" two levels under its
-  range. `UT_ChatKnowledgeLookup`. Bench (this branch, local Release build): BENCH_LINE
+  range. `UT_ChatKnowledgeLookup`. Bench (this branch, local Release build, on #585 and
+  origin/main): fresh lines 215 of 262 good (82.1%, was 157, 59.9%), holdout 59 of 78 (75.6%, was 34, 43.6%), the code set
+  490 of 527 (93.0%, was 89.8%), the whole bench 705 of 789 (89.4%, was 79.8%); wrong answers in the fresh lines 4 to 0,
+  silence where an answer was due 100 to 57; non-answers stay 0. The ratchet is tightened to these numbers.
 - **A tell that says where you are gets where the bot is, not "lol"** (the owner's game, 2026-11-23: an invite from too far,
   the bot's "in avalon marsh atm, inv me when ur close :)", the player's "I'm by camp station", and the bot's "lol"). The
   tell read as a grinding remark (the word "camp"), no grinding reply fitted, and the short answer for a tell ended on a
