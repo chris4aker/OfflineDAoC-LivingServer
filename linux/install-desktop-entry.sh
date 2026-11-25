@@ -9,6 +9,8 @@
 # clone's start-offline-daoc.sh with that folder, so run it again if you move the clone or the game folder. A
 # WINEPREFIX set when you run this is kept in the entry; otherwise the start script's own default applies.
 set -euo pipefail
+# A set CDPATH makes cd go somewhere else for a relative folder and print it, which would end up in the paths below.
+unset CDPATH
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ID="offline-daoc-living-server"
@@ -16,8 +18,12 @@ DATA="${XDG_DATA_HOME:-$HOME/.local/share}"
 APPS="$DATA/applications"
 ICONS="$DATA/icons/hicolor"
 
+# GNOME finds icons in your home folder without an icon cache, and a cache made here goes stale when other apps add
+# icons without updating it. So an existing cache is kept current, but none is created.
 refresh() {
-  command -v gtk-update-icon-cache >/dev/null && gtk-update-icon-cache -q -t "$ICONS" 2>/dev/null || true
+  if [[ -f "$ICONS/icon-theme.cache" ]] && command -v gtk-update-icon-cache >/dev/null; then
+    gtk-update-icon-cache -q -t "$ICONS" 2>/dev/null || true
+  fi
   command -v update-desktop-database >/dev/null && update-desktop-database -q "$APPS" 2>/dev/null || true
 }
 
@@ -36,6 +42,12 @@ GAME="${1:-${ODAOC_GAME:-$HOME/OfflineDAoC/game}}"
 GAME="$(cd "$GAME" 2>/dev/null && pwd)" || { echo "No game folder at ${1:-${ODAOC_GAME:-$HOME/OfflineDAoC/game}}" >&2; exit 1; }
 [[ -f "$GAME/runtime/OfflineDAoC.exe" ]] || { echo "$GAME has no runtime/OfflineDAoC.exe: is it the game folder?" >&2; exit 1; }
 
+# A newline in a value would start a new line (a new key) in the entry, so paths with control characters are refused.
+plain() { [[ "$2" != *[[:cntrl:]]* ]] || { echo "The $1 has a control character (such as a newline) in it: $(printf '%q' "$2")" >&2; exit 1; }; }
+plain "script folder" "$HERE"
+plain "game folder" "$GAME"
+plain "WINEPREFIX" "${WINEPREFIX:-}"
+
 # Desktop-entry Exec quoting: each argument in double quotes, with \ " ` $ escaped by a backslash.
 quote() { local s="$1"; s="${s//\\/\\\\}"; s="${s//\"/\\\"}"; s="${s//\`/\\\`}"; s="${s//\$/\\\$}"; printf '"%s"' "$s"; }
 # Exec also expands %-codes, so a literal % is written %%. The file's own string escaping is undone before that
@@ -46,11 +58,6 @@ START="$(exec_arg "$HERE/start-offline-daoc.sh")"
 if [[ -n "${WINEPREFIX:-}" ]]; then
   START="env $(exec_arg "WINEPREFIX=$WINEPREFIX") $START"
 fi
-
-for icon in "$HERE"/icons/hicolor/*/apps/"$ID".*; do
-  size="$(basename "$(dirname "$(dirname "$icon")")")"
-  install -D -m 0644 "$icon" "$ICONS/$size/apps/$(basename "$icon")"
-done
 
 mkdir -p "$APPS"
 tmp="$(mktemp --suffix=.desktop "$APPS/.$ID.XXXXXX")"
@@ -68,6 +75,11 @@ while IFS= read -r line; do
 done <"$HERE/$ID.desktop" >"$tmp"
 chmod 0644 "$tmp"
 if command -v desktop-file-validate >/dev/null; then desktop-file-validate "$tmp"; fi
+# The icons go in only once the entry is known to be good, so a failed run leaves nothing half installed.
+for icon in "$HERE"/icons/hicolor/*/apps/"$ID".*; do
+  size="$(basename "$(dirname "$(dirname "$icon")")")"
+  install -D -m 0644 "$icon" "$ICONS/$size/apps/$(basename "$icon")"
+done
 mv -f "$tmp" "$APPS/$ID.desktop"
 trap - EXIT
 refresh
