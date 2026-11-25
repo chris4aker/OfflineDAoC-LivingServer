@@ -230,7 +230,8 @@ build's).
 Not applied by any script; the owner sets them under Settings → Branches (or Rules):
 - require a pull request before merging, with no required review (a single maintainer couldn't merge otherwise);
 - require the status checks `server`, `launcher`, `encounter-catalog`, `new-client` and `versions` (build-and-test) to
-  pass (`encounter-catalog` checks the epic encounter catalog, `source/tools/tests` and the changelog fragments);
+  pass (`encounter-catalog` checks the epic encounter catalog, `source/tools/tests` and the changelog fragments; what
+  each check gates, and which jobs only report, is in [CI.md](CI.md));
 - block force pushes and block deletion;
 - let the owner (repository admin) bypass, for hotfixes.
 

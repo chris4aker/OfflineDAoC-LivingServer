@@ -1,47 +1,47 @@
-UT_AllFrontierKeepRoutes
-UT_AnimistInstalledCatalog
-UT_AuditHotspotProbe
-UT_AuditedDungeonInstalledMesh
-UT_Classic165SpawnRestoration
-UT_CrauchonResponseRoutes
-UT_CurrentDungeonGoalRoutes
-UT_DragonEncounterAdds
-UT_DragonLairProbe
-UT_DragonRallyRoute
-UT_DungeonProofGenerator
-UT_ExchangePlacementNavigation
-UT_ExpeditionHubFailures
-UT_ExpeditionInteriorCapacity
-UT_FloorAtPointsProbe
-UT_FrontierSupplyMerchants
-UT_IarnwoodCornerProbe
-UT_InstalledClassicMeleeAudit
-UT_InstalledKeepRoutes
-UT_InstalledPorterWaiting
-UT_KeepDoorNavmeshProbe
-UT_LongRunNavigationProbe
-UT_NavGapProbe
-UT_PathProbe
-UT_PlayerTravelInstalledMesh
-UT_PortalExitProbe
-UT_RealmEventAuditReadOnly
-UT_RealmEventNavigation
-UT_RealmEventRecords
-UT_RealmExchangeRelocation
-UT_RealmRaidRecruitment
-UT_RealmRepairNavigation
-UT_RecentHibDungeonSeams
-UT_September11HotspotProbe
-UT_SeptemberFourteenInstalledNavigation
-UT_SeptemberNineInstalledRoutes
-UT_SeptemberTenRouteProbe
-UT_SeptemberThirteenInstalledRoutes
-UT_SiPortalPlatformProbe
-UT_SiegeFiringPositions
-UT_SiegeIncidentNavigation
-UT_SiegeMerchantCatalog
-UT_SneezerCampNavigation
-UT_StarterDungeonInstalledMesh
-UT_XagaFloorProbe
-UT_ZoneBoundaryLeakProbe
-UT_ZoneStepProbe
+# Server test classes CI's server job leaves out (build-and-test.yml, "Test server"). One per line:
+#   UT_Name  # why it can't run in CI (#issue)
+# Every class here reads the installed game files (navmeshes, the played or release database, captured route logs), which
+# are never in Git, and is also [Explicit], so it runs only when named, on the owner's PC. Issue #619 tracks the list: an
+# entry comes off when its class no longer needs installed files. A synthetic test never goes here; fix it, or quarantine
+# it as UT_Name.Method with its own issue (docs/CI.md, "Excluded tests"). source/tools/ci_test_results.py checks the format.
+UT_AllFrontierKeepRoutes  # installed frontier route simulation; read only: needs the installed game files, [Explicit] (#619)
+UT_AnimistInstalledCatalog  # read-only installed spell/template catalog check: needs the installed game files, [Explicit] (#619)
+UT_AuditHotspotProbe  # read-only installed-navmesh hotspot probe: needs the installed game files, [Explicit] (#619)
+UT_AuditedDungeonInstalledMesh  # read-only installed dungeon coverage audit: needs the installed game files, [Explicit] (#619)
+UT_CrauchonResponseRoutes  # read-only installed Crauchon response incident: needs the installed game files, [Explicit] (#619)
+UT_CurrentDungeonGoalRoutes  # read-only installed native routes for every current ordinary dungeon goal: needs the installed game files, [Explicit] (#619)
+UT_DragonLairProbe  # reads installed navigation meshes only: needs the installed game files, [Explicit] (#619)
+UT_DungeonProofGenerator  # generates navigation proofs from the installed navmesh: needs the installed game files, [Explicit] (#619)
+UT_ExchangePlacementNavigation  # reads the installed capital navmeshes only: needs the installed game files, [Explicit] (#619)
+UT_ExpeditionHubFailures  # read-only reproduction of captured expedition routes: needs the installed game files, [Explicit] (#619)
+UT_ExpeditionInteriorCapacity  # read-only installed epic interior formation check: needs the installed game files, [Explicit] (#619)
+UT_FloorAtPointsProbe  # navmesh floor probe tool: needs the installed game files, [Explicit] (#619)
+UT_IarnwoodCornerProbe  # navmesh corner probe tool: needs the installed game files, [Explicit] (#619)
+UT_InstalledClassicMeleeAudit  # read-only installed Classic style and poison catalog audit: needs the installed game files, [Explicit] (#619)
+UT_InstalledKeepRoutes  # read-only installed keep navigation: needs the installed game files, [Explicit] (#619)
+UT_InstalledPorterWaiting  # read-only installed teleporter mesh check: needs the installed game files, [Explicit] (#619)
+UT_KeepDoorNavmeshProbe  # read-only installed-navmesh keep probe: needs the installed game files, [Explicit] (#619)
+UT_LongRunNavigationProbe  # requires OFFLINE_DAOC_NAV_ROOT; reads local meshes only: needs the installed game files, [Explicit] (#619)
+UT_NavGapProbe  # navmesh gap analysis tool: needs the installed game files, [Explicit] (#619)
+UT_PathProbe  # navmesh path probe tool: needs the installed game files, [Explicit] (#619)
+UT_PlayerTravelInstalledMesh  # read-only installed navmesh and database probes; never starts the server: needs the installed game files, [Explicit] (#619)
+UT_PortalExitProbe  # installed navmesh read-only: needs the installed game files, [Explicit] (#619)
+UT_RealmEventAuditReadOnly  # read-only captured route diagnostics, never edits meshes or game state: needs the installed game files, [Explicit] (#619)
+UT_RealmEventNavigation  # read-only installed raid entrance and interior route proofs: needs the installed game files, [Explicit] (#619)
+UT_RealmExchangeRelocation  # read-only installed-navmesh realm exchange proof: needs the installed game files, [Explicit] (#619)
+UT_RealmRepairNavigation  # installed navigation read-only repair probes: needs the installed game files, [Explicit] (#619)
+UT_RecentHibDungeonSeams  # read-only installed Hibernian dungeon exterior route proof: needs the installed game files, [Explicit] (#619)
+UT_September11HotspotProbe  # read-only installed hotspot navigation checks: needs the installed game files, [Explicit] (#619)
+UT_SeptemberFourteenInstalledNavigation  # read-only installed September 14 incident probes: needs the installed game files, [Explicit] (#619)
+UT_SeptemberNineInstalledRoutes  # read-only current installed routing proof: needs the installed game files, [Explicit] (#619)
+UT_SeptemberTenRouteProbe  # installed read-only route evidence: needs the installed game files, [Explicit] (#619)
+UT_SeptemberThirteenInstalledRoutes  # read-only installed route probes: needs the installed game files, [Explicit] (#619)
+UT_SiPortalPlatformProbe  # sI portal platform probe tool: needs the installed game files, [Explicit] (#619)
+UT_SiegeFiringPositions  # read-only installed keep firing-position verification: needs the installed game files, [Explicit] (#619)
+UT_SiegeIncidentNavigation  # read-only installed keep-approach incident checks: needs the installed game files, [Explicit] (#619)
+UT_SiegeMerchantCatalog  # read-only installed siege merchant catalog probe: needs the installed game files, [Explicit] (#619)
+UT_SneezerCampNavigation  # reads the installed Domnann navmesh: needs the installed game files, [Explicit] (#619)
+UT_StarterDungeonInstalledMesh  # read-only installed starter-dungeon mesh proof: needs the installed game files, [Explicit] (#619)
+UT_XagaFloorProbe  # navmesh floor probe tool: needs the installed game files, [Explicit] (#619)
+UT_ZoneBoundaryLeakProbe  # navmesh zone boundary leak probe tool: needs the installed game files, [Explicit] (#619)
+UT_ZoneStepProbe  # zone step probe tool: needs the installed game files, [Explicit] (#619)

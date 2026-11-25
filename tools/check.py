@@ -56,7 +56,9 @@ CHECKS: list[tuple[str, str]] = [
 # Workflow Python commands that do not run here, by script, with the reason.
 NOT_LOCAL: dict[str, str] = {
     "tools/newclient-compat/installed_check.py": "needs Godot and the 0.37 release commit (new-client job)",
-    "source/tools/chat_audit.py": "reads the transcript the server tests write (dotnet)",
+    "source/tools/chat_audit.py": "reads the transcripts the server tests write (dotnet; the report: chat audit job)",
+    # Its own tests (source/tools/tests/test_ci_test_results.py) run here; the CI lines read what dotnet test wrote.
+    "source/tools/ci_test_results.py": "reads the .trx results and the files the dotnet tests write (server, launcher jobs)",
     "tools/bot-voices/eval/evening_read.py": "reads the evenings the server tests write (dotnet)",
     "tools/bot-voices/eval/score_bench.py": "reads the bench replies the server tests write (dotnet)",
 }
