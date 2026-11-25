@@ -39,6 +39,29 @@ namespace DOL.GS
         private static int _doorHoldsSinceReport;
         private PathVisualization _pathVisualization;
 
+        // Off-mesh links (ladders, jumps; ports of OpenDAoC-Core 9071ad689, c2ab4a2e6 and b693fee89). Monsters, guards and pets
+        // only: gamebots and companions have their own link handling (NavLinkLeg, IsVerticalLink, the Darkness Falls climbs).
+        public const int OffMeshCommitTimeoutMilliseconds = 10_000;
+        private Vector3? _offMeshCommitEnd;
+        private long _offMeshCommitUntil;
+        private bool _replotDeferred;
+
+        // Cross-zone bridging (ports of OpenDAoC-Core 799b4f507 and 152b87aec), for the same NPCs. Gamebots keep the zone
+        // itinerary and its seam crossings (#421, #538, #550).
+        public const int CrossZoneRetargetDistance = 1_000;
+        private Zone _lastZone;
+        private Vector3 _lastGoal;
+        private Vector3? _crossZoneEntryPoint;
+        private CrossZonePlan _crossZone;
+
+        private sealed record CrossZonePlan(Zone Zone, Vector3 Target, bool Found, Vector3 Exit, Vector3 Entry, long Until);
+
+        /// <summary>Whether this NPC uses the upstream off-mesh link commit and the cross-zone bridge (not a gamebot).</summary>
+        public static bool UsesUpstreamLinkAndZoneRules(GameNPC owner) => owner is not GameBot;
+
+        /// <summary>True while the NPC is crossing an off-mesh link (it is off the walkable mesh; replots wait).</summary>
+        public bool IsJumping => _offMeshCommitEnd.HasValue;
+
         public static EDtPolyFlags[] DefaultFilters => PathfindingProvider.Instance.DefaultFilters;
         public static EDtPolyFlags[] BlockingDoorAvoidanceFilters => PathfindingProvider.Instance.BlockingDoorAvoidanceFilters;
 
@@ -53,6 +76,12 @@ namespace DOL.GS
             _activePath.Clear();
             _calculationBuffer.Clear();
             _lastTarget = Vector3.Zero;
+            _offMeshCommitEnd = null;
+            _replotDeferred = false;
+            _lastZone = null;
+            _lastGoal = Vector3.Zero;
+            _crossZoneEntryPoint = null;
+            _crossZone = null;
             PathfindingStatus = PathfindingStatus.NotSet;
             ForceReplot = true;
         }
@@ -69,7 +98,7 @@ namespace DOL.GS
             return count;
         }
 
-        public bool ShouldPath(Zone zone, Vector3 target)
+        public bool ShouldPath(Zone zone, Vector3 target, Vector3? position = null)
         {
             if (zone == null || !zone.IsPathfindingEnabled)
                 return false;
@@ -77,11 +106,97 @@ namespace DOL.GS
             if ((Owner.Flags & (eFlags.FLYING | eFlags.SWIMMING)) != 0 || Owner is GameTaxi || Owner is GameTaxiBoat)
                 return false;
 
-            // Target is in a different zone (TODO: implement this maybe? not sure if really required).
-            if (Owner.CurrentRegion.GetZone((int) target.X, (int) target.Y) != zone)
-                return false;
+            // Target is in a different zone. Monsters, guards and pets path to the border and over it (799b4f507) when a
+            // crossing is found; otherwise, and for gamebots (their zone itinerary plans crossings), they walk straight as before.
+            if (!zone.IsPointInZone(target))
+                return UsesUpstreamLinkAndZoneRules(Owner) && PrepareCrossZone(zone, position ?? new(Owner.X, Owner.Y, Owner.Z), target);
 
             return true;
+        }
+
+        private bool PrepareCrossZone(Zone zone, Vector3 position, Vector3 target)
+        {
+            long now = GameLoop.GameLoopTime;
+            CrossZonePlan plan = _crossZone;
+
+            // 152b87aec: while walking to the border, keep the crossing found for a target still outside the zone, so the exit
+            // point doesn't shift with every step the target takes (NPCs stuttered and spun at the border). A failed search
+            // is retried after a while; a target that moved far is planned again.
+            if (plan != null && plan.Zone == zone && plan.Target.IsInRange(target, CrossZoneRetargetDistance) &&
+                (plan.Found || now < plan.Until))
+                return plan.Found;
+
+            bool found = TryGetZoneExitPoint(zone, position, target, out Vector3 exit, out Vector3 entry);
+            _crossZone = new(zone, target, found, exit, entry, now + RecentFailureMilliseconds);
+            return found;
+        }
+
+        /// <summary>
+        /// The crossing on the straight line to an out-of-zone target (799b4f507): a binary search for the border, then a
+        /// point on each side snapped to its zone's navmesh.
+        /// </summary>
+        private bool TryGetZoneExitPoint(Zone zone, Vector3 position, Vector3 target, out Vector3 inZonePoint, out Vector3 neighborZonePoint)
+        {
+            const float SNAP_EXTENT = 128f;
+            const float ZONE_BORDER_HEIGHT_RANGE = 4000f;
+
+            FindBorderCrossing(zone, position, target, out inZonePoint, out neighborZonePoint);
+
+            Vector3? snapped = PathfindingProvider.Instance.GetClosestPoint(zone, inZonePoint, SNAP_EXTENT, SNAP_EXTENT, ZONE_BORDER_HEIGHT_RANGE, DefaultFilters);
+
+            if (!snapped.HasValue)
+                return false;
+
+            inZonePoint = snapped.Value;
+            Zone neighborZone = Owner.CurrentRegion?.GetZone((int) neighborZonePoint.X, (int) neighborZonePoint.Y);
+
+            if (neighborZone == null || neighborZone == zone || !neighborZone.IsPathfindingEnabled)
+                return false;
+
+            snapped = PathfindingProvider.Instance.GetClosestPoint(neighborZone, neighborZonePoint, SNAP_EXTENT, SNAP_EXTENT, ZONE_BORDER_HEIGHT_RANGE, DefaultFilters);
+
+            if (!snapped.HasValue)
+                return false;
+
+            neighborZonePoint = snapped.Value;
+            return true;
+        }
+
+        /// <summary>
+        /// The border between <paramref name="position"/> (in the zone) and <paramref name="target"/> (outside it) on the
+        /// straight line, and a point 8 units inside and outside it (pure apart from the zone's bounds).
+        /// </summary>
+        public static void FindBorderCrossing(Zone zone, Vector3 position, Vector3 target, out Vector3 inZonePoint, out Vector3 neighborZonePoint)
+        {
+            const float BORDER_PRECISION = 0.5f;
+            const float ZONE_BORDER_MARGIN = 8f;
+
+            Vector3 inside = position;
+            Vector3 outside = target;
+
+            while ((outside - inside).LengthSquared() > BORDER_PRECISION * BORDER_PRECISION)
+            {
+                Vector3 mid = (inside + outside) * 0.5f;
+
+                if (zone.IsPointInZone(mid))
+                    inside = mid;
+                else
+                    outside = mid;
+            }
+
+            Vector3 crossing = outside - inside;
+            float distance = crossing.Length();
+
+            if (distance <= 0)
+            {
+                inZonePoint = inside;
+                neighborZonePoint = outside;
+                return;
+            }
+
+            Vector3 direction = crossing / distance;
+            inZonePoint = inside - direction * ZONE_BORDER_MARGIN;
+            neighborZonePoint = outside + direction * ZONE_BORDER_MARGIN;
         }
 
         private PathfindingStatus CalculatePath(PathBuffer pathBuffer, Zone zone, Vector3 position, Vector3 target, EDtPolyFlags[] filters,
@@ -226,17 +341,53 @@ namespace DOL.GS
         public bool TryGetNextNode(Zone zone, Vector3 position, Vector3 target, out Vector3? nextNode,
             bool allowPartialContinuation = true)
         {
-            // Check if we can reuse our path. We assume that we ourselves never "suddenly" warp to a completely different pos.
-            if (ForceReplot || !_lastTarget.IsInRange(target, MIN_TARGET_DIFF_REPLOT_DISTANCE))
+            bool upstreamRules = UsesUpstreamLinkAndZoneRules(Owner);
+            Vector3 goal = target;
+            Vector3? entry = null;
+
+            if (upstreamRules && _crossZone is { Found: true } crossing && crossing.Zone == zone && !zone.IsPointInZone(target))
             {
-                PathfindingStatus status = CalculatePath(_activePath, zone, position, target, DefaultFilters, true);
+                goal = crossing.Exit;
+                entry = crossing.Entry;
+            }
+
+            // Check if we can reuse our path. We assume that we ourselves never "suddenly" warp to a completely different pos.
+            // Gamebots: unchanged (the target moved). Others: the path's goal moved (the target, or the border crossing toward
+            // it) or the NPC entered another zone.
+            bool replot = ForceReplot || (upstreamRules
+                ? !_lastGoal.IsInRange(goal, MIN_TARGET_DIFF_REPLOT_DISTANCE) || zone != _lastZone
+                : !_lastTarget.IsInRange(target, MIN_TARGET_DIFF_REPLOT_DISTANCE));
+
+            // 9071ad689: no replot while crossing an off-mesh link; the NPC is off the walkable mesh, a path from there finds
+            // nothing and it stood on the ladder. The order is honoured once it is across.
+            if (upstreamRules && UpdateOffMeshLinkState(position))
+            {
+                if (replot)
+                    _replotDeferred = true;
+
+                replot = false;
+                ForceReplot = false;
+            }
+            else if (_replotDeferred)
+            {
+                _replotDeferred = false;
+                replot = true;
+            }
+
+            if (replot)
+            {
+                _offMeshCommitEnd = null;
+                PathfindingStatus status = CalculatePath(_activePath, zone, position, goal, DefaultFilters, true);
+                _lastGoal = goal;
+                _lastZone = zone;
+                _crossZoneEntryPoint = entry;
                 UpdatePathState(status, target);
             }
 
             // Check if any doors on the path have become closed and can't be opened via interaction.
             // If so, replot with door avoidance filters. A detour that just failed is not searched again until
             // the target moves or a few seconds pass; the NPC holds as it did after the failure.
-            if (TryFindClosedUnopenableDoor(_activePath.Doors, out GameDoorBase closedDoor))
+            if (!IsJumping && TryFindClosedUnopenableDoor(_activePath.Doors, out GameDoorBase closedDoor))
             {
                 long now = GameLoop.GameLoopTime;
                 if (ShouldRetryDoorDetour(now, _doorDetourFailedUntil, _doorDetourFailedTarget, target) &&
@@ -273,6 +424,14 @@ namespace DOL.GS
 
             if (_activePath.Nodes.Count == 0)
             {
+                // 799b4f507: the path to the zone border is walked; the last step crosses it, and the next call plans on in
+                // the new zone.
+                if (_crossZoneEntryPoint.HasValue && PathfindingStatus is PathfindingStatus.PathFound)
+                {
+                    nextNode = _crossZoneEntryPoint;
+                    return true;
+                }
+
                 // A buffer-limited corridor is still the SAME movement order.
                 // Extend it here, before the mover emits a stop. Do not wake the
                 // entire brain (pet buffs, training, camp/group planning, etc.).
@@ -371,9 +530,55 @@ namespace DOL.GS
                          $"door={door?.Name} doorId={door?.DoorId} doorAt={door?.X},{door?.Y},{door?.Z}");
         }
 
+        /// <summary>
+        /// Updates the off-mesh link commit and returns whether the NPC is crossing a link. It commits when it stands at a
+        /// link's start (c2ab4a2e6: not earlier, when the link is merely the next node) and is released at the link's far
+        /// end, or after <see cref="OffMeshCommitTimeoutMilliseconds"/> (a Living Server guard: a mob knocked off a ladder
+        /// would otherwise never replot again).
+        /// </summary>
+        private bool UpdateOffMeshLinkState(Vector3 position)
+        {
+            if (_offMeshCommitEnd.HasValue)
+            {
+                if ((_offMeshCommitEnd.Value - position).LengthSquared() <= NODE_REACHED_DISTANCE * NODE_REACHED_DISTANCE ||
+                    GameLoop.GameLoopTime >= _offMeshCommitUntil)
+                    _offMeshCommitEnd = null;
+
+                return _offMeshCommitEnd.HasValue;
+            }
+
+            if (!_activePath.Nodes.TryPeek(0, out WrappedPathfindingNode next) || !IsJumpNode(next))
+                return false;
+
+            if ((next.Position - position).LengthSquared() > NODE_REACHED_DISTANCE * NODE_REACHED_DISTANCE)
+                return false;
+
+            _offMeshCommitEnd = _activePath.Nodes.Peek(ResolveOffMeshLinkEndIndex()).Position;
+            _offMeshCommitUntil = GameLoop.GameLoopTime + OffMeshCommitTimeoutMilliseconds;
+            return true;
+        }
+
+        private int ResolveOffMeshLinkEndIndex()
+        {
+            int count = _activePath.Nodes.Count;
+
+            if (count <= 0)
+                return 0;
+
+            int firstNonJump = 0;
+
+            while (firstNonJump < count && IsJumpNode(_activePath.Nodes.Peek(firstNonJump)))
+                firstNonJump++;
+
+            return firstNonJump < count ? firstNonJump : count - 1;
+        }
+
+        private static bool IsJumpNode(WrappedPathfindingNode node) => (node.Flags & EDtPolyFlags.Jump) != 0;
+
         private bool TryApplyAlternativePath(Zone zone, Vector3 position, Vector3 target)
         {
-            PathfindingStatus altStatus = CalculatePath(_calculationBuffer, zone, position, target, BlockingDoorAvoidanceFilters);
+            Vector3 goal = _crossZoneEntryPoint.HasValue ? _lastGoal : target;
+            PathfindingStatus altStatus = CalculatePath(_calculationBuffer, zone, position, goal, BlockingDoorAvoidanceFilters);
 
             // Stop here if the alternative path isn't complete.
             // This prevents NPCs from trying to get closer to their target by walking to the other side of a keep.
@@ -465,9 +670,11 @@ namespace DOL.GS
                     // Owner 2026-10-07: bots kept working the border keep door levers, so the player could not use
                     // them. Bots walk through openable doors anyway; only other NPCs open them on the way.
                     if (Owner is GameBot) continue;
+                    // Port of OpenDAoC-Core 15e7e3196: an NPC passing an open door keeps it open (GameDoor.Open extends its
+                    // timer), so it doesn't close on the NPC's back while it walks through.
                     foreach (GameDoorBase door in doors)
                     {
-                        if (door.CanBeOpenedViaInteraction && door.State is not eDoorState.Open)
+                        if (door.CanBeOpenedViaInteraction)
                             door.Open();
                     }
                 }
@@ -489,6 +696,14 @@ namespace DOL.GS
 
         public bool TryGetClosestReachableNode(Zone zone, Vector3 position, Vector3 target, out Vector3? node)
         {
+            // b693fee89: never touch the active path while crossing an off-mesh link (it corrupted the link state and left
+            // NPCs stuck on ladders).
+            if (IsJumping)
+            {
+                node = null;
+                return false;
+            }
+
             if (ForceReplot || !_lastTarget.IsInRange(target, MIN_TARGET_DIFF_REPLOT_DISTANCE))
             {
                 CalculatePath(_activePath, zone, position, target, DefaultFilters);

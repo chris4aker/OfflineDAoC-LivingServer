@@ -269,6 +269,8 @@ namespace DOL.GS
         /// </summary>
         public PathPoint ScriptedPath { get; private set; }
         public bool IsReturningToSpawnPoint { get; private set; }
+        /// <summary>The NPC is crossing an off-mesh link (Pathfinder.IsJumping; monsters, guards and pets only).</summary>
+        public bool IsCrossingOffMeshLink => _pathfinder?.IsJumping == true;
         public int RoamingRange { get; set; }
         public long MovementStartTick { get; set; }
         public long MovementElapsedTicks => IsMoving ? GameLoop.GameLoopTime - MovementStartTick : 0;
@@ -920,7 +922,12 @@ namespace DOL.GS
             }
             Zone zone = Owner.CurrentZone;
 
-            if (!_pathfinder.ShouldPath(zone, destination))
+            // Port of OpenDAoC-Core 799b4f507: the zone the NPC really is in (GameObject.X/Y lag a tick behind), for the NPCs
+            // that bridge zone borders. Gamebots are unchanged.
+            if (Pathfinder.UsesUpstreamLinkAndZoneRules(Owner) && Owner.CurrentRegion?.GetZone((int) _ownerPosition.X, (int) _ownerPosition.Y) is Zone actual)
+                zone = actual;
+
+            if (!_pathfinder.ShouldPath(zone, destination, _ownerPosition))
             {
                 if (IsPersistentAutonomous(this))
                     PauseMovement(this, destination);
@@ -1268,7 +1275,9 @@ namespace DOL.GS
             Vector3 relative = targetPos - _ownerPosition;
             float distanceSquared = relative.LengthSquared();
 
-            if (distanceSquared > MaxFollowDistance * MaxFollowDistance)
+            // Port of OpenDAoC-Core c59f4ba94: squared as a long. A follow with no limit (int.MaxValue: scouts running to their
+            // friends) overflowed to 1 and stopped at once.
+            if (distanceSquared > (long) MaxFollowDistance * MaxFollowDistance)
             {
                 StopFollowing();
                 return 0;
