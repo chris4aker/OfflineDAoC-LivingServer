@@ -20,7 +20,7 @@ public static class ForkBuildInfo
     /// package folder (LivingServer-&lt;name&gt;), its zip and BUILD-INFO.txt, Setup's exe and the launcher's own build are
     /// all named from it, and the launchers' update check compares it with the release tag (1.1.4-beta &lt; 1.2 &lt; 1.2.1 &lt; 1.2.2).
     /// </summary>
-    public const string BuildName = "1.2.2";
+    public const string BuildName = "1.2.3";
 
     /// <summary>
     /// The Offline DAoC release(s) this build installs on; the installer checks the game against them. Comma-separated
