@@ -886,9 +886,8 @@ namespace DOL.GS
                 if (effectA.IsConcentrationEffect() && effectB.IsConcentrationEffect())
                     return false;
 
-                // Only one movement speed buff is allowed, otherwise it allows falling back to another speed buff after being put in combat.
-                if (effectA.EffectType is eEffect.MovementSpeedBuff && effectB.EffectType is eEffect.MovementSpeedBuff)
-                    return false;
+                // Upstream (ff5449555) also forbids two movement speed buffs from coexisting. Living Server keeps a weaker singer's
+                // speed song as the disabled fallback (UT_BotMobileSongs): combat cancels every speed buff anyway.
 
                 if (!effectA.SpellHandler.Spell.IsHelpful || !effectB.SpellHandler.Spell.IsHelpful)
                     return false;
