@@ -168,6 +168,7 @@ internal sealed partial class MainForm
             ("dungeon-midgard-dodens", "Dodens Gruva", "Midgard", "Epic dungeon"),
             ("dungeon-hibernia-tursuil", "Tur Suil", "Hibernia", "Epic dungeon"),
             ("dungeon-hibernia-marfach", "Marfach Caverns", "Hibernia", "Epic dungeon"),
+            ("dungeon-hibernia-fomor", "Fomor City", "Hibernia", "Epic dungeon"),
         })
         {
             if (current.Any(row => row.Id == id || row.Kind == kind && row.Name == name && row.Owner == realm)) continue;

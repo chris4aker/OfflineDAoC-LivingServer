@@ -580,7 +580,7 @@
    "finals": [
     "Orylle"
    ],
-   "line": 61
+   "line": 64
   },
   {
    "id": "dungeon-albion-avalon",
@@ -592,7 +592,7 @@
    "finals": [
     "DuraekEmpowered"
    ],
-   "line": 62
+   "line": 65
   },
   {
    "id": "dungeon-albion-crystal",
@@ -604,7 +604,7 @@
    "finals": [
     "Xanxicar"
    ],
-   "line": 63
+   "line": 66
   },
   {
    "id": "dungeon-albion-corrupt",
@@ -617,7 +617,7 @@
     "AidonTheArchwizard",
     "LordGildas"
    ],
-   "line": 64
+   "line": 67
   },
   {
    "id": "dungeon-midgard-trollheim",
@@ -629,7 +629,7 @@
    "finals": [
     "Nosdoden"
    ],
-   "line": 66
+   "line": 69
   },
   {
    "id": "dungeon-midgard-iarnvidiur",
@@ -641,7 +641,7 @@
    "finals": [
     "Iarnvidiur"
    ],
-   "line": 67
+   "line": 70
   },
   {
    "id": "dungeon-midgard-dodens",
@@ -653,7 +653,7 @@
    "finals": [
     "SpiritmasterAros"
    ],
-   "line": 68
+   "line": 71
   },
   {
    "id": "dungeon-hibernia-tursuil",
@@ -665,7 +665,7 @@
    "finals": [
     "Balor"
    ],
-   "line": 69
+   "line": 72
   },
   {
    "id": "dungeon-hibernia-marfach",
@@ -679,7 +679,19 @@
     "ChieftainCaimheul",
     "Avartack"
    ],
-   "line": 70
+   "line": 73
+  },
+  {
+   "id": "dungeon-hibernia-fomor",
+   "name": "Fomor City",
+   "realm": "Hibernia",
+   "region": 180,
+   "bossType": "Myrddraxis",
+   "suggestedBots": 56,
+   "finals": [
+    "Myrddraxis"
+   ],
+   "line": 77
   },
   {
    "id": "dragon-albion",
@@ -691,7 +703,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 575
+   "line": 600
   },
   {
    "id": "dragon-midgard",
@@ -703,7 +715,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 576
+   "line": 601
   },
   {
    "id": "dragon-hibernia",
@@ -715,7 +727,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 577
+   "line": 602
   },
   {
    "id": "epic-albion",
@@ -727,7 +739,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 578
+   "line": 603
   },
   {
    "id": "epic-midgard",
@@ -740,7 +752,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 579
+   "line": 604
   },
   {
    "id": "epic-hibernia",
@@ -752,7 +764,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 580
+   "line": 605
   },
   {
    "id": "summoners-albion",
@@ -764,7 +776,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 581
+   "line": 606
   },
   {
    "id": "summoners-midgard",
@@ -776,7 +788,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 582
+   "line": 607
   },
   {
    "id": "summoners-hibernia",
@@ -788,7 +800,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 583
+   "line": 608
   },
   {
    "id": "darkness-albion",
@@ -800,7 +812,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 584
+   "line": 609
   },
   {
    "id": "darkness-midgard",
@@ -812,7 +824,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 585
+   "line": 610
   },
   {
    "id": "darkness-hibernia",
@@ -824,7 +836,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 586
+   "line": 611
   },
   {
    "id": "openworld-albion-greenknight",
@@ -836,7 +848,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 2960
+   "line": 2985
   },
   {
    "id": "openworld-albion-coliath",
@@ -848,7 +860,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 2962
+   "line": 2987
   },
   {
    "id": "openworld-albion-emthoro",
@@ -860,7 +872,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 2964
+   "line": 2989
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -872,7 +884,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 2967
+   "line": 2992
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -884,7 +896,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 2969
+   "line": 2994
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -896,7 +908,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 2971
+   "line": 2996
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -908,7 +920,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 2973
+   "line": 2998
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -920,7 +932,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 2975
+   "line": 3000
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -932,7 +944,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 2977
+   "line": 3002
   },
   {
    "id": "openworld-midgard-revenant",
@@ -944,7 +956,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 2979
+   "line": 3004
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -956,7 +968,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 2981
+   "line": 3006
   },
   {
    "id": "openworld-hibernia-evern",
@@ -968,7 +980,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 2984
+   "line": 3009
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -980,7 +992,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 2986
+   "line": 3011
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -992,7 +1004,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 2988
+   "line": 3013
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1004,7 +1016,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 2990
+   "line": 3015
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1016,7 +1028,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 2992
+   "line": 3017
   }
  ],
  "neutralObjectives": {
@@ -1963,7 +1975,7 @@
    "templateTetherRange": 2000,
    "raids": [],
    "raidAi": "no raid",
-   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region).",
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region). 1.2.3 (#414): no raid, as in the period. She hosts the Albion level 50 epic (Academy_50, 'Symbol of the Broken'); Allakhazam's walkthrough: 'Do not attack Morgana. She will not do anything during this attack', and the fight (two named demons and their minions) 'can take as little as 6 people'. The event starts only for a player on the quest's step. A bot raid on her would need her changed (a spawn and an attackable phase): the owner's call.",
    "verified": true
   },
   {
@@ -8529,7 +8541,7 @@
     }
    ],
    "raidAi": "generic dungeon route",
-   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged.",
+   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged. 1.2.3 (#414, owner 2026-11-24): no raid, by design. Period sources: Mythic's Grab Bag (11 January 2008) 'This mob is not killable. It has no loot. You have to be sent there.'; the Camelot Herald (relayed 11 April 2002) 'The Behemoth will now stay in his own area' (Legion had been summoning him); Allakhazam comments 2002-2009 (a Legion raid's two ported groups got him to about 35% several times and gave up; a claimed kill is hearsay). Bots keep away from him and tell him as a legend.",
    "verified": true
   },
   {
@@ -10041,8 +10053,13 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "dungeon-hibernia-fomor",
+     "role": "named"
+    }
+   ],
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.",
    "aiTactics": {
     "spreadRadius": 350,
@@ -10185,8 +10202,13 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "dungeon-hibernia-fomor",
+     "role": "named"
+    }
+   ],
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
    "aiTactics": {
     "summary": "Close in: he takes damage only from within 300, so every raider, casters too, fights from within 220-280 of him. His throw (four spots 465 above his floor) takes bots too since 1.2; they fall and walk back.",
     "since": "1.2"
@@ -10634,9 +10656,14 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
-   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
+   "raids": [
+    {
+     "id": "dungeon-hibernia-fomor",
+     "role": "final"
+    }
+   ],
+   "raidAi": "generic dungeon route + tactics (EpicEncounterTactics)",
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2.3 Fomor City raid (#414; tests only, not played): dungeon-hibernia-fomor, Hibernia, 56 raiders (the period's seven groups: Thredh's Fomor guide, Valmerwolf 2003, revised 2005), from Droighaid (the period's bind) or Aalid Feie. The shipped zone180.nav had three islands (the entrance with the outer ring and Krackenschtein; the second ring with Nogoribando; the inner ring with Anurigunda and Myrddraxis): the builder's three climb ladders north of Krackenschtein (the period's 'climb in two stages') and the way from the second ring in were cut from the floors beside them by cracks of 21-33 units. A content patch adds four two-way walk links (tools/fork-build/content-patches.json, AutonomousRealmRaid.FomorWalkLinks); probed with dfprobe, every Fomor named is reached and the corridor check is complete both ways. The named come in the period's order, Krackenschtein, Nogoribando, Anurigunda, then Myrddraxis (RaidNamedOrder, REALM_EXPEDITION_NAMED_ORDER): 'each ring's passage is guarded by a named'. No boss changed.",
    "aiTactics": {
     "blastThresholds": [
      80,
@@ -10757,8 +10784,13 @@
    ],
    "levelSource": "npc template",
    "templateTetherRange": 4500,
-   "raids": [],
-   "raidAi": "no raid",
+   "raids": [
+    {
+     "id": "dungeon-hibernia-fomor",
+     "role": "named"
+    }
+   ],
+   "raidAi": "generic dungeon route",
    "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.",
    "verified": true
   },

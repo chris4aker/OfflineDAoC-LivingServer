@@ -99,7 +99,7 @@ public class RealmEventsPresentationTests
         Assert.That(check.Checked, Is.True);
         Assert.That(Rows(grid).Length, Is.EqualTo(3));
         check.Checked = false;
-        Assert.That(Rows(grid).Length, Is.EqualTo(22)); // + Summoner's Hall, Darkness Falls and the raid dungeons for each realm
+        Assert.That(Rows(grid).Length, Is.EqualTo(23)); // + Summoner's Hall, Darkness Falls and the raid dungeons for each realm
         Assert.That(Field<bool>("_eventRequestPending"), Is.False);
     }
 
@@ -111,7 +111,7 @@ public class RealmEventsPresentationTests
         Assert.That(Rows(Field<DataGridView>("_rvrObjectivesGrid")), Is.Empty);
         Assert.That(Field<Button>("_eventStart").Enabled, Is.False);
         Field<CheckBox>("_eventActiveOnly").Checked = false;
-        Assert.That(Rows(Field<DataGridView>("_rvrObjectivesGrid")).Length, Is.EqualTo(21));
+        Assert.That(Rows(Field<DataGridView>("_rvrObjectivesGrid")).Length, Is.EqualTo(22));
     }
 
     [TestCase("Staging", 1800000L, "Staging 30:00")]
@@ -129,7 +129,7 @@ public class RealmEventsPresentationTests
     public void RealmTypeAndParticipantSearchFilterTheCorrectEvents()
     {
         var grid = Field<DataGridView>("_rvrObjectivesGrid");
-        Assert.That(Rows(grid).Length, Is.EqualTo(22));
+        Assert.That(Rows(grid).Length, Is.EqualTo(23));
         Field<ComboBox>("_eventRealm").SelectedItem = "Albion";
         Assert.That(Rows(grid).Select(r => Value(r,"Id")), Is.EquivalentTo(new[] { "dragon-albion", "epic-albion", "keep-1", "darkness-albion", "summoners-albion",
             "dungeon-albion-krondon", "dungeon-albion-avalon", "dungeon-albion-crystal", "dungeon-albion-corrupt" }));
@@ -217,11 +217,11 @@ public class RealmEventsPresentationTests
         Render();
         var grid = Field<DataGridView>("_rvrObjectivesGrid");
         var pve = Rows(grid).Where(row => (string)Value(row, "Kind") is "Dragon" or "Epic dungeon").ToArray();
-        Assert.That(pve.Length, Is.EqualTo(15));   // dragons, epic dungeons and the nine raid dungeons
-        Assert.That(pve.Select(row => Value(row, "Id")).Distinct().Count(), Is.EqualTo(15));
+        Assert.That(pve.Length, Is.EqualTo(16));   // dragons, epic dungeons and the ten raid dungeons (Fomor City since 1.2.3)
+        Assert.That(pve.Select(row => Value(row, "Id")).Distinct().Count(), Is.EqualTo(16));
         Assert.That(pve.All(row => (bool)Value(row, "IsCatalogOnly")), Is.True);
         Field<ComboBox>("_eventKind").SelectedItem = "Epic dungeon";
-        Assert.That(Rows(grid).Length, Is.EqualTo(12));
+        Assert.That(Rows(grid).Length, Is.EqualTo(13));
         grid.CurrentCell = grid.Rows[0].Cells[0];
         Assert.That(Field<Button>("_eventStart").Enabled, Is.False);
         Assert.That(Field<Button>("_eventReset").Enabled, Is.False);

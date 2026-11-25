@@ -130,7 +130,7 @@ its raid's log shows it lost again. #410, #412 and #414 stay open; 1.2.2's size 
 - ~~[#411](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/411) Trollheim: the bot raid times out before Nosdoden falls~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
 - [#412](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/412) The Green Knight and Marfoirwort: bot raids lose. **Open;** bigger Green Knight raid in 1.2.2 (#441).
 - ~~[#413](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/413) Legion: play his platform, the way down and his add waves~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
-- [#414](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/414) Behemoth, Fomor City and Morgana: no bot raid yet. **Open.**
+- [#414](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/414) Behemoth, Fomor City and Morgana: no bot raid yet. **Open.** 1.2.3: Fomor City has its raid (`dungeon-hibernia-fomor`, a zone180.nav walk-link patch and the period's named order; **tests only**, for the next sweep). Behemoth: no raid, by design (Mythic, 2008: "not killable"). Morgana: no raid, a quest host in the period too; a raid would need her changed (owner's call).
 - ~~[#415](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/415) Dragon fights fall apart partway (Golestandt, Cuuldurach)~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
 
 ## RvR and travel
@@ -264,8 +264,9 @@ bots only, at the game's own raid size:
   after two wipes (`c81eb5d`, `43c43aa`); won on test build 5. Dragon fights can fall apart partway.
 - **The Green Knight** and **Marfoirwort:** lost (`ccba364`).
 - **Legion:** some of his rules are in (his adds and heals are capped, wounded raiders step out of his reach), but the
-  raid does not play his platform, the way down or his add waves. **Behemoth** is never fought; **Fomor City** and
-  **Morgana** have no raid.
+  raid does not play his platform, the way down or his add waves. **Behemoth** is never fought (by design: Mythic,
+  2008, "This mob is not killable"); **Morgana** has no raid (a quest host); **Fomor City** has a raid since 1.2.3
+  (**tests only**).
 - **Xanxicar's stomp:** a realm learns him over its attempts. Still being tuned.
 
 **1.2.1:** the raid fixes in 1.2.1 come from these logs and from simulations, and are **tests only** until a raid is seen

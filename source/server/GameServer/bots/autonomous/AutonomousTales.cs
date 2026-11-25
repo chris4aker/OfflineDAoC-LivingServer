@@ -85,6 +85,8 @@ public static class AutonomousTales
         ["aros-the-spiritmaster"] = "dungeon-midgard-dodens", ["iarnvidiur"] = "dungeon-midgard-iarnvidiur", ["queen-kula"] = "epic",
         ["avartack-the-champion"] = "dungeon-hibernia-marfach", ["chieftain-caimheul"] = "dungeon-hibernia-marfach",
         ["balor"] = "dungeon-hibernia-tursuil",
+        // 1.2.3 (#414): Fomor City has a raid; its tale was raidless until then.
+        ["myrddraxis"] = "dungeon-hibernia-fomor",
         // The open-world raids (tales_more.lines, 2026-11-18). The five Wretches of Winter share one tale: its stem names one
         // of them, and LoreIdsForRaid matches the others by their shared schedule choice (RealmRaidOpenWorld.ChoiceOf).
         ["green-knight"] = "openworld-albion-greenknight", ["coliath"] = "openworld-albion-coliath",
@@ -97,10 +99,10 @@ public static class AutonomousTales
     };
 
     /// <summary>
-    /// Tales of a boss with no raid of its own (tales_more.lines): told on their own, the rumour after them always lore. Myrddraxis:
-    /// Fomor has no raid (its navmesh has no path to his chamber). Behemoth: the Darkness Falls raid's tale stays Legion's.
+    /// Tales of a boss with no raid of its own (tales_more.lines): told on their own, the rumour after them always lore.
+    /// Behemoth: the Darkness Falls raid's tale stays Legion's. Myrddraxis was here until 1.2.3, when Fomor City got its raid (#414).
     /// </summary>
-    public static readonly IReadOnlySet<string> RaidlessTales = new HashSet<string>(StringComparer.Ordinal) { "myrddraxis", "behemoth" };
+    public static readonly IReadOnlySet<string> RaidlessTales = new HashSet<string>(StringComparer.Ordinal) { "behemoth" };
 
     /// <summary>Whether a tale's raid is this raid: the same id, or one of the same open-world schedule choice (the Wretches).</summary>
     public static bool SameRaid(string taleRaid, string raidId) =>

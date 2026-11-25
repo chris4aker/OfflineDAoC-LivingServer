@@ -90,6 +90,10 @@ public static class RealmRaidMuster
         new("dungeon-hibernia-tursuil", "Aalid Feie", 181, 183, 32, 40, new(312698,352420,3573)),
         new("dungeon-hibernia-marfach", "Druim Cain", 200, 206, 47, 59, new(421782,485582,1824)),
         new("dungeon-hibernia-marfach", "Druim Ligen", 200, 207, 35, 51, new(334804,419842,5187)),
+        // Fomor City (1.2.3, #414): Droighaid, the period's bind ("bind at Droighaid ... head north from Droighaid and cut west",
+        // Thredh's Fomor guide), the healer as the centre; then Aalid Feie, the Tur Suil hub.
+        new("dungeon-hibernia-fomor", "Droighaid", 181, 182, 40, 44, new(378861,421343,5528)),
+        new("dungeon-hibernia-fomor", "Aalid Feie", 181, 183, 32, 40, new(312698,352420,3573)),
         // The open-world big bosses (Living Server 1.2, RealmRaidOpenWorld): a service settlement of the boss's realm in its
         // region, the nearest in the world database first (healer or stablemaster as the centre), then a hub another raid
         // already uses there. The first with a whole route to the staging ring is taken; none was walked on a navmesh yet.
