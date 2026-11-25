@@ -173,7 +173,9 @@ namespace DOL.GS
                 // #617 / #600 (FarmVibes): never a mezzed or breakably rooted enemy while a free one is in the fight, and no
                 // aggro pushed onto it (BotBrain.CrowdControlRespect): the bot takes the free one instead, never the gate
                 // while someone is free (FarmVibes' review 2).
+                GameLiving pickedBeforeControl = target; // #625: BG_TARGET_PICK notes a controlled pick passed over.
                 target = BattlegroundPickPastControl(bot, target);
+                bool skippedControlled = pickedBeforeControl != null && !ReferenceEquals(pickedBeforeControl, target);
                 target ??= FindReachableEnemyDoor(bot, central);
                 // A caster, archer or healer in the lord's fight takes its formation spot behind the melee first (1.2.2).
                 if (target is GuardLord formationLord && TakeLordFormation(bot, formationLord))
@@ -183,6 +185,9 @@ namespace DOL.GS
                 }
                 if (target != null)
                 {
+                    // #625: BG_TARGET_PICK for a new keep-assault pick (sampled; logs only).
+                    if (!ReferenceEquals(bot.TargetObject, target))
+                        BgTargetPickRows.Keep(bot, target, skippedControlled);
                     bot.StopMovingOnPath();
                     bot.StopMoving();
                     bot.TargetObject = target;

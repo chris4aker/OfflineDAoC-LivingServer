@@ -352,7 +352,11 @@ namespace DOL.GS.Spells
 
 			_halfwayCastChecked = true;
 
-			if (!Caster.IsBeingInterruptedByOther || !TryInterruptCaster(Caster.LastInterrupter))
+			bool lost = Caster.IsBeingInterruptedByOther && TryInterruptCaster(Caster.LastInterrupter);
+			// #625: the CAST_INTERRUPT row (sampled, logs only), from the decision just made.
+			CastInterruptRows.Observe(Caster, Spell, _castStartTick, _calculatedCastTime, lost, IsInterruptImmune);
+
+			if (!lost)
 				return false;
 
 			Caster.StartInterruptTimer(Caster.SpellSelfInterruptDuration, AttackData.eAttackType.Spell, Caster);

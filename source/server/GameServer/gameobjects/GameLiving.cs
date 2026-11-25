@@ -1899,7 +1899,11 @@ namespace DOL.GS
 					case eEffect.Mez:
 					{
 						if (removeMez)
+						{
+							// #625: the CC_BREAK row (logs only).
+							CcBreakRows.Broke(this, effect, ad);
 							effect.End();
+						}
 
 						break;
 					}
@@ -1909,6 +1913,8 @@ namespace DOL.GS
 							effect is ECSGameSpellEffect spellEffect &&
 							spellEffect.SpellHandler.Spell.SpellType is not eSpellType.UnbreakableSpeedDecrease and not eSpellType.PreventFlight)
 						{
+							// #625: the CC_BREAK row for a breakable root (Value >= 99; logs only).
+							CcBreakRows.Broke(this, effect, ad);
 							effect.End();
 						}
 
