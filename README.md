@@ -304,6 +304,7 @@ that repository and no longer download anything.
 
 - **Where to start:** [AGENTS.md](AGENTS.md) (also read by Claude as [CLAUDE.md](CLAUDE.md)) has
   the project rules.
+- **Contributing:** [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) covers access, claiming an issue, checks and merging.
 - **Guides:** [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) covers building and testing, and
   [docs/LLM-QUICKSTART.md](docs/LLM-QUICKSTART.md) covers customizing with your own AI.
 - **Where the code is:**

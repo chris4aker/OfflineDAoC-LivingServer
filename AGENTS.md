@@ -1,6 +1,7 @@
 # Offline DAoC — instructions for AI assistants and developers
 
-Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). Open work, with an issue for each item, is in [docs/OPEN-WORK.md](docs/OPEN-WORK.md). This file is also loaded by
+Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). Working from another account: also
+[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md). Open work, with an issue for each item, is in [docs/OPEN-WORK.md](docs/OPEN-WORK.md). This file is also loaded by
 Claude Code as `CLAUDE.md`.
 
 ## What this is
@@ -141,6 +142,9 @@ In a playable folder:
   - `reruns-owed`: a simulation, sweep or bench must be run again on the current build before its numbers can be
     quoted (e.g. after a rule changed under it).
   - Labels change as the issue moves: drop `tests-only` once a PC log shows it working, drop `needs-owner` once answered.
+- **Claim an issue before building it** (owner, 2026-11-25). Anyone outside the owner's own sessions claims the issue
+  (assign yourself, or comment "taking this") before starting work. Before building, every agent checks for an
+  existing claim, an open pull request or a branch for the issue ([docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)).
 - **Tell bot types apart.** Real players, companion bots and autonomous gamebots are different.
   Check which one a change affects.
 - **Don't start or deploy without permission.**
