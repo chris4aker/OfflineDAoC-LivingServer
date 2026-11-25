@@ -19,7 +19,8 @@ namespace DOL.GS.Tests
     [TestFixture]
     public class UT_NewcomerStream630
     {
-        private static readonly Stream.Settings On = new(true, 50, 6, true);
+        // The defaults the owner decided (2026-11-25): a floor of 75 and 10 an hour per realm at 1,000, scaled.
+        private static readonly Stream.Settings On = new(true, 75, 10, true);
 
         // ---- the floor and the rate --------------------------------------------------------------------------------
 
@@ -42,11 +43,11 @@ namespace DOL.GS.Tests
         public void ARealmTakesANewcomerOnlyBelowItsFloorAndAfterTheSpacing()
         {
             DateTime now = new(2026, 11, 25, 20, 0, 0, DateTimeKind.Utc);
-            var low = new Stream.RealmCount(eRealm.Albion, 1000, 49);
+            var low = new Stream.RealmCount(eRealm.Albion, 1000, 74);
             Assert.That(Stream.Due(low, On, null, now), Is.True);
-            Assert.That(Stream.Due(low with { Low = 50 }, On, null, now), Is.False, "at the floor");
-            Assert.That(Stream.Due(low, On, now.AddMinutes(-9), now), Is.False, "six an hour: ten minutes apart");
-            Assert.That(Stream.Due(low, On, now.AddMinutes(-10), now), Is.True);
+            Assert.That(Stream.Due(low with { Low = 75 }, On, null, now), Is.False, "at the floor");
+            Assert.That(Stream.Due(low, On, now.AddMinutes(-5), now), Is.False, "ten an hour: six minutes apart");
+            Assert.That(Stream.Due(low, On, now.AddMinutes(-6), now), Is.True);
             Assert.That(Stream.Due(low, On with { Newcomers = false }, null, now), Is.False);
             Assert.That(Stream.Due(low, On with { FloorAtBasis = 0 }, null, now), Is.False);
             Assert.That(Stream.Due(low, On with { PerHourAtBasis = 0 }, null, now), Is.False);
@@ -236,7 +237,7 @@ namespace DOL.GS.Tests
             var world = new List<Bot>();
             long nextId = 1;
             DateTime start = new(2026, 11, 25, 0, 0, 0, DateTimeKind.Utc);
-            // Owner 2026-11-25: a fresh world has almost no 50s. Per realm 1,000 gamebots: 20 in levels 1-19 (floor 50) and
+            // Owner 2026-11-25: a fresh world has almost no 50s. Per realm 1,000 gamebots: 20 in levels 1-19 (floor 75) and
             // 980 at 20-35, none at 50; a third of the 20-35s protected.
             foreach (eRealm realm in Stream.Realms)
                 for (int i = 0; i < 1000; i++)
@@ -284,18 +285,18 @@ namespace DOL.GS.Tests
             {
                 Assert.That(world.Count(b => !b.Row.IsRetired && b.Row.Realm == (int)realm), Is.EqualTo(1000), $"{realm}: the roster stays the same size");
                 List<DateTime> times = added[realm];
-                Assert.That(times, Has.Count.EqualTo(30), $"{realm}: 30 newcomers lift 20 lows to the floor of 50");
+                Assert.That(times, Has.Count.EqualTo(55), $"{realm}: 55 newcomers lift 20 lows to the floor of 75");
                 for (int i = 0; i < times.Count; i++)
-                    Assert.That(times.Count(t => t >= times[i] && t < times[i].AddHours(1)), Is.LessThanOrEqualTo(6), $"{realm}: at most 6 an hour");
-                Assert.That(world.Count(b => !b.Row.IsRetired && b.Row.Realm == (int)realm && b.Row.Level <= 19), Is.EqualTo(50), "stops at the floor");
+                    Assert.That(times.Count(t => t >= times[i] && t < times[i].AddHours(1)), Is.LessThanOrEqualTo(10), $"{realm}: at most 10 an hour");
+                Assert.That(world.Count(b => !b.Row.IsRetired && b.Row.Realm == (int)realm && b.Row.Level <= 19), Is.EqualTo(75), "stops at the floor");
             }
-            Assert.That(world, Has.Count.EqualTo(rows + 90), "every row is kept: newcomers added, nobody removed");
+            Assert.That(world, Has.Count.EqualTo(rows + 165), "every row is kept: newcomers added, nobody removed");
             Assert.That(world.Where(b => retiredIds.Contains(b.Row.BotId)).All(b => b.Items == 20 && b.Row.IsRetired), Is.True,
                 "retirees keep their items and stay in the records");
             Assert.That(world.Where(b => b.Excluded != Stream.Exclusion.None).Any(b => b.Row.IsRetired), Is.False, "no excluded bot retired");
             Assert.That(world.Where(b => b.Row.IsRetired).All(b => b.Row.Level is >= 20 and <= 35), Is.True,
                 "with no 50s, 20-35s retire, one per newcomer; never below 20");
-            Assert.That(retiredIds, Has.Count.EqualTo(90), "one retirement per newcomer");
+            Assert.That(retiredIds, Has.Count.EqualTo(165), "one retirement per newcomer");
         }
 
         // ---- rows ----------------------------------------------------------------------------------------------------
@@ -309,7 +310,7 @@ namespace DOL.GS.Tests
             var count = new Stream.RealmCount(eRealm.Albion, 1000, 31);
             string addedRow = Stream.AddedRow(count, On, row, 12);
             Assert.That(addedRow, Is.EqualTo($"POPULATION_NEWCOMER realm=Albion outcome=added id=77 class={identity.CharacterClass} " +
-                                             $"race={identity.Race} level=1 low=31 floor=50 roster=1000 per_hour=6 retired=12"));
+                                             $"race={identity.Race} level=1 low=31 floor=75 roster=1000 per_hour=10 retired=12"));
             Assert.That(addedRow, Does.Not.Contain(identity.Name));
             var retiree = new Stream.Candidate(12, eRealm.Albion, 7, 50, DateTime.UtcNow.AddHours(-30), true, Stream.Exclusion.None, 1,
                 Stream.GuildRole.Member);
@@ -317,7 +318,7 @@ namespace DOL.GS.Tests
             Assert.That(retiredRow, Does.StartWith("POPULATION_RETIRED realm=Albion id=12 class=Wizard level=50 online=1 idle_h=").And
                 .EndWith(" friends=1 guild=member score=-330 newcomer=77 candidates=300 excluded=leader:3,group:10 order=least_played_connected_idle"));
             Assert.That(Stream.HeldRow(count, On, "no_retiree", "0"),
-                Is.EqualTo("POPULATION_NEWCOMER realm=Albion outcome=held reason=no_retiree low=31 floor=50 roster=1000 per_hour=6 excluded=0"));
+                Is.EqualTo("POPULATION_NEWCOMER realm=Albion outcome=held reason=no_retiree low=31 floor=75 roster=1000 per_hour=10 excluded=0"));
         }
 
         // ---- settings ------------------------------------------------------------------------------------------------
@@ -334,16 +335,16 @@ namespace DOL.GS.Tests
                 .GroupBy(attribute => attribute.Key)
                 .ToDictionary(group => group.Key, group => group.First().DefaultValue);
             Assert.That(defaults["population_newcomers"], Is.EqualTo(true));
-            Assert.That(defaults["population_newcomer_floor"], Is.EqualTo(50));
-            Assert.That(defaults["population_newcomer_per_hour"], Is.EqualTo(6));
+            Assert.That(defaults["population_newcomer_floor"], Is.EqualTo(75));
+            Assert.That(defaults["population_newcomer_per_hour"], Is.EqualTo(10));
             Assert.That(defaults["population_retire"], Is.EqualTo(true));
             Assert.That((Properties.POPULATION_NEWCOMERS, Properties.POPULATION_NEWCOMER_FLOOR, Properties.POPULATION_NEWCOMER_PER_HOUR, Properties.POPULATION_RETIRE),
-                Is.EqualTo((true, 50, 6, true)), "the fields start at their defaults");
+                Is.EqualTo((true, 75, 10, true)), "the fields start at their defaults");
             Assert.That(Upgrade.Changes.Select(change => change.Key).Intersect(Keys), Is.Empty,
                 "new keys: a world from an earlier build has no row, so it takes the code default without an upgrade line");
             string release = File.ReadAllText(Path.Combine(SourceRoot(), "source/tools/release-server-settings.json"));
-            foreach ((string key, string value) in new[] { ("population_newcomers", "True"), ("population_newcomer_floor", "50"),
-                         ("population_newcomer_per_hour", "6"), ("population_retire", "True") })
+            foreach ((string key, string value) in new[] { ("population_newcomers", "True"), ("population_newcomer_floor", "75"),
+                         ("population_newcomer_per_hour", "10"), ("population_retire", "True") })
                 Assert.That(release, Does.Contain($"\"{key}\": \"{value}\""), key + " ships at its default");
         }
 

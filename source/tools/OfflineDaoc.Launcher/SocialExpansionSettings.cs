@@ -160,8 +160,8 @@ public sealed record SocialExpansionSettings
     public int NewcomerPerHour { get; init; } = DefaultNewcomerPerHour;
     /// <summary>Each newcomer pairs with a gamebot at level 20 or above that retires, kept and never deleted (population_retire). On by default.</summary>
     public bool PopulationRetire { get; init; } = true;
-    public const int DefaultNewcomerFloor = 50, MaxNewcomerFloor = 1000;
-    public const int DefaultNewcomerPerHour = 6, MaxNewcomerPerHour = 60;
+    public const int DefaultNewcomerFloor = 75, MaxNewcomerFloor = 1000;
+    public const int DefaultNewcomerPerHour = 10, MaxNewcomerPerHour = 60;
 
     public static readonly string[] UpkeepModes = ["classic", "light", "free"];
 
@@ -284,7 +284,7 @@ public sealed record SocialExpansionSettings
         ("bot_era_builds", "bots", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep the standard builds. Off: new bots get the standard builds too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS."),
         ("bot_era_class_shares", "bots", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class."),
         ("population_newcomers", "bots", "Server life: when a realm's autonomous gamebots in levels 1-19 fall below population_newcomer_floor, new level-1 gamebots join it (made like the launcher's + Lv.1 batch: the realm's 2003 class mix, never the custom class, no armour, a Classic or Shrouded Isles start), at most population_newcomer_per_hour an hour. Not during the startup ramp. Log: POPULATION_NEWCOMER. False: only the launcher adds bots."),
-        ("population_newcomer_floor", "bots", "The newcomer stream's floor: the gamebots a realm keeps in levels 1-19 at a roster of 1,000 in that realm, scaled to the realm's real roster (50 at 1,000 is 5 at 100 and 150 at 3,000; at least 1). 0 turns newcomers off."),
+        ("population_newcomer_floor", "bots", "The newcomer stream's floor: the gamebots a realm keeps in levels 1-19 at a roster of 1,000 in that realm, scaled to the realm's real roster (75 at 1,000 is 8 at 100 and 225 at 3,000; at least 1). 0 turns newcomers off."),
         ("population_newcomer_per_hour", "bots", "The newcomer stream's rate: at most this many new level-1 gamebots an hour per realm at a roster of 1,000 in that realm, scaled to the realm's roster (at least 1), spaced evenly. 0 turns newcomers off."),
         ("population_retire", "bots", "Server life: each newcomer is paired with a gamebot of its realm at level 20 or above (never below 20) that retires, the least-played and least-connected first, weighted toward the longest idle (fewer bot friends, no guild role, the least recent activity), so the realm's roster stays the same size. Never a bot guild leader, a bot in your guild, on your friends list, in a group or raid, trading, with an open craft order, busy or in your sight. A retired bot keeps its character, items and coin, is never deleted and never logs in again. Log: POPULATION_RETIRED. False: newcomers add to the roster."),
         ("bot_nolifer_buffbot_percent", "bots", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts."),

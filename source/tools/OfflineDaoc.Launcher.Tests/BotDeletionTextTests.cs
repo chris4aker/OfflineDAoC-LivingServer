@@ -57,11 +57,11 @@ public sealed class BotDeletionTextTests
     public void TheNewcomerStreamIsOnByDefault()
     {
         Assert.That((SocialExpansionSettings.Defaults.PopulationNewcomers, SocialExpansionSettings.Defaults.NewcomerFloor,
-            SocialExpansionSettings.Defaults.NewcomerPerHour, SocialExpansionSettings.Defaults.PopulationRetire), Is.EqualTo((true, 50, 6, true)));
+            SocialExpansionSettings.Defaults.NewcomerPerHour, SocialExpansionSettings.Defaults.PopulationRetire), Is.EqualTo((true, 75, 10, true)));
         Assert.That((SocialExpansionSettings.Recommended.PopulationNewcomers, SocialExpansionSettings.Recommended.PopulationRetire), Is.EqualTo((true, true)));
         var stored = SocialExpansionSettings.Defaults.ToStoredValues();
         Assert.That((stored["population_newcomers"], stored["population_newcomer_floor"], stored["population_newcomer_per_hour"], stored["population_retire"]),
-            Is.EqualTo(("True", "50", "6", "True")));
+            Is.EqualTo(("True", "75", "10", "True")));
         var off = SocialExpansionSettings.Defaults.AllOff();
         Assert.That((off.PopulationNewcomers, off.PopulationRetire, off.IsAllOff), Is.EqualTo((false, false, true)));
     }

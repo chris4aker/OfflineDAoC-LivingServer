@@ -41,8 +41,8 @@ namespace DOL.GS
 
         public const string NewcomerTag = "POPULATION_NEWCOMER";
         public const string RetiredTag = "POPULATION_RETIRED";
-        /// <summary>The realm roster the floor and the rate are given at (issue #630: "floor 50 per realm at a roster of
-        /// about 1,000 per realm").</summary>
+        /// <summary>The realm roster the floor and the rate are given at (owner decision 2026-11-25: a floor of 75 a realm in
+        /// levels 1-19 and up to 10 newcomers an hour, both at 1,000 a realm and scaled).</summary>
         public const int RosterBasis = 1000;
         /// <summary>The highest level counted as low (levels 1-19).</summary>
         public const int LowTop = 19;

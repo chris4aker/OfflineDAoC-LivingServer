@@ -2305,11 +2305,11 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "population_newcomers", "Server life: when a realm's autonomous gamebots in levels 1-19 fall below population_newcomer_floor, new level-1 gamebots join it (made like the launcher's + Lv.1 batch: the realm's 2003 class mix, never the custom class, no armour, a Classic or Shrouded Isles start), at most population_newcomer_per_hour an hour. Not during the startup ramp. Log: POPULATION_NEWCOMER. False: only the launcher adds bots.", true)]
 		public static bool POPULATION_NEWCOMERS = true;
 
-		[ServerProperty("bots", "population_newcomer_floor", "The newcomer stream's floor: the gamebots a realm keeps in levels 1-19 at a roster of 1,000 in that realm, scaled to the realm's real roster (50 at 1,000 is 5 at 100 and 150 at 3,000; at least 1). 0 turns newcomers off.", 50)]
-		public static int POPULATION_NEWCOMER_FLOOR = 50;
+		[ServerProperty("bots", "population_newcomer_floor", "The newcomer stream's floor: the gamebots a realm keeps in levels 1-19 at a roster of 1,000 in that realm, scaled to the realm's real roster (75 at 1,000 is 8 at 100 and 225 at 3,000; at least 1). 0 turns newcomers off.", 75)]
+		public static int POPULATION_NEWCOMER_FLOOR = 75;
 
-		[ServerProperty("bots", "population_newcomer_per_hour", "The newcomer stream's rate: at most this many new level-1 gamebots an hour per realm at a roster of 1,000 in that realm, scaled to the realm's roster (at least 1), spaced evenly. 0 turns newcomers off.", 6)]
-		public static int POPULATION_NEWCOMER_PER_HOUR = 6;
+		[ServerProperty("bots", "population_newcomer_per_hour", "The newcomer stream's rate: at most this many new level-1 gamebots an hour per realm at a roster of 1,000 in that realm, scaled to the realm's roster (at least 1), spaced evenly. 0 turns newcomers off.", 10)]
+		public static int POPULATION_NEWCOMER_PER_HOUR = 10;
 
 		[ServerProperty("bots", "population_retire", "Server life: each newcomer is paired with a gamebot of its realm at level 20 or above (never below 20) that retires, the least-played and least-connected first, weighted toward the longest idle (fewer bot friends, no guild role, the least recent activity), so the realm's roster stays the same size. Never a bot guild leader, a bot in your guild, on your friends list, in a group or raid, trading, with an open craft order, busy or in your sight. A retired bot keeps its character, items and coin, is never deleted and never logs in again. Log: POPULATION_RETIRED. False: newcomers add to the roster.", true)]
 		public static bool POPULATION_RETIRE = true;
