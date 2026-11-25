@@ -1,5 +1,7 @@
-# Builds the server and runs the tests that do not need installed game files.
-# Draft CI: first runs may need small fixes. See .github/ci-excluded-tests.txt.
+# Builds the server and runs the tests that do not need installed game files (.github/ci-excluded-tests.txt lists the ones
+# that do). Every step of a required job (versions, encounter-catalog, new-client, server, launcher) is a gate: it fails
+# when its check fails or when its input is missing. Report-only steps are in jobs whose name starts with "report"; none of
+# them is required. docs/CI.md lists each job and what it gates (issue #618).
 name: build-and-test
 
 on:
@@ -98,46 +100,28 @@ jobs:
         # SourceRevisionId stamps the commit into the build; the server logs it at startup (FORK_BUILD).
         run: dotnet build "source/server/Dawn of Light.sln" -c Release -p:SourceRevisionId=${{ github.sha }}
 
-      # Tests listed in .github/ci-excluded-tests.txt read the installed navmeshes and
-      # database (the /runtime/ folder, which is never in git). Run those on your own PC.
+      # Tests listed in .github/ci-excluded-tests.txt read the installed navmeshes and database (the /runtime/ folder, which
+      # is never in git); each entry says why and links its issue, or the filter step fails. Run those on your own PC.
       - name: Test server (without installed-game-file tests)
         shell: bash
         run: |
-          filter=""
-          while IFS= read -r name; do
-            name="${name%$'\r'}"
-            [ -z "$name" ] && continue
-            filter="${filter:+$filter&}FullyQualifiedName!~.$name"
-          done < .github/ci-excluded-tests.txt
-          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --logger "trx;LogFileName=server.trx"
+          filter=$(python source/tools/ci_test_results.py excluded-filter .github/ci-excluded-tests.txt)
+          dotnet test source/server/Tests/Tests.csproj -c Release --no-build ${filter:+--filter "$filter"} --results-directory TestResults --logger "trx;LogFileName=server.trx"
 
-      # Puts the test counts on the run page as notices (readable without downloading artifacts).
-      - name: Report test counts
+      # Issue #618: read from the results the step above wrote, no second run. Fails when the file is missing, when fewer
+      # tests ran than the floor (a filter that drops most of the suite is not a pass; about 10 170 run in 1.2.3), or when
+      # any failed. Then the feature tests of this branch (REPORT_TEST_CLASSES) and the passport lock: each class must have
+      # tests in the results, and every one must pass. The failures' first lines go on the run page.
+      - name: Server test results, feature tests and the passport lock
         if: always()
         shell: bash
         run: |
-          trx=$(find . -path '*TestResults*' -name 'server.trx' | head -n 1)
-          if [ -n "$trx" ]; then
-            # GitHub runs bash with -e and pipefail: a grep with no match must not fail the step
-            counters=$(grep -o '<Counters [^>]*>' "$trx" | head -n 1 || true)
-            get() { echo "$counters" | grep -o " $1=\"[0-9]*\"" | grep -o '[0-9]*' || true; }
-            echo "::notice title=Server tests::total $(get total), executed $(get executed), passed $(get passed), failed $(get failed)"
-            failedAll=$(grep -o '<UnitTestResult [^>]*outcome="Failed"[^>]*>' "$trx" | grep -o 'testName="[^"]*"' | sed 's/testName=//; s/"//g' | head -n 10 | paste -sd ';' - || true)
-            if [ -n "$failedAll" ]; then echo "::warning title=Failed server tests::$failedAll"; fi
-          else
-            echo "::warning title=Server tests::No test results file found"
-          fi
-          # Re-run the tests of the feature on this branch so their own count is visible too.
+          rc=0
+          python source/tools/ci_test_results.py trx TestResults/server.trx --title "Server tests" --min-executed 9000 || rc=1
           classes="${REPORT_TEST_CLASSES:-UT_AutonomousBotGuild UT_AutonomousBotPersonality UT_AutonomousBotVoices UT_AutonomousLivingServer UT_LevelRangeXpRates UT_BotXpRateSeparation}"
-          filter=""
-          for c in $classes; do filter="${filter:+$filter|}FullyQualifiedName~$c"; done
-          out=$(dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" 2>&1 || true)
-          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
-          echo "::notice title=Feature tests ($classes)::${summary:-no summary line found}"
-          failed=$(echo "$out" | grep -E "^\s*Failed [A-Za-z_]" | sed -E 's/^\s*Failed //; s/ \[.*//' | head -n 10 | paste -sd ';' - || true)
-          if [ -n "$failed" ]; then echo "::warning title=Failed feature tests::$failed"; fi
-          # First line of each failure's error message (the logs and artifacts may not be readable).
-          echo "$out" | awk '/^[[:space:]]*Failed [A-Za-z_]/{name=$2} /Error Message:/{if ((getline line) > 0) {gsub(/^[[:space:]]+/, "", line); print name ": " substr(line, 1, 300)}}' | head -n 10 | while IFS= read -r line; do echo "::warning title=Feature test error::$line"; done || true
+          python source/tools/ci_test_results.py trx TestResults/server.trx --title "Feature tests" --classes "$classes" || rc=1
+          python source/tools/ci_test_results.py trx TestResults/server.trx --title "Passport lock and desk tests (server)" --classes UT_PassportLock || rc=1
+          exit $rc
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -145,24 +129,28 @@ jobs:
           name: server-test-results
           path: "**/TestResults/*.trx"
 
-      # 1.1.3: the simulated /faction evening (UT_FactionCoherence.AnEveningHoldsTogether), old scheduling and new, audited by
-      # source/tools/chat_audit.py. Synthetic bots only, no played world.
-      - name: Audit the simulated /faction evening
+      # The simulated transcripts (UT_FactionCoherence, UT_ChatEngagement, UT_ChatSpeakerFit, UT_ChatVoiceAfterRC5) go to the
+      # "report: chat audit" job below, which reads them with source/tools/chat_audit.py. Missing ones fail here (#618):
+      # each test that writes one passed above, so a missing transcript means it wrote somewhere else or stopped writing.
+      - name: The simulated chat transcripts exist
         if: always()
         shell: bash
         run: |
-          logs=$(find . -path '*chat-sim*' -name 'faction-sim-*.chat.log' | sort || true)
-          if [ -z "$logs" ]; then echo "::warning title=Chat audit::no simulated transcript found"; exit 0; fi
-          mkdir -p chat-audit
-          python source/tools/chat_audit.py $logs --github --show 3 --json chat-audit/chat-audit.json | tee chat-audit/chat-audit.txt
-          cp $logs chat-audit/
+          logs=$(python source/tools/ci_test_results.py require --title "Chat audit" \
+            chat-sim/faction-sim-before.chat.log chat-sim/faction-sim-after.chat.log \
+            chat-sim/faction-sim-engage-before.chat.log chat-sim/faction-sim-engage-after.chat.log \
+            chat-sim/faction-sim-channels-before.chat.log chat-sim/faction-sim-channels-after.chat.log \
+            chat-sim/faction-sim-voice-before.chat.log chat-sim/faction-sim-voice-after.chat.log) || { echo "$logs"; exit 1; }
+          mkdir -p chat-sim
+          for f in $logs; do cp "$f" chat-sim/; done
+          ls chat-sim
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: chat-sim
-          path: chat-audit/
-          if-no-files-found: warn
+          path: chat-sim/
+          if-no-files-found: error
 
       # Realism 1b (#477; docs/realism-audit-1.2.3/evenings.md): the player's evenings (UT_ChatBudgetSimulation.PlaysThePlayersEvenings,
       # 18 two-hour evenings as one player reads them) read by evening_read.py, whose seven judgement-free counts may not get worse
@@ -171,11 +159,11 @@ jobs:
         if: always()
         shell: bash
         run: |
-          rows=$(find . -path '*evening-transcripts*' -name 'evenings.tsv' | head -n 1 || true)
-          if [ -z "$rows" ]; then echo "::error title=Evening transcripts::no evenings.tsv found"; exit 1; fi
+          # A missing evenings.tsv, or a metrics script that crashes, fails the step like the ratchet does (#618).
+          rows=$(python source/tools/ci_test_results.py require --title "Evening transcripts" evening-transcripts/evenings.tsv | head -n 1) || { echo "$rows"; exit 1; }
           mkdir -p evening-transcripts
           cp "$rows" evening-transcripts/
-          python tools/bot-voices/eval/evening_read.py "$rows" --metrics > evening-transcripts/metrics.txt || echo "::warning title=Evening transcripts::the metrics failed"
+          python tools/bot-voices/eval/evening_read.py "$rows" --metrics > evening-transcripts/metrics.txt
           python tools/bot-voices/eval/evening_read.py "$rows" --ratchet --github
 
       - uses: actions/upload-artifact@v4
@@ -196,20 +184,25 @@ jobs:
         if: always()
         shell: bash
         run: |
-          replies=$(find . -path '*chat-bench*' -name 'bench-replies.json' | head -n 1 || true)
-          holdout=$(find . -path '*chat-bench*' -name 'bench-holdout.json' | head -n 1 || true)
+          # Every bench file must be there (#618: a missing holdout or side bench was a warning, and the ratchet then skipped it).
+          # The bench report and the line scan only report (they exit 0 on what they find), but a crash fails the step.
+          files=$(python source/tools/ci_test_results.py require --title "Chat question bench" chat-bench/bench-replies.json \
+            chat-bench/bench-holdout.json chat-bench/bench-channels.json chat-bench/bench-followups.json \
+            chat-bench/bench-moments.json chat-bench/bench-twoline.json) || { echo "$files"; exit 1; }
+          pick() { echo "$files" | grep "/$1\$" | head -n 1; }
+          replies=$(pick bench-replies.json)
+          holdout=$(pick bench-holdout.json)
           mkdir -p chat-bench
-          if [ -z "$replies" ]; then echo "::error title=Chat question bench::no bench-replies.json found"; exit 1; fi
-          cp "$replies" chat-bench/
-          if [ -n "$holdout" ]; then cp "$holdout" chat-bench/; else echo "::warning title=Chat question bench::no bench-holdout.json found"; fi
-          python tools/bot-voices/eval/score_bench.py bench "$replies" --json chat-bench/bench-score.json --md chat-bench/bench-score.md > /dev/null || echo "::warning title=Chat question bench::the report failed"
-          python tools/bot-voices/eval/score_bench.py lines --json chat-bench/lines-scan.json || echo "::warning title=Chat line scan::the scan failed"
+          cp "$replies" "$holdout" chat-bench/
+          python tools/bot-voices/eval/score_bench.py bench "$replies" --json chat-bench/bench-score.json --md chat-bench/bench-score.md > /dev/null
+          python tools/bot-voices/eval/score_bench.py lines --json chat-bench/lines-scan.json
           sides=""
           for side in channels followups moments twoline; do
-            f=$(find . -path '*chat-bench*' -name "bench-$side.json" | head -n 1 || true)
-            if [ -n "$f" ]; then cp "$f" chat-bench/; sides="$sides --$side $f"; else echo "::warning title=Chat question bench::no bench-$side.json found"; fi
+            f=$(pick "bench-$side.json")
+            cp "$f" chat-bench/
+            sides="$sides --$side $f"
           done
-          python tools/bot-voices/eval/score_bench.py ratchet "$replies" ${holdout:+--holdout "$holdout"} $sides --github --json chat-bench/ratchet.json
+          python tools/bot-voices/eval/score_bench.py ratchet "$replies" --holdout "$holdout" $sides --github --json chat-bench/ratchet.json
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -219,15 +212,20 @@ jobs:
           if-no-files-found: warn
 
       # The launcher ships in the build too (its Living Server tab, from 1.1.2 its update check, from 1.2 Host for Friends
-      # and Join Friend, from 1.2 also Crafting 2.0's economy page, bot purge and level-50 kit). Their own tests must pass;
-      # the rest of the launcher tests run in the informational launcher job below.
+      # and Join Friend, from 1.2 also Crafting 2.0's economy page, bot purge and level-50 kit). Their own tests must pass,
+      # and every class of the filter must have tests in the results (#618: a renamed class used to drop out of the filter
+      # unseen). All the launcher tests run in the launcher job below, which is a gate too.
       - name: Build launcher and test the Living Server tab
         shell: bash
         run: |
           dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
-          out=$(dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "FullyQualifiedName~SocialExpansionSettingsTests|FullyQualifiedName~HeraldPageTests|FullyQualifiedName~LoreBestiaryTests|FullyQualifiedName~Tests.Update|FullyQualifiedName~HostForFriendsTests|FullyQualifiedName~JoinFriendTests|FullyQualifiedName~JoinFriendFormTests|FullyQualifiedName~GmAccessTests|FullyQualifiedName~HostForFriendsFirewallTests|FullyQualifiedName~CraftingEconomyLauncherTests|FullyQualifiedName~LauncherWindowSizeTests" 2>&1) || { echo "$out"; echo "::error title=Living Server tab tests::failed"; exit 1; }
-          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
-          echo "::notice title=Living Server tab tests::${summary:-no summary line found}"
+          classes="SocialExpansionSettingsTests HeraldPageTests LoreBestiaryTests Tests.Update HostForFriendsTests JoinFriendTests JoinFriendFormTests GmAccessTests HostForFriendsFirewallTests CraftingEconomyLauncherTests LauncherWindowSizeTests"
+          filter=""
+          for c in $classes; do filter="${filter:+$filter|}FullyQualifiedName~$c"; done
+          rc=0
+          dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=launcher-tab.trx" || rc=1
+          python source/tools/ci_test_results.py trx TestResults/launcher-tab.trx --title "Living Server tab tests" --classes "$classes" || rc=1
+          exit $rc
 
       # Real renders of the launcher's settings tabs and the Living Server tab (RendersPreviewsBesideTheOtherSettingsTabs).
       - uses: actions/upload-artifact@v4
@@ -245,21 +243,23 @@ jobs:
       - name: Test the character passport
         shell: bash
         run: |
+          # The server's passport lock tests (UT_PassportLock) gate in the server test results step above (#618; they were
+          # run a second time here with "|| true").
           dotnet build source/tools/OfflineDaoc.Passport.Cli/OfflineDaoc.Passport.Cli.csproj -c Release
-          out=$(dotnet test source/tools/OfflineDaoc.Passport.Tests/OfflineDaoc.Passport.Tests.csproj -c Release 2>&1) || { echo "$out"; echo "::error title=Character passport tests::failed"; exit 1; }
-          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
-          echo "::notice title=Character passport tests::${summary:-no summary line found}"
-          server=$(dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "FullyQualifiedName~UT_PassportLock" 2>&1 || true)
-          echo "::notice title=Passport lock and desk tests (server)::$(echo "$server" | grep -E "(Passed|Failed)!" | tail -n 1 || true)"
+          rc=0
+          dotnet test source/tools/OfflineDaoc.Passport.Tests/OfflineDaoc.Passport.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=passport.trx" || rc=1
+          python source/tools/ci_test_results.py trx TestResults/passport.trx --title "Character passport tests" || rc=1
+          exit $rc
 
       # Progress transfer (OfflineDaoc.ProgressImport): its engine's tests on synthetic saves (1.2: a play test sweep's
       # guest record is never carried, so a transfer can't give GM back).
       - name: Test the progress transfer engine
         shell: bash
         run: |
-          out=$(dotnet test source/tools/OfflineDaoc.ProgressImport.Tests/OfflineDaoc.ProgressImport.Tests.csproj -c Release 2>&1) || { echo "$out"; echo "::error title=Progress transfer tests::failed"; exit 1; }
-          summary=$(echo "$out" | grep -E "(Passed|Failed)!" | tail -n 1 || true)
-          echo "::notice title=Progress transfer tests::${summary:-no summary line found}"
+          rc=0
+          dotnet test source/tools/OfflineDaoc.ProgressImport.Tests/OfflineDaoc.ProgressImport.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=progress-transfer.trx" || rc=1
+          python source/tools/ci_test_results.py trx TestResults/progress-transfer.trx --title "Progress transfer tests" || rc=1
+          exit $rc
 
       # Only after every server test passed: the installable server build (docs/RELEASE-PLAN.md).
       - name: Package the server build
@@ -343,15 +343,57 @@ jobs:
     with:
       package_artifact: ${{ needs.server.outputs.artifact }}
 
+  # Every launcher test. A required check and a gate since #618: 58d407288 (2026-10-12) made the job continue-on-error
+  # ("some launcher tests expect a particular local setup"), so a failing test still left the run green. All 411 tests
+  # pass on a clean runner (1.2.3), and a test that needs a local setup must say so itself (Assume / Ignore), not hide the
+  # job. Fewer than 400 tests run fails too: a project that stops finding its tests is not a pass.
   launcher:
     runs-on: windows-latest
     timeout-minutes: 30
-    # Informational for now: some launcher tests expect a particular local setup.
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
       - name: Test launcher
-        run: dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release
+        shell: bash
+        run: |
+          rc=0
+          dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=launcher.trx" || rc=1
+          python source/tools/ci_test_results.py trx TestResults/launcher.trx --title "Launcher tests" --min-executed 400 || rc=1
+          exit $rc
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: launcher-test-results
+          path: TestResults/*.trx
+          if-no-files-found: warn
+
+  # Report only, never required (#618): source/tools/chat_audit.py's verdicts on the simulated transcripts the server job
+  # wrote. The C# tests that write them are the gate (each asserts its own numbers); a "before" transcript is the old
+  # scheduling and fails the audit on purpose, and the channels transcript has no repliers, so its unanswered-question
+  # verdict is not a defect. A missing transcript fails the server job; a crash of the audit fails this job.
+  report-chat-audit:
+    name: "report: chat audit"
+    needs: server
+    if: always() && needs.server.result != 'skipped' && needs.server.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: chat-sim
+          path: chat-sim
+      - name: "Report: audit the simulated /faction evenings"
+        run: |
+          set -o pipefail
+          mkdir -p chat-audit
+          python3 source/tools/chat_audit.py chat-sim/*.chat.log --github --show 3 --json chat-audit/chat-audit.json | tee chat-audit/chat-audit.txt
+          cp chat-sim/*.chat.log chat-audit/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chat-audit
+          path: chat-audit/
+          if-no-files-found: error

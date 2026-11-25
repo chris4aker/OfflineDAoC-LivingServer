@@ -728,6 +728,13 @@ def check_lore(problems):
     return count
 
 
+def verify(built, path):
+    """--verify: exit 1 when the committed corpus at path is not what the sources built (tests: test_checkers_fail.py)."""
+    committed = json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
+    if committed != json.loads(json.dumps(built, ensure_ascii=False)):
+        raise SystemExit('corpus.json is stale: run python tools/bot-voices/build_corpus.py and commit it')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--check', action='store_true')
@@ -848,9 +855,7 @@ def main():
     if markers:
         raise SystemExit(f'{len(markers)} scene line(s) start with a role marker, e.g. {markers[0]!r}')
     if args.verify:
-        committed = json.loads(OUT.read_text(encoding='utf-8'))
-        if committed != json.loads(json.dumps(out, ensure_ascii=False)):
-            raise SystemExit('corpus.json is stale: run python tools/bot-voices/build_corpus.py and commit it')
+        verify(out, OUT)
         print('corpus.json matches its sources')
         return
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + '\n', encoding='utf-8', newline='\n')
