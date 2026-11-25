@@ -206,8 +206,10 @@ namespace DOL.UnitTests
             });
             Assert.That(AutonomousRealmRaid.Definitions.Where(d => d.IsOpenWorld).Select(d => d.Realm).Distinct(),
                 Is.EquivalentTo(new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia }));
-            Assert.That(AutonomousRealmRaid.Definitions.Any(d => d.BossType is "Morgana" or "Myrddraxis" or "Anurigunda"), Is.False,
-                "Morgana is no raid boss of the period; Fomor City has no path in on its navmesh");
+            Assert.That(AutonomousRealmRaid.Definitions.Any(d => d.BossType is "Morgana"), Is.False, "Morgana is no raid boss of the period");
+            // 1.2.3 (#414): Fomor City is a raid dungeon (zone180.nav walk links), not an open-world raid.
+            Assert.That(AutonomousRealmRaid.Definitions.Where(d => d.BossType is "Myrddraxis" or "Anurigunda").Select(d => d.Id),
+                Is.EqualTo(new[] { "dungeon-hibernia-fomor" }));
             Assert.That(OW.Of("openworld-midgard-glaciergiant").SuggestedBots, Is.EqualTo(48), "5-6 groups (FreddysHouse, Dec 2003)");
             Assert.That(OW.Of("openworld-albion-coliath").SuggestedBots, Is.EqualTo(64), "Legion's size: about Legion difficulty");
             Assert.That(OW.Of("openworld-albion-greenknight").SuggestedBots, Is.EqualTo(40),
