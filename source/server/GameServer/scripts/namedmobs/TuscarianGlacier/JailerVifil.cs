@@ -138,8 +138,7 @@ namespace DOL.AI.Brain
                 if (!_spawnedTunnelGuardians && Body.IsAlive && Body.ObjectState == GameObject.eObjectState.Active)
                 {
                     _spawnedTunnelGuardians = true;
-                    SpawnTunnelGuardian(16709, 58973, 10879, 2088);
-                    SpawnTunnelGuardian(16379, 58954, 10885, 2048);
+                    SpawnTunnelGuardians();
                 }
             }
 
@@ -215,7 +214,7 @@ namespace DOL.AI.Brain
                 Body.Health = Body.MaxHealth;
                 ClearAggroList();
             }
-            else if (!Body.InCombatInLast(30_000) && Body.InCombatInLast(35_000))
+            else if (Body.InCombatInLast(30 * 1000) == false && this.Body.InCombatInLast(35 * 1000))
             {
                 Body.Health = Body.MaxHealth;
             }
@@ -235,19 +234,27 @@ namespace DOL.AI.Brain
             base.Think();
         }
 
-        private void SpawnTunnelGuardian(int x, int y, int z, ushort heading)
+        // Called under _tunnelGuardianLock. Kept in the original shape (one new JailerAdd per guardian, then AddToWorld)
+        // so the encounter catalog (source/tools/epic_encounter_catalog.py detect_adds) still reads it as the adds rule.
+        public void SpawnTunnelGuardians()
         {
-            JailerAdd guardian = new()
-            {
-                X = x,
-                Y = y,
-                Z = z,
-                CurrentRegion = Body.CurrentRegion,
-                Heading = heading,
-            };
+            JailerAdd Add1 = new JailerAdd();
+            Add1.X = 16709;
+            Add1.Y = 58973;
+            Add1.Z = 10879;
+            Add1.CurrentRegion = Body.CurrentRegion;
+            Add1.Heading = 2088;
+            _tunnelGuardians.Add(Add1);
+            Add1.AddToWorld();
 
-            _tunnelGuardians.Add(guardian);
-            guardian.AddToWorld();
+            JailerAdd Add2 = new JailerAdd();
+            Add2.X = 16379;
+            Add2.Y = 58954;
+            Add2.Z = 10885;
+            Add2.CurrentRegion = Body.CurrentRegion;
+            Add2.Heading = 2048;
+            _tunnelGuardians.Add(Add2);
+            Add2.AddToWorld();
         }
 
         internal void ClearTunnelGuardians(bool encounterEnded)

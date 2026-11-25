@@ -3185,19 +3185,19 @@
   "tuscaran-glacier/jailer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "10d55817536a858a70148ba2f2a5e1c5fe41d633697f74c2f0b0c6300347ec2b"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "5f2fcb43996e4f359e1adbb3589f8bf4f1d9f01a09939f6540cc35b1b1556d11"
    },
    "aiTactics": {
     "summary": "Jail rescue (AllowDisplacement, bots too since 1.2): the jail opens when his two tunnel guardians (20,000 health each, at the jail) are dead. Once the fight is on, one bot party (two in a raid of eight parties or more; never the party he fights or the real player's) goes down the tunnel, kills both and comes back (an errand: no path, no progress or past its budget and it rejoins the fight). Every raider jailed after that walks free at once; one jailed before fights the guards with the team, and the recovery frees it when they die (or recalls it after 3 minutes).",
     "since": "1.2"
    },
    "rules": {
-    "adds@239": {
-     "summary": "Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill).",
+    "adds@241": {
+     "summary": "Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill). 1.2.3: port of True165 78526630, tests only, the mechanic unchanged: his brain owns the pair and clears it on a reset or when he leaves the world, so they no longer stack; still two a pull.",
      "tactic": "The jail-rescue errand party kills both (see his tactic); a jailed raider walks free once they are dead.",
      "difficulty": "easy for the current raid AI"
     },
-    "teleport@170": {
+    "teleport@185": {
      "tactic": "Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes.",
      "difficulty": "easy for the current raid AI"
     }

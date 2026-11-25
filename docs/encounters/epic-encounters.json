@@ -213,7 +213,7 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordKvasir.cs": "6f0d544f2f611c9a225433005f35aab26e3eec05e2d00f71576b9c5cfd9b3037",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "1cdc6e4e909d849e8f375cface245c3da49aa49683181429de911c23889561d7",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "10d55817536a858a70148ba2f2a5e1c5fe41d633697f74c2f0b0c6300347ec2b",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "5f2fcb43996e4f359e1adbb3589f8bf4f1d9f01a09939f6540cc35b1b1556d11",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "9d5019fcddceef72b67442a6f9bde3a2a388f979e0e14eb1546bcc0f00f19d0a",
@@ -33844,8 +33844,8 @@
    "brain": "JailerBrain",
    "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
    "lines": [
-    11,
-    101
+    12,
+    113
    ],
    "dungeon": "Tuscaran Glacier",
    "region": 160,
@@ -33868,16 +33868,16 @@
      "maxHealth": 20000,
      "level": "78",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 261
+     "line": 291
     }
    ],
    "rules": [
     {
      "kind": "adds",
-     "summary": "Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill).",
+     "summary": "Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill). 1.2.3: port of True165 78526630, tests only, the mechanic unchanged: his brain owns the pair and clears it on a reset or when he leaves the world, so they no longer stack; still two a pull.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 239,
-     "lineEnd": 247,
+     "line": 241,
+     "lineEnd": 250,
      "anchor": "JailerAdd Add1 = new JailerAdd();",
      "confidence": "inferred",
      "sourceClass": "JailerBrain",
@@ -33890,14 +33890,14 @@
      "tactic": "The jail-rescue errand party kills both (see his tactic); a jailed raider walks free once they are dead.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "adds@239"
+     "key": "adds@241"
     },
     {
      "kind": "tether",
      "summary": "Tether range 5800 (hrimathursa tormentor (JailerAdd)): drawn further from its spawn it walks home.",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 304,
-     "lineEnd": 304,
+     "line": 334,
+     "lineEnd": 334,
      "anchor": "TetherRange = 5800;",
      "confidence": "read",
      "sourceClass": "JailerAdd",
@@ -33908,14 +33908,14 @@
      "tactic": "Fight it where it stands; don't pull it past its tether.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "tether@304"
+     "key": "tether@334"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 191,
-     "lineEnd": 196,
+     "line": 205,
+     "lineEnd": 210,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "JailerBrain",
@@ -33925,14 +33925,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@191"
+     "key": "reset@205"
     },
     {
      "kind": "reset",
      "summary": "Resets while drawn past its tether: aggro cleared, back to full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 200,
-     "lineEnd": 201,
+     "line": 214,
+     "lineEnd": 215,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "JailerBrain",
@@ -33942,14 +33942,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@200"
+     "key": "reset@214"
     },
     {
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 205,
-     "lineEnd": 205,
+     "line": 219,
+     "lineEnd": 219,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "JailerBrain",
@@ -33959,14 +33959,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@205"
+     "key": "reset@219"
     },
     {
      "kind": "teleport",
      "summary": "Jails PortTarget (MoveTo Body.CurrentRegionID, 16631, 58683, 10858, 2191)",
      "file": "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs",
-     "line": 170,
-     "lineEnd": 170,
+     "line": 185,
+     "lineEnd": 185,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(PortTarget, Body.CurrentRegionID, 16631, 58683, 10858, 2191, DisplacementKind.",
      "confidence": "inferred",
      "sourceClass": "JailerBrain",
@@ -33979,7 +33979,7 @@
      "tactic": "Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "teleport@170"
+     "key": "teleport@185"
     }
    ],
    "spells": [],
