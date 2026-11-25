@@ -36,6 +36,8 @@ open pull request or a branch for it. Then two sessions never build the same iss
 - Fill in the **pull request template**: the issue, period sources, owner decisions needed, tests vs in-game, reruns
   owed.
 - Building and testing: [DEVELOPMENT.md](DEVELOPMENT.md).
+- Charting the log rows in Grafana (gcx, the local stack, the dashboards): [GRAFANA.md](GRAFANA.md); every row is in
+  [LOG-ROWS.md](LOG-ROWS.md). A pull request that adds or changes a row runs `python3 tools/grafana/kit.py --write`.
 
 ## Merging
 
