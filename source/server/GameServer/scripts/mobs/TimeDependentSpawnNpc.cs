@@ -9,12 +9,13 @@ namespace DOL.GS
     {
         private const eFlags INACTIVE_FLAGS = eFlags.CANTTARGET | eFlags.DONTSHOWNAME | eFlags.PEACE;
 
-        public new TimeDependentSpawnBrain Brain => base.Brain as TimeDependentSpawnBrain;
-        public override eFlags Flags => Brain != null && Brain.IsVisible ? base.Flags : base.Flags | INACTIVE_FLAGS;
+        // Charmed, its brain isn't a TimeDependentSpawnBrain: it stays visible (OpenDAoC-Core 7ab320291).
+        public TimeDependentSpawnBrain TimeDependentBrain => Brain as TimeDependentSpawnBrain;
+        public override eFlags Flags => TimeDependentBrain == null || TimeDependentBrain.IsVisible ? base.Flags : base.Flags | INACTIVE_FLAGS;
 
         // Saved without the asleep flags, so a spawn saved at the wrong time of day still wakes up.
         protected override eFlags FlagsToSave => base.Flags;
-        public override ushort Model => Brain != null && Brain.IsVisible ? base.Model : (ushort) 1;
+        public override ushort Model => TimeDependentBrain == null || TimeDependentBrain.IsVisible ? base.Model : (ushort) 1;
 
         public override bool AddToWorld()
         {
