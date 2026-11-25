@@ -393,6 +393,14 @@ namespace DOL.GS
             }
         }
 
+        private static long _staleCopiesRetired;
+
+        /// <summary>On, as it should be. Off only restores the old double removal, for a test that shows it.</summary>
+        public static bool RetireStaleCopies { get; set; } = true;
+
+        /// <summary>How many ended effects were found replaced in their owner's list and retired without taking their bonus away again.</summary>
+        public static long StaleCopiesRetired => Interlocked.Read(ref _staleCopiesRetired);
+
         public void CancelAll()
         {
             foreach (ECSGameEffect effect in GetEffects())
@@ -919,7 +927,7 @@ namespace DOL.GS
                     effect.IsQuietHandover = result is RemoveEffectResult.Disabled ||
                         result is RemoveEffectResult.Removed && component.KeepsAnotherOfItsKind(effect);
                     bool stop = effect.FinalizeState(result);
-                    if (effect is SpeedEnhancementECSEffect { IsSuperseded: true })
+                    if (effect is SpeedEnhancementECSEffect { IsSuperseded: true } || effect.IsStaleCopy)
                         stop = false;
 
                     // Keep disabled effects in the store.
@@ -975,6 +983,20 @@ namespace DOL.GS
 
                 if (effect.IsEnding)
                 {
+                    // An instance that is no longer in the list was replaced there, in place, by a newer copy of the
+                    // same pulsing spell (two Bards or Paladins on one song or chant): what it gave its owner is the
+                    // copy's to take away. Ending it as if it were the live one took the bonus away a second time, and
+                    // the copy's own end a third, so group endurance regeneration sat at 0 with the song up. The speed
+                    // song had its own flag for this (IsSuperseded); this covers every pulsing buff.
+                    // Port of FelixGagnonB/OfflineDAoC 471b04186 (found on its own in True165 3615e416d).
+                    if (RetireStaleCopies && !existingEffects.Contains(effect))
+                    {
+                        effect.IsStaleCopy = true;
+                        if (Interlocked.Increment(ref _staleCopiesRetired) <= 20 && log.IsInfoEnabled)
+                            log.Info($"EFFECT_STALE_COPY_RETIRED owner={effect.Owner?.Name} spell={effect.SpellHandler?.Spell?.Name} caster={effect.SpellHandler?.Caster?.Name}");
+                        return RemoveEffectResult.Removed;
+                    }
+
                     existingEffects.Remove(effect);
                     RemoveEffectIdToEffect(effect);
 

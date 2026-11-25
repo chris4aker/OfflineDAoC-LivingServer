@@ -171,6 +171,16 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 
 ## Other bot behaviour
 
+- Fork package P5 (1.2.3, branch `fix/1.2.3-fork-bot-fixes`): fixes from the Offline DAoC forks (FelixGagnonB, True165,
+  DividedRealms, DetShaft), listed in CHANGELOG-LIVING-SERVER.md 1.2.3 "From the Offline DAoC forks". **Tests only.** Owed
+  on the PC: a two-Bard group's endurance with the song up (`EFFECT_STALE_COPY_RETIRED`); a grouped Bard keeping its drum
+  and song in a fight; a group through a keep door without freezing; no camp shared by two parties (`AutonomousMobClaims`);
+  `AUTONOMOUS_DEFENSIVE_PULL_IGNORED` runs of two at most. Not taken, held for the owner: the jump-interrupts-casting rule
+  (True165 c41415df, a new casting restriction on real players); realm-0 armor filtered from drops (DividedRealms 32f08331,
+  fewer drops); releasing a rider's pets when it boards a stable horse (True165 ef0dcd8b, a charmed pet would turn on
+  its owner). Left for later: True165's role sheet (only the main tank sets the kill target, the off-tank peels; d2fc3fe3d
+  needs its BotBrain.MainAssist), its Mag Mell release spots (needs its BesideBindstone) and the Trollheim pillar follow
+  fix (b390827f, a spot fix in core movement).
 - [#544](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/544) Hibernian bots level about twice as fast as Albion's. **Open.** Albion has the fewest camps per band from 5 to 19 (world data, owner decision); the 10-19 group XP gap is not explained yet. 1.2.3 adds the sampled `AUTONOMOUS_KILL_XP` row and `source/tools/kill_xp_report.py` (tests only); next: one played hour at 10-19 to tell shared kills from off-target kills.
 - [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491) Buffers waste buffs on targets that can't use them; split base and spec buffs between healers and spec buffers. **Fixed in 1.2.3, tests only** (`BotBuffTargetPolicy`, `UT_BotBuffTargets491`); open until a PC log shows a group buffed without power regen or acuity on melee.
 - [#535](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/535) Solo bots below 50 plan camps that are grey on arrival. **Fixed in 1.2.3, tests only** (`AutonomousSoloCampFloor`, `UT_CampChoiceAndDeaths123`); open until a played log shows `AUTONOMOUS_CAMP_OUTLEVELED` well under the 1.2.2 rate (about 1,040/h with about 2,930 bots).

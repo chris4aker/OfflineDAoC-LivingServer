@@ -2858,7 +2858,7 @@ namespace DOL.GS.Commands
 							client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.NoPrivileges"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 							return 1;
 						}
-						client.Player.Guild.GetRankByID(number).Release = reponse;
+						client.Player.Guild.GetRankByID(number).Dues = reponse;
 						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.RankDuesSet", (reponse ? "enabled" : "disabled"), number.ToString()), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 					}
 					break;
@@ -2869,7 +2869,7 @@ namespace DOL.GS.Commands
 							client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.NoPrivileges"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
 							return 1;
 						}
-						client.Player.Guild.GetRankByID(number).Release = reponse;
+						client.Player.Guild.GetRankByID(number).Withdraw = reponse;
 						client.Out.SendMessage(LanguageMgr.GetTranslation(client.Account.Language, "Scripts.Player.Guild.RankWithdrawSet", (reponse ? "enabled" : "disabled"), number.ToString()), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 					}
 					break;

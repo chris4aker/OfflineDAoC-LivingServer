@@ -234,6 +234,83 @@ namespace DOL.UnitTests
             finally { ServiceObjectStore.Remove<ECSGameEffect>(first); ServiceObjectStore.Remove<ECSGameEffect>(second); }
         }
 
+        // F5 (port of True165 48b20439): a melee hit keeps a combat song playing; only the speed song stops. A grouped
+        // performer keeps the instrument its song needs in hand; a solo one still draws its weapon (Living Server).
+        [TestCase(typeof(ClassBard), "EnduranceRegenBuff", 1, true, true)]
+        [TestCase(typeof(ClassMinstrel), "PowerRegenBuff", 1, true, true)]
+        [TestCase(typeof(ClassBard), "EnduranceRegenBuff", 1, false, true)]
+        [TestCase(typeof(ClassSkald), "DamageAdd", 0, true, true)]
+        [TestCase(typeof(ClassBard), "SpeedEnhancement", 1, true, false)]
+        public void MeleeFallbackPreservesCombatPulsesAndRequiredInstruments(Type type, string songType, int instrument,
+            bool grouped, bool preserve)
+        {
+            Bot bot = NewBot(type);
+            if (grouped)
+            {
+                Bot mate = NewBot(typeof(ClassArmsman));
+                var group = new Group(bot);
+                Field(typeof(Group), group, "_groupMembers", new List<GameLiving> { bot, mate });
+                bot.Group = mate.Group = group;
+            }
+            Spell song = Song(songType, instrument: instrument);
+            if (instrument > 0)
+                bot.Instrument = new DbInventoryItem { Object_Type = (int)eObjectType.Instrument, DPS_AF = instrument };
+            var source = new ECSPulseEffect(new(bot, 0, 1, new SpellHandler(bot, song, Line)), song.Frequency);
+            try
+            {
+                source.Start();
+                bot.effectListComponent.BeginTick();
+                Assert.That(typeof(BotBrain).GetMethod("HasActiveCombatSongInstrument", Hidden).Invoke(bot.Brain, null),
+                    Is.EqualTo(preserve && instrument > 0 && grouped));
+                typeof(BotBrain).GetMethod("StopTwistedSong", Hidden).Invoke(bot.Brain, new object[] { true });
+                Assert.That(source.IsEnding || source.IsEnded, Is.EqualTo(!preserve));
+            }
+            finally { ServiceObjectStore.Remove<ECSGameEffect>(source); }
+        }
+
+        [Test]
+        public void PaladinsAndWardensKeepTheirChantInMelee()
+        {
+            Assert.That(BotBrain.KeepsChantInMelee(NewBot(typeof(ClassPaladin))), Is.True);
+            Assert.That(BotBrain.KeepsChantInMelee(NewBot(typeof(ClassWarden))), Is.True);
+            Assert.That(BotBrain.KeepsChantInMelee(NewBot(typeof(ClassMinstrel))), Is.False);
+        }
+
+        // F1 (port of FelixGagnonB/OfflineDAoC 471b04186; True165 3615e416d found the same): two Bards on one
+        // endurance song. The second singer's pulse replaces the first copy in place; the first singer's pulse later
+        // ends that stale copy. It used to take the bonus off a second time, so endurance regeneration sat at 0.
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReplacedEnduranceSongCannotTakeItsBonusAwayTwice(bool processFirst)
+        {
+            var firstSinger = NewBot(typeof(ClassBard));
+            var secondSinger = NewBot(typeof(ClassBard));
+            var target = Actor<BuffPet>(); target.Alive = true;
+            var song = new Spell(new DbSpell { SpellID = 1205, Type = "EnduranceRegenBuff", Target = "Group",
+                Range = 2000, Value = 6, Pulse = 1, Frequency = 60, Duration = 6, ClientEffect = 124 }, 1);
+            var first = new StatBuffECSEffect(new(target, 6000, 1, new EnduranceRegenSpellHandler(firstSinger, song, Line)));
+            var second = new StatBuffECSEffect(new(target, 6000, 1, new EnduranceRegenSpellHandler(secondSinger, song, Line)));
+            int Bonus() => target.BaseBuffBonusCategory[eProperty.EnduranceRegenerationAmount];
+            long retiredBefore = EffectListComponent.StaleCopiesRetired;
+            try
+            {
+                Assert.That(first.Start(), Is.True);
+                if (processFirst) target.effectListComponent.BeginTick();
+                Assert.That(second.Start(), Is.True);
+                target.effectListComponent.BeginTick();
+                Assert.That(Bonus(), Is.EqualTo(6), "one song, one bonus");
+                first.End();
+                target.effectListComponent.BeginTick();
+                Assert.That(second.IsActive, Is.True);
+                Assert.That(Bonus(), Is.EqualTo(6), "the replaced copy must not take the live song's bonus away");
+                Assert.That(EffectListComponent.StaleCopiesRetired, Is.GreaterThan(retiredBefore));
+                second.End();
+                target.effectListComponent.BeginTick();
+                Assert.That(Bonus(), Is.Zero, "the live copy takes it away once");
+            }
+            finally { ServiceObjectStore.Remove<ECSGameEffect>(first); ServiceObjectStore.Remove<ECSGameEffect>(second); }
+        }
+
         [Test]
         public void SpeedSongFallbackReenablesThenExpiresWithoutStackingOrLeavingSpeedBehind()
         {
