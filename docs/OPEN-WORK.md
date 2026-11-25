@@ -36,6 +36,15 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
 - **Uthgard drops:** run `source/tools/uthgard_drops_content.py` (dry run first) as [UTHGARD-DROPS.md](UTHGARD-DROPS.md)
   says; the tool is in the code since 1.2.1, and its tables ship in 1.2.3 (owner, 2026-11-22).
 - **The fixes from the owner's PC checks** of 1.2.1 and 1.2.2 (the list below).
+- **OpenDAoC upstream ports:** every upstream commit from our base `d51233cb` to `428927b33` (632) is classified in
+  [upstream/OPENDAOC-LEDGER-2026-11.md](upstream/OPENDAOC-LEDGER-2026-11.md). Ports by area: P1 core, P2 effects, P3
+  combat, P4 AI and world (the `fix/1.2.3-upstream-*` branches), plus four extra packages:
+  [#562](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/562) housing, guild and market,
+  [#563](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/563) player and GM commands,
+  [#564](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/564) client display, chat and group window,
+  [#565](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/565) quests, gravestones and timed services.
+  26 commits wait for the owner (the ledger's "Held for the owner" list: the live interrupt and power pool, the NPC
+  defense package, PvE speed, stealth group visibility and others). Nothing ported yet.
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
   heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
   below.
