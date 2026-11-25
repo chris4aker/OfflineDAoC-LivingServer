@@ -28,13 +28,22 @@ namespace LivingServerSetup
         public GameInfo ImportFrom;     // new install: bring account, characters and bots from this older game
         public string LocalAssets;      // tests: the downloader reads release files from here instead of GitHub
 
+        /// <summary>The folder beside the game that holds the downloader and its downloads (#641: renamed from
+        /// "Offline DAoC setup files"; the old name is still recognised for an install that began before).</summary>
+        public const string SetupFilesFolderName = "Living Server setup files";
+        public const string LegacySetupFilesFolderName = "Offline DAoC setup files";
+        public static bool IsSetupFilesFolderName(string name) =>
+            string.Equals(name, SetupFilesFolderName, StringComparison.OrdinalIgnoreCase) || string.Equals(name, LegacySetupFilesFolderName, StringComparison.OrdinalIgnoreCase);
+
         public string SetupFilesDir
         {
             get
             {
                 var anchor = NewInstall ? Destination : Game.Path;
                 var parent = Path.GetDirectoryName(Path.GetFullPath(anchor).TrimEnd('\\', '/')) ?? anchor;
-                return Path.Combine(parent, "Offline DAoC setup files");
+                // An install that began under the old name finishes there (its downloads are kept).
+                var legacy = Path.Combine(parent, LegacySetupFilesFolderName);
+                return Directory.Exists(legacy) && !Directory.Exists(Path.Combine(parent, SetupFilesFolderName)) ? legacy : Path.Combine(parent, SetupFilesFolderName);
             }
         }
 
@@ -122,6 +131,8 @@ namespace LivingServerSetup
         string gamePath;
         string setupDir;
         DownloadWatch watch;
+        /// <summary>Setup's own downloader while it runs (#641), for the progress line.</summary>
+        volatile FastDownload fast;
         volatile bool upstreamRunning;
         bool rolledBack;
         string previousBuild;
@@ -153,7 +164,7 @@ namespace LivingServerSetup
             bool client = o.NewInstall ? o.NewClient : (o.Game.NewClient || o.AddClient);
             if (o.NewInstall)
             {
-                Add(StepId.DownloadGame, "Download Offline DAoC", Manifests.BaseGame, Theme.Gb(Manifests.BaseGame) + ", the Offline DAoC release files, checked part by part");
+                Add(StepId.DownloadGame, "Download the base game", Manifests.BaseGame, Theme.Gb(Manifests.BaseGame) + ", the base game files, checked part by part");
                 Add(StepId.UnpackGame, "Unpack the game", Manifests.BaseGame * 0.45);
                 if (client)
                     Add(StepId.Client, "Download and unpack the new client", Manifests.NewClient * 1.2, Theme.Gb(Manifests.NewClient) + ", in checked parts");
@@ -499,7 +510,7 @@ namespace LivingServerSetup
                 var details = GameScanner.RunningGameProcessDetails();
                 foreach (var d in details) Log.Write("Still running: " + d);
                 bool hidden = details.Any(d => d.Contains(", no window"));
-                throw new StepFailed("Offline DAoC is still running (" + string.Join(", ", running) + ").",
+                throw new StepFailed("The game is still running (" + string.Join(", ", running) + ").",
                     "Quit the game, click STOP SERVER in the launcher and close it, then click Try again." +
                     (hidden ? " One of them has no window: end it in Task Manager (Details: " +
                         string.Join(", ", details.Where(d => d.Contains(", no window"))) + ")." : ""));
@@ -509,12 +520,12 @@ namespace LivingServerSetup
             {
                 var dest = gamePath;
                 if (dest.Length > 100 && o.NewClient)
-                    throw new StepFailed("That folder's path is too long for the new client (" + dest.Length + " characters, 100 at most).", "Choose a shorter folder, like C:\\Games\\OfflineDAoC.") { CanChangeFolder = true };
+                    throw new StepFailed("That folder's path is too long for the new client (" + dest.Length + " characters, 100 at most).", "Choose a shorter folder, like C:\\Games\\LivingServer.") { CanChangeFolder = true };
                 var pf = new[] { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), Environment.GetFolderPath(Environment.SpecialFolder.Windows) };
                 if (pf.Any(p => !string.IsNullOrEmpty(p) && dest.StartsWith(p.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase)))
-                    throw new StepFailed("The game can't live under Program Files or Windows: it saves your world in its own folder.", "Choose a folder like C:\\Games\\OfflineDAoC.") { CanChangeFolder = true };
+                    throw new StepFailed("The game can't live under Program Files or Windows: it saves your world in its own folder.", "Choose a folder like C:\\Games\\LivingServer.") { CanChangeFolder = true };
                 if (GameScanner.IsGame(dest) && GameScanner.Inspect(dest).IsBase && MarkerExists(dest))
-                    throw new StepFailed("Offline DAoC " + GameScanner.Inspect(dest).Edition + " is already installed in " + dest + ".",
+                    throw new StepFailed("A game is already installed in " + dest + ".",
                         "Go back and choose that game on the first page to add Living Server to it, or choose a new folder for a second game.") { CanChangeFolder = true };
                 // A folder Setup itself started unpacking into, stopped by a crash or power cut before the downloader
                 // marked it finished: the downloader won't continue it, so move it aside (never delete) and start over
@@ -532,9 +543,9 @@ namespace LivingServerSetup
                     // A finished game whose download cache was cleaned up has no marker any more (walkthrough 2026-10-28: the
                     // message called a complete 0.37b game "not an unfinished Offline DAoC install").
                     if (GameScanner.IsGame(dest))
-                        throw new StepFailed("Offline DAoC " + GameScanner.Inspect(dest).Edition + " is already installed in " + dest + ".",
+                        throw new StepFailed("A game is already installed in " + dest + ".",
                             "Go back and choose that game on the first page to add Living Server to it, or choose a new folder for a second game.") { CanChangeFolder = true };
-                    throw new StepFailed("The folder " + dest + " already has files in it, and they aren't an unfinished Offline DAoC install.", "Choose a new folder: Setup never installs over files it didn't put there.") { CanChangeFolder = true };
+                    throw new StepFailed("The folder " + dest + " already has files in it, and they aren't an unfinished install of the game.", "Choose a new folder: Setup never installs over files it didn't put there.") { CanChangeFolder = true };
                 }
             }
             var need = NeededBytes();
@@ -597,6 +608,35 @@ namespace LivingServerSetup
 
         // ---------------------------------------------------------------- the official downloader
 
+        /// <summary>
+        /// Setup's own downloader (issue #641): the base game's parts in parallel, with byte ranges inside the large
+        /// ones, resumed where they stopped and each checked against its SHA-256. It puts every part where the original
+        /// downloader script looks for it, so the script then finds them checked and only joins and unpacks. If this
+        /// stops for any reason, the script downloads what is missing itself, as before.
+        /// </summary>
+        void Prefetch(string release)
+        {
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                var parts = Manifests.NewInstallParts(release, Path.Combine(setupDir, ".downloads"));
+                if (parts.Count == 0) return;
+                Activate(StepId.DownloadGame, "Downloading the base game...");
+                var dl = new FastDownload { Connections = 6, Log = m => Log.Write("download: " + m) };
+                fast = dl;
+                dl.Run(parts);
+                double secs = Math.Max(0.001, sw.Elapsed.TotalSeconds);
+                Log.Write(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                    "download: {0} part(s), {1:0.0} MB in {2:0} s, {3:0.0} MB/s over up to {4} connections (resumed and kept bytes included)",
+                    parts.Count, dl.BytesTotal / 1048576.0, secs, dl.BytesTotal / 1048576.0 / secs, dl.PeakConnections));
+            }
+            catch (Exception e)
+            {
+                Log.Write("download: Setup's downloader stopped (" + e.Message + "); the original downloader fetches what is missing.");
+            }
+            finally { fast = null; }
+        }
+
         void RunUpstream(InstallResult r)
         {
             var script = Payload.ExtractDownloader(setupDir);
@@ -633,6 +673,7 @@ namespace LivingServerSetup
             watch = new DownloadWatch(Path.Combine(setupDir, ".downloads"), gamePath, this);
             watch.Start();
             upstreamRunning = true;
+            if (o.NewInstall && !client && string.IsNullOrEmpty(o.LocalAssets) && !MarkerExists(gamePath)) Prefetch(release);
             string freshFolder = null;
             try
             {
@@ -716,7 +757,7 @@ namespace LivingServerSetup
         {
             if (line.StartsWith("Downloading OfflineDAoC-v") && line.Contains(".zip.") || line.StartsWith("Downloading the complete") || line.StartsWith("Step 1 of 2: the Offline DAoC") || line.StartsWith("Step 1 of 2: the complete"))
             {
-                if (Find(StepId.DownloadGame)?.Item.State == StepState.Pending) Activate(StepId.DownloadGame, "Downloading Offline DAoC...");
+                if (Find(StepId.DownloadGame)?.Item.State == StepState.Pending) Activate(StepId.DownloadGame, "Downloading the base game...");
             }
             else if (line.StartsWith("Verified and extracted to") || line.StartsWith("Verified the ") && line.Contains("edition"))
             {
@@ -764,6 +805,7 @@ namespace LivingServerSetup
             readonly Dictionary<string, long> seen = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
             Timer timer;
             readonly Queue<(DateTime t, long b)> samples = new Queue<(DateTime, long)>();
+            readonly Queue<(DateTime t, long b)> fastSamples = new Queue<(DateTime, long)>();
             long unpackTotal = -1;
             DateTime lastDirScan;
             long lastDirSize;
@@ -833,10 +875,22 @@ namespace LivingServerSetup
                 }
 
                 var dl = e.Find(StepId.DownloadGame);
-                if (dl != null && dl.Item.State == StepState.Active)
+                var fast = e.fast;
+                if (fast != null && dl != null && dl.Item.State == StepState.Active)
+                {
+                    // Setup's own downloader: its combined speed over every connection (#641).
+                    long got = fast.BytesDone, of = Math.Max(1, fast.BytesTotal);
+                    fastSamples.Enqueue((now, got));
+                    while (fastSamples.Count > 2 && (now - fastSamples.Peek().t).TotalSeconds > 8) fastSamples.Dequeue();
+                    double fastRate = 0;
+                    if (fastSamples.Count > 1) { var f0 = fastSamples.Peek(); var s = (now - f0.t).TotalSeconds; if (s > 0.5) fastRate = Math.Max(0, (got - f0.b) / s); }
+                    e.Progress(StepId.DownloadGame, got / (double)of);
+                    e.SetStatus("Downloading the base game", Line(got, of, fastRate));
+                }
+                else if (dl != null && dl.Item.State == StepState.Active)
                 {
                     e.Progress(StepId.DownloadGame, baseBytes / (double)Manifests.BaseGame);
-                    e.SetStatus("Downloading Offline DAoC", Line(baseBytes, Manifests.BaseGame, rate));
+                    e.SetStatus("Downloading the base game", Line(baseBytes, Manifests.BaseGame, rate));
                     // the joined archive appearing means every part is in: unpacking has begun, even if the sizes were stale
                     if (baseBytes >= Manifests.BaseGame || joined > 0) { e.Set(StepId.DownloadGame, StepState.Done); e.Activate(StepId.UnpackGame, "Unpacking the game..."); }
                 }
@@ -1106,11 +1160,11 @@ namespace LivingServerSetup
         public static void Create(string game)
         {
             var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            var menu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "Offline DAoC");
+            var menu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs), Program.ProductName);
             Directory.CreateDirectory(menu);
             // Owner 2026-10-28: the shortcuts carry Living Server's own icon (the splash painting's three figures),
-            // written beside the launcher; shadowofze's launcher and its exe icon are left as they are.
-            var icon = Path.Combine(game, "runtime", "OfflineDAoC.exe");
+            // written beside the launcher.
+            var icon = Path.Combine(game, "runtime", File.Exists(Path.Combine(game, "runtime", "DAoCLivingServer.exe")) ? "DAoCLivingServer.exe" : "OfflineDAoC.exe");
             try
             {
                 var ours = Path.Combine(game, "runtime", "living-server.ico");
@@ -1118,19 +1172,20 @@ namespace LivingServerSetup
                 icon = ours;
             }
             catch (Exception e) { Log.Write("Shortcut icon: " + e.Message + " (the launcher's icon is used)"); }
-            var targets = new List<(string name, string file)> { ("Offline DAoC", "START OFFLINE DAOC.cmd") };
+            // The start files keep the base game's names (they set up its bundled .NET); the shortcuts carry the product name (#641).
+            var targets = new List<(string name, string file)> { (Program.ProductName, "START OFFLINE DAOC.cmd") };
             if (File.Exists(Path.Combine(game, "START OFFLINE DAOC - NEW CLIENT.cmd")))
-                targets.Add(("Offline DAoC - New Client", "START OFFLINE DAOC - NEW CLIENT.cmd"));
+                targets.Add((Program.ProductName + " (New Client)", "START OFFLINE DAOC - NEW CLIENT.cmd"));
             foreach (var (name, file) in targets)
             {
                 var target = Path.Combine(game, file);
                 if (!File.Exists(target)) continue;
                 foreach (var dir in new[] { desktop, menu })
-                    Make(Path.Combine(dir, name + ".lnk"), target, game, File.Exists(icon) ? icon : null, "Play Offline DAoC with Living Server");
+                    Make(Path.Combine(dir, name + ".lnk"), target, game, File.Exists(icon) ? icon : null, "Play " + Program.ProductName);
             }
-            var folder = Path.Combine(menu, "Offline DAoC game folder.lnk");
-            Make(folder, game, game, null, "Open the Offline DAoC folder");
-            Log.Write("Shortcuts added on the desktop and in Start > Offline DAoC.");
+            var folder = Path.Combine(menu, "Game folder.lnk");
+            Make(folder, game, game, null, "Open the " + Program.ProductName + " game folder");
+            Log.Write("Shortcuts added on the desktop and in Start > " + Program.ProductName + ".");
         }
 
         static void Make(string lnk, string target, string workDir, string icon, string description)

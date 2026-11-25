@@ -13,7 +13,12 @@ namespace LivingServerSetup
 {
     internal static class Program
     {
+        // The repository keeps its name (issue #641: renaming it is an owner choice for later; GitHub would redirect).
         public const string ProjectUrl = "https://github.com/chris4aker/OfflineDAoC-LivingServer";
+        /// <summary>The product's full name (owner, 2026-11-25, #641). "Living Server" alone is the short form.</summary>
+        public const string ProductName = "DAoC - Living Server";
+        /// <summary>Setup's own title, in its window and message boxes.</summary>
+        public const string SetupTitle = ProductName + " Setup";
         public static bool IsWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
         public static bool Silent;
         public static bool DemoMode;
@@ -31,10 +36,10 @@ namespace LivingServerSetup
             try
             {
                 Log.FilePath = args.Get("--log") ?? Path.Combine(Path.GetTempPath(), "LivingServer-Setup-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log");
-                Log.Write("Offline DAoC Living Server Setup " + typeof(Program).Assembly.GetName().Version + " on " + Environment.OSVersion + (Environment.Is64BitOperatingSystem ? " (64-bit)" : ""));
+                Log.Write(SetupTitle + " " + typeof(Program).Assembly.GetName().Version + " on " + Environment.OSVersion + (Environment.Is64BitOperatingSystem ? " (64-bit)" : ""));
                 if (Silent) Log.Written += line => { try { Console.WriteLine(line); } catch { } };
                 Payload.Load();
-                Log.Write("Living Server package: " + Payload.BuildName + " (" + Payload.DisplayName + ") for Offline DAoC " + Payload.BaseRelease + ", commit " + Payload.Commit);
+                Log.Write("Living Server package: " + Payload.BuildName + " (" + Payload.DisplayName + ") for base game " + Payload.BaseRelease + ", commit " + Payload.Commit);
             }
             catch (Exception e)
             {
@@ -48,7 +53,7 @@ namespace LivingServerSetup
             {
                 // which package this Setup would install now (with a newer one from GitHub unless --no-update)
                 PackageUpdate.Run(CheckNewest, ReleaseJson, null);
-                Log.Write("WOULD INSTALL " + Payload.BuildName + " (" + Payload.DisplayName + ") for Offline DAoC " + Payload.BaseRelease);
+                Log.Write("WOULD INSTALL " + Payload.BuildName + " (" + Payload.DisplayName + ") for base game " + Payload.BaseRelease);
                 return 0;
             }
             if (args.Get("--classify-download-error") != null)
@@ -73,7 +78,7 @@ namespace LivingServerSetup
             {
                 if (!first && !args.Has("--screenshots"))
                 {
-                    MessageBox.Show("Living Server Setup is already open.", "Offline DAoC: Living Server Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Living Server Setup is already open.", SetupTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return 0;
                 }
                 Application.EnableVisualStyles();
@@ -107,7 +112,7 @@ namespace LivingServerSetup
             Log.Write("Unexpected error: " + e);
             try
             {
-                MessageBox.Show("Something went wrong in Setup:\n\n" + e?.Message + "\n\nThe log is at " + Log.FilePath, "Offline DAoC: Living Server Setup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Something went wrong in Setup:\n\n" + e?.Message + "\n\nThe log is at " + Log.FilePath, SetupTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch { }
         }
@@ -115,7 +120,7 @@ namespace LivingServerSetup
         static void Fail(string message)
         {
             Log.Write(message);
-            if (!Silent) { try { MessageBox.Show(message, "Offline DAoC: Living Server Setup", MessageBoxButtons.OK, MessageBoxIcon.Error); } catch { } }
+            if (!Silent) { try { MessageBox.Show(message, SetupTitle, MessageBoxButtons.OK, MessageBoxIcon.Error); } catch { } }
         }
 
         [DllImport("kernel32.dll")] static extern bool AttachConsole(int pid);
@@ -152,7 +157,7 @@ namespace LivingServerSetup
             }
             else if (a.Get("--game") != null)
             {
-                if (!GameScanner.IsGame(a.Get("--game"))) { Log.Write("No Offline DAoC game in " + a.Get("--game")); return 3; }
+                if (!GameScanner.IsGame(a.Get("--game"))) { Log.Write("No game folder in " + a.Get("--game")); return 3; }
                 o.Game = GameScanner.Inspect(a.Get("--game"));
                 o.AddClient = a.Has("--add-client");
                 o.Remove = a.Has("--remove");
@@ -218,8 +223,8 @@ namespace LivingServerSetup
                 ("03-prepare-new", () => { wz.Chosen = null; wz.Options = null; wz.Prepare(); }),
                 ("04-prepare-update", () => { wz.Chosen = wz.Games[1]; wz.Prepare(); }),
                 ("05-prepare-installed", () => { wz.Chosen = wz.Games[0]; wz.Prepare(); }),
-                ("06-install", () => { wz.Install(new InstallOptions { NewInstall = true, Destination = @"C:\Games\OfflineDAoC\playable-v" + Payload.BaseRelease + "b", NewClient = true, Shortcuts = true, EnableNetFx = true }); }),
-                ("07-done", () => { wz.Options = new InstallOptions { NewInstall = true, Destination = @"C:\Games\OfflineDAoC\playable-v" + Payload.BaseRelease + "b" }; wz.Finished(Demo.Success()); }),
+                ("06-install", () => { wz.Install(new InstallOptions { NewInstall = true, Destination = @"C:\Games\LivingServer", NewClient = true, Shortcuts = true, EnableNetFx = true }); }),
+                ("07-done", () => { wz.Options = new InstallOptions { NewInstall = true, Destination = @"C:\Games\LivingServer" }; wz.Finished(Demo.Success()); }),
                 ("08-failed", () => { wz.Finished(Demo.Failure()); }),
             };
             form.Show();
@@ -230,7 +235,7 @@ namespace LivingServerSetup
                 Capture(form, Path.Combine(dir, name + ".png"));
             }
             // the themed dialog over the install page
-            wz.Install(new InstallOptions { NewInstall = true, Destination = @"C:\Games\OfflineDAoC\playable-v" + Payload.BaseRelease + "b", Shortcuts = true });
+            wz.Install(new InstallOptions { NewInstall = true, Destination = @"C:\Games\LivingServer", Shortcuts = true });
             Pump(400);
             var dlg = typeof(Dialog);
             var t = new System.Windows.Forms.Timer { Interval = 700 };
@@ -400,7 +405,7 @@ namespace LivingServerSetup
     {
         public static List<GameInfo> Games() => new List<GameInfo>
         {
-            new GameInfo { Path = @"C:\Games\OfflineDAoC\playable-v" + Payload.BaseRelease + "b", Release = Payload.BaseRelease, NewClient = true, Ls = LsState.ThisBuild, LsBuild = Payload.BuildName },
+            new GameInfo { Path = @"C:\Games\LivingServer", Release = Payload.BaseRelease, NewClient = true, Ls = LsState.ThisBuild, LsBuild = Payload.BuildName },
             new GameInfo { Path = @"D:\OfflineDAoC\playable-v0.36b", Release = "0.36", Ls = LsState.OtherBuild, LsBuild = "0.36-se.4" },
             new GameInfo { Path = @"C:\Users\Player\Downloads\OfflineDAoC-v0.35b", Release = "0.35" },
         };
@@ -408,9 +413,9 @@ namespace LivingServerSetup
         public static InstallResult Success() => new InstallResult
         {
             Outcome = Outcome.Success,
-            GamePath = @"C:\Games\OfflineDAoC\playable-v" + Payload.BaseRelease + "b",
+            GamePath = @"C:\Games\LivingServer",
             CacheBytes = Manifests.BaseGame + Manifests.GamePatch,
-            CacheDir = @"C:\Games\OfflineDAoC\Offline DAoC setup files\.downloads",
+            CacheDir = @"C:\Games\Living Server setup files\.downloads",
         };
 
         public static InstallResult Failure() => new InstallResult
@@ -419,7 +424,7 @@ namespace LivingServerSetup
             Message = "A GameServer.dll above is neither the original " + Payload.BaseRelease + " file nor a fork build this script installed.",
             Hint = "Setup can replace them anyway: the files there now are backed up first, and ROLLBACK.cmd in the " + Payload.RootFolder + " folder puts them back.",
             CanForce = true,
-            GamePath = @"C:\Games\OfflineDAoC\playable-v" + Payload.BaseRelease + "b",
+            GamePath = @"C:\Games\LivingServer",
         };
     }
 }

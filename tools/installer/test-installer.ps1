@@ -244,14 +244,14 @@ if ($Scenario -contains 'fresh') {
     Check (Test-Path (Join-Path $fresh 'EDITION.txt')) 'fresh: the original classes (EDITION.txt); the b edition is no longer offered'
     Assert-LivingServer $fresh 'fresh'
     $desk = [Environment]::GetFolderPath('DesktopDirectory')
-    Check (Test-Path (Join-Path $desk 'Offline DAoC.lnk')) 'fresh: desktop shortcut'
-    Check (Test-Path (Join-Path ([Environment]::GetFolderPath('Programs')) 'Offline DAoC\Offline DAoC.lnk')) 'fresh: Start menu shortcut'
-    $lnk = (New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path $desk 'Offline DAoC.lnk'))
+    Check (Test-Path (Join-Path $desk 'DAoC - Living Server.lnk')) 'fresh: desktop shortcut'
+    Check (Test-Path (Join-Path ([Environment]::GetFolderPath('Programs')) 'DAoC - Living Server\DAoC - Living Server.lnk')) 'fresh: Start menu shortcut'
+    $lnk = (New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path $desk 'DAoC - Living Server.lnk'))
     Check ($lnk.IconLocation -like '*runtime\living-server.ico*' -and (Test-Path (Join-Path $fresh 'runtime\living-server.ico'))) "fresh: the shortcut has Living Server's icon ($($lnk.IconLocation))"
-    $setupDir = Join-Path $root 'Offline DAoC setup files'
+    $setupDir = Join-Path $root 'Living Server setup files'
     Check (Test-Path (Join-Path $setupDir 'Get-OfflineDAoC.ps1')) 'fresh: the official downloader sits in the setup files folder'
     # the steps were recognised from the downloader's own output, not only marked done at the end
-    Check ($r.Log -match '\] Downloading Offline DAoC \| [\d.]+ (MB|GB) of ') 'fresh: download progress measured in bytes'
+    Check ($r.Log -match '\] Downloading the base game \| [\d.]+ (MB|GB) of ') 'fresh: download progress measured in bytes'
     Check ($r.Log -match '\] Unpacking the game \| [\d.]+ (MB|GB) of ') 'fresh: unpacking progress measured in bytes'
     Check ($r.Log -match '\] Updating the game to ') 'fresh: the official update step recognised from its output'
     # A first install turns every Living Server feature on at the suggested settings (owner 2026-10-28).
@@ -301,7 +301,7 @@ if ($Scenario -contains 'fresh') {
 
 if ($Scenario -contains 'update036') {
     $old = Join-Path $root 'playable-v0.36b'
-    $setupDir = Join-Path $root 'Offline DAoC setup files'
+    $setupDir = Join-Path $root 'Living Server setup files'
     New-Item -ItemType Directory -Force -Path $setupDir | Out-Null
     $repoDownloader = Join-Path $PSScriptRoot '..\..\Get-OfflineDAoC.ps1'
     Copy-Item $repoDownloader (Join-Path $setupDir 'Get-OfflineDAoC.ps1') -Force
@@ -345,12 +345,12 @@ if ($Scenario -contains 'resume') {
     $game = Join-Path $root "playable-resume"
     $r = Setup 'stop-mid-download' @('--new', '--dest', $game, '--no-shortcuts', '--stop-after-seconds', '12')
     Check ($r.Code -eq 2 -and $r.Log -match 'RESULT Cancelled') 'resume: Stop during the download ends as stopped'
-    $cache = Join-Path $root 'Offline DAoC setup files\.downloads'
+    $cache = Join-Path $root 'Living Server setup files\.downloads'
     $partial = (Get-ChildItem $cache -Recurse -File -Filter '*.zip.0*' -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum
     Check ($partial -gt 0) ("resume: downloaded parts are kept ({0:N0} MB)" -f ($partial / 1MB))
 
     $run = Start-Setup 'crash-mid-download' @('--new', '--dest', $game, '--no-shortcuts')
-    $hit = Crash $run '\] Downloading Offline DAoC \| [\d.]+ GB of'
+    $hit = Crash $run '\] Downloading the base game \| [\d.]+ GB of'
     Check $hit 'resume: Setup was killed part-way through the download'
 
     $run = Start-Setup 'crash-mid-unpack' @('--new', '--dest', $game, '--no-shortcuts')
@@ -367,7 +367,7 @@ if ($Scenario -contains 'resume') {
 
 if ($Scenario -contains 'import') {
     $old = Join-Path $root 'playable-v0.35b'
-    $setupDir = Join-Path $root 'Offline DAoC setup files'
+    $setupDir = Join-Path $root 'Living Server setup files'
     New-Item -ItemType Directory -Force -Path $setupDir | Out-Null
     Copy-Item (Join-Path $PSScriptRoot '..\..\Get-OfflineDAoC.ps1') (Join-Path $setupDir 'Get-OfflineDAoC.ps1') -Force
     Write-Host ''
@@ -386,7 +386,7 @@ if ($Scenario -contains 'import') {
 
 if ($Scenario -contains 'freshcopy') {
     $old = Join-Path $root 'playable-v0.36b'
-    $setupDir = Join-Path $root 'Offline DAoC setup files'
+    $setupDir = Join-Path $root 'Living Server setup files'
     New-Item -ItemType Directory -Force -Path $setupDir | Out-Null
     Copy-Item (Join-Path $PSScriptRoot '..\..\Get-OfflineDAoC.ps1') (Join-Path $setupDir 'Get-OfflineDAoC.ps1') -Force
     if (!(Test-Path $old)) {
