@@ -32,8 +32,11 @@ namespace DOL.GS.Commands
 	public class RepairCommandHandler : AbstractCommandHandler, ICommandHandler
 	{
 		private static readonly Logging.Logger log = Logging.LoggerManager.Create(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		private static readonly string[] woodNames = { "rowan", "elm", "oak", "oaken", "ironwood", "heartwood", "runewood", "stonewood", "ebonwood", "dyrwood", "duskwood" };
-		private const int repairDuration = 20;
+		// #525: public so defender gamebots repair doors by these same rules (AutonomousDoorRepair).
+		public static readonly string[] woodNames = { "rowan", "elm", "oak", "oaken", "ironwood", "heartwood", "runewood", "stonewood", "ebonwood", "dyrwood", "duskwood" };
+		public const int repairDuration = 20;
+		/// <summary>Share of a door's or keep component's maximum health one successful repair restores.</summary>
+		public const double DoorRepairShare = 0.05;
 
 		public void OnCommand(GameClient client, string[] args)
 		{
@@ -228,7 +231,7 @@ namespace DOL.GS.Commands
 				if (obj is GameKeepDoor)
 				{
 					GameKeepDoor door = obj as GameKeepDoor;
-					door.Repair((int)(door.MaxHealth * 0.05));
+					door.Repair((int)(door.MaxHealth * DoorRepairShare));
 				}
 				else if (obj is GameKeepComponent)
 				{
@@ -272,12 +275,10 @@ namespace DOL.GS.Commands
 				return 100;
 
 			double skill = player.GetCraftingSkillValue(eCraftingSkill.WoodWorking);
-			int skillneeded = (obj.Level + 1) * 50;
-			double chance = skill / skillneeded;
-			return chance;
+			return RepairChance(skill, obj.Level);
 		}
 
-		private static int GetNeededWoodForOneTick(int level)
+		public static int GetNeededWoodForOneTick(int level)
 		{
 			switch (level)
 			{
@@ -357,6 +358,12 @@ namespace DOL.GS.Commands
 			// }
 		}
 		
+		/// <summary>Chance (0-1 and above) that one repair succeeds: woodworking skill against (level + 1) x 50.</summary>
+		public static double RepairChance(double woodworkingSkill, int level) => woodworkingSkill / ((level + 1) * 50);
+
+		/// <summary>A wood item the repair rules accept ("oak wooden boards" and the like).</summary>
+		public static bool IsWood(string itemName) => itemName != null && woodNames.Contains(itemName.Replace(" wooden boards", "").ToLower());
+
 		public static int GetWoodValue(string name)
 		{
 			switch (name.Replace(" wooden boards", ""))

@@ -356,6 +356,8 @@ namespace DOL.GS
 		public void Arm()
 		{
 			if (!CanUse()) return;
+			// #525: a ram's reload follows the crew standing at it now (bots who walked up count), for every operator.
+			(this as GameSiegeRam)?.UpdateRamStatus();
 			CurrentState &= ~eState.Armed;
 			SiegeWeaponTimer.CurrentAction = SiegeTimer.eAction.Arming;
 			PreAction();

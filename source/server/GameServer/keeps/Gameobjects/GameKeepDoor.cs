@@ -596,6 +596,9 @@ namespace DOL.GS.Keeps
         private const int ENEMIES_NEAR_RADIUS = 3000;
 
         /// <summary>A living enemy player or bot (companions included) of another realm than the keep's, near the door.</summary>
+        /// <summary>#525: the same rule for defender bots repairing the door by hand (AutonomousDoorRepair).</summary>
+        public bool EnemiesNearForRepair => Component?.Keep != null && EnemiesNear();
+
         private bool EnemiesNear()
         {
             eRealm owner = Component.Keep.Realm;

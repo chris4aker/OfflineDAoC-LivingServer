@@ -456,6 +456,41 @@ stealth.md findings 1-3 and 5-10, defense.md 7)
   the keep (a battleground keep with its doors down) and the frontier scan's dice (`RvrFightScan`: the server's own
   perception rules with seeded rolls). Scenario 3 repeats by seed; the two fight scenarios repeat closely but not yet
   exactly (the server's fight code still draws from `Random.Shared`). Runs in a few seconds. **Tests only.**
+- **Siegecraft: engines are built, doors are repaired, operators hold their engines, the player's ram gets a crew** (#525;
+  siege.md 4-5, defense.md 4-5; owner decisions 2026-11-24). **Tests only.**
+  - **Engines are built in sight.** A gamebot with no siege kit (the owner's 2026-10-07 "skip the shopping trips") no longer
+    makes an engine appear the moment it reaches its spot: it stands there and builds it (an emote every 5 s, "X begins to
+    build a siege ram" to the area), and the engine appears when the build is done. Build time is half the period time,
+    one constant (`AutonomousSiegeBuild.BuildTimeMultiplier` 0.5 on `PeriodBuildSeconds`): ram 30 s, ballista 20 s,
+    catapult 45 s, trebuchet 60 s. No period figure was found, so the period times (60/40/90/120 s) are chosen. Being
+    attacked, killed or pulled away interrupts the build, which starts again from nothing (`RVR_SIEGE
+    action=build_started|build_interrupted`). A destroyed engine is replaced only by a new build (played 1.2.2 `868a82d`:
+    replacements 6-301 s after the loss, median 43 s, all instant). A carried kit is still set up at once.
+  - **A finite stock of engines per siege**, sized to the army: one per engine place plus max(2, present/12) replacements
+    (100 present: 14), per realm and keep, renewed after ten quiet minutes. Spent: `RVR_SIEGE action=stock_spent`.
+  - **The status text is true**: "Siege engines built on the spot (n of m left this siege)" or "Carried siege kit", not
+    "Real siege equipment, finite inventory".
+  - **The player's ram gets a crew.** Friendly gamebots within 300 (and the operator's own group) crew any friendly ram,
+    the player's included; before, only a bot-operated ram counted them, so a player's ram hit for about a seventh of a bot
+    ram. Damage and reload are the same for either operator (`GameSiegeRam.CountCrew`), and the reload follows the crew at
+    each arming. A player-operated engine no longer takes one of the bots' two ram places, and the native two-rams-per-door
+    limit counts bot rams and player rams apart, so neither refuses the other.
+  - **Ram output in the log**: `RVR_SIEGE_OUTPUT` once a minute per hitting ram (owner, operator kind, crew, hits, damage,
+    door), player rams included; the `RVR_SIEGE action=hit` line now names its target.
+  - **Defending operators hold their engines.** A defender working a ballista or catapult leaves it only for an enemy
+    within 450 or one attacking its engine, as attackers do (before: any enemy it saw), and keeps its job through the
+    fight (`SiegeOperatorMayEngage`).
+  - **Defenders repair doors with wood** (owner: "bots repair doors the way players did"). Gamebots defending a keep when
+    its defense ends with the keep still theirs, and still within 4,000 of it, take a repair job for up to 15 minutes:
+    at most two on a door, the most damaged first. They follow the player's `/repair` rules (shared with the command): a
+    20-second repair, 5% of the door on success, the keep level's wood units (3,576 at level 5) taken from the backpack
+    on success only, the chance woodworking skill against (level + 1) x 50, no repair while in combat or while the door
+    is hit, and none with an enemy within 3,000. Wood comes from the bot's own backpack, else it buys boards for real coin
+    from a merchant of its realm in the same region (cheapest per unit, six repairs' worth a trip). No seller, coin or
+    room: no repair. A bot that never trained woodworking repairs at skill 100 (owner check). `RVR_DOOR_REPAIR
+    action=start|repaired|failed|wood_bought|end`. The door's slow self-repair (5% per 30 minutes) stays as the backstop.
+  - Boiling oil is left out: the rubric's tension (1.2: no hookpoint defences in Old Frontiers; 5.2: oil from the
+    gatehouse) is not settled. `UT_Siegecraft525`.
 
 ## 1.2.2 — 2026-11-23
 
