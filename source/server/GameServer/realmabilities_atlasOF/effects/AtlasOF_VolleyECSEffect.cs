@@ -173,11 +173,12 @@ namespace DOL.GS.Effects
                 if (!GameServer.ServerRules.IsAllowedToAttack(attacker, target, true))
                     return false;
 
-                if (Properties.VOLLEY_ROOF_CHECK)
+                // Without a navmesh for the zone the roof can't be known: let the arrow land (OpenDAoC-Core 302e8a8f3).
+                if (Properties.VOLLEY_ROOF_CHECK && target.CurrentZone is { IsPathfindingEnabled: true } zone)
                 {
                     EDtPolyFlags[] filters = PathfindingProvider.Instance.DefaultFilters;
 
-                    if (PathfindingProvider.Instance.GetRoofAbove(target.CurrentZone, new(target.X, target.Y, target.Z), ROOF_SEARCH_MAX_HEIGHT, filters).HasValue)
+                    if (PathfindingProvider.Instance.GetRoofAbove(zone, new(target.X, target.Y, target.Z), ROOF_SEARCH_MAX_HEIGHT, filters).HasValue)
                         return false;
                 }
 

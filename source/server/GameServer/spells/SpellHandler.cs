@@ -3080,7 +3080,8 @@ namespace DOL.GS.Spells
 				else
 					spec = 0;
 
-				spellDamage = stat * (spellDamage / 124 + 1 / 23) * (1 + spec * 0.004);
+				// 23.0: integer 1 / 23 was always 0 (OpenDAoC-Core d0cafbd5e).
+				spellDamage = stat * (spellDamage / 124 + 1 / 23.0) * (1 + spec * 0.004);
 				return Math.Max(0, spellDamage);
 			}
 

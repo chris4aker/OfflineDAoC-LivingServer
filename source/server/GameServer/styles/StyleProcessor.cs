@@ -351,11 +351,17 @@ namespace DOL.GS.Styles
 				}
 				else
 				{
+					// Melee damage and style damage ToA bonuses are pretty weird.
+					// * They're both calculated from base damage.
+					// * They effectively add the same amount of damage when used independently.
+					// * Style damage bonus works even on styles that have no growth rate.
+					// * They stack multiplicatively. Assuming a GR of 0, two 10% bonuses result in the attack doing 21% more damage.
+					// * StyleDamage raises the styled damage cap with it (OpenDAoC-Core 8274b06c1).
 					double growthRate = style.GrowthRate;
 					double attackSpeed = living.attackComponent.AttackSpeed(weapon) * 0.001;
-					double modifiedGrowthRate = growthRate * spec * attackSpeed / unstyledDamageCap;
-					styleDamage = modifiedGrowthRate * unstyledDamage;
-					styleDamageCap = modifiedGrowthRate * unstyledDamageCap;
+					double modifiedGrowthRate = growthRate * spec * attackSpeed / unstyledDamageCap + living.GetModified(eProperty.StyleDamage) * 0.01;
+					styleDamage = unstyledDamage * modifiedGrowthRate;
+					styleDamageCap = unstyledDamageCap * modifiedGrowthRate;
 
 					// Force styles do at least 1 damage to make level 2 styles actually do something.
 					// Don't forget to ignore the cap. Do it only if the style has a GR.

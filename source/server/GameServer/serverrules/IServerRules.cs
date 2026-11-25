@@ -435,11 +435,30 @@ namespace DOL.GS.ServerRules
 		/// </summary>
 		void OnPlayerLevelUp(GamePlayer player, int previousLevel);
 
-		public class EntityCountTotalDamagePair(int count, double damage, GameLiving highestLevelPlayer)
+		/// <summary>
+		/// Damage share of one entity (player, bot, group, battlegroup) on a kill. HighestLevel is a snapshot of the
+		/// highest (effective) level among its members, taken while damage is counted and before any reward is given,
+		/// so a member levelling up on this very kill can't change the group XP of the others (OpenDAoC-Core 6ac049c6e).
+		/// </summary>
+		public class EntityCountTotalDamagePair(int count, double damage, int highestLevel)
 		{
 			public int Count { get; set; } = count;
 			public double Damage { get; set; } = damage;
-			public GameLiving HighestLevelPlayer { get; set; } = highestLevelPlayer;
+			public int HighestLevel { get; set; } = highestLevel;
+
+			public EntityCountTotalDamagePair(int count, double damage, GameLiving highestLevelMember)
+				: this(count, damage, highestLevelMember?.EffectiveLevel ?? 0) { }
+
+			public void Track(GameLiving member)
+			{
+				Track(member.EffectiveLevel);
+			}
+
+			public void Track(int level)
+			{
+				if (HighestLevel < level)
+					HighestLevel = level;
+			}
 		}
 	}
 }

@@ -32,29 +32,31 @@ namespace DOL.GS.PropertyCalc
 	[PropertyCalculator(eProperty.MeleeSpeed)]
 	public class MeleeSpeedPercentCalculator : PropertyCalculator
 	{
+		/// <summary>Remaining swing time in per-mille (1000 = unchanged, 900 = 10% faster). Callers multiply by 0.001.</summary>
 		public override int CalcValue(GameLiving living, eProperty property)
 		{
-			if (living is GameNPC)
-			{
-				// NPC buffs effects are halved compared to debuffs, so it takes 2% debuff to mitigate 1% buff
-				// See PropertyChangingSpell.ApplyNpcEffect() for details.
-				int buffs = living.BaseBuffBonusCategory[property] << 1;
-				int debuff = Math.Abs(living.DebuffCategory[property]);
-				int specDebuff = Math.Abs(living.SpecDebuffCategory[property]);
+			// OpenDAoC-Core dda75528c, 99e18b6b2, 4c05debd6, after https://camelotherald.fandom.com/wiki/Melee_Damage:
+			// haste buffs (minus debuffs), then Mastery of Arms, then the ToA item bonus (capped at 10%) are three
+			// multiplicative layers, so Mastery of Arms is worth less on top of a big haste. The result is per-mille to
+			// keep a decimal place. NPC buffs are no longer halved (unsourced); that also gives gamebots, which are
+			// GameNPCs, the player rule. A necromancer pet uses its shade's ability and item bonuses.
+			GameLiving livingToCheck = living is NecromancerPet { Owner: GameLiving petOwner } && PlayerDefenseFormula.UsesPlayerDefense(petOwner)
+				? petOwner
+				: living;
 
-				buffs -= specDebuff;
-				if (buffs > 0)
-					buffs = buffs >> 1;
-				buffs -= debuff;
+			return Calculate(
+				living.BaseBuffBonusCategory[property] + living.SpecBuffBonusCategory[property] - Math.Abs(living.DebuffCategory[property]),
+				livingToCheck.AbilityBonus[property],
+				livingToCheck.ItemBonus[property]);
+		}
 
-				return 100 - buffs;
-			}
-
-			return Math.Max(1, 100
-				-living.BaseBuffBonusCategory[property] // less is faster = buff
-				+Math.Abs(living.DebuffCategory[property]) // more is slower = debuff
-				-Math.Min(10, living.ItemBonus[property])) // http://www.camelotherald.com/more/1325.shtml
-				- living.AbilityBonus[property] ;
+		public static int Calculate(int buffBonus, int abilityBonus, int itemBonus)
+		{
+			itemBonus = Math.Min(10, itemBonus); // http://www.camelotherald.com/more/1325.shtml
+			double result = buffBonus;
+			result += (1 - result * 0.01) * abilityBonus;
+			result += (1 - result * 0.01) * itemBonus;
+			return Math.Max(1, (int) ((100 - result) * 10));
 		}
 	}
 }

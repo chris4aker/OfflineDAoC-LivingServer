@@ -246,7 +246,7 @@ namespace DOL.GS.RealmAbilities
 					}
 					else
 					{
-						player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "RealmAbility.SendCastMessage.PlayerCasts", player.Name), eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+						player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "RealmAbility.SendCastMessage.PlayerCasts", AutonomousNameMask.NameFor(player, caster, 0, true)) /* caster, not the viewer (OpenDAoC-Core f45f95145) */, eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
 					}
 				}
 			}

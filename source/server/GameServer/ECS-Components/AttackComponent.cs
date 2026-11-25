@@ -73,8 +73,10 @@ namespace DOL.GS
 
         public void AddAttacker(AttackData attackData)
         {
-            long expireTime = GameLoop.GameLoopTime + (attackData.Interval > 0 ? attackData.Interval : Properties.SPELL_INTERRUPT_DURATION);
-            AttackerTracker.AddOrUpdate(attackData.Attacker, attackData.IsMeleeAttack, expireTime);
+            // Spells use the spell interrupt duration; weapon attacks their own interval (OpenDAoC-Core 3c1a424cb: before,
+            // a spell carrying an interval, or a swing without one, got the other's duration).
+            int interval = attackData.AttackType is AttackData.eAttackType.Spell || attackData.Interval <= 0 ? Properties.SPELL_INTERRUPT_DURATION : attackData.Interval;
+            AttackerTracker.AddOrUpdate(attackData.Attacker, attackData.IsMeleeAttack, GameLoop.GameLoopTime + interval);
         }
 
         /// <summary>
@@ -82,15 +84,15 @@ namespace DOL.GS
         /// </summary>
         public int CalculateCriticalChance(WeaponAction action)
         {
-            switch (owner.ActiveWeaponSlot)
+            // Use the slot the attack was made with, not the owner's current one: a weapon swap between the draw and
+            // the hit used to give an arrow the melee crit chance (OpenDAoC-Core e142cbdb1).
+            eActiveWeaponSlot slot = action?.ActiveWeaponSlot ?? owner.ActiveWeaponSlot;
+
+            return slot switch
             {
-                default:
-                case eActiveWeaponSlot.Standard:
-                case eActiveWeaponSlot.TwoHanded:
-                    return owner.GetModified(eProperty.CriticalMeleeHitChance);
-                case eActiveWeaponSlot.Distance:
-                    return action?.RangedAttackType is eRangedAttackType.Critical ? 0 : owner.GetModified(eProperty.CriticalArcheryHitChance);
-            }
+                eActiveWeaponSlot.Distance => action?.RangedAttackType is eRangedAttackType.Critical ? 0 : owner.GetModified(eProperty.CriticalArcheryHitChance),
+                _ => owner.GetModified(eProperty.CriticalMeleeHitChance),
+            };
         }
 
         public DbInventoryItem GetAttackAmmo(WeaponAction action)
@@ -312,7 +314,7 @@ namespace DOL.GS
                         //Table a: Formula used: drawspeed = bowspeed * (1-(quickness - 50)*0.002) * ((1-MoA*0.03) - (archeryspeedbonus/100))
                         //Table b: Formula used: drawspeed = bowspeed * (1-(quickness - 50)*0.002) * (1-MoA*0.03) - ((archeryspeedbonus/100 * basebowspeed))
 
-                        speed *= 1.0 - (quickness - 60) * 0.002;
+                        speed *= QuicknessMultiplier(quickness);
                         double percent;
                         percent = speed * 0.01 * owner.GetModified(eProperty.ArcherySpeed);
                         speed -= percent;
@@ -326,17 +328,17 @@ namespace DOL.GS
                         }
                     }
                     else
-                        speed *= 1.0 - (quickness - 60) * 0.002;
+                        speed *= QuicknessMultiplier(quickness);
                 }
                 else
-                    speed *= (1.0 - (quickness - 60) * 0.002) * 0.01 * owner.GetModified(eProperty.MeleeSpeed);
+                    speed *= QuicknessMultiplier(quickness) * 0.001 * owner.GetModified(eProperty.MeleeSpeed);
 
                 return (int) Math.Max(minimum, speed * 100);
             }
             else
             {
                 minimum = 500;
-                double speed = NpcWeaponSpeed(mainWeapon) * 100 * (1.0 - (owner.GetModified(eProperty.Quickness) - 60) / 500.0);
+                double speed = NpcWeaponSpeed(mainWeapon) * 100 * QuicknessMultiplier(owner.GetModified(eProperty.Quickness));
 
                 if (owner is GameSummonedPet pet)
                 {
@@ -367,7 +369,7 @@ namespace DOL.GS
                             }
                         }
 
-                        speed *= owner.GetModified(eProperty.MeleeSpeed) * 0.01 * modifier;
+                        speed *= owner.GetModified(eProperty.MeleeSpeed) * 0.001 * modifier;
                     }
                 }
                 else
@@ -381,12 +383,18 @@ namespace DOL.GS
                             speed *= 1.0 - owner.GetModified(eProperty.CastingSpeed) * 0.01;
                     }
                     else
-                        speed *= owner.GetModified(eProperty.MeleeSpeed) * 0.01;
+                        speed *= owner.GetModified(eProperty.MeleeSpeed) * 0.001;
                 }
 
                 return (int) Math.Max(minimum, speed);
             }
         }
+
+        /// <summary>
+        /// Swing and draw time multiplier from quickness: 1 - (quickness - 50) * 0.2%, the common formula
+        /// (OpenDAoC-Core ca9effdf6; it was 60 before, which made everyone about 2% slower).
+        /// </summary>
+        public static double QuicknessMultiplier(int quickness) => 1.0 - (quickness - 50) * 0.002;
 
         /// <summary>
         /// InventoryItem.SPD_ABS isn't set for NPCs, so this method must be used instead.
@@ -409,6 +417,9 @@ namespace DOL.GS
                 IGamePlayer playerBot => CalculatePlayerDamage(playerBot, weapon, action),
                 _ => CalculateNpcDamage(weapon),
             };
+            // MeleeDamage / RangedDamage (ToA, Savage and Cleric self buffs) raise the unstyled damage cap too
+            // (OpenDAoC-Core 8274b06c1).
+            damage *= CalculateDamageTypeModifier(weapon);
             damage *= effectiveness;
             damageCap = CalculateDamageCap(damage);
             damage *= GetWeaponQualityConditionModifier(weapon); // Quality and condition don't affect damage cap.
@@ -1151,7 +1162,8 @@ namespace DOL.GS
             GamePlayer playerOwner = owner as GamePlayer;
 
             // Strafing miss.
-            if (playerOwner != null && playerOwner.IsStrafing && ad.IsMeleeAttack && ad.Target is GamePlayer && Util.Chance(30))
+            // Strafing players miss NPCs too, as on live (OpenDAoC-Core 8ad486e27). Gamebots don't strafe.
+            if (playerOwner != null && playerOwner.IsStrafing && ad.IsMeleeAttack && Util.Chance(30))
             {
                 // Used to tell the difference between a normal miss and a strafing miss.
                 // Ugly, but we shouldn't add a new field to 'AttackData' just for that purpose.
@@ -1192,29 +1204,14 @@ namespace DOL.GS
                     // We apply the resistances later, and calculate the cap differently. But it should be mathematically equivalent.
                     double resistMod = CalculateTargetResistanceFactor(ad.Target, ad.DamageType, armor);
 
-                    // Melee damage and style damage ToA bonuses are pretty weird.
-                    // * They're both calculated from base damage.
-                    // * They effectively add the same amount of damage when used independently.
-                    // * Style damage bonus works even on styles that have no growth rate.
-                    // * However, the first one will be added to base damage, and the second one to style damage. This is really just for display purposes.
-                    // * They stack multiplicatively. Assuming a GR of 0, two 10% bonuses result in the attack doing 21% more damage.
-                    // * The higher the GR, the lower their contribution to total damage is (since GR is actually ignored).
-                    double baseDamageSnapshot = damage;
-
-                    // These bonuses don't increase the cap. This is correct for ToA melee bonus, but unknown for Savage/Cleric self-buff (they currently are of the same type).
-                    damage *= CalculateDamageTypeModifier(weapon);
-
                     double styleDamage = 0.0;
                     double styleDamageCap = 0.0;
                     double resistModifier = 0.0;
 
                     if (style != null)
                     {
-                        if (StyleProcessor.ExecuteStyle(ad, baseDamageSnapshot, baseDamageCap, out styleDamage, out styleDamageCap, out int animationId))
+                        if (StyleProcessor.ExecuteStyle(ad, damage, baseDamageCap, out styleDamage, out styleDamageCap, out int animationId))
                         {
-                            // Apply style bonus, calculated on base damage.
-                            styleDamage += damage * owner.GetModified(eProperty.StyleDamage) * 0.01;
-
                             // Save the raw unresisted style damage for the AttackData. To be used by the combat log only.
                             ad.StyleDamage = (int) styleDamage;
 
@@ -1389,7 +1386,7 @@ namespace DOL.GS
                 if (playerOwner.SpecLock > 0)
                     return (playerOwner.SpecLock, playerOwner.SpecLock);
 
-                double specRatio = Math.Min((spec - 1) / ((double) target.Level + 1), 1.0);
+                double specRatio = Math.Clamp((spec - 1) / ((double) target.Level + 1), 0, 1); // OpenDAoC-Core f55b1534f
                 double minVariance = 0.75 + 0.5 * specRatio;
                 varianceRange = (minVariance, minVariance + 0.5);
             }
@@ -1398,7 +1395,7 @@ namespace DOL.GS
                 if (botOwner.SpecLock > 0)
                     return (botOwner.SpecLock, botOwner.SpecLock);
 
-                double specRatio = Math.Min((spec - 1) / ((double)target.Level + 1), 1.0);
+                double specRatio = Math.Clamp((spec - 1) / ((double)target.Level + 1), 0, 1); // OpenDAoC-Core f55b1534f
                 double minVariance = 0.75 + 0.5 * specRatio;
                 varianceRange = (minVariance, minVariance + 0.5);
             }
@@ -1551,36 +1548,28 @@ namespace DOL.GS
                     source.IsIncapacitated ||
                     source.ActiveWeaponSlot is eActiveWeaponSlot.Distance ||
                     stealthStyle ||
-                    !guard.Source.IsObjectInFront(ad.Attacker, 180) ||
                     !guard.Source.IsWithinRadius(guard.Target, GuardAbilityHandler.GUARD_DISTANCE))
                 {
                     continue;
                 }
 
-                DbInventoryItem rightHand = source.ActiveWeapon;
-                DbInventoryItem leftHand = source.ActiveLeftWeapon;
-
-                if (((rightHand != null && rightHand.Hand == 1) || leftHand == null || (eObjectType) leftHand.Object_Type is not eObjectType.Shield) && source is not GameNPC)
-                    continue;
-
                 double guardChance;
 
-                if (source is GameNPC)
-                    guardChance = source.GetModified(eProperty.BlockChance);
+                if (DOL.GS.PropertyCalc.PlayerDefenseFormula.UsesPlayerDefense(source))
+                {
+                    // Players and gamebots guard through the block rules: shield, Shield ability, quality and
+                    // condition, the arrow bonus, Engage and a 120 degree arc (OpenDAoC-Core c284dd9d8, 34519baf5).
+                    guardChance = source.TryBlock(ad, true, out _);
+                }
                 else
-                    guardChance = source.GetModified(eProperty.BlockChance) * (leftHand.Quality * 0.01) * (leftHand.ConditionPercent * 0.01);
+                {
+                    // Ordinary NPC guards keep the earlier rule (no shield needed, 180 degrees): upstream's version
+                    // weakens them and is held for the owner.
+                    if (!guard.Source.IsObjectInFront(ad.Attacker, 180))
+                        continue;
 
-                guardChance *= 0.001;
-                guardChance += source.GetAbilityLevel(Abilities.Guard) * 0.05; // 5% additional chance to guard with each Guard level.
-                guardChance *= 1 - ad.DefensePenetration;
-
-                // Guard isn't affected by shield size or attacker count.
-
-                if (ad.AttackType is AttackData.eAttackType.MeleeDualWield)
-                    guardChance *= ad.Attacker.DualWieldDefensePenetrationFactor;
-
-                if (guardChance > Properties.BLOCK_CAP && ad.Attacker is GamePlayer && ad.Target is GamePlayer)
-                    guardChance = Properties.BLOCK_CAP;
+                    guardChance = NpcGuardChance(source, ad);
+                }
 
                 if (guardChance > 0)
                 {
@@ -1603,6 +1592,23 @@ namespace DOL.GS
             }
 
             return false;
+        }
+
+        private static double NpcGuardChance(GameLiving source, AttackData ad)
+        {
+            double guardChance = source.GetModified(eProperty.BlockChance) * 0.001;
+            guardChance += source.GetAbilityLevel(Abilities.Guard) * 0.05; // 5% additional chance to guard with each Guard level.
+            guardChance *= 1 - ad.DefensePenetration;
+
+            // Guard isn't affected by shield size or attacker count.
+
+            if (ad.AttackType is AttackData.eAttackType.MeleeDualWield)
+                guardChance *= ad.Attacker.DualWieldDefensePenetrationFactor;
+
+            if (guardChance > Properties.BLOCK_CAP && ad.Attacker is GamePlayer && ad.Target is GamePlayer)
+                guardChance = Properties.BLOCK_CAP;
+
+            return guardChance;
         }
 
         public static bool CheckDashingDefense(AttackData ad, bool stealthStyle, out eAttackResult result)
@@ -1733,12 +1739,17 @@ namespace DOL.GS
                 if (lastAttackData != null && lastAttackData.AttackResult is not eAttackResult.HitStyle)
                     lastAttackData = null;
 
-                double evadeChance = owner.TryEvade(ad, lastAttackData);
+                // Melee attackers, front and back, reduce parry and (for players and gamebots) evade (OpenDAoC-Core a36db6f43).
+                int attackerCount = AttackerTracker.MeleeCount;
+
+                double evadeChance = owner.TryEvade(ad, lastAttackData, attackerCount);
                 ad.EvadeChance = evadeChance * 100;
-                double evadeRoll = owner.GetPseudoDouble(RandomDeckEvent.Evade);
 
                 if (evadeChance > 0)
                 {
+                    // Roll only when there is a chance, so a zero chance doesn't use up a deck card (OpenDAoC-Core f589c15dc).
+                    double evadeRoll = owner.GetPseudoDouble(RandomDeckEvent.Evade);
+
                     if (ad.Attacker is GamePlayer evadeAtk && evadeAtk.UseDetailedCombatLog)
                         evadeAtk.Out.SendMessage($"target evade%: {evadeChance * 100:0.##} rand: {evadeRoll * 100:0.##}", eChatType.CT_DamageAdd, eChatLoc.CL_SystemWindow);
 
@@ -1751,12 +1762,13 @@ namespace DOL.GS
 
                 if (ad.IsMeleeAttack)
                 {
-                    double parryChance = owner.TryParry(ad, lastAttackData, AttackerTracker.MeleeCount);
+                    double parryChance = owner.TryParry(ad, lastAttackData, attackerCount);
                     ad.ParryChance = parryChance * 100;
-                    double parryRoll = owner.GetPseudoDouble(RandomDeckEvent.Parry);
 
                     if (parryChance > 0)
                     {
+                        double parryRoll = owner.GetPseudoDouble(RandomDeckEvent.Parry);
+
                         if (ad.Attacker is GamePlayer parryAtk && parryAtk.UseDetailedCombatLog)
                             parryAtk.Out.SendMessage($"target parry%: {parryChance * 100:0.##} rand: {parryRoll * 100:0.##}", eChatType.CT_DamageAdd, eChatLoc.CL_SystemWindow);
 
@@ -2367,22 +2379,50 @@ namespace DOL.GS
             return 0;
         }
 
+        /// <summary>
+        /// Hand to hand double, triple and quad swing chances, in percent. Any non-shield left hand weapon enables them with
+        /// Hand to Hand spec: the weapon type doesn't matter (OpenDAoC-Core 9add26a8f; "you can even use non-HTH styles and
+        /// still hit multiple times").
+        /// </summary>
         public (double, double, double) CalculateHthSwingChances(DbInventoryItem leftWeapon)
         {
-            if (leftWeapon == null)
+            if (leftWeapon == null || (eObjectType) leftWeapon.Object_Type is eObjectType.Shield)
                 return (0, 0, 0);
 
-            int specLevel = owner.GetModifiedSpecLevel(Specs.HandToHand);
+            return HthSwingChances(owner.GetModifiedSpecLevel(Specs.HandToHand), owner.GetModified(eProperty.OffhandDamageAndChance));
+        }
 
-            if (specLevel <= 0 || (eObjectType) leftWeapon.Object_Type is not eObjectType.HandToHand)
+        /// <summary>
+        /// The original powers-of-two formula without the old unlock levels (25 for triples, 40 for quads), so triples and
+        /// quads exist at every spec (OpenDAoC-Core 068076224). 8/13 of Dualist's Reflexes goes to the double chance and
+        /// trickles down to triples (4/13) and quads (1/13), leaving the single swing chance as before (ce965da78,
+        /// 706847173).
+        /// </summary>
+        public static (double doubleChance, double tripleChance, double quadChance) HthSwingChances(int handToHandSpec, int offhandBonus)
+        {
+            if (handToHandSpec <= 0)
                 return (0, 0, 0);
 
-            double doubleSwingChance = specLevel * 0.5; // specLevel >> 1
-            double tripleSwingChance = specLevel >= 25 ? doubleSwingChance * 0.5 : 0; // specLevel >> 2
-            double quadSwingChance = specLevel >= 40 ? tripleSwingChance * 0.25 : 0; // specLevel >> 4
-            int bonus = owner.GetModified(eProperty.OffhandDamageAndChance);
-            doubleSwingChance += bonus; // It's apparently supposed to only affect double swing chance around 1.65, which puts it more in line with DW / CD.
+            double doubleSwingChance = handToHandSpec * 0.5 + offhandBonus * (8 / 13.0);
+            double tripleSwingChance = doubleSwingChance * 0.5;
+            double quadSwingChance = tripleSwingChance * 0.25;
             return (doubleSwingChance, tripleSwingChance, quadSwingChance);
+        }
+
+        /// <summary>
+        /// Whether this attack uses the hand to hand multi-hit mechanic (a player or gamebot with Hand to Hand spec, a main
+        /// hand and a non-shield left hand, and no Left Axe, Dual Wield or Celtic Dual).
+        /// </summary>
+        public bool UsesHandToHandMechanic(DbInventoryItem mainWeapon, DbInventoryItem leftWeapon)
+        {
+            if (owner is not GamePlayer and not IGamePlayer || !CanUseLefthandedWeapon || mainWeapon == null ||
+                leftWeapon == null || (eObjectType) leftWeapon.Object_Type is eObjectType.Shield)
+                return false;
+
+            if (owner.GetBaseSpecLevel(Specs.Left_Axe) > 0 || CalculateDwCdLeftHandSwingChance() > 0)
+                return false;
+
+            return owner.GetModifiedSpecLevel(Specs.HandToHand) > 0;
         }
 
         /// <summary>
@@ -2475,12 +2515,26 @@ namespace DOL.GS
 
         public class BlockRoundHandler
         {
-            private GameObject _owner;
-            private int _usedBlockRoundCount;
+            // One block round per attacker, as upstream (OpenDAoC-Core a0f6fa4df, 469c9b7a1): a multi-hit attack (H2H,
+            // dual wield offhand) uses at most one, and an archer whose target closes in, so that the next arrow lands
+            // before the round expires, extends its round instead of taking another.
+            private readonly GameObject _owner;
+            private readonly Dictionary<GameLiving, BlockRoundReservation> _reservationsByAttacker = new();
+            private readonly Stack<BlockRoundReservation> _reservationPool = new();
+            private readonly Lock _lock = new();
 
             public BlockRoundHandler(GameObject owner)
             {
                 _owner = owner;
+            }
+
+            public int ReservationCount
+            {
+                get
+                {
+                    lock (_lock)
+                        return _reservationsByAttacker.Count;
+                }
             }
 
             public bool Consume(int shieldSize, AttackData attackData, out int usedBlockRoundCount)
@@ -2495,46 +2549,86 @@ namespace DOL.GS
                     return true;
                 }
 
-                // There is no need to make dual wield even more effective against shields.
-                // Returning true allows the off-hand of dual wield attacks to be blocked without consuming a block.
-                if (attackData.AttackType is AttackData.eAttackType.MeleeDualWield && attackData.IsOffHand)
+                // The round lasts until just after the attacker's next attack. `AttackData.Interval` alone isn't enough
+                // because `AttackAction.NextTick` is adjusted by `ServiceUtil.ShouldTickAdjust`.
+                GameLiving attacker = attackData.Attacker;
+                long nextTick = attacker?.attackComponent?.attackAction?.NextTick ?? GameLoop.GameLoopTime;
+                int duration = (int) Math.Max(1, nextTick - GameLoop.GameLoopTime + attackData.Interval);
+                return Consume(shieldSize, attacker, duration, out usedBlockRoundCount);
+            }
+
+            public bool Consume(int shieldSize, GameLiving attacker, int duration, out int usedBlockRoundCount)
+            {
+                lock (_lock)
                 {
-                    usedBlockRoundCount = 0;
+                    if (attacker != null && _reservationsByAttacker.TryGetValue(attacker, out BlockRoundReservation reservation))
+                    {
+                        reservation.Start(duration);
+                        usedBlockRoundCount = _reservationsByAttacker.Count;
+                        return true;
+                    }
+
+                    if (_reservationsByAttacker.Count >= shieldSize)
+                    {
+                        usedBlockRoundCount = _reservationsByAttacker.Count + 1;
+                        return false;
+                    }
+
+                    if (attacker == null)
+                    {
+                        usedBlockRoundCount = _reservationsByAttacker.Count + 1;
+                        return true;
+                    }
+
+                    reservation = _reservationPool.Count > 0 ? _reservationPool.Pop() : new(_owner, this);
+                    reservation.Begin(attacker, duration);
+                    _reservationsByAttacker.Add(attacker, reservation);
+                    usedBlockRoundCount = _reservationsByAttacker.Count;
                     return true;
                 }
+            }
 
-                // Many threads can enter this block simultaneously, so we increment the count first, then decrement if we've overshot the shield size.
-                usedBlockRoundCount = Interlocked.Increment(ref _usedBlockRoundCount);
-
-                if (usedBlockRoundCount > shieldSize)
+            private void Relinquish(BlockRoundReservation reservation)
+            {
+                lock (_lock)
                 {
-                    Relinquish();
-                    return false;
+                    if (reservation.Attacker != null &&
+                        _reservationsByAttacker.TryGetValue(reservation.Attacker, out BlockRoundReservation held) &&
+                        ReferenceEquals(held, reservation))
+                    {
+                        _reservationsByAttacker.Remove(reservation.Attacker);
+                    }
+
+                    reservation.Reset();
+                    _reservationPool.Push(reservation);
+                }
+            }
+
+            private class BlockRoundReservation : ECSGameTimerWrapperBase
+            {
+                private readonly BlockRoundHandler _handler;
+
+                public GameLiving Attacker { get; private set; }
+
+                public BlockRoundReservation(GameObject owner, BlockRoundHandler handler) : base(owner)
+                {
+                    _handler = handler;
                 }
 
-                // Decrement the count after a duration equal to the attack interval.
-                // We need to make sure it ticks before the attacker's next attack. We can't use `AttackData.Interval` only because `AttackAction.NextTick` is adjusted by `ServiceUtil.ShouldTickAdjust`.
-                new BlockRoundCountDecrementTimer(_owner, Relinquish).Start((int) (attackData.Attacker.attackComponent.attackAction.NextTick - GameLoop.GameLoopTime + attackData.Interval));
-                return true;
-            }
-
-            private void Relinquish()
-            {
-                Interlocked.Decrement(ref _usedBlockRoundCount);
-            }
-
-            class BlockRoundCountDecrementTimer : ECSGameTimerWrapperBase
-            {
-                private Action _decrementBlockRoundCount;
-
-                public BlockRoundCountDecrementTimer(GameObject owner, Action decrementBlockRoundCount) : base(owner)
+                public void Begin(GameLiving attacker, int interval)
                 {
-                    _decrementBlockRoundCount = decrementBlockRoundCount;
+                    Attacker = attacker;
+                    Start(interval);
+                }
+
+                public void Reset()
+                {
+                    Attacker = null;
                 }
 
                 protected override int OnTick(ECSGameTimer timer)
                 {
-                    _decrementBlockRoundCount();
+                    _handler.Relinquish(this);
                     return 0;
                 }
             }
