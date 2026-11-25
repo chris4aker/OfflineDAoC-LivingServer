@@ -9,6 +9,8 @@ namespace OfflineDaoc.Launcher;
 //   version;
 // - Install only with the server, the game and any other launcher closed; the launcher then hands over to the
 //   package's INSTALL.cmd and closes, and the update step opens it again. Nothing installs without the player's click.
+// - "Test builds" (off by default, issue #637) also offers release candidates published as GitHub pre-releases, shown
+//   as test builds; one can be installed here or into a new test folder beside this install (TestFolderInstall).
 internal sealed partial class MainForm
 {
     private static readonly Color StartAccent = Color.FromArgb(110, 128, 70);
@@ -44,6 +46,14 @@ internal sealed partial class MainForm
         Font = new Font("Georgia", 8f),
         Margin = new Padding(0, 1, 8, 0),
     };
+    private readonly CheckBox _testBuildsCheck = new()
+    {
+        AutoSize = true,
+        Text = "Offer test builds (pre-releases)",
+        ForeColor = DaocTheme.Muted,
+        Font = new Font("Georgia", 8f),
+        Margin = new Padding(0, 1, 8, 0),
+    };
     private readonly ProgressBar _updateProgress = new() { Width = 110, Height = 12, Visible = false, Margin = new Padding(0, 4, 8, 0) };
     private readonly Label _updateStatus = new()
     {
@@ -64,7 +74,7 @@ internal sealed partial class MainForm
             return; // a build without a Living Server name has nothing to compare
         // The version label itself names the build now ("LIVING SERVER 1.2.2", MainForm.VersionLabel), so the strip holds
         // only the update controls.
-        _updateStrip.Controls.AddRange([_checkUpdatesLink, _autoUpdateCheck, _updateProgress]);
+        _updateStrip.Controls.AddRange([_checkUpdatesLink, _autoUpdateCheck, _testBuildsCheck, _updateProgress]);
         titlePanel.Controls.Add(_updateStrip);
         titlePanel.Controls.Add(_updateStatus);
         titlePanel.Layout += (_, _) =>
@@ -82,6 +92,15 @@ internal sealed partial class MainForm
             Updater.SaveSettings();
             Updater.Log.Write("Automatic update checks " + (_autoUpdateCheck.Checked ? "on." : "off."));
         };
+        _testBuildsCheck.Checked = Updater.Settings.OfferTestBuilds;
+        _testBuildsCheck.CheckedChanged += (_, _) =>
+        {
+            Updater.Settings.OfferTestBuilds = _testBuildsCheck.Checked;
+            Updater.SaveSettings();
+            Updater.Log.Write("Test builds (pre-releases) " + (_testBuildsCheck.Checked ? "offered." : "not offered."));
+        };
+        SetToolTip(_testBuildsCheck, "For testers: also offer test builds, the release candidates published as pre-releases on " +
+                                     "GitHub. A test build can go into a new test folder beside this one, so your world here is never touched.");
         SetToolTip(_autoUpdateCheck, "When the launcher starts, look for a new Living Server on GitHub (at most once a day). " +
                                      "Only the release's version is asked for; nothing about you or your game is sent.");
         ShowLastUpdateResult();
@@ -92,7 +111,8 @@ internal sealed partial class MainForm
         var last = Updater.TakeLastResult();
         if (last == null || !last.TryGetValue("Build", out string? build))
             return;
-        string name = BuildVersion.Parse(build)?.DisplayName ?? build;
+        string shown = last.TryGetValue("Release", out string? release) && release.Length > 0 ? release : build;
+        string name = BuildVersion.Parse(shown)?.DisplayName ?? shown;
         bool installed = last.TryGetValue("Result", out string? result) && result == "installed";
         Updater.Log.Write($"Opened after the update to {build}: {result} ({(last.TryGetValue("Detail", out string? d) ? d : "")})");
         SetUpdateStatus(installed ? $"Updated to Living Server {name}. Your characters and world are as you left them."
@@ -113,6 +133,8 @@ internal sealed partial class MainForm
         BuildVersion? installed = LauncherBuild.Version;
         if (installed == null || _updating)
             return;
+        // A test build's binaries name the final's build; the marker says which candidate it is (TestBuildMarker).
+        installed = await Task.Run(() => Updater.InstalledBuild(installed)) ?? installed;
         if (!asked && !UpdatePolicy.ShouldCheck(Updater.Settings, DateTime.UtcNow, false))
             return;
         if (asked)
@@ -157,9 +179,10 @@ internal sealed partial class MainForm
         _updateOffer = release;
         var notes = release.NotesPreview(6);
         string headline = notes.Count > 0 ? notes[0] : release.Title ?? "";
-        SetUpdateStatus($"{release.Version!.DisplayName} is out: {headline}", DaocTheme.GoldLight,
-            $"Living Server {release.Version.DisplayName}{Environment.NewLine}{string.Join(Environment.NewLine, notes)}");
-        _startButton.Text = "GET UPDATE";
+        string kind = release.IsTestBuild ? "TEST BUILD (pre-release) " : "";
+        SetUpdateStatus($"{kind}{release.Version!.DisplayName} is out: {headline}", release.IsTestBuild ? DaocTheme.Danger : DaocTheme.GoldLight,
+            $"Living Server {kind}{release.Version.DisplayName}{Environment.NewLine}{string.Join(Environment.NewLine, notes)}");
+        _startButton.Text = release.IsTestBuild ? "GET TEST BUILD" : "GET UPDATE";
         ((RuneButton)_startButton).Accent = DaocTheme.Gold;
         SetTip(_startButton, $"Living Server {release.Version.DisplayName} is out. Click to install it, or choose Later to start the server.");
     }
@@ -191,26 +214,41 @@ internal sealed partial class MainForm
         if (release?.Version == null || _updating)
             return;
         string name = release.Version.DisplayName;
-        var install = new TaskDialogButton("Install");
+        bool test = release.IsTestBuild;
+        var install = new TaskDialogButton(test ? "Install here" : "Install");
+        var testFolder = new TaskDialogButton("Install into a new test folder");
         var later = new TaskDialogButton("Later");
         var skip = new TaskDialogButton("Skip this version");
         var notes = release.NotesPreview(5);
         var page = new TaskDialogPage
         {
-            Caption = "Living Server update",
-            Heading = $"Update to Living Server {name}? Your characters and world are kept.",
-            Text = (notes.Count > 0 ? string.Join(Environment.NewLine, notes) + Environment.NewLine + Environment.NewLine : "") +
+            Caption = test ? "Living Server test build" : "Living Server update",
+            Heading = test
+                ? $"Living Server {name} is a TEST BUILD (a pre-release). Install it into a new test folder, or here?"
+                : $"Update to Living Server {name}? Your characters and world are kept.",
+            Text = (test ? "A new test folder is a fresh install beside this one, with a new world: this install, its world and " +
+                           "characters are not touched. Install here updates this install (ROLLBACK.cmd undoes it)." +
+                           Environment.NewLine + Environment.NewLine : "") +
+                   (notes.Count > 0 ? string.Join(Environment.NewLine, notes) + Environment.NewLine + Environment.NewLine : "") +
                    $"The launcher downloads {release.Package?.Name} ({(release.Package?.Size ?? 0) / 1048576.0:0.0} MB) from GitHub and checks it, " +
                    "then closes while the package's INSTALL.cmd runs in its own window. It backs up every file it replaces " +
                    "(ROLLBACK.cmd undoes it), and the launcher opens again when it's done.",
             Footnote = release.PageUrl != null ? new TaskDialogFootnote(release.PageUrl) : null,
-            Buttons = { install, later, skip },
-            DefaultButton = install,
-            Icon = TaskDialogIcon.Information,
+            DefaultButton = test ? testFolder : install,
+            Icon = test ? TaskDialogIcon.Warning : TaskDialogIcon.Information,
             AllowCancel = true,
         };
+        if (test)
+            page.Buttons.Add(testFolder);
+        page.Buttons.Add(install);
+        page.Buttons.Add(later);
+        page.Buttons.Add(skip);
         TaskDialogButton chosen = TaskDialog.ShowDialog(this, page);
-        if (chosen == install)
+        if (chosen == testFolder)
+        {
+            _ = InstallIntoTestFolderAsync(release);
+        }
+        else if (chosen == install)
         {
             _ = ApplyUpdateAsync(release);
         }
@@ -277,5 +315,110 @@ internal sealed partial class MainForm
             _checkUpdatesLink.Enabled = true;
             await RefreshDashboardAsync();
         }
+    }
+
+    /// <summary>
+    /// "Install into a new test folder" (issue #637): asks for the folder name (beside this install), makes a fresh
+    /// install there with a clean world (TestFolderInstall), then hands over to that folder's INSTALL.cmd and, if the
+    /// player wants, opens that folder's launcher. This install's world and saves are only read.
+    /// </summary>
+    private async Task InstallIntoTestFolderAsync(ReleaseInfo release)
+    {
+        string name = release.Version!.DisplayName;
+        string game = Updater.GameFolder;
+        string? refused = TestFolderInstall.RunningRefusal(() => ServerPortProbe.IsListening(), RunningGameParts());
+        if (refused != null)
+        {
+            Updater.Log.Write("Test folder not made: " + refused);
+            MessageBox.Show(this, refused, "Living Server test build", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+        string? target = AskTestFolder(game);
+        if (target == null)
+            return;
+        _updating = true;
+        _startButton.Enabled = _stopButton.Enabled = _playButton.Enabled = _checkUpdatesLink.Enabled = false;
+        _updateProgress.Value = 0;
+        _updateProgress.Visible = true;
+        SetUpdateStatus($"Making the test folder {Path.GetFileName(target)}…", DaocTheme.GoldLight);
+        Updater.Log.Write($"Making a test folder for {release.TagName}: {target}");
+        try
+        {
+            var (testUpdater, prepared) = await Task.Run(() => TestFolderInstall.Create(game, target, release, _releaseWeb!,
+                () => ServerPortProbe.IsListening(),
+                text => BeginInvoke(() => _updateStatus.Text = text),
+                (done, total) => BeginInvoke(() =>
+                {
+                    if (total > 0)
+                        _updateProgress.Value = (int)Math.Min(100, done * 100 / total);
+                }), CancellationToken.None));
+            refused = TestFolderInstall.RunningRefusal(() => ServerPortProbe.IsListening(), RunningGameParts());
+            if (refused != null)
+                throw new PackageRefusedException(refused + " The test folder is ready; install the test build from its own launcher.");
+            string testLauncher = Path.Combine(target, "runtime", "OfflineDAoC.exe");
+            bool open = MessageBox.Show(this,
+                $"The test folder {target} is ready with a new world. This launcher now closes while {name} installs there." +
+                Environment.NewLine + Environment.NewLine + "Open the test folder's launcher when it's done? (No opens this one again.)",
+                "Living Server test build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+            Updater.Log.Write($"Test folder {target} ready; handing over to its INSTALL.cmd, then opening {(open ? testLauncher : "this launcher")}.");
+            testUpdater.StartHandoff(prepared, Environment.ProcessId, open && File.Exists(testLauncher) ? testLauncher : Environment.ProcessPath, noPause: false);
+            Close();
+        }
+        catch (Exception e)
+        {
+            string why = e is PackageRefusedException ? e.Message : "The test folder wasn't made: " + ReleaseFeed.Innermost(e).Message;
+            Updater.Log.Write("Test folder not made: " + why);
+            SetUpdateStatus($"{name} wasn't installed into a test folder. This install wasn't changed.", DaocTheme.Danger, why);
+            MessageBox.Show(this, why + Environment.NewLine + Environment.NewLine + "This install wasn't changed.",
+                "Living Server test build", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            _updateProgress.Visible = false;
+            _updating = false;
+            _checkUpdatesLink.Enabled = true;
+            await RefreshDashboardAsync();
+        }
+    }
+
+    /// <summary>The test folder's full path, asked with "&lt;this folder&gt;-test" filled in; null when cancelled.</summary>
+    private string? AskTestFolder(string game)
+    {
+        string parent = Path.GetDirectoryName(game) ?? game;
+        using var form = new Form
+        {
+            Text = "Install into a new test folder",
+            FormBorderStyle = FormBorderStyle.FixedDialog,
+            StartPosition = FormStartPosition.CenterParent,
+            MinimizeBox = false,
+            MaximizeBox = false,
+            ShowInTaskbar = false,
+            AutoSize = true,
+            AutoSizeMode = AutoSizeMode.GrowAndShrink,
+            Padding = new Padding(12),
+        };
+        var layout = new TableLayoutPanel { AutoSize = true, ColumnCount = 1, Dock = DockStyle.Fill };
+        var prompt = new Label { AutoSize = true, MaximumSize = new Size(UiScale.Px(this, 460), 0),
+            Text = $"A fresh install with a new world, in a new folder in {parent}. This install is not changed. Folder name:" };
+        var box = new TextBox { Text = TestFolderInstall.DefaultFolderName(game), Width = UiScale.Px(this, 460) };
+        var problem = new Label { AutoSize = true, ForeColor = Color.Firebrick, MaximumSize = new Size(UiScale.Px(this, 460), 0) };
+        var buttons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.RightToLeft, Dock = DockStyle.Fill };
+        var ok = new Button { Text = "Make the test folder", AutoSize = true };
+        var cancel = new Button { Text = "Cancel", AutoSize = true, DialogResult = DialogResult.Cancel };
+        buttons.Controls.AddRange([cancel, ok]);
+        layout.Controls.AddRange([prompt, box, problem, buttons]);
+        form.Controls.Add(layout);
+        form.AcceptButton = ok;
+        form.CancelButton = cancel;
+        string? chosen = null;
+        ok.Click += (_, _) =>
+        {
+            string? why = TestFolderInstall.CheckTarget(game, box.Text, out string full);
+            if (why != null)
+            {
+                problem.Text = why;
+                return;
+            }
+            chosen = full;
+            form.DialogResult = DialogResult.OK;
+        };
+        return form.ShowDialog(this) == DialogResult.OK ? chosen : null;
     }
 }

@@ -136,6 +136,18 @@ class CheckVersions(unittest.TestCase):
         self.assertEqual(self.problems(), [])
         self.assertTrue(any("BuildName is 1.2.1, but the release v1.2 needs 1.2" in p for p in cv.check(self.root, "v1.2")))
 
+    def test_a_test_build_tag_is_of_the_version_in_development(self):
+        # Issue #637: v1.2.1-rc.1 is published while 1.2.1 is in development, from a package built as 1.2.1.
+        changelog = FINAL_CHANGELOG.replace("## 1.2 —", "## 1.2.1 (in development)\n\n- a line\n\n## 1.2 —")
+        self.write(changelog=changelog, readme=FINAL_README, fork=FORK.replace("1.1.1-beta", "1.2.1"))
+        self.assertEqual(cv.check(self.root, "v1.2.1-rc.1"), [])
+        self.assertEqual(cv.check(self.root, "v1.2.1-rc.7"), [])
+        self.assertTrue(any("not of a version in development" in p for p in cv.check(self.root, "v1.2.2-rc.1")))
+        self.assertTrue(any("not of a version in development" in p for p in cv.check(self.root, "v1.2-rc.1")))
+        self.write(fork=FORK.replace("1.1.1-beta", "1.2"))
+        self.assertTrue(any("BuildName is 1.2, but the test build v1.2.1-rc.1 needs 1.2.1" in p
+                            for p in cv.check(self.root, "v1.2.1-rc.1")))
+
     def test_main_names_the_release_and_its_tag(self):
         self.write(changelog=FINAL_CHANGELOG, fork=FORK.replace("1.1.1-beta", "1.2"), readme=FINAL_README)
         out = io.StringIO()

@@ -40,8 +40,15 @@ public sealed class UpdateLog
     }
 }
 
-/// <summary>A checked package, unpacked into the game folder, ready for its INSTALL.cmd.</summary>
-public sealed record PreparedUpdate(BuildVersion Build, string ZipPath, string PackageFolder);
+/// <summary>
+/// A checked package, unpacked into the game folder, ready for its INSTALL.cmd. Build is the package's build (what its
+/// BUILD-INFO.txt names); Release the release's tag build, which differs for a test build (v1.2.3-rc.1 carries 1.2.3).
+/// </summary>
+public sealed record PreparedUpdate(BuildVersion Build, string ZipPath, string PackageFolder, BuildVersion? Release = null,
+    string? GameServerSha256 = null)
+{
+    public BuildVersion ReleaseBuild => Release ?? Build;
+}
 
 // Checks for and applies Living Server updates for one game folder. Used by the launcher's window (MainForm.Updates)
 // and by its headless test switch (--apply-update). The steps:
@@ -55,6 +62,13 @@ public sealed class LauncherUpdater
 {
     public const string UserAgent = "OfflineDAoC-LivingServer-Launcher";
     public const string ResultFile = "last-update.txt";
+    /// <summary>
+    /// runtime\updates\installed-test-build.txt: the test build (release candidate) handed to INSTALL.cmd and the
+    /// GameServer.dll it installs. A candidate's binaries name the final's build (1.2.3), so this is how the launcher
+    /// knows it runs 1.2.3-rc.1 and still offers rc.2 and the final 1.2.3. It counts only while runtime\server\
+    /// GameServer.dll is that file: a failed install, a rollback or any later update makes it stale.
+    /// </summary>
+    public const string TestBuildMarker = "installed-test-build.txt";
 
     /// <summary>The programs whose running blocks an update: the server, both clients, and another launcher.</summary>
     public static readonly string[] BlockingProcesses =
@@ -105,13 +119,62 @@ public sealed class LauncherUpdater
         Log.Write($"Checking for a newer Living Server than {installed?.Name ?? "(unknown build)"}{(asked ? " (asked)" : "")}: GET {ReleaseFeed.LatestUrl}");
         ReleaseInfo? latest = ReleaseFeed.TryGetLatest(_web, out problem);
         if (latest == null)
-        {
             Log.Write("No answer: " + problem);
-            return null;
+        else
+            Log.Write($"Newest release {latest.TagName}{(latest.Package == null ? " (no package)" : "")}.");
+        List<ReleaseInfo>? releases = null;
+        if (Settings.OfferTestBuilds)
+        {
+            Log.Write("Test builds are on: GET " + ReleaseFeed.ReleasesUrl);
+            releases = ReleaseFeed.TryGetReleases(_web, out string? listProblem);
+            ReleaseInfo? newestTest = releases?.Where(r => r.IsTestBuild).OrderByDescending(r => r.Version!).FirstOrDefault();
+            Log.Write(releases == null ? "No list of releases: " + listProblem : "Newest test build: " + (newestTest?.TagName ?? "none") + ".");
         }
-        bool offer = UpdatePolicy.ShouldOffer(latest, installed, Settings, asked);
-        Log.Write($"Newest release {latest.TagName}{(latest.Package == null ? " (no package)" : "")}: {(offer ? "newer, offered" : "nothing to offer")}.");
-        return offer ? latest : null;
+        if (latest == null && releases == null)
+            return null;
+        problem = null; // GitHub answered at least one of the two
+        ReleaseInfo? offer = UpdatePolicy.Choose(latest, releases, installed, Settings, asked);
+        Log.Write(offer == null ? "Nothing to offer." : $"Offered: {offer.TagName}{(offer.IsTestBuild ? " (test build)" : "")}.");
+        return offer;
+    }
+
+    /// <summary>
+    /// The build installed in this game folder: the launcher's own build, or the test build it is a candidate of when
+    /// runtime\updates\installed-test-build.txt names one whose GameServer.dll is the one in runtime\server.
+    /// </summary>
+    public BuildVersion? InstalledBuild(BuildVersion? launcherBuild)
+    {
+        if (launcherBuild == null)
+            return null;
+        try
+        {
+            string marker = Path.Combine(UpdatesFolder, TestBuildMarker);
+            string dll = Path.Combine(GameFolder, "runtime", "server", "GameServer.dll");
+            if (!File.Exists(marker) || !File.Exists(dll))
+                return launcherBuild;
+            var info = PackageCheck.ReadBuildInfo(File.ReadAllText(marker));
+            BuildVersion? test = info.TryGetValue("Tag", out string? tag) ? BuildVersion.Parse(tag) : null;
+            if (test is not { IsCandidate: true } || !test.PackageBuild.SameBuildAs(launcherBuild) ||
+                !info.TryGetValue("GameServer.dll", out string? sha) ||
+                !string.Equals(PackageDigest.FileSha256(dll), sha, StringComparison.OrdinalIgnoreCase))
+                return launcherBuild;
+            return test;
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            return launcherBuild;
+        }
+    }
+
+    /// <summary>Records (or, for a final build, clears) the test build about to be installed. See TestBuildMarker.</summary>
+    public void RecordTestBuild(PreparedUpdate update)
+    {
+        Directory.CreateDirectory(UpdatesFolder);
+        string marker = Path.Combine(UpdatesFolder, TestBuildMarker);
+        if (update.ReleaseBuild.IsCandidate && update.GameServerSha256 != null)
+            File.WriteAllText(marker, $"Tag={update.ReleaseBuild.Tag}{Environment.NewLine}GameServer.dll={update.GameServerSha256}{Environment.NewLine}");
+        else if (File.Exists(marker))
+            File.Delete(marker);
     }
 
     public void Skip(BuildVersion build)
@@ -148,7 +211,8 @@ public sealed class LauncherUpdater
         try
         {
             var (zip, contents) = ReleaseFeed.DownloadPackage(_web, release, UpdatesFolder, progress, cancel);
-            Log.Write($"Downloaded and checked: SHA-256 matches GitHub's digest {release.Package?.Digest}; BUILD-INFO.txt names {contents.BuildName}.");
+            Log.Write($"Downloaded and checked: SHA-256 matches GitHub's digest {release.Package?.Digest}; BUILD-INFO.txt names {contents.BuildName}" +
+                      (build.IsCandidate ? $" (test build {build.Tag})." : "."));
             return Stage(build, zip, contents);
         }
         catch (PackageRefusedException e)
@@ -181,7 +245,7 @@ public sealed class LauncherUpdater
                 : Path.GetFileName(zip) + " doesn't match the SHA-256 it should have.");
         Log.Write($"{zip}: SHA-256 matches {expected}");
         PackageContents contents;
-        try { contents = PackageCheck.Inspect(zip, build); }
+        try { contents = PackageCheck.Inspect(zip, build.PackageBuild); }
         catch (PackageRefusedException e) { Log.Write("REFUSED: " + e.Message); throw; }
         // Kept with the others, so it can be installed again later.
         Directory.CreateDirectory(UpdatesFolder);
@@ -225,7 +289,8 @@ public sealed class LauncherUpdater
         Directory.Delete(staging, true);
         Log.Write("Package folder ready: " + target);
         KeepNewestPackages(build);
-        return new PreparedUpdate(build, zip, target);
+        contents.BuildInfo.TryGetValue("GameServer.dll", out string? dllSha);
+        return new PreparedUpdate(build.PackageBuild, zip, target, build, dllSha?.ToLowerInvariant());
     }
 
     /// <summary>Keeps this package and the newest one before it in runtime\updates (to reinstall), deletes older ones.</summary>
@@ -266,6 +331,7 @@ public sealed class LauncherUpdater
         string result = Path.Combine(UpdatesFolder, ResultFile);
         if (File.Exists(result))
             File.Delete(result);
+        RecordTestBuild(update);
         var start = new ProcessStartInfo(Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"))
         {
             UseShellExecute = false,
@@ -281,6 +347,11 @@ public sealed class LauncherUpdater
         {
             start.ArgumentList.Add("-Restart");
             start.ArgumentList.Add(restart);
+        }
+        if (!update.ReleaseBuild.SameBuildAs(update.Build) || update.ReleaseBuild.IsCandidate)
+        {
+            start.ArgumentList.Add("-Release");
+            start.ArgumentList.Add(update.ReleaseBuild.Name);
         }
         if (noPause)
             start.ArgumentList.Add("-NoPause");
