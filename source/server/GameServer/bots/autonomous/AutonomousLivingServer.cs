@@ -286,8 +286,12 @@ public static partial class AutonomousLivingServer
             case Channel.Group:
                 if (!GroupHasPlayer(bot.Group))
                     return false;
-                bot.Group.SendMessageToGroupMembers(bot, text, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
-                BotChatTranscript.Bot("group", bot.Name, bot.Realm, text, who: bot);
+                // Issue #475: out through the say gate (a pass-through).
+                BotSayGate.Say(new BotSayGate.Utterance("group", bot.Name, bot.Realm, text, who: bot), said =>
+                {
+                    bot.Group.SendMessageToGroupMembers(bot, said, eChatType.CT_Group, eChatLoc.CL_ChatWindow);
+                    return said;
+                });
                 return true;
             case Channel.Faction:
                 return RealmHasPlayer(bot.Realm) && AutonomousBotChatCoordinator.BroadcastFaction(bot.Name, bot.Realm, text);
@@ -413,8 +417,12 @@ public static partial class AutonomousLivingServer
             return;
         text = AutonomousBotVoiceCorpus.ForNow(AutonomousRoleplayers.Voice(bot, text));
         text = ChatPromises.BeforeSend(bot.Name, bot.Realm, text);   // chat 1.2 follow-up: no "omw" whose promise ended unsaid
-        ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, text);
-        BotChatTranscript.Bot("tell", bot.Name, bot.Realm, text, player.Name, bot);
+        // Issue #475: out through the say gate (a pass-through).
+        BotSayGate.Say(new BotSayGate.Utterance("tell", bot.Name, bot.Realm, text, player.Name, bot) { Listeners = [player] }, said =>
+        {
+            ChatUtil.SendSendMessage(player.Client, "Social.ReceiveMessage.Private.Sends", bot.Name, said);
+            return said;
+        });
         // The talking update: the player's next tell to this bot continues this exchange.
         AutonomousChatThreads.Log.Record(AutonomousChatThreads.Tell(player.Name, bot.Name), bot.DatabaseID, bot.Name, text, invites,
             GameLoop.GameLoopTime);

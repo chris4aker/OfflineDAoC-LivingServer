@@ -512,6 +512,7 @@ namespace DOL.GS.PacketHandler
 		{
 			if (m_gameClient.ClientState == GameClient.eClientState.CharScreen)
 				return;
+			ScreenBursts.Note(m_gameClient.Player, msg, type);   // issue #475: counts system-window bursts, changes nothing
 
 			using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.Message)))
 			{

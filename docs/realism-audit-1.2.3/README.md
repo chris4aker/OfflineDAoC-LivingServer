@@ -46,6 +46,11 @@ and on those branches.
 - **Step 1, record real play** (no behaviour change): the say gate as a pass-through in every exit, the chat log, `/odd`,
   the transcript tool, and an honest bench. The number to drive down is **defects per hour of real play** (baseline: 9 in
   about an hour on 1.2.2).
+  - Built in #475 (tests only until a played log shows it). On the PC: play as usual and type `/odd` (or `/odd what was
+    wrong`) the moment a line reads wrong. Afterwards send `runtime/server/logs/session-chat.log` (one small file; rows
+    `CHAT_SAY`, `CHAT_HEAR`, `CHAT_HELD`, `SCREEN_BURST`, `CHAT_FLAG`). An agent runs
+    `python tools/bot-voices/session_transcript.py session-chat.log --out sessions/` for a masked transcript per player and
+    the defects per hour, per channel, per build. Logs and transcripts stay out of git.
 - **Step 2, chat fixed by class at the gate**: no non-answer as a whole answer in any channel; one reply path, memory and
   delay for all channels; follow-ups; line contract; knowledge gaps; pools and reactions; the period voice.
 - **Step 3, interactions.**

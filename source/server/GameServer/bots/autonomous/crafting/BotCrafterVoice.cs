@@ -136,10 +136,14 @@ public static class BotCrafterVoice
             return;
         if (safe.Length > 240)
             safe = safe[..240];
-        string formatted = $"[Trade] {bot.Name}: {safe}";
-        foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(bot.Realm))
-            player.Out.SendMessage(formatted, eChatType.CT_Trade, eChatLoc.CL_ChatWindow);
-        BotChatTranscript.Bot("trade", bot.Name, bot.Realm, safe);
+        // Issue #475: out through the say gate (a pass-through).
+        BotSayGate.Say(new BotSayGate.Utterance("trade", bot.Name, bot.Realm, safe) { Body = bot }, said =>
+        {
+            string formatted = $"[Trade] {bot.Name}: {said}";
+            foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(bot.Realm))
+                player.Out.SendMessage(formatted, eChatType.CT_Trade, eChatLoc.CL_ChatWindow);
+            return said;
+        });
         long now = GameLoop.GameLoopTime;
         AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Trade, (long)bot.Realm, now);
         AutonomousChatExchange.NoteLine("trade:" + (int)bot.Realm, bot.Name, now);

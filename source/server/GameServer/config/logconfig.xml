@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- living-server-logconfig 2 (audit 2026-11-13): the server replaces an older copy of this file at start, keeping a backup. -->
+<!-- living-server-logconfig 3 (audit 2026-11-13; 3: the session chat log, issue #475): the server replaces an older copy of this file at start, keeping a backup. -->
 <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" throwConfigExceptions="true" throwExceptions="true">
 	<variable name="logDirectory" value="./logs" />
 
@@ -81,6 +81,16 @@
 			archiveAboveSize="104857600"
 			archiveEvery="Day"
 			maxArchiveDays="30" />
+		<!-- The say gate's rows (CHAT_SAY, CHAT_HEAR, CHAT_HELD, SCREEN_BURST, CHAT_FLAG; issue #475): one small file per session to send. -->
+		<target name="sessionChatFile" xsi:type="File"
+			layout="${date:format=MM/dd HH\:mm\:ss} | ${message}"
+			fileName="${logDirectory}/session-chat.log"
+			keepFileOpen="true"
+			archiveFileName="${logDirectory}/session-chat.log"
+			archiveSuffixFormat=".{1:yyyy-MM-dd}.{0:0}"
+			archiveAboveSize="52428800"
+			archiveEvery="Day"
+			maxArchiveDays="7" />
 		<target name="inventoryFile" xsi:type="File"
 			layout="${date:format=MM/dd HH\:mm\:ss} | ${message}"
 			fileName="${logDirectory}/inventory.log"
@@ -109,6 +119,10 @@
 		<logger name="inventories"
 			minLevel="Trace"
 			writeTo="inventoryFile"
+			final="true" />
+		<logger name="sessionchat"
+			minLevel="Trace"
+			writeTo="sessionChatFile"
 			final="true" />
 
 		<!-- Filters -->

@@ -1251,10 +1251,14 @@ public static partial class AutonomousBotChatCoordinator
             return;
         safe = ChannelCap(safe);
         bool lfg = channel == "lfg";
-        string formatted = lfg ? $"[LFG] {bot.Name} ({bot.Level}, {bot.CharacterClass?.Name ?? bot.ClassName}): {safe}" : $"[Trade] {bot.Name}: {safe}";
-        foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(bot.Realm))
-            player.Out.SendMessage(formatted, lfg ? eChatType.CT_LFG : eChatType.CT_Trade, eChatLoc.CL_ChatWindow);
-        BotChatTranscript.Bot(channel, bot.Name, bot.Realm, safe);
+        // Issue #475: out through the say gate (a pass-through).
+        BotSayGate.Say(new BotSayGate.Utterance(channel, bot.Name, bot.Realm, safe) { Body = bot }, said =>
+        {
+            string formatted = lfg ? $"[LFG] {bot.Name} ({bot.Level}, {bot.CharacterClass?.Name ?? bot.ClassName}): {said}" : $"[Trade] {bot.Name}: {said}";
+            foreach (GamePlayer player in ClientService.Instance.GetPlayersOfRealm(bot.Realm))
+                player.Out.SendMessage(formatted, lfg ? eChatType.CT_LFG : eChatType.CT_Trade, eChatLoc.CL_ChatWindow);
+            return said;
+        });
         AutonomousChatBudget.Meter.Count(lfg ? AutonomousChatBudget.Channel.Lfg : AutonomousChatBudget.Channel.Trade, (long)bot.Realm, GameLoop.GameLoopTime);
         AutonomousChatExchange.NoteLine(MarketLane(channel, bot.Realm), bot.Name, GameLoop.GameLoopTime);
     }
@@ -1886,9 +1890,13 @@ public static partial class AutonomousBotChatCoordinator
             if (!Eligible(advisor))
                 return 0;
             string realm = player.Realm switch { eRealm.Albion => "ALB", eRealm.Midgard => "MID", eRealm.Hibernia => "HIB", _ => "NONE" };
-            foreach (GamePlayer listener in ClientService.Instance.GetPlayersOfRealm(player.Realm))
-                ChatUtil.SendAdviceMessage(listener, "Social.SendAdvice.Msg.Channel", realm, advisor.Name, text);
-            BotChatTranscript.Bot("advice", advisor.Name, advisor.Realm, text);
+            // Issue #475: out through the say gate (a pass-through).
+            BotSayGate.Say(new BotSayGate.Utterance("advice", advisor.Name, advisor.Realm, text) { Body = advisor }, said =>
+            {
+                foreach (GamePlayer listener in ClientService.Instance.GetPlayersOfRealm(player.Realm))
+                    ChatUtil.SendAdviceMessage(listener, "Social.SendAdvice.Msg.Channel", realm, advisor.Name, said);
+                return said;
+            });
             AutonomousChatWhy.Record(advisor, "advice", "player " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, message),
                 "an advisor who knows answers", text, choice.Line?.Id, player.Name);
             return 0;
@@ -2648,13 +2656,14 @@ public static partial class AutonomousBotChatCoordinator
             LastHeld = "duplicate";
             return false;
         }
-        string safe = SendFaction(speakerName, realm, message);
+        // Issue #475: out through the say gate (a pass-through: SendFaction sends, and the gate records what it sent).
+        string safe = BotSayGate.Say(new BotSayGate.Utterance("faction", speakerName, realm, message) { Body = source?.Speaker?.Name == speakerName ? source.Speaker : null },
+            said => SendFaction(speakerName, realm, said));
         if (safe == null)
         {
             LastHeld = "empty";
             return false;
         }
-        BotChatTranscript.Bot("faction", speakerName, realm, safe);
         AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Faction, (long)realm, GameLoop.GameLoopTime, kind);
         AutonomousChatExchange.NoteLine(AutonomousChatExchange.FactionKey(realm), speakerName, GameLoop.GameLoopTime);
         // 1.1.3, after RC6: a bot's "brb" or "back" in /faction counts for its time away (AutonomousChatEngagement.WasAway).

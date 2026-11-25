@@ -24,8 +24,12 @@ public static class BotChatTranscript
         if (player == null || string.IsNullOrWhiteSpace(text)) return;
         string intent;
         try { intent = AutonomousChatIntentModel.Predict(text).ToString(); } catch { intent = "?"; }
-        Log.Info($"CHAT_LINE who=player ch={channel} realm={GlobalConstants.RealmToName(player.Realm)} from=\"{player.Name}\"" +
+        // Issue #475: guarded, so a line can be traced through its exit where the server log is off (tests); the row is unchanged.
+        if (Log.IsInfoEnabled)
+            Log.Info($"CHAT_LINE who=player ch={channel} realm={GlobalConstants.RealmToName(player.Realm)} from=\"{player.Name}\"" +
                  (to != null ? $" to=\"{to}\"" : "") + $" intent={intent} zone=\"{player.CurrentZone?.Description}\" text=\"{Clean(text)}\"");
+        // Issue #475: the say gate's CHAT_HEAR row in the session chat log (logs only).
+        BotSayGate.Hear(channel, player, text, to, intent);
     }
 
     /// <summary>
@@ -35,6 +39,8 @@ public static class BotChatTranscript
     /// (gamebot, companion, buffbot, helper; chat audit TEXT-051), cls= and lvl= the speaker's real class and level, so a line
     /// can be checked against them (source/tools/chat_audit.py). Pass the speaking bot when it is known: a hired companion,
     /// a helper or a buffbot is not found by name among the realm's gamebots (and a buffbot may share its name with one).
+    /// Issue #475: only the say gate calls this (<see cref="BotSayGate.Say"/>, its send-and-record step); an exit hands its line
+    /// to the gate instead (tools/bot-voices/say_gate_ratchet.py fails a call anywhere else).
     /// </summary>
     public static void Bot(string channel, string speaker, eRealm realm, string text, string to = null, GameBot who = null)
     {
@@ -44,7 +50,8 @@ public static class BotChatTranscript
         else ChatPromises.NoteSaid(speaker, realm, text);
         string via;
         try { via = Via(new StackTrace(1, false)); } catch { via = "?"; }
-        Log.Info($"CHAT_LINE who=bot ch={channel} realm={GlobalConstants.RealmToName(realm)} from=\"{speaker}\"" + (to != null ? $" to=\"{to}\"" : "") +
+        if (Log.IsInfoEnabled)
+            Log.Info($"CHAT_LINE who=bot ch={channel} realm={GlobalConstants.RealmToName(realm)} from=\"{speaker}\"" + (to != null ? $" to=\"{to}\"" : "") +
                  $" via={via}{SourceFields(speaker, realm, via, who)}{CapField(channel, realm)} text=\"{Clean(text)}\"");
     }
 
@@ -167,7 +174,7 @@ public static class BotChatTranscript
                 int close = name.IndexOf('>');
                 name = (close > 1 ? name[1..close] : "lambda") + "~";
             }
-            if (Delivery.Contains(name) || type == typeof(BotChatTranscript)) continue;
+            if (Delivery.Contains(name) || type == typeof(BotChatTranscript) || type == typeof(BotSayGate)) continue;
             if (type != null && (type.Name.StartsWith("Timer") || type.Namespace?.StartsWith("System") == true)) break;
             return $"{type?.Name}.{name}";
         }
