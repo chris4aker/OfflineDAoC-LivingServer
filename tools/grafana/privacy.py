@@ -74,7 +74,8 @@ WORLD_KEYS = {"keep", "keeps", "relic", "zone", "region", "item", "items", "boss
               "recipe", "lane", "lanes", "gate", "gates", "place", "door", "capital", "encounter", "court",
               "destination", "passage", "npc", "mob", "monster", "lord", "service", "porter", "trainer", "merchant",
               "master", "ticket", "battleground", "bg", "town", "camp", "pad", "ability", "skill", "class", "realm",
-              "near", "beside", "danger", "add", "pet", "servant", "petTarget", "pending", "raid", "court"}
+              "near", "beside", "add", "pet", "servant", "raid"}
+# Not world keys, though they sound like it: a pet's target or pending target, and a route's danger, can be a player.
 # Objects whose .Name is world data: NPCs the world spawns, places, items, spells and classes. Compared without case and
 # without a leading underscore. Not here on purpose: anything that can be a player (target, subject, corpse, killer,
 # blocker, ahead, nearest, first, best, designated, inviter, challenger, gm, crafter, supplier).
@@ -91,7 +92,8 @@ SAFE_NAME_MEMBERS = {"MonsterName", "ZoneName", "ClassName", "ItemName", "Produc
 # database id).
 SAFE_NAME_CALLS = {"RealmToName", "TierName", "KindName", "HowName", "OutcomeName", "ChannelName", "TypeName",
                    "ReasonName", "SkillName", "GroupName", "RealmName", "StageName", "PhaseName", "ModeName"}
-# Locals ending in Name that are reviewed (groupName is GroupName's id).
+# Locals ending in Name that are reviewed (groupName: RvrEngagementRuntime's only groupName is GroupName's id; a new
+# groupName elsewhere needs the same check).
 SAFE_NAME_LOCALS = {"groupName"}
 # Free text: a chat line, an exception's message (can hold a user folder), a stack trace.
 _FREE_TEXT = re.compile(r"(?<![\w.])(?:message|line|text|lastMessage|words|quote|say|reply)\b"
