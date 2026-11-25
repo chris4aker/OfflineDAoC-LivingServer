@@ -133,6 +133,20 @@ namespace DOL.GS.Keeps
 		public List<GameKeepComponent> KeepComponents { get; set; } = new List<GameKeepComponent>();
 
 		/// <summary>
+		/// Get a component by its ID (the ID sent to the client), or null
+		/// </summary>
+		public GameKeepComponent GetComponent(int id)
+		{
+			foreach (GameKeepComponent component in KeepComponents)
+			{
+				if (component.ID == id)
+					return component;
+			}
+
+			return null;
+		}
+
+		/// <summary>
 		/// Keep components ( wall, tower, gate,...)
 		/// </summary>
 		public List<IGameKeepComponent> SentKeepComponents
@@ -1234,9 +1248,9 @@ namespace DOL.GS.Keeps
 			if (component == null)
 				return;
 
-			GameKeepHookPoint hookpoint = component.HookPoints[97] as GameKeepHookPoint;
-
-			if (hookpoint == null)
+			// Port of DOL 0554bfb0: a main component without hookpoint 97 threw KeyNotFoundException here, before the capture
+			// saved the keep and raised KeepTaken (keep state, keep bonuses and the bots' RvR goals fell out of step).
+			if (!component.HookPoints.TryGetValue(97, out var hookpointObject) || hookpointObject is not GameKeepHookPoint hookpoint)
 				return;
 
 			//predict Z
@@ -1254,7 +1268,24 @@ namespace DOL.GS.Keeps
 				if (player.Z > z)
 					player.MoveTo(player.CurrentRegionID, player.X, player.Y, z, player.Heading);
 			}
+
+			// 1.2.3 (DOL sweep X2): gamebots and companions on the walls are set down too; they floated at the old wall height.
+			foreach (GameNPC npc in component.GetNPCsInRadius(WorldMgr.VISIBILITY_DISTANCE))
+			{
+				if (npc is not GameBot bot || !bot.IsAlive)
+					continue;
+
+				if (!NeedsSettingDown(hookpoint.GetDistance(bot as IPoint2D), distance, bot.Z, z))
+					continue;
+
+				bot.StopMoving();
+				bot.MoveTo(bot.CurrentRegionID, bot.X, bot.Y, z, bot.Heading);
+			}
 		}
+
+		/// <summary>Whether a living this far from hookpoint 97 and this high stands above the reset wall height (pure).</summary>
+		public static bool NeedsSettingDown(int distanceToHookpoint, int radius, int livingZ, int wallZ) =>
+			distanceToHookpoint <= radius && livingZ > wallZ;
 
 
 		#endregion

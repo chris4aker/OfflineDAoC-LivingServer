@@ -81,6 +81,13 @@ namespace DOL.GS
 			if (TargetObject != CurrentRegion.GetObject(targetId))
 				return;
 
+			// Port of OpenDAoC-Core d79a497e6: no bolt at something the operator may not attack (a dead or friendly target).
+			if (Owner is GamePlayer player && !GameServer.ServerRules.IsAllowedToAttack(player, TargetObject as GameLiving, true))
+			{
+				player.Out.SendMessage("You cannot attack that!", eChatType.CT_Say, eChatLoc.CL_SystemWindow);
+				return;
+			}
+
 			base.Fire();
 		}
 
@@ -90,6 +97,8 @@ namespace DOL.GS
 			base.DoDamage();//anim mut be called after damage
 			GameLiving target = (TargetObject as GameLiving);
 			if (target == null || target is Keeps.GuardLord) return; // siege never kills a keep lord
+			// Port of OpenDAoC-Core d79a497e6: a bolt landing on a target that died (or turned friendly) in flight does nothing.
+			if (Owner != null && !GameServer.ServerRules.IsAllowedToAttack(Owner, target, true)) return;
 
 			int damageAmount = CalcDamageToTarget(target) + Util.Random(50);
 
