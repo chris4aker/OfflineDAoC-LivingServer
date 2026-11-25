@@ -2027,10 +2027,63 @@ namespace DOL.GS
         private bool ExecuteRvr(BotBrain brain, GameBot bot)
         {
             _rvrRuleHint = null;
-            bool result = ExecuteRvrTurn(brain, bot);
+            string forceId = RvrForceId(bot);
+            bool result;
+            // #530: the turn's intent proposals are decided as they come and written to the force once, at the end.
+            _forceTurn.Begin(forceId, IsRvrForceWriter(bot));
+            try
+            {
+                result = ExecuteRvrTurn(brain, bot);
+            }
+            finally
+            {
+                _forceTurn.End(bot, GameLoop.GameLoopTime);
+            }
+            AutonomousRvrEventLayer.Shadow(bot, forceId, _rvrIntent, _rvrSharedEvent);
             RvrDecide.Change(bot, "controller", "destination", _rvrDestination?.Id ?? "-",
                 _rvrRuleHint ?? _rvrLastStatusRule ?? "exec.none", _rvrDestination?.MonsterName);
             return result;
+        }
+
+        /// <summary>This bot's turn of intent proposals (#530): the event layer decides each, and writes the force once.</summary>
+        private readonly AutonomousRvrEventLayer.ForceTurn _forceTurn = new();
+
+        /// <summary>The force a frontier bot belongs to: its dynamic RvR warband, else itself (as ExecuteRvrTurn names it).</summary>
+        private string RvrForceId(GameBot bot) =>
+            _groupDirective?.IsDynamic == true && _groupDirective.ObjectiveKind == eAutonomousObjectiveKind.RvR
+                ? _groupDirective.GroupId : $"rvr-{bot.DatabaseID}";
+
+        /// <summary>Whose turn writes the force's intent: a solo bot, or the warband's leader. Followers read it.</summary>
+        private bool IsRvrForceWriter(GameBot bot) =>
+            !(_groupDirective?.IsDynamic == true && _groupDirective.ObjectiveKind == eAutonomousObjectiveKind.RvR) ||
+            _groupDirective.Leader == null || _groupDirective.Leader == bot;
+
+        /// <summary>
+        /// The one way this controller changes its intent (#530): propose to the event layer and take what it decided.
+        /// <paramref name="mirrorIntent"/> and <paramref name="mirrorKeep"/> copy the decision into the bot's
+        /// RvrWarbandIntent and RvrDefendingKeep TempProperties where the old writer did (their other readers are kept).
+        /// Outside a turn the proposal is written at once. Null: refused, nothing changed.
+        /// </summary>
+        private AutonomousRvrEventLayer.ForceIntent ProposeRvrIntent(GameBot bot, AutonomousRvrEventLayer.IntentProposal proposal,
+            bool mirrorIntent, bool mirrorKeep, string forceId = null)
+        {
+            bool outside = !_forceTurn.Open;
+            if (outside)
+                _forceTurn.Begin(forceId ?? RvrForceId(bot), IsRvrForceWriter(bot));
+            AutonomousRvrEventLayer.ForceIntent decided =
+                _forceTurn.Propose(new(_rvrIntent, _rvrSharedEvent), proposal, GameLoop.GameLoopTime);
+            if (decided != null)
+            {
+                _rvrIntent = decided.Intent;
+                _rvrSharedEvent = decided.Shared;
+                if (mirrorIntent)
+                    bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+                if (mirrorKeep)
+                    bot.TempProperties.SetProperty("RvrDefendingKeep", decided.DefendingKeep);
+            }
+            if (outside)
+                _forceTurn.End(bot, GameLoop.GameLoopTime);
+            return decided;
         }
 
         /// <summary>The rule code a destination write names for the trace (#505); read and cleared by <see cref="ExecuteRvr"/>.</summary>
@@ -2084,9 +2137,8 @@ namespace DOL.GS
                 _rvrRuleHint = "exec.committed";
                 _rvrDestination = new(committedPlan.TargetId, committedPlan.Name, committedPlan.Name,
                     committedPlan.RegionId, committedPlan.X, committedPlan.Y, committedPlan.Z, 1, false, true);
-                _rvrSharedEvent = true;
-                _rvrIntent = committedPlan.Intent;
-                bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+                ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Committed, committedPlan.Intent,
+                    committedPlan.TargetId, true, null, "exec.committed", committedPlan.Reason), mirrorIntent: true, mirrorKeep: false);
                 RvrAtObjective.Remember(bot, committedPlan.RegionId, committedPlan.X, committedPlan.Y, true);
             }
             var rally = AutonomousRvrEventLayer.GetRallyOrder(forceId, bot.Realm, GameLoop.GameLoopTime);
@@ -2095,8 +2147,10 @@ namespace DOL.GS
             // after the battle started, and no bot had ever deployed a siege weapon (logs since 2026-10-02).
             if (rally != null && !rally.HomeMuster && bot.Realm == rally.Attacker && TryRunSiegeJob(bot)) return true;
             if (rally != null) return HandleSiegeRally(bot, forceId, rally);
+            // #530 step 3: a follower reads its force's intent from the event layer (the leader's TempProperty only
+            // until the force has a record).
             if (committedPlan == null && dynamicWarband && _groupDirective.Leader != bot && _groupDirective.Leader != null)
-                _rvrIntent = (AutonomousRvrEventLayer.Intent)_groupDirective.Leader.TempProperties
+                _rvrIntent = AutonomousRvrEventLayer.IntentOf(forceId)?.Intent ?? (AutonomousRvrEventLayer.Intent)_groupDirective.Leader.TempProperties
                     .GetProperty<int>("RvrWarbandIntent", (int)AutonomousRvrEventLayer.Intent.Roam);
             bool carrying = GameRelic.IsPlayerCarryingRelic(bot);
             if (RvrTacticsTravelHold(brain, bot)) return true;
@@ -2113,7 +2167,8 @@ namespace DOL.GS
             {
                 _rvrDestination = null;
                 _rvrApproachDestination = null;
-                _rvrSharedEvent = false;
+                ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Released, _rvrIntent, null, false, null,
+                    "event.ended", "the event's objective resolved or timed out"), mirrorIntent: false, mirrorKeep: false);
                 _nextRvrPlanReview = 0;
             }
 
@@ -2154,7 +2209,8 @@ namespace DOL.GS
             // warband together around that leader.
             if (!battleActive && dynamicWarband && _groupDirective.Leader != bot && !GameRelic.IsPlayerCarryingRelic(bot))
             {
-                int defendingId = _groupDirective.Leader?.TempProperties.GetProperty<int>("RvrDefendingKeep", -1) ?? -1;
+                int defendingId = AutonomousRvrEventLayer.IntentOf(forceId)?.DefendingKeep ??
+                                  _groupDirective.Leader?.TempProperties.GetProperty<int>("RvrDefendingKeep", -1) ?? -1;
                 AbstractGameKeep wallKeep = defendingId >= 0
                     ? GameServer.KeepManager.GetKeepsOfRegion(bot.CurrentRegionID).FirstOrDefault(keep =>
                         keep.KeepID == defendingId && keep.Realm == bot.Realm &&
@@ -2721,34 +2777,46 @@ namespace DOL.GS
                 .ToArray() ?? [];
             if (warband.Length == 0)
                 warband = [bot];
-            int averageLevel = (int)Math.Round(warband.Average(member => member.Level));
-            int healers = warband.Count(member => member.ClassName.Contains("cleric", StringComparison.OrdinalIgnoreCase) ||
-                                                    member.ClassName.Contains("healer", StringComparison.OrdinalIgnoreCase) ||
-                                                    member.ClassName.Contains("druid", StringComparison.OrdinalIgnoreCase) ||
-                                                    member.ClassName.Contains("bard", StringComparison.OrdinalIgnoreCase));
+            // #530: one strength (ForceStrength, healers by RvrRoles); the size and level rule for a siege is the event
+            // layer's only (the controller's old level-35 rule never decided anything behind the layer's 50).
+            ForceStrength strength = ForceStrength.Of(warband);
             // 1.2 WP6: a roaming eight walks its circuits; it answers defence calls but opens no siege.
-            bool siegeReady = warband.Length >= 4 && averageLevel >= 35 && !RvrTacticsIsRoamingEight(bot) && CanSupplySiege(bot);
+            bool siegeReady = !RvrTacticsIsRoamingEight(bot) && CanSupplySiege(bot);
             AutonomousRvrEventLayer.Plan plan = AutonomousRvrEventLayer.ChooseOrJoin(
                 new AutonomousRvrEventLayer.Force(_groupDirective?.GroupId ?? $"rvr-{bot.DatabaseID}", bot.Realm,
-                    warband.Length, averageLevel, healers, siegeReady,
+                    strength.Members, strength.AverageLevel, strength.Healers, siegeReady,
                     (unchecked((ulong)(_groupDirective?.Leader?.DatabaseID ?? bot.DatabaseID)) * 2654435761UL % 100) < 30,
-                    warband.Select(member => member.DatabaseID).ToArray(), warband.Min(member => member.Level),
+                    warband.Select(member => member.DatabaseID).ToArray(), strength.MinimumLevel,
                     RecentWipes: RvrEngagement.RecentWipes(bot.Group, GameLoop.GameLoopTime), RoamingEight: RvrTacticsIsRoamingEight(bot)),
                 objectives, GameLoop.GameLoopTime, Random.Shared.NextDouble());
-            _rvrSharedEvent = plan?.IsSharedEvent == true;
-            _rvrIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;
-            bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
+            bool planShared = plan?.IsSharedEvent == true;
+            AutonomousRvrEventLayer.Intent planIntent = plan?.Intent ?? AutonomousRvrEventLayer.Intent.Roam;
             RvrAtObjective.Remember(bot, plan?.RegionId ?? 0, plan?.X ?? 0, plan?.Y ?? 0, plan != null);
-            bot.TempProperties.SetProperty("RvrDefendingKeep",
-                _rvrIntent == AutonomousRvrEventLayer.Intent.DefendEvent && plan.TargetId.StartsWith("rvr-keep-") &&
-                int.TryParse(plan.TargetId.Substring(9), out int defendingKeep) ? defendingKeep : -1);
+            int defendingKeepId = planIntent == AutonomousRvrEventLayer.Intent.DefendEvent && plan.TargetId.StartsWith("rvr-keep-") &&
+                int.TryParse(plan.TargetId.Substring(9), out int defendingKeep) ? defendingKeep : -1;
             CampDestination chosen = choices.FirstOrDefault(destination => destination.Id == plan?.TargetId) ??
                 (plan == null ? null : new CampDestination(plan.TargetId, plan.Name, plan.Name,
                     plan.RegionId, plan.X, plan.Y, plan.Z, 1, false, true));
             CampDestination planned = chosen;
-            chosen = RvrTacticsRoamDestination(bot, chosen) ?? chosen;
+            // #530 step 4: the roam override proposes beside the plan; the event layer decides, and the force is written once.
+            CampDestination roam;
+            _rvrPlanView = new(planIntent, planShared);
+            try
+            {
+                roam = RvrTacticsRoamDestination(bot, chosen);
+            }
+            finally
+            {
+                _rvrPlanView = null;
+            }
+            string basePlanRule = plan == null ? "plan.none" : "plan." + ToCamel(plan.Intent.ToString());
+            AutonomousRvrEventLayer.ForceIntent decided = ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Plan, planIntent,
+                    planned?.Id, planShared, defendingKeepId, basePlanRule, plan?.Reason, roam?.Id, "roam.override"),
+                mirrorIntent: true, mirrorKeep: true);
+            if (roam != null && decided?.Source == AutonomousRvrEventLayer.IntentSource.RoamOverride)
+                chosen = roam;
             // #505: RVR_PLAN and the destination decision (logging only).
-            string planRule = !ReferenceEquals(planned, chosen) ? "roam.override" : plan == null ? "plan.none" : "plan." + ToCamel(plan.Intent.ToString());
+            string planRule = !ReferenceEquals(planned, chosen) ? "roam.override" : basePlanRule;
             _rvrRuleHint = planRule;
             RvrRecordRows.Plan(bot, chosen?.Id, plan?.Intent.ToString() ?? "none", planRule, choices.Count, rejected, plan?.Reason);
             RvrDecide.Change(bot, "plan", "destination", chosen?.Id ?? "-", planRule, plan?.Reason);

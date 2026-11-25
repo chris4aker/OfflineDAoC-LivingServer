@@ -24,11 +24,4 @@ public static class AutonomousRvrObjectiveState
         _ => eAutonomousRvrPhase.Recon,
     };
 
-    public static eAutonomousRvrPhase Next(bool atObjective, bool closedEnemyDoor, bool enemyLordAlive, bool enemyBotVisible, bool relicAvailable) =>
-        !atObjective ? eAutonomousRvrPhase.Traveling :
-        closedEnemyDoor ? eAutonomousRvrPhase.BreachingDoor :
-        enemyLordAlive ? eAutonomousRvrPhase.AssaultingLord :
-        enemyBotVisible ? eAutonomousRvrPhase.HuntingEnemy :
-        relicAvailable ? eAutonomousRvrPhase.TakingRelic :
-        eAutonomousRvrPhase.Recon;
 }

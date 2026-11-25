@@ -344,6 +344,30 @@ otherwise.
   `hib-keep-levels-1.2.3` in `living_server_world_repairs`, so it never runs again (a later capture's reset to
   `starting_keep_level` stays). Only raises. Log `KEEP_LEVEL_DEFAULT_RAISED`. `UT_FrontierKeepLevelRepair526` pins
   every claimable keep at 5. **Tests only.**
+- **One intent per RvR force, owned by the event layer** (#530, RvR work 12 piece C, steps 1-4; structure.md findings 2
+  and 6). Autonomous gamebots only; companions and real players are untouched, and no keep, guard or lord changes.
+  - *The dead layer is gone.* `AutonomousRvrDirector` (no production caller) and its four tests are deleted, with
+    `AutonomousRvrObjectiveState.Next` (no caller). The live tests that sat in its file moved to `UT_RvrStagingAndChoice`.
+    A CI test (`UT_RvrForceIntent530.Every_Rvr_type_in_the_bots_has_a_caller`) fails on any production type in an
+    `Rvr*`/`AutonomousRvr*` file that nothing uses.
+  - *One siege rule.* "Can this force siege" was written three times (35 in the controller, 40/5/a healer in the dead
+    director, 50/4 in the event layer); only the event layer's held. It is now `ForceStrength.CanSiege` (4 members,
+    average 50) and `Force.SiegeCapable`, read at every site; the controller's level-35 rule, which never decided
+    anything, is gone. `Force.HealerCount` became `Healers` from `ForceStrength.Of`, by `RvrRoles.For`: Shaman, Friar and
+    Warden now count (the old class-name substring missed them; nothing reads the count yet).
+  - *The event layer decides every intent.* The committed plan, the plan, the roam override, a chat promise, the
+    battleground and the release of an ended objective each propose an `IntentProposal`; the layer's rules
+    (`AcceptsRoamOverride`, `AcceptsChatPromise`, moved unchanged from the controller) decide, and the force's
+    `ForceIntent` (objective, role, slots, since, source, rule, why) is written once per turn (`ForceTurn`), logged as
+    `RVR_DECIDE layer=event what=force` with the winning rule and `over=` the proposals it overruled. The roam override is
+    decided with its plan (one proposal, not a second write).
+  - *Followers read the force's intent* (`IntentOf`) instead of the leader's `RvrWarbandIntent`/`RvrDefendingKeep`
+    TempProperties (kept as a mirror for their other readers, and as the fallback before the force has a record).
+  - *Shadow.* Each turn compares the bot's own intent with its force's record: `RVR_DECIDE what=shadow` with
+    `shadow.mismatch` or `shadow.match`, for the PC check that the mismatch count falls to 0.
+  - What a bot decides is unchanged: the same rules in one place. Step 5 (the battleground keep, the small strike and the
+    slow realm force as objective kinds) is not in this change. `UT_RvrForceIntent530` pins one write per turn, the rules
+    and the source (every `_rvrIntent` write goes through `ProposeRvrIntent`). **Tests only.**
 
 **Tests**
 - **An RvR fight rehearsal in CI** (#520; docs/rvr-audit-1.2.3/evidence.md F2, F6, 5.2). Until now no RvR test ran a
