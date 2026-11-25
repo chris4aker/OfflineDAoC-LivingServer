@@ -46,9 +46,21 @@ public class BotGoalsSettingsTests
         Call("SaveSettings");
         Field<NumericUpDown[,]>("_values")[1, 0].Value = 99;
         Call("LoadSettings");
-        Assert.That(Field<NumericUpDown[,]>("_values")[1, 0].Value, Is.EqualTo(35)); // the Levels 20–49 default (35/35/15/15, 2026-11-16)
+        Assert.That(Field<NumericUpDown[,]>("_values")[1, 0].Value, Is.EqualTo(30)); // the Levels 20–49 default (30/30/15/25 since 1.2.3, #598)
         Assert.That(_panel.GetType().GetProperty("HasUnsavedChanges")!.GetValue(_panel), Is.False);
     }
+
+    [Test] public void HelpTextStatesTheDefaults()
+    {
+        // 1.2.3 (#598): the tab says what the defaults are, read from BotGoalSettings.Defaults.
+        string text = string.Join("\n", AllLabels(_panel).Select(label => label.Text));
+        Assert.That(text, Does.Contain("Levels 1–19 55/35/0/10, Levels 20–49 30/30/15/25, Level 50 20/40/40/0"));
+        Assert.That(text, Does.Contain("10% of the bots at 15–19 and 25% at 20–35"));
+        Assert.That(text, Does.Contain("A bot group whose members all fit one battleground can go there together"));
+    }
+
+    private static IEnumerable<Label> AllLabels(Control root) =>
+        root.Controls.Cast<Control>().SelectMany(child => (child is Label label ? new[] { label } : Array.Empty<Label>()).Concat(AllLabels(child)));
 
     [Test] public void RenderPanelWithoutStartingServerOrLauncher()
     {

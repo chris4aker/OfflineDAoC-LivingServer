@@ -115,8 +115,10 @@ namespace DOL.GS.Tests
                 Is.EquivalentTo(TurnedOn.Append("bot_schedule_mode")));
             Assert.That(Upgrade.Changes.Where(change => change.Since == "1.2.1").Select(change => (change.Key, change.OldDefault, change.NewDefault)),
                 Is.EqualTo(new[] { ("bot_schedule_mode", "clock", "off") }));
-            Assert.That(Upgrade.Version, Is.EqualTo("1.2.1"));
-            Assert.That(Upgrade.Version, Is.EqualTo(Upgrade.Changes.Last().Since), "the newest build with a change");
+            Assert.That(Upgrade.Version, Is.EqualTo("1.2.3"));
+            // 1.2.3's change is a file's (bot-goals.json, #598), not a database row's.
+            Assert.That(Upgrade.Version, Is.EqualTo(new[] { Upgrade.Changes.Last().Since, Upgrade.FileChanges.Last().Since }
+                .OrderBy(System.Version.Parse).Last()), "the newest build with a change");
         }
 
         [Test]

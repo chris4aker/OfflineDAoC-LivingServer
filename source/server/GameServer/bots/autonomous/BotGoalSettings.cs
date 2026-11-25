@@ -7,8 +7,8 @@ namespace OfflineDaoc.Configuration;
 
 // Linked into the launcher: validation, defaults and disk format have one owner.
 // Battlegrounds (added 2026-10-07) is 0 in a row that omits it, so settings files saved before it stay valid.
-// The default Levels 20–49 row sends 15% of those bots to the battlegrounds (owner, 2026-11-16: Living Server features
-// on by default for installer users).
+// Defaults (owner, 2026-11-24, #598 option A): Levels 1–19 send 10% of their bracket bots (15–19) to Abermenai and
+// Levels 20–49 send 25% of theirs (20–35). Until 1.2.2 they were 0% and 15% (2026-11-16).
 public sealed record BotGoalWeights(int SoloPve, int GroupPve, int RvR, int Battlegrounds = 0)
 {
     public int Total => SoloPve + GroupPve + RvR + Battlegrounds;
@@ -38,8 +38,39 @@ public sealed record BotGoalSettings
     public required BotGoalWeights Level50 { get; init; }
     public static BotGoalSettings Defaults => new()
     {
+        Levels1To19 = new(55, 35, 0, 10), Levels20To49 = new(30, 30, 15, 25), Level50 = new(20, 40, 40),
+    };
+
+    /// <summary>
+    /// The defaults up to 1.2.2 (60/40/0/0, 35/35/15/15, 20/40/40/0). A saved file that still holds exactly these is the
+    /// untouched old default (the launcher's Save with nothing changed), and moves once to <see cref="Defaults"/>
+    /// (<see cref="UpgradeUntouchedDefaults"/>, run by LivingServerSettingsUpgrade for 1.2.3).
+    /// </summary>
+    public static BotGoalSettings PreviousDefaults => new()
+    {
         Levels1To19 = new(60, 40, 0), Levels20To49 = new(35, 35, 15, 15), Level50 = new(20, 40, 40),
     };
+
+    /// <summary>The new defaults when <paramref name="saved"/> is exactly the old ones; otherwise null (the player's choice). Pure.</summary>
+    public static BotGoalSettings UpgradedDefaults(BotGoalSettings saved) => saved == PreviousDefaults ? Defaults : null;
+
+    /// <summary>
+    /// One-time file upgrade: a saved file holding exactly <see cref="PreviousDefaults"/> is rewritten with
+    /// <see cref="Defaults"/>. No file (the server already uses the new defaults), an unreadable file and any other values
+    /// are left alone. Called once per world (the caller records that it ran), at server start-up, before any bot plays.
+    /// True when the file was rewritten.
+    /// </summary>
+    public static bool UpgradeUntouchedDefaults(string path)
+    {
+        if (!File.Exists(path)) return false;
+        BotGoalSettings saved;
+        try { saved = Load(path); }
+        catch (Exception exception) when (exception is InvalidDataException or JsonException or IOException) { return false; }
+        BotGoalSettings upgraded = UpgradedDefaults(saved);
+        if (upgraded == null) return false;
+        upgraded.Write(path);
+        return true;
+    }
     public BotGoalWeights ForLevel(int level) => level >= 50 ? Level50 : level >= 20 ? Levels20To49 : Levels1To19;
 
     public void Validate()
@@ -78,6 +109,12 @@ public sealed record BotGoalSettings
     {
         Validate();
         if (!serverStopped()) throw new InvalidOperationException("Stop the server before saving bot goals.");
+        Write(path, serverStopped);
+    }
+
+    private void Write(string path, Func<bool> serverStopped = null)
+    {
+        Validate();
         string fullPath = Path.GetFullPath(path);
         Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
         string temporary = fullPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
@@ -88,7 +125,7 @@ public sealed record BotGoalSettings
                 JsonSerializer.Serialize(file, this, Json);
                 file.Flush(true);
             }
-            if (!serverStopped()) throw new InvalidOperationException("The server started; bot goals were not saved.");
+            if (serverStopped != null && !serverStopped()) throw new InvalidOperationException("The server started; bot goals were not saved.");
             File.Move(temporary, fullPath, true);
         }
         finally { if (File.Exists(temporary)) File.Delete(temporary); }

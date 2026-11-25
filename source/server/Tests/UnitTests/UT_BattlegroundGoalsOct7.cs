@@ -21,12 +21,14 @@ namespace DOL.UnitTests
             Assert.That(BattlegroundBrackets.ForLevel(level)?.Name, Is.EqualTo(expected));
 
         [Test]
-        public void DefaultsSendFifteenPercentOfLevelsTwentyToFortyNine()
+        public void DefaultsSendTenAndTwentyFivePercent()
         {
-            // Owner, 2026-11-16: Living Server features on by default; 15% of levels 20–49 go to the battlegrounds.
+            // Owner, 2026-11-16: Living Server features on by default; since 1.2.3 (#598) 10% of the 15-19 bots and 25% of
+            // the 20-35 bots go to the battlegrounds (was 0% and 15%).
             BotGoalSettings defaults = BotGoalSettings.Defaults;
-            Assert.That(defaults.Levels20To49.Battlegrounds, Is.EqualTo(15));
-            Assert.That(new[] { defaults.Levels1To19, defaults.Level50 }.Select(row => row.Battlegrounds), Has.All.EqualTo(0));
+            Assert.That(defaults.Levels20To49.Battlegrounds, Is.EqualTo(25));
+            Assert.That(defaults.Levels1To19.Battlegrounds, Is.EqualTo(10));
+            Assert.That(defaults.Level50.Battlegrounds, Is.EqualTo(0));
             Assert.DoesNotThrow(() => defaults.Validate());
         }
 
