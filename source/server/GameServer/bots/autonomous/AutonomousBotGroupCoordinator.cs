@@ -1229,13 +1229,20 @@ public static partial class AutonomousBotGroupCoordinator
         return Math.Clamp(leaderIndex, 0, roles.Count - 1);
     }
 
+    /// <summary>
+    /// The main tank and puller among the party's tanks: at level 50 any, else the highest level, picked at random. With
+    /// <paramref name="shieldTanks"/> given, shield tanks first (Prima: the shield tank is the main tank and puller; a
+    /// two-hander is damage or the off-tank). Port of True165 d2fc3fe3d.
+    /// </summary>
     public static int PreferredPveTankSlot(IReadOnlyList<int> tankLevels, bool levelFiftyGroup,
-        Random random = null)
+        Random random = null, IReadOnlyList<bool> shieldTanks = null)
     {
         if (tankLevels == null || tankLevels.Count == 0)
             return -1;
-        int highestLevel = levelFiftyGroup ? int.MinValue : tankLevels.Max();
-        int[] eligible = Enumerable.Range(0, tankLevels.Count)
+        bool shieldOnly = shieldTanks != null && shieldTanks.Count == tankLevels.Count && shieldTanks.Any(shield => shield);
+        int[] candidates = Enumerable.Range(0, tankLevels.Count).Where(index => !shieldOnly || shieldTanks[index]).ToArray();
+        int highestLevel = levelFiftyGroup ? int.MinValue : candidates.Max(index => tankLevels[index]);
+        int[] eligible = candidates
             .Where(index => levelFiftyGroup || tankLevels[index] == highestLevel)
             .ToArray();
         return eligible[(random ?? Random.Shared).Next(eligible.Length)];
@@ -3183,8 +3190,11 @@ public static partial class AutonomousBotGroupCoordinator
         // Guildmates of the leader get the first claim on slots (docs/BOT-GUILDS.md, phase 3); roles still decide.
         // The caller's order (nearest first) is kept within each guild rank, so the roster takes the closest bots
         // that fill it; a random reshuffle here used to throw that order away (2026-10-19).
+        // Within a guild rank, real healers (a Rejuvenation Cleric, a Mending Healer ...) are offered first, so a party takes
+        // them before a Smite Cleric, a Paladin or a Friar without Rejuvenation fills its healer slot (True165 d2fc3fe3d).
         GameBot[] pool = candidates.Where(candidate => candidate?.CharacterClass != null)
-            .OrderBy(candidate => AutonomousBotRealmGuilds.GuildmateRank(leader, candidate)).ToArray();
+            .OrderBy(candidate => AutonomousBotRealmGuilds.GuildmateRank(leader, candidate))
+            .ThenBy(candidate => BotGroupRoles.IsPrimaryHealer(BotGroupRoles.HealerRank(candidate)) ? 0 : 1).ToArray();
         eCharacterClass[] poolClasses = pool.Select(candidate => (eCharacterClass)candidate.CharacterClass.ID).ToArray();
         eCharacterClass leaderClass = (eCharacterClass)leader.CharacterClass.ID;
         if (!TryMatchPveRoster(leaderClass, poolClasses, minimumSize, maximumSize,
@@ -3193,6 +3203,11 @@ public static partial class AutonomousBotGroupCoordinator
                 out template, out owners, offTanks: true)))
             return false;
         GameBot[] slotted = owners.Select(owner => owner < 0 ? leader : pool[owner]).ToArray();
+        // The best healers hold the Healer slots (a Mentalism Mentalist only as the second healer). True165 d2fc3fe3d.
+        eCharacterClass[] slotClasses = slotted.Select(member => (eCharacterClass)member.CharacterClass.ID).ToArray();
+        int[] slotRanks = slotted.Select(BotGroupRoles.HealerRank).ToArray();
+        foreach ((int first, int second) in BotGroupRoles.PreferBetterHealers(template, slotClasses, slotRanks))
+            (slotted[first], slotted[second]) = (slotted[second], slotted[first]);
         selected = slotted.Where(owner => owner != leader).ToArray();
         roles = new Dictionary<long, BotPveGroupRole>();
         for (int index = 0; index < slotted.Length; index++)
@@ -3311,12 +3326,16 @@ public static partial class AutonomousBotGroupCoordinator
 
     private static GameBot ChooseLockedPvePuller(Session session, GameBot[] members)
     {
+        GameBot crowdControl = ChooseCrowdControlMember(members);
         if (AutonomousDefensivePull.UsesDefensivePull(true, members.Length, members.All(member => member.Level == 50)))
         {
             GameBot ranged = members.Where(AutonomousDefensivePull.HasRangedPull)
                 .OrderBy(PullerClassPenalty)
-                .ThenBy(member => session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role)
-                    ? role == BotPveGroupRole.Tank ? 0 : role == BotPveGroupRole.Healer ? 2 : 1 : 3)
+                // a shield tank, then a two-hander tank, then the crowd-control slot, then the rest, healers last
+                // (True165 d2fc3fe3d; Freddyshouse: the CC pulls when no tank has a ranged pull)
+                .ThenBy(member => BotGroupRoles.RangedPullerOrder(
+                    session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) ? role : null,
+                    BotGroupRoles.IsShieldTank(member), member == crowdControl))
                 .ThenBy(MemberKey).FirstOrDefault();
             if (ranged != null) return ranged;
         }
@@ -3325,8 +3344,18 @@ public static partial class AutonomousBotGroupCoordinator
             .OrderBy(MemberKey)
             .ToArray();
         bool levelFiftyGroup = members.Length > 0 && members.All(member => member.Level == 50);
-        int slot = PreferredPveTankSlot(tanks.Select(member => (int)member.Level).ToArray(), levelFiftyGroup);
+        int slot = PreferredPveTankSlot(tanks.Select(member => (int)member.Level).ToArray(), levelFiftyGroup, null,
+            tanks.Select(BotGroupRoles.IsShieldTank).ToArray());
         return slot >= 0 ? tanks[slot] : null;
+    }
+
+    /// <summary>The party's crowd-control slot (parties of five or more): the best crowd-control spec that can control.</summary>
+    private static GameBot ChooseCrowdControlMember(GameBot[] members)
+    {
+        GameBot[] ordered = members.OrderBy(MemberKey).ToArray();
+        int index = BotGroupRoles.ChooseCrowdControl(ordered.Select(BotGroupRoles.CrowdControlRank).ToArray(),
+            ordered.Select(member => member.CanCastCrowdControlSpells).ToArray(), ordered.Length);
+        return index >= 0 ? ordered[index] : null;
     }
 
     public static bool UsesDefensivePullGroup(Group group)

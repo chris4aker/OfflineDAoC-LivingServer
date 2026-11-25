@@ -3261,6 +3261,7 @@ namespace DOL.GS
             {
                 if (AutonomousDefensivePull.TryBeginFlyingHandoff(bot, target))
                 {
+                    AutonomousMobClaims.Take(bot, target);
                     SetStatus(bot, $"Ranged pulling {target.Name}", GoalText(),
                         "The designated puller handed an unreachable flying target to a ranged party member",
                         target.Name, _camp.ZoneName);
@@ -3286,12 +3287,16 @@ namespace DOL.GS
                 if (!SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
                     AutonomousDefensivePull.TryBegin(bot, target))
                 {
+                    // Claimed only once the shot is under way, not while the party waits out a retry.
+                    if (AutonomousDefensivePull.IsPulling(bot.Group, target))
+                        AutonomousMobClaims.Take(bot, target);
                     SetStatus(bot, $"Ranged pulling {target.Name}", GoalText(),
                         "Party holds formation; the ranged puller brings the target back before everyone engages",
                         target.Name, _camp.ZoneName);
                     return true;
                 }
                 bot.TargetObject = target;
+                AutonomousMobClaims.Take(bot, target);   // this side's monster now (AutonomousMobClaims)
                 _lastEngagedCon = ConLevels.GetConColor(bot.GetConLevel(target));
                 AutonomousBotGroupCoordinator.MarkCombatObserved(bot.Group);
                 brain.AddToAggroList(target, Math.Max(25, target.EffectiveLevel * 10));
@@ -3638,6 +3643,13 @@ namespace DOL.GS
                 // other melee classes. Only dungeons and audited risky camps
                 // require the extra reversible approach proof below.
                 .Where(npc => GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
+                // A monster already fighting someone outside the bot's side (its group, or its realm raid) is theirs,
+                // as players left it; and one another bot or player outside it has pulled or hit, even before it turns on
+                // them. No "sry ks" and no shared XP (port of True165 e4d2498ca). Self-defense is handled elsewhere.
+                .Where(npc => !npc.InCombat || npc.TargetObject == bot ||
+                              npc.TargetObject is GameLiving fighting && AutonomousMobClaims.SameFight(bot, fighting) ||
+                              npc.TargetObject is not GameLiving)
+                .Where(npc => !AutonomousMobClaims.TakenByOther(bot, npc))
                 // a party pulls the monster standing apart first, then the highest level (AutonomousGroupPullOrder);
                 // a careless puller now and then takes one with an add (Bots as people WP2, its skill)
                 .OrderForPull(_groupDirective?.IsDynamic == true, bot)

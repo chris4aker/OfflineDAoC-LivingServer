@@ -62,7 +62,35 @@ namespace DOL.GS.Spells
             if (!healed && Spell.CastTime == 0)
                 m_startReuseTimer = false;
 
+            CastOwnSubSpell(target ?? Caster);
             return true;
+        }
+
+        /// <summary>
+        /// A heal's attached part (its SubSpellID: a heal-over-time, a cleanse, a short damage reduction) was never cast:
+        /// this handler overrides StartSpell, and the shared CastSubSpells path skips any spell that itself carries a
+        /// SubSpellID (pets, bombers, archery and gifts use that column for payloads). So a heal casts its own.
+        /// Port of rambodolphin13/DividedRealms 8fda4493 and cfad6c50.
+        /// </summary>
+        protected void CastOwnSubSpell(GameLiving target)
+        {
+            if (target == null || ResolveOwnSubSpell(Spell) is not Spell subSpell)
+                return;
+
+            // Sub spells aren't scaled on initialization.
+            if (Caster is GameNPC npc)
+                subSpell = npc.GetScaledSpell(subSpell);
+
+            ScriptMgr.CreateSpellHandler(m_caster, subSpell, SkillBase.GetSpellLine(GlobalSpellsLines.Reserved_Spells))?.StartSpell(target);
+        }
+
+        /// <summary>The heal's own sub-spell, or null: none, itself, or not in the spell table.</summary>
+        public static Spell ResolveOwnSubSpell(Spell spell)
+        {
+            if (spell == null || spell.SubSpellID <= 0 || spell.SubSpellID == spell.ID)
+                return null;
+
+            return SkillBase.GetSpellByID(spell.SubSpellID);
         }
 
         public virtual bool HealTarget(GameLiving target, double amount, bool affectedByDisease)

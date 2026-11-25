@@ -422,6 +422,41 @@ audit's tells 11 and 12; seen on 1.2.2 `868a82d`, the owner's game of 2026-11-23
   2026-11-24): bots look like players. On, /who tags every gamebot "[Playerbot]" and a refused invite says "gamebot" or
   "buffbot". A new key, so worlds from earlier builds take the hidden default without an upgrade line.
 - Not here: "brb"/"afk" said in chat with no break behind it (#486). `UT_InvitesLogouts485`. **Tests only.**
+**From the Offline DAoC forks** (fork package P5; sources and SHAs in each commit and the PR). **Tests only.**
+- **Two singers on one song no longer leave the group at 0 endurance.** A pulsing song or chant renewed by a second Bard,
+  Minstrel, Skald or Paladin replaces the old copy in place; when the first singer's pulse later ended that stale copy, it
+  took the bonus away a second time, so endurance regeneration (or any stat song) sat at 0 with the song up. A stale copy
+  is now retired without touching the bonus (`EffectListComponent.RetireStaleCopies`, `EFFECT_STALE_COPY_RETIRED`, first
+  20 logged). This is a second cause of the r/daoc "no endurance regeneration" report, beside the server-property cause
+  fixed above (#465). FelixGagnonB 471b04186 (True165 3615e416d found the same). `UT_BotMobileSongs`.
+- **Heals cast their sub-spells** (a heal-over-time, cleanse or damage reduction carried in `SubSpellID`); the shared
+  sub-spell path skipped any spell that has one. Every caster, players and bots. DividedRealms 8fda4493, cfad6c50.
+- **Bots fire only their class's style proc**, as players do, not both it and the shared one; Doom Hammer damages its
+  target instead of the Thane. DividedRealms bebdbb71.
+- **Bots don't freeze after a keep door or any move.** `MoveTo` stops and restarts the brain and left a bot brain with no
+  state; every bot (not only hired companions) now resumes following, idling or passive. DetShaft a303aefaf.
+- **Performers keep their song and Paladins and Wardens their chant when hit in melee.** The speed song still stops. A
+  grouped performer whose song needs its instrument keeps it in hand (it still heals and controls); a solo one draws its
+  weapon as before. True165 48b20439 and its v0.7 `KeepsChantInMelee`.
+- **Jailer Vifil's tunnel guardians no longer stack** after kills, missed resets and respawns: his brain owns its two and
+  clears them when he resets out of combat or leaves the world. The encounter keeps its two guardians a pull; nothing
+  about Vifil or the guardians is weaker. True165 78526630, with its test.
+- **`/gc edit <rank> dues|withdraw`** sets that permission, not Release. True165 bc2440ca.
+- **A party gives up a ranged pull the monster ignores:** a pull that times out with the target alive and never at the
+  party counts toward the #539 bench like a pull with no firing point; the second benches it and the party pulls it the
+  ordinary way (`AUTONOMOUS_DEFENSIVE_PULL_IGNORED`). DividedRealms 1d18f864 (our #539 already had its 7e736ca8 half).
+- **Gamebots leave a monster another side is fighting or has just pulled** (no "sry ks", no shared XP): a pull claims
+  the monster for the bot's group, realm raid or warband for 30 s, and the camp search skips a monster that is claimed,
+  hit by, or fighting a bot, player or pet of another side. Self-defense is unchanged. True165 e4d2498ca, 927018e.
+- **Bots react at once**: an add wakes the group's mezzers and rooters, a groupmate about to drop under 75% wakes its
+  healers, and an enemy starting a cast wakes the bots fighting it, instead of waiting for their next think (at most one
+  wake per 250 ms per brain; the walk is the victim's group only). True165 8abbc61a8.
+- **Party roles follow spec**: real healers (Rejuvenation Cleric, Mending Healer, Regrowth Druid...) are offered first
+  and take the Healer slots over a Smite Cleric or a Paladin, a shield tank is main tank and puller over a two-hander,
+  and the ranged puller order is shield tank, two-hander tank, the crowd-control slot, the rest, healers last. True165
+  d2fc3fe3d (ranking only; its kill-target and peel sheet needs code we don't have). `UT_VeteranGroupRoles`.
+- **A damaged navmesh file is refused** with a log line instead of crashing the native loader when a path reaches it.
+  DividedRealms a5f19f5c. `UT_NavMeshFileCheck`.
 
 **Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
 - **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again

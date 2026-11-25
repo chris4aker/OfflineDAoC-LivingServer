@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using DOL.AI.Brain;
 using DOL.Database;
 using DOL.Events;
@@ -62,6 +63,17 @@ namespace DOL.GS
             return true;
         }
 
+        public override bool RemoveFromWorld()
+        {
+            if (!base.RemoveFromWorld())
+                return false;
+
+            if (m_ownBrain is JailerBrain brain)
+                brain.ClearTunnelGuardians(encounterEnded: true);
+
+            return true;
+        }
+
         [ScriptLoadedEvent]
         public static void ScriptLoaded(DOLEvent e, object sender, EventArgs args)
         {
@@ -115,18 +127,21 @@ namespace DOL.AI.Brain
             ThinkInterval = 2000;
         }
 
-        // Per brain: as a static it was cleared only in the 30-35 s after a fight that Vifil survived, so once he was
-        // killed his respawn was pulled with the flag still set and his tunnel guardians never came again until some
-        // later fight ended without a kill (epic-bosses M6 kind). A respawned Vifil gets a new brain.
-        private bool IsPulled = false;
+        private readonly Lock _tunnelGuardianLock = new();
+        private readonly List<JailerAdd> _tunnelGuardians = new(2);
+        private bool _spawnedTunnelGuardians;
 
         public override void OnAttackedByEnemy(AttackData ad)
         {
-            if (IsPulled == false)
+            lock (_tunnelGuardianLock)
             {
-                SpawnTunnelGuardians();
-                IsPulled = true;
+                if (!_spawnedTunnelGuardians && Body.IsAlive && Body.ObjectState == GameObject.eObjectState.Active)
+                {
+                    _spawnedTunnelGuardians = true;
+                    SpawnTunnelGuardians();
+                }
             }
+
             base.OnAttackedByEnemy(ad);
         }
 
@@ -184,7 +199,6 @@ namespace DOL.AI.Brain
             spam_teleport = false;
             return 0;
         }
-        private bool RemoveAdds = false;
         public static bool spam_teleport = false;
         public override void Think()
         {
@@ -203,27 +217,13 @@ namespace DOL.AI.Brain
             else if (Body.InCombatInLast(30 * 1000) == false && this.Body.InCombatInLast(35 * 1000))
             {
                 Body.Health = Body.MaxHealth;
-                IsPulled = false;
-                if (!RemoveAdds)
-                {
-                    foreach (GameNPC npc in WorldMgr.GetNPCsFromRegion(160))
-                    {
-                        if (npc != null)
-                        {
-                            if (npc.IsAlive && !npc.InCombat)
-                            {
-                                if (npc.Brain is JailerAddBrain && npc.RespawnInterval == -1)
-                                    npc.RemoveFromWorld();
-                            }
-                        }
-                    }
-                    RemoveAdds = true;
-                }
             }
+
+            if (!Body.InCombatInLast(30_000))
+                ClearTunnelGuardians(encounterEnded: false);
 
             if (Body.TargetObject != null && HasAggro)
             {
-                RemoveAdds = false;
                 if (spam_teleport == false && Body.TargetObject != null)
                 {
                     int rand = Util.Random(25000, 45000);
@@ -234,6 +234,8 @@ namespace DOL.AI.Brain
             base.Think();
         }
 
+        // Called under _tunnelGuardianLock. Kept in the original shape (one new JailerAdd per guardian, then AddToWorld)
+        // so the encounter catalog (source/tools/epic_encounter_catalog.py detect_adds) still reads it as the adds rule.
         public void SpawnTunnelGuardians()
         {
             JailerAdd Add1 = new JailerAdd();
@@ -242,6 +244,7 @@ namespace DOL.AI.Brain
             Add1.Z = 10879;
             Add1.CurrentRegion = Body.CurrentRegion;
             Add1.Heading = 2088;
+            _tunnelGuardians.Add(Add1);
             Add1.AddToWorld();
 
             JailerAdd Add2 = new JailerAdd();
@@ -250,7 +253,34 @@ namespace DOL.AI.Brain
             Add2.Z = 10885;
             Add2.CurrentRegion = Body.CurrentRegion;
             Add2.Heading = 2048;
+            _tunnelGuardians.Add(Add2);
             Add2.AddToWorld();
+        }
+
+        internal void ClearTunnelGuardians(bool encounterEnded)
+        {
+            lock (_tunnelGuardianLock)
+            {
+                if (!_spawnedTunnelGuardians)
+                    return;
+
+                // Keep the pair in play while a survivor is still fighting, and try again
+                // on the next think. Removing the boss ends the encounter immediately.
+                if (!encounterEnded && (Body.InCombatInLast(30_000) || _tunnelGuardians.Any(guardian =>
+                    guardian.ObjectState == GameObject.eObjectState.Active && guardian.IsAlive && guardian.InCombat)))
+                {
+                    return;
+                }
+
+                foreach (JailerAdd guardian in _tunnelGuardians)
+                {
+                    if (guardian.ObjectState == GameObject.eObjectState.Active)
+                        guardian.Delete();
+                }
+
+                _tunnelGuardians.Clear();
+                _spawnedTunnelGuardians = false;
+            }
         }
     }
 }

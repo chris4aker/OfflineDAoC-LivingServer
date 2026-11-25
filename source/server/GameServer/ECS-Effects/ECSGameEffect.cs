@@ -39,6 +39,14 @@ namespace DOL.GS
         public bool IsBeingReplaced { get; set; } // Used externally to force an effect to be silent (no message, no immunity) when being refreshed.
 
         /// <summary>
+        /// Set when this instance is ended after a newer copy of the same pulsing spell took its place in its owner's
+        /// effect list (EffectListComponent replaces a pulsing spell's effect in place, without stopping the old
+        /// instance or starting the new one). The copy in the list carries the effect on; this one is retired without
+        /// its <see cref="OnStopEffect"/>. Port of FelixGagnonB/OfflineDAoC 471b04186.
+        /// </summary>
+        public bool IsStaleCopy { get; set; }
+
+        /// <summary>
         /// The current start or stop only hands the effect over to another of the same kind on the same owner (1.2.3): a buff
         /// disabled because a stronger one from another caster took over, a disabled buff enabled again, or a buff ending while
         /// another of its kind stays on. Its messages stay quiet, because nothing changed for the owner ("Todd's weapon returns

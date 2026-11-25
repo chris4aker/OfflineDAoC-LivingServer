@@ -295,6 +295,17 @@ namespace DOL.GS
                 }
             }
 
+            // DividedRealms a5f19f5c (DR-376): the native loader never checks its reads or addTile, so a short or damaged file loads as tiles
+            // of zeros that crash Detour only when a path reaches them. Refuse such a file here.
+            string invalid = NavMeshFileCheck.Problem(path);
+            if (invalid != null)
+            {
+                if (log.IsErrorEnabled)
+                    log.Error($"Loading NavMesh refused for zone {id}: {path} is damaged ({invalid}). The zone runs without a navmesh.");
+
+                return;
+            }
+
             nint meshPtr = IntPtr.Zero;
 
             if (!LoadNavMesh(path, ref meshPtr))
