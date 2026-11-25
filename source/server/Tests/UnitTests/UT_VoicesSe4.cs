@@ -305,6 +305,10 @@ namespace DOL.GS.Tests
                     Assert.That(line.Invites, Is.Not.Empty, line.Text);
                     if (line.Invites is "none" or "chat")
                         continue;
+                    // #478: a question ("ask", "ask_<topic>") is answered from what the bots know or not at all; its written
+                    // "dunno" set is gone (build_corpus.py has the same rule).
+                    if (VC.InviteFamily(line.Invites) == "ask")
+                        continue;
                     int answers = VC.AnswerChain(line.Invites).Sum(key => linesByAnswer.GetValueOrDefault(key));
                     Assert.That(answers, Is.GreaterThanOrEqualTo(5), $"{line.Invites}: {line.Text}");
                 }

@@ -18,12 +18,15 @@ public static class AutonomousChatReplyBudget
     public static Outcome Decide(int fit, bool addressed, int minFit) =>
         fit >= minFit ? Outcome.Answer : addressed ? Outcome.Ack : Outcome.Silent;
 
-    private static readonly string[] Acks = ["?", "ya?", "hm?", "yes?", "ya", "whats up?", "yo", "hmm?", "yeah?", "sup?"];
+    // #478: an opener with nothing in it ("Brannoc", "u there?") gets that the bot is there and a real question back, never a bare
+    // "?" or "ya?" (an echo: the player still has to ask).
+    private static readonly string[] Acks = ["here, whats up?", "ya, whats up?", "yo, whats up", "here", "im here, whats up?", "hey, whats up?", "ya im here",
+        "here, need something?", "sup, need something?", "yo, here"];
     private static readonly string[] BusyAcks = ["sec", "1 sec", "sec, fighting", "sec, busy", "one sec"];
 
     /// <summary>
-    /// A short acknowledgement. A bot leans on two or three of its own (fixed from its id), as people do; a busy bot says
-    /// "sec". Pure.
+    /// The answer to an opener with nothing in it: the bot is here, and what's up. A bot leans on two or three of its own (fixed
+    /// from its id), as people do; a busy bot says "sec". Only for a <see cref="ContentFree"/> line (#478). Pure.
     /// </summary>
     public static string Ack(long botId, bool busy, Random random)
     {
@@ -48,6 +51,9 @@ public static class AutonomousChatReplyBudget
     {
         if (string.IsNullOrWhiteSpace(text))
             return false;
+        // #478: the gate's non-answer class (a dunno, a "try elsewhere", a bare "?") is a brush-off wherever it is said.
+        if (BotSayGate.IsNonAnswer(text))
+            return true;
         string t = AutonomousChatQuestions.Normalize(text);
         // A style's emote at the end (":D", "heh") is no part of what is said.
         foreach (string tail in new[] { " d", " p", " lol", " heh", " haha" })
@@ -88,8 +94,11 @@ public static class AutonomousChatReplyBudget
         _ => 0.0,
     };
 
-    /// <summary>The share of unanswered questions that one bot still answers "dunno" in a channel.</summary>
-    public static double DunnoShare(string channel) => channel switch
+    /// <summary>
+    /// The share of warnings and requests (not said to the bot) one bot answers with its short true reply in a channel ("where?",
+    /// "cant heal sry"). Before #478 the same share answered an unanswered question with "dunno"; that fallback is gone.
+    /// </summary>
+    public static double ShortReplyShare(string channel) => channel switch
     {
         "group" => 0.9,
         "guild" => 0.65,
@@ -128,9 +137,10 @@ public static class AutonomousChatReplyBudget
         AutonomousChatIntentModel.Words(message ?? string.Empty).Any(word => word is "brb" or "afk" or "bbl" or "bio" or "bbiab" or "bbs");
 
     /// <summary>
-    /// A short reply to a tell (or a line naming the bot) that says something, instead of a bare "ya?": a compliment gets thanks,
-    /// an offer to buy a no, a request for heals or a rez the truth for the bot's class, an offer of help a polite no, a question
-    /// "no clue sry", an answer to the bot's own question "cool". Null for a content-free opener (the "?" stays). Pure.
+    /// A short reply to a tell (or a line naming the bot) that says something: a compliment gets thanks, an offer to buy a no, a
+    /// request for heals or a rez the truth for the bot's class, an offer of help a polite no, a question about the bot its own
+    /// facts, an answer to the bot's own question "cool". Null for a content-free opener (<see cref="Ack"/> answers it) and, since
+    /// #478, for a question nothing here answers (no "no clue sry": the bot stays quiet). Pure.
     /// </summary>
     public static string ToContent(Moment moment, Random random)
     {
@@ -194,8 +204,10 @@ public static class AutonomousChatReplyBudget
                 : Pick(random, $"{cls}, no heals sry", $"no heals on a {cls} sry");
         if (buff && question)
             return Pick(random, $"no buffs, im a {cls}", $"{cls}, sry no buffs", "nothing worth having sry");
+        // #478: a question nothing above answers gets no "no clue sry" or "not sure, try /advice" (a non-answer, and a person
+        // doesn't send a friend to /advice): what the bot knows of itself answered it already if it could, else it stays quiet.
         if (question)
-            return Pick(random, "no clue sry", "dunno sry", "not sure, try /advice", "no idea tbh", "hmm no clue");
+            return null;
         if (moment.Intent == eAutonomousChatIntent.Abuse)
             return Pick(random, "ok", "k", "lol ok", "whatever");
         // 1.2.3 (the owner's game: "I'm by camp station" by tell drew "lol"): where the player is, that they are coming, or a fact
@@ -248,6 +260,16 @@ public static class AutonomousChatReplyBudget
     /// A reply that takes credit the bot can't have: "np" or "anytime" to thanks for heals from a bot with no heals, or for a rez
     /// from one with no rez (round 3). Pure.
     /// </summary>
+    /// <summary>What a bot says to thanks it can't take ("ty for the rez" to a bot with no rez): it wasn't it, and it is glad of
+    /// the outcome. Never claims the credit (ClaimsCredit is false for each line). Pure.</summary>
+    public static string CreditAside(string credit, Random random)
+    {
+        string[] lines = credit == "rez"
+            ? ["wasnt me, but glad ur up", "not me lol, good to have u back", "wasnt me, but phew"]
+            : ["thats our healer, not me", "not me, the healer is earning it tonight", "wasnt me, heals were solid tho"];
+        return lines[(random ?? Random.Shared).Next(lines.Length)];
+    }
+
     public static bool ClaimsCredit(string message, string reply, bool canHeal, bool canRez)
     {
         string credit = CreditFor(message);
@@ -263,7 +285,14 @@ public static class AutonomousChatReplyBudget
 
     /// <summary>A warning or a call: "zerg at mmg", "inc 3 albs", "adds!!", "mids hitting bled door". Pure.</summary>
     public static bool IsAlarm(string message, eAutonomousChatIntent intent) =>
-        intent == eAutonomousChatIntent.Alarm || Alarmed.IsMatch(" " + AutonomousChatQuestions.Normalize(message ?? string.Empty) + " ");
+        intent == eAutonomousChatIntent.Alarm || Alarmed.IsMatch(" " + AutonomousChatQuestions.Normalize(message ?? string.Empty) + " ") &&
+        // #478 (questions.md finding 7: "where do animists train" -> "where", "how do i add more bots" -> "Where?"): a question that
+        // only holds a word a warning also uses ("train", "add", "run") is a question, not a warning.
+        !(AutonomousChatQuestions.StartsLikeQuestion(message) && !StrongAlarm.IsMatch(" " + AutonomousChatQuestions.Normalize(message ?? string.Empty) + " "));
+
+    private static readonly System.Text.RegularExpressions.Regex StrongAlarm = new(
+        @" (inc|incoming|zerg|stealthers|ganked|gankers|under attack|rams|ram on) | \d+ ?\+? ?(albs|mids|hibs|enemies|stealthers) ",
+        System.Text.RegularExpressions.RegexOptions.CultureInvariant);
 
     /// <summary>"need heal!!", "heal pls", "rez?", "someone buff me": a request for something. Pure.</summary>
     public static bool IsRequest(string message)
@@ -320,24 +349,9 @@ public static class AutonomousChatReplyBudget
     };
 
     /// <summary>
-    /// Whether a question nobody could answer may draw a "dunno" in the channel: in a group or a guild one groupmate saying so
-    /// is natural; in /faction a "dunno" from the realm is a non-answer, and silence is better (1.2.2 chat fixes, F4; owner
-    /// 2026-11-22: "reduce or eliminate general fluff and non answers"; the bench: 20 of its 27 non-answers). Pure.
-    /// </summary>
-    public static bool RescuesWithDunno(string channel) => channel is not ("faction" or null);
-
-    /// <summary>
-    /// <see cref="RescuesWithDunno(string)"/> for this line: a question of where a place is never draws a "dunno" in any
-    /// channel (1.2.3, owner's game: the leader said "meet up at Humberton Castle", the player asked "where is that" and a
-    /// groupmate said "not sure tbh"). The world's places are answered from the world, or nobody speaks. Pure.
-    /// </summary>
-    public static bool RescuesWithDunno(string channel, string message) =>
-        RescuesWithDunno(channel) && !AutonomousChatKnowledge.LooksLikeLocationQuestion(message ?? string.Empty);
-
-    /// <summary>
     /// What a weak reply to a line not said to the bot becomes (blind round 2: silence went from 38% to 64% of turns, and most
-    /// of what was lost was short banter): a short reaction for a social line, at a rate by channel; a "dunno" from one bot for
-    /// a question in a group or guild; otherwise nothing. Null means silence. Pure.
+    /// of what was lost was short banter): a short reaction for a social line, at a rate by channel; the short true answer to a
+    /// warning or a request; otherwise nothing, and never a "dunno" (#478). Null means silence. Pure.
     /// </summary>
     public static string Rescue(Moment moment, string route, Random random)
     {
@@ -350,7 +364,7 @@ public static class AutonomousChatReplyBudget
             return null;
         // A call gets "where?" or "k", never "lol same" (round 3).
         if (IsAlarm(message, moment.Intent))
-            return random.NextDouble() < DunnoShare(moment.Channel) ? AlarmReaction(message, random, moment.Comes) : null;
+            return random.NextDouble() < ShortReplyShare(moment.Channel) ? AlarmReaction(message, random, moment.Comes) : null;
         // Thanks for heals a bot can't give get nothing from it.
         if (CreditFor(message) is { } credit && !CanGive(credit, moment))
             return null;
@@ -361,15 +375,15 @@ public static class AutonomousChatReplyBudget
         // A request for heals, a rez or buffs: the truth for the bot's class ("cant heal sry", "use a pot"), not "dunno", and
         // never "nah im good ty" (round 3: that answered "need heal!!").
         if (IsRequest(message) && System.Text.RegularExpressions.Regex.IsMatch(t, @" (heal|heals|healz|rez|res|rezz|buff|buffs|speed|power|pow|mana) "))
-            return random.NextDouble() < DunnoShare(moment.Channel) ? RequestAnswer(moment, t, random) : null;
+            return random.NextDouble() < ShortReplyShare(moment.Channel) ? RequestAnswer(moment, t, random) : null;
         bool question = AsksSomething(message) && !StepsAway(message);
         // Group posts, trades, hellos, goodbyes and brbs aren't "dunno" questions; their own rules answer them.
-        if (question && moment.Intent is not (eAutonomousChatIntent.Grouping or eAutonomousChatIntent.Trading or eAutonomousChatIntent.Away or
-                eAutonomousChatIntent.Back or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Thanks or
-                eAutonomousChatIntent.Rez or eAutonomousChatIntent.Alarm))
-            return RescuesWithDunno(moment.Channel, message) && random.NextDouble() < DunnoShare(moment.Channel)
-                ? Pick(random, "dunno", "no idea", "not sure tbh", "idk sry", "no clue, sry", "hmm dunno")
-                : null;
+        // #478: a question nobody could answer gets no "dunno" in any channel (1.2.2 took it out of /faction, 1.2.3 out of where-is
+        // questions; the other channels kept it). Silence is the fallback; a reaction never answers a question either.
+        // A joke shaped as a question ("why do casters wear robes? no pockets for the loot lol") is answered as a joke: a laugh,
+        // at the channel's rate (before #478 it drew "dunno").
+        if (question && AutonomousChatMeetup.Laughs(message))
+            return random.NextDouble() < ReactionShare(moment.Channel) ? Reaction("laugh", random) : null;
         if (question)
             return null;
         if (moment.Intent == eAutonomousChatIntent.Unknown && route is "none unknown" &&
@@ -391,6 +405,8 @@ public static class AutonomousChatReplyBudget
                 : Pick(random, "cant rez sry", $"no rez on a {cls}", $"{cls}, no rez sry");
         if (heal)
             return moment.CanHeal ? moment.Comes(ChatPromiseReason.Heal) ? Pick(random, "omw, where?", "on it") : Pick(random, "where?", "where r u?", "where are you?")   // promise: gated (moment.Comes)
+                // #478: "can u heal?" asks about the bot: its class answers, not "use a pot".
+                : AsksSomething(moment.Message) ? Pick(random, "cant heal sry", $"{cls}, no heals", $"no heals on a {cls}")
                 : Pick(random, "cant heal sry", "use a pot", $"{cls}, no heals", "pot up!");
         return Pick(random, "no buffs sry", $"{cls}, no buffs", "cant sry");
     }

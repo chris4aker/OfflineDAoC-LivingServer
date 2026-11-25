@@ -67,6 +67,26 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
   heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
   below.
+- [#475](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/475) Realism 1: record real play (the say gate as a
+  pass-through in all 17 exits, `logs/session-chat.log`, `/odd`, `tools/bot-voices/session_transcript.py`, the raw-send
+  ratchet). **Built, tests only;** done when a played session's `session-chat.log` gives a transcript an agent can read
+  line by line and a count of defects per hour, per channel, per build (baseline: 9 in about an hour on 1.2.2). Next:
+  #489's step 2 (the checks in the gate).
+- [#478](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/478) Realism 2a: no non-answer as a whole answer, in any
+  channel. **Built, tests only** (branch `fix/1.2.3-no-non-answers`, on top of #549). The say gate's step 2 holds the class
+  (dunno, try elsewhere, echo word, bare laugh, stock agreement; `BotSayGate.NonAnswer.cs`), the reply planner settles with
+  it (`AutonomousChatReplyPath.Settled`), and the "dunno" fallbacks and the `@answers ask` set are gone. Bench: non-answers
+  0 in every channel, no good share fell, bad silence rose where the dunnos were (tell 0 to 71, /group 42 to 86, follow-ups
+  in a tell 0 to 33): those lines need knowledge (#482). Open: see it in a PC log (`CHAT_HELD rule=non-answer`, and no
+  "dunno"/"not sure" rows in `session-chat.log`).
+- [#482](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/482) Realism 2e: knowledge a new player needs, as one
+  grounded lookup. **Built, tests only** (branch `fix/1.2.3-knowledge`, on top of #585). `AutonomousChatLookup` (typo fold,
+  question type, providers per type, every answer with its source) and `data/chat/game_guide.json`. Bench (local Release
+  build): fresh 82.4% (was 59.9%), holdout 75.6% (was 43.6%), code set 93.0% (was 89.8%), ratchet tightened.
+  Evening ratchet: party_unanswered 5.5 to 5.0; three counts re-baselined after the evening's random stream shifted (PR
+  #614 comment). Merges with
+  #585 (its PR holds #585's commits). Open: see it in a PC log (new-player questions in
+  `session-chat.log` answered with what was asked; `CHAT_PLAYER_REPLY_PLAN ... knowledge=True` for them).
 - **The honest chat bench** ([#477](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/477), realism 1b): done
   on `feature/1.2.3-honest-bench`, **tests only**. The bench's headline is the realism audit's fresh lines (155 of 262 good,
   59.2%), reported per kind and per channel, with the side benches (every channel path, 54 follow-ups, 40 lines of the

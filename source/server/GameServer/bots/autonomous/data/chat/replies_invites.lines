@@ -200,22 +200,8 @@ a crafter could beat that price
 already have one, gl though
 
 # ---- ask: any question --------------------------------------------------------------------
-@kind reply
-@answers ask
-@who *
-no idea sorry
-not sure
-dunno
-no clue
-cant help there sorry
-@answers ask_know
-@answers ask
-couldnt say
-@answers ask,ask_where,ask_advice
-@answers ask,ask_advice
-maybe ask a trainer
-@answers ask,ask_where
-try asking a guard
+# #478: no set here. A question nothing knows gets no "no idea sorry", "dunno" or "try asking a guard" (a non-answer is
+# never the whole answer, in any channel): the bot answers from what it knows of itself, or it stays quiet.
 
 # ---- ask_where ----------------------------------------------------------------------------
 @kind reply

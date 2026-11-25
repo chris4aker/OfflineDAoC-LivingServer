@@ -124,6 +124,8 @@ public static class AutonomousChatContext
 
     private static bool Stuck(string[] words, string text) =>
         words.Contains("stuck") && !Regex.IsMatch(text, @" stuck (at|on) (level|lvl|\d)| stuck with | xp | stuck lfg| stuck in town waiting") &&
+        // Realism 2e (#482): "stuck on the last epic step" is a quest, not the terrain.
+        !Regex.IsMatch(text, @" (quest|quests|epic|step|steps|chain|part) ") &&
         // A pet or a mob stuck behind a door is no /stuck for the player (blind round 2).
         !Regex.IsMatch(text, @" (pet|pets|mob|mobs|add|adds|monster|npc|horse|minion|summon|named|boss|it|he|she|they) (is|s|got|was|keeps|keep|getting) stuck | stuck (pet|mob)") &&
         Regex.IsMatch(text, @" (im|i m|i am|got|get|getting|totally|so|still) stuck | stuck (in|under|on|behind|inside|between|at) | help stuck | stuck help ");

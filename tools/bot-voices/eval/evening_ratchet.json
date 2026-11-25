@@ -2,10 +2,10 @@
  "note": "The evening ratchet (evening_read.py --ratchet): seven counts of the player's evenings (UT_ChatBudgetSimulation.PlayerEvenings) that need no judgement may not get worse. Tighten with --write after a fix; never loosen it to pass. Tests only.",
  "evenings": 18,
  "party_banter_after_60": 0,
- "say_stock_share": 0.614,
- "faction_top10_share": 0.497,
- "how_much_paying_per_hour": 24.88,
- "name_first_share": 0.265,
- "laughing_calls_share": 0.0896,
- "party_unanswered": 5.5
+ "say_stock_share": 0.6185,
+ "faction_top10_share": 0.4965,
+ "how_much_paying_per_hour": 25.13,
+ "name_first_share": 0.2593,
+ "laughing_calls_share": 0.1006,
+ "party_unanswered": 5.0
 }

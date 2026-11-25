@@ -799,6 +799,10 @@ def main():
         if invite in ('none', 'chat'):
             continue
         family = invite.split('_')[0]
+        # #478: a question ("ask", "ask_<topic>") is answered from what the bots know (the knowledge lookup, a bot's own facts)
+        # or not at all; its written "dunno" set is gone, so it needs no written replies.
+        if family == 'ask':
+            continue
         if answered[invite] + answered[family] < 5:
             problems.append(f'coverage: openers invite "{invite}" ({invited[invite]} lines) but only '
                             f'{answered[invite] + answered[family]} replies answer it or "{family}"')

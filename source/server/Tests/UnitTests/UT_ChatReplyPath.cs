@@ -51,7 +51,9 @@ public class UT_ChatReplyPath
         };
         Assert.That(AutonomousChatKnowledge.TryAnswer(ports, "where is the warrior trainer?", out string answer), Is.True);
         Assert.That(answer, Is.EqualTo("the trainer in jordheim"));
-        Assert.That(steps, Is.EqualTo(new[] { "world", "trainer" }), "how far is asked only for a how-far question; the world before the trainer");
+        // #482: a trainer question is a question of the lookup's trainer type, so the trainer alone is asked (precedence by
+        // question type, not by call order): how far and the world are not asked for it.
+        Assert.That(steps, Is.EqualTo(new[] { "trainer" }), "a trainer question asks the trainer alone");
     }
 
     [Test]
@@ -126,13 +128,12 @@ public class UT_ChatReplyPath
     // ---- F4: no "dunno" and no "not sure" set to the whole realm -------------------------------------------------------------
 
     [Test]
-    public void TheRescueSaysNoDunnoInFaction()
+    public void TheRescueSaysNoDunnoInAnyChannel()
     {
+        // #478: 1.2.2 (F4) took the rescue's "dunno" out of /faction; now it is gone from every channel.
         var moment = new AutonomousChatReplyBudget.Moment("how does spellcrafting work?", "faction", false, eAutonomousChatIntent.Unknown, "Thane", false, false, false);
-        Assert.That(AutonomousChatReplyBudget.Rescue(moment, "none factual", new FixedRandom(0.0)), Is.Null);
-        Assert.That(AutonomousChatReplyBudget.RescuesWithDunno("faction"), Is.False);
-        Assert.That(AutonomousChatReplyBudget.RescuesWithDunno("group"), Is.True, "a groupmate may still say so");
-        Assert.That(AutonomousChatReplyBudget.Rescue(moment with { Channel = "group" }, "none factual", new FixedRandom(0.0)), Is.Not.Null);
+        foreach (string channel in new[] { "faction", "say", "group", "guild", "broadcast", "chatgroup" })
+            Assert.That(AutonomousChatReplyBudget.Rescue(moment with { Channel = channel }, "none factual", new FixedRandom(0.0)), Is.Null, channel);
     }
 
     [Test]
@@ -145,19 +146,13 @@ public class UT_ChatReplyPath
     }
 
     [Test]
-    public void AFactualQuestionToTheBotMayGetAnHonestNotSure()
+    public void AFactualQuestionToTheBotGetsNoNotSureEither()
     {
-        var choice = Path.Voiced(OnlyNotSure(new List<string>()), "how does spellcrafting work?", null, null, addressed: true, channel: "tell", relax: true);
-        Assert.That(choice.Route, Does.Contain("not sure"));
-        Assert.That(choice.Text, Is.EqualTo("not sure tbh"));
-    }
-
-    [Test]
-    public void NotSureOnlyWhenSaidToTheBot()
-    {
-        Assert.That(Path.MaySayNotSure(false, "faction"), Is.False);
-        Assert.That(Path.MaySayNotSure(true, "faction"), Is.True, "named in the line");
-        Assert.That(Path.MaySayNotSure(false, "say"), Is.True);
+        // #478: the "not sure" set no longer answers a line said to the bot (a tell, its name, /group) either.
+        var asked = new List<string>();
+        var choice = Path.Voiced(OnlyNotSure(asked), "how does spellcrafting work?", null, null, addressed: true, channel: "tell", relax: true);
+        Assert.That(choice.Text, Is.Null, choice.Route);
+        Assert.That(asked, Does.Not.Contain("ask"), "the not-sure set is not even drawn");
     }
 
     // ---- F6: questions about grouping ----------------------------------------------------------------------------------------

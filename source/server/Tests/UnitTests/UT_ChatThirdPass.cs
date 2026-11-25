@@ -310,6 +310,14 @@ public class UT_ChatThirdPass
         string reply = Budget.ToContent(Tell("ty for the heals!"), new Random(1));
         Assert.That(reply, Does.Contain("not me").Or.Contain("wasnt me"), "a thane says it wasn't it");
         Assert.That(Budget.Rescue(Heard("ty for the rez", "group"), "intent thanks", new FixedRandom(0.0)), Is.Null);
+        // PR #614: what a bot says instead of "np" to thanks it can't take never claims the credit.
+        for (int seed = 0; seed < 12; seed++)
+            foreach (string credit in new[] { "rez", "heals" })
+            {
+                string aside = Budget.CreditAside(credit, new Random(seed));
+                Assert.That(aside, Does.Contain("not me").Or.Contain("wasnt me").Or.Contain("thats our healer"));
+                Assert.That(Budget.ClaimsCredit(credit == "rez" ? "ty for the rez" : "ty for the heals", aside, false, false), Is.False, aside);
+            }
     }
 
     // ---- 6. /say lines aimed at a bot ----------------------------------------------------------------------------------------

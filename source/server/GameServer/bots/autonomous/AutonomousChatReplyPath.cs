@@ -98,7 +98,12 @@ public static class AutonomousChatReplyPath
     /// general "long chain"). Pure.
     /// </summary>
     public static bool KnowledgeFirst(string message, eAutonomousChatIntent intent, bool helpCall, bool directed) =>
-        !IsShortTalk(message, intent) && !helpCall && !(directed && AutonomousChatQuestions.SelfQuestion(message) != null);
+        (!IsShortTalk(message, intent) || AsksWhatNext(message)) && !helpCall && !(directed && AutonomousChatQuestions.SelfQuestion(message) != null);
+
+    /// <summary>"just dinged 50, now what": a ding that asks what comes next is a question (Realism 2e, #482: it drew "Ooh nice"). Pure.</summary>
+    public static bool AsksWhatNext(string message) =>
+        !string.IsNullOrWhiteSpace(message) &&
+        System.Text.RegularExpressions.Regex.IsMatch(" " + AutonomousChatQuestions.Normalize(message) + " ", @" (now what|what now|whats next|what next|then what|what do i do now) ");
 
     /// <summary>What a player's line draws, decided once for the line (<see cref="Plan"/>).</summary>
     public enum Step
@@ -286,17 +291,10 @@ public static class AutonomousChatReplyPath
     }
 
     /// <summary>
-    /// The honest "not sure" set (<c>@answers ask</c>) may answer: only a line said to the bot (named, a tell, /group), never one
-    /// to the whole realm (F4, owner 2026-11-22: "reduce or eliminate general fluff and non answers"; silence is better there). Pure.
-    /// </summary>
-    public static bool MaySayNotSure(bool addressed, string channel) => addressed || channel is not ("faction" or null);
-
-    private static bool NoTrainerOrGuard(VC.Line line) => !line.Text.Contains("trainer") && !line.Text.Contains("guard");
-
-    /// <summary>
     /// The voiced reply (VoicedChoiceCore): a true answer, the situation, a holiday wish, the bot's memory, an honest no to an
-    /// order, the question's shape, then the corpus by intent; a factual question no answer knew gets an honest "not sure" only
-    /// where <see cref="MaySayNotSure"/> allows, else the caller's <paramref name="fallback"/>.
+    /// order, the question's shape, then the corpus by intent; a factual question no answer knew gets the caller's
+    /// <paramref name="fallback"/> (#478: the "not sure" set, <c>@answers ask</c>, no longer answers in any channel; 1.2.2's F4
+    /// took it out of /faction only).
     /// </summary>
     public static ReplyChoice Voiced(Ports ports, string incoming, Func<string> fallback, eAutonomousChatIntent? knownIntent, bool addressed, string channel,
         bool relax)
@@ -337,25 +335,15 @@ public static class AutonomousChatReplyPath
         // "really?", "why?": a follow-up only the one it was said to can answer.
         if (AutonomousChatShortTalk.IsFollowUp(incoming))
             return new ReplyChoice(fallback(), "none followup");
-        bool notSureOk = MaySayNotSure(addressed, channel);
-        // A factual question no answer above knew gets an honest "not sure" now and then (when said to the bot), never a remark
-        // on its topic.
+        // A factual question no answer above knew gets no remark on its topic, and no "not sure" (#478).
         if (AutonomousChatQuestions.IsFactual(incoming) && value is not (eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Thanks or
                 eAutonomousChatIntent.Rez or eAutonomousChatIntent.Alarm or eAutonomousChatIntent.Grouping or eAutonomousChatIntent.BotCheck or
                 eAutonomousChatIntent.Abuse or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Ding or eAutonomousChatIntent.Congrats or
                 eAutonomousChatIntent.Back or eAutonomousChatIntent.Away or eAutonomousChatIntent.Roleplay))
-        {
-            if (notSureOk && random.NextDouble() < 0.5 && ports.Pick(answers: "ask", relax: relax, filter: NoTrainerOrGuard) is { } honest)
-                return new ReplyChoice(honest.Text, "not sure", honest.Line);
             return new ReplyChoice(fallback(), "none factual");
-        }
+        // An unread line gets no reply (#478: and a question no "not sure").
         if (value == eAutonomousChatIntent.Unknown)
-        {
-            // A question with no answer set gets an honest "not sure" (when said to the bot); any other unread line no reply.
-            if (notSureOk && incoming.Contains('?') && ports.Pick(answers: "ask", relax: relax, filter: NoTrainerOrGuard) is { } unsure)
-                return new ReplyChoice(unsure.Text, "not sure", unsure.Line);
             return new ReplyChoice(fallback(), "none unknown");
-        }
         // An in-character line is answered in kind for what it does, else with an emote.
         if (value == eAutonomousChatIntent.Roleplay)
         {
@@ -396,12 +384,7 @@ public static class AutonomousChatReplyPath
                                 !(value is eAutonomousChatIntent.Banter or eAutonomousChatIntent.Dungeon or eAutonomousChatIntent.RvR &&
                                   Regex.IsMatch(line.Text, @"sure (u|you) did|bet (u|you) cant|bet you can't|pics or|show off", RegexOptions.IgnoreCase))) is { } voiced)
             return new ReplyChoice(voiced.Text, "intent " + topicIntent, voiced.Line);
-        // No reply of the line's kind fits: a question said to the bot gets an honest "not sure", anything else the fallback.
-        if (notSureOk && incoming.Contains('?') && value is not (eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Farewell or
-                eAutonomousChatIntent.Thanks or eAutonomousChatIntent.Back or eAutonomousChatIntent.Away or eAutonomousChatIntent.Laugh or
-                eAutonomousChatIntent.Roleplay) &&
-            ports.Pick(answers: "ask", relax: relax, filter: NoTrainerOrGuard) is { } notSure)
-            return new ReplyChoice(notSure.Text, "intent " + intent + " -> not sure", notSure.Line);
+        // No reply of the line's kind fits: the fallback (#478: never a "not sure").
         return new ReplyChoice(fallback(), "none " + intent);
     }
 
@@ -427,6 +410,47 @@ public static class AutonomousChatReplyPath
     {
         if (!ports.Voices || choice.Route == "legacy")
             return choice;
+        return Settled(ports, Budgeted(ports, choice, message, addressed, channel), message, addressed || channel is "tell" or "group");
+    }
+
+    /// <summary>
+    /// The gate's rule where the reply is chosen (#478, <see cref="BotSayGate.Settle"/>): a non-answer is never the whole answer to
+    /// a line said to the bot or asked of the channel. In its place the bot answers from what it knows of itself (its class, level,
+    /// place and plans: <see cref="FromWhatItKnows"/>), or it stays quiet.
+    /// </summary>
+    public static ReplyChoice Settled(Ports ports, ReplyChoice choice, string message, bool saidToBot)
+    {
+        if (choice.Text == null)
+            return choice;
+        BotSayGate.NonAnswerKind kind = BotSayGate.Owed(message, saidToBot) ? BotSayGate.KindOf(choice.Text, message) : BotSayGate.NonAnswerKind.None;
+        if (kind == BotSayGate.NonAnswerKind.None)
+            return choice;
+        string known = BotSayGate.Settle(choice.Text, message, saidToBot, () => FromWhatItKnows(ports, message));
+        return known != null
+            ? new ReplyChoice(known, "known (" + choice.Route + ")")
+            : new ReplyChoice(null, "silent (non-answer " + kind.ToString().ToLowerInvariant() + ": " + choice.Route + ")");
+    }
+
+    /// <summary>
+    /// What the bot knows of itself that answers the line: a question about it (its level, class, spec, group, plans: SelfQuestion
+    /// and AnswerSelf on its facts), or where it is. Null when nothing it knows answers it. Pure but for the ports.
+    /// </summary>
+    public static string FromWhatItKnows(Ports ports, string message)
+    {
+        if (string.IsNullOrWhiteSpace(message) || ports == null)
+            return null;
+        AutonomousChatQuestions.BotFacts facts = ports.Facts?.Invoke();
+        Random random = ports.Random ?? Random.Shared;
+        if (facts != null && AutonomousChatQuestions.AddressedSelfQuestion(message) is { } self &&
+            AutonomousChatQuestions.AnswerSelf(self, message, facts, random) is { Length: > 0 } known)
+            return ports.Styled(known);
+        if (AutonomousBotChatCoordinator.AsksWhereYouAre(message) && ports.Live?.Invoke("ask_whereyou", message) is { Length: > 0 } here)
+            return ports.Styled(here);
+        return null;
+    }
+
+    private static ReplyChoice Budgeted(Ports ports, ReplyChoice choice, string message, bool addressed, string channel)
+    {
         Random random = ports.Random ?? Random.Shared;
         string moments = channel ?? (addressed ? "tell" : "faction");
         if (AutonomousChatScreen.IsSpam(message))
@@ -434,8 +458,10 @@ public static class AutonomousChatReplyPath
         AutonomousChatReplyBudget.Moment moment = ports.Moment?.Invoke(message, moments, addressed) ??
             new AutonomousChatReplyBudget.Moment(message, moments, addressed, AutonomousChatIntentModel.Predict(message), ports.ClassName, false, false, false);
         // Never take thanks for heals or a rez the bot can't give.
-        if (AutonomousChatReplyBudget.CreditFor(message) != null && AutonomousChatReplyBudget.ClaimsCredit(message, choice.Text, moment.CanHeal, moment.CanRez))
-            choice = new ReplyChoice(null, "none credit");
+        // #482 (the evening ratchet's party_unanswered): a bot that would have said "np" but can't take the credit says it wasn't
+        // it, glad of the outcome, instead of leaving the player's thanks unanswered.
+        if (AutonomousChatReplyBudget.CreditFor(message) is { } credit && AutonomousChatReplyBudget.ClaimsCredit(message, choice.Text, moment.CanHeal, moment.CanRez))
+            return new ReplyChoice(ports.Styled(AutonomousChatReplyBudget.CreditAside(credit, random)), "credit aside");
         // Conversation memory (DESIGN-040): a bot never asks what the conversation already holds.
         if (ports.Holds != null && ports.Holds(choice.Text, channel ?? (addressed ? "tell" : "faction"), addressed))
             choice = new ReplyChoice(null, "none known (" + choice.Route + ")");
@@ -462,9 +488,17 @@ public static class AutonomousChatReplyPath
             AutonomousBotChatCoordinator.AsksToJoinGroup(message))
             return new ReplyChoice(ports.Styled(band), "short (band)");
         if (outcome == AutonomousChatReplyBudget.Outcome.Ack)
-            return AutonomousChatReplyBudget.ToContent(moment, random) is { } content
-                ? new ReplyChoice(ports.Styled(content), "short (" + choice.Route + ")")
-                : new ReplyChoice(AutonomousChatReplyBudget.Ack(ports.BotId, moment.Busy, random), "ack (" + choice.Route + ")");
+        {
+            if (AutonomousChatReplyBudget.ToContent(moment, random) is { } content)
+                return new ReplyChoice(ports.Styled(content), "short (" + choice.Route + ")");
+            // #478: "here, whats up?" answers an opener with nothing in it; a line that says or asks something gets what the bot
+            // knows of itself, or silence, never a bare "?".
+            if (AutonomousChatReplyBudget.ContentFree(message))
+                return new ReplyChoice(AutonomousChatReplyBudget.Ack(ports.BotId, moment.Busy, random), "ack (" + choice.Route + ")");
+            return FromWhatItKnows(ports, message) is { } known
+                ? new ReplyChoice(known, "known (" + choice.Route + ")")
+                : new ReplyChoice(null, "silent (nothing true to say: " + choice.Route + ")");
+        }
         return AutonomousChatReplyBudget.Rescue(moment, choice.Route, random) is { } rescue
             ? new ReplyChoice(ports.Styled(rescue), "rescue (" + choice.Route + ")")
             : new ReplyChoice(null, "silent (" + choice.Route + ")");

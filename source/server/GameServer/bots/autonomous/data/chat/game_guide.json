@@ -1,0 +1,1351 @@
+{
+ "note": "Realism 2e (#482): the written guide of the knowledge lookup (AutonomousChatLookup). 'topics' are the question types in the order they are read: the first whose 'when' matches is the question's subject (each pattern is a regular expression on the line lower-cased, typos folded, every mark but letters and digits made a space, with a space at each end). 'entries' are the guide's answers: an entry answers a question of its topic when every 'when' matches and no 'unless' does; 'realm' (alb, mid, hib) limits an entry to askers of that realm; 'lines' are said as a player types them ({capital}, {porter}, {border_keep}, {vault}, {smith}, {xp_loss_level}, {con_loss_level}, {relic_bonus} are filled in); 'source' says where the fact comes from. Game help, never lore: no entry may be used by a lore channel. Tests only until seen in a played log.",
+ "topics": [
+  {
+   "id": "living",
+   "when": " (hire|hired|hiring|hireling|hirelings|companion|companions|mercs for hire) | realm exchange | tc | launcher | living server | (add|adding|more|spawn|make|get) (some )?(more )?bots | bots? (tab|setting|settings|menu) | spawn (a |some )?(helper|helpers|bot|bots) | stables | lswhy | invites (off|on) | stop (getting )?(all )?(these )?(group |raid )?invites | (join|get into|get in|sign up for|sign up to) (the |a |one of the |one of these )?(realm )?raids? | raid (40|80) | (join|get into) one of (these|the|those) groups| faction (channel|chat) "
+  },
+  {
+   "id": "start",
+   "when": " (just made|just rolled|just started|new (char|character|player|toon) |first (char|character|toon|time playing|time here)|new here|new to (the|this) game|where do i go first|where (do i|should i) (start|begin)|(tips|help) for (a )?(noob|newbie|new player|beginner)|(noob|newbie) (tips|here|needs help)|any tips) "
+  },
+  {
+   "id": "classtree",
+   "when": " (wont|won t|doesnt|does not|will not|cant|can t|refuses to) (let me )?train (me )?| stuck at (lvl |level )?5 | (lvl|level) 5 .*(trainer|guild)| trainer .*(join a guild|which guild|pick a guild)| (what|which) (are )?(my )?(choices|options|classes) | turn into | (can|could) (a|an|my) [a-z]+ (be|become|turn) | become (a|an) [a-z]+ | real class | pick my class | (diff|difference|differences) between | (go|get) all the way to [a-z ]+ to (pick|choose|become|be) "
+  },
+  {
+   "id": "conloss",
+   "when": " (con|constitution) back | (lost|lose|losing|missing) (some |my |\\d+ |a |all )?(con|constitution) | (con|constitution) (loss|lost|points|gone|went down) | restore (my )?(con|constitution) | healer npc | rez(z)? (sick|sickness) | res (sick|sickness) | resurrection (illness|sickness) | rez illness "
+  },
+  {
+   "id": "respec",
+   "when": " respec | respecs | re spec | (undo|redo|reset|redistribute|change) (my |all my |the )?(spec|specs|points|spec points|skills|lines) | (messed|screwed|mucked) up (my )?(spec|points|build) | respec stones? "
+  },
+  {
+   "id": "salvage",
+   "when": " salvage | salvaging | salvaged "
+  },
+  {
+   "id": "spellcraft",
+   "when": " spellcraft | spellcrafting | spell craft | (sc|spellcraft) (my|own|gear|armor|armour|pieces|stuff|weapon) | imbue | imbuing | overcharge | overcharging ",
+   "unless": " (buy|sell|get|find|where|wheres|who) .*gems?| gems? (from|where)| (sc|spellcraft) or drops | drops or (sc|spellcraft) "
+  },
+  {
+   "id": "bind",
+   "when": " bind | binding | bindstone | bind stone | bind point | bindpoint "
+  },
+  {
+   "id": "vault",
+   "when": " vault | bank | banker | bags? (full|are full) | inventory (full|is full) | storage "
+  },
+  {
+   "id": "tasks",
+   "when": " kill tasks? | /task | tasks? (from|work|are|do) | what (are|is) (a )?tasks? "
+  },
+  {
+   "id": "death",
+   "when": " (die|died|dying|dies|death|deaths|dead|killed me|got killed|wiped) | release | releasing | gravestone | grave | pray | praying | (lose|loose|losing) (xp|exp|experience|anything|levels?|stuff|items|gear) | (xp|exp) (loss|debt) | penalty "
+  },
+  {
+   "id": "pets",
+   "when": " pet | pets | charm | charming | charmed | minion | minions | (my|the|his|her) (summon|summons) "
+  },
+  {
+   "id": "stealth",
+   "when": " stealth | stealthed | stealther | stealthers | (go|going) (into )?hide | hidden | invisible | invis | sneak | sneaking | camo | camouflage | detect (stealth|hidden)? "
+  },
+  {
+   "id": "buffs",
+   "when": " buff | buffs | buffed | buffing | buffer | buffbot | buffbots | concentration | conc | self buffs | spec buffs | base buffs "
+  },
+  {
+   "id": "guild",
+   "when": " (form|create|make|start|found|leave|quit|join|find|get into|get in|disband) (a |my |the |your |ur )?(own )?guild | guild (emblem|bank|house|ranks?|registrar|leader|invite|cape|cloak|dues) | gc | guildless | no guild | in a guild | recruit(ing)? ",
+   "unless": " (are you|r u|are u|you in|u in|ur guild|your guild|join (my|our) guild) "
+  },
+  {
+   "id": "group",
+   "when": " (xp|exp) (split|share|shared|bonus) | split (the )?(xp|exp|loot) | share (xp|exp) | (level|lvl) (gap|difference|range) (in|for) (a )?(group|grp) | too (high|low) (to|for) (group|grp|me) | (group|grp|party) (size|max|limit|xp|bonus) | how many (people |ppl )?(in|per|for) (a )?(group|grp|party) | max (group|party) | invite (someone|people|ppl|him|her|them|a friend) | inv (someone|people|ppl) | disband | (leave|quit|drop) (the |my |a |this )?(group|grp|party) | kick (him|her|someone|them)? ?(from|out of) | autosplit | loot (rules|split|roll|order) | grey (me |us |them |you )?out | power ?(level|leveling|lvl) "
+  },
+  {
+   "id": "con",
+   "when": " (grey|gray|greys|grays|green|greens|blue|blues|yellow|yellows|orange|oranges|red|reds|purple|purples|purp|purps)( con| cons| mob| mobs| ones| stuff)? (mean|means|bad|good|ok|okay|safe|worth|give|gives|giving|xp|exp|for xp|dangerous|hard|easy|soloable) | (what|how) (does|do|is) (a |the )?(grey|gray|green|blue|yellow|orange|red|purple)( con)? | con (colou?rs?|system|levels?) | (cons|conning) (mean|work) | what (does|do) (the )?(con|cons|colou?rs?) mean | (is|are) (grey|gray|green|blue|yellow|orange|red|purple)( ones| mobs| cons)? (bad|ok|good|worth|safe) | (do|does|can) (greys|grays|greens|blues|yellows|oranges|reds|purples|grey|gray|green|blue) (give|still give)| (what|which) colou?r (mobs?|cons?|ones?)? ?(should|do|to) ",
+   "unless": " (item|items|armor|armour|gear|weapon|on it|on items) "
+  },
+  {
+   "id": "rr",
+   "when": " rr ?\\d{1,2} | realm rank | realm ranks | realm level | (how many|how much|how long) .*(rps|realm points|rp) | rps (for|to|do i) "
+  },
+  {
+   "id": "relic",
+   "when": " relic | relics "
+  },
+  {
+   "id": "keep",
+   "when": " (take|taking|capture|capturing|claim|claiming|siege|sieging|upgrade|upgrading|defend|defending) (a |the |our |their )?keeps? | keeps? (do|give|for|work|worth|lord|lords|door|doors|guards?) | (keep|tower) (lord|door|claim|upgrade) | ram (the )?(door|gate) | (build|use|get) (a )?(ram|trebuchet|catapult|siege) | siege (weapon|weapons|engines?) "
+  },
+  {
+   "id": "money",
+   "when": " (make|making|get|getting|earn|earning|farm|farming|need|save) (some |more |good |easy )?(money|coin|coins|gold|plat|platinum|cash|silver|copper) | (money|coin|gold|plat|cash) (fast|quick|quickly|making|farming) | broke | (im|i am|so) poor | (how much|how many) (copper|silver|gold) (in|is) (a|one) | (copper|silver|gold|plat|platinum|mithril) (to|in) (a )?(silver|gold|plat|platinum|mithril) | (what is|whats) (a )?(plat|platinum|mithril) | (spare|give|lend) (me )?(some )?(money|coin|gold|copper|silver)| (who|where|which) .*(buys?|takes?) (my |the |all )?(loot|junk|drops|stuff|items|trash) "
+  },
+  {
+   "id": "items",
+   "when": " quality | qual | durability | dura | (item|weapon|armor|armour) condition | condition (on|of|is) | af | armor factor | armour factor | mp | masterpiece | uti | utility | (item )?bonus(es)? (on|mean) | procs? | (what|whats) (is |are )?(a |an |the )?(dps|spd|speed) (on|of|mean) | crafted (vs|or|versus) (dropped|drops|drop) | (dropped|drops|drop) (vs|or|versus) crafted| best (armor|armour|gear|weapon|weapons) "
+  },
+  {
+   "id": "merchant",
+   "when": " (weapon|weapons|armor|armour|arrow|arrows|bow|bows|staff|staves|shield|shields|instrument|instruments) (merchant|merchants|vendor|vendors|seller|sellers|shop|shops) "
+  },
+  {
+   "id": "ui",
+   "when": " (how|where) (do|can|would|should) (i|you|u|one) (sit|sit down|stand|stand up|loot|send|whisper|tell|chat|talk|type|emote|wave|dance|zoom|zoom out|move the camera|turn the camera|target|assist|follow|jump|sprint|run faster|face|quit|log ?out|logout|camp out|see|check|open|close|find (my|the) (map|inventory|bag|journal|quest)|read|filter|ignore|reply|use emotes|afk|go afk|anon|go anon) | send (a |someone a )?tell | (send|reply to) (a )?(whisper|msg|message) | chat window | chat tabs? | (open|see|find) (my |the )?(map|inventory|journal|quest log|quest journal|spellbook|spell book|stats|bag|bags) | quickbar | quick bar | hotbar | macro | macros | keybind | key binds| command (for|to) (a |an )?(tell|whisper|send|guild|group|say|emote|sit|afk|anon) "
+  },
+  {
+   "id": "stats",
+   "when": " (stat|stats) (matter|for|should|to|do i|are|is|important|points) | (what|which) (stat|stats) | (str|strength|dex|dexterity|qui|quickness|int|intelligence|pie|piety|emp|empathy|cha|charisma|acuity|con|constitution) (for|or|vs|matter|is|do) | (raise|raising|put|putting|need|want) (my )?(str|strength|dex|dexterity|qui|quickness|int|intelligence|pie|piety|emp|empathy|cha|charisma|acuity) "
+  },
+  {
+   "id": "endgame",
+   "when": " ((at|hit|hitting|reached|dinged|ding|im|i m|got to|just got) 50|level 50|lvl 50|max level|level cap) .*(now what|what now|what next|then what|whats next|what do i do|what to do|to do|now) | (to do|do now) at 50 | endgame | end game | after 50 "
+  },
+  {
+   "id": "classadvice",
+   "when": " (which|what|best|good|easiest|strongest|fun|funnest|good solo|best solo) (class|classes|caster|casters|tank|tanks|healer|healers|melee|toon|char|alt) (to|for|is|are|should|in) | (class|caster|tank|healer|melee) (is )?(the )?(best|strongest|easiest) | should i (roll|play|make|go|pick) (a |an )?[a-z]+ (or|vs) | (worth|good) (rolling|playing) | (is|are) (a |an )?[a-z]+s? (good|any good|ok|decent|strong|weak) (solo|soloers?|for solo|at solo) | (good|any good|ok|decent) solo | solo well | (best|good|easiest) (to )?solo| (class|classes) (solos|solo) (best|well|good|easiest) | solos best ",
+   "unless": " (are you|r u|are u|you play|u play|your class|ur class|you are|u are) | (are|is) (they|them|it|he|she|those|these|that|this) "
+  },
+  {
+   "id": "ra",
+   "when": " realm abilit(y|ies) | (my|buy|train|use) ras? | ra points "
+  },
+  {
+   "id": "craft",
+   "when": " (craft|crafting|crafter|crafters|crafts|tradeskill|tradeskills) "
+  },
+  {
+   "id": "quest",
+   "when": " quest | quests | questing "
+  },
+  {
+   "id": "spec",
+   "when": " (what|which|how|best|good|any) .*(spec|specs|specced|template|build)( |$)| what (do|does|should) (a |an |my )?[a-z]+s? (train|spec|put points in) | (put|spend) (my )?(spec )?points "
+  },
+  {
+   "id": "trainer",
+   "when": " (trainer|trainers) | where (do|does|can|should) (a |an |the |my )?[a-z]+s? (train|get trained) | who trains "
+  },
+  {
+   "id": "classrole",
+   "when": " what (does|do|is) (a |an )?[a-z]+s? (do|for|good for)( in (a )?(group|groups|rvr))? $| (is|are) (a |an )?[a-z]+s? (needed|wanted|useful|good|any good|worth it|worth playing) (in|for) (groups?|rvr|solo|a group) "
+  },
+  {
+   "id": "terms",
+   "when": " (what|wat|whats|wats|wtf) (does |do |is |s )?(a |an )?[a-z0-9]+( ding)?( mean| means| stand for| stands for)? $|^ [a-z0-9]+ (mean|means) $"
+  }
+ ],
+ "entries": [
+  {
+   "id": "living.faction",
+   "topic": "living",
+   "when": [
+    " faction (channel|chat) "
+   ],
+   "lines": [
+    "the realm chat, everyone on our side reads it",
+    "its realm chat, ask anything there",
+    "realm wide chat, /faction and your message"
+   ],
+   "source": "commands/playercommands/FactionChatCommand.cs (the realm's chat channel)"
+  },
+  {
+   "id": "living.hire",
+   "topic": "living",
+   "when": [
+    " (hire|hired|hiring|hireling|hirelings|companion|companions) "
+   ],
+   "unless": [
+    " (how many|max|limit|up to) "
+   ],
+   "lines": [
+    "stand next to a healer and type /hire, first one is free",
+    "/hire beside any healer in town, it opens the window",
+    "go find a healer npc and /hire, then /hire list shows yours"
+   ],
+   "source": "mode165/HireCommand165.cs (/hire beside a healer; the first companion is free)"
+  },
+  {
+   "id": "living.hire.count",
+   "topic": "living",
+   "when": [
+    " (hire|hired|companion|companions) ",
+    " (how many|max|limit|up to) "
+   ],
+   "lines": [
+    "up to seven, first one free. more slots open at 5, 10, 15, 20, 30, 40 and 45",
+    "seven max, slots open as you level, 5 10 15 20 30 40 45"
+   ],
+   "source": "mode165/HireCommand165.cs (slots at levels 5, 10, 15, 20, 30, 40 and 45); README (up to seven)"
+  },
+  {
+   "id": "living.exchange",
+   "topic": "living",
+   "when": [
+    " (realm exchange|the exchange|tc) "
+   ],
+   "unless": [
+    " (where|wheres|how do i get|how to get|find) "
+   ],
+   "lines": [
+    "its the broker in {capital}, put stuff up and buy what others posted. /tc ports you there",
+    "the realm's market in {capital}, /tc takes you to it",
+    "the market everyone posts to in {capital}, type /tc to go there"
+   ],
+   "source": "commands/playercommands/TeleportToExchangeCommand.cs (/tc); README (the Realm Exchange)"
+  },
+  {
+   "id": "living.tc.where",
+   "topic": "living",
+   "when": [
+    " (realm exchange|the exchange|tc) ",
+    " (where|wheres|how do i get|how to get|find) "
+   ],
+   "lines": [
+    "in {capital}, type /tc and it ports you right to it",
+    "/tc ports you there, its the broker in {capital}",
+    "its the broker in {capital}, just type /tc and it takes you there"
+   ],
+   "source": "commands/playercommands/TeleportToExchangeCommand.cs"
+  },
+  {
+   "id": "living.spawn",
+   "topic": "living",
+   "when": [
+    " (spawn|helper|helpers) "
+   ],
+   "lines": [
+    "/spawn opens the helper menu, pick a class and spec",
+    "type /spawn, you get a helper of any class you want"
+   ],
+   "source": "commands/playercommands/TemporaryGroupCommands.cs (/spawn)"
+  },
+  {
+   "id": "living.bots",
+   "topic": "living",
+   "when": [
+    " (add|adding|more|make|get) (some )?(more )?bots | bots? (tab|setting|settings|menu) | launcher | living server "
+   ],
+   "lines": [
+    "thats the launcher, the + lv.1 / + lv.20 / + lv.50 buttons, then start the server again",
+    "on the launcher, + lv.1 or + lv.20 per realm. shift adds 10",
+    "launcher's main screen, the + lv buttons. the living server tab has the rest"
+   ],
+   "source": "README.md (Your first evening: + Lv.1, + Lv.20, + Lv.50; Shift adds 10; the Living Server tab)"
+  },
+  {
+   "id": "living.invites",
+   "topic": "living",
+   "when": [
+    " (invites (off|on)|stop (getting )?(all )?(these )?(group |raid )?invites) "
+   ],
+   "lines": [
+    "/invites off, turn them back on with /invites on",
+    "type /invites off",
+    "/invites off stops the leaders asking"
+   ],
+   "source": "commands/playercommands/invites.cs; README (/invites on, /invites off)"
+  },
+  {
+   "id": "living.stables",
+   "topic": "living",
+   "when": [
+    " stables "
+   ],
+   "lines": [
+    "/stables lists the horse routes from where you are",
+    "/stables shows every route the stable masters run"
+   ],
+   "source": "commands/playercommands/stables.cs"
+  },
+  {
+   "id": "living.lswhy",
+   "topic": "living",
+   "when": [
+    " lswhy "
+   ],
+   "lines": [
+    "/lswhy says why someone answered you or didnt",
+    "/lswhy me, or /lswhy and a name"
+   ],
+   "source": "commands/playercommands/LivingServerWhyCommand.cs"
+  },
+  {
+   "id": "living.raid",
+   "topic": "living",
+   "when": [
+    " (raid|raids) "
+   ],
+   "unless": [
+    " raid (40|80) "
+   ],
+   "lines": [
+    "the raid leader sends a 50 a tell when one forms, say yes and you get a spot. keep /invites on",
+    "be 50 and keep /invites on, the leader asks you when the realm raid forms",
+    "when the realm calls one the leader tells the 50s, just accept"
+   ],
+   "source": "bots/autonomous/AutonomousRealmRaid.Players.cs (the raid leader invites a level-50 player); invites.cs"
+  },
+  {
+   "id": "living.raid.own",
+   "topic": "living",
+   "when": [
+    " raid (40|80) "
+   ],
+   "lines": [
+    "/raid 40 or /raid 80 opens a raid of 50 helpers",
+    "/raid 40 gives you a helper raid, 80 for the big ones"
+   ],
+   "source": "commands/playercommands/CompanionRaidCommand.cs"
+  },
+  {
+   "id": "living.groups",
+   "topic": "living",
+   "when": [
+    " (join|get into) one of (these|the|those) groups "
+   ],
+   "lines": [
+    "/lfg with your level and class, the leaders pick you up",
+    "type /lfg, someone with a spot sends a tell"
+   ],
+   "source": "commands/playercommands/LFG.cs; README (/lfg)"
+  },
+  {
+   "id": "conloss.worth",
+   "topic": "conloss",
+   "when": [
+    " (worth|should i|pay|gold|cost|price) "
+   ],
+   "lines": [
+    "yeah pay it, lost con means less hp",
+    "worth it, con is your hp. the price goes up the more you lost"
+   ],
+   "source": "gameobjects/CustomNPC/Healer.cs (the cost by points lost)"
+  },
+  {
+   "id": "conloss.sick",
+   "topic": "conloss",
+   "when": [
+    " (sick|sickness|illness) "
+   ],
+   "lines": [
+    "rez sickness wears off, or a healer npc in town takes it off",
+    "it wears off in a few mins, the town healer clears it too"
+   ],
+   "source": "gameobjects/CustomNPC/Healer.cs (removes resurrection illness)"
+  },
+  {
+   "id": "conloss.healer",
+   "topic": "conloss",
+   "when": [
+    " (con|constitution|healer) "
+   ],
+   "lines": [
+    "the healer npc in town gives it back, costs some coin",
+    "talk to a healer in town, he restores lost con for gold",
+    "healer npc, right click and pay, con comes back"
+   ],
+   "source": "gameobjects/CustomNPC/Healer.cs (restores lost Constitution for a donation)"
+  },
+  {
+   "id": "respec.how",
+   "topic": "respec",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "/respec at your trainer, you need a respec stone first. /respec all or /respec and the line",
+    "target your trainer and /respec all, or one line with /respec linename. needs a respec",
+    "you need a respec stone, hand it to your trainer then /respec"
+   ],
+   "source": "commands/playercommands/respec.cs (target a trainer; /respec ALL, /respec <line>, /respec REALM); GameTrainer.cs (respec stones)"
+  },
+  {
+   "id": "salvage.how",
+   "topic": "salvage",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "yeah, /salvage with it in your bag. you need the craft skill for it",
+    "/salvage, crafters get mats back from it",
+    "/salvage works if youve got some crafting skill"
+   ],
+   "source": "commands/playercommands/salvage.cs (/salvage, when you are a crafter)"
+  },
+  {
+   "id": "spellcraft.own",
+   "topic": "spellcraft",
+   "when": [
+    " "
+   ],
+   "unless": [
+    " (sc|spellcraft) or drops | drops or (sc|spellcraft) | worth (sc|spellcraft)"
+   ],
+   "lines": [
+    "gems go on player crafted gear only, so yeah if its crafted",
+    "spellcrafting puts gems on crafted pieces, dropped stuff cant take them",
+    "only on crafted gear, a spellcrafter imbues the gems"
+   ],
+   "source": "bots/autonomous/AutonomousChatGuide.cs (gems on crafted gear); craft/SpellCrafting"
+  },
+  {
+   "id": "death.now",
+   "topic": "death",
+   "when": [
+    " (now what|what now|what do i do|what should i do|what happens|then what|how do i get back|how do i come back|respawn) "
+   ],
+   "lines": [
+    "/release takes you to your bind, or wait if someone can rez",
+    "type /release, you pop at your bind point. a rez is better if one is coming",
+    "release with /release, then go /pray at your gravestone for some xp back"
+   ],
+   "source": "commands/playercommands/release.cs; pray.cs (pray at your gravestone for experience)"
+  },
+  {
+   "id": "death.releaseorrez",
+   "topic": "death",
+   "when": [
+    " (release|rez|res|wait) ",
+    " (better|or|should i|worth) "
+   ],
+   "lines": [
+    "wait for the rez if one is coming, you lose less",
+    "rez is better, releasing costs more. dont wait forever tho",
+    "take the rez, release only if nobody can"
+   ],
+   "source": "commands/playercommands/release.cs; GamePlayer.Die (the xp loss is set on death; a rez gives part back)"
+  },
+  {
+   "id": "death.pray",
+   "topic": "death",
+   "when": [
+    " (pray|praying|gravestone|grave) "
+   ],
+   "lines": [
+    "go back to your gravestone and /pray, you get some xp back",
+    "/pray at the grave, gets part of the xp back"
+   ],
+   "source": "commands/playercommands/pray.cs (pray on your gravestone to get some experience back)"
+  },
+  {
+   "id": "death.rvr",
+   "topic": "death",
+   "when": [
+    " (rvr|frontier|pvp|enemy|realm|keep|emain|odins|hadrian|bg|battleground|thid) "
+   ],
+   "lines": [
+    "no, rvr deaths dont cost xp. only mobs do",
+    "nope, no xp loss in rvr",
+    "nothing in rvr, its only pve deaths that cost xp"
+   ],
+   "source": "gameobjects/GamePlayer.cs Die (a realm-enemy kill: xpLossPercent 0)"
+  },
+  {
+   "id": "pets.control",
+   "topic": "pets",
+   "when": [
+    " (running|runs|pull|pulling|pulls|attack|attacks|aggro|aggros|control|stay|follow|keeps) "
+   ],
+   "lines": [
+    "set it to passive or defensive in the pet window",
+    "pet window, put it on defensive, aggressive pulls everything",
+    "click passive on the pet bar, then it only does what you tell it"
+   ],
+   "source": "the pet window's passive, defensive and aggressive buttons (ControlledNpcBrain eAggressionState)"
+  },
+  {
+   "id": "pets.classes",
+   "topic": "pets",
+   "when": [
+    " (which|what|who|best|class|classes) "
+   ],
+   "lines": [
+    "cabalist, necro and theurgist on alb, bonedancer and spiritmaster on mid, enchanter and animist on hib",
+    "the pet classes are the caster ones, cabalist, bonedancer, spiritmaster, enchanter. minstrels charm too"
+   ],
+   "source": "the classes' pet spell lines (playerclasses: Cabalist, Necromancer, Theurgist, Bonedancer, Spiritmaster, Hunter, Enchanter, Animist, Druid, Minstrel, Mentalist)"
+  },
+  {
+   "id": "pets.general",
+   "topic": "pets",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "the pet window has passive, defensive and aggressive, defensive is safest",
+    "keep it on defensive and use attack yourself",
+    "pet window, the buttons there tell it what to do"
+   ],
+   "source": "the pet window (ControlledNpcBrain)"
+  },
+  {
+   "id": "stealth.classes",
+   "topic": "stealth",
+   "when": [
+    " (which|what|who|class|classes|can) "
+   ],
+   "lines": [
+    "infiltrator, scout and minstrel on alb, shadowblade and hunter on mid, nightshade and ranger on hib",
+    "the rogue classes, infil and scout here, sb and hunter on mid, ns and ranger on hib"
+   ],
+   "source": "the Stealth ability of each class (playerclasses)"
+  },
+  {
+   "id": "stealth.how",
+   "topic": "stealth",
+   "when": [
+    " (how|use|go|get) "
+   ],
+   "lines": [
+    "its the stealth ability on your bar, you cant be in combat",
+    "hit stealth from your abilities, out of combat only. you move slower in it"
+   ],
+   "source": "skillhandler StealthAbilityHandler (not in combat)"
+  },
+  {
+   "id": "buffs.conc",
+   "topic": "buffs",
+   "when": [
+    " (conc|concentration) "
+   ],
+   "lines": [
+    "concentration, the spec buffs use it, you can only keep so many up",
+    "conc is what your spec buffs cost, it grows with your level",
+    "each long buff takes concentration, check the bar"
+   ],
+   "source": "spells (Concentration cost of spec buffs; GamePlayer.MaxConcentration)"
+  },
+  {
+   "id": "buffs.who",
+   "topic": "buffs",
+   "when": [
+    " (who|where|get|need|can) "
+   ],
+   "lines": [
+    "a cleric or friar here, healers and shamans on mid, druids on hib. ask in /faction",
+    "group with a healer class, they carry the str and con buffs"
+   ],
+   "source": "the buff spell lines (Rejuvenation, Enhancement, Augmentation, Mending, Nurture)"
+  },
+  {
+   "id": "buffs.general",
+   "topic": "buffs",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "base buffs from the healer classes, spec buffs cost conc. they drop if you die",
+    "buffs fall off when you die or zone too far from the caster"
+   ],
+   "source": "spells (concentration buffs end on death)"
+  },
+  {
+   "id": "guild.form",
+   "topic": "guild",
+   "when": [
+    " (form|create|make|start|found) "
+   ],
+   "lines": [
+    "go to a guild registrar and /gc form name, costs a gold",
+    "/gc form yourguildname next to a guild registrar, 1g",
+    "registrar in {capital}, /gc form and the name"
+   ],
+   "source": "commands/playercommands/guild.cs (/gc form at a guild registrar, 1 gold; alone on an offline server)"
+  },
+  {
+   "id": "guild.leave",
+   "topic": "guild",
+   "when": [
+    " (leave|quit|disband) "
+   ],
+   "lines": [
+    "/gc leave",
+    "type /gc leave",
+    "/gc leave, no way back without an invite"
+   ],
+   "source": "commands/playercommands/guild.cs (/gc leave)"
+  },
+  {
+   "id": "guild.join",
+   "topic": "guild",
+   "when": [
+    " (join|find|get into|get in|recruit|recruiting|guildless|no guild|in a guild|invite) "
+   ],
+   "lines": [
+    "ask in /faction, guilds recruit there all the time. they /gc invite you",
+    "watch /faction, recruiters post there. someone has to /gc invite you",
+    "say you want one in /faction, an officer sends the invite"
+   ],
+   "source": "commands/playercommands/guild.cs (/gc invite); bots/autonomous guild recruiting"
+  },
+  {
+   "id": "guild.general",
+   "topic": "guild",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "/gc help lists the guild commands",
+    "/gc help, its all under that"
+   ],
+   "source": "commands/playercommands/guild.cs (/gc help)"
+  },
+  {
+   "id": "group.invites",
+   "topic": "group",
+   "when": [
+    " (stop|no more|turn off|block) .*invites? "
+   ],
+   "lines": [
+    "/invites off",
+    "type /invites off, /invites on to undo"
+   ],
+   "source": "commands/playercommands/invites.cs"
+  },
+  {
+   "id": "group.invite",
+   "topic": "group",
+   "when": [
+    " (invite|inv) "
+   ],
+   "lines": [
+    "/invite name, or target them and /invite",
+    "target them and /invite",
+    "/invite theirname"
+   ],
+   "source": "commands/playercommands/invite.cs"
+  },
+  {
+   "id": "group.leave",
+   "topic": "group",
+   "when": [
+    " (leave|quit|drop|disband) "
+   ],
+   "lines": [
+    "/disband takes you out of the group",
+    "type /disband",
+    "/disband, the leader can /disband name to kick"
+   ],
+   "source": "commands/playercommands/disband.cs"
+  },
+  {
+   "id": "group.size",
+   "topic": "group",
+   "when": [
+    " (how many|size|max|limit) "
+   ],
+   "lines": [
+    "8 in a group",
+    "eight max",
+    "full group is 8"
+   ],
+   "source": "ServerProperties group_max_member (8)"
+  },
+  {
+   "id": "group.split",
+   "topic": "group",
+   "when": [
+    " (split|share|shared|bonus|gap|difference|range|too high|too low|grey|gray) "
+   ],
+   "lines": [
+    "xp splits by level, and a mob grey to the highest gives nobody anything",
+    "big gaps hurt, the mob cons off the highest guy. stay within a few levels",
+    "the higher one takes the bigger share, and if its grey to him nobody gets xp"
+   ],
+   "source": "GameNPC xp award (shared by level; no xp when grey to the group's highest)"
+  },
+  {
+   "id": "group.loot",
+   "topic": "group",
+   "when": [
+    " (loot|autosplit) "
+   ],
+   "lines": [
+    "/autosplit coins splits the coin, loot is whoever clicks unless you set it",
+    "/autosplit for coins, items go round robin if you turn that on"
+   ],
+   "source": "commands/playercommands/autosplit.cs"
+  },
+  {
+   "id": "group.powerlevel",
+   "topic": "group",
+   "when": [
+    " power ?(level|leveling|lvl) "
+   ],
+   "lines": [
+    "doesnt work great, if the mob is grey to the high guy nobody gets xp",
+    "not really, grey to the highest means no xp for anyone"
+   ],
+   "source": "GameNPC xp award (no xp when grey to the group's highest)"
+  },
+  {
+   "id": "money.sell",
+   "topic": "money",
+   "when": [
+    " (buys?|takes?|sell) "
+   ],
+   "lines": [
+    "any merchant buys loot, right click and sell",
+    "every merchant takes it, the good stuff goes on the exchange",
+    "any vendor in town buys it"
+   ],
+   "source": "merchants buy loot (GameMerchant); the Realm Exchange"
+  },
+  {
+   "id": "money.make",
+   "topic": "money",
+   "when": [
+    " (make|making|get|getting|earn|earning|farm|farming|need|fast|quick|broke|poor|save) "
+   ],
+   "lines": [
+    "sell your loot to any merchant, kill tasks from the guards pay too",
+    "loot sells, do /task with the town guards for coin",
+    "kill stuff and sell the drops, tasks pay a bit. it adds up"
+   ],
+   "source": "commands/playercommands/task.cs (kill tasks from guards); merchants buy loot (GameMerchant)"
+  },
+  {
+   "id": "money.units",
+   "topic": "money",
+   "when": [
+    " (copper|silver|gold|plat|platinum|mithril) ",
+    " (in|to|is|whats|what is) "
+   ],
+   "lines": [
+    "100 copper a silver, 100 silver a gold, 1000 gold a plat",
+    "100c = 1s, 100s = 1g, 1000g = 1p"
+   ],
+   "source": "Money.cs (100 copper, 100 silver, 1000 gold, 1000 platinum)"
+  },
+  {
+   "id": "money.spare",
+   "topic": "money",
+   "when": [
+    " (spare|give|lend) "
+   ],
+   "lines": [
+    "not much to spare sry, sell your drops, it comes quick",
+    "dont have much, but merchants buy everything you loot"
+   ],
+   "source": "merchants buy loot (GameMerchant)"
+  },
+  {
+   "id": "items.quality",
+   "topic": "items",
+   "when": [
+    " (quality|qual) "
+   ],
+   "lines": [
+    "quality is how good the item is, 100 is best. higher quality hits harder or blocks more",
+    "100% is perfect, crafters make 94 to 100. drops are usually lower"
+   ],
+   "source": "DbInventoryItem.Quality (the item's quality, 100 best); craft quality"
+  },
+  {
+   "id": "items.condition",
+   "topic": "items",
+   "when": [
+    " (condition|durability|dura|repair) "
+   ],
+   "lines": [
+    "condition drops as you use it, a smith repairs it. durability is how many repairs it has left",
+    "get it repaired at {smith} or any smith before it breaks"
+   ],
+   "source": "DbInventoryItem Condition and Durability; commands/playercommands/Repair.cs"
+  },
+  {
+   "id": "items.af",
+   "topic": "items",
+   "when": [
+    " (af|armor factor|armour factor) "
+   ],
+   "lines": [
+    "af is armor factor, how much the piece soaks. more is better",
+    "armor factor, the armor number. higher level pieces have more"
+   ],
+   "source": "DbInventoryItem.DPS_AF (armor factor)"
+  },
+  {
+   "id": "items.mp",
+   "topic": "items",
+   "when": [
+    " (mp|masterpiece) "
+   ],
+   "lines": [
+    "mp is a masterpiece, a 100% quality craft",
+    "masterpiece, 100 quality crafted"
+   ],
+   "source": "craft: a masterpiece is a 100% quality item"
+  },
+  {
+   "id": "items.bonus",
+   "topic": "items",
+   "when": [
+    " (bonus|bonuses|uti|utility|proc|procs) "
+   ],
+   "lines": [
+    "the stats on it, str con and so on. uti is how much the bonuses add up to",
+    "bonuses are the stats it gives, a proc fires a spell when you hit"
+   ],
+   "source": "DbInventoryItem Bonus1..10 and the proc spells"
+  },
+  {
+   "id": "items.dps",
+   "topic": "items",
+   "when": [
+    " (dps|spd|speed) "
+   ],
+   "lines": [
+    "dps is the weapons damage, spd its speed. slower hits harder per swing",
+    "damage per second and swing speed, higher dps is better"
+   ],
+   "source": "DbInventoryItem.DPS_AF and SPD_ABS"
+  },
+  {
+   "id": "items.craftedvsdrop",
+   "topic": "items",
+   "when": [
+    " (crafted|drop|drops|dropped) "
+   ],
+   "lines": [
+    "crafted is higher quality and takes sc gems, drops often have better bonuses",
+    "crafted plus sc usually wins, drops are nice early"
+   ],
+   "source": "craft quality; spellcraft only on crafted items"
+  },
+  {
+   "id": "ui.tell",
+   "topic": "ui",
+   "when": [
+    " (tell|send|whisper|msg|message|reply|talk to) "
+   ],
+   "lines": [
+    "/send name and then the message",
+    "/send theirname hey",
+    "/send name msg"
+   ],
+   "source": "commands/playercommands/send.cs (/send <name> <message>); README (/send)"
+  },
+  {
+   "id": "ui.sit",
+   "topic": "ui",
+   "when": [
+    " (sit|rest|regen|regain) "
+   ],
+   "lines": [
+    "/sit, or the sit key. you regen faster sitting",
+    "type /sit, /stand to get up"
+   ],
+   "source": "commands/playercommands/stand.cs (/sit, /stand); the client's sit key"
+  },
+  {
+   "id": "ui.stand",
+   "topic": "ui",
+   "when": [
+    " stand "
+   ],
+   "lines": [
+    "/stand, or just move",
+    "type /stand"
+   ],
+   "source": "commands/playercommands/stand.cs"
+  },
+  {
+   "id": "ui.loot",
+   "topic": "ui",
+   "when": [
+    " loot "
+   ],
+   "lines": [
+    "click the corpse, or /autoloot on so you pick it up yourself",
+    "target the body and right click, /autoloot helps"
+   ],
+   "source": "commands/playercommands/autoloot.cs"
+  },
+  {
+   "id": "ui.emote",
+   "topic": "ui",
+   "when": [
+    " (emote|wave|dance|emotes) "
+   ],
+   "lines": [
+    "/wave, /dance, /bow, slash and the emote",
+    "slash and the emote, /bow /cheer /dance"
+   ],
+   "source": "commands/playercommands/emote.cs, emotes.cs"
+  },
+  {
+   "id": "ui.anon",
+   "topic": "ui",
+   "when": [
+    " anon "
+   ],
+   "lines": [
+    "/anon",
+    "type /anon, hides you on /who"
+   ],
+   "source": "commands/playercommands/anonymous.cs"
+  },
+  {
+   "id": "ui.afk",
+   "topic": "ui",
+   "when": [
+    " afk "
+   ],
+   "lines": [
+    "/afk and a message if you want",
+    "type /afk"
+   ],
+   "source": "commands/playercommands/afk.cs"
+  },
+  {
+   "id": "ui.quit",
+   "topic": "ui",
+   "when": [
+    " (quit|log ?out|logout|camp out) "
+   ],
+   "lines": [
+    "/quit, sit still for the countdown",
+    "type /quit, dont move or it stops"
+   ],
+   "source": "commands/playercommands/quit.cs"
+  },
+  {
+   "id": "ui.ignore",
+   "topic": "ui",
+   "when": [
+    " (ignore|filter) "
+   ],
+   "lines": [
+    "/ignore name",
+    "/ignore theirname, again to undo"
+   ],
+   "source": "commands/playercommands/ignore.cs"
+  },
+  {
+   "id": "ui.assist",
+   "topic": "ui",
+   "when": [
+    " assist "
+   ],
+   "lines": [
+    "/assist name targets what theyre hitting",
+    "target the tank and /assist"
+   ],
+   "source": "commands/playercommands/assist.cs"
+  },
+  {
+   "id": "ui.sprint",
+   "topic": "ui",
+   "when": [
+    " (sprint|run faster) "
+   ],
+   "lines": [
+    "/sprint, it eats your endurance",
+    "sprint is /sprint, watch the endu bar"
+   ],
+   "source": "commands/playercommands/sprint.cs"
+  },
+  {
+   "id": "ui.stats",
+   "topic": "ui",
+   "when": [
+    " (stats|my level|xp) "
+   ],
+   "lines": [
+    "the character sheet shows them, /stats for the server ones",
+    "open your character window, the stats are on it"
+   ],
+   "source": "commands/playercommands/stats.cs"
+  },
+  {
+   "id": "ui.where",
+   "topic": "ui",
+   "when": [
+    " (map|where am i|location|loc) "
+   ],
+   "lines": [
+    "/gloc gives your spot. ask a guard with /where and an npc name",
+    "the map shows the zone, /where name at a guard finds an npc"
+   ],
+   "source": "commands/playercommands/where.cs (/where <NPC name> at a guard), gloc.cs"
+  },
+  {
+   "id": "ui.macro",
+   "topic": "ui",
+   "when": [
+    " (macro|macros|quickbar|quick bar|hotbar|keybind|key binds) "
+   ],
+   "lines": [
+    "drag skills onto the quickbar, the macro button is in the main menu",
+    "quickbar, drag from your spellbook onto it"
+   ],
+   "source": "the client's quickbar and macro window"
+  },
+  {
+   "id": "endgame.what",
+   "topic": "endgame",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "grats! rvr in the frontier, your epic, and the realm raids on the dragons",
+    "gz, now its realm points in the frontier, the epic armor and raids",
+    "epic quest from your trainer, then rvr for rps and the big raids"
+   ],
+   "source": "the level-50 content: the epic quests, the frontier (realm points), AutonomousRealmRaid (dragon and epic raids)"
+  },
+  {
+   "id": "relic.what",
+   "topic": "relic",
+   "when": [
+    " (what|whats|do|give|gives|for|why|bonus|work) "
+   ],
+   "unless": [
+    " (who|which realm|do we|have we|we have|ours|theirs|still) "
+   ],
+   "lines": [
+    "each enemy relic you hold gives {relic_bonus}% more melee or magic damage, strength ones melee, power ones magic",
+    "{relic_bonus}% per enemy relic, melee from strength relics, magic from power. you need your own relic too",
+    "they boost the whole realm, {relic_bonus}% damage each"
+   ],
+   "source": "keeps/Managers/RelicMgr.cs GetRelicBonusModifier (relic_owning_bonus per enemy relic, only while the realm holds its own)"
+  },
+  {
+   "id": "relic.how",
+   "topic": "relic",
+   "when": [
+    " (take|steal|capture|grab|get|how) "
+   ],
+   "unless": [
+    " (who|which realm|do we|have we|ours|theirs) "
+   ],
+   "lines": [
+    "take the relic keep, grab it and carry it to one of ours. its a zerg thing",
+    "break into their relic keep and run it home, needs a big raid"
+   ],
+   "source": "relics (GameRelic: carried to a relic pad of the realm)"
+  },
+  {
+   "id": "keep.take",
+   "topic": "keep",
+   "when": [
+    " (take|taking|capture|capturing|siege|sieging|ram|door|gate|lord|how) "
+   ],
+   "lines": [
+    "ram the door, kill the guards and the lord inside. then a guild can claim it",
+    "break the door with rams or siege, then kill the keep lord",
+    "siege the door, get inside and kill the lord"
+   ],
+   "source": "keeps (GameKeepDoor, the keep lord; /gc claim)"
+  },
+  {
+   "id": "keep.why",
+   "topic": "keep",
+   "when": [
+    " (do|give|for|worth|why) "
+   ],
+   "lines": [
+    "realm points, and the realm with the most keeps gets darkness falls",
+    "rps for taking them, and holding the most opens df for us"
+   ],
+   "source": "DFEnterJumpPoint (the realm with the most keeps); keep realm points"
+  },
+  {
+   "id": "keep.claim",
+   "topic": "keep",
+   "when": [
+    " (claim|claiming|upgrade|upgrading) "
+   ],
+   "lines": [
+    "a guild leader in the keep does /gc claim, then they can upgrade it",
+    "/gc claim inside the keep, the guild pays for upgrades"
+   ],
+   "source": "commands/playercommands/guild.cs (/gc claim)"
+  },
+  {
+   "id": "stats.general",
+   "topic": "stats",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "con for hp on everyone, then your main stat. str for melee, int or pie for casters",
+    "your casting stat if you cast, str and dex if you hit things, con for everyone"
+   ],
+   "source": "the class's primary stats (playerclasses CharacterClass.PrimaryStat)"
+  },
+  {
+   "id": "death.how",
+   "topic": "death",
+   "when": [
+    " (how|where) .*(release|respawn) | release "
+   ],
+   "lines": [
+    "type /release, you go back to your bind",
+    "/release, you pop up at your bindstone",
+    "/release and you respawn at your bind"
+   ],
+   "source": "commands/playercommands/release.cs"
+  },
+  {
+   "id": "start.gear",
+   "topic": "start",
+   "when": [
+    " (armor|armour|gear|weapon|equipment|clothes) "
+   ],
+   "lines": [
+    "nope, just the basics. loot it off mobs or buy some from the town merchants",
+    "barely anything, buy a few pieces from the merchants in town",
+    "no, you earn it. drops and the town merchants"
+   ],
+   "source": "character creation (starting items); merchants (GameMerchant)"
+  },
+  {
+   "id": "items.best",
+   "topic": "items",
+   "when": [
+    " best "
+   ],
+   "lines": [
+    "crafted 99s with sc gems, or your epic set at 50",
+    "player crafted with spellcraft, nothing drops better for long",
+    "sc'd crafted gear beats most drops"
+   ],
+   "source": "craft quality and spellcraft (gems on crafted items); the epic armour"
+  },
+  {
+   "id": "ra.use",
+   "topic": "ra",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "buy them at your trainer with realm points, then drag them onto your bar",
+    "trainer sells them for rps, the actives go on your quickbar",
+    "your trainer has an ra list, you pay with realm points"
+   ],
+   "source": "GameTrainer (realm abilities bought with realm points); respec.cs (/respec REALM)"
+  },
+  {
+   "id": "craft.money",
+   "topic": "craft",
+   "when": [
+    " (money|coin|gold|profit|best|which craft|what craft) "
+   ],
+   "lines": [
+    "spellcrafting and alchemy, everyone needs gems and pots",
+    "sc and alchemy sell the best, armor and weapons too if you get high",
+    "alchemy for pots and sc, those always sell"
+   ],
+   "source": "crafting skills (spellcrafting, alchemy: gems and potions only crafted, AutonomousChatGuide)"
+  },
+  {
+   "id": "craft.skill",
+   "topic": "craft",
+   "when": [
+    " (see|check|my|whats my) .*(skill|level|lvl) "
+   ],
+   "lines": [
+    "your skills window lists the craft skills",
+    "its in the skills window, under the trade skills",
+    "open the skills window, craft levels are there"
+   ],
+   "source": "the client's skills window (trade skills)"
+  },
+  {
+   "id": "quest.handin",
+   "topic": "quest",
+   "when": [
+    " (hand|turn|finish|complete|return) "
+   ],
+   "lines": [
+    "back to whoever gave it, your journal says who",
+    "the npc that gave it, check the journal",
+    "back to the quest giver"
+   ],
+   "source": "quests (the quest giver; the journal)"
+  },
+  {
+   "id": "quest.good",
+   "topic": "quest",
+   "when": [
+    " (good|any|where|get|find|best) "
+   ],
+   "unless": [
+    " epic "
+   ],
+   "lines": [
+    "npcs in towns hand them out, and the guards give kill tasks with /task",
+    "talk to the npcs around town, plus /task with the guards",
+    "kill tasks from the guards are the easy ones, the town npcs have the rest"
+   ],
+   "source": "commands/playercommands/task.cs; quests from town NPCs"
+  },
+  {
+   "id": "trainer.everylevel",
+   "topic": "trainer",
+   "when": [
+    " (every|each) (level|lvl|ding|time) | (need|have) to (see|visit) "
+   ],
+   "lines": [
+    "yeah, every level he spends your new points. you can save them up too",
+    "each ding, or save the points and go when youre in town",
+    "every level for the points, but they keep if you wait"
+   ],
+   "source": "GameTrainer (spec points are spent at the trainer; unspent points are kept)"
+  },
+  {
+   "id": "role.tank",
+   "topic": "classrole",
+   "when": [
+    " tank "
+   ],
+   "lines": [
+    "holds aggro off the casters, taunts and guards",
+    "takes the hits and holds the aggro",
+    "the tank holds the mobs so the healer and casters live"
+   ],
+   "source": "group roles (the bot group planner: tank)"
+  },
+  {
+   "id": "role.healer",
+   "topic": "classrole",
+   "when": [
+    " (healer|healers) (do|for)"
+   ],
+   "lines": [
+    "keeps everyone alive, every group needs one",
+    "heals and buffs, groups wait for them"
+   ],
+   "source": "group roles (the bot group planner: healer)"
+  },
+  {
+   "id": "role.puller",
+   "topic": "classrole",
+   "when": [
+    " puller "
+   ],
+   "lines": [
+    "brings the mobs back to the group one at a time",
+    "pulls the mobs to camp so nobody gets swarmed"
+   ],
+   "source": "group roles (the bot group planner: puller)"
+  },
+  {
+   "id": "classadvice.solo.alb",
+   "topic": "classadvice",
+   "realm": "alb",
+   "when": [
+    " (solo|solos|soloing|soloer|soloers) "
+   ],
+   "lines": [
+    "a cabalist or a necro solos best here, the pet takes the hits",
+    "necro or cabalist, anything with a pet",
+    "pet classes, cabby or necro, theurgs are good too"
+   ],
+   "source": "the classes' pet spell lines (playerclasses)"
+  },
+  {
+   "id": "classadvice.solo.mid",
+   "topic": "classadvice",
+   "realm": "mid",
+   "when": [
+    " (solo|solos|soloing|soloer|soloers) "
+   ],
+   "lines": [
+    "bonedancers and spiritmasters, the pet does the work",
+    "bd or sm, a pet class always solos",
+    "hunters solo nicely too, but bd is the easy one"
+   ],
+   "source": "the classes' pet spell lines (playerclasses)"
+  },
+  {
+   "id": "classadvice.solo.hib",
+   "topic": "classadvice",
+   "realm": "hib",
+   "when": [
+    " (solo|solos|soloing|soloer|soloers) "
+   ],
+   "lines": [
+    "enchanters and animists, the pets do it",
+    "an ench or an animist, pets make it easy",
+    "rangers solo ok too, but ench is the solo king"
+   ],
+   "source": "the classes' pet spell lines (playerclasses)"
+  },
+  {
+   "id": "classadvice.general",
+   "topic": "classadvice",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "play what looks fun, a healer always finds a group",
+    "healers and tanks never wait for groups, casters level fast",
+    "depends what you like, but every group wants a healer"
+   ],
+   "source": "group roles (healer, tank, crowd control) in the bot group planner"
+  },
+  {
+   "id": "merchant.town",
+   "topic": "merchant",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "the town merchants, {capital} has the most of them",
+    "every town has a few, {capital} has them all",
+    "check the merchants in town, {capital} for the full set"
+   ],
+   "source": "the merchants of every town and capital (the world's merchant lists; AutonomousChatGuide.Realms)"
+  },
+  {
+   "id": "bind.how",
+   "topic": "bind",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "only at a bindstone, stand next to it and /bind",
+    "next to any bindstone, type /bind. towns and keeps have them",
+    "/bind at a bindstone, not just anywhere"
+   ],
+   "source": "commands/playercommands/bind.cs (/bind near a bindstone)"
+  },
+  {
+   "id": "vault.where",
+   "topic": "vault",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "the vault keeper in {capital}, {vault}. bigger towns have a vault too",
+    "your vault is with {vault} in {capital}",
+    "theres a vault keeper in {capital}, {vault}, right click him"
+   ],
+   "source": "commands/playercommands/vault.cs; AutonomousChatGuide.Realms (the capital's vault keeper)"
+  },
+  {
+   "id": "tasks.what",
+   "topic": "tasks",
+   "when": [
+    " "
+   ],
+   "lines": [
+    "ask a town guard with /task, he gives you a mob to kill for xp and coin. works till 19",
+    "/task at a guard, kill what he says, hand it in. only up to 19",
+    "the guards hand them out, /task near one. good xp early on"
+   ],
+   "source": "commands/playercommands/task.cs (/task; kill tasks to level 19)"
+  }
+ ]
+}

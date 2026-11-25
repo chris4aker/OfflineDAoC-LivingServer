@@ -959,15 +959,13 @@ public static class AutonomousChatFieldTalk
         return asked == null ? null : AnswerFor(asked, answerer, random) is { } plain && !IsNonAnswer(plain) ? Finish(plain, random) : null;
     }
 
-    private static readonly System.Text.RegularExpressions.Regex NonAnswer = new(
-        @"^\W*(dunno|idk|no idea|not sure|no clue|hmm dunno|never (got|camped|did) it|havent (camped|been|seen))\b",
-        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
-
     /// <summary>
     /// Whether a bot's answer to another bot says it doesn't know ("dunno, havent camped them", "idk", "no idea"): such a line
-    /// is left unsaid (1.2.3; 1.2.2's F4 kept "dunno" from answering players in /faction). Pure.
+    /// is left unsaid (1.2.3; 1.2.2's F4 kept "dunno" from answering players in /faction). Since #478 this is the say gate's one
+    /// non-answer class (<see cref="BotSayGate.IsNonAnswer"/>), not a list of its own, plus a line that opens on a dunno
+    /// (<see cref="BotSayGate.OpensWithDunno"/>: "dunno, check lfg" is said only by a bot with nothing better in its pool). Pure.
     /// </summary>
-    public static bool IsNonAnswer(string text) => !string.IsNullOrWhiteSpace(text) && NonAnswer.IsMatch(text);
+    public static bool IsNonAnswer(string text) => BotSayGate.IsNonAnswer(text) || BotSayGate.OpensWithDunno(text);
 
     /// <summary>The idea an answer rests under (30-60 minutes, <see cref="Memory.IdeaRestMs"/>) once the evening has heard it.</summary>
     private static string AnswerIdea(string skeleton) => "answer:" + skeleton;

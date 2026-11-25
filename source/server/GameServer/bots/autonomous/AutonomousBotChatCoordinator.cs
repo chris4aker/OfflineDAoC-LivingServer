@@ -1612,10 +1612,11 @@ public static partial class AutonomousBotChatCoordinator
         string family = last?.Family;
         var slots = new Dictionary<string, string>(StringComparer.Ordinal) { ["player"] = player?.Name };
         if (!string.IsNullOrEmpty(family) && AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked fit, answers: "followup_" + word,
-                slots: slots, relax: true, filter: line => line.Topic == family))
+                slots: slots, relax: true, filter: line => line.Topic == family && !BotSayGate.IsNonAnswer(line.Text)))
             return fit.Text;
+        // #478: no "the name escapes me" or "dunno" as the answer to "who?" or "why?": the say gate's non-answer class is left out.
         return AutonomousBotVoices.TryLine(bot, "reply", out VC.Picked any, answers: "followup_" + word, slots: slots, relax: true,
-            filter: line => line.Topic is "general" or "")
+            filter: line => line.Topic is "general" or "" && !BotSayGate.IsNonAnswer(line.Text))
             ? any.Text
             : null;
     }
@@ -3540,7 +3541,8 @@ public static partial class AutonomousBotChatCoordinator
                 {
                     // Chat 1.2 follow-up: a reply that says "omw" only from a bot the gate would send (promised when said).
                     if (AutonomousBotVoices.TryLine(responder, "reply", out VC.Picked picked, answers: answers, slots: slots,
-                            filter: line => AnswerFits(answers, opening, line.Text) &&
+                            // #478: never a non-answer ("no idea sorry") to another bot's question.
+                            filter: line => AnswerFits(answers, opening, line.Text) && !BotSayGate.IsNonAnswer(line.Text, opening) &&
                                             (!ChatPromiseRules.SaysComing(line.Text) || ChatPromises.CanPromiseCome(responder, alarmPlace, comeFor, opening, starter))))
                     {
                         (response, replyLine) = (picked.Text, picked.Line);
