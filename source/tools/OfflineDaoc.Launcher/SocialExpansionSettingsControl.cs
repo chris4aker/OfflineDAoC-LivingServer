@@ -108,6 +108,8 @@ internal sealed class SocialExpansionSettingsControl : UserControl
     private bool _loading;
     // raid_learns_from_raiders has no checkbox: kept from the loaded values, off with ALL OFF, back on with Skill that grows.
     private bool _raidLearns = true;
+    // The newcomer stream (#630) has no control of its own yet: its four values are kept as read and saved back unchanged.
+    private SocialExpansionSettings _population = SocialExpansionSettings.Defaults;
     // The saved settings couldn't be read at all: nothing may be saved over them (that would overwrite the
     // player's real values with what the tab happens to show) until a reload succeeds.
     private bool _loadFailed;
@@ -460,6 +462,10 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BuffBotEraConcRange = _buffBotConcRange.Checked,
         BotSkillProfiles = _skillProfiles.Checked,
         RaidLearnsFromRaiders = _raidLearns,
+        PopulationNewcomers = _population.PopulationNewcomers,
+        NewcomerFloor = _population.NewcomerFloor,
+        NewcomerPerHour = _population.NewcomerPerHour,
+        PopulationRetire = _population.PopulationRetire,
         BotPlaceKnowledge = _placeKnowledge.Checked,
         BotMovementHabits = _movementHabits.Checked,
         LivingMilestones = _milestones.Checked,
@@ -513,6 +519,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         _buffBotConcRange.Checked = settings.BuffBotEraConcRange;
         _skillProfiles.Checked = settings.BotSkillProfiles;
         _raidLearns = settings.RaidLearnsFromRaiders;
+        _population = settings;
         _placeKnowledge.Checked = settings.BotPlaceKnowledge;
         _movementHabits.Checked = settings.BotMovementHabits;
         _milestones.Checked = settings.LivingMilestones;

@@ -2428,10 +2428,14 @@ internal sealed partial class MainForm : Form
                      CurrentGoal, ObjectiveProgress, LastMeaningfulProgressUtc, IsRetired)
                 VALUES
                     (@name, @realm, @classId, @className, @raceId, @raceName, @gender, @level, @xp, 0,
-                     @zoneName, 'Queued at randomized starting location', 0, 1, @now, @money, 0,
-                     @zoneId, @x, @y, @z, @region, 1, 0, 0, @region, @x, @y, @z,
-                     'Awaiting staggered login queue', @placement, @now, 0)
+                     @zoneName, @activity, 0, 1, @now, @money, 0,
+                     @zoneId, @x, @y, @z, @region, @health, 0, 0, @region, @x, @y, @z,
+                     @goal, @placement, @now, 0)
                 """;
+            // The queued fields every new row starts with, shared with the server's newcomer stream (#630).
+            insert.Parameters.AddWithValue("@activity", OfflineDaoc.Shared.NewBotRow.QueuedActivity);
+            insert.Parameters.AddWithValue("@goal", OfflineDaoc.Shared.NewBotRow.QueuedGoal);
+            insert.Parameters.AddWithValue("@health", OfflineDaoc.Shared.NewBotRow.StartingHealth);
             insert.Parameters.AddWithValue("@name", identity.Name);
             insert.Parameters.AddWithValue("@level", botLevel);
             // The server's experience for the level (169,999,999,950 at 50, 0 at 1).

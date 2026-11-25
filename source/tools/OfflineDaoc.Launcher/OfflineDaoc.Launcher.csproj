@@ -34,6 +34,9 @@
     <Compile Include="../../server/GameServer/bots/autonomous/EraBuildCatalog.cs" Link="SocialExpansion/EraBuildCatalog.cs" />
     <!-- Living Server 1.2: the Activity marker of a retired buffbot copy (shown as kept, not as a deletion). -->
     <Compile Include="../../server/GameServer/bots/autonomous/BuffBotCopyMarker.cs" Link="SocialExpansion/BuffBotCopyMarker.cs" />
+    <!-- Living Server 1.2.3 (#630): a new bot row's queued fields and the retired-from-play marker, shared with the server's
+         newcomer stream. -->
+    <Compile Include="../../server/GameServer/bots/autonomous/NewcomerStreamShared.cs" Link="SocialExpansion/NewcomerStreamShared.cs" />
     <EmbeddedResource Include="../../server/GameServer/bots/autonomous/data/era-builds-165.json" LogicalName="OfflineDaoc.era-builds-165.json" />
     <!-- Living Server 1.2: the lore bible's channels shared with the server (the Herald's chronicle and bestiary), and the
          lore files themselves, the same ones the server embeds (LauncherLore). -->

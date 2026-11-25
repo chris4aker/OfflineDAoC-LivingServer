@@ -39,4 +39,30 @@ public sealed class BotDeletionTextTests
         Assert.That(BotDeletionText.State(false, false, true), Is.EqualTo("Online"));
         Assert.That(BotDeletionText.State(false, false, false), Is.EqualTo("Offline"));
     }
+
+    [Test]
+    public void AGamebotTheNewcomerStreamRetiredShowsAsKept()
+    {
+        // #630: a level 50 that made room for a newcomer keeps its row, items and coin; its class name stays.
+        string retired = RetiredFromPlayMarker.ActivityFor(50);
+        Assert.That(BotDeletionText.IsRetiredCopy(true, "Wizard", retired), Is.True);
+        Assert.That(BotDeletionText.Activity("Wizard", retired, serverUp: true), Is.EqualTo(retired));
+        Assert.That(BotDeletionText.State(deletionQueued: true, retiredCopy: true, isOnline: false), Is.EqualTo("Retired"));
+        Assert.That(BotDeletionText.IsRetiredCopy(false, "Wizard", retired), Is.False);
+        // the player deleted it: the launcher wrote "Deletion requested" over the marker
+        Assert.That(BotDeletionText.Activity("Wizard", "Deletion requested", serverUp: false), Is.EqualTo(BotDeletionText.DeletionPending));
+    }
+
+    [Test]
+    public void TheNewcomerStreamIsOnByDefault()
+    {
+        Assert.That((SocialExpansionSettings.Defaults.PopulationNewcomers, SocialExpansionSettings.Defaults.NewcomerFloor,
+            SocialExpansionSettings.Defaults.NewcomerPerHour, SocialExpansionSettings.Defaults.PopulationRetire), Is.EqualTo((true, 75, 10, true)));
+        Assert.That((SocialExpansionSettings.Recommended.PopulationNewcomers, SocialExpansionSettings.Recommended.PopulationRetire), Is.EqualTo((true, true)));
+        var stored = SocialExpansionSettings.Defaults.ToStoredValues();
+        Assert.That((stored["population_newcomers"], stored["population_newcomer_floor"], stored["population_newcomer_per_hour"], stored["population_retire"]),
+            Is.EqualTo(("True", "75", "10", "True")));
+        var off = SocialExpansionSettings.Defaults.AllOff();
+        Assert.That((off.PopulationNewcomers, off.PopulationRetire, off.IsAllOff), Is.EqualTo((false, false, true)));
+    }
 }
