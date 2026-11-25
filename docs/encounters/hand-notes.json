@@ -353,7 +353,7 @@
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "04ab35b46538ce36670b6e175110a5eede34960d91e0475fc36a45059b4666c5"
    },
-   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region)."
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region). 1.2.3 (#414): no raid, as in the period. She hosts the Albion level 50 epic (Academy_50, 'Symbol of the Broken'); Allakhazam's walkthrough: 'Do not attack Morgana. She will not do anything during this attack', and the fight (two named demons and their minions) 'can take as little as 6 people'. The event starts only for a player on the quest's step. A bot raid on her would need her changed (a spawn and an attackable phase): the owner's call."
   },
   "albion-named-mobs-classic-zones/mouth": {
    "verified": true,
@@ -837,7 +837,7 @@
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "125507e83dc024d8ee1fdc985450d0cefdf4f7262c6c9768ceb1af592215de72"
    },
-   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged."
+   "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged. 1.2.3 (#414, owner 2026-11-24): no raid, by design. Period sources: Mythic's Grab Bag (11 January 2008) 'This mob is not killable. It has no loot. You have to be sent there.'; the Camelot Herald (relayed 11 April 2002) 'The Behemoth will now stay in his own area' (Legion had been summoning him); Allakhazam comments 2002-2009 (a Legion raid's two ported groups got him to about 35% several times and gave up; a claimed kill is hearsay). Bots keep away from him and tell him as a legend."
   },
   "darkness-falls/beliathan": {
    "verified": true,
@@ -1261,7 +1261,7 @@
      "difficulty": "easy for the current raid AI"
     }
    },
-   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
+   "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2.3 Fomor City raid (#414; tests only, not played): dungeon-hibernia-fomor, Hibernia, 56 raiders (the period's seven groups: Thredh's Fomor guide, Valmerwolf 2003, revised 2005), from Droighaid (the period's bind) or Aalid Feie. The shipped zone180.nav had three islands (the entrance with the outer ring and Krackenschtein; the second ring with Nogoribando; the inner ring with Anurigunda and Myrddraxis): the builder's three climb ladders north of Krackenschtein (the period's 'climb in two stages') and the way from the second ring in were cut from the floors beside them by cracks of 21-33 units. A content patch adds four two-way walk links (tools/fork-build/content-patches.json, AutonomousRealmRaid.FomorWalkLinks); probed with dfprobe, every Fomor named is reached and the corridor check is complete both ways. The named come in the period's order, Krackenschtein, Nogoribando, Anurigunda, then Myrddraxis (RaidNamedOrder, REALM_EXPEDITION_NAMED_ORDER): 'each ring's passage is guarded by a named'. No boss changed."
   },
   "fomor-city/nogoribando": {
    "verified": true,
@@ -3185,19 +3185,19 @@
   "tuscaran-glacier/jailer": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "10d55817536a858a70148ba2f2a5e1c5fe41d633697f74c2f0b0c6300347ec2b"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "5f2fcb43996e4f359e1adbb3589f8bf4f1d9f01a09939f6540cc35b1b1556d11"
    },
    "aiTactics": {
     "summary": "Jail rescue (AllowDisplacement, bots too since 1.2): the jail opens when his two tunnel guardians (20,000 health each, at the jail) are dead. Once the fight is on, one bot party (two in a raid of eight parties or more; never the party he fights or the real player's) goes down the tunnel, kills both and comes back (an errand: no path, no progress or past its budget and it rejoins the fight). Every raider jailed after that walks free at once; one jailed before fights the guards with the team, and the recovery frees it when they die (or recalls it after 3 minutes).",
     "since": "1.2"
    },
    "rules": {
-    "adds@239": {
-     "summary": "Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill).",
+    "adds@241": {
+     "summary": "Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill). 1.2.3: port of True165 78526630, tests only, the mechanic unchanged: his brain owns the pair and clears it on a reset or when he leaves the world, so they no longer stack; still two a pull.",
      "tactic": "The jail-rescue errand party kills both (see his tactic); a jailed raider walks free once they are dead.",
      "difficulty": "easy for the current raid AI"
     },
-    "teleport@170": {
+    "teleport@185": {
      "tactic": "Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes.",
      "difficulty": "easy for the current raid AI"
     }

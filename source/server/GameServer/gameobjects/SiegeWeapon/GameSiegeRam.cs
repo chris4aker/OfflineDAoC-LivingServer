@@ -83,7 +83,8 @@ namespace DOL.GS
 			{
 				if(npc is GameSiegeRam ram)
 				{
-					if (ram != this && ram.IsAlive && ram.Health > ram.DecayedHp && ram.TargetObject == Owner.TargetObject)
+					if (ram != this && ram.IsAlive && ram.Health > ram.DecayedHp && ram.TargetObject == Owner.TargetObject &&
+						SharesRamLimit(this, ram))
 					{
 						ramsAimedAtTarget++;
 					}
@@ -99,6 +100,11 @@ namespace DOL.GS
 
 			base.Aim();
 		}
+
+		/// <summary>#525: the two-rams-per-door limit is counted for the bots' rams and the players' rams apart, so a
+		/// player's ram neither takes a bot ram's place nor is refused because two bot rams are on the door (siege.md
+		/// finding 5). A door can therefore take two bot rams and two player rams at once.</summary>
+		public static bool SharesRamLimit(GameSiegeWeapon a, GameSiegeWeapon b) => (a?.Owner is GamePlayer) == (b?.Owner is GamePlayer);
 
 		public override void Fire()
 		{
@@ -154,6 +160,7 @@ namespace DOL.GS
 			int before = target.Health;
 			target.TakeDamage(this, eDamageType.Crush, damageAmount, 0);
 			RecordBotHit(before, target);
+			NoteOutput(System.Math.Max(0, before - target.Health), target);
 			target.OnAttackedByEnemy(ad);
 
 			if(Owner != null)
@@ -190,25 +197,51 @@ namespace DOL.GS
 				player.DismountSteed(true);
 		}
 
+		/// <summary>Bots standing this close to a ram count as its crew (bots cannot mount).</summary>
+		public const int BotCrewRadius = 300;
+
 		/// <summary>
-		/// Riders, plus - for a bot-operated ram - the operator's group members standing at the ram (bots cannot mount;
-		/// owner 2026-10-07: players crewed rams and bot crews must break doors in a sensible time). Up to the ram's places.
+		/// Riders, plus the friendly bots standing at the ram (bots cannot mount; owner 2026-10-07: players crewed rams
+		/// and bot crews must break doors in a sensible time). Up to the ram's places.
+		/// #525: the same for every operated ram, the player's own included. Before, only a bot-operated ram counted the
+		/// bots beside it, so a player's ram hit for about a seventh of a bot ram's rate (siege.md finding 5).
 		/// </summary>
 		public int Crew
 		{
 			get
 			{
-				int crew = CurrentRiders.Length;
-				// A gamebot ram is crewed by any friendly gamebot at it, not only the operator's own group (run 2026-10-07:
-				// Midgard's ram at Caer Erasleigh ran on one bot while its army fought beside it).
-				if (Owner is GameBot op && (op.Group != null || op.IsAutonomousWorldBot))
-					foreach (GameNPC npc in GetNPCsInRadius(300))
-						if (npc is GameBot member && member != op && member.IsAlive && member.Realm == Realm &&
-							(op.Group?.IsInTheGroup(member) == true || op.IsAutonomousWorldBot && member.IsAutonomousWorldBot))
-							crew++;
-				return System.Math.Min(MAX_PASSENGERS, crew);
+				GameLiving op = Owner;
+				if (op == null) return System.Math.Min(MAX_PASSENGERS, CurrentRiders.Length);
+				var bots = new System.Collections.Generic.List<GameBot>();
+				foreach (GameNPC npc in GetNPCsInRadius(BotCrewRadius))
+					if (npc is GameBot member) bots.Add(member);
+				return CountCrew(op, Realm, CurrentRiders.Length, bots, MAX_PASSENGERS);
 			}
 		}
+
+		/// <summary>A bot at the ram that counts as crew: alive, of the ram's realm, not the operator, and either an
+		/// autonomous gamebot (any friendly gamebot crews any friendly ram: run 2026-10-07, Midgard's ram at Caer
+		/// Erasleigh ran on one bot while its army fought beside it) or in the operator's own group (a player's or a
+		/// bot's companions). Who operates the ram, player or bot, does not matter.</summary>
+		public static bool CountsAsCrew(GameLiving op, eRealm realm, GameBot member) =>
+			member != null && member != op && member.IsAlive && member.Realm == realm &&
+			(member.IsAutonomousWorldBot || op?.Group != null && op.Group.IsInTheGroup(member));
+
+		public static int CountCrew(GameLiving op, eRealm realm, int riders, System.Collections.Generic.IEnumerable<GameBot> nearby, int places)
+		{
+			int crew = riders;
+			if (op != null)
+				foreach (GameBot member in nearby)
+					if (CountsAsCrew(op, realm, member)) crew++;
+			return System.Math.Min(places, crew);
+		}
+
+		/// <summary>Damage of one ram hit: base plus half the base per crew member.</summary>
+		public static int CrewDamage(int baseDamage, int crew) => baseDamage + (baseDamage / 2 * crew);
+
+		/// <summary>Reload (arming) time in ms: shorter with more crew.</summary>
+		public static int CrewReloadMilliseconds(int level, int crew, int places) =>
+			10000 + ((level + 1) * 2000) - (int)(10000 * ((double)crew / (double)places));
 
 		public void UpdateRamStatus()
 		{
@@ -221,15 +254,51 @@ namespace DOL.GS
 			get
 			{
 				//custom formula
-				return 10000 + ((Level + 1) * 2000) - (int)(10000 * ((double)Crew / (double)MAX_PASSENGERS));
+				return CrewReloadMilliseconds(Level, Crew, MAX_PASSENGERS);
 			}
 		}
 
 		public override int CalcDamageToTarget(GameLiving target)
 		{
 			//return BaseDamage + (int)(((double)BaseDamage / 2.0) * (double)((double)CurrentRiders.Length / (double)MAX_PASSENGERS));
-			return BaseDamage + (BaseDamage/2 * Crew);
+			int crew = Crew;
+			_lastCrew = crew;
+			return CrewDamage(BaseDamage, crew);
 		}
+
+		private int _lastCrew;
+		private long _outputSince, _outputDamage;
+		private int _outputHits;
+
+		/// <summary>#525: one RVR_SIEGE_OUTPUT line per ram per minute of hitting (owner, kind, crew, hits, damage and
+		/// the door hit), player rams included, so a player's ram can be compared with a bot's in the log.</summary>
+		public const long OutputLogMilliseconds = 60_000;
+
+		private void NoteOutput(int damage, GameLiving target)
+		{
+			long now = GameLoop.GameLoopTime;
+			if (_outputSince == 0) _outputSince = now;
+			_outputHits++;
+			_outputDamage += damage;
+			if (now - _outputSince < OutputLogMilliseconds) return;
+			if (log.IsInfoEnabled)
+				log.Info(OutputLine(Owner, Realm, _lastCrew, MAX_PASSENGERS, _outputHits, _outputDamage, (now - _outputSince) / 1000, target));
+			_outputSince = now; _outputHits = 0; _outputDamage = 0;
+		}
+
+		public static string OperatorKind(GameLiving op) => op switch
+		{
+			GamePlayer => "player",
+			GameBot { IsAutonomousWorldBot: true } => "gamebot",
+			GameBot => "companion",
+			null => "none",
+			_ => "other"
+		};
+
+		public static string OutputLine(GameLiving op, eRealm realm, int crew, int places, int hits, long damage, long seconds, GameLiving target) =>
+			$"RVR_SIEGE_OUTPUT kind=ram owner={op?.Name ?? "none"} operator={OperatorKind(op)} realm={realm} crew={crew}/{places} " +
+			$"hits={hits} damage={damage} seconds={seconds} target={target?.Name ?? "none"} targetId={(target as GameKeepDoor)?.DoorId ?? 0} " +
+			$"targetHp={target?.HealthPercent ?? 0}";
 
 		public override int BaseDamage
 		{

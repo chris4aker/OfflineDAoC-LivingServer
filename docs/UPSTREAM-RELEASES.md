@@ -5,6 +5,13 @@ Each new upstream release changes that game's own server, so a Living Server bui
 server code before it may install on it. Otherwise it would undo that release's server changes. This page is the
 checklist for that day, written for 0.38.
 
+> **Current state (2026-11-24): see [upstream/HARVEST-2026-11.md](upstream/HARVEST-2026-11.md)** for what Living
+> Server takes from OpenDAoC-Core, True 1.65, the other Offline DAoC forks and DOL, and
+> [UPSTREAM-WATCH.md](UPSTREAM-WATCH.md) for the weekly watch. The "In his main and not in Living Server" list below is
+> **stale**: all 19 server files from shadowofze's final `main` (`b0b855d`) are now in our tree (2026-11 harvest). His
+> current work lives in [zomboden/OfflineDAoC-True165](https://github.com/zomboden/OfflineDAoC-True165), which the
+> weekly watch follows. The rest of this page is history.
+
 ## State as of 2026-10-31
 
 - **No new base release is expected.** Offline DAoC with Living Server is maintained in this repository now. The
@@ -81,7 +88,7 @@ checklist for that day, written for 0.38.
   Living Server still has it.
 - **The siege expiry throttle bug and the effect leak** were fixed in Beta 1.1 (PR #27) and are in his `main`
   since 2026-10-29, credited to Living Server (and stefanrows's fork for finding the siege one).
-- **In his `main` and not in Living Server (2026-10-31):** area spells and add control for every class, Celerity,
+- **In his `main` and not in Living Server (2026-10-31; all in Living Server since, per the 2026-11 harvest):** area spells and add control for every class, Celerity,
   pet focus shields, Reaver auras, mesmerized and rooted monsters left alone, camp spread, tank Protect/Guard/
   Intercept, raid tether and rally fixes, performers holding one song, relic campaigns and relic captures, raid loot
   shared with a player, bots at player height, three Exchange listings per bot, seal merchants, the double dead

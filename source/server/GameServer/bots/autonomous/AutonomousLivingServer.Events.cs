@@ -603,7 +603,8 @@ public static partial class AutonomousLivingServer
             Speak(bot, channel, line);
             toldGroup = channel == Channel.Group;
         }
-        // Bots do not get resurrection illness; a level 10+ bot in a player's group may still grumble about it.
+        // A level 10+ bot in a player's group may grumble about resurrection illness (since #521 it carries the RvR one
+        // after an RvR death, GameBot.ApplyRvrResurrectionIllness; none after a PvE death).
         if (GroupHasPlayer(bot.Group) && bot.Level >= Properties.RESS_SICKNESS_LEVEL && Random.Shared.NextDouble() < 0.35)
             Later(bot, 12_000 + Random.Shared.Next(10_000), () => bot.IsAlive && GroupHasPlayer(bot.Group), () =>
             {

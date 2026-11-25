@@ -1697,7 +1697,7 @@
    "Realm": 0
   },
   "100": {
-   "Level": 4,
+   "Level": 5,
    "Name": "Dun Crauchon",
    "Realm": 3
   },
@@ -1712,12 +1712,12 @@
    "Realm": 3
   },
   "103": {
-   "Level": 1,
+   "Level": 5,
    "Name": "Dun nGed",
    "Realm": 3
   },
   "104": {
-   "Level": 1,
+   "Level": 5,
    "Name": "Dun Da Behnn",
    "Realm": 3
   },
@@ -1727,7 +1727,7 @@
    "Realm": 3
   },
   "106": {
-   "Level": 1,
+   "Level": 5,
    "Name": "Dun Ailinne",
    "Realm": 3
   },
@@ -2096,5 +2096,5 @@
    "Realm": 3
   }
  },
- "_source": "The default world: keep owners and levels and keep door health/state as in the original v0.32 world (the last release built before any test runs changed them); the two battleground keeps added later (Dun Abermenai, Dun Murdaigean) as shipped in 0.35. build_release_036.py resets the release world to these and verifies it. BaseLevel, where given, is a battleground keep's base level: its bracket's top level + 2 (BattlegroundKeepLevels; owner 2026-11-19: guards and lords at their battleground's level; Caer Caledon had 46)."
+ "_source": "The default world: keep owners and levels and keep door health/state as in the original v0.32 world (the last release built before any test runs changed them); the two battleground keeps added later (Dun Abermenai, Dun Murdaigean) as shipped in 0.35. build_release_036.py resets the release world to these and verifies it. BaseLevel, where given, is a battleground keep's base level: its bracket's top level + 2 (BattlegroundKeepLevels; owner 2026-11-19: guards and lords at their battleground's level; Caer Caledon had 46). Since 1.2.3 (#526, owner 2026-11-24) Dun Crauchon (100, was 4) and Dun nGed, Dun Da Behnn and Dun Ailinne (103, 104, 106, were 1) ship at level 5, as every other claimable frontier keep; their door rows keep the old level's full health and the server makes them whole at level 5 on the world's first start (FrontierKeepLevelRepair), which also raises worlds from earlier builds where the keep still holds its old shipped level."
 }

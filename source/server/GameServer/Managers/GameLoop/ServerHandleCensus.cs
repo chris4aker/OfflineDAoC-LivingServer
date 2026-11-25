@@ -4,21 +4,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using DOL.Logging;
 
 namespace DOL.GS
 {
     /// <summary>
-    /// SERVER_HANDLE_CENSUS (Windows test runs only, with runtime\server\memory-census.on): the server's own open handles
-    /// by kernel object type (File, Event, Thread, Key, Section...). Overnight runs of 2026-10-20/21: handles climbed about
-    /// 2,000 an hour while the thread count stayed at 68, and the total alone does not say what leaks.
-    /// One NtQuerySystemInformation snapshot every 30 minutes; the type of each handle comes from NtQueryObject.
+    /// SERVER_HANDLE_CENSUS (Windows): the server's own open handles by kernel object type (File, Event, Thread, Key,
+    /// Section...). Overnight runs of 2026-10-20/21: handles climbed about 2,000 an hour while the thread count stayed at
+    /// 68, and the total alone does not say what leaks. One NtQuerySystemInformation snapshot every
+    /// <see cref="IntervalMinutes"/> minutes, on a background thread so the game loop never waits for it; the type of each
+    /// handle comes from NtQueryObject (its type only, never its name, which can block on a pipe).
+    /// Since issue #540 (1.2.2: handles 2,134 to 5,260 in 4.5 hours) it runs in every session, not only census runs: a
+    /// small row every ten minutes, so the next played log says which type grows.
     /// </summary>
     public static class ServerHandleCensus
     {
         private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
-        public const int IntervalMinutes = 30;
+        public const int IntervalMinutes = 10;
         private static long _nextRunTicks;
+        private static int _running;
         private static readonly Dictionary<ushort, string> TypeNames = new();
         private static Dictionary<string, int> _last = new();
 
@@ -32,21 +37,38 @@ namespace DOL.GS
         [DllImport("ntdll.dll")]
         private static extern uint NtQueryObject(IntPtr handle, int infoClass, IntPtr info, int length, out int returnLength);
 
+        /// <summary>Starts a snapshot on a thread-pool thread when one is due (Windows only); never blocks the caller.</summary>
         public static void MaybeRun()
         {
             if (!OperatingSystem.IsWindows()) return;
             long now = Stopwatch.GetTimestamp();
-            if (now < _nextRunTicks) return;
-            _nextRunTicks = now + IntervalMinutes * 60 * Stopwatch.Frequency;
+            if (now < Volatile.Read(ref _nextRunTicks) || Interlocked.Exchange(ref _running, 1) == 1) return;
+            Volatile.Write(ref _nextRunTicks, now + IntervalMinutes * 60 * Stopwatch.Frequency);
+            ThreadPool.UnsafeQueueUserWorkItem(_ =>
+            {
+                try { RunNow(); }
+                catch (Exception exception) { Log.Warn("SERVER_HANDLE_CENSUS failed", exception); }
+                finally { Volatile.Write(ref _running, 0); }
+            }, null);
+        }
+
+        private static void RunNow()
+        {
+            var watch = Stopwatch.StartNew();
             Dictionary<string, int> counts = Count();
             if (counts == null) return;
             var rows = counts.OrderByDescending(pair => pair.Value)
                 .Select(pair => (pair.Key, pair.Value, Delta: pair.Value - _last.GetValueOrDefault(pair.Key, pair.Value))).ToList();
             _last = counts;
-            Log.Info($"SERVER_HANDLE_CENSUS total={counts.Values.Sum()} " +
-                     $"byType=\"{string.Join(",", rows.Take(12).Select(r => $"{r.Key}={r.Value}"))}\" " +
-                     $"grew=\"{string.Join(",", rows.Where(r => r.Delta > 0).OrderByDescending(r => r.Delta).Take(8).Select(r => $"{r.Key}+{r.Delta}"))}\"");
+            Log.Info(Line(counts.Values.Sum(), rows, watch.Elapsed.TotalMilliseconds));
         }
+
+        /// <summary>The log row (pure, for tests): the total, the 12 largest types and the 8 that grew most since the last.</summary>
+        public static string Line(int total, IReadOnlyList<(string Type, int Count, int Delta)> rows, double milliseconds) =>
+            $"SERVER_HANDLE_CENSUS total={total} " +
+            $"byType=\"{string.Join(",", rows.OrderByDescending(r => r.Count).Take(12).Select(r => $"{r.Type}={r.Count}"))}\" " +
+            $"grew=\"{string.Join(",", rows.Where(r => r.Delta > 0).OrderByDescending(r => r.Delta).Take(8).Select(r => $"{r.Type}+{r.Delta}"))}\" " +
+            System.FormattableString.Invariant($"ms={milliseconds:F0}");
 
         /// <summary>This process's handles by object type; null when the snapshot could not be taken.</summary>
         private static Dictionary<string, int> Count()

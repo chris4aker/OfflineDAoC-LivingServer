@@ -15,6 +15,7 @@ using DOL.GS.Movement;
 using DOL.GS.PacketHandler;
 using DOL.GS.PropertyCalc;
 using DOL.GS.Realm;
+using DOL.GS.ServerRules;
 using DOL.GS.RealmAbilities;
 using DOL.GS.Styles;
 using static DOL.GS.GamePlayer;
@@ -142,7 +143,16 @@ namespace DOL.GS
         private Point3D _stableRouteLastPosition;
         private ECSGameTimer _deathRecoveryTimer;
         private long _deathTick;
+        /// <summary>Autonomous gamebots only: what killed this bot last, and where (AutonomousDeathDiagnostics, #537).</summary>
+        public AutonomousDeathBlame.Killer? LastAutonomousKiller { get; set; }
         private ushort _deathRegionId;
+        // #521: the last death was an RvR death by the player's rule (GamePlayer.Die: an enemy realm's kill, PvP combat or a
+        // keep guard), so a raise gives the RvR resurrection illness (ApplyRvrResurrectionIllness).
+        private bool _lastDeathRvr;
+        // #521: the effectiveness the RvR resurrection illness takes away while it lasts (ResurrectionIllnessECSGameEffect).
+        private double _resurrectionIllnessPenalty;
+        internal void AddResurrectionIllnessPenalty(double amount) =>
+            _resurrectionIllnessPenalty = Math.Max(0, _resurrectionIllnessPenalty + amount);
         private Point3D _deathLocation;
         private long _nextReturnRoleplayTick;
         private AutonomousStableRoutePlanner.Choice _stableReturnPlan;
@@ -507,6 +517,9 @@ namespace DOL.GS
             // GameBots recover through the internal recovery lock; never expose
             // GameLiving.IsSitting to clients. Outside enhanced recovery they
             // use ordinary standing/combat timing.
+            // #521: in RvR an autonomous gamebot regenerates as the player does, and its rest seat counts as sitting (3 s).
+            if (UsesPlayerRegeneration)
+                return DOL.GS.ServerRules.PvpRules.PlayerRegenerationIntervalMs(IsRecoveryResting && !IsMoving, InCombat);
             return ClassicRestRegeneration.HealthAndPowerInterval(false, InCombat);
         }
 
@@ -518,9 +531,13 @@ namespace DOL.GS
 
         public bool IsRecoveryResting => _recoveryRestLocked;
 
-        public bool IsEnhancedResting =>
-            (IsRecoveryResting && !IsMoving && !BotRestRecovery.BlocksRest(this)) ||
-            BotRestRecovery.ShouldAutonomousPlayerBotRecover(this, GameLoop.GameLoopTime);
+        /// <summary>#521 (owner 2026-11-24): an autonomous gamebot in RvR (PvpRules.InRvr) regenerates as the player does; the
+        /// fast rest floor (BotRestRecovery) stays for PvE and for companions.</summary>
+        public bool UsesPlayerRegeneration => !DOL.GS.ServerRules.PvpRules.UsesFastRest(DOL.GS.ServerRules.PvpRules.TakesPlayerRules(this));
+
+        public bool IsEnhancedResting => !UsesPlayerRegeneration &&
+            ((IsRecoveryResting && !IsMoving && !BotRestRecovery.BlocksRest(this)) ||
+            BotRestRecovery.ShouldAutonomousPlayerBotRecover(this, GameLoop.GameLoopTime));
 
         /// <summary>
         /// Moves an already-running ordinary regeneration timer onto the
@@ -638,16 +655,33 @@ namespace DOL.GS
             // GameBots have lightweight free-running travel. Endurance is a
             // combat resource for styles/abilities and is never consumed merely
             // because a persistent bot or /spawn companion is moving quickly.
+            // #521: except sprint in RvR, which is real for an autonomous gamebot (+30%, MaxSpeedCalculator) and drains as
+            // the player's does (GamePlayer.EnduranceRegenerationTimerCallback).
+            bool sprintDrains = IsSprinting && DOL.GS.ServerRules.PvpRules.TakesPlayerRules(this);
             if (Endurance >= maxEndurance)
             {
                 Endurance = maxEndurance;
-                return 0;
+                if (!sprintDrains)
+                    return 0;
             }
 
             int regen = GetModified(eProperty.EnduranceRegenerationAmount);
             if (IsEnhancedResting) regen = BotRestRecovery.RecoveryAmount(regen, maxEndurance);
+            if (sprintDrains && IsMoving && EffectListService.GetEffectOnTarget(this, eEffect.Charge) == null)
+            {
+                RealmAbilities.AtlasOF_LongWindAbility longWind = GetAbility<RealmAbilities.AtlasOF_LongWindAbility>();
+                int drain = DOL.GS.ServerRules.PvpRules.SprintDrainPerTick(longWind != null ? longWind.GetAmountForLevel(longWind.Level) : 0);
+                regen -= drain;
+                int endChant = GetModified(eProperty.FatigueConsumption);
+                if (endChant > 1)
+                    regen = (int)Math.Ceiling(regen * endChant * 0.01);
+                if (Endurance + regen > maxEndurance - drain)
+                    regen -= Endurance + regen - (maxEndurance - drain);
+            }
             if (regen != 0)
                 ChangeEndurance(this, eEnduranceChangeType.Regenerate, regen);
+            if (sprintDrains && Endurance - 5 <= 0)
+                Sprint(false);
 
             WakeAfterRecovery();
 
@@ -1189,6 +1223,9 @@ namespace DOL.GS
             _deathTick = GameLoop.GameLoopTime;
             _deathRegionId = CurrentRegionID;
             _deathLocation = new Point3D(X, Y, Z);
+            GameLiving killerSide = killer is GameLiving killerLiving ? DOL.GS.ServerRules.PvpRules.Controller(killerLiving) : null;
+            _lastDeathRvr = DOL.GS.ServerRules.PvpRules.IsAutonomousGamebot(this) && (InCombatPvP || killer is Keeps.GameKeepGuard ||
+                killerSide != null && killerSide.Realm != eRealm.None && killerSide.Realm != Realm);
             IsReturningAfterRelease = false;
             _stableReturnPlan = null;
             CompleteStableMasterRoute();
@@ -1278,7 +1315,9 @@ namespace DOL.GS
             long releaseDelay = resurrectionPossible
                 ? IsAutonomousWorldBot && AutonomousRvrEventLayer.TrySiegeRelease(AutonomousBotGroupCoordinator.RvrForceId(this), Realm,
                     GameLoop.GameLoopTime, out _, out _) ? SiegeCorpseWaitMilliseconds : 90_000
-                : 20_000;
+                // #485: a gamebot with nobody to rez it releases after its own 15-45 s, so a wipe does not vanish in one beat;
+                // /spawn helpers keep their 20 s.
+                : IsAutonomousWorldBot ? BotReleaseTiming.WipeReleaseMs(DatabaseID, PersistentRecord?.DeathCount ?? 0) : 20_000;
             if (groupDisposition is not (AutonomousBotGroupCoordinator.PveCorpseDisposition.ReleaseAndDisband or
                 AutonomousBotGroupCoordinator.PveCorpseDisposition.ReleaseAndRejoin) &&
                 deadFor < releaseDelay)
@@ -1416,6 +1455,7 @@ namespace DOL.GS
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             ShowStandingToViewers();
+            ApplyRvrResurrectionIllness();   // #521: a release after an RvR death gives it too, as GamePlayer.Release does
             if (returnToParty && !toldGroup)
                 TellOwnGroup(ReturnDialogue("release"));
 
@@ -1473,6 +1513,7 @@ namespace DOL.GS
             if (IsTemporaryGroupHelper)
                 TryReturnTemporaryCompanionToLeader(true);
             HiredCompanions165.OnRaised(this);   // back in its player's group and at their side
+            ApplyRvrResurrectionIllness();
             Brain?.FSM?.SetCurrentState(eFSMStateType.FOLLOW);
             Brain?.Start();
             if (IsAutonomousWorldBot && AutonomousLivingServer.OnBotResurrected(this, caster))
@@ -2254,6 +2295,11 @@ namespace DOL.GS
                 if (effectListComponent.ContainsEffectForEffectType(eEffect.Pulse))
                     return;
 
+                // #522: the player's "too close to hide" rule (StealthRules.EnemyTooClose; StealthSpecHandler for the
+                // player): no bot hides inside a live enemy's circle. Before, only companions kept it.
+                if (StealthRules.EnemyTooClose(this) != null)
+                    return;
+
                 if (IsOnHorse)
                     IsOnHorse = false;
 
@@ -2263,19 +2309,69 @@ namespace DOL.GS
                 foreach (GamePlayer viewer in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
                     if (!viewer.CanDetect(this))
                         viewer.Out.SendObjectRemove(this);
+                StartStealthUncoverAction();
                 return;
             }
 
             Flags &= ~eFlags.STEALTH;
             OnMaxSpeedChange();
+            StopStealthUncoverAction();
         }
 
+        private ECSGameTimer _stealthUncoverTimer;
+
+        /// <summary>
+        /// #522: the monster and guard uncover timer for an autonomous gamebot stealther, the player's (GamePlayer
+        /// UncoverStealthAction) through the one rule, StealthRules.Look: once a second, a hostile monster or guard close
+        /// enough, in its front cone and winning its roll, uncovers the bot if it has line of sight on the navmesh (the
+        /// player's client answers that check for him); one in a side cone turns to look. Companions keep today's rules
+        /// (the owner's #521 decision names autonomous gamebots only).
+        /// </summary>
         public void StartStealthUncoverAction()
         {
+            if (!PvpRules.IsAutonomousGamebot(this) || _stealthUncoverTimer?.IsAlive == true)
+                return;
+            _stealthUncoverTimer = new ECSGameTimer(this, StealthUncoverTick, StealthRules.UncoverIntervalMilliseconds);
         }
 
         public void StopStealthUncoverAction()
         {
+            _stealthUncoverTimer?.Stop();
+            _stealthUncoverTimer = null;
+        }
+
+        private int StealthUncoverTick(ECSGameTimer timer)
+        {
+            if (!IsStealthed || !IsAlive || ObjectState != eObjectState.Active)
+            {
+                _stealthUncoverTimer = null;
+                return 0;
+            }
+            StealthRules.UncoverRoll? uncovered = null;
+            StealthRules.Look(this, roll =>
+            {
+                if (uncovered != null)
+                    return;
+                if (roll.Sense == UncoverSense.Hearing)
+                    roll.By.TurnTo(this, StealthRules.HearingTurnMilliseconds);
+                else if (UncoverSightOnNavmesh(roll.By))
+                    uncovered = roll;
+            });
+            if (uncovered is not { } found)
+                return StealthRules.UncoverIntervalMilliseconds;
+            Stealth(false);
+            RvrStealthRecord.Uncovered(this, found.By, found.Distance, UncoverSense.Sight);
+            _stealthUncoverTimer = null;
+            return 0;
+        }
+
+        /// <summary>The sight check the player's client makes for him, made on the navmesh for a bot (true with no mesh).</summary>
+        private bool UncoverSightOnNavmesh(GameNPC by)
+        {
+            var nav = DOL.GS.PathfindingProvider.Instance;
+            if (nav == null || !nav.IsAvailable || CurrentZone == null || !nav.HasNavmesh(CurrentZone))
+                return true;
+            return nav.HasLineOfSight(CurrentZone, new(by.X, by.Y, by.Z + 48), new(X, Y, Z + 48), nav.DefaultFilters);
         }
 
         #endregion
@@ -4341,6 +4437,22 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>
+        /// Whether a trained specialization (level above 0) raises this skill property: GetSpecList's answer without its
+        /// sorted copy. Issue #540: the gear checks asked this through GetSpecList for every skill bonus of every Exchange
+        /// candidate, and the sort's arrays and iterators were the 1.2.2 PC log's next largest allocations.
+        /// </summary>
+        public bool HasTrainedSpecRaising(eProperty property)
+        {
+            lock (((ICollection)m_specialization).SyncRoot)
+            {
+                foreach (Specialization spec in m_specialization.Values)
+                    if (spec != null && spec.Level > 0 && SkillBase.SpecToSkill(spec.KeyName) == property)
+                        return true;
+            }
+            return false;
+        }
+
         public virtual IList<Specialization> GetSpecList()
         {
             lock (((ICollection)m_specialization).SyncRoot)
@@ -6013,10 +6125,41 @@ namespace DOL.GS
 
         #region Effectiveness
 
+        // 1.0, less the RvR resurrection illness while an autonomous gamebot carries it (#521); nothing else sets it.
         public override double Effectiveness
         {
-            get => 1.0;
+            get => Math.Max(0, 1.0 - _resurrectionIllnessPenalty);
             set { }
+        }
+
+        /// <summary>
+        /// #521 (owner 2026-11-24: rez sickness by the player's rule in RvR): an autonomous gamebot raised after an RvR death
+        /// at or above RESS_SICKNESS_LEVEL carries the RvR resurrection illness (spell 8181) as the player does
+        /// (GamePlayer.OnRevive); a full raise halves it and Perfect Recovery removes it (ResurrectSpellHandler). PvE deaths
+        /// and companions: none, as before.
+        /// </summary>
+        private void ApplyRvrResurrectionIllness()
+        {
+            bool rvrDeath = _lastDeathRvr;
+            _lastDeathRvr = false;
+            if (!rvrDeath)
+            {
+                TempProperties?.RemoveProperty(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS);
+                return;
+            }
+            double rezSick = TempProperties.GetAllProperties().Contains(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS)
+                ? TempProperties.GetProperty<double>(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS) : 1.0;
+            if (!DOL.GS.ServerRules.PvpRules.RvrRezSicknessApplies(DOL.GS.ServerRules.PvpRules.IsAutonomousGamebot(this), rvrDeath,
+                    Level, ServerProperties.Properties.RESS_SICKNESS_LEVEL, rezSick))
+            {
+                TempProperties.RemoveProperty(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS);
+                return;
+            }
+            SpellLine line = SkillBase.GetSpellLine(GlobalSpellsLines.Realm_Spells);
+            Spell illness = line == null ? null : SkillBase.FindSpell(8181, line);
+            if (illness == null)
+                return;
+            ScriptMgr.CreateSpellHandler(this, illness, line)?.StartSpell(this);
         }
 
         double IGamePlayer.Effectiveness

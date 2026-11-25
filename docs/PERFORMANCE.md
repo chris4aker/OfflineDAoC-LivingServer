@@ -65,8 +65,9 @@ All system times are summed over every thread for the minute. With 12 cores, 12,
 is a whole core busy with NPC brains.
 
 **Not measured here yet** (audit §1.5): allocations per system, SQLite queue depth and write latency (only the batch
-time), and chat lines per channel. Heap, handles and threads are in the existing `SERVER_MEMORY` lines, and slow
-turns still go to `SERVER_STALL`.
+time), and chat lines per channel. Heap, handles and threads are in the existing `SERVER_MEMORY` lines (with the PC's memory load against the GC's
+high-load line since 1.2.3), handles by kernel type in `SERVER_HANDLE_CENSUS` every 10 minutes (Windows, 1.2.3, #540),
+and slow turns still go to `SERVER_STALL`.
 
 ### What it costs
 

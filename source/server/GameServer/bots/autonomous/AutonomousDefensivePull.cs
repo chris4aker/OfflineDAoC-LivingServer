@@ -72,6 +72,20 @@ namespace DOL.GS
                 return bench;
             }
 
+            /// <summary>
+            /// A ranged pull that was made but timed out with the target alive and never at the party (it ignored the
+            /// shot or couldn't path) is a failed try too: two in a row bench it like two with no firing point.
+            /// DividedRealms saw 280 of 1,097 PvE tasks expire on this loop ("Holding group formation"). Port of
+            /// rambodolphin13/DividedRealms 1d18f864, folded into the #539 bench (which already had its 7e736ca8 half).
+            /// </summary>
+            public bool RecordIgnored(int target, long now) => RecordUnreachable(target, now);
+
+            /// <summary>The target reached the party: its failed tries are forgotten (a bench already set stays).</summary>
+            public void Reached(int target, long now)
+            {
+                if (!IsBenched(target, now)) _targets.Remove(target);
+            }
+
             public int BenchedCount(long now) => _targets.Values.Count(entry => entry.BenchedAt > 0 && now - entry.BenchedAt < BenchMilliseconds);
 
             /// <summary>Enough of this camp's targets are benched: the camp is given up.</summary>
@@ -315,16 +329,21 @@ namespace DOL.GS
             lock (state)
             {
                 if (!state.Active) return false;
-                if (bot.Group == null || !state.Target.IsAlive || state.Target.ObjectState != GameObject.eObjectState.Active ||
+                bool broken = bot.Group == null || !state.Target.IsAlive || state.Target.ObjectState != GameObject.eObjectState.Active ||
                     state.Members.Any(member => !member.IsAlive || member.Group != bot.Group ||
                         member.CurrentRegion != state.Shooter.CurrentRegion || member.IsOnStableMasterRoute) ||
-                    state.Target.CurrentRegion != bot.CurrentRegion || GameLoop.GameLoopTime >= state.Until)
+                    state.Target.CurrentRegion != bot.CurrentRegion;
+                if (broken || GameLoop.GameLoopTime >= state.Until)
                 {
+                    // A live target that never reached the party in the whole window is a failed pull (DividedRealms
+                    // 1d18f864): the second benches it and the party pulls it the ordinary way.
+                    if (!broken) RecordIgnoredPull(state);
                     Finish(state, false);
                     return false;
                 }
                 if (state.Members.Any(member => member.IsWithinRadius(state.Target, ContactRadius)))
                 {
+                    state.Bench.Reached(state.Target.ObjectID, GameLoop.GameLoopTime);
                     Finish(state, true);
                     return false;
                 }
@@ -379,10 +398,30 @@ namespace DOL.GS
                     Finish(state, attacker == state.Target);
         }
 
+        /// <summary>This party's ranged pull of this target is under way (not a retry wait).</summary>
+        public static bool IsPulling(Group group, GameLiving target)
+        {
+            if (group == null || target == null || !States.TryGetValue(group, out State state)) return false;
+            lock (state) return state.Active && state.Target == target;
+        }
+
         public static void Cancel(Group group)
         {
             if (group == null || !States.TryGetValue(group, out State state)) return;
             lock (state) if (state.Active) Finish(state, false);
+        }
+
+        private static void RecordIgnoredPull(State state)
+        {
+            if (state.Target == null || state.Shooter == null) return;
+            bool benched = state.Bench.RecordIgnored(state.Target.ObjectID, GameLoop.GameLoopTime);
+            var log = LoggerManager.Create(typeof(AutonomousDefensivePull));
+            if (log.IsInfoEnabled)
+                log.Info($"AUTONOMOUS_DEFENSIVE_PULL_IGNORED bot={state.Shooter.Name} target={state.Target.Name} shot={state.Shot} " +
+                     $"tries={state.Bench.Tries(state.Target.ObjectID)} distance={(int)state.Shooter.GetDistanceTo(state.Target)} " +
+                     $"action={(benched ? "ordinary-pull" : "retry")} region={state.Shooter.CurrentRegionID} " +
+                     $"x={state.Shooter.X} y={state.Shooter.Y} z={state.Shooter.Z}");
+            // Benched: TryBegin checks the bench before the retry wait, so the caller pulls it the ordinary way at once.
         }
 
         private static void Finish(State state, bool engage)

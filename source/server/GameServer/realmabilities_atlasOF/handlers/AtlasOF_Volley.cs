@@ -151,34 +151,9 @@ namespace DOL.GS.RealmAbilities
             {
                 foreach (AbstractArea area in _player.CurrentRegion.GetAreasOfSpot(_player.GroundTarget).Where(x => x is AbstractArea))
                 {
-                    if (area is Area.Circle)
-                    {
-                        if (_player.Realm == eRealm.Albion)
-                        {
-                            if (area.Description is "Druim Ligen" or "Druim Cain" or "Svasud Faste" or "Vindsaul Faste")
-                            {
-                                _player.Out.SendMessage("You can't use Volley inside enemy Border Keep!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                                return;
-                            }
-                        }
-                        else if (_player.Realm == eRealm.Hibernia)
-                        {
-                            if (area.Description is "Svasud Faste" or "Vindsaul Faste" or "Castle Sauvage" or "Snowdonia Fortress")
-                            {
-                                _player.Out.SendMessage("You can't use Volley inside enemy Border Keep!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                                return;
-                            }
-                        }
-                        else if (_player.Realm == eRealm.Midgard)
-                        {
-                            if (area.Description is "Druim Ligen" or "Druim Cain" or "Castle Sauvage" or "Snowdonia Fortress")
-                            {
-                                _player.Out.SendMessage("You can't use Volley inside enemy Border Keep!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-                                return;
-                            }
-                        }
-                    }
-                    else if (area is KeepArea)
+                    // KeepArea is an Area.Circle, so it has to be tested first or the portal keep check never runs
+                    // (OpenDAoC-Core 36b74205d).
+                    if (area is KeepArea)
                     {
                         if (_player.Realm == eRealm.Albion)
                         {
@@ -201,6 +176,33 @@ namespace DOL.GS.RealmAbilities
                             if (area.Description is "Albion Portal Keep" or "Hibernia Portal Keep")
                             {
                                 _player.Out.SendMessage("You can't use Volley inside enemy Portal Keep!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                                return;
+                            }
+                        }
+                    }
+                    else if (area is Area.Circle)
+                    {
+                        if (_player.Realm == eRealm.Albion)
+                        {
+                            if (area.Description is "Druim Ligen" or "Druim Cain" or "Svasud Faste" or "Vindsaul Faste")
+                            {
+                                _player.Out.SendMessage("You can't use Volley inside enemy Border Keep!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                                return;
+                            }
+                        }
+                        else if (_player.Realm == eRealm.Hibernia)
+                        {
+                            if (area.Description is "Svasud Faste" or "Vindsaul Faste" or "Castle Sauvage" or "Snowdonia Fortress")
+                            {
+                                _player.Out.SendMessage("You can't use Volley inside enemy Border Keep!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                                return;
+                            }
+                        }
+                        else if (_player.Realm == eRealm.Midgard)
+                        {
+                            if (area.Description is "Druim Ligen" or "Druim Cain" or "Castle Sauvage" or "Snowdonia Fortress")
+                            {
+                                _player.Out.SendMessage("You can't use Volley inside enemy Border Keep!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                                 return;
                             }
                         }

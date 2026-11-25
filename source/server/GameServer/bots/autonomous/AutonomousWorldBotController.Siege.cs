@@ -4,6 +4,7 @@ using System.Numerics;
 using DOL.Database;
 using DOL.GS.Keeps;
 using DOL.GS.Spells;
+using DOL.GS.PacketHandler;
 
 namespace DOL.GS
 {
@@ -25,6 +26,12 @@ namespace DOL.GS
         private Vector3? _siegeMoveTo;
         private long _siegeMoveStarted, _siegeNextMove, _siegeMoveRepath;
         private string _siegePreSupplyKeep;
+        // #525: the synthetic engine under construction (AutonomousSiegeBuild).
+        private long _siegeBuildStarted, _siegeBuildLastWorked, _siegeBuildNextEmote, _siegeNextStockLog;
+        private Vector3? _siegeBuildSpot;
+        private BotSiegeKind _siegeBuildKind;
+        private bool _siegeSynthetic = true;
+        private int _siegeStockLeft, _siegeStock;
 
         public static long SiegeSupplyBudget(bool playerResponse) => playerResponse ? 180_000L : 600_000L;
 
@@ -105,6 +112,8 @@ namespace DOL.GS
             if (!AutonomousSiegeJobs.TryAcquire(bot, _siegeJobKeep, present, attacking && door!=null, enemyEngines, out _siegeKind, out _siegeSlot,
                     carried: CarriedSiegeKind(bot) ?? AbandonedSiegeKind(bot, engines)))
             { _siegeNextAttempt = now + 10_000; return false; }
+            // #525: siege work at the keep keeps this siege's engine stock alive and sized to the army.
+            _siegeStockLeft = AutonomousSiegeBuild.Remaining(bot.CurrentRegionID, _siegeJobKeep, bot.Realm, present, now, out _siegeStock);
             if (now>=_siegeNextTopup)
             {
                 _siegeNextTopup=now+30_000;
@@ -193,11 +202,12 @@ namespace DOL.GS
             // Goal 1 (owner 2026-10-07): siege crews use a kit they carry, otherwise synthetic siege equipment set up on
             // the spot; no more shopping trips (runs to run 18: hundreds of supply timeouts, not one engine deployed).
             bool synthetic = BotSiegeRuntime.Item(bot, kitId) == null;
+            _siegeSynthetic = synthetic;
             if (owned == null)
             {
-                // Working player engines count too. Broken engines retain their native decay,
-                // but do not count as functioning firepower and are never deleted here.
-                int active = engines.Count(w => w.Realm == bot.Realm && w.Health > w.DecayedHp &&
+                // Broken engines retain their native decay, but do not count as functioning firepower and are never
+                // deleted here. #525: an engine a player operates is the player's, not one of the bots' places.
+                int active = engines.Count(w => w.Realm == bot.Realm && w.Health > w.DecayedHp && CountsAgainstBotEngineCap(w) &&
                     (BotSiegeRuntime.Kind(w) == _siegeKind || _siegeKind is BotSiegeKind.Catapult or BotSiegeKind.Trebuchet && w is GameSiegeCatapult) &&
                     (w is not GameSiegeRam || w.IsWithinRadius(target, 600)));
                 if (active >= 2) { _siegeNextAttempt = now + 10_000; return false; }
@@ -221,11 +231,18 @@ namespace DOL.GS
                 if (Vector3.Distance(new(bot.X, bot.Y, bot.Z), _siegePosition.Value) > (_siegeKind == BotSiegeKind.Ballista ? 55 : 90))
                 { IssuePath(bot, _siegePosition.Value, preciseArrival:true); SiegeStatus(bot, "Moving to verified siege position", target); return true; }
                 bot.StopMovingOnPath(); bot.StopMoving();
+                // #525 (owner 2026-11-24): a synthetic engine is built in sight at the spot before it appears.
+                if (synthetic)
+                {
+                    int step = SyntheticBuildStep(bot, target, now);
+                    if (step == 0) return true;
+                    if (step < 0) return false;
+                }
                 lock (AutonomousSiegeOwnership.ChangeGate)
                 {
                     // Recheck the shared cap immediately before consuming any kit.
                     if (target.GetNPCsInRadius(_siegeKind == BotSiegeKind.Ram ? (ushort)650 : (ushort)6000)
-                        .OfType<GameSiegeWeapon>().Count(w => w.IsAlive && w.Realm == bot.Realm && w.Health > w.DecayedHp &&
+                        .OfType<GameSiegeWeapon>().Count(w => w.IsAlive && w.Realm == bot.Realm && w.Health > w.DecayedHp && CountsAgainstBotEngineCap(w) &&
                             (BotSiegeRuntime.Kind(w) == _siegeKind || _siegeKind is BotSiegeKind.Catapult or BotSiegeKind.Trebuchet && w is GameSiegeCatapult)) >= 2) return false;
                     DbInventoryItem kit = synthetic ? null : BotSiegeRuntime.Item(bot, kitId);
                     SpellLine line = SkillBase.GetSpellLine(GlobalSpellsLines.Item_Effects);
@@ -243,9 +260,12 @@ namespace DOL.GS
                     { SiegeLog(bot, "spawn_failed", null, $"out of range ({(int)owned.GetDistanceTo(target)})"); owned.Delete(); _siegePosition = null; return false; }
                     if (!owned.TryTakeControl(bot) || !synthetic && !BotSiegeRuntime.Consume(bot, kitId, 1))
                     { owned.Delete(); SiegeLog(bot, "spawn_failed", null, "operator could not take control"); return false; }
+                    if (synthetic && !AutonomousSiegeBuild.TryTake(bot.CurrentRegionID, _siegeJobKeep, bot.Realm, present, now))
+                    { owned.ReleaseControl(); owned.Delete(); SiegeLog(bot, "stock_spent", null, $"stock={_siegeStock}"); ReleaseSiegeJob(bot); _siegeNextAttempt = now + 60_000; return false; }
                 }
                 _siegeWeapon = owned; _siegeLastProgress = now; _siegeObservedHits = 0;
-                SiegeLog(bot, "deployed", owned, synthetic ? "synthetic=true" : $"kit={kitId}");
+                if (synthetic) _siegeStockLeft = Math.Max(0, _siegeStockLeft - 1);
+                SiegeLog(bot, "deployed", owned, synthetic ? $"synthetic=true built={AutonomousSiegeBuild.BuildMilliseconds(_siegeKind) / 1000}s stockLeft={_siegeStockLeft}/{_siegeStock}" : $"kit={kitId}");
             }
             if (!bot.IsWithinRadius(owned, Math.Max(32, owned.SIEGE_WEAPON_CONTROLE_DISTANCE - 20)))
             { IssuePath(bot, new(owned.X, owned.Y, owned.Z), preciseArrival:true); return true; }
@@ -263,13 +283,59 @@ namespace DOL.GS
             {
                 _siegeObservedHits = owned.ConfirmedHits; _siegeLastProgress = now;
                 AutonomousStuckWatchdog.MarkProgress(bot,eAutonomousProgressKind.SiegeParticipation);
-                if (now >= _siegeLastHitLog) { SiegeLog(bot, "hit", owned, $"hits={owned.ConfirmedHits} targetHp={target.HealthPercent}"); _siegeLastHitLog = now + 60_000; }
+                if (now >= _siegeLastHitLog) { SiegeLog(bot, "hit", owned, $"hits={owned.ConfirmedHits} target={target.Name} targetId={(target as GameKeepDoor)?.DoorId ?? 0} targetHp={target.HealthPercent} defending={!attacking}"); _siegeLastHitLog = now + 60_000; }
             }
             if (now - _siegeLastProgress > 90_000)
             { SiegeLog(bot, "no_progress", owned, "90s without damage; release and retry"); owned.ReleaseControl(); _siegeNextAttempt = now + 30_000; return false; }
             SiegeStatus(bot, $"Siege {owned.CurrentState}: {owned.ShotsFired} shots / {owned.ConfirmedHits} confirmed hits", target);
             return true;
         }
+
+        /// <summary>#525: an engine operated by a player does not take one of the bots' engine places (siege.md finding 5:
+        /// the player's ram took one of the two ram places).</summary>
+        public static bool CountsAgainstBotEngineCap(GameSiegeWeapon w) => w?.Owner is not GamePlayer;
+
+        /// <summary>
+        /// #525 (owner 2026-11-24): one step of building a synthetic engine at the verified spot. 0: still building (the
+        /// operator stays and works); 1: built, set it up now; -1: no build (the stock is spent, or the build was
+        /// interrupted and starts again next attempt). A build interrupted by an attack, death or leaving starts again from
+        /// nothing (AutonomousSiegeBuild.Interruption).
+        /// </summary>
+        private int SyntheticBuildStep(GameBot bot, GameLiving target, long now)
+        {
+            string interrupted = AutonomousSiegeBuild.Interruption(_siegeBuildStarted, _siegeBuildLastWorked, now,
+                bot.LastAttackedByEnemyTick, bot.IsAlive, _siegeBuildSpot == _siegePosition, _siegeBuildKind == _siegeKind);
+            if (interrupted != null)
+            {
+                SiegeLog(bot, "build_interrupted", null, $"kind={_siegeBuildKind} reason={interrupted} after={(now - _siegeBuildStarted) / 1000}s");
+                ResetSiegeBuild();
+                _siegeNextAttempt = now + 5_000;
+                return -1;
+            }
+            if (_siegeBuildStarted == 0)
+            {
+                if (_siegeStockLeft <= 0)
+                {
+                    if (now >= _siegeNextStockLog)
+                    { SiegeLog(bot, "stock_spent", null, $"kind={_siegeKind} stock={_siegeStock}"); _siegeNextStockLog = now + 60_000; }
+                    ReleaseSiegeJob(bot); _siegeNextAttempt = now + 60_000; return -1;
+                }
+                _siegeBuildStarted = now; _siegeBuildKind = _siegeKind; _siegeBuildSpot = _siegePosition; _siegeBuildNextEmote = 0;
+                SiegeLog(bot, "build_started", null, $"kind={_siegeKind} seconds={AutonomousSiegeBuild.BuildMilliseconds(_siegeKind) / 1000} " +
+                    $"target={target.Name} at={(int)_siegePosition.Value.X},{(int)_siegePosition.Value.Y},{(int)_siegePosition.Value.Z} stockLeft={_siegeStockLeft}/{_siegeStock}");
+                Message.SystemToArea(bot, $"{bot.Name} begins to build a siege {_siegeKind.ToString().ToLowerInvariant()}.", eChatType.CT_Emote, bot);
+            }
+            _siegeBuildLastWorked = now;
+            if (AutonomousSiegeBuild.Complete(_siegeBuildKind, _siegeBuildStarted, now))
+            { ResetSiegeBuild(); return 1; }
+            if (now >= _siegeBuildNextEmote) { bot.Emote(eEmote.PlayerPrepare); _siegeBuildNextEmote = now + AutonomousSiegeBuild.BuildEmoteMilliseconds; }
+            AutonomousSiegeJobs.Refresh(bot);
+            AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.SiegeParticipation);
+            SiegeStatus(bot, $"Building a siege {_siegeKind.ToString().ToLowerInvariant()} ({AutonomousSiegeBuild.SecondsLeft(_siegeBuildKind, _siegeBuildStarted, now)} s left)", target);
+            return 0;
+        }
+
+        private void ResetSiegeBuild() { _siegeBuildStarted = 0; _siegeBuildLastWorked = 0; _siegeBuildSpot = null; }
 
         private static BotSiegeKind? CarriedSiegeKind(GameBot bot)
         {
@@ -488,6 +554,7 @@ namespace DOL.GS
             _siegeJobKeep=null; _siegeWeapon=null; _siegePosition=null; _siegeRepair=null; _siegeRepairUntil=0;
             _siegeSupplyItem=null; _siegeNoTargetSince=0;
             _siegeMoveTo=null;
+            ResetSiegeBuild();
         }
         private bool ContinueSiegeMove(GameBot bot,long now)
         {
@@ -509,7 +576,10 @@ namespace DOL.GS
                 bot.PathTo(new Vector3(weapon.X,weapon.Y,weapon.Z),bot.MaxSpeed);
             SiegeStatus(bot,"Relocating siege equipment along checked route",weapon); return true;
         }
-        private void SiegeStatus(GameBot bot,string status,GameLiving target) => SetRvrStatus(bot,status,target.Name,"Real siege equipment, finite inventory and native combat timers");
+        // #525: the detail says where the engine came from; the old "Real siege equipment, finite inventory" was false
+        // while engines appeared from nothing with no limit.
+        private void SiegeStatus(GameBot bot,string status,GameLiving target) =>
+            SetRvrStatus(bot,status,target.Name,AutonomousSiegeBuild.StatusDetail(_siegeSynthetic,_siegeStockLeft,_siegeStock));
         private void SiegeLog(GameBot bot,string action,GameSiegeWeapon weapon,string detail)
         { if(Log.IsInfoEnabled) Log.Info($"RVR_SIEGE action={action} bot={bot.Name} keep={_siegeJobKeep} engine={weapon?.ObjectID} {detail}"); }
     }

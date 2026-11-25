@@ -327,7 +327,8 @@ namespace DOL.GS.Commands
 				else
 					result.Append(bot.CurrentZone.Description);
 			}
-			result.Append(" [Playerbot]");
+			// #485 (owner 2026-11-24): the tag is a launcher setting, hidden by default (bot_show_as_bots).
+			result.Append(BotGroupInvite.WhoTag(ServerProperties.Properties.BOT_SHOW_AS_BOTS));
 			return result.ToString();
 		}
 

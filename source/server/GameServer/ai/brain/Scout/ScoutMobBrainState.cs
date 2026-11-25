@@ -109,7 +109,18 @@ namespace DOL.AI.Brain
             {
                 // Our friend may die before we reach it, but it should be fine.
                 if (!_brain.Body.IsWithinRadius(_friend.Body, REPORT_RANGE))
+                {
+                    // Port of OpenDAoC-Core 4376f3c9b: a scout that can't move toward its friend (rooted, no path) stood
+                    // in this state for good. It fights instead. Checked after the range test, so a scout that stopped
+                    // beside its friend still reports.
+                    if (!_brain.Body.IsMoving)
+                    {
+                        _friend = null;
+                        _state = ScoutMobState.FIGHTING;
+                    }
+
                     return;
+                }
 
                 _brain.AddAggroListTo(_friend);
 
@@ -122,6 +133,7 @@ namespace DOL.AI.Brain
                         _brain.AddAggroListTo(brain);
                 }
 
+                _friend = null;
                 _state = ScoutMobState.FIGHTING;
             }
         }

@@ -506,6 +506,11 @@ namespace DOL.GS
 					return false;
 
 				//---------------------------------------------------------------
+				//One-time raise of the keeps earlier builds shipped below level 5 (#526); keeps and doors are loaded by now.
+				//Never stops the start.
+				InitComponent(FrontierKeepLevelRepair.Run(), "Frontier keep level repair");
+
+				//---------------------------------------------------------------
 				//Load all crafting managers
 				if (!InitComponent(CraftingMgr.Init(), "Crafting Managers"))
 					return false;

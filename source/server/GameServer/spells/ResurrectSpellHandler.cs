@@ -168,6 +168,13 @@ namespace DOL.GS.Spells
                 player.Notify(GamePlayerEvent.Revive, player, new RevivedEventArgs(Caster, Spell));
             }
 
+			else if (living is GameBot)
+			{
+				// #521: the same halving (full raise) or removal (Perfect Recovery) of the RvR illness for a gamebot.
+				living.TempProperties.SetProperty(GamePlayer.RESURRECT_REZ_SICK_EFFECTIVENESS,
+					IsPerfectRecovery() ? 0.0 : Spell.ResurrectHealth == 100 ? 0.5 : 1.0);
+			}
+
 			living.Health = living.MaxHealth * m_spell.ResurrectHealth / 100;
 			double tempManaEnd = m_spell.ResurrectMana / 100.0;
 			living.Mana = (int)(living.MaxMana * tempManaEnd);

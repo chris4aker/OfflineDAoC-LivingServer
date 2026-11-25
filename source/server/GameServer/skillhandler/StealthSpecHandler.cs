@@ -163,31 +163,9 @@ namespace DOL.GS.SkillHandler
 		/// <returns>true if object prevents player from hiding</returns>
 		private bool IsObjectTooClose(GameObject obj, GamePlayer player)
 		{
-			float enemyLevel = Math.Max(1f, obj.Level);
-			float stealthLevel = player.GetModifiedSpecLevel(Specs.Stealth);
-			if(stealthLevel > 50)
-				stealthLevel = 50;
-			float radius;
-
-			if(obj is GamePlayer && ((GamePlayer)obj).HasAbility(Abilities.DetectHidden))
-			{
-				//1792.0 = 2048.0 - 256.0 <- Detect Hidden doubles the range
-				radius = 2048f - (1792f * stealthLevel / enemyLevel); 
-			}
-			else
-			{
-				//1024.0 = 1024.0 - 128.0 <- normal Range
-				radius = 1024f - (896f * stealthLevel / enemyLevel); 
-			}
-
-			//If we are so skilled we can hide right under the nose of
-			//this enemy player, we continue the checks for the next 
-			//player without any redundant distance calculations
-			if(radius <= 0) return false;
-
-			//Test if the stealthing player is in range of this 
-			//player's "impossible to hide" circle
-			return obj.IsWithinRadius(player,(int)radius);
+			// #522: one "too close to hide" rule for the player, the gamebots and the companions (StealthRules). An enemy
+			// gamebot's Detect Hidden now doubles the circle, as an enemy player's always did.
+			return DOL.GS.ServerRules.StealthRules.IsTooClose(obj, player);
 		}
 	}
 }

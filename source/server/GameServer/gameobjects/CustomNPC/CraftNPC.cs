@@ -60,7 +60,7 @@ namespace DOL.GS
 			var playerSkills = player.GetCraftingSkillValue(TheCraftingSkill);
 			if (playerSkills >= 1)
 			{
-				player.CraftingPrimarySkill = TheCraftingSkill;
+				player.ChangeCraftingPrimarySkill(TheCraftingSkill);
 				SayTo(player, eChatLoc.CL_PopupWindow, "Hello, " + player.CraftTitle.GetDescription(player) + "! Because you are already a member of our order, you do not need to join. I have changed your primary crafting skill to " + player.CraftingPrimarySkill + ". Please speak to myself or another craft master if you wish to change your primary crafting skill again.");
 				player.Out.SendUpdatePlayer();
 				player.Out.SendUpdateCraftingSkills();
@@ -117,7 +117,7 @@ namespace DOL.GS
 				return;
 
 			bool firstOrder = player.CraftingPrimarySkill == eCraftingSkill.NoCrafting;
-			player.CraftingPrimarySkill = TheCraftingSkill;
+			player.ChangeCraftingPrimarySkill(TheCraftingSkill);
 
 			player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "CraftNPC.CraftNpcDialogResponse.Accepted", ACCEPTED_BY_ORDER_NAME), eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 				

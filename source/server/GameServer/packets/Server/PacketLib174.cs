@@ -344,17 +344,31 @@ namespace DOL.GS.PacketHandler
 		protected virtual void WriteGroupMemberMapUpdate(GSTCPPacketOut pak, GameLiving living)
 		{
 			if (living.Group?.IsCompanionRaid == true && living.GroupIndex >= 8) return;
-			bool sameRegion = living.CurrentRegion == m_gameClient.Player.CurrentRegion;
-			if (sameRegion && living.CurrentSpeed != 0)//todo : find a better way to detect when player change coord
+			GamePlayer player = m_gameClient.Player;
+
+			// Ports of OpenDAoC-Core f3943156a, 1a97fbde9 and 5725446af: sent whether or not the member moves (the group's
+			// timer paces it), never the player's own dot, and a member in another region has its dot removed (zone 0).
+			if (player == null || player == living)
+				return;
+
+			Zone zone = living.CurrentZone;
+			if (zone == null)
+				return;
+
+			pak.WriteByte((byte)(0x40 | living.GroupIndex));
+
+			if (player.CurrentRegion == living.CurrentRegion)
 			{
-				Zone zone = living.CurrentZone;
-				if (zone == null)
-					return;
-				pak.WriteByte((byte)(0x40 | living.GroupIndex));
-                //Dinberg - ZoneSkinID for group members aswell.
+				//Dinberg - ZoneSkinID for group members aswell.
 				pak.WriteShort(zone.ZoneSkinID);
 				pak.WriteShort((ushort)(living.X - zone.XOffset));
 				pak.WriteShort((ushort)(living.Y - zone.YOffset));
+			}
+			else
+			{
+				pak.WriteShort(0);
+				pak.WriteShort(0);
+				pak.WriteShort(0);
 			}
 		}
 

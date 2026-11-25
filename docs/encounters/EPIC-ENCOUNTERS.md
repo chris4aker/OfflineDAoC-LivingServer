@@ -522,7 +522,7 @@ Area spells: Crush (DirectDamageNoVariance, damage 400, radius 800).
 
 `source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs` lines 14-41. level 90; npc template 700000001; raid AI: no raid.
 
-A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region).
+A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region). 1.2.3 (#414): no raid, as in the period. She hosts the Albion level 50 epic (Academy_50, 'Symbol of the Broken'); Allakhazam's walkthrough: 'Do not attack Morgana. She will not do anything during this attack', and the fight (two named demons and their minions) 'can take as little as 6 people'. The event starts only for a player on the quest's step. A bot raid on her would need her changed (a spawn and an attackable phase): the owner's call.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1143,7 +1143,7 @@ Area spells: Lifetap (DirectDamageNoVariance, damage 1000, radius 1000).
 
 `source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs` lines 659-720. level 99; 600,000 health; npc template 60158340; raids: darkness-albion (fought if met), darkness-midgard (fought if met), darkness-hibernia (fought if met); raid AI: generic dungeon route.
 
-Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged.
+Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged. 1.2.3 (#414, owner 2026-11-24): no raid, by design. Period sources: Mythic's Grab Bag (11 January 2008) 'This mob is not killable. It has no loot. You have to be sent there.'; the Camelot Herald (relayed 11 April 2002) 'The Behemoth will now stay in his own area' (Legion had been summoning him); Allakhazam comments 2002-2009 (a Legion raid's two ported groups got him to about 35% several times and gave up; a claimed kill is hearsay). Bots keep away from him and tell him as a legend.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1304,7 +1304,7 @@ Area spells: Command Mjollnir (DirectDamageNoVariance, damage 500, radius 350).
 
 #### Anurigunda (`Anurigunda`)
 
-`source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs` lines 10-81. level 75; 30,000 health; npc template 60157942; raid AI: no raid.
+`source/server/GameServer/scripts/namedmobs/Fomor/Anurigunda.cs` lines 10-81. level 75; 30,000 health; npc template 60157942; raids: dungeon-hibernia-fomor (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
@@ -1321,7 +1321,7 @@ Area spells: Touch of Flames (DamageOverTime, damage 45, radius 350).
 
 #### Krackenschtein (`Krackenschtein`)
 
-`source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs` lines 11-95. level 70; 30,000 health; npc template 60162981; raid AI: no raid.
+`source/server/GameServer/scripts/namedmobs/Fomor/Krackenschtein.cs` lines 11-95. level 70; 30,000 health; npc template 60162981; raids: dungeon-hibernia-fomor (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1334,9 +1334,9 @@ Area spells: Thunder Stomp (DirectDamageNoVariance, damage 250, radius 1000).
 
 #### Myrddraxis (`Myrddraxis`)
 
-`source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs` lines 12-297. level 80; 100,000 health; npc template 60164337; raid AI: no raid.
+`source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs` lines 12-297. level 80; 100,000 health; npc template 60164337; raids: dungeon-hibernia-fomor (final); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
-1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.
+1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2.3 Fomor City raid (#414; tests only, not played): dungeon-hibernia-fomor, Hibernia, 56 raiders (the period's seven groups: Thredh's Fomor guide, Valmerwolf 2003, revised 2005), from Droighaid (the period's bind) or Aalid Feie. The shipped zone180.nav had three islands (the entrance with the outer ring and Krackenschtein; the second ring with Nogoribando; the inner ring with Anurigunda and Myrddraxis): the builder's three climb ladders north of Krackenschtein (the period's 'climb in two stages') and the way from the second ring in were cut from the floors beside them by cracks of 21-33 units. A content patch adds four two-way walk links (tools/fork-build/content-patches.json, AutonomousRealmRaid.FomorWalkLinks); probed with dfprobe, every Fomor named is reached and the corridor check is complete both ways. The named come in the period's order, Krackenschtein, Nogoribando, Anurigunda, then Myrddraxis (RaidNamedOrder, REALM_EXPEDITION_NAMED_ORDER): 'each ring's passage is guarded by a named'. No boss changed.
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
@@ -1354,7 +1354,7 @@ Area spells: Disease (Disease, damage None, radius 800); Combat Speed Debuff (Co
 
 #### Nogoribando (`Nogoribando`)
 
-`source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs` lines 9-65. level 70; 30,000 health; npc template 60164519; raid AI: no raid.
+`source/server/GameServer/scripts/namedmobs/Fomor/Nogoribando.cs` lines 9-65. level 70; 30,000 health; npc template 60164519; raids: dungeon-hibernia-fomor (named); raid AI: generic dungeon route.
 
 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, "shared variable safety"), so a reset, a respawn or a second attempt starts clean; no mechanic changed.
 
@@ -3426,16 +3426,16 @@ Area spells: Issorden Root (SpeedDecrease, damage None, radius 1500).
 
 #### Jailer Vifil (`Jailer`)
 
-`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs` lines 11-101. level 82; 100,000 health; npc template 60162583; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
+`source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs` lines 12-113. level 82; 100,000 health; npc template 60162583; raids: epic-midgard (named); raid AI: generic dungeon route + tactics (EpicEncounterTactics).
 
 | Kind | Rule | Where | Confidence | Switch | Difficulty | Proposed tactic |
 |---|---|---|---|---|---|---|
-| adds | Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill). | `JailerVifil.cs:239` | inferred, verified |  | easy for the current raid AI | The jail-rescue errand party kills both (see his tactic); a jailed raider walks free once they are dead. |
-| tether | Tether range 5800 (hrimathursa tormentor (JailerAdd)): drawn further from its spawn it walks home. | `JailerVifil.cs:304` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
-| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `JailerVifil.cs:191` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `JailerVifil.cs:200` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `JailerVifil.cs:205` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
-| teleport / jail | Jails PortTarget (MoveTo Body.CurrentRegionID, 16631, 58683, 10858, 2191) | `JailerVifil.cs:170` | inferred, verified | AllowDisplacement | easy for the current raid AI | Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes. |
+| adds | Spawns his two tunnel guardians (hrimathursa tormentor, JailerAdd, 20,000 health each) at the jail the first time he is hit in a pull; again after a fight he survives ends (the 30-35 s window) and on every respawn (1.2, True 1.65 port: before, once he was killed the guardians never came again until a fight ended without a kill). 1.2.3: port of True165 78526630, tests only, the mechanic unchanged: his brain owns the pair and clears it on a reset or when he leaves the world, so they no longer stack; still two a pull. | `JailerVifil.cs:241` | inferred, verified |  | easy for the current raid AI | The jail-rescue errand party kills both (see his tactic); a jailed raider walks free once they are dead. |
+| tether | Tether range 5800 (hrimathursa tormentor (JailerAdd)): drawn further from its spawn it walks home. | `JailerVifil.cs:334` | read, verified |  | easy for the current raid AI | Fight it where it stands; don't pull it past its tether. |
+| reset | Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver) | `JailerVifil.cs:205` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_tether | Resets while drawn past its tether: aggro cleared, back to full health | `JailerVifil.cs:214` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| reset / out_of_combat | Resets after 30 s out of combat: aggro cleared, full health | `JailerVifil.cs:219` | read, verified |  | easy for the current raid AI | Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it). |
+| teleport / jail | Jails PortTarget (MoveTo Body.CurrentRegionID, 16631, 58683, 10858, 2191) | `JailerVifil.cs:185` | inferred, verified | AllowDisplacement | easy for the current raid AI | Jail: on since 1.2 for bots too (AllowDisplacement, AllowBotDisplacement for Jailer). In the raid AI (EpicEncounterTactics.Tuscaran, an errand): once the fight is on one bot party (two in a raid of eight or more) goes down the tunnel, kills the two guardians and comes back; a jailed bot fights the guards where it lands and walks free when they are dead (recovery jail rule), or recalls after 3 minutes. |
 
 #### Queen Kula (`QueenKula`)
 

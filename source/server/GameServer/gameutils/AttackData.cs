@@ -57,6 +57,18 @@ namespace DOL.GS
 
         public AttackData() { }
 
+        /// <summary>
+        /// The attack speed of this attack's own weapon. Damage adds and shields scale with it, so each hand of a dual
+        /// wield uses its own speed instead of the combined round interval (OpenDAoC-Core 57a8584ff, 6e2d36b9e: NPCs with
+        /// no weapon still get their own swing speed).
+        /// Note: AttackSpeed returns the capped speed, which may not be right for the slower weapon of a dual wield.
+        /// </summary>
+        public int GetWeaponAttackSpeed()
+        {
+            int speed = Attacker?.attackComponent?.AttackSpeed(Weapon) ?? 0;
+            return speed > 0 ? speed : Interval; // An unarmed player keeps the round interval.
+        }
+
         public static eAttackType GetAttackType(DbInventoryItem weapon, bool dualWield, GameLiving attacker)
         {
             if (dualWield && (attacker is not GamePlayer playerAttacker || (eCharacterClass) playerAttacker.CharacterClass.ID is not eCharacterClass.Savage))

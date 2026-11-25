@@ -122,7 +122,7 @@ namespace DOL.GS.Tests
                         continue;
                     }
                     string raid = Tales.RaidIdFor(Tales.LoreIdOf(tale.Topic), realm);
-                    // Only the named raidless tales may have none (Myrddraxis: Fomor has no raid; Behemoth: Darkness Falls is Legion's).
+                    // Only the named raidless tales may have none (Behemoth: Darkness Falls is Legion's; Myrddraxis has the Fomor City raid since 1.2.3).
                     if (Tales.RaidlessTales.Contains(Tales.LoreIdOf(tale.Topic)))
                     {
                         Assert.That(raid, Is.Null, $"{tale.Id}: a raidless tale leads to no raid");

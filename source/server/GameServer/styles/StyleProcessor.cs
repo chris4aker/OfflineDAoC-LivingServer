@@ -351,11 +351,17 @@ namespace DOL.GS.Styles
 				}
 				else
 				{
+					// Melee damage and style damage ToA bonuses are pretty weird.
+					// * They're both calculated from base damage.
+					// * They effectively add the same amount of damage when used independently.
+					// * Style damage bonus works even on styles that have no growth rate.
+					// * They stack multiplicatively. Assuming a GR of 0, two 10% bonuses result in the attack doing 21% more damage.
+					// * StyleDamage raises the styled damage cap with it (OpenDAoC-Core 8274b06c1).
 					double growthRate = style.GrowthRate;
 					double attackSpeed = living.attackComponent.AttackSpeed(weapon) * 0.001;
-					double modifiedGrowthRate = growthRate * spec * attackSpeed / unstyledDamageCap;
-					styleDamage = modifiedGrowthRate * unstyledDamage;
-					styleDamageCap = modifiedGrowthRate * unstyledDamageCap;
+					double modifiedGrowthRate = growthRate * spec * attackSpeed / unstyledDamageCap + living.GetModified(eProperty.StyleDamage) * 0.01;
+					styleDamage = unstyledDamage * modifiedGrowthRate;
+					styleDamageCap = unstyledDamageCap * modifiedGrowthRate;
 
 					// Force styles do at least 1 damage to make level 2 styles actually do something.
 					// Don't forget to ignore the cap. Do it only if the style has a GR.
@@ -391,25 +397,10 @@ namespace DOL.GS.Styles
 					// the class-specific proc instead of the ClassID=0 proc
 					if (!style.RandomProc)
 					{
-						List<StyleProcInfo> procsToExecute = new();
-						bool onlyExecuteClassSpecific = false;
-
-						foreach (StyleProcInfo proc in style.Procs)
+						// Bots resolve their class like players, so a class-specific proc row replaces the shared
+						// ClassID 0 row for them too; they fired both. Port of rambodolphin13/DividedRealms bebdbb71.
+						foreach (StyleProcInfo procToExecute in SelectFixedProcs(style.Procs, Specialization.ResolveClassId(living), style.ClassID))
 						{
-							if (player != null && proc.ClassId == player.CharacterClass.ID)
-							{
-								procsToExecute.Add(proc);
-								onlyExecuteClassSpecific = true;
-							}
-							else if (proc.ClassId == style.ClassID || proc.ClassId == 0)
-								procsToExecute.Add(proc);
-						}
-
-						foreach (StyleProcInfo procToExecute in procsToExecute)
-						{
-							if (onlyExecuteClassSpecific && procToExecute.ClassId == 0)
-								continue;
-
 							if (Util.Chance(procToExecute.Chance))
 							{
 								effect = CreateMagicEffect(living, target, procToExecute.Spell.ID);
@@ -606,6 +597,32 @@ namespace DOL.GS.Styles
 		/// <param name="delveInfo"></param>
 		/// <param name="style"></param>
 		/// <param name="player"></param>
+		/// <summary>
+		/// The procs a non-random style rolls for: a proc for the attacker's class (a player's, or a player-like bot's)
+		/// replaces the shared ClassID 0 ones; otherwise the shared ones and, for mobs, those of the style's own class.
+		/// </summary>
+		public static List<StyleProcInfo> SelectFixedProcs(IEnumerable<StyleProcInfo> procs, int livingClassId, int styleClassId)
+		{
+			List<StyleProcInfo> procsToExecute = new();
+			bool onlyExecuteClassSpecific = false;
+
+			foreach (StyleProcInfo proc in procs)
+			{
+				if (livingClassId != 0 && proc.ClassId == livingClassId)
+				{
+					procsToExecute.Add(proc);
+					onlyExecuteClassSpecific = true;
+				}
+				else if (proc.ClassId == styleClassId || proc.ClassId == 0)
+					procsToExecute.Add(proc);
+			}
+
+			if (onlyExecuteClassSpecific)
+				procsToExecute.RemoveAll(proc => proc.ClassId == 0);
+
+			return procsToExecute;
+		}
+
 		public static void DelveWeaponStyle(List<string> delveInfo, Style style, GamePlayer player)
 		{
 			delveInfo.Add(LanguageMgr.GetTranslation(player.Client.Account.Language, "DetailDisplayHandler.HandlePacket.WeaponType", style.GetRequiredWeaponName()));
@@ -840,6 +857,9 @@ namespace DOL.GS.Styles
 						if (hasClassSpecificProc && proc.ClassId != player.CharacterClass.ID)
 							continue;
 						else if (!hasClassSpecificProc && proc.ClassId != 0)
+							continue;
+						// A Chance 0 class row only blocks the shared proc for that class; it never fires, so don't list it.
+						if (proc.Chance <= 0)
 							continue;
 
 						ISpellHandler spellHandler = ScriptMgr.CreateSpellHandler(player.Client.Player, proc.Spell, styleLine);

@@ -492,7 +492,7 @@ namespace DOL.GS
 		/// Resolve a class hint for both connected players and player-like bots.
 		/// Ordinary NPC specializations continue to use the class-neutral catalog.
 		/// </summary>
-		private static int ResolveClassId(GameLiving living)
+		internal static int ResolveClassId(GameLiving living)
 		{
 			if (living is GamePlayer player)
 				return player.CharacterClass?.ID ?? 0;

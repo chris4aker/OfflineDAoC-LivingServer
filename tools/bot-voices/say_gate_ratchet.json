@@ -1,11 +1,11 @@
 {
-  "gate_calls": 17,
+  "gate_calls": 20,
   "raw_sends": {
     "bots/BotBrain.cs": 1,
     "bots/BotCommand.cs": 43,
     "bots/BotCorpseTargeting.cs": 1,
     "bots/BotFriends.cs": 1,
-    "bots/BotGroupInvite.cs": 10,
+    "bots/BotGroupInvite.cs": 9,
     "bots/BotManager.cs": 2,
     "bots/CompanionRaidSiege.cs": 2,
     "bots/PlayerLedPullCoordinator.cs": 1,

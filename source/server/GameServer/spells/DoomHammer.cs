@@ -18,7 +18,10 @@ namespace DOL.GS.Spells
 		public override double CalculateDamageBase(GameLiving target) { return Spell.Damage; }
 		public override void ApplyEffectOnTarget(GameLiving target)
 		{
-			base.ApplyEffectOnTarget(Caster);
+			// The Thane throws his hammer for direct damage and is disarmed for the spell's duration. The old code passed
+			// the Thane to the base method, so it put the effect on (or damaged) the Thane himself.
+			// Port of rambodolphin13/DividedRealms bebdbb71.
+			OnDirectEffect(target);
 			Caster.attackComponent.StopAttack();
 			Caster.DisarmedTime = Caster.CurrentRegion.Time + Spell.Duration;
 
@@ -31,8 +34,6 @@ namespace DOL.GS.Spells
 					visPlayer.Out.SendSpellEffectAnimation(Caster, target, (ushort) Spell.ResurrectMana, 0, false, 0x01);
 			}
 
-			if ((Spell.Duration > 0 && Spell.Target != eSpellTarget.AREA) || Spell.Concentration>0)
-				OnDirectEffect(target);
 		}
 		public override int OnEffectExpires(GameSpellEffect effect, bool noMessages)
 		{

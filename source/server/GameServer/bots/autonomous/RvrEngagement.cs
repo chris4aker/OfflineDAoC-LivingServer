@@ -262,7 +262,7 @@ public static class RvrEngagement
     /// <summary>An enemy this close to the group is on it, whatever the stance.</summary>
     public const int UponGroupRadius = 350;
 
-    // ---- the wipe rule (lifted from AutonomousRvrDirector.Choose) ------------------------------------------------------
+    // ---- the wipe rule (lifted from the old director, deleted in #530) ------------------------------------------------------
     /// <summary>A force with this many recent wipes regroups before it goes hunting again.</summary>
     public const int RepeatedWipes = 3;
 
@@ -794,7 +794,7 @@ public static class RvrEngagement
 
     // ---- wipes ---------------------------------------------------------------------------------------------------------
 
-    /// <summary>The wipe rule of AutonomousRvrDirector.Choose: a force that wiped this often lately regroups first. Pure.</summary>
+    /// <summary>The wipe rule (from the old director, deleted in #530): a force that wiped this often lately regroups first. Pure.</summary>
     public static bool WipedRepeatedly(int recentWipes) => recentWipes >= RepeatedWipes;
 
     /// <summary>Records a wipe of a bot group (the Group object) in its stored facts. Lock-free; safe under the coordinator's lock.</summary>

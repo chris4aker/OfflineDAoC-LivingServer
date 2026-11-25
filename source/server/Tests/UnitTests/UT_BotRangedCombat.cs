@@ -28,7 +28,7 @@ public class UT_BotRangedCombat
         public override byte Level { get; set; }
         public override int Endurance { get; set; }
         public override short Quickness { get => 60; set { } }
-        public override int GetModified(eProperty property) => property == eProperty.MeleeSpeed ? 100 : 0;
+        public override int GetModified(eProperty property) => property == eProperty.MeleeSpeed ? 1000 : 0; // per-mille since OpenDAoC-Core dda75528c
         public override bool HasAbilityToUseItem(DbItemTemplate item) => true;
         public override int WeaponSpecLevel(DbInventoryItem item) => 1;
         public override void RefreshItemBonuses() { }

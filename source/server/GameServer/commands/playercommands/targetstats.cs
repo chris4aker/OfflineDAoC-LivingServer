@@ -89,7 +89,6 @@ namespace DOL.GS.Commands
                 static void AddWeaponInfo(List<string> info, string header, GameClient client, GameLiving target, DbInventoryItem weapon, AttackData.eAttackType attackType)
                 {
                     double weaponDamage = target.attackComponent.WeaponDamage(weapon, null, target.Effectiveness, out double weaponDamageCap);
-                    weaponDamage *= target.attackComponent.CalculateDamageTypeModifier(weapon);
 
                     info.Add("");
                     info.Add(header);
@@ -198,7 +197,7 @@ namespace DOL.GS.Commands
                 for (int i = 1; i < spanLength; i++)
                 {
                     dummyAttackData.AttackType = attackTypes[i - 1];
-                    evades[i] = target.TryEvade(dummyAttackData, lastAttackData);
+                    evades[i] = target.TryEvade(dummyAttackData, lastAttackData, meleeAttackerCount);
                     parries[i] = target.TryParry(dummyAttackData, lastAttackData, meleeAttackerCount);
                     blocks[i] = target.TryBlock(dummyAttackData, out _);
                 }

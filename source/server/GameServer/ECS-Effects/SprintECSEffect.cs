@@ -15,7 +15,7 @@ namespace DOL.GS
         private int _idleTicks = 0;
 
         public override ushort Icon => 0x199;
-        public override string Name => LanguageMgr.GetTranslation(OwnerPlayer.Client, "Effects.SprintEffect.Name");
+        public override string Name => OwnerPlayer != null ? LanguageMgr.GetTranslation(OwnerPlayer.Client, "Effects.SprintEffect.Name") : "Sprint";
         public override bool HasPositiveEffect => true;
 
         public override long GetRemainingTimeForClient()
@@ -31,6 +31,8 @@ namespace DOL.GS
                 OwnerPlayer.Out.SendMessage(LanguageMgr.GetTranslation(OwnerPlayer.Client.Account.Language, "GamePlayer.Sprint.PrepareSprint"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 Owner.StartEnduranceRegeneration();
             }
+            else
+                Owner.StartEnduranceRegeneration();   // #521: a gamebot's sprint drains in RvR (GameBot.EnduranceRegenerationTimerCallback)
         }
 
         public override void OnStopEffect()

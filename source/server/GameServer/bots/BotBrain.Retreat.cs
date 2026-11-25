@@ -132,15 +132,23 @@ namespace DOL.AI.Brain
         private PersonalRetreat ConsiderSoloBail(GameBot bot, long now)
         {
             if (!bot.IsAutonomousWorldBot || bot.IsTemporaryGroupHelper || bot.Group != null || !bot.InCombat ||
-                _soloBailUsedThisFight || bot.HealthPercent >= 50 || now < _nextSoloBailLook || bot.IsIncapacitated)
+                _soloBailUsedThisFight || now < _nextSoloBailLook || bot.IsIncapacitated)
+                return null;
+            // #522: a stealther whose opener lost its edge (BotStealthEdge: the target still above half health, or a second
+            // enemy joined) runs whatever its own health, and re-hides once out of combat (BotStealthTravel).
+            string edgeReason = null;
+            bool edgeGone = DOL.GS.ServerProperties.Properties.RVR_BOT_STEALTH_OPENERS && RvrTacticsActive() && BotStealthEdge.Gone(bot, now, out edgeReason);
+            if (!edgeGone && bot.HealthPercent >= 50)
                 return null;
             _nextSoloBailLook = now + 500;
             GameLiving target = bot.TargetObject as GameLiving;
             int attackers = bot.attackComponent?.AttackerTracker.Count ?? 0;
-            if (!BotGroupRetreat.SoloShouldBail(bot.HealthPercent, target?.IsAlive == true ? target.HealthPercent : 0,
+            if (!edgeGone && !BotGroupRetreat.SoloShouldBail(bot.HealthPercent, target?.IsAlive == true ? target.HealthPercent : 0,
                     attackers, SpellReady(bot, bot.HealSpells, bot.InstantHealSpells, IsSelfHeal),
                     SpellReady(bot, bot.CrowdControlSpells, bot.InstantCrowdControlSpells, _ => true)))
                 return null;
+            if (edgeGone)
+                BotStealthEdge.Clear(bot);
             _soloBailUsedThisFight = true;
             Vector3 here = new(bot.X, bot.Y, bot.Z);
             Vector3 enemy = target != null ? new(target.X, target.Y, target.Z) : here;
@@ -151,11 +159,11 @@ namespace DOL.AI.Brain
                 AutonomousWorldBotController.TryCampSafeSpot(_autonomousWorldController?.CurrentCampId, bot.CurrentRegionID,
                     out Vector3 campSafe) ? campSafe : null,
                 enemy, BotGroupRetreat.RetreatPoint(here, _lastPeacePosition, enemy, SoloBailDistance));
-            RvrDecide.Event(bot, "brain", "flee", $"{bot.CurrentRegionID}:{(int)point.X},{(int)point.Y}", "flee.soloBail",
-                $"health={bot.HealthPercent} attackers={attackers}");
+            RvrDecide.Event(bot, "brain", "flee", $"{bot.CurrentRegionID}:{(int)point.X},{(int)point.Y}",
+                edgeGone ? "flee.stealthEdge" : "flee.soloBail", $"health={bot.HealthPercent} attackers={attackers}");
             log.Info($"BOT_SOLO_BAIL bot=\"{bot.Name}\" level={bot.Level} class=\"{bot.ClassName}\" health={bot.HealthPercent} " +
                      $"target=\"{target?.Name}\" targetHealth={target?.HealthPercent} attackers={attackers} " +
-                     $"to={bot.CurrentRegionID}:{(int)point.X},{(int)point.Y}");
+                     $"to={bot.CurrentRegionID}:{(int)point.X},{(int)point.Y} reason={edgeReason ?? "losing"}");
             return new PersonalRetreat
             {
                 Region = bot.CurrentRegionID, Point = point, Kind = "solo",

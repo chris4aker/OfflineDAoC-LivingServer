@@ -32,7 +32,10 @@ namespace DOL.AI.Brain
                 if (spell.Level>Body.Level || Body.GetSkillDisabledDuration(spell)>0 || Body.Mana<BotBody.PowerCost(spell) ||
                     spell.CastTime>0 && Body.IsBeingInterrupted && !spell.Uninterruptible) continue;
                 int range = spell.Target==eSpellTarget.SELF || spell.Range<=0 ? spell.Radius : spell.CalculateEffectiveRange(Body);
+                // #521: the older path reads the server's immunity too (it wasted casts on immune targets).
                 GameLiving candidate=enemies.Where(t=>Body.IsWithinRadius(t,range) && !LivingHasEffect(t,spell) &&
+                    !(spell.SpellType==eSpellType.Mesmerize && RvrCrowdControlPlan.MezImmune(t,spell.Duration,Body)) &&
+                    !(spell.SpellType==eSpellType.Stun && RvrCrowdControlPlan.StunImmune(t,spell.Duration,Body)) &&
                     NeedsOffensiveSpellApplication(t,spell)).OrderByDescending(t=>enemies.Count(n=>n.IsWithinRadius(t,Math.Max(1,spell.Radius))))
                     .ThenBy(Body.GetDistanceTo).FirstOrDefault(t=>BotSiegeRuntime.Visible(Body,t));
                 if (candidate==null || !BotPvpCrowdControl.Reserve(BotBody,candidate,spell.CastTime+2000)) continue;
@@ -85,8 +88,8 @@ namespace DOL.AI.Brain
                     continue;
                 bool immune = spellKind switch
                 {
-                    RvrControlKind.Mez => RvrCrowdControlPlan.MezImmune(subject, spell.Duration),
-                    RvrControlKind.Stun => RvrCrowdControlPlan.StunImmune(subject, spell.Duration),
+                    RvrControlKind.Mez => RvrCrowdControlPlan.MezImmune(subject, spell.Duration, Body),
+                    RvrControlKind.Stun => RvrCrowdControlPlan.StunImmune(subject, spell.Duration, Body),
                     _ => RvrCrowdControlPlan.RootImmune(subject),
                 };
                 if (immune)

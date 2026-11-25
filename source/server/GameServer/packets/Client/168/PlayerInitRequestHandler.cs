@@ -49,6 +49,8 @@ namespace DOL.GS.PacketHandler.Client.v168
                 firstEntry = true;
                 player.EnteredGame = true;
                 player.Notify(GamePlayerEvent.GameEntered, player);
+                // 1.2.3: the gravestone saved before a server restart stands again.
+                GameGravestone.RestoreFor(player);
                 ShowPatchNotes(player);
                 EffectHelper.RestoreAllEffects(player);
                 checkInstanceLogin = true;

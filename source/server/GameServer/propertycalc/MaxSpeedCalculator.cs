@@ -3,6 +3,7 @@ using System.Linq;
 using DOL.AI.Brain;
 using DOL.GS.Effects;
 using DOL.GS.RealmAbilities;
+using DOL.GS.ServerRules;
 
 namespace DOL.GS.PropertyCalc
 {
@@ -66,27 +67,15 @@ namespace DOL.GS.PropertyCalc
 
                 if (player.IsStealthed && player.Client.Account.PrivLevel == 1)
                 {
-                    AtlasOF_MasteryOfStealth mos = player.GetAbility<AtlasOF_MasteryOfStealth>();
                     //GameSpellEffect bloodrage = SpellHandler.FindEffectOnTarget(player, "BloodRage");
                     //VanishEffect vanish = player.EffectList.GetOfType<VanishEffect>();
-                    double stealthSpec = player.GetModifiedSpecLevel(Specs.Stealth);
-
-                    if (stealthSpec > player.Level)
-                        stealthSpec = player.Level;
-
-                    speedIncrease *= 0.3 + (stealthSpec + 10) * 0.3 / (player.Level + 10);
-
                     //if (vanish != null)
                     //    speed *= vanish.SpeedBonus;
-
-                    if (mos != null)
-                        speedIncrease *= 1 + mos.GetAmountForLevel(mos.Level) / 100.0;
-
                     //if (bloodrage != null)
                     //    speed *= 1 + (bloodrage.Spell.Value * 0.01); // 25 * 0.01 = 0.25 (a.k 25%) value should be 25.5
 
-                    if (player.effectListComponent.ContainsEffectForEffectType(eEffect.ShadowRun))
-                        speedIncrease *= 2;
+                    // #521/#522: one formula for the player and the gamebots (StealthRules.SpeedFactor, PvpRules.StealthSpeedFactor).
+                    speedIncrease *= StealthRules.SpeedFactor(player);
                 }
 
                 if (GameRelic.IsPlayerCarryingRelic(player))
@@ -137,10 +126,22 @@ namespace DOL.GS.PropertyCalc
                     }
                 }
 
+                // #521: an autonomous gamebot in RvR moves by the player's speed rules: stealth slows it, sprint is +30%, and
+                // low health does not slow it. Everywhere else (PvE), and for every other NPC, today's rule.
+                bool botPlayerRules = npc is GameBot && PvpRules.TakesPlayerRules(npc);
+
+                if (botPlayerRules && npc is GameBot bot)
+                {
+                    // #522: the same stealth rule as the player's (StealthRules.SpeedFactor).
+                    speedIncrease *= StealthRules.SpeedFactor(bot);
+
+                    speedIncrease *= PvpRules.SprintSpeedFactor(true, bot.IsSprinting);
+                }
+
                 double healthPercent = living.Health / (double) living.MaxHealth;
 
-                if (healthPercent < 0.33)
-                    speedIncrease *= 0.2 + healthPercent * (0.8 / 0.33); // 33% HP = full speed, 0% HP = 20% speed
+                // 33% HP = full speed, 0% HP = 20% speed (monsters only)
+                speedIncrease *= PvpRules.LowHealthSpeedFactor(botPlayerRules, healthPercent);
             }
 
             if (living is GameBot && GameRelic.IsPlayerCarryingRelic(living))

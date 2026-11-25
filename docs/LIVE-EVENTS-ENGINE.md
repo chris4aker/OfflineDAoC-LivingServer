@@ -111,7 +111,7 @@ from a friend ("you coming? {place} is getting hit"), and the after-event line. 
 corpus with the same truth rule as 1.1 (a line that names a place needs the event to be real). Each beat carries a
 chat budget so an invasion never floods /faction the way the backlog warns.
 
-**Director.** Small and pure, in the shape of `AutonomousRvrDirector` (which production code never calls, so it
+**Director.** Small and pure, in the shape of the old `AutonomousRvrDirector` (deleted in 1.2.3, #530; it was never called, so it
 is a template, not a dependency). It hooks into `PrepareCoordinatorTick`, where every other pulse runs. It owns: the
 player's session clock (today there is none: sessions only fire one-shot `OnSessionStart` callbacks, so "minutes
 into the session" is new state); what the player is
@@ -254,7 +254,7 @@ guilds reading the same event records).
 A second, file-by-file pass over the raid, siege, messaging and test code confirmed the table in section 2 and
 added these, each of which changes a detail above:
 - `ai_budget_ms` is not read by production code; section 5 now says so.
-- `AutonomousRvrDirector` is only called by tests.
+- `AutonomousRvrDirector` was only called by tests; it was deleted in 1.2.3 (#530).
 - Dragons already spawn adds by health, and boss mechanics the bots can't handle are already switched off per
   script: the scripted-fight layer extends those seams.
 - The watchdog teleports idle bots away after 15 minutes unless exempted; raids and sieges register exemptions and

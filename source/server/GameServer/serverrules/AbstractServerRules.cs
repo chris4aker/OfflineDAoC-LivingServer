@@ -355,10 +355,30 @@ namespace DOL.GS.ServerRules
                 if ((attacker as GameNPC).Brain is IControlledBrain)
                     playerAttacker = ((attacker as GameNPC).Brain as IControlledBrain).GetPlayerOwner();
 
-            if (playerDefender != null && (playerDefender.Client.ClientState == GameClient.eClientState.WorldEnter || playerDefender.IsInvulnerableToAttack))
+            // Loading screen protection: invulnerable to everything.
+            if (playerDefender != null && playerDefender.Client?.ClientState == GameClient.eClientState.WorldEnter)
             {
                 if (!quiet)
-                    MessageToLiving(attacker, defender.Name + " is entering the game and is temporarily immune to PvP attacks!");
+                    MessageToLiving(attacker, defender.Name + " is entering the game and cannot be attacked!");
+                return false;
+            }
+
+            // Ports of OpenDAoC-Core 9a665b536 and d73447af2: the login/zoning invulnerability timer is a PvP rule. Monsters,
+            // guards and pets no longer wait for it to run out, and a player under it may fight monsters. An autonomous
+            // gamebot in RvR (PvpRules.TakesPlayerRules) counts as a player here, on either side.
+            if (playerAttacker == null && playerDefender != null && PvpRules.TakesPlayerRules(attacker, defender) &&
+                playerDefender.IsInvulnerableToAttack)
+            {
+                if (!quiet)
+                    MessageToLiving(attacker, defender.Name + " is temporarily immune to PvP attacks!");
+                return false;
+            }
+
+            if (playerAttacker != null && playerDefender == null && PvpRules.TakesPlayerRules(defender, attacker) &&
+                playerAttacker.IsInvulnerableToAttack)
+            {
+                if (!quiet)
+                    MessageToLiving(attacker, "You can't attack players until your PvP invulnerability timer wears off!");
                 return false;
             }
 
@@ -386,16 +406,6 @@ namespace DOL.GS.ServerRules
             if (defender is GameNPC)
                 if ((((GameNPC)defender).Flags & GameNPC.eFlags.PEACE) != 0)
                     return false;
-            // Players can't attack mobs while they have immunity
-            if (playerAttacker != null && defender != null)
-            {
-                if ((defender is GameNPC) && (playerAttacker.IsInvulnerableToAttack))
-                {
-                    if (quiet == false) MessageToLiving(attacker, "You can't attack until your PvP invulnerability timer wears off!");
-                    return false;
-                }
-            }
-
             // GMs can't be attacked
             if (playerDefender != null && playerDefender.Client.Account.PrivLevel > 1)
                 return false;
@@ -581,9 +591,8 @@ namespace DOL.GS.ServerRules
             if (player.Client.Account.PrivLevel > 1)
                 return false;
 
-            if (player.IsInvulnerableToAttack)
-                return false;
-
+            // Port of OpenDAoC-Core 2e791235f: the invulnerability timer no longer cancels fall damage (GMs above still take
+            // none, observer flight included).
             if (player.CurrentRegion.IsHousing)
                 return false; // Workaround: falling from houses should not produce damage
 
@@ -1114,6 +1123,8 @@ namespace DOL.GS.ServerRules
                     .Distinct().ToArray();
             }
             var expeditionMembers = expeditionOwner?.Members.ToHashSet();
+            // GitHub #544: a sampled per-kill XP row (no random numbers, no state written; raid expeditions left out).
+            var killXpSample = expeditionOwner == null ? AutonomousKillXpDiagnostics.Begin(botCountAndDamage) : null;
             foreach (var pair in botCountAndDamage)
             {
                 GameBot bot = pair.Key;
@@ -1126,6 +1137,8 @@ namespace DOL.GS.ServerRules
                     AutonomousObjectiveAssignments.RecordPveKill(bot);
                     AutonomousGoalDiagnostics.Reward(bot, killedNpc, 0);
                 }
+            AutonomousKillXpDiagnostics.Finish(killXpSample, killedNpc, totalDamage, playerCountAndDamage,
+                botCountAndDamage, groupCountAndDamage);
 
             // A gamebot party moves on once its camp bonus runs dry (from True 1.65): the fraction this kill paid.
             NoteGamebotPartyCampBonus(killedNpc, botCountAndDamage.Keys);
@@ -1354,10 +1367,7 @@ namespace DOL.GS.ServerRules
                             value.Count++;
                         value.Damage += damage;
                         totalDamage = value.Damage;
-                        int level = participant.Level;
-
-                        if (value.HighestLevelPlayer.Level < level)
-                            value.HighestLevelPlayer = participant;
+                        value.Track(participant);
                     }
                     else
                     {
@@ -1496,7 +1506,7 @@ namespace DOL.GS.ServerRules
                 if (memberCount <= 1)
                     return killedNpc.ExperienceValue;
 
-                GameLiving highestLevelPlayer = entityCountTotalDamagePair.HighestLevelPlayer;
+                int highestLevelInGroup = entityCountTotalDamagePair.HighestLevel;
 
                 /*
                 * http://www.camelotherald.com/more/110.shtml
@@ -1514,7 +1524,7 @@ namespace DOL.GS.ServerRules
                 * challenge code may not kick in. It could also kick in if the monster is low yellow to the high level player, depending on the group strength of the pair.
                 */
 
-                ConColor conColorForHighestLevelPlayerInGroup = ConLevels.GetConColor(highestLevelPlayer.GetConLevel(killedNpc));
+                ConColor conColorForHighestLevelPlayerInGroup = ConLevels.GetConColor(ConLevels.GetConLevel(highestLevelInGroup, killedNpc.EffectiveLevel));
 
                 if (conColorForHighestLevelPlayerInGroup is ConColor.GREY)
                     return 0;
@@ -1538,43 +1548,15 @@ namespace DOL.GS.ServerRules
 
                 // If we're checking the highest level player, or if the npc is of the same or higher con level for us.
                 // We shouldn't try to treat the NPC as if it was of a different con color if it's already of that color to us (this could raise or lower the experience).
-                if (highestLevelPlayer == playerToAward || ConLevels.GetConColor(playerToAward.GetConLevel(killedNpc)) <= conColorForHighestLevelPlayerInGroup)
+                // The highest level member always passes this check with its level from before the kill; with its new
+                // level (it just levelled up) the NPC cons lower to it, so it passes too (OpenDAoC-Core 6ac049c6e).
+                if (ConLevels.GetConColor(playerToAward.GetConLevel(killedNpc)) <= conColorForHighestLevelPlayerInGroup)
                     return (long) Math.Ceiling((double) killedNpc.ExperienceValue / memberCount);
 
                 // Find an adequate NPC level so that its con color for the player being handled matches the con color of the highest level player in the group.
                 // If it's below yellow, loop downwards; if it's above yellow, loop upwards; if it's yellow, use our own level.
                 // We have to check every level starting from the player's. This isn't very efficient but there shouldn't be too many iterations.
-                int level = 0;
-
-                if (conColorForHighestLevelPlayerInGroup < ConColor.YELLOW)
-                {
-                    // Downwards loop. Return the first level found.
-                    for (int i = playerToAward.Level - 1; i > 1; i--)
-                    {
-                        if (ConLevels.GetConColor(ConLevels.GetConLevel(playerToAward.Level, i)) == conColorForHighestLevelPlayerInGroup)
-                        {
-                            level = i;
-                            break;
-                        }
-                    }
-                }
-                else if (conColorForHighestLevelPlayerInGroup > ConColor.YELLOW)
-                {
-                    level = playerToAward.Level + 1;
-
-                    for (int i = level; i < 51; i++)
-                    {
-                        // Upwards loop. Continue until we find the highest level matching this color.
-                        ConColor color = ConLevels.GetConColor(ConLevels.GetConLevel(playerToAward.Level, i));
-
-                        if (color == conColorForHighestLevelPlayerInGroup)
-                            level = i;
-                        else if (color > conColorForHighestLevelPlayerInGroup)
-                            break;
-                    }
-                }
-                else if (conColorForHighestLevelPlayerInGroup is ConColor.YELLOW)
-                    level = playerToAward.Level;
+                int level = ChallengeEquivalentNpcLevel(playerToAward.Level, conColorForHighestLevelPlayerInGroup);
 
                 if (playerToAward.XPLogState is eXPLogState.Verbose)
                     playerToAward.Out.SendMessage($"Base XP set to match the one of a level {level} NPC", eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -1888,8 +1870,8 @@ namespace DOL.GS.ServerRules
                 if (memberCount <= 1)
                     return killedNpc.ExperienceValue;
 
-                GameLiving highestLevelMember = groupContribution.HighestLevelPlayer;
-                ConColor highestCon = ConLevels.GetConColor(highestLevelMember.GetConLevel(killedNpc));
+                int highestLevelMember = groupContribution.HighestLevel;
+                ConColor highestCon = ConLevels.GetConColor(ConLevels.GetConLevel(highestLevelMember, killedNpc.EffectiveLevel));
                 if (highestCon is ConColor.GREY)
                     return 0;
 
@@ -1900,44 +1882,56 @@ namespace DOL.GS.ServerRules
                     _ => ConColor.YELLOW,
                 };
 
-                if (highestCon >= challengeThreshold || highestLevelMember == botToAward ||
+                if (highestCon >= challengeThreshold ||
                     ConLevels.GetConColor(botToAward.GetConLevel(killedNpc)) <= highestCon)
                 {
                     return (long)Math.Ceiling((double)killedNpc.ExperienceValue / memberCount);
                 }
 
-                int equivalentLevel = 0;
-                if (highestCon < ConColor.YELLOW)
-                {
-                    for (int level = botToAward.Level - 1; level > 1; level--)
-                    {
-                        if (ConLevels.GetConColor(ConLevels.GetConLevel(botToAward.Level, level)) == highestCon)
-                        {
-                            equivalentLevel = level;
-                            break;
-                        }
-                    }
-                }
-                else if (highestCon > ConColor.YELLOW)
-                {
-                    equivalentLevel = botToAward.Level + 1;
-                    for (int level = equivalentLevel; level < 51; level++)
-                    {
-                        ConColor color = ConLevels.GetConColor(ConLevels.GetConLevel(botToAward.Level, level));
-                        if (color == highestCon)
-                            equivalentLevel = level;
-                        else if (color > highestCon)
-                            break;
-                    }
-                }
-                else
-                {
-                    equivalentLevel = botToAward.Level;
-                }
+                int equivalentLevel = ChallengeEquivalentNpcLevel(botToAward.Level, highestCon);
 
                 return (long)Math.Ceiling(
                     (double)killedNpc.GetExperienceValueForLevel(equivalentLevel) / memberCount);
             }
+        }
+
+        /// <summary>
+        /// Group "challenge code": the NPC level that cons <paramref name="highestCon"/> to a member of
+        /// <paramref name="memberLevel"/>. Below yellow the first level found going down is used, above yellow the highest
+        /// level of that colour, at yellow the member's own level. Shared by players and autonomous gamebots. The downward
+        /// search reaches level 1 (OpenDAoC-Core 6ac049c6e; it used to stop at 2, so a level 1 NPC could never match).
+        /// </summary>
+        public static int ChallengeEquivalentNpcLevel(int memberLevel, ConColor highestCon)
+        {
+            if (highestCon < ConColor.YELLOW)
+            {
+                for (int i = memberLevel - 1; i > 0; i--)
+                {
+                    if (ConLevels.GetConColor(ConLevels.GetConLevel(memberLevel, i)) == highestCon)
+                        return i;
+                }
+
+                return 0;
+            }
+
+            if (highestCon > ConColor.YELLOW)
+            {
+                int level = memberLevel + 1;
+
+                for (int i = level; i < 51; i++)
+                {
+                    ConColor color = ConLevels.GetConColor(ConLevels.GetConLevel(memberLevel, i));
+
+                    if (color == highestCon)
+                        level = i;
+                    else if (color > highestCon)
+                        break;
+                }
+
+                return level;
+            }
+
+            return memberLevel;
         }
 
         public virtual void OnPlayerKilled(GamePlayer killedPlayer, GameObject killer)
@@ -2021,10 +2015,7 @@ namespace DOL.GS.ServerRules
                         value.Count++;
                         value.Damage += damage;
                         totalDamage = value.Damage;
-                        int level = player.Level;
-
-                        if (value.HighestLevelPlayer.Level < level)
-                            value.HighestLevelPlayer = player;
+                        value.Track(player);
                     }
                     else
                     {

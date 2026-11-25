@@ -1,0 +1,47 @@
+{
+  "_comment": "Repos the weekly upstream watch follows (.github/workflows/upstream-watch.yml). 'reviewed' is the last commit a person or agent has gone through; move it forward when a review is done (see docs/UPSTREAM-WATCH.md).",
+  "repos": [
+    {
+      "name": "OpenDAoC-Core",
+      "url": "https://github.com/OpenDAoC/OpenDAoC-Core",
+      "branch": "master",
+      "reviewed": "428927b33163234a578a14cd2762b9d50fd927f9",
+      "note": "Our server base. Reviewed through 2026-11-23 in the 2026-11-24 harvest (base was about d51233cb, 2026-03-13)."
+    },
+    {
+      "name": "OfflineDAoC-True165",
+      "url": "https://github.com/zomboden/OfflineDAoC-True165",
+      "branch": "main",
+      "reviewed": "e2af3f2d2fdcfe0deed73c0ff4591bdf1bf2756d",
+      "note": "shadowofze's current home (True 1.65). GPL-3.0. Bot AI source: its pre-v0.7 bots/ files were mostly never ported. Reviewed in the 2026-11-24 harvest (docs/upstream/HARVEST-2026-11.md, issues #567-#574)."
+    },
+    {
+      "name": "DividedRealms",
+      "url": "https://github.com/rambodolphin13/DividedRealms",
+      "branch": "feature/bot-ai-trips",
+      "reviewed": "9ef07ca4e20136653d349cec15cf31b0853157a1",
+      "note": "GPL-3.0. Same bot lineage as ours; active work is on this branch (main stops at a0555cd, 2026-11-11). Much is ToA/ML/NF, out of era. Reviewed in the 2026-11-24 harvest."
+    },
+    {
+      "name": "DetShaft-LivingServer",
+      "url": "https://github.com/DetShaft/OfflineDAoC-LivingServer",
+      "branch": "main",
+      "reviewed": "e77f16a1bcb4e7fd331050063e35e0670f931abf",
+      "note": "GPL-3.0. A Living Server fork (their 1.1.x-beta line): player-group combat, siege, pets. Reviewed in the 2026-11-24 harvest."
+    },
+    {
+      "name": "FelixGagnonB-OfflineDAoC",
+      "url": "https://github.com/FelixGagnonB/OfflineDAoC",
+      "branch": "main",
+      "reviewed": "1729e070c1e121af9dccee9776d92060aacc0541",
+      "note": "GPL-3.0. A 0.37 fork with an engine fix (two singers). Reviewed in the 2026-11-24 harvest."
+    },
+    {
+      "name": "FelixGagnonB-OfflineDAoC-pvp-8v8",
+      "url": "https://github.com/FelixGagnonB/OfflineDAoC",
+      "branch": "pvp-8v8-m11",
+      "reviewed": "277d68fcb7b138729099a6a69a823fd72ec5e541",
+      "note": "GPL-3.0. The 8v8 PvP group AI (bots/pvp/). Milestone branches (m2..m11) move on: when the watch can't read this branch, point it at the newest pvp-8v8-m* branch. Reviewed in the 2026-11-24 harvest."
+    }
+  ]
+}

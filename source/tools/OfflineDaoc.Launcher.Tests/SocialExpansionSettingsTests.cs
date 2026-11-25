@@ -94,6 +94,8 @@ public class SocialExpansionSettingsTests
         [
             nameof(SocialExpansionSettings.ManaHalvedBelowHalf), nameof(SocialExpansionSettings.CraftingSecondaryCaps),
             nameof(SocialExpansionSettings.CraftingClassicQuality), nameof(SocialExpansionSettings.CraftingClassicLosses),
+            // Not a feature switch: marking bots as bots stays off so they look like players (owner decision 2026-11-24, #485).
+            nameof(SocialExpansionSettings.ShowBotsAsBots),
         ];
         var switches = typeof(SocialExpansionSettings).GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.PropertyType == typeof(bool) && p.CanWrite && !classicRules.Contains(p.Name)).ToArray();
@@ -299,6 +301,20 @@ public class SocialExpansionSettingsTests
         Assert.That(Rows()["bot_death_animation"], Is.EqualTo("False"));
         var problems = new List<string>();
         Assert.That(SocialExpansionSettings.Load(_database, problems).DeathFall, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
+    [Test] public void ShowBotsAsBotsIsOffByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // 1.2.3 (owner 2026-11-24, #485): the [Playerbot] tag in /who and "gamebot"/"buffbot" in refusals are a launcher
+        // setting, hidden by default, in Setup too; ALL OFF (a display choice, not a feature) leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.ShowBotsAsBots || SocialExpansionSettings.Recommended.ShowBotsAsBots, Is.False);
+        Assert.That((d with { ShowBotsAsBots = true }).AllOff().ShowBotsAsBots, Is.True);
+        (d with { ShowBotsAsBots = true }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_show_as_bots"], Is.EqualTo("True"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).ShowBotsAsBots, Is.True);
         Assert.That(problems, Is.Empty);
     }
 

@@ -36,6 +36,34 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
 - **Uthgard drops:** run `source/tools/uthgard_drops_content.py` (dry run first) as [UTHGARD-DROPS.md](UTHGARD-DROPS.md)
   says; the tool is in the code since 1.2.1, and its tables ship in 1.2.3 (owner, 2026-11-22).
 - **The fixes from the owner's PC checks** of 1.2.1 and 1.2.2 (the list below).
+- **OpenDAoC upstream ports:** every upstream commit from our base `d51233cb` to `428927b33` (632) is classified in
+  [upstream/OPENDAOC-LEDGER-2026-11.md](upstream/OPENDAOC-LEDGER-2026-11.md). Ports by area: P1 core, P2 effects, P3
+  combat, P4 AI and world (the `fix/1.2.3-upstream-*` branches), plus four extra packages:
+  [#562](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/562) housing, guild and market,
+  [#563](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/563) player and GM commands,
+  [#564](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/564) client display, chat and group window,
+  [#565](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/565) quests, gravestones and timed services.
+  26 commits wait for the owner (the ledger's "Held for the owner" list: the live interrupt and power pool, the NPC
+  defense package, PvE speed, stealth group visibility and others). Nothing ported yet.
+- **OpenDAoC upstream port P3** (combat, XP, crafting and items; branch `fix/1.2.3-upstream-combat`, changelog 1.2.3
+  "From OpenDAoC upstream: combat, XP, crafting and items"). **Tests only.** Left for later: the attack-speed recalculation
+  series in `AttackAction` (`6258566a3`, `27bc0293f`, `a7468c046`, `109a38cf0`), kept apart from the interrupt port in
+  the same file; the Savage buff effect refactor (`1713a0e8f`, `9f0bd91b1`, effect code). Held for the owner: the NPC evade
+  arc and attacker rule and the NPC guard rule (weaker monsters).
+- [#485](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/485) Realism 3a, invites, joins and logouts with a
+  person behind them (one invite decision for words and act, human accept pauses, bot-led range and "want in?" waiting for
+  a yes, seated logout, wipe releases 15-45 s apart, `bot_show_as_bots` off by default). **In review, tests only**
+  (`UT_InvitesLogouts485`). PC check: /invite an idle bot, a fighting bot and a bot in its party; /lfg; watch a "brb"
+  logout and a wipe.
+- **OpenDAoC upstream port P4** (NPC AI, pathing, keeps and world; branch `fix/1.2.3-upstream-ai-world`). **Tests only.**
+  Owed on the PC: a monster or guard landing a spell after its target stepped behind a wall; no monster or gamebot cast
+  through a dungeon or keep wall away from the player; a mob climbing a ladder without stalling; a mob chasing over a zone
+  border; a gravestone still standing after a restart; group dots on the minimap. Re-run the raid sims before any period
+  size decision (bosses now land started casts). Held for the owner: B1/B2/B9 (as briefed), `2ffc5c0ff` (5% interrupt step:
+  low mobs interrupt less), `44ae62e96` (stuck NPCs become immune), `76f4a6fd0` (NPCs walk up to a blocking door: changes
+  the bot door holds), `b80fae038` (door polygon registration: navmesh evidence needed). Skipped (owner): B6 `eb06c09aa`,
+  `970282fba`. Finding for #521: `BotCastSight` checks bot-to-bot casts at any height, so a bot caster on a keep wall may
+  be refused at bots below (the navmesh ray can't cross a drop); shots use the one-floor rule.
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Realism 4a, movement's small safe fixes (follower
   heading, rest seat kept, spread party ring, emote text, post-kill breather). **In review, tests only.** Open PC check
   below.
@@ -59,6 +87,36 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   facts from the world database; the evening stream is still a loop of its own beside `UT_ChatBudgetSimulation.Evening`
   (same fixture, same items and keeps; a change to Evening's start rules must be made in both); new holdout lines come
   from the owner's real lines, written by someone who did not write the fix.
+- [#521](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/521) RvR work 3, player/bot rule parity: autonomous
+  gamebots take the player's PvP rules in RvR (mez/CC immunity, interrupts, crits, facing, speed, sprint, stealth speed,
+  rez sickness, cast line of sight, spell level, RP window, regeneration; `PvpRules`, `UT_PvpRuleParity`). **In review,
+  tests only.** Companions unchanged. Open: the fight harness rows (#520) before/after, the PC checks P-mech 1-7
+  (mechanics.md) on a named build, and the realm-ability gaps (finding 6) and companion RvR jobs (finding 10), which
+  are not part of this change.
+- [#520](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/520) An end-to-end RvR fight harness in CI.
+  **Built, tests only** (`UT_RvrFightRehearsal`): three report rows in the CI log, none a gate until a PC log agrees
+  (evidence.md 5.3). Open: the two fight scenarios do not yet repeat exactly by seed (`Random.Shared` in the server's
+  fight code); the world database's spells, specs and keeps are stood in.
+- [#475](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/475) Realism 1: record real play (the say gate as a
+  pass-through in all 17 exits, `logs/session-chat.log`, `/odd`, `tools/bot-voices/session_transcript.py`, the raw-send
+  ratchet). **Built, tests only;** done when a played session's `session-chat.log` gives a transcript an agent can read
+  line by line and a count of defects per hour, per channel, per build (baseline: 9 in about an hour on 1.2.2). Next:
+  #489's step 2 (the checks in the gate).
+
+- **The 2026-11 upstream harvest** ([upstream/HARVEST-2026-11.md](upstream/HARVEST-2026-11.md)): one ranked list from
+  the OpenDAoC-Core, Offline DAoC family and DOL sweeps. In progress: port packages P1-P5 (`fix/1.2.3-upstream-core`,
+  `-effects`, `-combat`, `-ai-world`, `fix/1.2.3-fork-bot-fixes`) and the ledger issues #562-#565. To do, **nothing
+  started**: #567-#574 (bot behaviour from True 1.65, DividedRealms, DetShaft and FelixGagnonB), #575-#580 (world data
+  audits and checks), #581 (geometry line of sight) and #582 (single-zone navmesh tooling); #581 and #582 need the PC.
+- [#522](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/522) RvR work 4, stealth: one stealth-rules module
+  for the player and the gamebots (`StealthRules`: speed, too close, uncover, see), gamebots out of the base uncover timer
+  (`RVR_STEALTH_UNCOVER` logged), the stealth notice at objectives, the planning filter, the ambush scope, travel hidden
+  with duo followers (`BotStealthTravel`), the archer opener (`BotStealthArcher`), the "edge gone" bail
+  (`BotStealthEdge`) and See Hidden at 1.62 strength. **In review, tests only** (`UT_StealthRules`). Open: stealth.md PC
+  checks 1-8 and defense.md PC check 6 on a named build; openers per chokepoint per hour from the RvR hour report before
+  and after; the owner's call on the See Hidden cut's shape and on whether every guard should use the rubric's short range
+  (it would weaken `GuardStealther`, so it is not done); Rapid Fire, Camouflage, Vanish and True Sight for bots (#531);
+  the duo's edge-gone retreat (only soloers run); the fight harness rows (#520).
 
 ## 1.3
 
@@ -93,15 +151,19 @@ its raid's log shows it lost again. #410, #412 and #414 stay open; 1.2.2's size 
 - ~~[#411](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/411) Trollheim: the bot raid times out before Nosdoden falls~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
 - [#412](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/412) The Green Knight and Marfoirwort: bot raids lose. **Open;** bigger Green Knight raid in 1.2.2 (#441).
 - ~~[#413](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/413) Legion: play his platform, the way down and his add waves~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
-- [#414](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/414) Behemoth, Fomor City and Morgana: no bot raid yet. **Open.**
+- [#414](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/414) Behemoth, Fomor City and Morgana: no bot raid yet. **Open.** 1.2.3: Fomor City has its raid (`dungeon-hibernia-fomor`, a zone180.nav walk-link patch and the period's named order; **tests only**, for the next sweep). Behemoth: no raid, by design (Mythic, 2008: "not killable"). Morgana: no raid, a quest host in the period too; a raid would need her changed (owner's call).
 - ~~[#415](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/415) Dragon fights fall apart partway (Golestandt, Cuuldurach)~~ **Done in 1.2.1, tests only** (closed 2026-11-22)
 
 ## RvR and travel
 
 Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner's log lines.
 
+- [#525](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/525) RvR work 7: siegecraft stand-ins. **Built in 1.2.3, tests only** (branch `fix/1.2.3-siegecraft`): synthetic engines built in sight at half the period time (ram 30 s, ballista 20 s, catapult 45 s, trebuchet 60 s; one multiplier), interrupted by an attack or death, replaced only by a new build, and a finite per-siege stock; the true status text; bot crew for the player's ram and no ram place taken by it; `RVR_SIEGE_OUTPUT`; defending operators that hold their engines; defenders that repair doors with wood by the player's rules (self-repair stays). Owed on the PC: a defender engine's `RVR_SIEGE action=hit defending=true`, a player ram's `RVR_SIEGE_OUTPUT operator=player`, `build_started`/`deployed built=` timings, `RVR_DOOR_REPAIR action=repaired` and the gate's health an hour after a defended siege. Owner checks: the chosen period build times (no source found), the untrained repair skill of 100, the stock size, wood sellers in the frontier (none in a region: no bot repair there), and boiling oil (rubric 1.2 against 5.2).
+
 - [#519](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/519) Honest measuring (RvR audit 3): the log checker's notice, regroup, siege-outcome and party rows, the misleading test names, the Seen stamps. **Done in 1.2.3, tools and tests only.** Owed on the PC: re-read the `19e7037`, `5378dbe` and `9a173f4` logs with the notice row; run the real-mesh probes once per release (`docs/RELEASE-TRAIN.md`). Owner decisions: the regroup share bars (now a tally), and a "shipped, owed in play" state for #416, #417 and #418. First read on `868a82d` (2026-11-24): scans about 4.6 s apart instead of 1.0-1.25 s, so the time to notice from first sight is about 2.3 s at every range (the table: 0.5 s at 1,000-1,500, 11.8 s past 3,400); the notice row reads Contradicted.
+- [#530](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/530) RvR work 12 (piece C): one force intent owned by the event layer. **Steps 1-4 built in 1.2.3, tests only** (branch `fix/1.2.3-force-intent`): the dead director and `ObjectiveState.Next` deleted, the caller check in CI, one `ForceStrength` siege rule, every intent write proposed to the event layer and written once per turn (`RVR_DECIDE what=force`), followers read `IntentOf`, the shadow (`what=shadow`). Owed on the PC: `what=destination` and `what=force` show one writer per change, and the `shadow.mismatch` count falls to 0. Open: step 5 (the battleground keep as an objective with its wave as muster, the small strike with #523, the slow realm force), and then retiring the TempProperty mirror.
 - [#505](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/505) RvR: record real frontier play (audit phase 0). **Built in 1.2.3, tests only** (branch `feature/1.2.3-rvr-record`): `RVR_DECIDE`, fight ids, the player's rows, siege stalls, teleports, `RVR_HOUR`, `/rvrodd`, `rvr_hour.py`. Open until a played frontier hour yields the report; still to add: `RVR_LORD_BLOCKED`, `RVR_EVENT_OPENED reason= depth=`, the stealth rows (#522), `RVR_COMPANION_ENGAGE`, `RVR_LEGS_LOST`, ram output per engine, `RVR_RANKS`, the CI ratchet on rule codes, and folding `/rvrodd` into #475's `/odd`.
+- [#505](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/505) RvR: record real frontier play (audit phase 0). **Built in 1.2.3, tests only** (branch `feature/1.2.3-rvr-record`): `RVR_DECIDE`, fight ids, the player's rows, siege stalls, teleports, `RVR_HOUR`, `/rvrodd`, `rvr_hour.py`. Open until a played frontier hour yields the report; still to add: `RVR_LORD_BLOCKED`, `RVR_EVENT_OPENED reason= depth=`, `RVR_COMPANION_ENGAGE`, `RVR_LEGS_LOST`, ram output per engine, `RVR_RANKS`, the CI ratchet on rule codes, and folding `/rvrodd` into #475's `/odd`. The stealth rows (`RVR_STEALTH_UNCOVER`, `_ARCHER_OPEN`, `_TRAVEL`) come with #522.
 - ~~[#416](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/416) Battleground keeps rarely change hands~~ **Done in 1.2.1, tests only** (closed 2026-11-22): stormers strike the lord only from within 350 (battlegrounds and frontier; `BG_RALLY_STATUS inLordReach=`, `RVR_LORD_STEP_IN`).
 - ~~[#417](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/417) Roaming eight-man RvR groups rarely find a fight~~ **Done in 1.2.1, tests only** (closed 2026-11-22): patrols weigh enemy RvR bots, eights chase the planner's hunts (`RVR_ROAM_CHASE`).
 - ~~[#418](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/418) Gamebots wait a long time at frontier teleporters~~ **Done in 1.2.1, tests only** (closed 2026-11-22): bots pick a porter that sells their medallion; waits past 5 minutes log `RVR_FRONTIER_WAIT_LONG`.
@@ -110,10 +172,32 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 - [#421](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/421) Lough Derg / Bri Leith seam loops at region 200. **Fixed in 1.2.2, tests only** (the zone itinerary's main-ground rule; `tools/navmesh/seam_route_sim.py`); open until a PC log shows no `AUTONOMOUS_ZONE_SEAM_CYCLE` there.
 - [#538](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/538) Party members stall at zone borders, so resurrections time out with the healer out of range. **Fixed in 1.2.3, tests only** (`AutonomousGroupFormationFollow.NeedsSeamRoute`: the AI turn takes the itinerary's seam crossing to a leader over the border; a stalled member is moved only out of a player's sight). Open until a PC log shows few cross-zone `AUTONOMOUS_GROUP_MEMBER_STALLED` (11/24: 1,784 in 5 h) and `seamRoutes=` in `AUTONOMOUS_GROUP_FORMATION`. Not done: retrying a resurrection blocked for power within the 60 s window (66 of 2,780 timeouts).
 - [#539](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/539) Parties stand at one target for up to 107 minutes on an unreachable ranged pull. **Fixed in 1.2.3, tests only** (`AutonomousDefensivePull.UnreachableBench`: two tries then an ordinary pull; three benched targets give the camp up). Open until a PC log shows no same-shooter, same-target `AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE` run past a few minutes.
+- [#526](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/526) World data and map one-offs. **Item 1 fixed
+  in 1.2.3, tests only:** Dun nGed, Da Behnn, Ailinne and Crauchon at level 5, with a one-time repair for older worlds
+  (`FrontierKeepLevelRepair`); PC check: `/keep info` at nGed on a fresh build and on an old world
+  (`KEEP_LEVEL_DEFAULT_RAISED`, doors at 50,000). **Owner decisions open:** Darkness Falls on a fresh or tied world, and
+  the 15-minute grace (item 2; the holder isn't persisted until then). **PC (#503):** home-realm circuits (P13), Odin's
+  Gate Hibernian exit (P4), lifts (P5), Midgard's walk to Caer Benowyc (P3). Item 7: `GetRealmKeepBonusLevel` is called
+  by `UpdateBaseLevels` when `use_keep_balancing` is on (off by default), so it is kept. Item 8 is the battleground-fill
+  issue's.
 
 ## Other bot behaviour
 
+- Fork package P5 (1.2.3, branch `fix/1.2.3-fork-bot-fixes`): fixes from the Offline DAoC forks (FelixGagnonB, True165,
+  DividedRealms, DetShaft), listed in CHANGELOG-LIVING-SERVER.md 1.2.3 "From the Offline DAoC forks". **Tests only.** Owed
+  on the PC: a two-Bard group's endurance with the song up (`EFFECT_STALE_COPY_RETIRED`); a grouped Bard keeping its drum
+  and song in a fight; a group through a keep door without freezing; no camp shared by two parties (`AutonomousMobClaims`);
+  `AUTONOMOUS_DEFENSIVE_PULL_IGNORED` runs of two at most. Not taken, held for the owner: the jump-interrupts-casting rule
+  (True165 c41415df, a new casting restriction on real players); realm-0 armor filtered from drops (DividedRealms 32f08331,
+  fewer drops); releasing a rider's pets when it boards a stable horse (True165 ef0dcd8b, a charmed pet would turn on
+  its owner). Left for later: True165's role sheet (only the main tank sets the kill target, the off-tank peels; d2fc3fe3d
+  needs its BotBrain.MainAssist), its Mag Mell release spots (needs its BesideBindstone) and the Trollheim pillar follow
+  fix (b390827f, a spot fix in core movement).
+- [#544](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/544) Hibernian bots level about twice as fast as Albion's. **Open.** Albion has the fewest camps per band from 5 to 19 (world data, owner decision); the 10-19 group XP gap is not explained yet. 1.2.3 adds the sampled `AUTONOMOUS_KILL_XP` row and `source/tools/kill_xp_report.py` (tests only); next: one played hour at 10-19 to tell shared kills from off-target kills.
 - [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491) Buffers waste buffs on targets that can't use them; split base and spec buffs between healers and spec buffers. **Fixed in 1.2.3, tests only** (`BotBuffTargetPolicy`, `UT_BotBuffTargets491`); open until a PC log shows a group buffed without power regen or acuity on melee.
+- [#535](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/535) Solo bots below 50 plan camps that are grey on arrival. **Fixed in 1.2.3, tests only** (`AutonomousSoloCampFloor`, `UT_CampChoiceAndDeaths123`); open until a played log shows `AUTONOMOUS_CAMP_OUTLEVELED` well under the 1.2.2 rate (about 1,040/h with about 2,930 bots).
+- [#536](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/536) Group PvE camps purple for low-level parties. **Fixed in 1.2.3, tests only** (`AutonomousGroupCampBand`); open until a played log shows the purple share of grouped deaths (75% on 1.2.2) and the "No reachable non-grey group camp" disbands (24%) fall. Parties spread more than a con band wide can still find no camp.
+- [#537](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/537) Solo bots die to purple monsters en route; the killer is never benched. **Fixed in 1.2.3, tests only** (`AutonomousPveBossDanger` by con, `AutonomousDeathBlame`); open until a played log shows fewer purple deaths with `arrivedAtCamp=False` and fewer at the howling maiden cell (Black Mtns. North, 514k,380k). That spot was already marked on 1.2.2 (ten levels above) and still killed 120 bots, mostly while they searched for a camp or met up with a group near it: the avoidance (route bend, rendezvous and release spots) may need more work.
 - [#473](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/473) /classes showed party roles that /spawn won't accept as builds. **Fixed in 1.2.3, tests only** (`ClassesCommandHandler.Lines`, `UT_ClassesCommandBuilds473`).
 - ~~[#396](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/396) No xp for kills in Thid~~ **Done in 1.2.1, tests only** (closed 2026-11-22): enemy gamebot kills pay what a player kill pays.
 - ~~[#397](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/397) Training hires doesn't work once the skill tree grows outside the training window~~ **Done in 1.2.1, tests only** (closed 2026-11-22): `/hire train` by line name; the trainer window shows the next skill first.
@@ -127,6 +211,7 @@ Fix routes spot by spot; never rebuild navmeshes globally. #421 needs the owner'
 - [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487) Does a resting or waiting bot show as
   sitting on the original client (emote 0xF0, `BOT_MOVE_SIT` in the log)? **Open.** If not, change or drop it in
   `BotIdleLife` (`ShowSeat`, `SitAnimation`, `StandAnimation`); the seat's logic stays.
+- [#540](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/540) Blocking gen-2 GC pauses of 1.1-2.4 s (49 in 5 h on 1.2.2 `868a82d`) and handles growing about 700 an hour. **Fixed in part in 1.2.3, tests only:** the gear checks' allocations (the log's largest allocator, 27-35% of all bytes) are gone, the stat tables no longer hold a `Lock` (the 2026-10-22 census's main owner of Windows events), and `SERVER_HANDLE_CENSUS` (handles by type, every 10 min) and the memory-load fields of `SERVER_MEMORY` / `SERVER_GC_PAUSE` run in every session. Open until a 6 h+ PC log on 1.2.3 shows: `topAllocations` without the tuple arrays, the pause count and length, which handle type grows, and whether `memoryLoadPct` is at `highLoadPct` when a blocking collection runs (then the fix is memory on the PC or the launcher's "Lean server memory", not a GC setting).
 - [#425](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/425) 1.2.1 PC check: the original client's handshake build, and the bot death fall. **Open.** CI's playtester scenarios `bot-death`, `bot-corpse-target` and `bot-rez` pass (on `b644529a`), but they check packets, not what the client draws.
 
 ## The 1.2.1 check on the owner's PC
@@ -210,8 +295,9 @@ bots only, at the game's own raid size:
   after two wipes (`c81eb5d`, `43c43aa`); won on test build 5. Dragon fights can fall apart partway.
 - **The Green Knight** and **Marfoirwort:** lost (`ccba364`).
 - **Legion:** some of his rules are in (his adds and heals are capped, wounded raiders step out of his reach), but the
-  raid does not play his platform, the way down or his add waves. **Behemoth** is never fought; **Fomor City** and
-  **Morgana** have no raid.
+  raid does not play his platform, the way down or his add waves. **Behemoth** is never fought (by design: Mythic,
+  2008, "This mob is not killable"); **Morgana** has no raid (a quest host); **Fomor City** has a raid since 1.2.3
+  (**tests only**).
 - **Xanxicar's stomp:** a realm learns him over its attempts. Still being tuned.
 
 **1.2.1:** the raid fixes in 1.2.1 come from these logs and from simulations, and are **tests only** until a raid is seen
@@ -357,8 +443,10 @@ English; German and French come with the language selector in 1.3 (#437).
   hasn't been completed yet (4 h 42 min on `19e7037` had one stall of 1.05 s).
 - **A bot can search for a camp for minutes** (mostly level 50s at Tir na Nog's bind). It clears its search after 3
   minutes; the cause isn't found yet.
-- **Memory over very long sessions:** Windows handles grow slowly (about 1,700 an hour with 600 bots a realm). The server's
-  own memory stays flat.
+- **Memory over very long sessions:** Windows handles grow slowly (about 1,700 an hour with 600 bots a realm; about 700
+  an hour on 1.2.2 with 2,930 bots). The live heap grows about 75 MB an hour (1.2.2), and blocking gen-2 collections froze
+  the server 1.1-2.4 s every 10-25 minutes (#540: 1.2.3 removes the largest allocator and the stat tables' Locks; tests
+  only).
 
 ### New client (0.37c)
 

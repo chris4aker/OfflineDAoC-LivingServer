@@ -49,8 +49,11 @@ namespace DOL.GS
         /// turn of the schedule. Final = the final boss's room, where the route stages last.
         /// Crystal Cave is entered only through Avalon City: its raid stages outside Avalon City and walks through it, the
         /// way a Summoner's Hall raid walks through Hall of the Corrupt (<see cref="RaidDungeon.Through"/>).
-        /// Not here: Fomor City (Myrddraxis), whose navmesh has no path from the entrance to the central chamber of Myrddraxis and
-        /// Anurigunda (installed zone180.nav, 2026-10-20: the path stops 3,000-3,600 units short on both sides).
+        /// Fomor City (1.2.3, #414): until 1.2.3 its navmesh had no path from the entrance to the central chamber of Myrddraxis
+        /// and Anurigunda (installed zone180.nav, 2026-10-20: the path stops 3,000-3,600 units short on both sides). The
+        /// builder's own climb ladders north of Krackenschtein and the way from the second ring to the inner one were cut
+        /// from the floors beside them by cracks of 21-33 units; four walk links close them (tools/fork-build/
+        /// content-patches.json, <see cref="FomorWalkLinks"/>). Its named are fought in the period's order (<see cref="RaidNamedOrder"/>).
         /// </summary>
         public sealed record RaidDungeon(string Id, string Name, eRealm Realm, ushort Region, string BossType, int SuggestedBots,
             Vector3 Final, string[] Finals, ushort Through = 0);
@@ -69,6 +72,28 @@ namespace DOL.GS
             new("dungeon-hibernia-tursuil", "Tur Suil", eRealm.Hibernia, 190, "Balor", 40, new(32032, 31048, 15984), ["Balor"]),
             new("dungeon-hibernia-marfach", "Marfach Caverns", eRealm.Hibernia, 276, "BlackLady", 64, new(30086, 37378, 15001),
                 ["BlackLady", "ChieftainCaimheul", "Avartack"]),
+            // 1.2.3 (#414): seven groups, the period's "7 gruppi sarebbero l'ideale" (Thredh's Fomor guide, Valmerwolf 2003/2005).
+            // Final: Myrddraxis's lair (his spawn); Krackenschtein, Nogoribando and Anurigunda are fought on the way, in order.
+            new("dungeon-hibernia-fomor", "Fomor City", eRealm.Hibernia, 180, "Myrddraxis", 56, new(32302, 32221, 15635), ["Myrddraxis"]),
+        ];
+
+        /// <summary>Fomor City's region (and zone): zone180.nav.</summary>
+        public const ushort FomorRegion = 180;
+
+        /// <summary>
+        /// The four walk links the 1.2.3 content patch adds to Fomor's zone180.nav (tools/fork-build/content-patches.json,
+        /// released 5482cffb... to fixed a1162c94...), each a two-way Walk link with both ends in one tile, made with
+        /// tools/navmesh_splice/add_offmesh.py. Probed with tools/navmesh/dfprobe on the patched mesh: every Fomor named is
+        /// reached from the entrance and the server's corridor check is complete to each and back.
+        /// 1-3: the floors beside the three climb ladders north of Krackenschtein (16000 to 16256, 16256 to 16502, 16512 to
+        /// 16765), the period's "climb in two stages" to the second ring; 4: the second ring to the inner ring.
+        /// </summary>
+        public static readonly (Vector3 A, Vector3 B)[] FomorWalkLinks =
+        [
+            (new(31496, 36855, 16003), new(31527, 36812, 16003)),
+            (new(32047, 36549, 16256), new(32004, 36557, 16256)),
+            (new(31676, 36420, 16512), new(31658, 36379, 16512)),
+            (new(29875, 28693, 16768), new(29915, 28688, 16768)),
         ];
 
         public static bool IsRaidDungeon(ushort region) => RaidDungeons.Any(d => d.Region == region);

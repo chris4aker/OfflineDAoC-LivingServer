@@ -183,7 +183,8 @@ namespace DOL.UnitTests
                 Assert.Multiple(() =>
                 {
                     Assert.That(AutonomousPveBossDanger.Marks("monster", 30, 12), Is.True, "merucha 30 on a level 12");
-                    Assert.That(AutonomousPveBossDanger.Marks("monster", 21, 12), Is.False, "nine levels above");
+                    Assert.That(AutonomousPveBossDanger.Marks("monster", 21, 12), Is.True, "nine levels above is purple (1.2.3, #537)");
+                    Assert.That(AutonomousPveBossDanger.Marks("monster", 14, 12), Is.False, "orange");
                     Assert.That(AutonomousPveBossDanger.Marks("bot", 50, 12), Is.False, "enemy bots are RvR, not a camp to avoid");
                     AutonomousPveBossDanger.Record(200, 332000, 431500, 30, now);
                     Assert.That(AutonomousPveBossDanger.IsNear(200, 333500, 432500, 12, now.AddHours(1)), Is.True);

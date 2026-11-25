@@ -30,7 +30,8 @@ namespace DOL.GS
         /// </summary>
         private bool ApplyChatPromiseRvr(GameBot bot)
         {
-            ChatPromise promise = _rvrSharedEvent ? null : ChatPromises.ActiveFor(bot);
+            // #530: a promise proposes to the event layer, whose rule keeps an event plan over it.
+            ChatPromise promise = !AutonomousRvrEventLayer.AcceptsChatPromise(new(_rvrIntent, _rvrSharedEvent)) ? null : ChatPromises.ActiveFor(bot);
             if (promise is not { Mode: ChatPromiseMode.RvrObjective })
             {
                 if (_chatPromiseDestination)
@@ -55,9 +56,9 @@ namespace DOL.GS
                 _patrolDestination = null;
                 _campStartedTick = now;
             }
-            _rvrIntent = defend ? AutonomousRvrEventLayer.Intent.DefendEvent : AutonomousRvrEventLayer.Intent.Roam;
-            bot.TempProperties.SetProperty("RvrWarbandIntent", (int)_rvrIntent);
-            bot.TempProperties.SetProperty("RvrDefendingKeep", defend ? target.Anchor : -1);
+            ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.ChatPromise,
+                defend ? AutonomousRvrEventLayer.Intent.DefendEvent : AutonomousRvrEventLayer.Intent.Roam, id, null,
+                defend ? target.Anchor : -1, "chat.promise", $"promised in chat: {target.Name}"), mirrorIntent: true, mirrorKeep: true);
             _nextRvrPlanReview = now + 45_000;
             _chatPromiseDestination = true;
             return true;

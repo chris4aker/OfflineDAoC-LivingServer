@@ -293,24 +293,32 @@ namespace DOL.GS.Keeps
             return TraverseDoor(bot);
         }
 
+        /// <summary>
+        /// How far passing through a door moves you: 150 for the main door (index 1); 175 for the side doors 3-6 (port of DOL
+        /// 2239176: the cross doors of the battleground central keeps, component skin 30, and a high bridge's door, which left
+        /// players and bots inside the door frame at 100); 100 for the other inner doors. The 1.65 frontier keeps' doors are
+        /// indexes 1 and 2 (OpenDAoC-Database keepposition), so they are unchanged.
+        /// </summary>
+        public static int TraverseDistance(int doorIndex) => doorIndex switch
+        {
+            1 => 150,
+            3 or 4 or 5 or 6 => 175,
+            _ => 100,
+        };
+
         private bool TraverseDoor(GameLiving player)
         {
                 int keepz = Z, distance = 0;
 
                 //calculate distance
-                //normal door
-                if (DoorIndex == 1)
-                    distance = 150;
-                //side or internal door
-                else
-                    distance = 100;
+                distance = TraverseDistance(DoorIndex);
 
                 //calculate Z
                 if (Component.Keep is GameKeepTower && !Component.Keep.IsPortalKeep)
                 {
                     //when entering a tower, we need to raise Z
                     //portal keeps are considered towers too, so we check component count
-                    if (IsObjectInFront(player, 180))
+                    if (IsObjectInFront(player, 180, 0))
                     {
                         if (DoorId == 1)
                             keepz = Z + 83;
@@ -321,7 +329,7 @@ namespace DOL.GS.Keeps
                 else
                 {
                     //when entering a keeps inner door, we need to raise Z
-                    if (IsObjectInFront(player, 180))
+                    if (IsObjectInFront(player, 180, 0))
                     {
                         //To find out if a door is the keeps inner door, we compare the distance between
                         //the component for the keep and the component for the gate
@@ -349,7 +357,7 @@ namespace DOL.GS.Keeps
                 Point2D keepPoint;
 
                 //calculate x y
-                if (IsObjectInFront(player, 180))
+                if (IsObjectInFront(player, 180, 0))
                     keepPoint = GetPointFromHeading(Heading, -distance );
                 else
                     keepPoint = GetPointFromHeading(Heading, distance );
@@ -596,6 +604,9 @@ namespace DOL.GS.Keeps
         private const int ENEMIES_NEAR_RADIUS = 3000;
 
         /// <summary>A living enemy player or bot (companions included) of another realm than the keep's, near the door.</summary>
+        /// <summary>#525: the same rule for defender bots repairing the door by hand (AutonomousDoorRepair).</summary>
+        public bool EnemiesNearForRepair => Component?.Keep != null && EnemiesNear();
+
         private bool EnemiesNear()
         {
             eRealm owner = Component.Keep.Realm;

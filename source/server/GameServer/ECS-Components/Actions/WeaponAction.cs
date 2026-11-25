@@ -20,6 +20,7 @@ namespace DOL.GS
         private Style _combatStyle;
         private int _leftHandSwingCount;
         private bool _isDualWieldAttack; // Not necessarily true even if _leftHandSwingCount is > 0, for example H2H isn't technically dual wield.
+        private bool _isHandToHand; // H2H multi-hit mechanic: both hands swing (offhand haste), but the attack isn't a dual wield attack.
 
         // The active weapon slot, ranged attack type, and ammo at the time the ammo was released
         public eActiveWeaponSlot ActiveWeaponSlot { get; }
@@ -70,6 +71,7 @@ namespace DOL.GS
             //- Monsters, pets and Non-Player Characters (NPCs) will now halt their pursuit when the character being chased stealths.
 
             _isDualWieldAttack = IsDualWieldAttack(_attackWeapon, _leftWeapon, _owner); // Should be false for H2H.
+            _isHandToHand = !_isDualWieldAttack && _owner.attackComponent.UsesHandToHandMechanic(_attackWeapon, _leftWeapon);
             _leftHandSwingCount = _owner.attackComponent.CalculateLeftHandSwingCount(_attackWeapon, _leftWeapon);
 
             if (!MakeMainHandAttack(_attackWeapon, _leftWeapon, _combatStyle, _effectiveness, out AttackData mainHandAttackData))
@@ -105,9 +107,17 @@ namespace DOL.GS
                     break;
             }
 
-            // Unstealth before attack animation.
             if (_owner is GamePlayer playerOwner)
+            {
+                // Unstealth before attack animation.
                 playerOwner.Stealth(false);
+
+                // Show H2H multi-hit attacks (OpenDAoC-Core e9fdfdd2a).
+                string multihitMessage = HandToHandMultihitMessage(_isHandToHand, _leftHandSwingCount);
+
+                if (multihitMessage != null)
+                    playerOwner.Out.SendMessage(multihitMessage, eChatType.CT_YouHit, eChatLoc.CL_SystemWindow);
+            }
 
             // Show the animation.
             if (mainHandAttackData.AttackResult is not eAttackResult.HitUnstyled and not eAttackResult.HitStyle && leftHandAttackData != null)
@@ -257,6 +267,13 @@ namespace DOL.GS
             }
         }
 
+        public static string HandToHandMultihitMessage(bool handToHand, int extraSwingCount) => !handToHand ? null : extraSwingCount switch
+        {
+            2 => "Triple attack!",
+            3 => "Quad attack!",
+            _ => null,
+        };
+
         public static bool IsDualWieldAttack(DbInventoryItem mainWeapon, DbInventoryItem leftWeapon, GameLiving attacker)
         {
             if (mainWeapon == null || mainWeapon.Item_Type is Slot.TWOHAND || mainWeapon.SlotPosition is Slot.RANGED)
@@ -265,7 +282,9 @@ namespace DOL.GS
             if (leftWeapon == null || (eObjectType) leftWeapon.Object_Type is eObjectType.Shield)
                 return false;
 
-            if (attacker is GamePlayer)
+            // Gamebots follow the player rule (they are GameNPCs with no LeftHandSwingChance): before, their dual wield
+            // swings were never dual wield attacks.
+            if (attacker is GamePlayer or IGamePlayer)
             {
                 // The two handed checks shouldn't be necessary.
                 return (eObjectType) mainWeapon.Object_Type is not eObjectType.HandToHand &&
@@ -284,10 +303,14 @@ namespace DOL.GS
             int animationId = 0;
             _owner.attackComponent.UsedHandOnLastDualWieldAttack = 0;
 
+            // H2H swings both hands like dual wield, so its multi-hits get the offhand's speed ("haste") too
+            // (OpenDAoC-Core a0f6fa4df), but its attack type stays one handed.
+            bool swingsBothHands = _isDualWieldAttack || _isHandToHand;
+
             // Determine the weapon and animation to use.
             if (_leftHandSwingCount > 0)
             {
-                if (_isDualWieldAttack)
+                if (swingsBothHands)
                     _owner.attackComponent.UsedHandOnLastDualWieldAttack = 2;
 
                 if (style == null)
@@ -296,7 +319,7 @@ namespace DOL.GS
             else if (mainWeapon != null)
             {
                 // One of two hands is used for attack if no style, treated as a main hand attack.
-                if (_isDualWieldAttack && style == null && Util.Chance(50))
+                if (swingsBothHands && style == null && Util.Chance(50))
                 {
                     mainWeapon = leftWeapon;
                     _owner.attackComponent.UsedHandOnLastDualWieldAttack = 1;
@@ -376,8 +399,7 @@ namespace DOL.GS
             else if (attackData.AttackResult is eAttackResult.Blocked)
                 target.OnArmorHit(attackData, target.ActiveLeftWeapon);
 
-            if (_target is GameLiving livingTarget && livingTarget.effectListComponent.ContainsEffectForEffectType(eEffect.ReflexAttack))
-                HandleReflexAttack(_owner, attackData.Target, attackData.AttackResult, _interval);
+            HandleReflexAttack(_owner, target, attackData.AttackResult);
         }
 
         private static void HandleDamageAdd(GameLiving owner, AttackData ad)
@@ -444,18 +466,26 @@ namespace DOL.GS
             }
         }
 
-        private static void HandleReflexAttack(GameLiving attacker, GameLiving target, eAttackResult attackResult, int interval)
+        /// <summary>Reflex Attack counters only attacks that hit, from the front (OpenDAoC-Core 410f1d9bb).</summary>
+        public static bool ReflexAttackTriggers(eAttackResult attackResult, bool attackerInFront) =>
+            attackerInFront && attackResult is eAttackResult.HitStyle or eAttackResult.HitUnstyled;
+
+        private static void HandleReflexAttack(GameLiving attacker, GameLiving target, eAttackResult attackResult)
         {
-            // Create an attack where the target hits the attacker back.
-            // Triggers if we actually took a swing at the target, regardless of whether or not we hit.
+            // 1.65 behavior (OpenDAoC-Core 410f1d9bb):
+            // https://forums.jeuxonline.info/sujet/250789/attaque-reflexe-moine
+            // https://web.archive.org/web/20050108223232/http://forums.drunkenfriar.com/viewtopic.php?t=47#1435&sid=037826ba0db6f1217513823c90303a52
+            // * Only works against frontal attacks.
+            // * Only works against attacks that actually hit the target.
+            // * Can counter the offhand from dual wield attacks.
+            // * Counter attacks can miss or be defended against.
+            if (target == null || !target.effectListComponent.ContainsEffectForEffectType(eEffect.ReflexAttack) || !ReflexAttackTriggers(attackResult, target.IsObjectInFront(attacker, 120)))
+                return;
+
             switch (attackResult)
             {
                 case eAttackResult.HitStyle:
                 case eAttackResult.HitUnstyled:
-                case eAttackResult.Missed:
-                case eAttackResult.Blocked:
-                case eAttackResult.Evaded:
-                case eAttackResult.Parried:
                 {
                     int attackSpeed = target.AttackSpeed(target.ActiveWeapon);
                     WeaponAction weaponAction = new(target, attacker, target.ActiveWeapon, null, 1.0, attackSpeed, null);
@@ -475,18 +505,6 @@ namespace DOL.GS
 
                     break;
                 }
-                case eAttackResult.NotAllowed_ServerRules:
-                case eAttackResult.NoTarget:
-                case eAttackResult.TargetDead:
-                case eAttackResult.OutOfRange:
-                case eAttackResult.NoValidTarget:
-                case eAttackResult.TargetNotVisible:
-                case eAttackResult.Fumbled:
-                case eAttackResult.Bodyguarded:
-                case eAttackResult.Phaseshift:
-                case eAttackResult.Grappled:
-                default:
-                    break;
             }
         }
     }
