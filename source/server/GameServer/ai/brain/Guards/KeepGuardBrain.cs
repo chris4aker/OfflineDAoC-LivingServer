@@ -56,7 +56,9 @@ namespace DOL.AI.Brain
                 GameBot autonomous = npc as GameBot ?? (npc.Brain as IControlledBrain)?.GetLivingOwner() as GameBot;
                 if (autonomous?.IsAutonomousWorldBot == true)
                 {
-                    if (!npc.IsAlive || npc.IsStealthed || !CanAggroTarget(npc) ||
+                    // #522: a stealther guard sees stealthed gamebots as it sees stealthed players (CheckPlayerAggro); the
+                    // other guards find them by the uncover timer (StealthRules), as they find a stealthed player.
+                    if (!npc.IsAlive || npc.IsStealthed && Body is not GuardStealther || !CanAggroTarget(npc) ||
                         !PathfindingProvider.Instance.HasLineOfSight(Body.CurrentZone, new(Body.X, Body.Y, Body.Z),
                             new(npc.X, npc.Y, npc.Z), PathfindingProvider.Instance.DefaultFilters)) continue;
                     AddToAggroList(npc);

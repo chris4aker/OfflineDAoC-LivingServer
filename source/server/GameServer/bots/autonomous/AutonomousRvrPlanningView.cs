@@ -20,6 +20,15 @@ namespace DOL.GS
         private static readonly Lock RvrPlanningLock = new();
         private static RvrPlanningView _rvrPlanningView;
 
+        /// <summary>
+        /// Whether a live gamebot is one the RvR planner may hunt (rvr-enemy-*): of a realm, on RvR duty, in the frontier, and
+        /// not stealthed (#522; stealth.md finding 8). The planner sees every bot of the world, so without this a warband
+        /// walked straight to the spot where a hidden stealther camped, with nobody having seen it. The population counts
+        /// still include stealthers. Pure.
+        /// </summary>
+        public static bool IsRvrHuntCandidate(eRealm realm, bool stealthed, bool onRvrDuty, bool inFrontier) =>
+            realm != eRealm.None && !stealthed && onRvrDuty && inFrontier;
+
         public static void PrepareRvrPlanningTick() => Volatile.Write(ref _rvrPlanningView, null);
 
         private static RvrPlanningView GetRvrPlanningView()
@@ -38,7 +47,8 @@ namespace DOL.GS
                         population[actor.CurrentRegionID] = counts = new int[5];
                     counts[4]++;
                     if ((int)actor.Realm is >= 0 and < 4) counts[(int)actor.Realm]++;
-                    if (actor.Realm != eRealm.None && AutonomousObjectiveAssignments.Is(actor, eAutonomousObjectiveKind.RvR) && IsInFrontier(actor))
+                    if (IsRvrHuntCandidate(actor.Realm, actor.IsStealthed,
+                            AutonomousObjectiveAssignments.Is(actor, eAutonomousObjectiveKind.RvR), IsInFrontier(actor)))
                         candidates.Add(actor);
                 }
                 view = new(candidates.ToArray(), population);

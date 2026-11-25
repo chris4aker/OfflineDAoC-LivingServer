@@ -15,6 +15,7 @@ using DOL.GS.Movement;
 using DOL.GS.PacketHandler;
 using DOL.GS.PropertyCalc;
 using DOL.GS.Realm;
+using DOL.GS.ServerRules;
 using DOL.GS.RealmAbilities;
 using DOL.GS.Styles;
 using static DOL.GS.GamePlayer;
@@ -2292,6 +2293,11 @@ namespace DOL.GS
                 if (effectListComponent.ContainsEffectForEffectType(eEffect.Pulse))
                     return;
 
+                // #522: the player's "too close to hide" rule (StealthRules.EnemyTooClose; StealthSpecHandler for the
+                // player): no bot hides inside a live enemy's circle. Before, only companions kept it.
+                if (StealthRules.EnemyTooClose(this) != null)
+                    return;
+
                 if (IsOnHorse)
                     IsOnHorse = false;
 
@@ -2301,19 +2307,69 @@ namespace DOL.GS
                 foreach (GamePlayer viewer in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
                     if (!viewer.CanDetect(this))
                         viewer.Out.SendObjectRemove(this);
+                StartStealthUncoverAction();
                 return;
             }
 
             Flags &= ~eFlags.STEALTH;
             OnMaxSpeedChange();
+            StopStealthUncoverAction();
         }
 
+        private ECSGameTimer _stealthUncoverTimer;
+
+        /// <summary>
+        /// #522: the monster and guard uncover timer for an autonomous gamebot stealther, the player's (GamePlayer
+        /// UncoverStealthAction) through the one rule, StealthRules.Look: once a second, a hostile monster or guard close
+        /// enough, in its front cone and winning its roll, uncovers the bot if it has line of sight on the navmesh (the
+        /// player's client answers that check for him); one in a side cone turns to look. Companions keep today's rules
+        /// (the owner's #521 decision names autonomous gamebots only).
+        /// </summary>
         public void StartStealthUncoverAction()
         {
+            if (!PvpRules.IsAutonomousGamebot(this) || _stealthUncoverTimer?.IsAlive == true)
+                return;
+            _stealthUncoverTimer = new ECSGameTimer(this, StealthUncoverTick, StealthRules.UncoverIntervalMilliseconds);
         }
 
         public void StopStealthUncoverAction()
         {
+            _stealthUncoverTimer?.Stop();
+            _stealthUncoverTimer = null;
+        }
+
+        private int StealthUncoverTick(ECSGameTimer timer)
+        {
+            if (!IsStealthed || !IsAlive || ObjectState != eObjectState.Active)
+            {
+                _stealthUncoverTimer = null;
+                return 0;
+            }
+            StealthRules.UncoverRoll? uncovered = null;
+            StealthRules.Look(this, roll =>
+            {
+                if (uncovered != null)
+                    return;
+                if (roll.Sense == UncoverSense.Hearing)
+                    roll.By.TurnTo(this, StealthRules.HearingTurnMilliseconds);
+                else if (UncoverSightOnNavmesh(roll.By))
+                    uncovered = roll;
+            });
+            if (uncovered is not { } found)
+                return StealthRules.UncoverIntervalMilliseconds;
+            Stealth(false);
+            RvrStealthRecord.Uncovered(this, found.By, found.Distance, UncoverSense.Sight);
+            _stealthUncoverTimer = null;
+            return 0;
+        }
+
+        /// <summary>The sight check the player's client makes for him, made on the navmesh for a bot (true with no mesh).</summary>
+        private bool UncoverSightOnNavmesh(GameNPC by)
+        {
+            var nav = DOL.GS.PathfindingProvider.Instance;
+            if (nav == null || !nav.IsAvailable || CurrentZone == null || !nav.HasNavmesh(CurrentZone))
+                return true;
+            return nav.HasLineOfSight(CurrentZone, new(by.X, by.Y, by.Z + 48), new(X, Y, Z + 48), nav.DefaultFilters);
         }
 
         #endregion

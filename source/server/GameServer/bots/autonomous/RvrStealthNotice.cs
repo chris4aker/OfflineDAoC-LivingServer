@@ -35,8 +35,8 @@ public static class RvrStealthNotice
     public const int MaxRange = 350;
     /// <summary>The chance per second at 125 units, as a share of the point-blank chance.</summary>
     public const double EdgeShare = 0.3;
-    /// <summary>The server's hard cap on a player's detection range (GamePlayer.CanDetect).</summary>
-    public const int HumanHardCap = 1_900;
+    /// <summary>The server's hard cap on a player's detection range (GamePlayer.CanDetect; StealthRules.SeeHardCap).</summary>
+    public const int HumanHardCap = DOL.GS.ServerRules.StealthRules.SeeHardCap;
 
     /// <summary>The chance per second at point blank for an awareness level: easy 35%, normal 50%, veteran 60%.</summary>
     public static double PointBlankPerSecond(RvrBotAwareness awareness) => awareness switch
@@ -47,23 +47,12 @@ public static class RvrStealthNotice
     };
 
     /// <summary>
-    /// How far a human player in the bot's place sees this stealther, as the server rules it for a player
-    /// (GamePlayer.CanDetectStealthedBot and the player case of CanDetect): 0 through Vanish. Pure.
+    /// How far a human player in the bot's place sees this stealther, as the server rules it for a player: the one rule,
+    /// StealthRules.SeeRange (#522), which GamePlayer.CanDetect and CanDetectStealthedBot use too. 0 through Vanish. Pure.
     /// </summary>
-    public static int HumanRange(in RvrStealthSighting s)
-    {
-        if (s.Vanish)
-            return 0;
-        int stealthLevel = Math.Min(50, Math.Max(0, s.StealthSpec));
-        int levelDiff = Math.Max(0, s.ObserverLevel - stealthLevel);
-        int range = s.ObserverDetectHidden && !s.TargetDetectHidden && !s.Camouflage
-            ? levelDiff * 50 + 250
-            : levelDiff * 20 + 125;
-        if (s.ObserverSeeHidden && !s.TargetAssassin && !s.Camouflage)
-            range = Math.Max(range, 2700 - 36 * stealthLevel);
-        range += s.ObserverStealthBonus;
-        return Math.Clamp(range, 0, HumanHardCap);
-    }
+    public static int HumanRange(in RvrStealthSighting s) => DOL.GS.ServerRules.StealthRules.SeeRange(new(
+        s.ObserverLevel, s.StealthSpec, s.ObserverDetectHidden, s.TargetDetectHidden, s.ObserverSeeHidden, s.TargetAssassin,
+        s.Camouflage, s.Vanish, s.ObserverStealthBonus));
 
     /// <summary>The farthest this bot may notice this stealther: the human's range, never beyond 350. Pure.</summary>
     public static int Limit(in RvrStealthSighting s) => Math.Min(MaxRange, HumanRange(s));

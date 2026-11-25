@@ -326,6 +326,8 @@ public static class AutonomousFrontierTransport
                 processed++;
                 var ticket = Ticket(member,request.Passage);
                 member.StopMovingOnPath(); member.StopMoving();
+                // #522: a stealther comes out of stealth to use the porter, as a player must talk to it.
+                if (member.IsStealthed) member.Stealth(false);
                 if (!member.MoveTo(request.Passage.Location)) continue;
                 departed++;
                 member.Inventory.RemoveItem(ticket);

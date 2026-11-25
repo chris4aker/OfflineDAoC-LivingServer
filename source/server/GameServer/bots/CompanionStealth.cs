@@ -73,32 +73,12 @@ namespace DOL.GS
                 GameRelic.IsPlayerCarryingRelic(bot) ||
                 bot.IsMezzed || bot.IsStunned)
                 return false;
-            int stealth = Math.Min(50, bot.GetModifiedSpecLevel(Specs.Stealth));
-            foreach (GamePlayer player in bot.GetPlayersInRadius(2_048))
-                if (player.IsAlive && player.ObjectState == GameObject.eObjectState.Active &&
-                    GameServer.ServerRules.IsAllowedToAttack(player, bot, true) &&
-                    TooClose(bot, player, player.Level, stealth, player.HasAbility(Abilities.DetectHidden)))
-                    return false;
-            foreach (GameNPC npc in bot.GetNPCsInRadius(1_024))
-                if (npc != bot && npc.IsAlive && npc.ObjectState == GameObject.eObjectState.Active &&
-                    GameServer.ServerRules.IsAllowedToAttack(npc, bot, true) &&
-                    TooClose(bot, npc, npc.Level, stealth, false))
-                    return false;
-            return true;
+            // #522: the one "too close to hide" rule (StealthRules), shared with the player and the gamebots.
+            return DOL.GS.ServerRules.StealthRules.EnemyTooClose(bot) == null;
         }
 
-        /// <summary>The "impossible to hide" circle of StealthSpecHandler.IsObjectTooClose.</summary>
-        public static int HideRadius(int enemyLevel, int stealthLevel, bool detectHidden)
-        {
-            float enemy = Math.Max(1f, enemyLevel);
-            float stealth = Math.Min(50, stealthLevel);
-            return (int)(detectHidden ? 2048f - 1792f * stealth / enemy : 1024f - 896f * stealth / enemy);
-        }
-
-        private static bool TooClose(GameBot bot, GameObject enemy, int enemyLevel, int stealth, bool detectHidden)
-        {
-            int radius = HideRadius(enemyLevel, stealth, detectHidden);
-            return radius > 0 && enemy.IsWithinRadius(bot, radius);
-        }
+        /// <summary>The "impossible to hide" circle of StealthSpecHandler.IsObjectTooClose (StealthRules.HideRadius).</summary>
+        public static int HideRadius(int enemyLevel, int stealthLevel, bool detectHidden) =>
+            DOL.GS.ServerRules.StealthRules.HideRadius(enemyLevel, stealthLevel, detectHidden);
     }
 }

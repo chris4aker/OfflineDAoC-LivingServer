@@ -384,9 +384,11 @@ namespace DOL.UnitTests
             // Detect Hidden widens what a player (and so a bot) could see, unless the stealther has it or Camouflage.
             Assert.That(RvrStealthNotice.HumanRange(Stealther(0) with { ObserverDetectHidden = true }), Is.EqualTo(250));
             Assert.That(RvrStealthNotice.HumanRange(Stealther(0) with { ObserverDetectHidden = true, Camouflage = true }), Is.EqualTo(125));
-            Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 30) with { ObserverSeeHidden = true }), Is.EqualTo(1_620));
+            // See Hidden at its 1.62 strength (#522, StealthRules.SeeHiddenRange): 1,620 before the cut, 45% of it now.
+            Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 30) with { ObserverSeeHidden = true }), Is.EqualTo(729));
             Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 30) with { ObserverSeeHidden = true, TargetAssassin = true }), Is.EqualTo(525));
-            Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 5) with { ObserverSeeHidden = true }), Is.EqualTo(1_900), "the server's hard cap");
+            Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 5) with { ObserverSeeHidden = true }), Is.EqualTo(1_764));
+            Assert.That(RvrStealthNotice.HumanRange(Stealther(0, spec: 5) with { ObserverDetectHidden = true }), Is.EqualTo(1_900), "the server's hard cap");
 
             // Over many random cases: a chance only where a player in the bot's place sees the stealther, falling with distance.
             var random = new Random(5);

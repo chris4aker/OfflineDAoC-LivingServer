@@ -305,6 +305,38 @@ of OpenDAoC-Core, ported by hand onto our tree; `UT_UpstreamCombatPort123`). **T
 - `UT_PvpRuleParity`: the same scenario against a player and a gamebot gives the same outcome at every site; monsters,
   guards, companions and PvE keep theirs. **Tests only.**
 
+**RvR: one set of stealth rules for the player and the gamebots, and stealthers that play like 2003** (#522;
+stealth.md findings 1-3 and 5-10, defense.md 7)
+- One module, `StealthRules`, holds the stealth rules that `GamePlayer`, `StealthSpecHandler`, `MaxSpeedCalculator`,
+  `GameBot`, `CompanionStealth`, `KeepGuardBrain` and `RvrStealthNotice` used to copy: the speed (#521's
+  `PvpRules.StealthSpeedFactor`, called in one place), the "too close to hide" circle, the monster and guard uncover
+  timer and the detection range.
+- **Gamebots no longer uncover a stealthed player like monsters.** The base uncover timer takes only monsters and guards;
+  enemy gamebots, companions and all their pets were in it ("X uncovers you!" from a visible Armsman, at keeps too).
+  Bots now find a stealther only by `RvrStealthNotice` (350 at most, chance, line of sight), which now also applies at an
+  objective and out of the field tactics' scope, so keep defenders are not left blind. Every uncover is logged:
+  `RVR_STEALTH_UNCOVER` (hider, by kind, distance, sense, near a keep).
+- **Bot stealth has the player's costs.** A gamebot cannot hide inside a live enemy's "too close" circle; monsters and
+  guards uncover a gamebot stealther by the player's timer (sight checked on the navmesh); a stealther guard
+  (`GuardStealther`) sees stealthed gamebots as it sees stealthed players. An enemy gamebot's Detect Hidden now doubles
+  the circle against the player too, as an enemy player's always did. Companions keep their rules (they already kept
+  the circle).
+- **See Hidden at its 1.62 strength**: 25%-75% of the old 2,700 - 36 x spec range by archer spec against assassin level
+  (the straight line between is ours), for the player and the bots' notice alike.
+- **Stealthers travel hidden.** A gamebot Infiltrator, Nightshade, Shadowblade, Scout, Hunter or Ranger in a soloer or
+  duo party hides once out of the portal keep's or bind's safe area and walks to its camp at stealth speed; it comes out
+  only to fight, ride a stablemaster route or use a porter (`BotStealthTravel`, `RVR_STEALTH_TRAVEL`). It no longer
+  unhides to walk on from a camp. A duo's second copies its leader's stealth.
+- **The planner never hunts a hidden stealther**: stealthed bots are out of the RvR planning view's hunt targets.
+- **The ambush approach has a scope**: only an autonomous gamebot in the open-field scope stalks from stealth, so keep
+  defenders keep their posts and companions don't flicker.
+- **Archer opener**: a hidden bot archer stops at its bow's range (1,500-2,300 when the bow reaches) and draws a Critical
+  Shot from stealth when the target may be critical-shot, keeping stealth on the nock by the player's chance
+  (`BotStealthArcher`, `RVR_STEALTH_ARCHER_OPEN`).
+- **"My edge is gone"**: a solo stealther whose opener did not take its target below half health within 4 s, or that a
+  second enemy joined, runs at once (`BotStealthEdge`, `BOT_SOLO_BAIL reason=edge...`) and hides again out of combat.
+- `UT_StealthRules`. **Tests only.**
+
 **Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
 - **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again
   whenever it was more than 30 degrees off, every 400 ms, so 119 of the 120 look angles body language picks were undone
