@@ -44,6 +44,9 @@ namespace DOL.GS
         public string AttemptId { get; } = Guid.NewGuid().ToString("N");
         public string CampId { get; init; }
         public string Target { get; init; }
+        /// <summary>GitHub #544: the camp's target level when it was chosen (the camp's average monster level); 0 when
+        /// unknown. Logged as targetLevel so a report can give the target con (targetLevel minus the bot's level).</summary>
+        public int TargetLevel { get; init; }
         public string AssignmentId { get; init; }
         public string GroupId { get; init; }
         public long BotId { get; init; }
@@ -139,7 +142,7 @@ namespace DOL.GS
                     reason = GoalAttemptEnd.Expired;
                 return new
                 {
-                    schema = 1, attemptId = AttemptId, campId = CampId, target = Target,
+                    schema = 1, attemptId = AttemptId, campId = CampId, target = Target, targetLevel = TargetLevel,
                     assignmentId = AssignmentId, groupId = GroupId, botId = BotId, bot = BotName,
                     className = ClassName, level = Level, realm = Realm, groupSize = GroupSize,
                     groupAverageLevel = GroupAverageLevel, groupClasses = GroupClasses,
@@ -162,7 +165,8 @@ namespace DOL.GS
         private static readonly Logger Log = LoggerManager.Create(typeof(AutonomousGoalDiagnostics));
 
         public static void Begin(GameBot bot, string campId, string target, string zone, int region,
-            int x, int y, int z, string groupId, int groupSize, double groupAverageLevel, string groupClasses)
+            int x, int y, int z, string groupId, int groupSize, double groupAverageLevel, string groupClasses,
+            int targetLevel = 0)
         {
             try
             {
@@ -174,7 +178,7 @@ namespace DOL.GS
                 System.Globalization.DateTimeStyles.RoundtripKind, out DateTime expiry);
             bot.GoalDiagnosticAttempt = new AutonomousGoalAttempt
             {
-                CampId = campId, Target = target, Zone = zone, Region = region, X = x, Y = y, Z = z,
+                CampId = campId, Target = target, TargetLevel = Math.Max(0, targetLevel), Zone = zone, Region = region, X = x, Y = y, Z = z,
                 AssignmentId = bot.PersistentRecord?.ObjectiveAssignmentId, GroupId = groupId,
                 BotId = bot.DatabaseID, BotName = bot.Name, ClassName = bot.ClassName, Level = bot.Level,
                 Realm = (int)bot.Realm, GroupSize = groupSize, GroupAverageLevel = groupAverageLevel,
@@ -183,6 +187,47 @@ namespace DOL.GS
             };
             }
             catch { }
+        }
+
+        /// <summary>
+        /// GitHub #544: the party reached its camp (AUTONOMOUS_GROUP_ARRIVED). Every member's open attempt at that camp
+        /// takes the arrival time. Followers trail the leader and seldom come within the camp's arrival radius
+        /// themselves, so their attempts used to end with arrivedUtc null (95-99% of group attempts on a 1.2.2 world).
+        /// Diagnostic only. Returns how many attempts were marked.
+        /// </summary>
+        public static int GroupArrived(System.Collections.Generic.IEnumerable<GameBot> party, string campId, DateTime utcNow)
+        {
+            try
+            {
+                if (party == null) return 0;
+                var attempts = new System.Collections.Generic.List<AutonomousGoalAttempt>();
+                foreach (GameBot member in party)
+                    if (member?.GoalDiagnosticAttempt is { } attempt)
+                        attempts.Add(attempt);
+                return MarkArrived(attempts, campId, utcNow);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>Marks each open attempt at <paramref name="campId"/> as arrived at <paramref name="utcNow"/>; an
+        /// attempt at another camp, an attempt that already arrived and a finished one are left alone.</summary>
+        public static int MarkArrived(System.Collections.Generic.IEnumerable<AutonomousGoalAttempt> attempts, string campId,
+            DateTime utcNow)
+        {
+            if (attempts == null || string.IsNullOrEmpty(campId)) return 0;
+            int marked = 0;
+            foreach (AutonomousGoalAttempt attempt in attempts)
+            {
+                if (attempt == null || attempt.ArrivedUtc.HasValue ||
+                    !string.Equals(attempt.CampId, campId, StringComparison.Ordinal))
+                    continue;
+                attempt.Arrive(utcNow);
+                if (attempt.ArrivedUtc.HasValue) marked++;
+            }
+            return marked;
         }
 
         public static void Reward(GameBot bot, GameNPC killedNpc, long actualExperience)

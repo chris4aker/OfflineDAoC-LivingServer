@@ -21,6 +21,19 @@ AUTONOMOUS_GOAL_ATTEMPT lines (one per camp attempt, routed to detail.log by log
 server.log) are read too when a detail.log is given: per realm, the share of attempt XP not from the camp's target
 (1 - targetXp / xp), a second, unsampled, view of the off-target question.
 
+Since #544's follow-up (FarmVibes' second-PC data):
+
+* target con: the camp's target level minus the bot's level (campLevel - maxLevel on a kill row; targetLevel - level
+  on an attempt), per realm, for solo and group kills apart, beside XP per member. Rows from before the field was
+  logged read "?" and are left out of the target con (never counted as 0);
+* zone names are merged across spellings ("Black Mtns. North" / "Black Mtns North", "Aegirs Landing" /
+  "Aegir's Landing"): see zone_key();
+* level bands: kills (by the party's highest level) and attempts (by the bot's level) per realm and 5-level band, so
+  a realm with many new low bots is not compared with one at 20-29;
+* re-rolled bots: a bot id whose attempt level drops below a level it already had is flagged and its attempts are
+  left out of the band table (bot_level_snapshots.py does the same for database snapshots);
+* arrival: the share of solo and group attempts that recorded arrivedUtc.
+
 Names are not printed: only realms, zones, monster cons and numbers. Reads each file once, line by line.
 """
 from __future__ import annotations
@@ -63,6 +76,42 @@ def parse_since(text: str | None, year: int) -> dt.datetime | None:
     return dt.datetime.strptime(f"{year}/{text}", "%Y/%m/%d %H:%M")
 
 
+BAND_WIDTH = 5
+_ZONE_PUNCT = re.compile(r"[.'\u2019`]")
+_SPACES = re.compile(r"\s+")
+
+
+def zone_key(name: str) -> str:
+    """One key for every spelling of a zone: no dots or apostrophes, one space, case folded.
+
+    "Black Mtns. North" and "Black Mtns North", "Silvermine Mts" and "Silvermine Mts.", "Aegirs Landing" and
+    "Aegir's Landing" each give one key."""
+    return _SPACES.sub(" ", _ZONE_PUNCT.sub("", name or "")).strip().casefold()
+
+
+def zone_names(names) -> dict:
+    """Key -> the name shown for it: the spelling seen most, then the longest (the one with its punctuation)."""
+    seen = defaultdict(Counter)
+    for name in names:
+        seen[zone_key(name)][(name or "").strip()] += 1
+    return {key: sorted(counts.items(), key=lambda kv: (-kv[1], -len(kv[0]), kv[0]))[0][0] for key, counts in seen.items()}
+
+
+def band_of(level) -> str:
+    level = max(0, to_int(level))
+    low = level // BAND_WIDTH * BAND_WIDTH
+    return f"{low:02d}-{low + BAND_WIDTH - 1:02d}"
+
+
+def optional_int(value):
+    if value in (None, "", "?"):
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def to_int(value, default=0):
     try:
         return int(value)
@@ -80,6 +129,10 @@ def to_float(value, default=0.0):
 def kill_row(fields: dict) -> dict:
     xp = [to_int(x) for x in str(fields.get("xpPerMember", "0")).split("/") if x != ""]
     on_target = fields.get("onTarget")
+    camp_level = optional_int(fields.get("campLevel"))
+    if camp_level is not None and camp_level <= 0:
+        camp_level = None
+    max_level = to_int(fields.get("maxLevel"))
     return {
         "realm": fields.get("realm", "None"),
         "zone": fields.get("zone", ""),
@@ -89,6 +142,9 @@ def kill_row(fields: dict) -> dict:
         "party": fields.get("party", "solo"),
         "size": to_int(fields.get("size"), 1),
         "levelDiff": to_int(fields.get("levelDiff")),
+        "maxLevel": max_level,
+        "campLevel": camp_level,
+        "targetCon": None if camp_level is None else camp_level - max_level,
         "xp": xp or [0],
         "share": to_float(fields.get("share"), 1.0),
         "otherParties": to_int(fields.get("otherParties")),
@@ -122,8 +178,13 @@ def read_logs(paths, since=None, until=None, year=None):
     return kills, goals
 
 
+def is_group(row: dict) -> bool:
+    return row["party"] in ("group", "pgroup")
+
+
 def summarize(rows: list[dict]) -> dict:
     xp = [x for row in rows for x in row["xp"]]
+    con = [row["targetCon"] for row in rows if row.get("targetCon") is not None]
     known = [row for row in rows if row["onTarget"] is not None]
     off = [row for row in known if row["onTarget"] == 0]
     cons = Counter(row["con"] for row in rows)
@@ -134,6 +195,9 @@ def summarize(rows: list[dict]) -> dict:
         "xpPerMemberMedian": statistics.median(xp) if xp else 0,
         "xpPerMemberMean": round(statistics.fmean(xp)) if xp else 0,
         "levelDiffMedian": statistics.median([row["levelDiff"] for row in rows]) if rows else 0,
+        "targetConMedian": statistics.median(con) if con else None,
+        "targetConMean": round(statistics.fmean(con), 2) if con else None,
+        "targetConRows": len(con),
         "cons": {con: round(n / len(rows), 3) for con, n in cons.most_common()} if rows else {},
         "killerShareMedian": round(statistics.median([row["share"] for row in rows]), 3) if rows else 0,
         "splitShare": round(sum(1 for row in rows if row["otherParties"] > 0) / len(rows), 3) if rows else 0,
@@ -144,33 +208,112 @@ def summarize(rows: list[dict]) -> dict:
     }
 
 
+def goal_realm(goal: dict) -> str:
+    return GOAL_REALMS.get(to_int(goal.get("realm")), "None")
+
+
+def goal_is_group(goal: dict) -> bool:
+    return bool(goal.get("groupId")) or to_int(goal.get("groupSize"), 1) > 1
+
+
+def goal_target_con(goal: dict):
+    target = optional_int(goal.get("targetLevel"))
+    if target is None or target <= 0:
+        return None
+    return target - to_int(goal.get("level"))
+
+
+def rerolled_bots(goals: list[dict]) -> dict:
+    """Bot ids whose attempt level fell below a level they already had (in start order): re-rolled or replaced
+    under the same id. Bot id -> (realm, highest level before the drop, level after it)."""
+    flagged, best = {}, {}
+    ordered = sorted((g for g in goals if g.get("botId") not in (None, "", 0)),
+                     key=lambda g: str(g.get("startedUtc") or ""))
+    for goal in ordered:
+        bot, level = goal.get("botId"), to_int(goal.get("level"))
+        if bot in best and level < best[bot] and bot not in flagged:
+            flagged[bot] = (goal_realm(goal), best[bot], level)
+        best[bot] = max(best.get(bot, 0), level)
+    return flagged
+
+
 def goal_summary(goals: list[dict]) -> dict:
-    by_realm = defaultdict(lambda: [0, 0, 0])
+    by_realm = defaultdict(list)
     for goal in goals:
-        realm = GOAL_REALMS.get(to_int(goal.get("realm")), "None")
-        entry = by_realm[realm]
-        entry[0] += 1
-        entry[1] += max(0, to_int(goal.get("xp")))
-        entry[2] += max(0, to_int(goal.get("targetXp")))
-    return {realm: {"attempts": n, "xp": xp, "targetXp": target,
-                    "offTargetXpShare": round(1 - target / xp, 3) if xp else None}
-            for realm, (n, xp, target) in sorted(by_realm.items())}
+        by_realm[goal_realm(goal)].append(goal)
+    out = {}
+    for realm, rows in sorted(by_realm.items()):
+        xp = sum(max(0, to_int(g.get("xp"))) for g in rows)
+        target = sum(max(0, to_int(g.get("targetXp"))) for g in rows)
+        entry = {"attempts": len(rows), "xp": xp, "targetXp": target,
+                 "offTargetXpShare": round(1 - target / xp, 3) if xp else None}
+        for kind, part in (("solo", [g for g in rows if not goal_is_group(g)]),
+                           ("group", [g for g in rows if goal_is_group(g)])):
+            con = [c for c in (goal_target_con(g) for g in part) if c is not None]
+            entry[kind] = {
+                "attempts": len(part),
+                "arrivedShare": round(sum(1 for g in part if g.get("arrivedUtc")) / len(part), 3) if part else None,
+                "targetConMedian": statistics.median(con) if con else None,
+                "targetConRows": len(con),
+            }
+        out[realm] = entry
+    return out
+
+
+def goal_bands(goals: list[dict], rerolled: dict) -> dict:
+    """Per realm and 5-level band of the bot's level: attempts, XP per attempt-hour, target con. Re-rolled bots are
+    left out (they would add new low-level gains to the realm)."""
+    cells = defaultdict(list)
+    for goal in goals:
+        if goal.get("botId") in rerolled:
+            continue
+        cells[(goal_realm(goal), band_of(goal.get("level")))].append(goal)
+    out = defaultdict(dict)
+    for (realm, band), rows in sorted(cells.items()):
+        seconds = sum(max(0.0, to_float(g.get("elapsedSeconds"))) for g in rows)
+        xp = sum(max(0, to_int(g.get("xp"))) for g in rows)
+        con = [c for c in (goal_target_con(g) for g in rows) if c is not None]
+        out[realm][band] = {"attempts": len(rows), "xpPerHour": round(xp / seconds * 3600) if seconds > 0 else None,
+                            "targetConMedian": statistics.median(con) if con else None}
+    return dict(out)
+
+
+def kill_bands(kills: list[dict]) -> dict:
+    cells = defaultdict(list)
+    for row in kills:
+        cells[(row["realm"], band_of(row["maxLevel"]))].append(row)
+    out = defaultdict(dict)
+    for (realm, band), rows in sorted(cells.items()):
+        s = summarize(rows)
+        out[realm][band] = {"rows": s["rows"], "xpPerMemberMedian": s["xpPerMemberMedian"],
+                            "targetConMedian": s["targetConMedian"], "groupedRows": s["groupedRows"]}
+    return dict(out)
 
 
 def build_report(kills: list[dict], goals: list[dict], min_rows: int = 1) -> dict:
     by_realm = defaultdict(list)
     by_zone = defaultdict(list)
+    names = zone_names(row["zone"] for row in kills)
     for row in kills:
         by_realm[row["realm"]].append(row)
-        by_zone[(row["realm"], row["zone"])].append(row)
+        by_zone[(row["realm"], zone_key(row["zone"]))].append(row)
     realm_order = [r for r in REALMS if r in by_realm] + sorted(r for r in by_realm if r not in REALMS)
+    rerolled = rerolled_bots(goals)
+    reroll_counts = Counter(realm for realm, _, _ in rerolled.values())
     return {
         "realms": {realm: summarize(by_realm[realm]) for realm in realm_order},
-        "zones": [dict(realm=realm, zone=zone, **summarize(rows))
-                  for (realm, zone), rows in sorted(by_zone.items(),
-                                                     key=lambda item: (realm_order.index(item[0][0]), -len(item[1])))
+        "realmParties": {realm: {"solo": summarize([r for r in by_realm[realm] if r["party"] == "solo"]),
+                                 "group": summarize([r for r in by_realm[realm] if is_group(r)])}
+                         for realm in realm_order},
+        "zones": [dict(realm=realm, zone=names[key], **summarize(rows))
+                  for (realm, key), rows in sorted(by_zone.items(),
+                                                    key=lambda item: (realm_order.index(item[0][0]), -len(item[1]),
+                                                                      item[0][1]))
                   if len(rows) >= min_rows],
+        "killBands": kill_bands(kills),
         "goalAttempts": goal_summary(goals),
+        "goalBands": goal_bands(goals, rerolled),
+        "rerolledBots": {realm: reroll_counts[realm] for realm in sorted(reroll_counts)},
     }
 
 
@@ -178,12 +321,18 @@ def pct(value) -> str:
     return "-" if value is None else f"{value * 100:.0f}%"
 
 
+def con_text(value) -> str:
+    return "-" if value is None else f"{value:+g}"
+
+
 def render(report: dict) -> str:
     out = []
-    head = f"{'':<34}{'rows':>6}{'kills':>8}{'xp/mbr med':>12}{'mean':>9}{'lvl+':>6}{'share':>7}{'split':>7}{'lost':>6}{'off':>6}"
+    head = (f"{'':<34}{'rows':>6}{'kills':>8}{'xp/mbr med':>12}{'tcon':>6}{'mean':>9}{'lvl+':>6}{'share':>7}"
+            f"{'split':>7}{'lost':>6}{'off':>6}")
 
     def line(name, s):
-        return (f"{name[:33]:<34}{s['rows']:>6}{s['kills']:>8}{s['xpPerMemberMedian']:>12,.0f}{s['xpPerMemberMean']:>9,}"
+        return (f"{name[:33]:<34}{s['rows']:>6}{s['kills']:>8}{s['xpPerMemberMedian']:>12,.0f}"
+                f"{con_text(s['targetConMedian']):>6}{s['xpPerMemberMean']:>9,}"
                 f"{s['levelDiffMedian']:>6}{pct(s['killerShareMedian']):>7}{pct(s['splitShare']):>7}"
                 f"{pct(s['lostShareMedian']):>6}{pct(s['offTargetShare']):>6}")
 
@@ -191,8 +340,20 @@ def render(report: dict) -> str:
     out.append(head)
     for realm, s in report["realms"].items():
         out.append(line(realm, s))
+        for kind in ("solo", "group"):
+            part = report.get("realmParties", {}).get(realm, {}).get(kind)
+            if part and part["rows"]:
+                out.append(line(f"  {kind}", part))
         if s["cons"]:
             out.append("    cons: " + ", ".join(f"{con} {pct(share)}" for con, share in s["cons"].items()))
+    if report.get("killBands"):
+        out.append("")
+        out.append("Per realm and level band (the party's highest level)")
+        out.append(f"{'':<16}{'rows':>6}{'xp/mbr med':>12}{'tcon':>6}{'grouped':>9}")
+        for realm, bands in report["killBands"].items():
+            for band, b in bands.items():
+                out.append(f"{realm[:3] + ' ' + band:<16}{b['rows']:>6}{b['xpPerMemberMedian']:>12,.0f}"
+                           f"{con_text(b['targetConMedian']):>6}{b['groupedRows']:>9}")
     out.append("")
     out.append("Per zone")
     out.append(head)
@@ -204,9 +365,25 @@ def render(report: dict) -> str:
         for realm, g in report["goalAttempts"].items():
             out.append(f"  {realm:<10} attempts={g['attempts']} xp={g['xp']:,} targetXp={g['targetXp']:,} "
                        f"offTarget={pct(g['offTargetXpShare'])}")
+            for kind in ("solo", "group"):
+                k = g.get(kind)
+                if k and k["attempts"]:
+                    out.append(f"    {kind:<6} attempts={k['attempts']} arrived={pct(k['arrivedShare'])} "
+                               f"tcon={con_text(k['targetConMedian'])}")
+        if report.get("goalBands"):
+            out.append("  by level band (re-rolled bots left out):")
+            for realm, bands in report["goalBands"].items():
+                for band, b in bands.items():
+                    xph = "-" if b["xpPerHour"] is None else f"{b['xpPerHour']:,}"
+                    out.append(f"    {realm[:3]} {band} attempts={b['attempts']} xp/attempt-hour={xph} "
+                               f"tcon={con_text(b['targetConMedian'])}")
+        if report.get("rerolledBots"):
+            out.append("  re-rolled bots (level dropped): " +
+                       ", ".join(f"{realm} {n}" for realm, n in report["rerolledBots"].items()))
     out.append("")
     out.append("share = killer party's median share of the kill's damage; split = kills shared with another party or "
-               "player; lost = damage that paid nobody; off = kills not the camp's target (camp known).")
+               "player; lost = damage that paid nobody; off = kills not the camp's target (camp known); tcon = median target con, the "
+               "camp's target level minus the bot's (party's highest) level, '-' when the log predates the field.")
     return "\n".join(out)
 
 
