@@ -90,7 +90,7 @@ internal static class BotCharacterGenerator
     /// <param name="rejected">The server's invalid-names check, or null for none.</param>
     public static Identity Generate(int realm, ISet<string> reservedNames, bool eraClassShares, Func<string, bool>? rejected)
     {
-        int gender = Random.Shared.Next(1, 3);
+        int gender = OfflineDaoc.Shared.NewBotRow.DrawGender(Random.Shared);
         Choice choice = DrawClass(realm, eraClassShares, Random.Shared);
         var race = choice.Races[Random.Shared.Next(choice.Races.Length)];
         var parts = Names[(realm, gender)];

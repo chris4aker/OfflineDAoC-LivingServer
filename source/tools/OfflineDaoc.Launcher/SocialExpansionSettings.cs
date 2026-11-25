@@ -151,6 +151,17 @@ public sealed record SocialExpansionSettings
     /// switch, no checkbox). On by default (1.2); ALL OFF turns it off with the rest, and turning Skill that grows back on
     /// in the tab turns it back on.</summary>
     public bool RaidLearnsFromRaiders { get; init; } = true;
+    /// <summary>The newcomer stream (#630, population_newcomers): new level-1 gamebots join a realm whose levels 1-19 run low.
+    /// On by default.</summary>
+    public bool PopulationNewcomers { get; init; } = true;
+    /// <summary>Gamebots a realm keeps in levels 1-19 at a roster of 1,000, scaled (population_newcomer_floor), 0 to 1000.</summary>
+    public int NewcomerFloor { get; init; } = DefaultNewcomerFloor;
+    /// <summary>New level-1 gamebots an hour per realm at a roster of 1,000, scaled (population_newcomer_per_hour), 0 to 60.</summary>
+    public int NewcomerPerHour { get; init; } = DefaultNewcomerPerHour;
+    /// <summary>Each newcomer pairs with a level-50 gamebot that retires, kept and never deleted (population_retire). On by default.</summary>
+    public bool PopulationRetire { get; init; } = true;
+    public const int DefaultNewcomerFloor = 50, MaxNewcomerFloor = 1000;
+    public const int DefaultNewcomerPerHour = 6, MaxNewcomerPerHour = 60;
 
     public static readonly string[] UpkeepModes = ["classic", "light", "free"];
 
@@ -208,6 +219,7 @@ public sealed record SocialExpansionSettings
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
         RaidLearnsFromRaiders = true, DeathFall = true, ShowBotsAsBots = false,
+        PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -271,6 +283,10 @@ public sealed record SocialExpansionSettings
         ("launcher_level50_kit", "bots", "The launcher's level-50 bot batches arrive with the quality-100 kit and 10,000 gold (off for a fresh-start world)."),
         ("bot_era_builds", "bots", "Era builds: at its first load a new autonomous gamebot draws its lifetime spec build from its class's 2002-2003 builds (estimates from period forum posts; a Mind/Body Sorcerer is likelier than a Matter one), with up to 2 points of per-bot variation, and keeps it for life. A bot with a saved build keeps it; companions, hired companions, Epic Special Forces and buffbots keep the standard builds. Off: new bots get the standard builds too. Log: ERA_BUILD_ASSIGNED, ERA_BUILD_TRAINED, ERA_BUILD_CENSUS."),
         ("bot_era_class_shares", "bots", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class."),
+        ("population_newcomers", "bots", "Server life: when a realm's autonomous gamebots in levels 1-19 fall below population_newcomer_floor, new level-1 gamebots join it (made like the launcher's + Lv.1 batch: the realm's 2003 class mix, never the custom class, no armour, a Classic or Shrouded Isles start), at most population_newcomer_per_hour an hour. Not during the startup ramp. Log: POPULATION_NEWCOMER. False: only the launcher adds bots."),
+        ("population_newcomer_floor", "bots", "The newcomer stream's floor: the gamebots a realm keeps in levels 1-19 at a roster of 1,000 in that realm, scaled to the realm's real roster (50 at 1,000 is 5 at 100 and 150 at 3,000; at least 1). 0 turns newcomers off."),
+        ("population_newcomer_per_hour", "bots", "The newcomer stream's rate: at most this many new level-1 gamebots an hour per realm at a roster of 1,000 in that realm, scaled to the realm's roster (at least 1), spaced evenly. 0 turns newcomers off."),
+        ("population_retire", "bots", "Server life: each newcomer is paired with a level-50 gamebot of its realm that retires (the longest idle first, then the oldest character), so the realm's roster stays the same size. Never a bot guild leader, a bot in your guild, on your friends list, in a group or raid, trading, with an open craft order, busy or in your sight. A retired bot keeps its character, items and coin, is never deleted and never logs in again. Log: POPULATION_RETIRED. False: newcomers add to the roster."),
         ("bot_nolifer_buffbot_percent", "bots", "Percent (0 to 100) of the No Lifer bots that run a buffbot. Which No Lifers have one is fixed from each main's roster id, so the same mains keep theirs across restarts."),
         ("bot_nolifer_buffbot_era_conc_range", "bots", "No Lifers' buffbots follow the 2003 rule for concentration buffs: no range limit, so a buffbot parked at a bind keeps its main buffed (Mythic added the 5,000-unit limit with its Classic servers in July 2005). False: their concentration buffs switch off beyond this server's buff range like everyone else's, and come back in range."),
         ("bot_skill_profiles", "bots", "Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): every autonomous gamebot gets a skill tier (Casual, Average or Veteran, 30/50/20, shifted by rvr_bot_awareness) and six facets: reactions, positioning, pulls, standing in fire, buffs and power use. A Casual bot pulls an add now and then, lets a buff run out and reacts late; a Veteran rarely does, and no mistake takes a named or a monster more than 2 levels above the group. Never companions, raids, battleground assaults or fights at a keep. False turns bot_skill_growth and bot_skill_spare_player_group off with it. Log: BOT_SKILL_PROFILE, BOT_SKILL_BUDGET, BOT_SKILL_MISTAKE. Mistakes: Casual pulls an add in 10% of party pulls (Average 5%, Veteran 1.5%), lets 25% of expired buffs stay off 20-90 s (12%, 4%), casts its dearest nuke in 30% of casts (15%, 5%) and rests at 25% power (35%, 45%), circles into a monster's face in 12% of steps (6%, 2%), reacts x1.3 slower (x1.0, x0.75) and in open-field RvR steps out of an area effect after 2-5 s (1-3 s, 0.5-1.5 s; an RvR group keeps its group tier) and follows its group's call after a delay inside the group tier's band, sooner with better reactions."),
@@ -366,6 +382,10 @@ public sealed record SocialExpansionSettings
         ["bot_movement_habits"] = Bool(BotMovementHabits),
         ["bot_living_milestones"] = Bool(LivingMilestones),
         ["raid_learns_from_raiders"] = Bool(RaidLearnsFromRaiders),
+        ["population_newcomers"] = Bool(PopulationNewcomers),
+        ["population_newcomer_floor"] = NewcomerFloor.ToString(CultureInfo.InvariantCulture),
+        ["population_newcomer_per_hour"] = NewcomerPerHour.ToString(CultureInfo.InvariantCulture),
+        ["population_retire"] = Bool(PopulationRetire),
     };
 
     private static string Bool(bool value) => value ? "True" : "False";
@@ -702,6 +722,10 @@ public sealed record SocialExpansionSettings
             BotMovementHabits = ReadBool("bot_movement_habits", d.BotMovementHabits),
             LivingMilestones = ReadBool("bot_living_milestones", d.LivingMilestones),
             RaidLearnsFromRaiders = ReadBool("raid_learns_from_raiders", d.RaidLearnsFromRaiders),
+            PopulationNewcomers = ReadBool("population_newcomers", d.PopulationNewcomers),
+            NewcomerFloor = ReadCraftingInt("population_newcomer_floor", d.NewcomerFloor, 0, MaxNewcomerFloor),
+            NewcomerPerHour = ReadCraftingInt("population_newcomer_per_hour", d.NewcomerPerHour, 0, MaxNewcomerPerHour),
+            PopulationRetire = ReadBool("population_retire", d.PopulationRetire),
         };
     }
 
@@ -732,11 +756,13 @@ public sealed record SocialExpansionSettings
         BotCrafters = false, BotCraftOrders = false,
         BotSkillProfiles = false, BotPlaceKnowledge = false, BotMovementHabits = false, LivingMilestones = false,
         RaidLearnsFromRaiders = false, BotEraClassShares = false, BotEraBuilds = false,
+        PopulationNewcomers = false, PopulationRetire = false,
     };
 
     /// <summary>True when every feature and both XP ranges are off.</summary>
     public bool IsAllOff => !BotGuilds && !Personalities && !Voices && !AnyLiving && !HiredCompanions && !BotGroupInvites && !BotRaidInvites &&
                             !BotCrafters && !BotCraftOrders && !AnyBotsAsPeople && !RaidLearnsFromRaiders && !BotEraClassShares && !BotEraBuilds &&
+                            !PopulationNewcomers && !PopulationRetire &&
                             PlayerXpByLevel.Trim() == "" && BotXpByLevel.Trim() == "";
 
     /// <summary>True when any "Bots as people" master switch is on.</summary>

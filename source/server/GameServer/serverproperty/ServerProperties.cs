@@ -2298,6 +2298,23 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_ERA_CLASS_SHARES = true;
 
 		/// <summary>
+		/// The newcomer stream (issue #630; AutonomousNewcomerStream): new level-1 gamebots join a realm whose levels 1-19 run
+		/// low, and as many level-50 gamebots retire (kept, never deleted). Autonomous gamebots only. New keys in 1.2.3, on
+		/// from the start, so no LivingServerSettingsUpgrade line (a world from an earlier build has no row).
+		/// </summary>
+		[ServerProperty("bots", "population_newcomers", "Server life: when a realm's autonomous gamebots in levels 1-19 fall below population_newcomer_floor, new level-1 gamebots join it (made like the launcher's + Lv.1 batch: the realm's 2003 class mix, never the custom class, no armour, a Classic or Shrouded Isles start), at most population_newcomer_per_hour an hour. Not during the startup ramp. Log: POPULATION_NEWCOMER. False: only the launcher adds bots.", true)]
+		public static bool POPULATION_NEWCOMERS = true;
+
+		[ServerProperty("bots", "population_newcomer_floor", "The newcomer stream's floor: the gamebots a realm keeps in levels 1-19 at a roster of 1,000 in that realm, scaled to the realm's real roster (50 at 1,000 is 5 at 100 and 150 at 3,000; at least 1). 0 turns newcomers off.", 50)]
+		public static int POPULATION_NEWCOMER_FLOOR = 50;
+
+		[ServerProperty("bots", "population_newcomer_per_hour", "The newcomer stream's rate: at most this many new level-1 gamebots an hour per realm at a roster of 1,000 in that realm, scaled to the realm's roster (at least 1), spaced evenly. 0 turns newcomers off.", 6)]
+		public static int POPULATION_NEWCOMER_PER_HOUR = 6;
+
+		[ServerProperty("bots", "population_retire", "Server life: each newcomer is paired with a level-50 gamebot of its realm that retires (the longest idle first, then the oldest character), so the realm's roster stays the same size. Never a bot guild leader, a bot in your guild, on your friends list, in a group or raid, trading, with an open craft order, busy or in your sight. A retired bot keeps its character, items and coin, is never deleted and never logs in again. Log: POPULATION_RETIRED. False: newcomers add to the roster.", true)]
+		public static bool POPULATION_RETIRE = true;
+
+		/// <summary>
 		/// Era builds 1.2 (docs/ERA-BUILDS-1.2.md, WP3): a new gamebot takes its lifetime build from the era data at its first
 		/// load. Saved builds are never re-drawn; companions, hired companions, Epic Special Forces and buffbots are untouched.
 		/// </summary>
