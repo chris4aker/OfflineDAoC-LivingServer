@@ -106,6 +106,12 @@ The raid release on `integration/1.2.2` (owner, 2026-11-22: 1.2.2 is the raids).
   (it would weaken `GuardStealther`, so it is not done); Rapid Fire, Camouflage, Vanish and True Sight for bots (#531);
   the duo's edge-gone retreat (only soloers run); the fight harness rows (#520).
 
+- **OpenDAoC upstream, server core (P1):** database save safety, the memory-leak bundle (#540), game-loop drift, the
+  trade deadlock and small core fixes, on `fix/1.2.3-upstream-core`. **In review, tests only.** Left: the quest-list
+  locking refactor (`22197f1f6`, about 100 call sites incl. the quest harness and journal), the equipment broadcast
+  rework (`ec54287b1`) and the UDP receive hardening (`a981b22f7`, does not apply to our diverged network code) were not
+  ported. PC check: a long session's log shows the periodic saves and no growth in held deleted objects.
+
 ## 1.3
 
 - [#437](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/437) Language selector, German and French (original client only). **Open, not started.** Moved from 1.2.2
