@@ -100,7 +100,7 @@ namespace DOL.GS
 
         public override void OnStopEffect()
         {
-            Owner.IsStunned = false;
+            Owner.IsStunned = Owner.effectListComponent.ContainsEffectForEffectType(eEffect.Stun);
             OnHardCCStop();
             UpdatePlayerStatus();
 
@@ -138,7 +138,7 @@ namespace DOL.GS
 
         public override void OnStopEffect()
         {
-            Owner.IsMezzed = false;
+            Owner.IsMezzed = Owner.effectListComponent.ContainsEffectForEffectType(eEffect.Mez);
             OnHardCCStop();
             UpdatePlayerStatus();
 
