@@ -163,6 +163,9 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("pattern")
     f.add_argument("--root", type=Path, default=Path("."))
     args = ap.parse_args(argv)
+    # Plain \n on Windows too: bash reads the printed paths and filter, and a \r would end up in them.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(newline="\n")
     if args.cmd == "trx":
         classes = [c for item in args.classes for c in item.split()]
         return check_trx(args.trx, args.title, classes, args.min_executed)
