@@ -198,6 +198,8 @@ namespace DOL.GS
             /// <summary>A dragon or open-world raid's attempt rows (#644; logging only), and the fight's attempts already written.</summary>
             public RaidAttemptTracker DragonAttempts;
             public int DragonAttemptsSeen, DragonEndsSeen;
+            /// <summary>The raid's RAID_FUNNEL counts (#644 part 2; logging only).</summary>
+            public readonly RaidFunnel Funnel = new();
         }
         private sealed class Party
         {
@@ -621,6 +623,8 @@ namespace DOL.GS
         {
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
+                // #644 part 2: RAID_FIGHT_SAMPLE runs on its own 5 s look, so a 15 s sample is not held to the 10 s pulse.
+                PulseFightSamples(now);
                 if (now < _nextPulse) return;
                 _nextPulse = now + 10_000;
                 foreach (GameNPC expired in CompletedLoot.Where(p => p.Value.Expires <= now).Select(p => p.Key).ToArray())
@@ -656,13 +660,18 @@ namespace DOL.GS
                         Party party = raid.Parties[group];
                         foreach (var alive in party.Members.Where(b => b.IsAlive)) party.CorpseSince.Remove(alive.DatabaseID);
                         if (party.Members.Any(b => !IsEligible(b) || b.Group != group || !AutonomousBotRegistry.Contains(b.DatabaseID)))
+                        {
+                            raid.Funnel.PartyLeft(party.Members.Select(b => (b.DatabaseID, !AutonomousBotRegistry.Contains(b.DatabaseID))));
                             RemoveParty(group);
+                        }
                     }
                     raid.Support = raid.Parties.Values.SelectMany(p => p.Members).Cast<GameLiving>().ToArray();
                     raid.MostRecruited = Math.Max(raid.MostRecruited, raid.Support.Length);
+                    ObserveFunnelLives(raid);
                     int presentAtHub = raid.Parties.Values.Sum(p => PresentAtHub(raid, p));
                     bool departing = !raid.HubDeparted && RealmRaidRecruitmentPolicy.DepartHub(false, presentAtHub,
                         GameLoop.GameLoopTime - raid.Created, raid.Required, !raid.Clocked);
+                    raid.Funnel.Observe(raid.Parties.Count, presentAtHub, !raid.HubDeparted);
                     raid.HubDeparted |= departing;
                     if (departing) raid.HubDepartedTick = GameLoop.GameLoopTime;
                     // Living Server 1.2: the raid leader briefs the realm on the boss as the raid leaves the muster (docs/LORE.md).
@@ -756,6 +765,8 @@ namespace DOL.GS
                             RealmEventRecords.Progress(raid.Definition.Id, "Battle", "Expedition began advancing to the encounter.", raid.Support.Length, present);
                             Log.Info($"REALM_RAID_STARTED event={raid.Definition.Id} present={present} required={raid.Required} " +
                                      $"support={raid.Support.Length} minutes={(now - raid.Created) / 60_000} forced={raid.Forced} playtest={raid.Playtest}");
+                            raid.Funnel.StartedTick = now;
+                            WriteFunnel(raid, "start", now);
                             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm,
                                 $"The {raid.Definition.Name} expedition is advancing with {present} staged level-50 adventurers.");
                             // An expedition that lost here the last two times brings the Epic Special Forces from the start
@@ -1383,6 +1394,85 @@ namespace DOL.GS
             catch (Exception exception)
             {
                 Log.Warn("RAID_ATTEMPT rows (raid end)", exception);
+            }
+        }
+
+        // ---- #644 part 2: RAID_FIGHT_SAMPLE and RAID_FUNNEL (logging only: nothing below decides anything for the raid) ----
+
+        private static long _nextFightSampleCheck;
+
+        /// <summary>Every 5 s (under the raid lock): a RAID_FIGHT_SAMPLE for each live attempt whose 15 s are up.</summary>
+        private static void PulseFightSamples(long now)
+        {
+            if (now < _nextFightSampleCheck || Raids.Count == 0 || !RaidAttemptRows.AnyLive) return;
+            _nextFightSampleCheck = now + RaidFightSampleRows.CheckMilliseconds;
+            try
+            {
+                foreach (Raid raid in Raids.Values)
+                {
+                    raid.DungeonRoute?.Attempts?.Sample(now);
+                    raid.Transit?.Attempts?.Sample(now);
+                    raid.DragonAttempts?.Sample(now);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("RAID_FIGHT_SAMPLE rows", exception);
+            }
+        }
+
+        /// <summary>The raid's gamebots seen dead this pulse outside any live attempt (RAID_FUNNEL's died).</summary>
+        private static void ObserveFunnelLives(Raid raid)
+        {
+            try
+            {
+                foreach (GameLiving member in raid.Support)
+                    if (member is GameBot bot)
+                        raid.Funnel.ObserveLife(bot.DatabaseID, !bot.IsAlive, RaidAttemptRows.ByRaider.ContainsKey(bot));
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("RAID_FUNNEL rows (lives)", exception);
+            }
+        }
+
+        /// <summary>A gamebot of a raid party dropped out on the way: "route" (no route to the hub) or "travel" (stable travel cancelled).</summary>
+        public static void NoteFunnelLoss(Group group, GameBot bot, string reason)
+        {
+            if (group == null || bot == null) return;
+            try
+            {
+                using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+                {
+                    if (!Membership.TryGetValue(group, out Raid raid)) return;
+                    if (reason == "route") raid.Funnel.RouteFailed(bot.DatabaseID);
+                    else if (reason == "travel") raid.Funnel.TravelCancelled(bot.DatabaseID);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("RAID_FUNNEL rows (loss)", exception);
+            }
+        }
+
+        /// <summary>RAID_FUNNEL at the raid's start or end. atBoss: the most raiders in one of the raid's own attempts (its dungeon route
+        /// or its dragon / open-world fight; a route gate's boss is not the raid's).</summary>
+        private static void WriteFunnel(Raid raid, string stage, long now)
+        {
+            if (!LivingRows.Enabled) return;
+            try
+            {
+                RaidAttemptTracker main = raid.DungeonRoute?.Attempts ?? raid.DragonAttempts;
+                long firstPull = main?.FirstBegin ?? -1;
+                int atBoss = main == null || firstPull < 0 ? -1 : main.MostMembers;
+                var (hubS, stageS, bossS) = RaidFightSampleRows.Legs(raid.Created, raid.HubDepartedTick, raid.Funnel.StartedTick, firstPull, now);
+                LivingRows.Emit(RaidFightSampleRows.FormatFunnel(new RaidFightSampleRows.FunnelFacts(raid.Definition.Id, stage, raid.Required,
+                    raid.MostRecruited, raid.Funnel.MostParties, raid.Funnel.MostAtHub, raid.StagingBest, atBoss,
+                    raid.Funnel.Lost(raid.Released.Count), hubS, stageS, bossS)));
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("RAID_FUNNEL rows", exception);
             }
         }
 
@@ -2782,6 +2872,7 @@ namespace DOL.GS
                      $"mostRecruited={raid.MostRecruited} underStrength={underStrength} " +
                      $"forced={raid.Forced} minutes={(now - raid.Created) / 60_000} named={named.Length} " +
                      $"specialForces={AutonomousEpicSpecialForces.Count(raid.Definition.Id)} specialForcesJoined={specialForcesJoined} wipes={raid.Wipes} reason=\"{reason}\"");
+            WriteFunnel(raid, "end", now);
             // The encounter that beat the raid: a route gate's (Aidon in Hall of the Corrupt), its own dungeon's or the dragon.
             string defeatedBy = DefeatedBy(raid.Transit?.DefeatedAt, raid.DungeonRoute?.DefeatedAt, raid.DragonFight?.DefeatedAt,
                 FinalBossName(raid), raid.Definition.BossType);
