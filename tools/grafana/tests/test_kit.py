@@ -11,6 +11,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
@@ -81,14 +82,29 @@ class CheckTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("NO_SUCH_ROW_628", out)
 
-    def test_removing_a_pending_row_fails_the_dashboards_that_read_it(self):
-        path = self.root / "tools/grafana/pending-rows.json"
-        pending = json.loads(path.read_text(encoding="utf-8"))
-        del pending["rows"]["BG_POPULATION"]
-        path.write_text(json.dumps(pending), encoding="utf-8")
-        code, out = run_check(self.root)
+    def test_a_row_neither_in_code_nor_pending_fails_the_dashboards_that_read_it(self):
+        # #690: BG_POPULATION is read from code now (it was a pending entry); the scan is made to miss it instead, as it
+        # did before the scanner read LivingRows formatters.
+        real_scan = rows.scan
+
+        def missing_it(repo):
+            found = real_scan(repo)
+            found.pop("BG_POPULATION", None)
+            return found
+        with mock.patch.object(rows, "scan", missing_it):
+            code, out = run_check(self.root)
         self.assertEqual(code, 1)
         self.assertIn("row BG_POPULATION is neither in code nor pending", out)
+
+    def test_a_pending_entry_for_a_row_in_code_fails(self):
+        # #690's acceptance: pending-rows.json has no entries for rows on main.
+        path = self.root / "tools/grafana/pending-rows.json"
+        pending = json.loads(path.read_text(encoding="utf-8"))
+        pending["rows"]["GOAL_PASS"] = {"issue": 690, "branch": "main", "log": "server.log", "fields": ["t"]}
+        path.write_text(json.dumps(pending), encoding="utf-8")
+        code, out = run_check(self.root)
+        self.assertEqual(code, 1, out)
+        self.assertIn("GOAL_PASS", out)
 
 
 class DashboardRuleTests(unittest.TestCase):
@@ -172,6 +188,93 @@ class A {
         self.assertEqual(set(found["PLANTED_BUILDER"].fields), {"bot", "hp"})
         for absent in ["PLANTED_ERROR", "PLANTED_COMMENTED", "PLANTED_COMPARE", "TEST_ONLY_ROW"]:
             self.assertNotIn(absent, found)
+
+    def test_livingrows_formatters(self):
+        """#690: the shapes the LivingRows files use. Several row classes in one file, each with its own `const string
+        Marker`; a StringBuilder with a capacity after the marker; an Append chain that ends at its ToString()."""
+        found = self.scan('''
+public static class FirstRows
+{
+    public const string Marker = "PLANTED_FIRST";
+    public static string Format(long now, string caster) =>
+        string.Create(CultureInfo.InvariantCulture, $"{Marker} t={now} caster={caster} note={(x ? "a{" : "b}")}");
+}
+
+/// <summary>A comment with a brace { and a string "}" in it.</summary>
+public static class SecondRows
+{
+    public const string Marker = "PLANTED_SECOND";
+    private const char Open = '{';
+    public static string Format(long now, int bots)
+    {
+        var row = new StringBuilder(Marker, 200);
+        row.Append(" t=").Append(now).Append(" bots=").Append(bots);
+        return row.ToString();
+    }
+    public static string Other() => new StringBuilder("x").Append(" stray=").Append(1).ToString();
+
+    public static class Inner
+    {
+        public const string Marker = "PLANTED_INNER";
+        public static string Format(int n) => $"{Marker} n={n}";
+    }
+
+    public static string After(int k) => $"{Marker} k={k}";
+}
+''')
+        self.assertEqual(set(found["PLANTED_FIRST"].fields), {"t", "caster", "note"})
+        self.assertEqual(set(found["PLANTED_SECOND"].fields), {"t", "bots", "k"},
+                         "its own const, after the nested class too; the stray Append after ToString() is not its field")
+        self.assertEqual(set(found["PLANTED_INNER"].fields), {"n"})
+        self.assertEqual(len(found["PLANTED_FIRST"].sites), 1)
+
+    def test_a_new_stringbuilder_row_is_found(self):
+        # #690's acceptance: a planted StringBuilder-style row, as LivingRows.Goals.cs writes GOAL_PASS.
+        found = self.scan('''
+public static class PlantedRows
+{
+    public const string PassMarker = "PLANTED_PASS";
+    public static string Pass(long now, int band) {
+        var row = new StringBuilder(PassMarker, 220);
+        row.Append(" t=").Append(now.ToString(CultureInfo.InvariantCulture))
+            .Append(" band=").Append(band.ToString(CultureInfo.InvariantCulture));
+        return row.ToString();
+    }
+}''')
+        self.assertIn("PLANTED_PASS", found)
+        self.assertEqual(set(found["PLANTED_PASS"].fields), {"t", "band"})
+
+    def test_mask_blanks_strings_chars_and_comments(self):
+        text = 'a = "{"; b = \'}\'; c = \'\\\'\'; // }\nd = @"x""}"; /* { */ e = $"{X} {(q ? "}" : "{")}"; { }'
+        masked = rows.mask(text)
+        self.assertEqual(len(masked), len(text))
+        self.assertEqual(masked.count("{"), 1)
+        self.assertEqual(masked.count("}"), 1)
+        self.assertEqual(masked.count("\n"), 1)
+
+    def test_the_livingrows_rows_on_main(self):
+        """The real code: the four rows of #690 with their fields, and CC_BREAK and BG_RALLY_RESPONSE with only their own
+        (the scanner used to give them CAST_INTERRUPT's and BG_TARGET_PICK's, whose const shares their name)."""
+        found = rows.scan(REPO)
+        want = {
+            "BG_POPULATION": {"t", "bg", "bracket", "realm", "bots", "bgGoal", "passing", "travelling", "assigned", "eligible",
+                              "expected", "companions", "player"},
+            "CAST_INTERRUPT": {"seq", "every", "t", "caster", "pet", "realm", "spell", "castMs", "leftMs", "outcome", "why",
+                               "attacker", "attackerPet", "region", "bg"},
+            "BG_TARGET_PICK": {"seq", "every", "t", "bg", "realm", "src", "pick", "target", "skippedControlled", "skippedEngines",
+                               "rally", "list", "candidates"},
+            "GOAL_PASS": {"t", "realm", "band", "members", "pool", "bgEligible", "target", "held", "open", "planned",
+                          "personalities"},
+            "CC_BREAK": {"t", "cc", "target", "breaker", "breakerPet", "caster", "side", "ms", "attack", "region", "bg"},
+            "BG_RALLY_RESPONSE": {"t", "bg", "realm", "contact", "pet", "ms", "nth"},
+        }
+        for marker, keys in want.items():
+            self.assertIn(marker, found)
+            self.assertEqual(set(found[marker].fields), keys, marker)
+        policy = privacy.load_policy(REPO / "tools/grafana/row-policy.json", REPO / "tools/grafana/pending-rows.json")
+        for marker in want:
+            self.assertEqual(privacy.dropped_fields(found[marker], policy), {}, f"{marker}: no field reads a name")
+        self.assertEqual(dict(policy.pending), {}, "no pending entry for a row on main")
 
     def test_detail_log_rows_follow_logconfig(self):
         found = self.scan('class A { void F() { Log.Info($"AUTONOMOUS_GOAL_ATTEMPT_X a={1}"); Log.Info($"OTHER_ROW a={1}"); } }')

@@ -10,18 +10,10 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **740**; pending (#625, not on main yet): **3**; shipped by the pipeline: **711**.
+- Rows in code: **744**; pending (#625, not on main yet): **0**; shipped by the pipeline: **712**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
-
-## Pending rows
-
-| Row | Issue | Branch | Log | Fields | Frequency | Meaning |
-|---|---|---|---|---|---|---|
-| `BG_POPULATION` | pending #625 | `main` | server.log | `t`, `bg`, `bracket`, `realm`, `bots`, `bgGoal`, `passing`, `travelling`, `assigned`, `eligible`, `expected`, `companions`, `player` | every 5 min, one per battleground and realm (about 144 an hour) | Bots present per battleground and realm, by goal, beside the expected headcount (#610). |
-| `BG_TARGET_PICK` | pending #625 | `main` | server.log | `seq`, `every`, `t`, `bg`, `realm`, `src`, `pick`, `target`, `skippedControlled`, `skippedEngines`, `rally`, `list`, `candidates` | every 10th battleground pick, at most 10 a minute | A sampled battleground target pick: the kind picked, controlled enemies and engines skipped, rally board or not (#621). |
-| `CAST_INTERRUPT` | pending #625 | `main` | server.log | `seq`, `every`, `t`, `caster`, `pet`, `realm`, `spell`, `castMs`, `leftMs`, `outcome`, `why`, `attacker`, `attackerPet`, `region`, `bg` | every 10th cast an attacker's interrupt timer reached, at most 20 a minute | A sampled cast an interrupting hit reached: caster kind, spell type, time left, kept or lost (#596). |
 
 ## Rows in code
 
@@ -181,6 +173,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BG_KEEP_LEVEL_RESTORED` | server.log | **ships** | `keeps/AbstractGameKeep.cs` | `baseLevel`, `from`, `id`, `keep`, `realm`, `reason`, `to` | - | - | - |
 | `BG_KEEP_STATUS` | server.log | **ships** | `bots/autonomous/AutonomousRvrDashboard.cs` | `activities`, `atLord`, `attackersAtLord`, `attackersOnLordFloor`, `battleground`, `doorHealth`, `doors`, `guardLevel`, `guards`, `holder`, `inCombat`, `inside`, `keep`, `keepLevel`, `lord`, `lordLevel`, `medianToKeep`, `moving`, `near`, `onLord` | - | - | - |
 | `BG_LORD_PATH` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `at`, `attempt`, `bot`, `dest`, `goalSnap`, `heightToLord`, `inCombat`, `keep`, `lordAt`, `moving`, `path`, `realm`, `sample`, `target`, `walkKind`, `walkTo` | `bot`, `path`, `target` | - | - |
+| `BG_POPULATION` | server.log | **ships** | `bots/autonomous/LivingRows.Battlegrounds.cs` | `assigned`, `bg`, `bgGoal`, `bots`, `bracket`, `companions`, `eligible`, `expected`, `passing`, `player`, `realm`, `t`, `travelling` | - | - | BG_POPULATION (#625 row 1; |
 | `BG_RALLY_BARREN` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `barren`, `battleground`, `bearing`, `inside`, `joint`, `keep`, `minutes`, `needed`, `peakRallied`, `point`, `realm` | - | - | - |
 | `BG_RALLY_CANDIDATES` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `candidates`, `gate`, `keep`, `realm`, `reason` | - | - | - |
 | `BG_RALLY_CONTACT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `approaching`, `bot`, `fight`, `id`, `realm`, `region`, `target`, `toRally` | `bot`, `target` | - | - |
@@ -188,11 +181,12 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BG_RALLY_PLACED` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `apart`, `arrivalBearing`, `barren`, `battleground`, `bearing`, `gate`, `generation`, `keep`, `others`, `partner`, `plan`, `point`, `realm`, `reason`, `restartedGathering`, `separated`, `usedBarren` | - | - | The realm gathers afresh at the new spot: |
 | `BG_RALLY_REGROUP` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `atLord`, `battleground`, `bestBelowLord`, `bestToLord`, `engaged`, `keep`, `lord`, `lowest`, `minutes`, `onLordFloor`, `passedGate`, `peakInLordReach`, `realm`, `reason`, `standing` | - | - | - |
 | `BG_RALLY_REINFORCE` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `engaged`, `joined`, `keep`, `lord`, `realm` | - | - | - |
-| `BG_RALLY_RESPONSE` | server.log | **ships** | `bots/autonomous/LivingRows.Battlegrounds.cs` | `bg`, `candidates`, `contact`, `every`, `list`, `ms`, `nth`, `pet`, `pick`, `rally`, `realm`, `seq`, `skippedControlled`, `skippedEngines`, `src`, `t`, `target` | - | - | BG_RALLY_RESPONSE (#625 row 4; |
+| `BG_RALLY_RESPONSE` | server.log | **ships** | `bots/autonomous/LivingRows.Battlegrounds.cs` | `bg`, `contact`, `ms`, `nth`, `pet`, `realm`, `t` | - | - | BG_RALLY_RESPONSE (#625 row 4; |
 | `BG_RALLY_STATUS` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `apart`, `atLord`, `battleground`, `bearing`, `bestBelowLord`, `bestToLord`, `chasesDropped`, `clear`, `climbOpen`, `climbs`, `committed`, `diedOther`, `diedToGuards`, `engaged`, `fightsRefused`, `floorArrivals`, `gate`, `gateGuards`, `guardClear`, `inLordReach`, `inside`, `keep`, `lord`, `modelled`, `musterNeeded`, `needed`, `onLordFloor`, `otherStorming`, `passedGate`, `peakRallied`, `plan`, `players`, `point`, `rallying`, `readySeconds`, `realm`, `share`, `state`, `waitedSeconds` | - | - | Once a minute per realm (3b808b4: |
 | `BG_RALLY_STORM` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `foot`, `gate`, `going`, `heldSeconds`, `inside`, `keep`, `lord`, `lordLevel`, `minutes`, `modelled`, `needed`, `otherStormSeconds`, `otherWaiting`, `players`, `rally`, `realm`, `rule`, `share`, `withOtherRealm` | - | - | - |
 | `BG_SIEGE_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `attacker`, `holder`, `keep`, `region` | - | - | - |
 | `BG_STORM_TRACE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `alive`, `at`, `bot`, `dest`, `gate`, `inCombat`, `issued`, `keep`, `lordAt`, `moving`, `orderIn`, `path`, `pending`, `realm`, `recovery`, `stallReplans`, `state`, `step`, `target`, `toGate`, `toLord`, `wave` | `bot`, `path`, `target` | - | pending=True: the order was given this turn and the mover has not taken it yet, so moving, path and dest are still those of the previous order (build ea882e6: |
+| `BG_TARGET_PICK` | server.log | **ships** | `bots/autonomous/LivingRows.Battlegrounds.cs` | `bg`, `candidates`, `every`, `list`, `pick`, `rally`, `realm`, `seq`, `skippedControlled`, `skippedEngines`, `src`, `t`, `target` | - | - | BG_TARGET_PICK (#625 row 4; |
 | `BG_TOWER_CLIMB` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `atFoot`, `battleground`, `climb`, `comingInside`, `footHeldSeconds`, `keep`, `lord`, `realm`, `second`, `standing`, `upTheTower` | - | - | Who went up and why (4d48f42: |
 | `BG_TOWER_FOOT` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `belowLord`, `foot`, `footIndex`, `guardClear`, `keep`, `nodes`, `path`, `realm`, `status` | `path` | - | - |
 | `BG_WAVE_ASSAULT` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundWave.cs` | `battleground`, `gathered`, `inside`, `keep`, `minutes`, `needed`, `patienceNeeded`, `realm`, `withOtherRealm` | - | - | - |
@@ -278,7 +272,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BUFFBOT_LOGOUT` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `id`, `main`, `reason` | `buffbot`, `main` | - | - |
 | `BUFFBOT_RELOCATED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `from`, `main`, `to`, `why`, `x`, `y` | `buffbot`, `main` | - | - |
 | `CABALIST_REST` | server.log | **ships** | `bots/CabalistRestDiagnostics.cs` | `aggro`, `blocked`, `cast`, `end`, `hp`, `lastAttempt`, `lastMessage`, `leaderDistance`, `level`, `mana`, `moving`, `name`, `pending`, `pet`, `petCast`, `petCombat`, `petMoving`, `petTarget` | `lastMessage`, `name`, `pending`, `petTarget` | - | - |
-| `CC_BREAK` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attack`, `attacker`, `attackerPet`, `bg`, `breaker`, `breakerPet`, `castMs`, `caster`, `cc`, `every`, `leftMs`, `ms`, `outcome`, `pet`, `realm`, `region`, `seq`, `side`, `spell`, `t`, `target`, `why` | - | - | CC_BREAK (#625 row 3; |
+| `CAST_INTERRUPT` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attacker`, `attackerPet`, `bg`, `castMs`, `caster`, `every`, `leftMs`, `outcome`, `pet`, `realm`, `region`, `seq`, `spell`, `t`, `why` | - | - | CAST_INTERRUPT (#625 row 2; |
+| `CC_BREAK` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attack`, `bg`, `breaker`, `breakerPet`, `caster`, `cc`, `ms`, `region`, `side`, `t`, `target` | - | - | CC_BREAK (#625 row 3; |
 | `CHAT_EMOTE` | server.log | **ships** | `bots/autonomous/BotChatTranscript.cs` | `emote`, `from`, `kind`, `realm` | `from` | - | - |
 | `CHAT_FLAG` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `at`, `ch`, `lines`, `note`, `realm`, `seq`, `t`, `to`, `zone` | - | - | - |
 | `CHAT_HEAR` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `ch`, `from`, `grouped`, `heard`, `intent`, `realm`, `room`, `seq`, `t`, `text`, `to`, `zone` | - | - | - |
@@ -420,6 +415,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `FORK_BUILD` | server.log | **ships** | `gameutils/ForkBuildInfo.cs` | `bot_debates`, `bot_group_invite_player`, `bot_group_player_loot_weight`, `bot_guild_parts`, `bot_guilds`, `bot_led_group_join_mode`, `bot_personalities`, `bot_player_guild_economy`, `bot_raid_invite_player`, `bot_schedule`, `bot_voices`, `bot_xp_rate_by_level`, `commit`, `living`, `mana_halved_below_50`, `mana_regen`, `name`, `quest_xp_by_level`, `sluaghbinder`, `xp_rate_by_level` | - | once at server start | - |
 | `GM_JUMP_BOT` | server.log | **ships** | `commands/gmcommands/JumpBotTargets.cs` | `bot`, `from`, `gm`, `kind`, `region_change`, `to`, `was_fighting`, `was_riding` | `bot`, `gm` | - | - |
 | `GM_JUMP_BOT_REFUSED` | server.log | **ships** | `commands/gmcommands/JumpBotTargets.cs` | `at`, `bot`, `gm`, `kind`, `reason` | `bot`, `gm` | - | - |
+| `GOAL_PASS` | server.log | **ships** | `bots/autonomous/LivingRows.Goals.cs` | `band`, `bgEligible`, `held`, `members`, `open`, `personalities`, `planned`, `pool`, `realm`, `t`, `target` | - | - | The goal rows (#669, #670). |
 | `GOLD_SPAMMER_BANNED` | server.log | **ships** | `bots/autonomous/AutonomousGoldSpammers.cs` | `ads`, `name`, `realm` | `name` | - | - |
 | `GOLD_SPAMMER_START` | server.log | **ships** | `bots/autonomous/AutonomousGoldSpammers.cs` | `name`, `realm`, `waited_s` | `name` | - | - |
 | `GROUP_ENDED` | server.log | **ships** | `bots/autonomous/LivingLog.cs` | `alive_end`, `camp`, `cause`, `dropped`, `dur_s`, `every`, `gc`, `gc_total`, `group`, `hosted`, `last_left`, `left`, `left_by`, `objective`, `open`, `phase`, `realm`, `reason`, `seq`, `size_end`, `size_start`, `task_started`, `wipes` | - | - | Row 7 (#544: 71-80% of group camp attempts end GroupChanged): |

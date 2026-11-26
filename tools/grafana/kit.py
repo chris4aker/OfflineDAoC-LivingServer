@@ -172,10 +172,15 @@ class Kit:
         for marker in self.allowed():
             if marker not in known:
                 errors.append(f"the allowlist names {marker}, which is neither in code nor pending")
+        # #690: a pending entry for a row the scanner finds is an error, not a note. Its hand-copied fields would hide what
+        # the code really writes (BG_POPULATION, CAST_INTERRUPT and BG_TARGET_PICK sat pending on main that way).
+        for marker in self.policy.pending:
+            if marker in self.rows:
+                errors.append(f"pending-rows.json: {marker} is in code now; remove its entry")
         return errors
 
     def notes(self) -> list[str]:
-        return [f"pending-rows.json: {m} is in code now; remove its entry" for m in self.policy.pending if m in self.rows]
+        return []
 
 
 def main(argv: list[str] | None = None) -> int:
