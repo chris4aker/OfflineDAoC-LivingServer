@@ -73,6 +73,8 @@ NOT_LOCAL: dict[str, str] = {
     "source/tools/ci_test_results.py": "reads the .trx results and the files the dotnet tests write (server, launcher jobs)",
     "tools/bot-voices/eval/evening_read.py": "reads the evenings the server tests write (dotnet)",
     "tools/bot-voices/eval/score_bench.py": "reads the bench replies the server tests write (dotnet)",
+    # Its own tests (source/tools/tests/test_raid_attempts.py) run here; the CI line reads the rows the raid sims write.
+    "source/tools/raid_postmortem.py --check": "reads the raid rows the server tests write (dotnet; raid-sim/*.raid.log)",
     # A script and its subcommand: only these lines of navmesh_set.py are excused (its check and status run here).
     "tools/navmesh/navmesh_set.py fetch": "downloads the published navmesh set, about 2 GB (navmesh job)",
     "tools/navmesh/navmesh_set.py verify": "reads the downloaded navmesh set (navmesh job)",

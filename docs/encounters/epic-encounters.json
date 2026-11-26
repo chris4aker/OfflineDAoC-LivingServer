@@ -8,7 +8,7 @@
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Fester.cs": "43e981bf07934f0a8231a81c88448434770946d54cbb70518693ed7e1b10bab3",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/KingOfTheBarfogHills.cs": "95023c311861809f6b79ee8d3f992619fb3d40ad1eb2bc753c8ef16cf78a3027",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/LegendaryAfanc.cs": "fb2cadfac67cd0a6ffad0f9786e4c4ed368f21522af4fa9082e5489b68f0c775",
-  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "04ab35b46538ce36670b6e175110a5eede34960d91e0475fc36a45059b4666c5",
+  "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs": "651819e01e607ac8775e45c9f7de5f0448869e9dccec5a3aceeb46d99b50c68f",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Mouth.cs": "ceb60c7908e5a89d8ab4c622bb46dc0d0b6ec4b0ff54076988d57f5a01bf9762",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/SisterBlythe.cs": "892e0fcf04c452655aa6f3ded924b2d2b0945ad6ecbdba24a8714cba41fc5d44",
   "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/Teazanodwc.cs": "62b5465cf6f2714c3b9205a6a83bbc3ceae677033beae06e47432f7acf03c6a9",
@@ -1794,7 +1794,7 @@
      "maxHealth": 7000,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 216
+     "line": 223
     },
     {
      "class": "Silcharde",
@@ -1807,7 +1807,7 @@
      "maxHealth": 7000,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 401
+     "line": 408
     },
     {
      "class": "DemonicMinion",
@@ -1820,7 +1820,7 @@
      "maxHealth": null,
      "level": "(byte)Util.Random(30, 33)",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 579
+     "line": 586
     }
    ],
    "rules": [
@@ -1828,8 +1828,8 @@
      "kind": "immune_while",
      "summary": "Takes no damage while it is drawn past its tether.",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 222,
-     "lineEnd": 238,
+     "line": 229,
+     "lineEnd": 245,
      "anchor": "{",
      "confidence": "read",
      "sourceClass": "Bechard",
@@ -1844,14 +1844,14 @@
      "tactic": "Fight inside the tether: stop hitting it once it is drawn out and lead it home (AutonomousTetherReset already does this).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "immune_while@222"
+     "key": "immune_while@229"
     },
     {
      "kind": "adds",
      "summary": "Spawns Bechard: from SpawnBechard; count 1 spawn call in SpawnBechard",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 184,
-     "lineEnd": 184,
+     "line": 189,
+     "lineEnd": 189,
      "anchor": "Bechard npc = new Bechard();",
      "confidence": "inferred",
      "sourceClass": "MorganaBrain",
@@ -1865,14 +1865,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@184"
+     "key": "adds@189"
     },
     {
      "kind": "adds",
      "summary": "Spawns Silcharde: from SpawnSilcharde; count 1 spawn call in SpawnSilcharde",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 200,
-     "lineEnd": 200,
+     "line": 206,
+     "lineEnd": 206,
      "anchor": "Silcharde npc = new Silcharde();",
      "confidence": "inferred",
      "sourceClass": "MorganaBrain",
@@ -1886,14 +1886,14 @@
      "tactic": "Its adds are epic NPCs: the route treats them as separate encounters, not adds. Assign parties to them as they spawn.",
      "difficulty": "needs new raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@200"
+     "key": "adds@206"
     },
     {
      "kind": "adds",
      "summary": "Spawns demonic minion (DemonicMinion): from SpawnDemonic; count 1 spawn call in SpawnDemonic",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 340,
-     "lineEnd": 340,
+     "line": 347,
+     "lineEnd": 347,
      "anchor": "DemonicMinion npc = new DemonicMinion();",
      "confidence": "inferred",
      "sourceClass": "Bechard",
@@ -1912,14 +1912,14 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@340"
+     "key": "adds@347"
     },
     {
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 374,
-     "lineEnd": 379,
+     "line": 381,
+     "lineEnd": 386,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "BechardBrain",
@@ -1932,14 +1932,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@374"
+     "key": "reset@381"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: SilchardeBrain",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 388,
-     "lineEnd": 388,
+     "line": 395,
+     "lineEnd": 395,
      "anchor": "brain.AddToAggroList(target, 100);",
      "confidence": "inferred",
      "sourceClass": "BechardBrain",
@@ -1949,14 +1949,14 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@388"
+     "key": "linked_pack@395"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight: BechardBrain",
      "file": "source/server/GameServer/scripts/namedmobs/Albion Named Mobs/Classic Zones/MorganaBechardSilcharde.cs",
-     "line": 566,
-     "lineEnd": 566,
+     "line": 573,
+     "lineEnd": 573,
      "anchor": "brain.AddToAggroList(target, 100);",
      "confidence": "inferred",
      "sourceClass": "SilchardeBrain",
@@ -1966,7 +1966,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@566"
+     "key": "linked_pack@573"
     }
    ],
    "spells": [],
@@ -1975,7 +1975,7 @@
    "templateTetherRange": 2000,
    "raids": [],
    "raidAi": "no raid",
-   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region). 1.2.3 (#414): no raid, as in the period. She hosts the Albion level 50 epic (Academy_50, 'Symbol of the Broken'); Allakhazam's walkthrough: 'Do not attack Morgana. She will not do anything during this attack', and the fight (two named demons and their minions) 'can take as little as 6 people'. The event starts only for a player on the quest's step. A bot raid on her would need her changed (a spawn and an attackable phase): the owner's call.",
+   "notes": "A data/script fact (1.2 wave 3 audit, not changed): Morgana is the event's host, not a fight: out of her demons' phase she hides (model 1, CANTTARGET, no name), and the Albion lore audit found she can't be attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. Bechard's and Silcharde's demonic minions spawn on a random navmesh point within 150 of the old spot when the zone has a navmesh. 1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed. The demonic-minion kill counts and the Bechard/Silcharde killed flags belong to Morgana's brain; Bechard, Silcharde and their minions find their Morgana (OwnerBrain, else the nearest within 5,000; the minions search the region). 1.2.3 (#414): no raid, as in the period. She hosts the Albion level 50 epic (Academy_50, 'Symbol of the Broken'); Allakhazam's walkthrough: 'Do not attack Morgana. She will not do anything during this attack', and the fight (two named demons and their minions) 'can take as little as 6 people'. The event starts only for a player on the quest's step. A bot raid on her would need her changed (a spawn and an attackable phase): the owner's call. 1.2.3 (#611, owner decision 2026-11-25, tests only): when the event starts for the quest player, MorganaBrain passes the demons it spawned (or found) to MorganaQuestHelp, and every bot in that player's own group within 2,000 (companions and grouped gamebots) assists on the nearer demon; the second comes in through the demons' link. Bots never take Morgana as a target (BotBrain.CanAggroTarget, ForceAddToAggroList). Switch bot_morgana_quest_help (on). No mechanic, stat or flag of Morgana or the demons changed.",
    "verified": true
   },
   {

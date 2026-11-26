@@ -464,6 +464,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BotSkillProfiles = _skillProfiles.Checked,
         RaidLearnsFromRaiders = _raidLearns,
         BardFillsHealerSlot = _population.BardFillsHealerSlot, // no checkbox: kept as read
+        MorganaQuestHelp = _population.MorganaQuestHelp, // no checkbox: kept as read (#611)
         HealerPeriodRules = _population.HealerPeriodRules, // no checkbox: kept as read
         PopulationNewcomers = _population.PopulationNewcomers,
         NewcomerFloor = _population.NewcomerFloor,

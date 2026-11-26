@@ -187,8 +187,10 @@ namespace DOL.UnitTests
             /// <param name="tankHit">Her melee on her target a half second (<see cref="TankHitPerHalfSecond"/>; 1.2.2: UT_RaidRealStats122).</param>
             /// <param name="dsHit">Her damage shield on a melee raider's swing (<see cref="DsHit"/>; 1.2.2: UT_RaidRealStats122).</param>
             /// <param name="heal">A healer's effective heal a cast (<see cref="Heal"/>; 1.2.2: recalibrated to b1b6846 with the real melee).</param>
+            /// <param name="rows">#644 part 6: writes the fight as the server's RAID_* rows (logging only: the fight is the same
+            /// with and without it; <see cref="SimRaidRows"/>, UT_SimRaidRows644).</param>
             public static RoesiaFight Run(int seed, int n, CureRule rule, string realm, bool cures = true, int minutes = 15,
-                int tankHit = TankHitPerHalfSecond, int dsHit = DsHit, int heal = Heal)
+                int tankHit = TankHitPerHalfSecond, int dsHit = DsHit, int heal = Heal, SimRaidRows rows = null)
             {
                 Spell pain = RoesiaSpell("RoesiaDot"), hot = RoesiaSpell("RoesiaHOT");
                 int freq = pain.Frequency, dur = pain.Duration, recast = pain.RecastDelay, cast = pain.CastTime;
@@ -213,8 +215,29 @@ namespace DOL.UnitTests
                 long now = 0, ready = 0, castAt = -1, hotReady = 0;
                 var hotAt = new List<long>();
                 int tank = 0;
+                // #644 part 6: the rows (logging only). The realm's classes stand in for the model's roles; the model has no
+                // positions, so a death's distance is unknown and every living healer is in reach.
+                Spell ds = rows != null ? RoesiaSpell("RoesiaDS") : null;
+                if (rows != null)
+                {
+                    rows.Join(role.Select(r => RowClass(realm, r)));
+                    rows.Pull(0);
+                }
                 while (now < minutes * 60_000L)
                 {
+                    if (rows != null)
+                    {
+                        rows.Pulse(now);
+                        if (rows.SampleDue(now))
+                        {
+                            var seen = new RaidFightSampleRows.Raider[n];
+                            for (int i = 0; i < n; i++)
+                                seen[i] = new RaidFightSampleRows.Raider { Role = rows.Raiders[i].Role, Alive = !dead[i], InRegion = true,
+                                    InCombat = !dead[i], Dist = -1, Mana = -1 };
+                            rows.Sample(now, Math.Max(0, (int)Math.Floor(boss * 100 / bossMax)), seen, rows.TargetKind(dead[tank] ? -1 : tank),
+                                everyoneEngaged: true);
+                        }
+                    }
                     if (now % Think == 0)
                     {
                         if (castAt < 0 && now >= ready && rng.Next() < PainChance) castAt = now + cast;
@@ -250,6 +273,7 @@ namespace DOL.UnitTests
                         {
                             nextTick[i] += freq;
                             hp[i] -= Tick;
+                            rows?.Hit(now, i, AttackData.eAttackType.Spell, Tick, pain.ID, pain.SpellType, pain.Radius, SummonerRoesiaName);
                             if (now < 60_000) f.FirstMinutePain += Tick;
                         }
                     if (dead[tank])
@@ -259,11 +283,17 @@ namespace DOL.UnitTests
                         if (next < 0) break;
                         tank = next;
                     }
+                    rows?.Threat(now, tank);
                     if (now % 500 == 0)
                     {
                         hp[tank] -= tankHit;
+                        rows?.Hit(now, tank, AttackData.eAttackType.MeleeTwoHand, tankHit);
                         for (int i = 0; i < n; i++)
-                            if (!dead[i] && role[i] is "tank" or "melee" && (now + i * 137L) % Swing < 500) hp[i] -= dsHit;
+                            if (!dead[i] && role[i] is "tank" or "melee" && (now + i * 137L) % Swing < 500)
+                            {
+                                hp[i] -= dsHit;
+                                rows?.Hit(now, i, AttackData.eAttackType.Spell, dsHit, ds.ID, ds.SpellType, ds.Radius, SummonerRoesiaName);
+                            }
                     }
                     for (int i = 0; i < n; i++)
                         if (!dead[i] && hp[i] <= 0)
@@ -271,6 +301,7 @@ namespace DOL.UnitTests
                             dead[i] = true;
                             hp[i] = 0;
                             f.Fallen++;
+                            rows?.Death(now, i, "boss", SummonerRoesiaName, -1, rows.HealersIn(i, _ => 0), i == tank ? 1 : 0);
                         }
                     foreach (int h in healers)
                     {
@@ -280,7 +311,15 @@ namespace DOL.UnitTests
                             string kind = pending[h];
                             int t = pendingTarget[h];
                             pending[h] = null;
-                            if (kind == "heal") { if (!dead[t]) hp[t] = Math.Min(max[t], hp[t] + heal); }
+                            if (kind == "heal")
+                            {
+                                if (!dead[t])
+                                {
+                                    int before = hp[t];
+                                    hp[t] = Math.Min(max[t], hp[t] + heal);
+                                    rows?.Healed(h, hp[t] - before, heal - (hp[t] - before));
+                                }
+                            }
                             else
                             {
                                 if (!dead[t]) painUntil[t] = 0;
@@ -338,18 +377,54 @@ namespace DOL.UnitTests
                         }
                     }
                     boss -= DealtPerRaiderMs * (n - f.Fallen) * Step;
+                    if (rows != null)
+                        for (int i = 0; i < n; i++)
+                            if (!dead[i]) rows.Dealt(now, i, DealtPerRaiderMs * Step, true);
                     f._aliveSum += n - f.Fallen;
                     f._steps++;
                     f.Contributing = f._aliveSum / (double)f._steps;
                     f.Lowest = Math.Min(f.Lowest, Math.Max(0, (int)Math.Floor(boss * 100 / bossMax)));
                     f.Minutes = now / 60_000.0;
-                    if (boss <= 0) { f.Won = true; return f; }
-                    if (f.Fallen * 2 >= n) return f;
+                    if (boss <= 0)
+                    {
+                        f.Won = true;
+                        rows?.End(now, RaidAttemptRows.DungeonOutcome(false, false, false, "killed"), 0, 0);
+                        return f;
+                    }
+                    if (f.Fallen * 2 >= n)
+                    {
+                        // The game's wipe (RealmRaidDungeonRoute.IsWipe): half of the engaged fallen.
+                        rows?.End(now, RaidAttemptRows.DungeonOutcome(true, false, false, null), Math.Max(0, (int)Math.Floor(boss * 100 / bossMax)), f.Lowest);
+                        return f;
+                    }
                     now += Step;
                 }
                 f.Minutes = now / 60_000.0;
+                // The model's own clock ran out (no wipe, no kill): the attempt "stopped".
+                rows?.End(now, f.Fallen * 2 >= n ? "wipe" : RaidAttemptRows.RaidEndOutcome(null, false),
+                    Math.Max(0, (int)Math.Floor(boss * 100 / bossMax)), f.Lowest);
                 return f;
             }
+
+            /// <summary>Summoner Roesia's name (SummonerRoesia.AddToWorld), as the rows write the boss and the killer.</summary>
+            public const string SummonerRoesiaName = "Summoner Roesia";
+
+            /// <summary>The class a model role stands for in the rows, per realm (#644 part 6; the role is the server's for it).</summary>
+            public static eCharacterClass RowClass(string realm, string role) => (realm, role) switch
+            {
+                ("midgard", "tank") => eCharacterClass.Warrior,
+                ("midgard", "melee") => eCharacterClass.Berserker,
+                ("midgard", "caster") => eCharacterClass.Runemaster,
+                ("midgard", _) => eCharacterClass.Healer,
+                ("hibernia", "tank") => eCharacterClass.Hero,
+                ("hibernia", "melee") => eCharacterClass.Blademaster,
+                ("hibernia", "caster") => eCharacterClass.Eldritch,
+                ("hibernia", _) => eCharacterClass.Druid,
+                (_, "tank") => eCharacterClass.Armsman,
+                (_, "melee") => eCharacterClass.Mercenary,
+                (_, "caster") => eCharacterClass.Wizard,
+                _ => eCharacterClass.Cleric,
+            };
         }
 
         private static RoesiaFight[] Roesia(int n, CureRule rule, string realm, bool cures = true, int seeds = 16) =>
