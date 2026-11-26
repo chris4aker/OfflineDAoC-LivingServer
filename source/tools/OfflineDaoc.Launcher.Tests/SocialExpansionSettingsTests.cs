@@ -227,7 +227,7 @@ public class SocialExpansionSettingsTests
             Assert.That(problems, Is.Empty, "SAVE SETTINGS repaired " + stored);
         }
 
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
         Exec("UPDATE ServerProperty SET Value='2.5' WHERE `Key`='endurance_regen_amount_modifier'");
         using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
         var rate = (NumericUpDown)type.GetField("_enduranceRate", Hidden)!.GetValue(panel)!;
@@ -426,7 +426,7 @@ public class SocialExpansionSettingsTests
     [Test] public void AFailedLoadNeverSavesOverTheRealSettings()
     {
         Exec("DROP TABLE ServerProperty");
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
         using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
         var save = (Button)type.GetField("_save", Hidden)!.GetValue(panel)!;
         ((CheckBox)type.GetField("_guilds", Hidden)!.GetValue(panel)!).Checked = true;
@@ -473,7 +473,7 @@ public class SocialExpansionSettingsTests
         Assert.That(SocialExpansionSettings.Load(_database, new List<string>()).ManaRegenModifier, Is.EqualTo(SocialExpansionSettings.MaxManaRegenModifier));
 
         // The tab shows and saves them.
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
         Exec("UPDATE ServerProperty SET Value='1.5' WHERE `Key`='mana_regen_amount_modifier'");
         using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
         var rate = (NumericUpDown)type.GetField("_manaRate", Hidden)!.GetValue(panel)!;
@@ -550,7 +550,7 @@ public class SocialExpansionSettingsTests
             UPDATE ServerProperty SET Value='2' WHERE `Key`='crafting_skill_rate';
             UPDATE ServerProperty SET Value='free' WHERE `Key`='player_upkeep';
             """);
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
         using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
         T Field<T>(string name) => (T)type.GetField(name, Hidden)!.GetValue(panel)!;
         Assert.That((Field<CheckBox>("_craftEraStart").Checked, Field<NumericUpDown>("_craftPace").Value, Field<ComboBox>("_upkeep").SelectedIndex,
@@ -637,7 +637,7 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty, "SAVE SETTINGS repaired the rows");
 
         // The tab shows and saves them.
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
         using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
         T Field<T>(string name) => (T)type.GetField(name, Hidden)!.GetValue(panel)!;
         Assert.That((Field<CheckBox>("_botCrafters").Checked, Field<NumericUpDown>("_crafterShare").Value, Field<ComboBox>("_commissions").SelectedIndex,
@@ -697,7 +697,7 @@ public class SocialExpansionSettingsTests
 
     [Test] public void TheTabFollowsTheServerStateAndDependencies()
     {
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.SocialExpansionSettingsControl")!;
         using var panel = (Control)Activator.CreateInstance(type, _database, (Func<bool>)(() => _stopped))!;
         T Field<T>(string name) => (T)type.GetField(name, Hidden)!.GetValue(panel)!;
         void Call(string name) => type.GetMethod(name, Hidden | BindingFlags.Public)!.Invoke(panel, null);
@@ -772,7 +772,7 @@ public class SocialExpansionSettingsTests
     {
         string folder = Path.Combine(TestContext.CurrentContext.WorkDirectory, "ui-preview");
         Directory.CreateDirectory(folder);
-        var launcher = Assembly.Load("OfflineDAoC");
+        var launcher = Assembly.Load("DAoCLivingServer");
 
         var form = (Form)Activator.CreateInstance(launcher.GetType("OfflineDaoc.Launcher.MainForm")!)!;
         try

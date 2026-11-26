@@ -5,7 +5,7 @@ using NUnit.Framework;
 [TestFixture, NonParallelizable, Apartment(ApartmentState.STA)]
 public sealed class LauncherPresentationTests
 {
-    private static readonly Assembly Launcher = Assembly.Load("OfflineDAoC");
+    private static readonly Assembly Launcher = Assembly.Load("DAoCLivingServer");
     private static readonly BindingFlags HiddenStatic = BindingFlags.Static | BindingFlags.NonPublic;
     private static readonly BindingFlags HiddenInstance = BindingFlags.Instance | BindingFlags.NonPublic;
 

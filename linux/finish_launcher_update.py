@@ -212,8 +212,11 @@ def main():
     # Installed means: the server and launcher in the game folder are now this package's files (as apply-update.ps1).
     dll = os.path.join(game, "runtime", "server", "GameServer.dll")
     ok = os.path.isfile(dll) and sha(dll) == info.get("GameServer.dll", "").lower()
-    if ok and info.get("launcher/OfflineDAoC.dll"):
-        ok = sha(os.path.join(game, "runtime", "OfflineDAoC.dll")) == info["launcher/OfflineDAoC.dll"].lower()
+    # DAoCLivingServer.dll from 1.2.3 (#641); a package of an earlier build names OfflineDAoC.dll.
+    for name in ("DAoCLivingServer.dll", "OfflineDAoC.dll"):
+        if ok and info.get("launcher/" + name):
+            ok = sha(os.path.join(game, "runtime", name)) == info["launcher/" + name].lower()
+            break
     if ok:
         backup = re.search(r"^Backup: (.+)$", out.stdout, re.M)
         return finish("installed", "Living Server %s is installed. %s" % (

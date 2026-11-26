@@ -15,7 +15,7 @@ public class BotGoalsSettingsTests
     {
         _folder = Path.Combine(Path.GetTempPath(), "goal-ui-" + Guid.NewGuid().ToString("N"));
         _stopped = true;
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.BotGoalsSettingsControl")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.BotGoalsSettingsControl")!;
         _panel = (Control)Activator.CreateInstance(type, Path.Combine(_folder, BotGoalSettings.FileName), (Func<bool>)(() => _stopped))!;
     }
     [TearDown] public void Cleanup() { _panel.Dispose(); if (Directory.Exists(_folder)) Directory.Delete(_folder, true); }

@@ -21,14 +21,17 @@ import sys
 
 SERVER_FOLDERS = ["runtime/server", "runtime/server/lib", "runtime/server/win-x64"]
 LAUNCHER_FOLDERS = ["runtime", "new-client/runtime"]
-LAUNCHER_FILES = ["OfflineDAoC.dll", "OfflineDAoC.exe", "OfflineDAoC.pdb", "OfflineDAoC.deps.json",
-                  "OfflineDAoC.runtimeconfig.json"]
+# From 1.2.3 (#641) the launcher is DAoCLivingServer.*, plus OfflineDAoC.exe, a byte copy of its apphost (it runs
+# DAoCLivingServer.dll whatever its own name). The older launcher's other OfflineDAoC.* files stay where they are.
+LAUNCHER_FILES = ["DAoCLivingServer.dll", "DAoCLivingServer.exe", "DAoCLivingServer.pdb", "DAoCLivingServer.deps.json",
+                  "DAoCLivingServer.runtimeconfig.json", "OfflineDAoC.exe"]
+LAUNCHER_DLL, LEGACY_LAUNCHER_DLL = "DAoCLivingServer.dll", "OfflineDAoC.dll"
 # The server's own libraries beside GameServer.dll (Living Server 1.1.2+ ships them in the build's core/ folder; a
 # new GameServer.dll with the released CoreDatabase.dll stops at start). Each replaces the folder's copy only where the
 # folder has one; its .pdb goes with it where the folder has a .pdb too.
 CORE_FILES = ["CoreBase.dll", "CoreDatabase.dll", "CoreServer.dll"]
 DB_KEEP = 3   # world database copies kept in deployment-backups (newest installs); older data/ folders are removed
-PROCESS_NAMES = {"CoreServer", "DOLServer", "OfflineDAoC", "game", "camelot", "connect",
+PROCESS_NAMES = {"CoreServer", "DOLServer", "DAoCLivingServer", "OfflineDAoC", "game", "camelot", "connect",
                  "Godot_v4.7.2-stable_mono_win64"}
 # Names any Linux program could have: they count only as a Windows program (game.exe). Under Wine the classic client
 # runs as game.dll.
@@ -283,23 +286,24 @@ def main():
     lplan = []
     if lnew:
         for folder in LAUNCHER_FOLDERS:
-            dll = p(game, folder + "/OfflineDAoC.dll")
+            name = LAUNCHER_DLL if os.path.isfile(p(game, folder + "/" + LAUNCHER_DLL)) else LEGACY_LAUNCHER_DLL
+            dll = p(game, folder + "/" + name)
             if not os.path.isfile(dll):
                 if folder == "runtime":
-                    stop("No launcher (runtime/OfflineDAoC.dll) in this game folder.")
+                    stop("No launcher (runtime/OfflineDAoC.dll or runtime/DAoCLivingServer.dll) in this game folder.")
                 continue
             h = sha(dll)
             all_new = all(os.path.isfile(p(game, folder + "/" + n)) and sha(p(game, folder + "/" + n)) == lnew[n]
                           for n in LAUNCHER_FILES)
-            state = ("this build" if h == lnew["OfflineDAoC.dll"] and all_new else
-                     "this build, other files differ" if h == lnew["OfflineDAoC.dll"] else
-                     "original %s launcher" % base if manifest.get(folder + "/OfflineDAoC.dll") == h else
-                     "original %sc launcher" % base if nc_manifest.get(folder + "/OfflineDAoC.dll") == h else
+            state = ("this build" if h == lnew[LAUNCHER_DLL] and all_new else
+                     "this build, other files differ" if h == lnew[LAUNCHER_DLL] else
+                     "original %s launcher" % base if manifest.get(folder + "/" + name) == h else
+                     "original %sc launcher" % base if nc_manifest.get(folder + "/" + name) == h else
                      "fork build %s launcher" % known_l[h] if h in known_l else "unknown")
             lplan.append({"Folder": folder, "Hash": h, "State": state})
             print("  %-26s %s" % (folder + " (launcher)", state))
     if any(x["State"] == "unknown" for x in lplan) and not force:
-        stop("A launcher (OfflineDAoC.dll) above is neither the original %s file nor a fork build." % base)
+        stop("A launcher above is neither the original %s file nor a fork build." % base)
 
     cplan = []
     for patch in patches:
@@ -403,7 +407,7 @@ def main():
                 if sha(os.path.join(saved, name)) != old:
                     stop("Backup of %s/%s failed verification." % (item["Folder"], name))
             files.append({"Name": name, "OldHash": old, "NewHash": lnew[name]})
-        lentries.append({"Folder": item["Folder"], "OldDll": item["Hash"], "NewDll": lnew["OfflineDAoC.dll"],
+        lentries.append({"Folder": item["Folder"], "OldDll": item["Hash"], "NewDll": lnew[LAUNCHER_DLL],
                          "Files": files})
 
     centries = []

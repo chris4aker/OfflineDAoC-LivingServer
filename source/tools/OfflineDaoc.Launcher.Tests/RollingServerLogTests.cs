@@ -13,7 +13,7 @@ public sealed class RollingServerLogTests
         Directory.CreateDirectory(directory);
         try
         {
-            Type type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.RollingServerLog", true)!;
+            Type type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.RollingServerLog", true)!;
             object log = Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                 null, [Path.Combine(directory, "server-console.log"), 1024L, 3072L], null)!;
             MethodInfo writeLine = type.GetMethod("WriteLine")!;

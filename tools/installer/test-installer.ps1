@@ -123,9 +123,14 @@ function Assert-LivingServer([string]$game, [string]$what) {
         $dll = Join-Path $game "$f\GameServer.dll"
         if (Test-Path $dll) { Check ((Sha $dll) -eq $info['GameServer.dll'].ToLowerInvariant()) "$what : $f\GameServer.dll is the Living Server build" }
     }
-    Check ((Sha (Join-Path $game 'runtime\OfflineDAoC.dll')) -eq $info['launcher/OfflineDAoC.dll'].ToLowerInvariant()) "$what : the launcher has the Living Server tab"
-    if (Test-Path (Join-Path $game 'new-client\runtime\OfflineDAoC.dll')) {
-        Check ((Sha (Join-Path $game 'new-client\runtime\OfflineDAoC.dll')) -eq $info['launcher/OfflineDAoC.dll'].ToLowerInvariant()) "$what : the new client's launcher has the Living Server tab"
+    # DAoCLivingServer.dll from 1.2.3 (#641), with OfflineDAoC.exe a copy of its apphost; OfflineDAoC.dll before.
+    $dll = if ($info['launcher/DAoCLivingServer.dll']) { 'DAoCLivingServer.dll' } else { 'OfflineDAoC.dll' }
+    Check ((Sha (Join-Path $game "runtime\$dll")) -eq $info["launcher/$dll"].ToLowerInvariant()) "$what : the launcher has the Living Server tab"
+    if ($info['launcher/OfflineDAoC.exe']) {
+        Check ((Sha (Join-Path $game 'runtime\OfflineDAoC.exe')) -eq $info['launcher/OfflineDAoC.exe'].ToLowerInvariant()) "$what : OfflineDAoC.exe opens the new launcher"
+    }
+    if (Test-Path (Join-Path $game "new-client\runtime\$dll")) {
+        Check ((Sha (Join-Path $game "new-client\runtime\$dll")) -eq $info["launcher/$dll"].ToLowerInvariant()) "$what : the new client's launcher has the Living Server tab"
     }
     Check (Test-Path (Join-Path $game "$pkgRoot\ROLLBACK.cmd")) "$what : the package folder (with ROLLBACK.cmd) is in the game"
     $rec = Get-ChildItem (Join-Path $game 'runtime\server\deployment-backups') -Directory -Filter 'fork-build-*' | Sort-Object Name | Select-Object -Last 1
@@ -205,7 +210,8 @@ if ($Scenario -contains 'newest') {
     }
 
     if ($newer) {
-        $asset = @($latest.assets | Where-Object { $_.name -eq "OfflineDAoC-LivingServer-$newestBuild.zip" })[0]
+        $asset = @($latest.assets | Where-Object { $_.name -eq "DAoC-LivingServer-$newestBuild.zip" })[0]
+        if (!$asset) { $asset = @($latest.assets | Where-Object { $_.name -eq "OfflineDAoC-LivingServer-$newestBuild.zip" })[0] }
         $json = $latest | ConvertTo-Json -Depth 8
         foreach ($case in @(@{ Name = 'wrong'; Digest = '"sha256:' + ('0' * 64) + '"'; Expect = "doesn't match the SHA-256" },
                             @{ Name = 'missing'; Digest = 'null'; Expect = 'no SHA-256 digest' })) {

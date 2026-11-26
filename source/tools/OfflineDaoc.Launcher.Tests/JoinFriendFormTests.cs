@@ -15,7 +15,7 @@ public sealed class JoinFriendFormTests
         Directory.CreateDirectory(runtime);
         try
         {
-            Type type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.JoinFriendForm")!;
+            Type type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.JoinFriendForm")!;
             using var form = (Form)Activator.CreateInstance(type, runtime)!;
             var (host, own) = ((TextBox, TextBox))type.GetProperty("PasswordBoxes", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(form)!;
 

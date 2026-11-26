@@ -61,13 +61,13 @@ if ($ToRelease) {
     foreach ($folder in $Script:ServerFolders) {
         foreach ($name in $Script:CoreFiles) { $wanted += "$folder/$name"; $wanted += "$folder/$([IO.Path]::ChangeExtension($name, '.pdb'))" }
     }
-    foreach ($folder in $Script:LauncherFolders) { foreach ($name in $Script:LauncherFiles) { $wanted += "$folder/$name" } }
+    foreach ($folder in $Script:LauncherFolders) { foreach ($name in $Script:AllLauncherFiles) { $wanted += "$folder/$name" } }
     $backups = Join-Path $game 'runtime\server\deployment-backups'
     $copies = @{}
     if (Test-Path -LiteralPath $backups) {
         foreach ($file in Get-ChildItem -LiteralPath $backups -Recurse -File) {
             $core = $Script:CoreFiles | Where-Object { $file.Name -eq $_ -or $file.Name -eq [IO.Path]::ChangeExtension($_, '.pdb') }
-            if ($file.Name -like 'GameServer.*' -or $core -or $Script:LauncherFiles -contains $file.Name) {
+            if ($file.Name -like 'GameServer.*' -or $core -or $Script:AllLauncherFiles -contains $file.Name) {
                 $hash = Get-Sha256 $file.FullName
                 if (!$copies.ContainsKey($hash)) { $copies[$hash] = $file.FullName }
             }
@@ -127,7 +127,16 @@ if ($ToRelease) {
         Stop-WithMessage ("No backup holds the released copy of:`n  " + ($missing -join "`n  ") +
             "`nThe update's downloader can repair the game (or install it fresh and bring your progress over).")
     }
-    if ($restore.Count -eq 0) { Write-Host 'The released server and launcher files are already in place.' -ForegroundColor Green }
+    # The 1.2.3+ launcher's own files (#641) are not part of the release: they go, and OfflineDAoC.exe is the released one again.
+    $extra = @()
+    foreach ($folder in $Script:LauncherFolders) {
+        foreach ($name in $Script:LauncherFiles) {
+            if ($Script:LegacyLauncherFiles -contains $name) { continue }
+            if (Test-Path -LiteralPath (Join-Path $game (Join-Path $folder $name))) { $extra += "$folder/$name" }
+        }
+    }
+    if ($restore.Count -eq 0 -and $extra.Count -eq 0) { Write-Host 'The released server and launcher files are already in place.' -ForegroundColor Green }
+    foreach ($rel in $extra) { Write-Host "  $rel  (removed: not a released file)" }
     foreach ($item in $restore) { Write-Host "  $($item.Path)  <-  $($item.From)" }
     if ($DryRun) { Write-Host ''; Write-Host 'Dry run: every check passed. Nothing was changed.' -ForegroundColor Green; exit 0 }
     foreach ($item in $restore) {
@@ -138,6 +147,7 @@ if ($ToRelease) {
             exit 1
         }
     }
+    foreach ($rel in $extra) { Remove-Item -LiteralPath (Join-Path $game $rel) -Force }
     foreach ($open in @(Get-InstallRecords $game | Where-Object { !$_.RolledBack })) {
         Set-Content -LiteralPath (Join-Path $open.BackupFolder 'rolled-back.txt') -Value "Rolled back to the release at $(Get-Date -Format o)."
     }
@@ -172,10 +182,12 @@ foreach ($entry in @($record.CoreFiles)) {
 }
 foreach ($entry in @($record.LauncherFolders)) {
     if ($null -eq $entry) { continue }
-    $dll = Join-Path $game (Join-Path $entry.Folder 'OfflineDAoC.dll')
+    # The install's launcher file: DAoCLivingServer.dll when it installed a 1.2.3 or later build (#641), else OfflineDAoC.dll.
+    $dllName = if (@($entry.Files | Where-Object { $_.Name -eq $Script:LauncherDll }).Count -gt 0) { $Script:LauncherDll } else { $Script:LegacyLauncherDll }
+    $dll = Join-Path $game (Join-Path $entry.Folder $dllName)
     $current = if (Test-Path -LiteralPath $dll) { Get-Sha256 $dll } else { '' }
     if ($current -ne $entry.NewDll -and !$Force) {
-        Stop-WithMessage "$($entry.Folder)\OfflineDAoC.dll (the launcher) changed since that install. -Force restores the backup anyway."
+        Stop-WithMessage "$($entry.Folder)\$dllName (the launcher) changed since that install. -Force restores the backup anyway."
     }
     $saved = Join-Path $record.BackupFolder ((Get-BackupName $entry.Folder) + '_launcher')
     foreach ($file in @($entry.Files)) {

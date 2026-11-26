@@ -222,10 +222,12 @@ namespace LivingServerSetup
 
         static string ApplyRecommendedSettings(string game)
         {
-            var launcher = Path.Combine(game, "runtime", "OfflineDAoC.exe");
+            // DAoCLivingServer.exe from 1.2.3 (#641); an older build's launcher is OfflineDAoC.exe with OfflineDAoC.dll.
+            bool renamed = File.Exists(Path.Combine(game, "runtime", "DAoCLivingServer.dll"));
+            var launcher = Path.Combine(game, "runtime", renamed ? "DAoCLivingServer.exe" : "OfflineDAoC.exe");
             if (!File.Exists(launcher)) return "no launcher in runtime";
             // A launcher from before Beta 1.1 has no settings mode and would just open its window: look for the switch in it.
-            if (!LauncherHasSettingsMode(Path.Combine(game, "runtime", "OfflineDAoC.dll")))
+            if (!LauncherHasSettingsMode(Path.Combine(game, "runtime", renamed ? "DAoCLivingServer.dll" : "OfflineDAoC.dll")))
             {
                 Log.Write("Recommended settings: this launcher has no settings mode");
                 return "this launcher has no settings mode";
@@ -475,7 +477,8 @@ namespace LivingServerSetup
                 foreach (var n in new[] { "GameServer.dll", "GameServer.pdb", "CoreBase.dll", "CoreBase.pdb", "CoreDatabase.dll", "CoreDatabase.pdb", "CoreServer.dll", "CoreServer.pdb" })
                     files.Add(Path.Combine(f, n));
             foreach (var f in new[] { "runtime", @"new-client\runtime" })
-                foreach (var n in new[] { "OfflineDAoC.dll", "OfflineDAoC.exe", "OfflineDAoC.pdb", "OfflineDAoC.deps.json", "OfflineDAoC.runtimeconfig.json" }) files.Add(Path.Combine(f, n));
+                foreach (var n in new[] { "OfflineDAoC.dll", "OfflineDAoC.exe", "OfflineDAoC.pdb", "OfflineDAoC.deps.json", "OfflineDAoC.runtimeconfig.json",
+                                          "DAoCLivingServer.dll", "DAoCLivingServer.exe", "DAoCLivingServer.pdb", "DAoCLivingServer.deps.json", "DAoCLivingServer.runtimeconfig.json" }) files.Add(Path.Combine(f, n));
             foreach (var rel in files)
             {
                 var src = Path.Combine(game, rel);

@@ -149,7 +149,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-launcher-update.ps1 -Launcher source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows/OfflineDAoC.exe -Work C:\lsupdate -From v1.1-beta -To v1.1.1-beta
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-launcher-update.ps1 -Launcher source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows/DAoCLivingServer.exe -Work C:\lsupdate -From v1.1-beta -To v1.1.1-beta
           exit $LASTEXITCODE
       - uses: actions/upload-artifact@v4
         if: always()

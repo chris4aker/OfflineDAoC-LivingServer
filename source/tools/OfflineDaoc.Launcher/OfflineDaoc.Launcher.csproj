@@ -5,9 +5,13 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>OfflineDAoC</AssemblyName>
-    <Product>Offline DAoC: Classic + Shrouded Isles</Product>
-    <AssemblyTitle>Offline DAoC Launcher and Population Monitor</AssemblyTitle>
+    <!-- DAoCLivingServer.exe from 1.2.3 (#641). The package also ships OfflineDAoC.exe, a byte copy of this apphost (it
+         runs DAoCLivingServer.dll whatever its own name), so the game's start file, old shortcuts and 1.2.x updaters that
+         open runtime\OfflineDAoC.exe still open this launcher. -->
+    <AssemblyName>DAoCLivingServer</AssemblyName>
+    <Product>DAoC - Living Server</Product>
+    <AssemblyTitle>DAoC - Living Server launcher</AssemblyTitle>
+    <Description>The launcher of DAoC - Living Server, a single-player server for Dark Age of Camelot. Not affiliated with Electronic Arts or Broadsword.</Description>
     <!-- Windows enlarges fonts for display scaling; UiScale scales the pixel layout to match. -->
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <!-- Living Server: the build this launcher ships with, read from the server's ForkBuildInfo.BuildName, so the

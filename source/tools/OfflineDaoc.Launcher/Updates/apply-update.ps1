@@ -35,7 +35,7 @@ function Finish([string]$state, [string]$detail) {
     Say "$state`: $detail"
     if ($Restart -and (Test-Path -LiteralPath $Restart)) {
         if (!$NoPause) { Write-Host ''; Read-Host 'Press Enter to open the launcher again' | Out-Null }
-        # The game's own .NET, as START OFFLINE DAOC.cmd sets it (the launcher's environment is inherited too).
+        # The game's own .NET, as the game's start file sets it (the launcher's environment is inherited too).
         $dotnet = Join-Path $GameFolder 'tools\dotnet'
         if (Test-Path -LiteralPath (Join-Path $dotnet 'dotnet.exe')) {
             $env:DOTNET_ROOT = $dotnet; $env:DOTNET_ROOT_X64 = $dotnet; $env:DOTNET_MULTILEVEL_LOOKUP = '0'
@@ -82,8 +82,12 @@ try {
     # Installed means: the server and launcher in the game folder are now this package's files.
     $ok = (Test-Path -LiteralPath (Join-Path $GameFolder 'runtime\server\GameServer.dll')) -and
           (Sha (Join-Path $GameFolder 'runtime\server\GameServer.dll')) -eq $info['GameServer.dll'].ToLowerInvariant()
-    if ($ok -and $info['launcher/OfflineDAoC.dll']) {
-        $ok = (Sha (Join-Path $GameFolder 'runtime\OfflineDAoC.dll')) -eq $info['launcher/OfflineDAoC.dll'].ToLowerInvariant()
+    # The launcher is DAoCLivingServer.dll from 1.2.3 (#641); a package of an earlier build names OfflineDAoC.dll.
+    foreach ($launcherDll in @('DAoCLivingServer.dll', 'OfflineDAoC.dll')) {
+        if ($ok -and $info["launcher/$launcherDll"]) {
+            $ok = (Sha (Join-Path $GameFolder "runtime\$launcherDll")) -eq $info["launcher/$launcherDll"].ToLowerInvariant()
+            break
+        }
     }
     if ($ok) { Finish 'installed' "Living Server $Build is installed. ROLLBACK.cmd in $PackageFolder undoes it." }
     Finish 'not installed' 'INSTALL.cmd did not install it (its output is above and in the log); the game is as it was before.'

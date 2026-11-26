@@ -169,22 +169,22 @@ $newClientManifest = Read-ManifestFile (Join-Path $game 'new-client\PACKAGE MANI
 $launcherPlan = @()
 if ($launcherNew.Count -gt 0) {
     foreach ($folder in $Script:LauncherFolders) {
-        $dll = Join-Path $game (Join-Path $folder 'OfflineDAoC.dll')
-        if (!(Test-Path -LiteralPath $dll)) {
-            if ($folder -eq 'runtime') { Stop-WithMessage 'No launcher (runtime\OfflineDAoC.dll) in this game folder. Is the download complete?' }
+        $dllName = Get-LauncherDllName (Join-Path $game $folder)
+        if (!$dllName) {
+            if ($folder -eq 'runtime') { Stop-WithMessage 'No launcher (runtime\OfflineDAoC.dll or runtime\DAoCLivingServer.dll) in this game folder. Is the download complete?' }
             continue
         }
-        $hash = Get-Sha256 $dll
-        # 'this build' only when all five launcher files match; a half-copied launcher is installed again.
+        $hash = Get-Sha256 (Join-Path $game (Join-Path $folder $dllName))
+        # 'this build' only when every launcher file matches; a half-copied launcher is installed again.
         $allNew = $true
         foreach ($name in $Script:LauncherFiles) {
             $path = Join-Path $game (Join-Path $folder $name)
             if (!(Test-Path -LiteralPath $path) -or (Get-Sha256 $path) -ne $launcherNew[$name]) { $allNew = $false }
         }
-        $state = if ($hash -eq $launcherNew['OfflineDAoC.dll'] -and $allNew) { 'this build' }
-            elseif ($hash -eq $launcherNew['OfflineDAoC.dll']) { 'this build, other files differ' }
-            elseif ($manifest["$folder/OfflineDAoC.dll"] -and $hash -eq $manifest["$folder/OfflineDAoC.dll"]) { "original $base launcher" }
-            elseif ($newClientManifest -and $newClientManifest["$folder/OfflineDAoC.dll"] -and $hash -eq $newClientManifest["$folder/OfflineDAoC.dll"]) { "original $($base)c launcher" }
+        $state = if ($hash -eq $launcherNew[$Script:LauncherDll] -and $allNew) { 'this build' }
+            elseif ($hash -eq $launcherNew[$Script:LauncherDll]) { 'this build, other files differ' }
+            elseif ($manifest["$folder/$dllName"] -and $hash -eq $manifest["$folder/$dllName"]) { "original $base launcher" }
+            elseif ($newClientManifest -and $newClientManifest["$folder/$dllName"] -and $hash -eq $newClientManifest["$folder/$dllName"]) { "original $($base)c launcher" }
             elseif ($knownLauncher.ContainsKey($hash)) { "fork build $($knownLauncher[$hash]) launcher" }
             else { 'unknown' }
         $launcherPlan += [pscustomobject]@{ Folder = $folder; Hash = $hash; State = $state }
@@ -192,7 +192,7 @@ if ($launcherNew.Count -gt 0) {
     }
 }
 if (@($launcherPlan | Where-Object { $_.State -eq 'unknown' }).Count -gt 0 -and !$Force) {
-    Stop-WithMessage ("A launcher (OfflineDAoC.dll) above is neither the original $base file nor a fork build this script installed. " +
+    Stop-WithMessage ("A launcher above is neither the original $base file nor a fork build this script installed. " +
         'Restore the original first, or run with -Force to replace it anyway (it is still backed up).')
 }
 # Game files this build fixes in place: only the released file is changed, or an earlier Living Server version of a file
@@ -318,7 +318,7 @@ foreach ($item in $launcherPlan) {
         }
         $files += [pscustomobject]@{ Name = $name; OldHash = $old; NewHash = $launcherNew[$name] }
     }
-    $launcherEntries += [pscustomobject]@{ Folder = $item.Folder; OldDll = $item.Hash; NewDll = $launcherNew['OfflineDAoC.dll']; Files = $files }
+    $launcherEntries += [pscustomobject]@{ Folder = $item.Folder; OldDll = $item.Hash; NewDll = $launcherNew[$Script:LauncherDll]; Files = $files }
 }
 
 $contentEntries = @()

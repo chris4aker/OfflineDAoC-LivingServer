@@ -61,7 +61,7 @@ def build_of(tag):
 
 def names(tag):
     build = build_of(tag)
-    return build, f"LivingServer-Setup-{build}.exe", f"OfflineDAoC-LivingServer-{build}.zip"
+    return build, publish_release.setup_name(build), publish_release.zip_name(build)
 
 
 def sha256_file(path):
