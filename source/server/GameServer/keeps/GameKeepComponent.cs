@@ -264,11 +264,11 @@ namespace DOL.GS.Keeps
 								break;
 							case "DOL.GS.Keeps.Patrol":
 								if ((position.KeepType == (int)AbstractGameKeep.eKeepType.Any || position.KeepType == (int)Keep.KeepType)
-									&& Keep.Patrols.ContainsKey(sKey) == false)
+									&& Keep.Patrols.ContainsKey(Patrol.KeyFor(position)) == false)
 								{
 									Patrol p = new Patrol(this);
 									p.SpawnPosition = position;
-									p.PatrolID = position.TemplateID;
+									p.PatrolID = Patrol.KeyFor(position);
 									p.InitialiseGuards();
 								}
 								continue;
