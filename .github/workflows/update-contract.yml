@@ -8,6 +8,8 @@
 #     against a fake GitHub) checks, downloads, verifies and installs the candidate through its own apply-update.ps1 on a
 #     fake game it was installed on; the released Setup's --info chooses the candidate
 #     (tools/release/test-update-contract.ps1);
+#   - this commit's own launcher (the package's launcher files, same harness) takes the candidate under either repository
+#     path, chris4aker/OfflineDAoC-LivingServer or chris4aker/DAoC-LivingServer, in any case, and refuses lookalikes (#689);
 #   - the repository GitHub runs this in is exactly the one the launcher names (#645).
 # A failure means players on that release would not get this build without downloading a new Setup.
 name: update-contract
@@ -64,6 +66,10 @@ jobs:
           set -euo pipefail
           python tools/release/update_contract.py candidate --package-dir D:/uc-in/package --out D:/uc-in/candidate
           echo "build=$(python -c "import json; print(json.load(open('D:/uc-in/candidate/feed.json'))['build'])")" >> "$GITHUB_OUTPUT"
+      # #689: the same candidate under every repository path this commit's launcher must accept, and lookalikes it must refuse.
+      - name: The candidate under each repository path
+        shell: bash
+        run: python tools/release/update_contract.py paths --package-dir D:/uc-in/package --out D:/uc-in/paths
       - name: The newest full release older than the candidate
         shell: bash
         env:
@@ -71,10 +77,10 @@ jobs:
         run: python tools/release/update_contract.py released --repository "${{ github.repository }}" --below "${{ steps.candidate.outputs.build }}" --out D:/uc-in/released
       - name: Build the harness
         run: dotnet build source/tools/DAoCLivingServer.UpdateContract/DAoCLivingServer.UpdateContract.csproj -c Release
-      - name: The released launcher and Setup take the candidate
+      - name: The released launcher and Setup take the candidate; this commit's launcher takes either repository path
         shell: pwsh
         run: |
-          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/release/test-update-contract.ps1 -Released D:\uc-in\released -Candidate D:\uc-in\candidate -Harness source/tools/DAoCLivingServer.UpdateContract/bin/Release/net10.0/DAoCLivingServer.UpdateContract.dll -Work D:\uc
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/release/test-update-contract.ps1 -Released D:\uc-in\released -Candidate D:\uc-in\candidate -Harness source/tools/DAoCLivingServer.UpdateContract/bin/Release/net10.0/DAoCLivingServer.UpdateContract.dll -Work D:\uc -Paths D:\uc-in\paths -Package D:\uc-in\package
           exit $LASTEXITCODE
       # Also after a failure above, so a rename shows as its own error.
       - name: The repository is the one released launchers accept

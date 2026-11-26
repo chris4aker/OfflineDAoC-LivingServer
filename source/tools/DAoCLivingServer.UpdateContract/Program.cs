@@ -8,7 +8,10 @@ namespace DAoCLivingServer.UpdateContract;
 
 // Issue #685: would a RELEASED launcher take the candidate as its update?
 //
-//   dotnet DAoCLivingServer.UpdateContract.dll --launcher <game>\runtime\<launcher>.dll --game <game> --feed <feed.json> [--apply]
+//   dotnet DAoCLivingServer.UpdateContract.dll --launcher <game>\runtime\<launcher>.dll --game <game> --feed <feed.json> [--apply] [--as-build <build>]
+//
+// --as-build: the launcher checks as if it were that build (its own LauncherBuild is the candidate's when the launcher
+// under test is this commit's own, #689: the candidate under each repository path it must accept or refuse).
 //
 // The released launchers have no command that checks GitHub without the window (1.2.2's only headless switch,
 // --apply-update, starts from a file already on disk and skips the release feed and the download address check). So this
@@ -37,10 +40,10 @@ public static class Program
             int i = Array.IndexOf(args, key);
             return i >= 0 && i + 1 < args.Length ? args[i + 1] : null;
         }
-        string? launcher = Get("--launcher"), game = Get("--game"), feedPath = Get("--feed");
+        string? launcher = Get("--launcher"), game = Get("--game"), feedPath = Get("--feed"), asBuild = Get("--as-build");
         if (launcher == null || game == null || feedPath == null)
         {
-            Console.WriteLine("Usage: DAoCLivingServer.UpdateContract --launcher <dll> --game <folder> --feed <feed.json> [--apply]");
+            Console.WriteLine("Usage: DAoCLivingServer.UpdateContract --launcher <dll> --game <folder> --feed <feed.json> [--apply] [--as-build <build>]");
             return 2;
         }
         Feed feed;
@@ -55,7 +58,7 @@ public static class Program
             Console.WriteLine("ERROR: " + e.Message);
             return 2;
         }
-        var check = new OldLauncher(old, feed, Path.GetFullPath(game));
+        var check = new OldLauncher(old, feed, Path.GetFullPath(game), asBuild);
         try
         {
             return check.Run(args.Contains("--apply"));
@@ -163,9 +166,11 @@ public sealed class OldLauncher
     private readonly Feed _feed;
     private readonly string _game;
     private readonly string _ns;
+    private readonly string? _asBuild;
 
-    public OldLauncher(Assembly asm, Feed feed, string game)
+    public OldLauncher(Assembly asm, Feed feed, string game, string? asBuild = null)
     {
+        _asBuild = asBuild;
         _asm = asm;
         _feed = feed;
         _game = game;
@@ -193,6 +198,12 @@ public sealed class OldLauncher
         Console.WriteLine($"Released launcher: {_asm.Location}");
         Console.WriteLine($"  build {installedName ?? "(none)"}; LatestUrl {Static(feedType, "LatestUrl")}; DownloadPrefix {Static(feedType, "DownloadPrefix")}");
         Console.WriteLine($"Candidate: {_feed.Tag} (package build {_feed.Build}) in {_feed.Repository}");
+        if (_asBuild != null)
+        {
+            installed = T("BuildVersion").GetMethod("Parse", BindingFlags.Public | BindingFlags.Static)!.Invoke(null, [_asBuild])
+                        ?? throw new Refused("--as-build " + _asBuild + " isn't a build the launcher reads");
+            Console.WriteLine($"  checking as build {_asBuild} (--as-build)");
+        }
         if (installed == null)
             throw new Refused("the released launcher names no build of its own (LauncherBuild.Version), so it offers nothing");
 
