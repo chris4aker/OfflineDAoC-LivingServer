@@ -9,6 +9,48 @@ namespace DOL.AI.Brain
         private long _nextPvpControl;
         private int _pvpControlSpellId;
         private long _pvpControlCastUntil;
+        /// <summary>#568 C7: no area mez attempt before this (60 s after the last one).</summary>
+        private long _nextPvpAreaMez;
+
+        /// <summary>#568 C7 (DetShaft abd63c964): an area mez is held this long after an attempt.</summary>
+        public const long PvpAreaMezHoldMilliseconds = 60_000;
+        /// <summary>#568 C7: an area mez with at least this cast time is a slow backup, tried after the others.</summary>
+        public const int SlowAreaMezCastMilliseconds = 4_000;
+
+        /// <summary>
+        /// Pure (#568 C7, DetShaft abd63c964 spec): an area mez only with two or more free (not mezzed, not immune) enemies in
+        /// its area, and not again within 60 s of the last attempt (a pack already mezzed or immune is left alone).
+        /// </summary>
+        public static bool PvpAreaMezWorthwhile(int freeEnemiesInArea, long now, long heldUntil) =>
+            freeEnemiesInArea >= 2 && now >= heldUntil;
+
+        /// <summary>Pure (#568 C7): no mez or root on an enemy a groupmate is hitting (the hit breaks it at once).</summary>
+        public static bool PvpMezOrRootAllowed(bool mezOrRoot, bool groupmateHitsIt) => !mezOrRoot || !groupmateHitsIt;
+
+        /// <summary>
+        /// Pure (#568 C7): the order PvP control is tried in - a quick area mez, a single mez, a slow (4 s or more) backup
+        /// area mez, then the rest; higher level first within each.
+        /// </summary>
+        public static int PvpControlRank(bool mez, int radius, int castTimeMilliseconds) =>
+            !mez ? 3 : radius <= 0 ? 1 : castTimeMilliseconds >= SlowAreaMezCastMilliseconds ? 2 : 0;
+
+        /// <summary>A groupmate (or a groupmate's pet) is meleeing, shooting or casting at <paramref name="enemy"/>.</summary>
+        private bool GroupmateHits(GameLiving enemy)
+        {
+            Group group = Body.Group;
+            if (group == null || enemy == null)
+                return false;
+            foreach (GameLiving member in group.GetMembersInTheGroup())
+            {
+                if (member == Body || !member.IsAlive)
+                    continue;
+                if (member.TargetObject == enemy && (member.IsAttacking || member.IsCasting))
+                    return true;
+                if (member.ControlledBrain?.Body is GameNPC pet && pet.IsAlive && pet.TargetObject == enemy && pet.IsAttacking)
+                    return true;
+            }
+            return false;
+        }
         private bool PvpControlInFlight => Body.IsCasting && GameLoop.GameLoopTime<_pvpControlCastUntil &&
             Body.castingComponent?.SpellHandler?.Spell?.ID==_pvpControlSpellId;
         private bool TryPvpCrowdControl()
@@ -27,18 +69,36 @@ namespace DOL.AI.Brain
                     !CompanionPvpEngagement.Focused(Body,t) && !CompanionPvpEngagement.Defending(Body,t))
                 .OrderBy(Body.GetDistanceTo).Take(24).ToArray();
             if (enemies.Length == 0) return false;
-            foreach (Spell spell in BotBody.CrowdControlSpells.OrderByDescending(s=>s.SpellType==eSpellType.Mesmerize).ThenByDescending(s=>s.Radius).ThenByDescending(s=>s.Level))
+            // #568 C7 (DetShaft abd63c964): a quick area mez, a single mez, a slow backup area mez, then roots
+            foreach (Spell spell in BotBody.CrowdControlSpells
+                         .OrderBy(s=>PvpControlRank(s.SpellType==eSpellType.Mesmerize, s.Radius, s.CastTime))
+                         .ThenByDescending(s=>s.Level))
             {
                 if (spell.Level>Body.Level || Body.GetSkillDisabledDuration(spell)>0 || Body.Mana<BotBody.PowerCost(spell) ||
                     BotInterruptPolicy.CastWouldBeLost(Body, spell)) continue;
+                bool mez = spell.SpellType is eSpellType.Mesmerize or eSpellType.Mez;
+                bool root = BotControlSpells.KindOfType(spell) == BotControlSpells.ControlKind.Root;
+                bool areaMez = mez && spell.Radius > 0;
+                if (areaMez && GameLoop.GameLoopTime < _nextPvpAreaMez) continue;
                 int range = spell.Target==eSpellTarget.SELF || spell.Range<=0 ? spell.Radius : spell.CalculateEffectiveRange(Body);
                 // #521: the older path reads the server's immunity too (it wasted casts on immune targets).
-                GameLiving candidate=enemies.Where(t=>Body.IsWithinRadius(t,range) && !LivingHasEffect(t,spell) &&
-                    !(spell.SpellType==eSpellType.Mesmerize && RvrCrowdControlPlan.MezImmune(t,spell.Duration,Body)) &&
+                // #568 C7: roots read it as well; an enemy a groupmate is hitting gets no mez or root.
+                bool Free(GameLiving t) =>
+                    !(mez && RvrCrowdControlPlan.MezImmune(t,spell.Duration,Body)) &&
                     !(spell.SpellType==eSpellType.Stun && RvrCrowdControlPlan.StunImmune(t,spell.Duration,Body)) &&
+                    !(root && RvrCrowdControlPlan.RootImmune(t)) &&
+                    PvpMezOrRootAllowed(mez || root, GroupmateHits(t));
+                GameLiving candidate=enemies.Where(t=>Body.IsWithinRadius(t,range) && !LivingHasEffect(t,spell) && Free(t) &&
                     NeedsOffensiveSpellApplication(t,spell)).OrderByDescending(t=>enemies.Count(n=>n.IsWithinRadius(t,Math.Max(1,spell.Radius))))
                     .ThenBy(Body.GetDistanceTo).FirstOrDefault(t=>BotSiegeRuntime.Visible(Body,t));
-                if (candidate==null || !BotPvpCrowdControl.Reserve(BotBody,candidate,spell.CastTime+2000)) continue;
+                if (candidate != null && areaMez)
+                {
+                    GameLiving centre = spell.Target == eSpellTarget.SELF ? Body : candidate;
+                    int free = enemies.Count(t => t.IsWithinRadius(centre, spell.Radius) && Free(t));
+                    if (!PvpAreaMezWorthwhile(free, GameLoop.GameLoopTime, _nextPvpAreaMez)) continue;
+                }
+                if (candidate==null || !BotPvpCrowdControl.Reserve(BotBody,candidate,spell.CastTime+2000,spell)) continue;
+                if (areaMez) _nextPvpAreaMez = GameLoop.GameLoopTime + PvpAreaMezHoldMilliseconds;
                 GameObject previous=Body.TargetObject;
                 Body.TargetObject=candidate;
                 if (spell.CastTime>0) { Body.StopMovingOnPath(); Body.StopMoving(); }
@@ -47,7 +107,7 @@ namespace DOL.AI.Brain
                 _pvpControlSpellId=spell.ID; _pvpControlCastUntil=GameLoop.GameLoopTime+spell.CastTime+2000;
                 if (spell.SpellType==eSpellType.Mesmerize && spell.Radius>0)
                     foreach(GameLiving enemy in enemies.Where(t=>t.IsWithinRadius(spell.Target==eSpellTarget.SELF ? Body : candidate,spell.Radius)))
-                        BotPvpCrowdControl.Reserve(BotBody,enemy,spell.CastTime+2000);
+                        BotPvpCrowdControl.Reserve(BotBody,enemy,spell.CastTime+2000,spell);
                 return true;
             }
             return false;
@@ -101,7 +161,7 @@ namespace DOL.AI.Brain
                     continue;
                 if (!Body.IsWithinRadius(subject, range) || LivingHasEffect(subject, spell) ||
                     !NeedsOffensiveSpellApplication(subject, spell) || !BotSiegeRuntime.Visible(Body, subject) ||
-                    !BotPvpCrowdControl.Reserve(BotBody, subject, spell.CastTime + 2000))
+                    !BotPvpCrowdControl.Reserve(BotBody, subject, spell.CastTime + 2000, spell))
                     continue;
                 GameObject previous = Body.TargetObject;
                 Body.TargetObject = subject;

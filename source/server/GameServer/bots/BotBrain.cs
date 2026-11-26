@@ -4182,7 +4182,8 @@ namespace DOL.AI.Brain
                 TryCommandCompanionDruidPet(CalculateNextAttackTarget());
             HoldSupportCombat();
             if (TryRvrTacticsSupport()) return;
-            if (!CheckHeals() && !TryPvpCrowdControl() && !TryPveAddControl() && !TryGroupCelerity())
+            if (!CheckHeals() && !TryPvpCrowdControl() && !TryPveAddControl() && !TryShedAggroInSupport() &&
+                !TryGroupCelerity())
                 CheckSpells(eCheckSpellType.Defensive);
             if (BotBody.IsPlayerLedGroup)
             {
@@ -4466,6 +4467,8 @@ namespace DOL.AI.Brain
                 // df-bosses L2 (True 1.65): from where the target takes no damage, no attack spell: the caller walks in to range
                 if (BeyondTargetDamageRange()) return false;
                 if (TryPvpCrowdControl()) return true;
+                // #568 C4: Life Transfer, Amnesia for the pet, shedding a monster to the tank, PvP utility (once a second)
+                if (TryUtilitySpells()) return true;
                 if (TryBardPveAddMez()) return true;
                 if (TryPveAddControl()) return true;
                 if (TryGroupCelerity()) return true;
@@ -4478,20 +4481,34 @@ namespace DOL.AI.Brain
                         return false;
                 }
 
+                // #568 C6: up to two opening debuffs on a fresh target that lasts; C5: damage waits for the tank or pet
+                bool debuffOpening = DebuffOpeningWorthwhile();
+                bool holdDamage = HoldDamageForTank();
+
                 // Check instant spells
                 if (Body.CanCastInstantHarmfulSpells)
                 {
                     IEnumerable<Spell> instantOffense = Body.InstantHarmfulSpells;
                     if (UsesMinstrelHybridCombat)
                         instantOffense = instantOffense.OrderByDescending(BotCasterPriority.IsDamage);
+                    else if (debuffOpening)
+                        instantOffense = instantOffense.OrderByDescending(BotCasterPriority.IsDebuff);
                     foreach (Spell spell in instantOffense)
                     {
                         bool meleePressure = Body.IsBeingInterruptedByOther &&
                             Body.IsWithinRadius(Body.TargetObject, Body.MeleeAttackRange + 35);
-                        if (!BotCasterPriority.AllowInstant(spell, PrefersCurrentSpellRange(), meleePressure))
+                        if (!BotCasterPriority.AllowInstant(spell, PrefersCurrentSpellRange(), meleePressure, debuffOpening))
+                            continue;
+                        // C6: a resist debuff only for the bot's own damage types (unless the player picked it)
+                        if (!PlaybookDebuffFits(spell))
+                            continue;
+                        if (holdDamage && BotCasterPriority.IsDamage(spell))
                             continue;
                         if (CheckInstantOffensiveSpells(spell))
+                        {
+                            NoteOpeningDebuff(spell);
                             return true;
+                        }
                     }
                 }
 
@@ -4542,21 +4559,28 @@ namespace DOL.AI.Brain
                     {
                         foreach (Spell spell in BotBody.CrowdControlSpells)
                         {
-                            // Never mesmerize the monster this bot is trying to kill:
-                            // the next hit breaks it, so the cast only delays the fight
-                            // (solo level 1 Healers spent turns mezzing their own
-                            // target). PvP control and Bard add-mez use separate paths;
-                            // stuns stay allowed since they give free hits.
-                            if (Body.TargetObject is GameNPC and not GameBot &&
-                                spell.SpellType is eSpellType.Mesmerize or eSpellType.Mez)
-                                continue;
+                            // #568 C2: never a mez or root on the monster this bot is trying to kill (the next hit breaks
+                            // it, or it only slows the kill): CanCastOffensiveSpell reads ControlAllowedOnTarget. Adds are
+                            // controlled by their own rules; player-like enemies keep their PvP control.
                             if (CanCastOffensiveSpell(spell) && !LivingHasEffect((GameLiving)Body.TargetObject, spell))
                                 spellsToCast.Add(spell);
                         }
                     }
                 }
 
-                if (BotBody.CanCastBolts && spellsToCast.Count < 1)
+                // #568 C6 (True165 269870b; Prima: "forget bolts in large battles, since they'll often be blocked"): a bolt
+                // is the opener, or for a target nobody else is meleeing; a Wizard or Theurgist bolts only as the opener, and
+                // no bolt goes into a monster meleeing the caster. Bolts and the other attack spells are offered together;
+                // the playbook puts the bolt first while it is the opener. A bolt held back is still cast when nothing
+                // else does damage.
+                bool crowdControlQueued = spellsToCast.Count > 0;
+                bool boltsAllowed = BotBody.CanCastBolts && !holdDamage;
+                bool boltsHeldForMelee = boltsAllowed && !crowdControlQueued && Body.TargetObject is GameLiving boltTarget &&
+                    (!BotCasterPriority.BoltWorthwhile(OthersMeleeing(boltTarget)) ||
+                     !BotPlaybook.BoltLands(0, boltTarget.TargetObject == Body &&
+                                               Body.IsWithinRadius(boltTarget, Body.MeleeAttackRange + 50)) ||
+                     !BoltAllowedByPlaybook(BotBody.Playbook.BoltOpenerOnly, PlaybookDamageCastsOn(boltTarget)));
+                if (boltsAllowed && !boltsHeldForMelee && !crowdControlQueued)
                 {
                     foreach (Spell spell in BotBody.BoltSpells)
                     {
@@ -4565,7 +4589,7 @@ namespace DOL.AI.Brain
                     }
                 }
 
-                if (spellsToCast.Count < 1)
+                if (!crowdControlQueued)
                 {
                     if (Body.CanCastHarmfulSpells)
                     {
@@ -4583,6 +4607,12 @@ namespace DOL.AI.Brain
                     }
                 }
 
+                // a bolt held back from a melee scrum is still better than no attack spell at all
+                if (boltsHeldForMelee && !spellsToCast.Exists(BotCasterPriority.IsDamage))
+                    foreach (Spell spell in BotBody.BoltSpells)
+                        if (CanCastOffensiveSpell(spell))
+                            spellsToCast.Add(spell);
+
                 // Nothing else to cast while the pet is being hit: the shield, above 60% power too.
                 if (spellsToCast.Count == 0 && TryStartPetFocusShield(true))
                     return true;
@@ -4593,25 +4623,57 @@ namespace DOL.AI.Brain
                     // its refusal for a reason to abandon ranged combat.
                     spellsToCast.RemoveAll(spell => !NeedsOffensiveSpellApplication((GameLiving)Body.TargetObject, spell));
                     if (spellsToCast.Count == 0) return Body.IsCasting;
+                    // #568 C5: while holding damage only real debuffs (and an interrupt/peel stun) go, never a snare, root
+                    // or nearsight on the monster the tank or pet holds. Waiting is this turn's decision.
+                    if (holdDamage)
+                    {
+                        bool playerLikeTarget = BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving);
+                        spellsToCast.RemoveAll(spell => BotControlSpells.HoldDamageStrips(spell, playerLikeTarget));
+                        if (spellsToCast.Count == 0) return true;
+                    }
+                    // #568 C6: a resist debuff for a damage type the bot does not deal is no cast at all (Void Eldritch)
+                    spellsToCast.RemoveAll(spell => !PlaybookDebuffFits(spell));
+                    if (spellsToCast.Count == 0) return Body.IsCasting;
+                    // #568 C3: the plain nuke over a snare-nuke on a held monster
+                    PreferPlainNukeOverSnareNuke(spellsToCast, Body.TargetObject as GameLiving);
+                    // #568 C2: a stun kept by ControlAllowedOnTarget interrupts a cast or peels: it goes first
+                    Spell urgentStun = spellsToCast.Find(BotControlSpells.IsStun);
                     if (PrefersCurrentSpellRange() &&
                         spellsToCast.Exists(spell => spell.Range > Body.MeleeAttackRange))
                         spellsToCast.RemoveAll(spell => spell.Range <= Body.MeleeAttackRange);
                     if (PrefersCurrentSpellRange() && spellsToCast.Exists(BotCasterPriority.IsDamage))
-                        spellsToCast.RemoveAll(spell => !BotCasterPriority.IsDamage(spell));
+                        spellsToCast.RemoveAll(spell => !BotCasterPriority.IsDamage(spell) && spell != urgentStun &&
+                                                        !(debuffOpening && BotCasterPriority.IsDebuff(spell)));
+                    if (spellsToCast.Count == 0) return Body.IsCasting;
+                    // #568 C6: debuff first, then nuke - a resist debuff for the bot's own damage type first, then the others
+                    Spell openingDebuff = urgentStun == null && debuffOpening && !Body.IsBeingInterrupted
+                        ? ChoosePlaybookOpeningDebuff(spellsToCast)
+                        : null;
+                    if (openingDebuff != null && !BotInterruptPolicy.CastWouldBeLost(Body, openingDebuff) &&
+                        CheckOffensiveSpells(openingDebuff))
+                    {
+                        NoteOpeningDebuff(openingDebuff);
+                        return true;
+                    }
                     bool shamanHybrid = ShamanBotCombatPolicy.IsHybrid((eCharacterClass)BotBody.CharacterClass.ID);
                     // Two or more monsters in the fight within an area damage spell's reach: that spell, when its total
                     // beats the best single nuke. Area spells that would wake a mez or pull a monster are dropped here.
-                    Spell areaChoice = ChooseAreaDamage(spellsToCast, Body.TargetObject as GameLiving);
-                    if (spellsToCast.Count == 0) return Body.IsCasting;
-                    Spell spellToCast = areaChoice ?? (shamanHybrid
+                    Spell areaChoice = urgentStun == null ? ChooseAreaDamage(spellsToCast, Body.TargetObject as GameLiving) : null;
+                    if (urgentStun == null && spellsToCast.Count == 0) return Body.IsCasting;
+                    Spell spellToCast = urgentStun ?? areaChoice ?? (shamanHybrid
                         ? spellsToCast.OrderBy(ShamanBotCombatPolicy.RotationPriority)
                             .ThenByDescending(spell => spell.Level).First()
                         : BotBody.IsEndgameCompanion
                         ? TemporaryCompanionBalance.HighestSpell(spellsToCast)
-                        : BotSpellPower.WithSkill(BotBody, spellsToCast, spellsToCast[Util.Random(spellsToCast.Count - 1)]));
+                        // #568 C6: the playbook order, not a random pick; the skill-mistake layer stays on top
+                        : BotSpellPower.WithSkill(BotBody, spellsToCast,
+                            ChoosePlaybookAttack(spellsToCast, Body.TargetObject as GameLiving) ?? spellsToCast[0]));
 
                     if (!BotInterruptPolicy.CastWouldBeLost(Body, spellToCast))
+                    {
                         casted = CheckOffensiveSpells(spellToCast);
+                        NotePlaybookCast(spellToCast, casted);
+                    }
                     else if (shamanHybrid && ShamanBotCombatPolicy.HoldMeleeForCast(true,
                                  Body.IsBeingInterruptedByOther, Body.IsBeingSelfInterrupted))
                     {
@@ -4751,6 +4813,11 @@ namespace DOL.AI.Brain
                 Body.TargetObject is not GameLiving target || !target.IsAlive ||
                 !BardBotCrowdControlPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell.SpellType) ||
                 !ShamanBotCombatPolicy.AllowsOrdinaryOffense((eCharacterClass)BotBody.CharacterClass.ID, spell) ||
+                // #568 C2: snares, stuns, roots, mez and nearsight on the bot's own target by their own rules
+                !ControlAllowedOnTarget(spell, target) ||
+                // #568 C6: a spell the companion's AI Options refuse at the cast is no candidate, so the playbook's pick
+                // (an opening debuff marked Skip, a bolt under "Nukes only") never blocks the rotation
+                CompanionSpellOptions165.Blocks(BotBody, spell) ||
                 BotSpellPower.BlocksAttackerRotation(BotBody, spell) ||
                 EpicEncounterTactics.ForbidsSpell(BotBody, target, spell) ||
                 !NeedsOffensiveSpellApplication(target, spell) ||
@@ -4886,7 +4953,12 @@ namespace DOL.AI.Brain
                 spell.HasRecastDelay && Body.GetSkillDisabledDuration(spell) > 0 ||
                 EpicEncounterTactics.ForbidsSpell(BotBody, Body.TargetObject as GameLiving, spell) ||
                 // As CanCastOffensiveSpell: nothing on a boss this bot must not hit (duo14: reavers' instant DoTs healed Funus).
-                EpicEncounterTactics.MustNotHit(BotBody, Body.TargetObject as GameLiving))
+                EpicEncounterTactics.MustNotHit(BotBody, Body.TargetObject as GameLiving) ||
+                CompanionSpellOptions165.Blocks(BotBody, spell))
+                return false;
+            // #568 C2: an instant stun only interrupts or peels, no instant mez on the bot's own monster (Minstrel Stunning
+            // Yell, Healer Paralyzing Glance); player-like enemies keep their PvP control
+            if (!ControlAllowedOnTarget(spell, Body.TargetObject as GameLiving))
                 return false;
 
             bool castSpell = false;

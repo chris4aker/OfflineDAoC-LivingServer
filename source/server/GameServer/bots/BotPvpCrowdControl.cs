@@ -8,7 +8,40 @@ namespace DOL.GS
     /// <summary>Short-lived reservations scoped to player-versus-player targets only.</summary>
     public static class BotPvpCrowdControl
     {
-        private sealed class Claim { public long Until; public eRealm Realm; public WeakReference<GameBot> Caster; }
+        private sealed class Claim
+        {
+            public long Until; public eRealm Realm; public WeakReference<GameBot> Caster;
+            // #568 C7: the claiming cast, and when the caster was first seen no longer casting it
+            public int SpellId; public eSpellType SpellType; public long NotCastingSince;
+        }
+
+        /// <summary>#568 C7 (DetShaft abd63c964): a claim outlives its cast by this much (the cast may still be queued).</summary>
+        public const long ClaimGraceMilliseconds = 1_000;
+
+        /// <summary>
+        /// Pure (#568 C7, DetShaft abd63c964 spec): a crowd-control claim holds only while its time runs, the target is not
+        /// immune to it, and the claiming cast is still running (or stopped less than a second ago). Before this a claim
+        /// ended only by time or the caster's death, so an interrupted cast kept its target off limits for up to 10 s.
+        /// </summary>
+        public static bool ClaimHolds(long now, long until, bool targetImmune, bool castRunning, long notCastingSince) =>
+            until > now && !targetImmune &&
+            (castRunning || notCastingSince <= 0 || now - notCastingSince <= ClaimGraceMilliseconds);
+
+        /// <summary>The target already carries the immunity of the claimed kind (effects only: the server rules call here).</summary>
+        private static bool ImmuneTo(GameLiving target, eSpellType type)
+        {
+            var effects = target?.effectListComponent;
+            if (effects == null)
+                return false;
+            return type switch
+            {
+                eSpellType.Mesmerize or eSpellType.Mez => effects.ContainsEffectForEffectType(eEffect.MezImmunity),
+                eSpellType.Stun => effects.ContainsEffectForEffectType(eEffect.StunImmunity),
+                eSpellType.SpeedDecrease or eSpellType.UnbreakableSpeedDecrease =>
+                    effects.ContainsEffectForEffectType(eEffect.SnareImmunity),
+                _ => false,
+            };
+        }
         private static readonly ConditionalWeakTable<GameLiving, Claim> Claims = new();
         private sealed class FreeEnemyScan { public long Until; public bool Found; }
         private static readonly ConditionalWeakTable<GameBot, FreeEnemyScan> FreeEnemyScans = new();
@@ -26,8 +59,25 @@ namespace DOL.GS
             if (bot.Owner is GamePlayer player && player.IsAttacking && player.TargetObject == target) return false;
             if (target.IsMezzed) return OtherEnemyFree(bot);
             if (!Claims.TryGetValue(target, out Claim claim)) return false;
-            lock (claim) return claim.Realm == bot.Realm && claim.Until > GameLoop.GameLoopTime &&
-                claim.Caster != null && claim.Caster.TryGetTarget(out GameBot caster) && caster.IsAlive && caster != bot;
+            lock (claim)
+            {
+                long now = GameLoop.GameLoopTime;
+                if (claim.Realm != bot.Realm || claim.Until <= now || claim.Caster == null ||
+                    !claim.Caster.TryGetTarget(out GameBot caster) || !caster.IsAlive || caster == bot)
+                    return false;
+                if (claim.SpellId == 0)
+                    return true;
+                bool castRunning = caster.IsCasting && caster.castingComponent?.SpellHandler?.Spell?.ID == claim.SpellId ||
+                                   caster.castingComponent?.HasPendingSkillRequests == true;
+                if (castRunning)
+                    claim.NotCastingSince = 0;
+                else if (claim.NotCastingSince <= 0)
+                    claim.NotCastingSince = now;
+                bool holds = ClaimHolds(now, claim.Until, ImmuneTo(target, claim.SpellType), castRunning, claim.NotCastingSince);
+                if (!holds)
+                    claim.Until = 0;
+                return holds;
+            }
         }
         // Owner 2026-10-27: a mesmerized enemy is left alone only while another enemy is still free to fight nearby.
         // Once the mez is all that is left, the bots finish it instead of walking away from it.
@@ -48,7 +98,7 @@ namespace DOL.GS
             }
         }
 
-        public static bool Reserve(GameBot caster, GameLiving target, int duration)
+        public static bool Reserve(GameBot caster, GameLiving target, int duration, Spell spell = null)
         {
             Claim claim = Claims.GetOrCreateValue(target);
             lock (claim)
@@ -57,6 +107,9 @@ namespace DOL.GS
                 claim.Realm = caster.Realm;
                 claim.Caster = new(caster);
                 claim.Until = GameLoop.GameLoopTime + Math.Clamp(duration, 1000, 10_000);
+                claim.SpellId = spell?.ID ?? 0;
+                claim.SpellType = spell?.SpellType ?? eSpellType.None;
+                claim.NotCastingSince = 0;
                 return true;
             }
         }

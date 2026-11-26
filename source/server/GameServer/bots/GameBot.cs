@@ -2535,6 +2535,25 @@ namespace DOL.GS
 
         public int PowerCost(Spell spell) => BotSpellPower.Cost(this, spell, null);
 
+        private BotPlaybook _playbook;
+
+        /// <summary>
+        /// #568 C6: the bot's veteran playbook (BotPlaybook), built once from its known spells and rebuilt after SortSpells
+        /// or a level change. Gamebots and companions alike.
+        /// </summary>
+        public BotPlaybook Playbook
+        {
+            get
+            {
+                BotPlaybook playbook = _playbook;
+                if (playbook != null && playbook.Level == Level)
+                    return playbook;
+                playbook = BotPlaybook.Build(Spells, Level, (eCharacterClass)(CharacterClass?.ID ?? 0));
+                _playbook = playbook;
+                return playbook;
+            }
+        }
+
         private Dictionary<int, SpellLine> _powerSpellLines = new();
 
         // Combat still uses its existing dispatch line (no damage/spec behavior
@@ -2550,6 +2569,7 @@ namespace DOL.GS
 
         public override void SortSpells()
         {
+            _playbook = null;   // #568 C6: rebuilt from the new spell list on its next read
             if (Spells.Count < 1)
                 return;
 
