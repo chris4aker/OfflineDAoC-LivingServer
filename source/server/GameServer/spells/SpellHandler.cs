@@ -2192,6 +2192,10 @@ namespace DOL.GS.Spells
 			{
 				GameLiving targetInList = targets[i];
 
+				// #661: a buff a bot casts never lands on a player who refused its type, or on that player's pet.
+				if (HasPositiveEffect && PlayerBuffRefusals.BlocksBotBuff(Caster, targetInList, Spell))
+					continue;
+
 				if (CheckSpellResist(targetInList))
 					continue;
 

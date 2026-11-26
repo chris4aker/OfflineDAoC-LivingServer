@@ -85,10 +85,17 @@ namespace DOL.GS
             return target is GameNPC and not GameBot ? TargetKind.Pet : TargetKind.Other;
         }
 
-        /// <summary>Whether this spell does anything for this live target (see <see cref="Benefits(eSpellType, TargetKind, eCharacterClass, eStat, eClassType, bool)"/>).</summary>
+        /// <summary>
+        /// Whether this spell does anything for this live target (see <see cref="Benefits(eSpellType, TargetKind, eCharacterClass, eStat, eClassType, bool)"/>),
+        /// and the target takes it: a real player who refused the type (<c>/buff refuse</c>, or a right-click cancel of a bot's
+        /// buff; #661) gets none from a bot, and neither do that player's pets (<see cref="PlayerBuffRefusals"/>). Every
+        /// group, realm and pet buff pick in BotBrain goes through here.
+        /// </summary>
         public static bool Benefits(GameLiving target, Spell spell)
         {
             if (target == null || spell == null)
+                return false;
+            if (PlayerBuffRefusals.Refuses(target, spell.SpellType))
                 return false;
             TargetKind kind = KindOf(target, out ICharacterClass characterClass);
             return characterClass == null
