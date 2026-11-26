@@ -191,6 +191,25 @@ jobs:
           path: evening-transcripts/
           if-no-files-found: warn
 
+      # #644 part 6: the raid sims write their attempts as the server's RAID_* rows (UT_SimRaidRows644, raid-sim/*.raid.log).
+      # They are read with the same parser as a server log: every row has the server's fields in order, every simulated
+      # attempt has its pull and end, and the death counts agree. A missing log fails here (#618). Tests only: a sim is a model.
+      - name: The simulated raid rows read like a server log
+        if: always()
+        shell: bash
+        run: |
+          logs=$(python source/tools/ci_test_results.py require --title "Raid sim rows" 'raid-sim/*.raid.log') || { echo "$logs"; exit 1; }
+          mkdir -p raid-sim
+          for f in $logs; do [ "$f" -ef "raid-sim/$(basename "$f")" ] || cp "$f" raid-sim/; done
+          python source/tools/raid_postmortem.py --check --github raid-sim/*.raid.log
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: raid-sim
+          path: raid-sim/
+          if-no-files-found: warn
+
       # 1.2.2 chat audit (docs/bot-voices/CHAT-AUDIT-1.2.2.md): the player questions of tools/bot-voices/eval/player_questions.json
       # answered through the server's own reply path (UT_ChatQuestionBench runs AutonomousChatReplyPath) and scored. Since the 1.2.2
       # fixes it is a ratchet: the build fails when the good share falls or a bad category grows past bench_ratchet.json's caps.
