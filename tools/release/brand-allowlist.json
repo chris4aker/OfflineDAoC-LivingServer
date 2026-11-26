@@ -1,0 +1,35 @@
+{
+  "files": {
+    "CREDITS.md": {"why": "the credits: GPL v3 section 5 keeps the upstream attribution (issue #641)"},
+    "docs/RELEASE-NOTES-1.1*.md": {"why": "release notes of releases published under the old name (legacy records)"},
+    "docs/RELEASE-NOTES-1.2.md": {"why": "release notes of a release published under the old name (legacy record)"},
+    "docs/RELEASE-NOTES-1.2.1.md": {"why": "release notes of a release published under the old name (legacy record)"},
+    "docs/RELEASE-NOTES-1.2.2.md": {"why": "release notes of a release published under the old name (legacy record)"}
+  },
+  "lines": {
+    "README.md": [
+      {"text": "it started from the original Offline DAoC by", "why": "credits (CREDITS.md has them all)"},
+      {"text": "[shadowofze](https://github.com/shadowofze)", "why": "credits: the original author"},
+      {"text": "Living Server started as an add-on to Offline DAoC 0.36 and 0.37", "why": "the former name, pointing to the legacy records"}
+    ],
+    "docs/BOT-GUILDS.md": [
+      {"text": "| Original (`shadowofze/OfflineDAoC`, `1cabc77`)", "why": "a research table that credits the original code"}
+    ],
+    "source/tools/OfflineDaoc.Launcher/AboutForm.cs": [
+      {"text": "the original Offline DAoC by shadowofze", "why": "About's fallback credits, if CREDITS.md were missing"}
+    ],
+    "source/tools/OfflineDaoc.Launcher/Updates/ReleaseInfo.cs": [
+      {"text": "OfflineDAoC-LivingServer)-(.+)", "why": "reads a package file of the pre-1.2.3 name"},
+      {"text": "LegacyPackagePrefix = \"OfflineDAoC-LivingServer-\"", "why": "the pre-1.2.3 package name, for older releases"}
+    ],
+    "tools/installer/src/Engine.cs": [
+      {"text": "LegacySetupFilesFolderName = \"Offline DAoC setup files\"", "why": "an install begun by an older Setup finishes in its folder"},
+      {"text": "line.StartsWith(\"Installing a fresh Offline DAoC\")", "why": "reads the pinned base-game downloader's own output"},
+      {"text": "line.StartsWith(\"Step 1 of 2: the Offline DAoC\")", "why": "reads the pinned base-game downloader's own output"}
+    ],
+    "source/server/GameServer/serverproperty/LivingServerSettingsUpgrade.cs": [
+      {"text": "\"Welcome back to Offline DAoC.", "why": "the old default text, so an untouched world moves to the new one"},
+      {"text": "\"Welcome to Offline DAoC, a private", "why": "the old default text, so an untouched world moves to the new one"}
+    ]
+  }
+}

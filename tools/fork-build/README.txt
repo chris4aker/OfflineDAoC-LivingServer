@@ -80,7 +80,7 @@ The loading screen is Living Server's own and is the exception. The installer pu
 Server loading screen over the base game's or over an earlier Living Server one (1.1); any other
 loading screen is left alone. ROLLBACK.cmd puts back the earlier Living Server loading screen
 when that is what it replaced, but never the base game's: after a first install the Living Server
-one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the Offline DAoC update doesn't touch it).
+one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the base game's update doesn't touch it).
 
 Check: start the game as usual. The server log shows a line like
   FORK_BUILD name=1.2 commit=... bot_guilds=on ... bot_voices=on ... living=memory,grats,...

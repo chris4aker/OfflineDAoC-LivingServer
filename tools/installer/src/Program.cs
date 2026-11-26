@@ -406,7 +406,7 @@ namespace LivingServerSetup
         public static List<GameInfo> Games() => new List<GameInfo>
         {
             new GameInfo { Path = @"C:\Games\LivingServer", Release = Payload.BaseRelease, NewClient = true, Ls = LsState.ThisBuild, LsBuild = Payload.BuildName },
-            new GameInfo { Path = @"D:\OfflineDAoC\playable-v0.36b", Release = "0.36", Ls = LsState.OtherBuild, LsBuild = "0.36-se.4" },
+            new GameInfo { Path = @"D:\Games\playable-v0.36b", Release = "0.36", Ls = LsState.OtherBuild, LsBuild = "0.36-se.4" },
             new GameInfo { Path = @"C:\Users\Player\Downloads\OfflineDAoC-v0.35b", Release = "0.35" },
         };
 

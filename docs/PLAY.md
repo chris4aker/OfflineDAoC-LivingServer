@@ -118,4 +118,4 @@ In short:
 
 The 0.3x releases this project started from stay available as records: the guide to their own downloaders is in
 [history/PLAY-0.37.md](history/PLAY-0.37.md), their notes are in [docs/history](history/), and their files are kept in
-[OfflineDAoC-base-files](https://github.com/chris4aker/OfflineDAoC-base-files/releases).
+[the base-files repository](https://github.com/chris4aker/OfflineDAoC-base-files/releases).

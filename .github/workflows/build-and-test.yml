@@ -25,6 +25,7 @@ jobs:
       - name: Check the README and release versions agree
         run: |
           python3 tools/release/check_versions.py
+          python3 tools/release/check_brand.py
           python3 -m unittest discover -s tools/release/tests -v
           python3 -m unittest discover -s tools/installer/tests -v
 

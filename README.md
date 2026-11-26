@@ -211,7 +211,7 @@ Third-party notices: [THIRD_PARTY.md](THIRD_PARTY.md).
 ## Earlier versions
 
 Living Server started as an add-on to Offline DAoC 0.36 and 0.37. Those releases (v0.3 to v0.37c) stay available as
-records: their files are in [OfflineDAoC-base-files](https://github.com/chris4aker/OfflineDAoC-base-files/releases), the
+records: their files are in [the base-files repository](https://github.com/chris4aker/OfflineDAoC-base-files/releases), the
 original README is kept in [docs/history/OFFLINE-DAOC-README.md](docs/history/OFFLINE-DAOC-README.md), and their notes
 are in [docs/history/](docs/history/).
 
