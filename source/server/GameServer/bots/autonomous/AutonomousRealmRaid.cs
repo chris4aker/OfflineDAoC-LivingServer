@@ -195,6 +195,9 @@ namespace DOL.GS
             public string LeeroyName;
             /// <summary>Wipes this raid took (dungeon encounters and dragons): a time-out with none is no result.</summary>
             public int Wipes;
+            /// <summary>A dragon or open-world raid's attempt rows (#644; logging only), and the fight's attempts already written.</summary>
+            public RaidAttemptTracker DragonAttempts;
+            public int DragonAttemptsSeen, DragonEndsSeen;
         }
         private sealed class Party
         {
@@ -762,6 +765,7 @@ namespace DOL.GS
                                     "the last two expeditions here were defeated");
                             // A dragon raid's first attempt: everyone at the staging ring is in it.
                             raid.DragonFight?.Engage(StagedBots(raid).OfType<GameBot>().Select(b => b.DatabaseID), DragonState(raid), now);
+                            ObserveDragonAttempts(raid, now);
                             if (leeroy != null && AutonomousRaidLeeroy.Charge(leeroy, raid.Boss, staged, raid.Definition.Name))
                                 raid.LeeroyName = leeroy.Name;
                         }
@@ -792,6 +796,7 @@ namespace DOL.GS
                     {
                         PulseDragonReturnWave(raid, now);
                         fight.Advance(DragonRaiders(raid), DragonState(raid), now);
+                        ObserveDragonAttempts(raid, now);
                         while (fight.TryTakeWipe(out int failures, out int engaged, out int fallen))
                             OnWipe(raid, raid.Boss.Name, failures, now, engaged, fallen);
                         if (fight.Defeated)
@@ -956,10 +961,15 @@ namespace DOL.GS
                             continue;
                         }
                         candidate.DungeonRoute = route;
+                        route.Attempts = AttemptTracker(candidate, "dungeon", candidate.Definition.SuggestedBots);
                         if (playtestFocus is { Length: > 0 }) route.Focus = playtestFocus;
                     }
                     else
+                    {
                         candidate.DragonFight = new RealmRaidDragonFight(candidate.Boss.Name, candidate.Definition.IsOpenWorld);
+                        candidate.DragonAttempts = AttemptTracker(candidate, candidate.Definition.IsOpenWorld ? "open" : "dragon",
+                            candidate.Definition.SuggestedBots);
+                    }
                     bool staged = TryStaging(candidate, 0, out var destination);
                     if (staged && playtestAtStaging)
                     {
@@ -1296,6 +1306,84 @@ namespace DOL.GS
             // A return wave clearing its way back in is headway (owner, 2026-11-17): it restarts the clock, at most one limit
             // beyond the last real progress (RealmRaidReturnWave.Stalled).
             return RealmRaidReturnWave.Stalled(StallLimit(raid), now, raid.LastProgressTick, raid.LastHeadwayTick);
+        }
+
+        // ---- #644 raid attempt rows (logging only: nothing below decides anything for the raid) ----
+
+        /// <summary>The attempt rows of one of the raid's routes or its dragon fight. Guests: the members of the raid's parties
+        /// who are not its gamebots (the player seated as a raid guest).</summary>
+        private static RaidAttemptTracker AttemptTracker(Raid raid, string kind, int period) =>
+            new(raid.Definition.Id, kind, period, () => RaidGuests(raid));
+
+        private static IEnumerable<GameLiving> RaidGuests(Raid raid)
+        {
+            var bots = raid.Support.ToHashSet();
+            return raid.Parties.Keys.Where(g => g != null).SelectMany(g => g.GetMembersInTheGroup())
+                .Where(m => m is GamePlayer || m is GameBot && !bots.Contains(m)).ToArray();
+        }
+
+        /// <summary>The raid's gamebots whose ids are in <paramref name="ids"/>.</summary>
+        private static GameLiving[] BotsWithIds(Raid raid, IEnumerable<long> ids)
+        {
+            var set = new HashSet<long>(ids ?? []);
+            return raid.Support.OfType<GameBot>().Where(b => set.Contains(b.DatabaseID)).Cast<GameLiving>().ToArray();
+        }
+
+        /// <summary>
+        /// RAID_ATTEMPT_END and RAID_ATTEMPT for the dragon fight's attempts that ended or began since the last look (after each
+        /// Engage and Advance), and the raiders who joined the open one.
+        /// </summary>
+        private static void ObserveDragonAttempts(Raid raid, long now)
+        {
+            if (raid.DragonFight is not { } fight || raid.DragonAttempts is not { } rows) return;
+            try
+            {
+                if (fight.AttemptsEnded > raid.DragonEndsSeen && fight.LastEnd is { } end)
+                {
+                    raid.DragonEndsSeen = fight.AttemptsEnded;
+                    long[] diedIds = (rows.Current?.DiedMembers() ?? []).OfType<GameBot>().Select(b => b.DatabaseID).ToArray();
+                    var (died, left) = RaidAttemptRows.SplitFallen(end.Engaged, end.Fallen.Contains, diedIds.Contains);
+                    rows.End(RaidAttemptRows.DragonOutcome(end.Wipe), end.Engaged.Length, end.Fallen.Count, died, left, end.HealthPercent,
+                        end.LowestPercent, now);
+                }
+                if (fight.AttemptsBegun > raid.DragonAttemptsSeen)
+                {
+                    raid.DragonAttemptsSeen = fight.AttemptsBegun;
+                    long gather = fight.LastGatherMilliseconds >= 0 ? fight.LastGatherMilliseconds
+                        : raid.HubDepartedTick > 0 ? now - raid.HubDepartedTick : -1;
+                    rows.Begin(raid.Boss, raid.Definition.Region, BotsWithIds(raid, fight.EngagedIds), raid.Support, now, gather);
+                }
+                else if (fight.AttemptOpen && rows.Current != null)
+                    rows.Join(BotsWithIds(raid, fight.EngagedIds));
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("RAID_ATTEMPT rows (dragon)", exception);
+            }
+        }
+
+        /// <summary>The raid ended: an attempt still open on any of its routes or its dragon ends with the raid's outcome.</summary>
+        private static void CloseAttempts(Raid raid, long now, string reason)
+        {
+            try
+            {
+                string outcome = RaidAttemptRows.RaidEndOutcome(reason, false);
+                raid.Transit?.CloseOpenAttempt(outcome, now);
+                raid.DungeonRoute?.CloseOpenAttempt(outcome, now);
+                if (raid.DragonAttempts?.Current is { } open)
+                {
+                    bool dead = raid.Boss != null && !raid.Boss.IsAlive;
+                    long[] diedIds = open.DiedMembers().OfType<GameBot>().Select(b => b.DatabaseID).ToArray();
+                    int engaged = raid.DragonFight?.Engaged ?? open.Members;
+                    raid.DragonAttempts.End(RaidAttemptRows.RaidEndOutcome(reason, dead), engaged, raid.DragonFight?.Fallen ?? -1,
+                        raid.DragonFight != null ? raid.DragonFight.EngagedIds.Count(diedIds.Contains) : -1, -1,
+                        dead ? 0 : raid.Boss?.HealthPercent ?? -1, -1, now);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("RAID_ATTEMPT rows (raid end)", exception);
+            }
         }
 
         /// <summary>The dragon as its raid's fight tracker sees it this pulse (RealmRaidDragonFight).</summary>
@@ -2177,6 +2265,7 @@ namespace DOL.GS
                 if (RealmRaidRouteGate.On && !gate.Complete && !gate.Blocked) return gate;
                 raid.GateNamed += gate.NamedDefeatedCount;
                 raid.GateWipes += gate.WipesSoFar;
+                gate.CloseOpenAttempt("stopped", now);
                 raid.Transit = null;
                 raid.NextGateCheck = now + (gate.Complete ? 0 : RealmRaidRouteGate.SetAsideMilliseconds);
                 main.Resumed(now);
@@ -2192,6 +2281,7 @@ namespace DOL.GS
                 !RealmRaidDungeonRoute.TryCreateGate(main, out RealmRaidDungeonRoute created, out string detail))
                 return main;
             raid.Transit = created;
+            created.Attempts = AttemptTracker(raid, "dungeon", 0);
             Log.Warn($"REALM_EXPEDITION_ROUTE_GATE event={raid.Definition.Id} region={created.Region} into={main.Region} living={living} " +
                      $"past={past} {detail} reason=\"a living boss covers the walk to the way in and there is no way round; the raid " +
                      $"musters for it and fights it there before it goes on\"");
@@ -2655,6 +2745,7 @@ namespace DOL.GS
 
         private static void End(Raid raid, long now, string reason)
         {
+            CloseAttempts(raid, now, reason);
             bool stoppedByPlayer = !SetsCooldown(reason);
             string outcome = StopOutcome(reason) ?? (
                 reason.StartsWith("Route blocked") ? "Route blocked" :

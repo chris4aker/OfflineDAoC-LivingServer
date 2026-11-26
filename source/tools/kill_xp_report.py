@@ -34,6 +34,11 @@ Since #544's follow-up (FarmVibes' second-PC data):
   left out of the band table (bot_level_snapshots.py does the same for database snapshots);
 * arrival: the share of solo and group attempts that recorded arrivedUtc.
 
+Since #671: a member at the level cap (50) is paid no XP by design (GameBot.GainExperience returns at the cap), so a
+capped kill's 0s are left out of the XP median and mean and counted in a "capped" column instead. A row is capped
+when its party's lowest level (minLevel) is at the cap; a row without minLevel counts as capped only when it is solo
+at the cap. A realm with capped group kills shows "group <50" and "group 50" lines instead of one "group" line.
+
 Names are not printed: only realms, zones, monster cons and numbers. Reads each file once, line by line.
 """
 from __future__ import annotations
@@ -53,6 +58,7 @@ FIELD = re.compile(r'(\w+)=("([^"]*)"|\S+)')
 STAMP = re.compile(r"^(\d\d)/(\d\d) (\d\d):(\d\d):(\d\d) \|")
 REALMS = ("Albion", "Midgard", "Hibernia")
 GOAL_REALMS = {1: "Albion", 2: "Midgard", 3: "Hibernia"}
+LEVEL_CAP = 50
 
 
 def parse_fields(message: str) -> dict:
@@ -133,16 +139,21 @@ def kill_row(fields: dict) -> dict:
     if camp_level is not None and camp_level <= 0:
         camp_level = None
     max_level = to_int(fields.get("maxLevel"))
+    min_level = optional_int(fields.get("minLevel"))
+    party = fields.get("party", "solo")
+    capped = (min_level >= LEVEL_CAP) if min_level is not None else (party == "solo" and max_level >= LEVEL_CAP)
     return {
         "realm": fields.get("realm", "None"),
         "zone": fields.get("zone", ""),
         "every": max(1, to_int(fields.get("every"), 1)),
         "dropped": to_int(fields.get("dropped")),
         "con": fields.get("con", "UNKNOWN"),
-        "party": fields.get("party", "solo"),
+        "party": party,
         "size": to_int(fields.get("size"), 1),
         "levelDiff": to_int(fields.get("levelDiff")),
         "maxLevel": max_level,
+        "minLevel": min_level,
+        "capped": capped,
         "campLevel": camp_level,
         "targetCon": None if camp_level is None else camp_level - max_level,
         "xp": xp or [0],
@@ -182,8 +193,14 @@ def is_group(row: dict) -> bool:
     return row["party"] in ("group", "pgroup")
 
 
+def is_capped(row: dict) -> bool:
+    return bool(row.get("capped"))
+
+
 def summarize(rows: list[dict]) -> dict:
-    xp = [x for row in rows for x in row["xp"]]
+    # Capped members are paid nothing by design (#671): their 0s are not XP lost, so they stay out of the XP figures.
+    xp = [x for row in rows if not is_capped(row) for x in row["xp"]]
+    capped = [row for row in rows if is_capped(row)]
     con = [row["targetCon"] for row in rows if row.get("targetCon") is not None]
     known = [row for row in rows if row["onTarget"] is not None]
     off = [row for row in known if row["onTarget"] == 0]
@@ -192,8 +209,10 @@ def summarize(rows: list[dict]) -> dict:
         "rows": len(rows),
         "kills": sum(row["every"] * (1 + row["dropped"]) for row in rows),
         "groupedRows": sum(1 for row in rows if row["party"] in ("group", "pgroup")),
-        "xpPerMemberMedian": statistics.median(xp) if xp else 0,
-        "xpPerMemberMean": round(statistics.fmean(xp)) if xp else 0,
+        "xpPerMemberMedian": statistics.median(xp) if xp else (None if capped else 0),
+        "xpPerMemberMean": round(statistics.fmean(xp)) if xp else (None if capped else 0),
+        "cappedRows": len(capped),
+        "cappedValues": sum(len(row["xp"]) for row in capped),
         "levelDiffMedian": statistics.median([row["levelDiff"] for row in rows]) if rows else 0,
         "targetConMedian": statistics.median(con) if con else None,
         "targetConMean": round(statistics.fmean(con), 2) if con else None,
@@ -290,6 +309,15 @@ def kill_bands(kills: list[dict]) -> dict:
     return dict(out)
 
 
+def realm_parties(rows: list[dict]) -> dict:
+    groups = [r for r in rows if is_group(r)]
+    out = {"solo": summarize([r for r in rows if r["party"] == "solo"]), "group": summarize(groups)}
+    if any(is_capped(r) for r in groups):  # split only when there is something to split (#671)
+        out["group <50"] = summarize([r for r in groups if not is_capped(r)])
+        out["group 50"] = summarize([r for r in groups if is_capped(r)])
+    return out
+
+
 def build_report(kills: list[dict], goals: list[dict], min_rows: int = 1) -> dict:
     by_realm = defaultdict(list)
     by_zone = defaultdict(list)
@@ -302,9 +330,7 @@ def build_report(kills: list[dict], goals: list[dict], min_rows: int = 1) -> dic
     reroll_counts = Counter(realm for realm, _, _ in rerolled.values())
     return {
         "realms": {realm: summarize(by_realm[realm]) for realm in realm_order},
-        "realmParties": {realm: {"solo": summarize([r for r in by_realm[realm] if r["party"] == "solo"]),
-                                 "group": summarize([r for r in by_realm[realm] if is_group(r)])}
-                         for realm in realm_order},
+        "realmParties": {realm: realm_parties(by_realm[realm]) for realm in realm_order},
         "zones": [dict(realm=realm, zone=names[key], **summarize(rows))
                   for (realm, key), rows in sorted(by_zone.items(),
                                                     key=lambda item: (realm_order.index(item[0][0]), -len(item[1]),
@@ -321,27 +347,39 @@ def pct(value) -> str:
     return "-" if value is None else f"{value * 100:.0f}%"
 
 
+def xp_text(value, width: int) -> str:
+    return f"{'-':>{width}}" if value is None else f"{value:>{width},.0f}"
+
+
 def con_text(value) -> str:
     return "-" if value is None else f"{value:+g}"
 
 
 def render(report: dict) -> str:
     out = []
+    # The capped column appears only when some kill was capped, so a log without level-50 kills reads as before.
+    show_capped = any(s.get("cappedRows") for s in report["realms"].values())
     head = (f"{'':<34}{'rows':>6}{'kills':>8}{'xp/mbr med':>12}{'tcon':>6}{'mean':>9}{'lvl+':>6}{'share':>7}"
-            f"{'split':>7}{'lost':>6}{'off':>6}")
+            f"{'split':>7}{'lost':>6}{'off':>6}" + (f"{'capped':>12}" if show_capped else ""))
 
     def line(name, s):
-        return (f"{name[:33]:<34}{s['rows']:>6}{s['kills']:>8}{s['xpPerMemberMedian']:>12,.0f}"
-                f"{con_text(s['targetConMedian']):>6}{s['xpPerMemberMean']:>9,}"
+        text = (f"{name[:33]:<34}{s['rows']:>6}{s['kills']:>8}{xp_text(s['xpPerMemberMedian'], 12)}"
+                f"{con_text(s['targetConMedian']):>6}{xp_text(s['xpPerMemberMean'], 9)}"
                 f"{s['levelDiffMedian']:>6}{pct(s['killerShareMedian']):>7}{pct(s['splitShare']):>7}"
                 f"{pct(s['lostShareMedian']):>6}{pct(s['offTargetShare']):>6}")
+        if show_capped:
+            capped = f"{s.get('cappedRows', 0)}/{s.get('cappedValues', 0)}" if s.get("cappedRows") else "-"
+            text += f"{capped:>12}"
+        return text
 
     out.append("Per realm (AUTONOMOUS_KILL_XP)")
     out.append(head)
     for realm, s in report["realms"].items():
         out.append(line(realm, s))
-        for kind in ("solo", "group"):
-            part = report.get("realmParties", {}).get(realm, {}).get(kind)
+        parties = report.get("realmParties", {}).get(realm, {})
+        kinds = ("solo", "group <50", "group 50") if "group 50" in parties else ("solo", "group")
+        for kind in kinds:
+            part = parties.get(kind)
             if part and part["rows"]:
                 out.append(line(f"  {kind}", part))
         if s["cons"]:
@@ -352,7 +390,7 @@ def render(report: dict) -> str:
         out.append(f"{'':<16}{'rows':>6}{'xp/mbr med':>12}{'tcon':>6}{'grouped':>9}")
         for realm, bands in report["killBands"].items():
             for band, b in bands.items():
-                out.append(f"{realm[:3] + ' ' + band:<16}{b['rows']:>6}{b['xpPerMemberMedian']:>12,.0f}"
+                out.append(f"{realm[:3] + ' ' + band:<16}{b['rows']:>6}{xp_text(b['xpPerMemberMedian'], 12)}"
                            f"{con_text(b['targetConMedian']):>6}{b['groupedRows']:>9}")
     out.append("")
     out.append("Per zone")
@@ -382,8 +420,11 @@ def render(report: dict) -> str:
                        ", ".join(f"{realm} {n}" for realm, n in report["rerolledBots"].items()))
     out.append("")
     out.append("share = killer party's median share of the kill's damage; split = kills shared with another party or "
-               "player; lost = damage that paid nobody; off = kills not the camp's target (camp known); tcon = median target con, the "
-               "camp's target level minus the bot's (party's highest) level, '-' when the log predates the field.")
+               "player; lost = damage that paid nobody; off = of the kills whose camp is known, the share that were not the camp's "
+               "target (adds, dungeon paths): kills the bot made on the way, not XP lost; tcon = median target con, the "
+               "camp's target level minus the bot's (party's highest) level, '-' when the log predates the field." +
+               (" capped = kills (rows/member values) by a party at the level cap, paid nothing by design and left out "
+                "of xp/mbr." if show_capped else ""))
     return "\n".join(out)
 
 

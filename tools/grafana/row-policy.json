@@ -1,0 +1,86 @@
+{
+  "_about": "Issue #628. The reviewed part of the log-shipping privacy policy; tools/grafana/kit.py adds what it finds in code. Every entry says why. Rows here must exist in code or in pending-rows.json (kit.py --check).",
+  "exclude_rows": {
+    "ACCOUNT_LOGIN": "free text with the account name and the IP address",
+    "HOST_PASSWORD": "free text with the account name and the IP address",
+    "CLIENT_HANDSHAKE": "addr= is the client's network address",
+    "NETWORK_EXPOSURE": "the PC's network setup",
+    "UPNP_MAPPING": "the PC's router and port mappings",
+    "CUSTOM_CLASS_REFUSED": "account= is the account name",
+    "WORLD_ENTER_REPEAT_IGNORED": "account= is the account name",
+    "EPIC_SWEEP_GUEST_RESTORED": "account= is the account name",
+    "PLAYER_NICKNAME": "the player's chosen nickname",
+    "LOG_CONFIG": "local file paths"
+  },
+  "name_free_rows": {
+    "FORK_BUILD": "build name, commit and server switches only (ForkBuildInfo.Describe); name= is the build's name",
+    "BG_POPULATION": "#625 rule: no player or account names; counts and kinds only (LivingRows.cs)",
+    "CAST_INTERRUPT": "#625 rule: caster= and attacker= are kinds (LivingRows.Kind), never names",
+    "CC_BREAK": "#625 rule: target=, breaker= and caster= are kinds (LivingRows.Kind)",
+    "BG_TARGET_PICK": "#625 rule: target= is a pick kind (LivingRows.PickKind)",
+    "BG_RALLY_RESPONSE": "#625 rule: contact= is a kind",
+    "PLAYER_LINE_OUTCOME": "#625 rule: channel, intent and counts; never the line's text or a name"
+  },
+  "extra_drop": {
+    "CHAT_LINE": {
+      "to": "a tell's player or a guild line's guild (BotChatTranscript.Player/Bot)"
+    },
+    "CHAT_EMOTE": {
+      "from": "the emoting bot's or player's name"
+    },
+    "BOT_LED_RECRUIT": {
+      "hosting": "the player hosting the group",
+      "left": "who left (a name)"
+    }
+  },
+  "keep": {
+    "RVR_DECIDE": {
+      "from": "the decision's previous value (RvrRecord.Format)",
+      "to": "the decision's new value"
+    },
+    "CHAT_LINE": {
+      "who": "the speaker's kind, player or bot (a literal in BotChatTranscript)"
+    },
+    "AUTONOMOUS_KILL_XP": {
+      "sameName": "a count of kills of the same monster name (AutonomousKillXpDiagnostics: int?)"
+    },
+    "AUTONOMOUS_GROUP_RESURRECTION_TIMEOUT": {
+      "role": "the dead member's group role (BotPveGroupRole), not a name"
+    },
+    "SERVER_BOT_FIELD_CENSUS": {
+      "grew": "server field names and averages (ServerMemoryDiagnostics), no people",
+      "largest": "server field names and averages (ServerMemoryDiagnostics), no people"
+    },
+    "SERVER_STATIC_CENSUS": {
+      "grew": "static collection names and counts (ServerMemoryDiagnostics), no people",
+      "largest": "static collection names and counts (ServerMemoryDiagnostics), no people"
+    }
+  },
+  "json_name_keys": [
+    "name",
+    "bot",
+    "botName",
+    "player",
+    "playerName",
+    "leader",
+    "leaderName",
+    "owner",
+    "ownerName",
+    "account",
+    "accountName",
+    "killer",
+    "victim",
+    "speaker",
+    "guild",
+    "guildName",
+    "text"
+  ],
+  "frequency": {
+    "AUTONOMOUS_KILL_XP": "every 25th autonomous gamebot PvE kill, at most 120 a minute (bot_kill_xp_sample_every)",
+    "AUTONOMOUS_GOAL_ATTEMPT": "one per finished gamebot goal attempt (detail.log)",
+    "SERVER_STALL": "once a minute when a game-loop tick ran slow",
+    "RVR_DECIDE": "one per change of an RvR decision, within the RvR record's minute budget",
+    "CHAT_LINE": "every chat line a player can see from bots, and every line the player says",
+    "FORK_BUILD": "once at server start"
+  }
+}

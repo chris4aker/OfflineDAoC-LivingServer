@@ -1218,6 +1218,8 @@ namespace DOL.GS
 
         public override void ProcessDeath(GameObject killer)
         {
+            // #644: RAID_DEATH when this bot is a raider in a live raid attempt (logging only; read before the death clears anything).
+            RaidAttemptRows.NoteDeath(this, killer);
             SetSeatedForClients(false);
             AutonomousPetSupport.CancelPendingCharm(this);
             _deathTick = GameLoop.GameLoopTime;

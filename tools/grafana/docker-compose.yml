@@ -1,0 +1,67 @@
+# Offline DAoC Living Server: a local Grafana + Loki + Alloy on this PC only (issue #628). Nothing leaves the PC:
+# every port is published on 127.0.0.1, Alloy writes to this Loki, and Grafana sends no usage reports.
+#
+#   OFFLINEDAOC_LOGS_DIR=/path/to/LivingServer/runtime/server/logs OFFLINEDAOC_TZ=Europe/London docker compose -f tools/grafana/docker-compose.yml up -d
+#   docker compose -f tools/grafana/docker-compose.yml down          # stop (add -v to delete the stored rows)
+#
+# Then open http://127.0.0.1:3000 (admin / the GRAFANA_ADMIN_PASSWORD you set, default admin). docs/GRAFANA.md
+# has the Windows, Linux and Wine paths.
+name: offlinedaoc-grafana
+
+services:
+  loki:
+    image: grafana/loki:3.7.10
+    command: ["-config.file=/etc/loki/offlinedaoc.yaml"]
+    volumes:
+      - ./local/loki.yaml:/etc/loki/offlinedaoc.yaml:ro
+      - loki-data:/loki
+    ports:
+      - "127.0.0.1:3100:3100"
+    restart: unless-stopped
+
+  alloy:
+    image: grafana/alloy:v1.22.0
+    command: ["run", "--disable-reporting", "--server.http.listen-addr=0.0.0.0:12345", "--storage.path=/var/lib/alloy/data",
+              "/etc/alloy/config.alloy"]
+    environment:
+      OFFLINEDAOC_LOGS: /offlinedaoc/logs
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      OFFLINEDAOC_BUILD: ${OFFLINEDAOC_BUILD:-local}
+      # The server writes local times and the container can't see the PC's zone, so it must be given (no UTC guess).
+      OFFLINEDAOC_TZ: ${OFFLINEDAOC_TZ:?set OFFLINEDAOC_TZ to the server PC's IANA time zone, for example America/New_York}
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - ${OFFLINEDAOC_LOGS_DIR:?set OFFLINEDAOC_LOGS_DIR to the server's runtime/server/logs folder}:/offlinedaoc/logs:ro
+      - alloy-data:/var/lib/alloy/data
+    ports:
+      - "127.0.0.1:12345:12345"
+    depends_on: [loki]
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:13.3.2
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      GF_PLUGINS_PREINSTALL_DISABLED: "true"
+    volumes:
+      - ./local/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      # File-provisioned dashboards: ready at first start, but `gcx resources push` cannot update them (Grafana refuses
+      # to change a provisioned dashboard's manager). To iterate with gcx, comment out the next two lines and push.
+      - ./local/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./provisioning/dashboards:/var/lib/grafana/dashboards/offlinedaoc:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on: [loki]
+    restart: unless-stopped
+
+volumes:
+  loki-data:
+  alloy-data:
+  grafana-data:

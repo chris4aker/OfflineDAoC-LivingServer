@@ -623,6 +623,7 @@ namespace LivingServerSetup
             try
             {
                 var parts = Manifests.NewInstallParts(release, Path.Combine(setupDir, ".downloads"));
+                prefetched = parts;
                 if (parts.Count == 0) return;
                 Activate(StepId.DownloadGame, "Downloading the base game...");
                 var dl = new FastDownload { Connections = 6, Log = m => Log.Write("download: " + m) };
@@ -638,6 +639,27 @@ namespace LivingServerSetup
                 Log.Write("download: Setup's downloader stopped (" + e.Message + "); the original downloader fetches what is missing.");
             }
             finally { fast = null; }
+        }
+
+        /// <summary>The parts Setup's own downloader was given, so their unfinished copies can be removed afterwards (#677).</summary>
+        List<DownloadPart> prefetched;
+
+        /// <summary>
+        /// After the original download script finished: removes Setup's unfinished copy of every part the script put in
+        /// place itself (only after Setup's downloader stopped part-way; #677). Each part is checked against its SHA-256
+        /// first, and a part that isn't in place keeps its copy for the next run.
+        /// </summary>
+        void RemoveDownloadLeftovers()
+        {
+            var parts = prefetched;
+            prefetched = null;
+            if (parts == null || parts.Count == 0) return;
+            try
+            {
+                long freed = FastDownload.RemoveLeftovers(parts, m => Log.Write("download: " + m));
+                if (freed > 0) Log.Write("download: removed Setup's unfinished download copies the original downloader replaced (" + Theme.Gb(freed) + " freed)");
+            }
+            catch (Exception e) { Log.Write("download: unfinished download copies not checked (" + e.Message + ")"); }
         }
 
         void RunUpstream(InstallResult r)
@@ -737,6 +759,7 @@ namespace LivingServerSetup
                 }
             }
             finally { watch.Stop(); upstreamRunning = false; Recompute(); }
+            RemoveDownloadLeftovers();
 
             if (freshFolder != null)
             {

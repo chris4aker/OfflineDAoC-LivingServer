@@ -1,0 +1,1325 @@
+{
+  "apiVersion": "dashboard.grafana.app/v1beta1",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "living-server-health-showcase",
+    "annotations": {
+      "grafana.app/folder": "living-server"
+    }
+  },
+  "spec": {
+    "uid": "living-server-health-showcase",
+    "title": "Living Server ✦ Server Health",
+    "tags": [
+      "living-server-showcase",
+      "health"
+    ],
+    "editable": true,
+    "schemaVersion": 39,
+    "version": 1,
+    "timezone": "browser",
+    "graphTooltip": 1,
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "refresh": "1m",
+    "templating": {
+      "list": [
+        {
+          "name": "ds_prom",
+          "label": "Prometheus",
+          "type": "datasource",
+          "query": "prometheus",
+          "current": {},
+          "hide": 0,
+          "refresh": 1,
+          "regex": "/^(?!.*(usage|insights|alert-state|billing|cardinality)).*$/"
+        },
+        {
+          "name": "ds_loki",
+          "label": "Loki",
+          "type": "datasource",
+          "query": "loki",
+          "current": {},
+          "hide": 0,
+          "refresh": 1,
+          "regex": "/^(?!.*(usage|insights|alert-state|billing|cardinality)).*$/"
+        },
+        {
+          "name": "job",
+          "label": "Job",
+          "type": "custom",
+          "query": "livingserver,livingserver-test",
+          "current": {
+            "text": "livingserver",
+            "value": "livingserver"
+          },
+          "options": [],
+          "hide": 0
+        },
+        {
+          "name": "instance",
+          "label": "Server",
+          "type": "query",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${ds_prom}"
+          },
+          "query": {
+            "query": "label_values(loki_process_custom_lines_total{job=\"$job\"}, instance)",
+            "refId": "v"
+          },
+          "definition": "label_values(loki_process_custom_lines_total{job=\"$job\"}, instance)",
+          "refresh": 2,
+          "includeAll": true,
+          "multi": false,
+          "allValue": ".*",
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "hide": 0,
+          "sort": 1
+        }
+      ]
+    },
+    "annotations": {
+      "list": []
+    },
+    "links": [
+      {
+        "type": "dashboards",
+        "tags": [
+          "living-server-showcase"
+        ],
+        "asDropdown": true,
+        "title": "Living Server",
+        "includeVars": true,
+        "keepTime": true
+      }
+    ],
+    "panels": [
+      {
+        "type": "text",
+        "title": "",
+        "transparent": true,
+        "options": {
+          "mode": "html",
+          "content": "<div style=\"padding:6px 14px;border-left:6px solid #E02F44;background:linear-gradient(90deg, rgba(242,204,12,0.18), rgba(50,116,217,0.10) 60%, transparent)\"><div style=\"font-size:30px;font-weight:700;letter-spacing:1px\">Living Server ✦ Server Health</div><div style=\"font-size:15px;opacity:0.85;margin-top:2px\">Under the hood: tick budget, game services, memory and the error log.</div><div style=\"font-size:14px;margin-top:6px\"><a href=\"/d/living-server-overview-showcase?${__url_time_range}&var-job=${job}\" style=\"color:#bbbbbb\">Overview</a> &nbsp;·&nbsp; <a href=\"/d/living-server-health-showcase?${__url_time_range}&var-job=${job}\" style=\"color:#E02F44\">Server Health</a> &nbsp;·&nbsp; <a href=\"/d/living-server-bots-world-showcase?${__url_time_range}&var-job=${job}\" style=\"color:#bbbbbb\">Bots & World</a></div></div>"
+        },
+        "id": 1,
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 24,
+          "h": 4
+        }
+      },
+      {
+        "type": "gauge",
+        "title": "🧠 AI tick p99",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_ai_tick_p99_ms{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "min": 0,
+            "max": 150,
+            "noValue": "Server stopped",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 30
+                },
+                {
+                  "color": "red",
+                  "value": 100
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdMarkers": true,
+          "showThresholdLabels": false,
+          "minVizHeight": 75
+        },
+        "id": 2,
+        "gridPos": {
+          "x": 0,
+          "y": 4,
+          "w": 5,
+          "h": 6
+        }
+      },
+      {
+        "type": "gauge",
+        "title": "💾 Heap (live / total)",
+        "description": "Live managed memory as a share of the heap.",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_server_memory_live_mb{job=\"$job\", instance=~\"$instance\"}) / max(loki_process_custom_server_memory_heap_mb{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "min": 0,
+            "max": 1,
+            "noValue": "Server stopped",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 0.8
+                },
+                {
+                  "color": "red",
+                  "value": 0.95
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdMarkers": true,
+          "showThresholdLabels": false,
+          "minVizHeight": 75
+        },
+        "id": 3,
+        "gridPos": {
+          "x": 5,
+          "y": 4,
+          "w": 5,
+          "h": 6
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Heap",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_server_memory_heap_mb{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "decmbytes",
+            "noValue": "Server stopped",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#8F3BB8",
+                  "value": null
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false
+        },
+        "id": 4,
+        "gridPos": {
+          "x": 10,
+          "y": 4,
+          "w": 5,
+          "h": 6
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Handles",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_server_handles{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "Server stopped",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#1F60C4",
+                  "value": null
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false
+        },
+        "id": 5,
+        "gridPos": {
+          "x": 15,
+          "y": 4,
+          "w": 3,
+          "h": 6
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Threads",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_server_threads{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "Server stopped",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#1F60C4",
+                  "value": null
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false
+        },
+        "id": 6,
+        "gridPos": {
+          "x": 18,
+          "y": 4,
+          "w": 3,
+          "h": 6
+        }
+      },
+      {
+        "type": "stat",
+        "title": "🗑️ GC pauses / h",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"SERVER_GC_PAUSE\"}[1h]))",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "Server stopped",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#56A64B",
+                  "value": null
+                },
+                {
+                  "color": "#FF9830",
+                  "value": 10
+                },
+                {
+                  "color": "#E02F44",
+                  "value": 30
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 0
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false
+        },
+        "id": 7,
+        "gridPos": {
+          "x": 21,
+          "y": 4,
+          "w": 3,
+          "h": 6
+        }
+      },
+      {
+        "type": "row",
+        "title": "⏱️ AI tick",
+        "id": 8,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 10,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "timeseries",
+        "title": "Tick latency",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_ai_tick_p50_ms{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "p50",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_ai_tick_p95_ms{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "p95",
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_ai_tick_p99_ms{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "p99",
+            "refId": "C"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_ai_tick_max_ms{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "max",
+            "refId": "D"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "line"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 100
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p50"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#56A64B"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p95"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#F2CC0C"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p99"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#FF9830"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "max"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#E02F44"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 9,
+        "gridPos": {
+          "x": 0,
+          "y": 11,
+          "w": 16,
+          "h": 8
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Serial vs parallel",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_ai_serial_ms{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "serial",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_ai_parallel_ms{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "parallel",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "normal",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "serial"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#8F3BB8"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "parallel"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#5794F2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 10,
+        "gridPos": {
+          "x": 16,
+          "y": 11,
+          "w": 8,
+          "h": 8
+        }
+      },
+      {
+        "type": "row",
+        "title": "⚙️ Game services (SERVER_WORK)",
+        "id": 11,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 19,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "bargauge",
+        "title": "Max ms per service",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sort_desc(max by (stage) (loki_process_custom_server_work_max_ms{job=\"$job\", instance=~\"$instance\"}))",
+            "legendFormat": "{{stage}}",
+            "refId": "A",
+            "instant": true,
+            "range": false
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "noValue": "Server stopped",
+            "min": 0,
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 20
+                },
+                {
+                  "color": "red",
+                  "value": 50
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "lcd",
+          "showUnfilled": true,
+          "valueMode": "color",
+          "namePlacement": "left",
+          "sizing": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "id": 12,
+        "gridPos": {
+          "x": 0,
+          "y": 20,
+          "w": 12,
+          "h": 11
+        }
+      },
+      {
+        "type": "bargauge",
+        "title": "Average ms per service",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sort_desc(max by (stage) (loki_process_custom_server_work_avg_ms{job=\"$job\", instance=~\"$instance\"}))",
+            "legendFormat": "{{stage}}",
+            "refId": "A",
+            "instant": true,
+            "range": false
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "noValue": "Server stopped",
+            "min": 0,
+            "color": {
+              "mode": "continuous-BlYlRd"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "gradient",
+          "showUnfilled": true,
+          "valueMode": "color",
+          "namePlacement": "left",
+          "sizing": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "id": 13,
+        "gridPos": {
+          "x": 12,
+          "y": 20,
+          "w": 12,
+          "h": 11
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Over budget per service",
+        "description": "Only services that went over budget.",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max by (stage) (loki_process_custom_server_work_over_budget{job=\"$job\", instance=~\"$instance\"}) > 0",
+            "legendFormat": "{{stage}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 70,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "normal",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 14,
+        "gridPos": {
+          "x": 0,
+          "y": 31,
+          "w": 24,
+          "h": 7
+        }
+      },
+      {
+        "type": "row",
+        "title": "💾 Memory & runtime",
+        "id": 15,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 38,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "timeseries",
+        "title": "Managed heap",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_server_memory_heap_mb{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "heap",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_server_memory_live_mb{job=\"$job\", instance=~\"$instance\"})",
+            "legendFormat": "live",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "decmbytes",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "heap"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#8F3BB8"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "live"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#5794F2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 16,
+        "gridPos": {
+          "x": 0,
+          "y": 39,
+          "w": 12,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "GC pauses & stalls per hour",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"SERVER_GC_PAUSE\"}[1h]))",
+            "legendFormat": "GC pauses",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"SERVER_STALL\"}[1h]))",
+            "legendFormat": "stalls",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "GC pauses"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#56A64B"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "stalls"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#E02F44"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 17,
+        "gridPos": {
+          "x": 12,
+          "y": 39,
+          "w": 12,
+          "h": 7
+        }
+      },
+      {
+        "type": "row",
+        "title": "🚨 Warnings & errors",
+        "id": 18,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 46,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "logs",
+        "title": "WRN / ERR (names and free text blanked as ~)",
+        "description": "",
+        "datasource": {
+          "type": "loki",
+          "uid": "${ds_loki}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "${ds_loki}"
+            },
+            "expr": "{job=\"$job\", instance=~\"$instance\", level=~\"WRN|ERR\"}",
+            "refId": "A",
+            "queryType": "range"
+          }
+        ],
+        "options": {
+          "showTime": true,
+          "wrapLogMessage": true,
+          "sortOrder": "Descending",
+          "enableLogDetails": true,
+          "dedupStrategy": "none",
+          "prettifyLogMessage": false
+        },
+        "id": 19,
+        "gridPos": {
+          "x": 0,
+          "y": 47,
+          "w": 24,
+          "h": 12
+        }
+      }
+    ]
+  }
+}

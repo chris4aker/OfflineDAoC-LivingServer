@@ -1418,6 +1418,8 @@ namespace DOL.GS
 			// 1.2 diagnostics: a hit Icelord Kvasir's cold rule turns into a heal is logged with what dealt it (EPIC_KVASIR_HEALED).
 			if (this is GameNPC && ad != null && ad.DamageType == eDamageType.Cold)
 				EpicEncounterRestores.NoteKvasirHeal(this, ad);
+			// #644: a raider's last hit in a live raid attempt, for RAID_DEATH's source (logging only; one check outside raids).
+			RaidAttemptRows.NoteHit(this, ad);
 			base.TakeDamage(ad);
 		}
 
@@ -1433,6 +1435,8 @@ namespace DOL.GS
 		{
 			// 1.2 diagnostics: where a raid's damage goes (EpicFightLedger; a no-op unless a raid route watches the region).
 			EpicFightLedger.Note(this, source, damageAmount + criticalAmount);
+			if (damageType == eDamageType.Falling)
+				RaidAttemptRows.NoteFall(this);
 			base.TakeDamage(source, damageType, damageAmount, criticalAmount);
 
 			double damageDealt = damageAmount + criticalAmount;

@@ -443,6 +443,85 @@ class Raids(unittest.TestCase):
         self.assertEqual(check(only(log.run()[1]), "attempt_contact")["status"], pcl.SEEN, "nine fallen is under the bar")
 
 
+class RaidAttemptIds644(unittest.TestCase):
+    """#644 decision b: the four attempt-end rows carry `attempt=<event>.<n>` at their end, every field before it unchanged,
+    and the new RAID_ATTEMPT / RAID_ATTEMPT_END / RAID_DEATH rows sit beside them. played_check_log judges a log the same
+    with and without them."""
+
+    ENDS = ("REALM_EXPEDITION_ATTEMPT_ENDED ", "REALM_EXPEDITION_ENCOUNTER_RESET ", "REALM_EXPEDITION_SKIRMISH_LOST ",
+            "REALM_EXPEDITION_WIPE ")
+
+    def fights(self, with_ids):
+        """A night of dungeon attempts that moves several raid judgements (attempt_contact, reset_no_attempt, retry_adds,
+        pull_70), with the attempt rows as the server writes them now (with_ids) or as before."""
+        rows = [
+            (1, 'REALM_EXPEDITION_FINAL_ENGAGE region=160 target="Boss" mustered=79 needed=70 living=100 attempt=1 retry=False',
+             "INF", "e.1"),
+            (2, 'EPIC_TACTIC_BOT bot=A region=160 target="Boss" action=Retarget to="Boss Shard" reason="shards first (3 left)"',
+             "INF", None),
+            (9, 'REALM_EXPEDITION_WIPE region=160 target="Boss" level=75 failures=1 of=2 engaged=99 fallen=86 health=49 '
+                'lowest=49 how="left combat"', "WRN", "e.1"),
+            (11, 'REALM_EXPEDITION_ENCOUNTER_RESET region=160 target="Icelord Hakr" engaged=74 fallen=6 health=100 lowest=60 '
+                 'how="reset to full" resets=1 of=2 reason="the encounter reset while the raid still stood; the raid musters '
+                 'again and no attempt is used"', "WRN", "e.2"),
+            (13, 'REALM_EXPEDITION_SKIRMISH_LOST region=160 target="Icelord Hakr" engaged=20 fallen=14 raid=100 health=97 '
+                 'lowest=88 how="left combat" reason="less than half the raid was in it and less than half fell; no attempt '
+                 'used"', "WRN", "e.3"),
+            (15, 'REALM_EXPEDITION_ATTEMPT_ENDED region=191 target="Aroon the Urlamhai" engaged=97 fallen=14 health=100 '
+                 'lowest=100 how="never entered combat" wipe=False', "INF", "e.4"),
+            (16, 'REALM_EXPEDITION_ATTEMPT_ENDED region=191 target="Aroon the Urlamhai" engaged=80 fallen=0 health=100 '
+                 'lowest=100 how="left combat" wipe=False', "INF", "e.5"),
+            (20, 'REALM_EXPEDITION_FINAL_ENGAGE region=160 target="Boss" mustered=89 needed=87 living=124 attempt=2 '
+                 'retry=True', "INF", "e.6"),
+            (21, 'EPIC_FIGHT_LEDGER region=160 target="Boss" seconds=60 raid_dealt="Boss Shard:5000/9/3"', "INF", None),
+            # The raid-wide wipe outside an attempt has no attempt and keeps its row as it was.
+            (24, 'REALM_EXPEDITION_WIPE region=191 target="Xaga" level=67 failures=1 of=2 engaged=125 fallen=71 health=39 '
+                 'how="raid-wide deaths outside an attempt" raidTarget="Xaga"', "WRN", None),
+            (26, 'REALM_EXPEDITION_TARGET_DEFEATED region=160 target="Boss" level=75 minutes=27.7', "INF", None),
+        ]
+        log = Log().start(at(0))
+        for minute, message, level, attempt in rows:
+            if with_ids and attempt and message.startswith(self.ENDS):
+                message += f" attempt=epic-midgard.{attempt[2:]}"
+            if with_ids and attempt and message.startswith("REALM_EXPEDITION_FINAL_ENGAGE"):
+                log.add(at(minute), f"RAID_ATTEMPT attempt=epic-midgard.{attempt[2:]} event=epic-midgard kind=dungeon "
+                                    'region=160 boss="Boss" n=1 size=100 period=100 sizePct=100 sf=0 roles=10:25:5:60 '
+                                    "classes=Healer:20,Warrior:10 players=1 build=abc1234 gatherS=300")
+            log.add(at(minute), message, level)
+            if with_ids and attempt and message.startswith(self.ENDS):
+                log.add(at(minute), 'RAID_DEATH attempt=epic-midgard.1 t=40 idx=3 kind=player player=1 class=Healer '
+                                    'role=healer level=50 killerKind=boss killer="Boss" source=aoe spellId=1 mechanic=- '
+                                    "dist=300 healersIn=4 attackers=1")
+                log.add(at(minute), f"RAID_ATTEMPT_END attempt=epic-midgard.{attempt[2:]} outcome=wipe secs=480 engaged=99 "
+                                    "fallen=86 died=80 left=6 deaths=91 health=49 lowest=49")
+        return log
+
+    @staticmethod
+    def judgements(result):
+        return [(s["build"], c["id"], c["status"], c.get("detail")) for s in builds(result) for c in s["checks"]]
+
+    def test_the_appended_attempt_field_changes_no_judgement(self):
+        code_before, before = self.fights(False).run()
+        code_after, after = self.fights(True).run()
+        self.assertEqual(code_before, code_after)
+        self.assertEqual(self.judgements(before), self.judgements(after))
+        # The comparison means something: the log moves these judgements, both ways.
+        sec = only(after)
+        self.assertEqual(check(sec, "attempt_contact")["status"], pcl.CONTRADICTED)
+        self.assertEqual(check(sec, "reset_no_attempt")["status"], pcl.SEEN)
+        self.assertEqual(check(sec, "retry_adds")["status"], pcl.SEEN)
+        self.assertIn("never entered combat", check(sec, "attempt_contact")["line"])
+
+    def test_the_fields_before_it_read_the_same(self):
+        for message in ('REALM_EXPEDITION_WIPE region=160 target="Boss" level=75 failures=1 of=2 engaged=99 fallen=86 '
+                        'health=49 lowest=49 how="left combat" fought="Boss Shard"',
+                        'REALM_EXPEDITION_ATTEMPT_ENDED region=191 target="A" engaged=9 fallen=0 health=100 lowest=100 '
+                        'how="left combat" wipe=False'):
+            plain, tagged = pcl.kv(message), pcl.kv(message + " attempt=epic-midgard.12")
+            self.assertEqual(tagged.pop("attempt"), "epic-midgard.12")
+            self.assertEqual(tagged, plain)
+
+
 class Rvr(unittest.TestCase):
     REGROUP = ('RVR_REGROUP phase=start group={g} realm=Hibernia region=1 reason="{r}" skill=Average members=4 '
                'relayedTo={to} relay={relay} minSeconds=15')
