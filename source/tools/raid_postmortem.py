@@ -13,6 +13,8 @@ attempt it prints, as markdown:
 - every raider death (RAID_DEATH) in order, with its second into the pull, role, killer, last hit, mechanic, distance,
   healers in range and attackers; the deaths per 15 s; when the first raider and a quarter and half of the pull's size
   had died;
+- the timeline: each 15 s fight sample (RAID_FIGHT_SAMPLE: boss health, raiders alive and engaged by role, the healers'
+  power, whom the boss fights, the median distance, mezzed and stunned) with the deaths between them, by second;
 - every other row that carries the same attempt= (REALM_EXPEDITION_ATTEMPT_ENDED, _WIPE, _ENCOUNTER_RESET,
   _SKIRMISH_LOST), at its second into the pull.
 
@@ -32,7 +34,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import living_report as lr  # noqa: E402
-from living_report_sections._raid import ROWS, attempts, count, killer_of  # noqa: E402
+from living_report_sections._raid import ROWS, attempts, count, killer_of, split  # noqa: E402
 from living_report_sections._util import fields, message, stamp, table, tag  # noqa: E402
 
 BUCKET_S = 15
@@ -164,6 +166,8 @@ def report(attempt, lines) -> str:
     else:
         out.append("No raider died in this attempt.")
 
+    out += timeline(attempt)
+
     rest = other_rows(lines, attempt.id, attempt.pulled_at, attempt.ended_at)
     if rest:
         out += ["", f"## Other rows of this attempt ({len(rest)})", ""]
@@ -173,11 +177,61 @@ def report(attempt, lines) -> str:
     return "\n".join(out) + "\n"
 
 
+def roles_text(value) -> str:
+    s = split(value)
+    return "-" if s is None else f"T{s['tank']} H{s['healer']} B{s['buffer']} A{s['attacker']}"
+
+
+def sample_text(f: dict) -> str:
+    """One RAID_FIGHT_SAMPLE as a timeline line (no names: the row has none)."""
+    target = f.get("tgtKind", "-")
+    on = {"tank": "on a tank", "healer": "on a healer", "buffer": "on a buffer", "attacker": "on an attacker",
+          "raider": "on a raider", "pet": "on a raider's pet", "other": "on someone outside the attempt"}.get(target, "no target")
+    parts = [f"boss {f.get('bossPct', '-')}%"]
+    if f.get("phase") not in (None, "-"):
+        parts.append(f"phase {f['phase']}")
+    if f.get("adds") not in (None, "-"):
+        parts.append(f"adds {f['adds']}")
+    parts += [f"alive {roles_text(f.get('alive'))}", f"engaged {roles_text(f.get('engaged'))}",
+              f"healer power {f.get('healerPow', '-')}%" + (f" ({f['healersLow']} under 10%)"
+                                                          if count(f.get("healersLow")) else ""),
+              on, f"median distance {f.get('medDist', '-')}"]
+    if count(f.get("mezzed")) or count(f.get("stunned")):
+        parts.append(f"mezzed {f.get('mezzed', '0')}, stunned {f.get('stunned', '0')}")
+    return "sample: " + ", ".join(parts)
+
+
+def death_text(d: dict) -> str:
+    who = d.get("kind", "-") + (" (you)" if d.get("player") == "1" else "")
+    mech = d.get("mechanic", "-")
+    return (f"death: #{d.get('idx', '-')} {d.get('role', '-')} {d.get('class', '-')} ({who}), {killer_of(d)}, "
+            f"{d.get('source', '-')}" + (f", during {mech}" if mech not in (None, "-") else ""))
+
+
+def timeline(attempt) -> list[str]:
+    """The samples with the deaths between them, by second into the pull (a death and a sample at the same second: the
+    sample first, as it was taken at the start of that second's pulse)."""
+    if not attempt.samples:
+        return ["", "## Timeline", "", "No RAID_FIGHT_SAMPLE rows for this attempt (an older build, or a budget drop)."]
+    events = [(count(f.get("t")) or 0, 0, sample_text(f)) for _, f in attempt.samples]
+    events += [(count(d.get("t")) or 0, 1, death_text(d)) for _, d in attempt.deaths]
+    events.sort(key=lambda e: (e[0], e[1]))
+    gaps = [b - a for a, b in zip(sorted(count(f.get("t")) or 0 for _, f in attempt.samples)[:-1],
+                                  sorted(count(f.get("t")) or 0 for _, f in attempt.samples)[1:])]
+    out = ["", f"## Timeline ({len(attempt.samples)} samples, {len(attempt.deaths)} deaths)", ""]
+    if any(g > 20 for g in gaps):
+        out.append(f"_Gaps between samples: up to {max(gaps)} s (a budget drop or a slow pulse)._")
+        out.append("")
+    out += [f"- {mmss(t)} {text}" for t, _, text in events]
+    return out
+
+
 def listing(found) -> str:
     if not found:
         return "No RAID_ATTEMPT rows in these logs.\n"
-    rows = [[a.key, a.pulled_at or "-", a.boss, a.pull.get("size", "-"), a.outcome, mmss(a.secs), len(a.deaths)] for a in found]
-    return table(["Attempt", "Pulled", "Boss", "Size", "Outcome", "Time", "Deaths"], rows) + "\n"
+    rows = [[a.key, a.pulled_at or "-", a.boss, a.pull.get("size", "-"), a.outcome, mmss(a.secs), len(a.deaths), len(a.samples)]
+            for a in found]
+    return table(["Attempt", "Pulled", "Boss", "Size", "Outcome", "Time", "Deaths", "Samples"], rows) + "\n"
 
 
 def main(argv=None) -> int:

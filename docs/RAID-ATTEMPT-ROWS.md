@@ -1,9 +1,10 @@
-# Raid attempt rows (#644, part 1)
+# Raid attempt rows (#644, parts 1-3)
 
 Server-log rows that say, for one pull of a raid boss, who was there, who died, to what, and how it ended. Logging only:
 they change no boss, no tactic and no raid rule ("raise a size, never weaken a boss" stands). On by default. No player,
 account or bot names; monster names are written. Code: `source/server/GameServer/bots/autonomous/LivingRows.Raid.cs`
-(pure `Format*` functions, `RaidAttemptTracker`, `RaidAttempt`); tests: `UT_RaidAttemptRows644`.
+(pure `Format*` functions, `RaidAttemptTracker`, `RaidAttempt`); tests: `UT_RaidAttemptRows644`. The fight samples and
+the funnel (parts 2-3): `LivingRows.RaidSample.cs` (`RaidFightSampleRows`, `RaidFunnel`); tests: `UT_RaidFightSampleRows644`.
 
 Status: **tests only**. Not yet seen in a PC log.
 
@@ -95,10 +96,65 @@ Written for every raider in the attempt (those sent in, those who joined during 
 companions in the region), for every death, with **no cap** during a live attempt (owner decision a). After the attempt
 ends no more are written for it. `AUTONOMOUS_BOT_DEATH` is unchanged.
 
+### `RAID_FIGHT_SAMPLE`: every 15 s of a live attempt (parts 2-3)
+
+```
+RAID_FIGHT_SAMPLE attempt= t= bossPct= phase= adds= alive=T:H:B:A engaged=T:H:B:A healerPow= healersLow= onTank= tgtKind= medDist= mezzed= stunned=
+```
+
+Written for dungeon encounters, dragons and open-world bosses alike, from the attempt's own raiders (the same set
+`RAID_DEATH` writes for: no scan of the world) and its boss. The first sample is at the pull (`t=0`), then one every 15 s
+while the attempt is live; the raid pulse looks every 5 s, so a sample is at most 5 s late. None after the attempt ends.
+
+| Field | Meaning |
+|---|---|
+| `t` | seconds into the pull |
+| `bossPct` | the boss's health in percent (0 once it is dead); `-` when unknown |
+| `phase` | **always `-`**: no boss script exposes its fight phase in a common way (a dragon's flight is out of combat, not a fight phase). Left out rather than guessed |
+| `adds` | **always `-`**: only the Green Knight's trees and the ranged-add parties count their adds (`EPIC_GK_TREES`, `EPIC_RANGED_ADDS`), and a general count needs a scan around the boss. Left out rather than guessed |
+| `alive` | the attempt's raiders alive and in its region, by role, `tank:healer:buffer:attacker` (the roles of `RAID_ATTEMPT`; a raider with no class is in no slot) |
+| `engaged` | of `alive`, those in combat (the game's `InCombat`: hit or hitting in the last seconds, or crowd-controlled) and within 1,500 of the boss |
+| `healerPow` | the mean power percent of the living healers (the healer role, the Bard included); `-` with none |
+| `healersLow` | living healers under 10% power |
+| `onTank` | `1` when the boss's target is a tank of the attempt, `0` when it is anyone else, `-` when it has no target |
+| `tgtKind` | whom the boss fights: `tank`, `healer`, `buffer`, `attacker` (a raider of the attempt, by role), `raider` (one with no class), `pet` (a raider's pet), `other` (anyone outside the attempt), `none` |
+| `medDist` | the median distance of the living raiders in the region to the boss (the lower middle for an even count); `-` with none |
+| `mezzed`, `stunned` | living raiders in the region mesmerized, stunned |
+
+Budget (`LivingRows.Take`): 4 a minute per attempt (tag `RAID_FIGHT_SAMPLE.<attempt>`, forgotten when the attempt ends)
+and 30 a minute overall (tag `RAID_FIGHT_SAMPLE`). A refused sample is counted in `RVR_HOUR`'s `dropped=` under the tag
+that refused it; the post-mortem shows the gap. Cost: one read of each raider per sample (alive, region, class, distance,
+combat, power, mez, stun) into buffers the attempt allocates once and grows only when raiders join.
+
+### `RAID_FUNNEL`: each raid's way to the fight (parts 2-3)
+
+```
+RAID_FUNNEL event= stage=start|end asked= recruited= parties= atHub= staged= atBoss= lost=route:n,travel:n,died:n,logout:n,released:n,other:n hubS= stageS= bossS=
+```
+
+`stage=start` right after `REALM_RAID_STARTED`, `stage=end` right after `REALM_RAID_ENDED`. A raid that never starts
+(a failed rally) writes only the end row. Keyed by `event=` (no attempt).
+
+| Field | Meaning |
+|---|---|
+| `asked` | the size the raid required (`REALM_RAID_STARTED`'s `required`) |
+| `recruited` | the most gamebots the raid had recruited at once (`mostRecruited`) |
+| `parties` | the most parties the raid had at once |
+| `atHub` | the most of its gamebots at the hub at once before it left the hub |
+| `staged` | the most at the staging posts at once (`StagingBest`) |
+| `atBoss` | the most raiders in one of the raid's own attempts (its dungeon route's, or its dragon or open-world fight's; a route gate's boss is not the raid's); `-` before any pull |
+| `lost` | distinct gamebots per reason, counted from the existing sites (whose per-bot rows stay): `route` had a hub route failure (`REALM_RAID_HUB_ROUTE_FAILED`; some recover), `travel` had a stable travel cancelled (`REALM_RAID_TRAVEL_CANCEL`; it retries), `died` was seen dead at a raid pulse while in no live attempt (on the way in, at staging or between pulls; deaths in a pull are `RAID_DEATH`'s), `logout` was in a party that left the raid and had logged off, `released` was released from its party (no route to the hub, `REALM_RAID_HUB_ROUTE_RELEASED`), `other` was in a party that left the raid for another reason (a member no longer eligible or out of the group). Reasons can overlap (route, then released) |
+| `hubS` | seconds from the raid's call to its hub departure; `-` when it never left |
+| `stageS` | seconds from the hub departure to the start (to the end for a raid that never started) |
+| `bossS` | seconds from the start to the first pull; `-` before any |
+
+No budget: two rows a raid.
+
 ## Volume [I]
 
 At about 160 raiders and one live raid: `RAID_ATTEMPT` and `RAID_ATTEMPT_END` 2-10 an hour each (budget 10 a minute
-each); `RAID_DEATH` 20-300 an hour, up to the raid's size in one minute at a wipe. Not measured.
+each); `RAID_DEATH` 20-300 an hour, up to the raid's size in one minute at a wipe; `RAID_FIGHT_SAMPLE` 240 an hour per
+live attempt (at most 1,800 an hour overall); `RAID_FUNNEL` 2 a raid. Not measured.
 
 ## Cost
 
@@ -113,15 +169,20 @@ death and, for a raider, one pass over the attempt's raiders (healers in range).
   size, time to kill and to fail, the boss's lowest health on a failed pull, and deaths a pull. Then all deaths by role, kind
   and last hit, the top killers and mechanics, deaths with no healer in range, `died` against `left`, the wait from a failed
   attempt to the next pull (`wipeToPullS`) and the muster before a pull (`gatherS`).
+  From parts 2-3 it also gives a **fight curve** per attempt with `RAID_FIGHT_SAMPLE` rows (the boss's health at the start,
+  a quarter, half and three quarters into the samples and the last; raiders alive and engaged at the first and last
+  sample; the healers' median and lowest power; the peak of healers under 10%; the share of samples with the boss on a
+  tank; the median distance; the mez and stun peaks) and a **funnel table** per raid from `RAID_FUNNEL`.
 - **`source/tools/raid_postmortem.py <attempt> <logs>`** prints one attempt: the pull, the end, every death in order with its
-  second into the pull, the deaths per 15 s, when the first raider and a quarter and half of the pull had died, and every
-  other row carrying the same `attempt=`. `--list` lists the attempts; `--run` picks one pull of an id that a server restart
+  second into the pull, the deaths per 15 s, when the first raider and a quarter and half of the pull had died, a
+  **timeline** of the fight samples with the deaths between them by second (and a note when samples are more than 20 s
+  apart), and every other row carrying the same `attempt=`. `--list` lists the attempts; `--run` picks one pull of an id that a server restart
   reused.
 - Both read the rows through one parser (`living_report_sections/_raid.py`). A restart starts the attempt count at 1 again,
   so an id pulled a second time in a log set is a new attempt (`<id> (run 2)`). Tests: `source/tools/tests/test_raid_attempts.py`,
-  on synthetic rows; it also parses the rows `UT_RaidAttemptRows644` pins for the `Format*` functions, so a change to the rows
-  fails there.
+  on synthetic rows; it also parses the rows `UT_RaidAttemptRows644` and `UT_RaidFightSampleRows644` pin for the `Format*`
+  functions, so a change to the rows fails there.
 
-Not in part 1 (later parts of #644): `RAID_FIGHT_SAMPLE`, `RAID_FUNNEL`, `RAID_MECHANIC_FIRE`, `RAID_THREAT` and
+Not yet (later parts of #644): `RAID_MECHANIC_FIRE`, `RAID_THREAT` and
 `RAID_ROLE_TOTALS` (the last two behind the diagnostics switch, decision c), damage and heal totals on the end row,
 `rezzed=`, the sims writing these rows, and the Grafana panels.

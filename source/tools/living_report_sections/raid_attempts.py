@@ -1,16 +1,21 @@
 """RAID_ATTEMPT / RAID_ATTEMPT_END / RAID_DEATH (#644 part 6; rows from part 1, docs/RAID-ATTEMPT-ROWS.md): each boss's
 pulls and how they ended, time to kill, who died to what (by role, kind and source), the top killers and mechanics, died
-against left, and how long the raid took from a failed attempt to its next pull. No names: the rows carry none for
-raiders; monster names are written. One attempt in detail: source/tools/raid_postmortem.py <attempt>."""
+against left, and how long the raid took from a failed attempt to its next pull. RAID_FIGHT_SAMPLE (parts 2-3): a fight
+curve per attempt (boss health over the pull, raiders alive and engaged, the healers' power, the boss on the tank).
+RAID_FUNNEL (parts 2-3): each raid's funnel from asked to at the boss, with the drop-outs and the legs' times. No names:
+the rows carry none for raiders; monster names are written. One attempt in detail: source/tools/raid_postmortem.py
+<attempt>."""
 from __future__ import annotations
 
 from collections import Counter, defaultdict
 
-from living_report_sections._raid import FAILED, ROWS as RAID_ROWS, attempts, count, killer_of, mechanics_of
+from living_report_sections._raid import (FAILED, FUNNEL, ROWS as RAID_ROWS, attempts, count, funnels, killer_of, lost,
+                                          mechanics_of, total)
 from living_report_sections._util import median, pct, table
 
 TITLE = "Raid attempts"
-ROWS = list(RAID_ROWS)
+ROWS = list(RAID_ROWS) + [FUNNEL]
+CURVES = 20   # fight curves shown (the most recent attempts with samples)
 ORDER = 45
 TOP = 10
 
@@ -33,8 +38,11 @@ def _mmss(seconds):
 
 def summarize(lines) -> str:
     found = attempts(lines)
-    if not found:
+    raids = funnels(lines)
+    if not found and not raids:
         return "_No RAID_ATTEMPT, RAID_ATTEMPT_END or RAID_DEATH rows._"
+    if not found:
+        return "\n".join(["_No RAID_ATTEMPT, RAID_ATTEMPT_END or RAID_DEATH rows._", ""] + funnel_table(raids))
     deaths = [d for a in found for _, d in a.deaths]
     ended = [a for a in found if a.end]
     kills = [a for a in found if a.outcome == "killed"]
@@ -114,4 +122,67 @@ def summarize(lines) -> str:
     if gathers:
         out.append(f"Muster or regroup before a pull ({_n(len(gathers), 'pull')}): median {_mmss(median(gathers))}, "
                    f"longest {_mmss(max(gathers))}.")
+
+    # ---- fight curves (RAID_FIGHT_SAMPLE)
+    sampled = [a for a in found if a.samples]
+    if sampled:
+        out += ["", f"Fight curves ({_n(len(sampled), 'attempt')} with RAID_FIGHT_SAMPLE rows"
+                    + (f"; the last {CURVES}" if len(sampled) > CURVES else "") + "). Boss health at the start, a quarter, half "
+                    "and three quarters into the samples, and the last; alive and engaged are raiders (all roles) at the first and "
+                    "the last sample; healer power is the healers' mean, lowest sample; on tank is the share of samples with the "
+                    "boss on a tank (of those with a target):", "",
+                table(["Attempt", "Boss", "Outcome", "Samples", "Boss %", "Alive", "Engaged", "Healer power (low)",
+                       "Healers <10% (peak)", "On tank", "Median distance", "Mezzed / stunned (peak)"],
+                      [curve_row(a) for a in sampled[-CURVES:]])]
+    if raids:
+        out += [""] + funnel_table(raids)
     return "\n".join(out)
+
+
+def _at_shares(values, shares=(0, 0.25, 0.5, 0.75)):
+    if not values:
+        return []
+    picks = [values[min(len(values) - 1, int(share * len(values)))] for share in shares] + [values[-1]]
+    return picks
+
+
+def curve_row(a) -> list:
+    samples = [f for _, f in sorted(a.samples, key=lambda sf: count(sf[1].get("t")) or 0)]
+    boss = " > ".join("-" if v is None else str(v) for v in _at_shares([count(f.get("bossPct")) for f in samples]))
+    alive = [total(f.get("alive")) for f in samples]
+    engaged = [total(f.get("engaged")) for f in samples]
+    pows = [count(f.get("healerPow")) for f in samples]
+    known_pows = [p for p in pows if p is not None]
+    low = [count(f.get("healersLow")) for f in samples]
+    on = [f.get("onTank") for f in samples if f.get("onTank") in ("0", "1")]
+    mez = [count(f.get("mezzed")) or 0 for f in samples]
+    stun = [count(f.get("stunned")) or 0 for f in samples]
+
+    def ends(values):
+        return f"{'-' if values[0] is None else values[0]} > {'-' if values[-1] is None else values[-1]}"
+
+    return [a.key, a.boss, a.outcome, len(samples), boss, ends(alive), ends(engaged),
+            "-" if not known_pows else f"{median(known_pows):.0f}% ({min(known_pows)}%)",
+            f"{max((x for x in low if x is not None), default=0)}",
+            pct(on.count("1"), len(on)),
+            _med([count(f.get("medDist")) for f in samples]),
+            f"{max(mez)} / {max(stun)}"]
+
+
+def funnel_table(raids) -> list[str]:
+    """One row per raid: its end row (or its start row when the log stops before the end)."""
+    rows = []
+    reasons = ("route", "travel", "died", "logout", "released", "other")
+    for event, start, end_ in raids:
+        f = end_ or start
+        drops = lost(f.get("lost"))
+        rows.append([event, f.get("at", "-"), "end" if end_ else "start only", f.get("asked", "-"), f.get("recruited", "-"),
+                     f.get("parties", "-"), f.get("atHub", "-"), f.get("staged", "-"), f.get("atBoss", "-"),
+                     ", ".join(f"{r} {drops[r]}" for r in reasons if drops.get(r)) or "none",
+                     _mmss(count(f.get("hubS"))), _mmss(count(f.get("stageS"))), _mmss(count(f.get("bossS")))])
+    return [f"Raid funnel (RAID_FUNNEL, {_n(len(raids), 'raid')}): asked is the size required; recruited, parties, at the hub and "
+            "staged are the most at once; at the boss is the most raiders in one of the raid's attempts. Drop-outs count "
+            "distinct raiders per reason (route and travel are failures a raider can recover from; logout, released and other "
+            "left the raid; died is a death outside a pull):", "",
+            table(["Event", "At", "Rows", "Asked", "Recruited", "Parties", "At hub", "Staged", "At boss", "Drop-outs",
+                   "Hub muster", "Hub to start", "Start to first pull"], rows)]

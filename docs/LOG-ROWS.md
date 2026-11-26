@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **744**; pending (#625, not on main yet): **0**; shipped by the pipeline: **712**.
+- Rows in code: **746**; pending (#625, not on main yet): **0**; shipped by the pipeline: **714**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -482,6 +482,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RAID_CURE_MEZZ` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `mezzedInReach`, `rank`, `spell`, `target` | `bot`, `target` | - | - |
 | `RAID_CURE_POISON` | server.log | **ships** | `bots/autonomous/RaidCureLog.cs` | `casts`, `curers`, `dots`, `groups`, `pastDanger`, `region`, `seconds`, `targets` | - | - | - |
 | `RAID_DEATH` | server.log | **ships** | `bots/autonomous/LivingRows.Raid.cs` | `attackers`, `attempt`, `class`, `dist`, `healersIn`, `idx`, `killer`, `killerKind`, `kind`, `level`, `mechanic`, `player`, `role`, `source`, `spellId`, `t` | - | - | RAID_DEATH attempt= t= idx= kind= player= class= role= level= killerKind= killer="" source= spellId= mechanic= dist= |
+| `RAID_FIGHT_SAMPLE` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs`<br>`bots/autonomous/LivingRows.RaidSample.cs` | `adds`, `alive`, `attempt`, `bossPct`, `engaged`, `healerPow`, `healersLow`, `medDist`, `mezzed`, `onTank`, `phase`, `stunned`, `t`, `tgtKind` | - | - | RAID_FIGHT_SAMPLE attempt= t= bossPct= phase= adds= alive=T:H:B:A engaged=T:H:B:A healerPow= healersLow= onTank= tgtKind= |
+| `RAID_FUNNEL` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs`<br>`bots/autonomous/LivingRows.RaidSample.cs` | `asked`, `atBoss`, `atHub`, `bossS`, `event`, `hubS`, `lost`, `parties`, `recruited`, `stage`, `stageS`, `staged` | - | - | RAID_FUNNEL event= stage=start/end asked= recruited= parties= atHub= staged= atBoss= lost=route:n,... |
 | `RAID_LEARN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `familiarity`, `health`, `knowledge`, `mechanic`, `newcomer`, `raid`, `raiders`, `record`, `run`, `seen`, `seenShare`, `specialForces`, `veteran` | - | - | - |
 | `RAID_LEEROY` | server.log | **ships** | `bots/autonomous/AutonomousRaidLeeroy.cs` | `boss`, `bot`, `class`, `raid`, `raiders`, `region` | `bot` | - | - |
 | `RAID_LEEROY_ROLLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event` | - | - | - |
