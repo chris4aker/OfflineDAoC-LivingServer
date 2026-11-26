@@ -18,9 +18,11 @@ import check  # noqa: E402
 
 
 def workflow_python_commands():
-    """Every python command line of build-and-test.yml, without the interpreter and unittest's -v."""
+    """Every python command line of the mirrored workflows (build-and-test.yml, navmesh.yml), without the interpreter
+    and unittest's -v."""
     out = []
-    for raw in (REPO / check.WORKFLOW).read_text(encoding="utf-8").split("\n"):
+    lines = [raw for wf in check.WORKFLOWS for raw in (REPO / wf).read_text(encoding="utf-8").split("\n")]
+    for raw in lines:
         line = raw.strip()
         if line.startswith("run:"):
             line = line[4:].strip()
@@ -38,7 +40,8 @@ class MirrorTests(unittest.TestCase):
         commands = workflow_python_commands()
         self.assertGreater(len(commands), 15)
         local = {c for _, c in check.CHECKS}
-        missing = [c for c in commands if c not in local and c.split()[0] not in check.NOT_LOCAL]
+        missing = [c for c in commands if c not in local and c.split()[0] not in check.NOT_LOCAL
+                   and " ".join(c.split()[:2]) not in check.NOT_LOCAL]
         self.assertEqual(missing, [], "add these to tools/check.py CHECKS (or NOT_LOCAL with the reason)")
 
     def test_the_issue_615_checks_are_in(self):
@@ -47,6 +50,11 @@ class MirrorTests(unittest.TestCase):
                   "tools/bot-voices/say_gate_ratchet.py", "tools/lore/lint_lore.py", "-m unittest discover -s source/tools/tests",
                   "tools/release/check_versions.py", "source/tools/assemble_changelog.py --check"]:
             self.assertIn(c, local)
+
+    def test_the_navmesh_workflow_is_mirrored(self):
+        commands = workflow_python_commands()
+        self.assertIn("tools/navmesh/navmesh_set.py check", commands, "navmesh.yml is read too (issue #684)")
+        self.assertIn("-m unittest discover -s tools/navmesh/tests", {c for _, c in check.CHECKS})
 
     def test_every_check_names_an_existing_script_or_folder(self):
         for _, command in check.CHECKS:

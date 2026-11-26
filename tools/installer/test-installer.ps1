@@ -222,6 +222,16 @@ if ($Scenario -contains 'newest') {
         }
     } else { Write-Host '   INFO  newest: the embedded package is not older than GitHub''s newest, so the digest cases were not run' }
 
+    # Issue #684: the navmesh-vN release (CI's navmesh set, zip parts and a manifest, no game package) is never a game
+    # update, even published by mistake as a full release and GitHub's newest. Setup keeps the embedded package.
+    $navmesh = '{"tag_name":"navmesh-v1","name":"Navmesh set v1","prerelease":false,"draft":false,"html_url":"https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/tag/navmesh-v1","body":"CI only",' +
+        '"assets":[{"name":"navmesh-v1.part01.zip","size":1900000,"digest":"sha256:' + ('1' * 64) + '","browser_download_url":"https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/download/navmesh-v1/navmesh-v1.part01.zip"},' +
+        '{"name":"navmesh-manifest.json","size":900,"digest":"sha256:' + ('2' * 64) + '","browser_download_url":"https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/download/navmesh-v1/navmesh-manifest.json"}]}'
+    $file = Join-Path $Work 'release-navmesh.json'
+    [IO.File]::WriteAllText($file, $navmesh)
+    $r = Setup 'newest-navmesh-release' @('--info', '--release-json', $file) -CheckNewest
+    Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($embedded)) " -and $r.Log -match 'it is the newest release' -and $r.Log -notmatch 'downloading navmesh') 'newest: the navmesh-v1 release is never a game package; the embedded one is installed'
+
     # 1.1.3: a busy GitHub download server (429/5xx) is retried by Setup itself; a dropped connection and anything else
     # still go to Try again. The messages are the real forms from Windows PowerShell 5.1, PowerShell 7 and curl.exe.
     $cases = @(

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Runs every Python check of .github/workflows/build-and-test.yml locally, in parallel (issue #615).
+"""Runs every Python check of .github/workflows/build-and-test.yml and navmesh.yml locally, in parallel (issue #615).
 
 Required before every push (AGENTS.md). The checks need no dotnet, no game files and no network. They take about 175 CPU
 seconds: about 90 s on a 2-core box, under a minute with 4 cores or more. Each unittest folder runs one process per test file, so the slow lore and bot-voice suites spread
@@ -26,6 +26,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 WORKFLOW = Path(".github/workflows/build-and-test.yml")
+# Every workflow whose Python commands this mirrors (source/tools/tests/test_check.py reads each).
+WORKFLOWS = (WORKFLOW, Path(".github/workflows/navmesh.yml"))
 
 # (CI job, command) as the workflow writes it, without "python"/"python3" and without unittest's "-v".
 CHECKS: list[tuple[str, str]] = [
@@ -57,6 +59,10 @@ CHECKS: list[tuple[str, str]] = [
     # Not a workflow line of its own (source/tools/tests/test_command_reference.py runs it in CI); kept as its own line
     # so a stale ALL SERVER COMMANDS.txt says what to run.
     ("encounter-catalog", "source/tools/make_command_reference.py --check"),
+    # navmesh.yml (issue #684): the navmesh set tool's tests, and the manifest, test list and installer patches agree.
+    ("navmesh", "-m unittest discover -s tools/navmesh/tests"),
+    ("navmesh", "tools/navmesh/navmesh_set.py check"),
+    ("navmesh", "tools/navmesh/navmesh_set.py status tools/navmesh/manifest.json"),
 ]
 
 # Workflow Python commands that do not run here, by script, with the reason.
@@ -67,6 +73,11 @@ NOT_LOCAL: dict[str, str] = {
     "source/tools/ci_test_results.py": "reads the .trx results and the files the dotnet tests write (server, launcher jobs)",
     "tools/bot-voices/eval/evening_read.py": "reads the evenings the server tests write (dotnet)",
     "tools/bot-voices/eval/score_bench.py": "reads the bench replies the server tests write (dotnet)",
+    # A script and its subcommand: only these lines of navmesh_set.py are excused (its check and status run here).
+    "tools/navmesh/navmesh_set.py fetch": "downloads the published navmesh set, about 2 GB (navmesh job)",
+    "tools/navmesh/navmesh_set.py verify": "reads the downloaded navmesh set (navmesh job)",
+    "tools/navmesh/navmesh_set.py filter": "feeds dotnet test the navmesh filter (navmesh job; its tests run here)",
+    "tools/navmesh/navmesh_set.py results": "reads the .trx the navmesh tests write (navmesh job; its tests run here)",
 }
 
 

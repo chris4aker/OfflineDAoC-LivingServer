@@ -1,0 +1,5 @@
+{
+  "schema": 1,
+  "placeholder": true,
+  "note": "No navmesh set is published yet (issue #684). The owner runs tools/navmesh/RUN-ME.cmd once and uploads its files as the navmesh-v1 pre-release; then navmesh-manifest.json from that release replaces this file, and the navmesh workflow starts running the tests in .github/navmesh-tests.txt."
+}
