@@ -53,3 +53,4 @@ UT_ZoneStepProbe  # navmesh probe tool: needs its input (OFFLINE_DAOC_ZONES, OFF
 UT_Diag704StarterSpawns  # DIAGNOSTIC (#704), not for merge: read-only installed starter-dungeon report, [Explicit] (#704)
 UT_SeamCycle555  # read-only installed Hibernian seam-cycle replay: needs the navmesh set and its world, runs in the navmesh job, [Explicit] (#555)
 UT_Diag704Captures  # DIAGNOSTIC (#704), not for merge: read-only installed capture report, [Explicit] (#704)
+UT_Diag704Approach  # DIAGNOSTIC (#704), not for merge: read-only installed approach report, [Explicit] (#704)
