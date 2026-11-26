@@ -243,6 +243,12 @@ namespace DOL.GS
                 {
                     workReady.Wait(cancellationToken);
                     participating = true;
+                    // #640: Wait returns at once when the batch was signalled
+                    // before this worker reached it, so a watchdog interrupt
+                    // left from an earlier cycle is still pending here and
+                    // would fire inside this batch or its completion below.
+                    // It belongs to no work of this cycle: consume it now.
+                    ConsumeStaleInterrupt();
                     workerCycle = ++cycle;
                     ExecutionContext.Run(_workContext, static state => ((GameLoopThreadPoolMultiThreaded) state).ProcessWorkActions(), this);
                 }
@@ -270,16 +276,36 @@ namespace DOL.GS
                 {
                     workerCycle = GameLoopThreadPoolWatchdog.IDLE_CYCLE;
                     if (participating)
-                    {
-                        workReady.Reset();
-                        Interlocked.Increment(ref _workState.CompletedWorkerCount);
-                        _workCompleted.Signal();
-                    }
+                        CompleteParticipation(workReady);
                 }
             }
 
             if (log.IsInfoEnabled)
                 log.Info($"Thread \"{Thread.CurrentThread.Name}\" is stopping");
+        }
+
+        private static void ConsumeStaleInterrupt()
+        {
+            // Thread.Sleep(0) throws at once if an interrupt is pending and
+            // returns at once otherwise.
+            try { Thread.Sleep(0); }
+            catch (ThreadInterruptedException) { }
+        }
+
+        private void CompleteParticipation(ManualResetEventSlim workReady)
+        {
+            workReady.Reset();
+            Interlocked.Increment(ref _workState.CompletedWorkerCount);
+            // #640: CountdownEvent.Signal decrements first and can block only
+            // while waking the caller (the barrier is already open by then).
+            // An interrupt thrown there must not escape this finally and end
+            // the worker loop, which would strand the next batch's signal.
+            try { _workCompleted.Signal(); }
+            catch (ThreadInterruptedException)
+            {
+                if (log.IsWarnEnabled)
+                    log.Warn($"Thread \"{Thread.CurrentThread.Name}\" was interrupted while completing a batch");
+            }
         }
 
         private void ProcessWorkActions()
