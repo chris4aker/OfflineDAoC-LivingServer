@@ -52,7 +52,8 @@ jobs:
       contents: write   # the publish step only (dry runs and pull requests never reach it)
       actions: read     # the build-and-test run's Candidate-Setup artifact
     env:
-      VERSION: ${{ inputs.version || 'v1' }}
+      # Not VERSION: MSBuild reads environment variables as properties, and Version=v1 broke the restore (MSB4181).
+      SET_VERSION: ${{ inputs.version || 'v1' }}
       DRY_RUN: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}
       RUN_ID: ${{ inputs.run_id }}
       GH_TOKEN: ${{ github.token }}
@@ -66,22 +67,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "version=$VERSION dry_run=$DRY_RUN event=${{ github.event_name }} ref=${{ github.ref }}"
+          echo "version=$SET_VERSION dry_run=$DRY_RUN event=${{ github.event_name }} ref=${{ github.ref }}"
           if [ "$DRY_RUN" != "true" ] && [ "${{ github.ref }}" != "refs/heads/main" ]; then
             echo "::error title=Navmesh set::a set is published from main only; run it from main, or as a dry run"; exit 1
           fi
-          if ! python tools/navmesh/navmesh_set.py tag-free "$VERSION"; then
-            if [ "$DRY_RUN" = "true" ]; then echo "::warning title=Navmesh set::navmesh-$VERSION exists: this dry run could not be published as it"; else exit 1; fi
+          if ! python tools/navmesh/navmesh_set.py tag-free "$SET_VERSION"; then
+            if [ "$DRY_RUN" = "true" ]; then echo "::warning title=Navmesh set::navmesh-$SET_VERSION exists: this dry run could not be published as it"; else exit 1; fi
           fi
-          echo "## Navmesh set navmesh-$VERSION ($([ "$DRY_RUN" = "true" ] && echo 'dry run' || echo 'publish'))" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Navmesh set navmesh-$SET_VERSION ($([ "$DRY_RUN" = "true" ] && echo 'dry run' || echo 'publish'))" >> "$GITHUB_STEP_SUMMARY"
           date -u +%s > "$RUNNER_TEMP/start"
 
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
 
-      # Before Setup runs: after the fresh install, NuGet's restore failed at once with no error logged (MSB4181, in Git
-      # Bash and in PowerShell; dry runs of #694), while the same build passes on a clean runner.
       - name: Build the server tests
         shell: pwsh
         run: |
@@ -158,10 +157,10 @@ jobs:
         shell: powershell
         run: |
           $start = Get-Date
-          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/navmesh/Publish-NavmeshSet.ps1 -NavmeshFolder 'D:\nmset\games\fresh\runtime\server\navmesh' -Version $env:VERSION -OutputRoot 'D:\nmset\upload' -NoBrowser -WorldDatabase 'D:\nmset\world\opendaoc.sqlite3.db'
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/navmesh/Publish-NavmeshSet.ps1 -NavmeshFolder 'D:\nmset\games\fresh\runtime\server\navmesh' -Version $env:SET_VERSION -OutputRoot 'D:\nmset\upload' -NoBrowser -WorldDatabase 'D:\nmset\world\opendaoc.sqlite3.db'
           if ($LASTEXITCODE -ne 0) { exit 1 }
           $secs = [int]((Get-Date) - $start).TotalSeconds
-          Get-ChildItem "D:\nmset\upload\$env:VERSION" | ForEach-Object { "  - $($_.Name): {0:N0} bytes" -f $_.Length } | Tee-Object -Variable parts | Write-Host
+          Get-ChildItem "D:\nmset\upload\$env:SET_VERSION" | ForEach-Object { "  - $($_.Name): {0:N0} bytes" -f $_.Length } | Tee-Object -Variable parts | Write-Host
           @("- Packed in $secs s:") + @($parts) | Add-Content $env:GITHUB_STEP_SUMMARY
 
       # As the navmesh job reads it: every part and file by its hash, the world clean again (the packed copy), and the
@@ -170,7 +169,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          up="D:\\nmset\\upload\\$VERSION"
+          up="D:\\nmset\\upload\\$SET_VERSION"
           python tools/navmesh/navmesh_set.py fetch "$up\\navmesh-manifest.json" --dest 'D:\nmset\ci\set' --from "$up"
           python tools/navmesh/navmesh_set.py verify "$up\\navmesh-manifest.json" --root 'D:\nmset\ci\set'
           python tools/navmesh/navmesh_set.py check --manifest "$up\\navmesh-manifest.json"
@@ -214,19 +213,19 @@ jobs:
 
       # Main and dry_run off only. navmesh_set.py publish checks the tag again, every part against the manifest, then
       # GitHub's digest of every upload, and publishes a pre-release with make_latest false.
-      - name: Publish navmesh-${{ env.VERSION }}
+      - name: Publish navmesh-${{ env.SET_VERSION }}
         if: env.DRY_RUN != 'true' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
-          python tools/navmesh/navmesh_set.py publish "D:\\nmset\\upload\\$VERSION\\navmesh-manifest.json" --from "D:\\nmset\\upload\\$VERSION" \
+          python tools/navmesh/navmesh_set.py publish "D:\\nmset\\upload\\$SET_VERSION\\navmesh-manifest.json" --from "D:\\nmset\\upload\\$SET_VERSION" \
             --commit "${{ github.sha }}" --notes "$RUNNER_TEMP/notes.md"
-          echo "- **Published** navmesh-$VERSION: https://github.com/${{ github.repository }}/releases/tag/navmesh-$VERSION" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Published** navmesh-$SET_VERSION: https://github.com/${{ github.repository }}/releases/tag/navmesh-$SET_VERSION" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Dry run (what publishing would do)
         if: env.DRY_RUN == 'true'
         shell: bash
         run: |
-          python tools/navmesh/navmesh_set.py publish "D:\\nmset\\upload\\$VERSION\\navmesh-manifest.json" --from "D:\\nmset\\upload\\$VERSION" \
+          python tools/navmesh/navmesh_set.py publish "D:\\nmset\\upload\\$SET_VERSION\\navmesh-manifest.json" --from "D:\\nmset\\upload\\$SET_VERSION" \
             --commit "${{ github.sha }}" --notes "$RUNNER_TEMP/notes.md" --dry-run || echo "::warning title=Navmesh set::the publish check refused (above)"
           echo "- Dry run: nothing published. Total $(( $(date -u +%s) - $(cat "$RUNNER_TEMP/start") )) s" >> "$GITHUB_STEP_SUMMARY"
 
@@ -234,7 +233,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: navmesh-set-${{ env.VERSION }}-report
+          name: navmesh-set-${{ env.SET_VERSION }}-report
           path: |
             D:\nmset\upload\*\navmesh-manifest.json
             D:\nmset\world\opendaoc.sqlite3.db.clean.json
