@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 $sourceRoot = Split-Path $PSScriptRoot -Parent
 $runtime = 'C:\Users\thedo\Desktop\new class test\runtime\server'
 function Assert-Stopped {
-    if (Get-Process CoreServer,game,camelot,OfflineDaoc.Launcher -ErrorAction SilentlyContinue) {
+    if (Get-Process CoreServer,game,camelot,DAoCLivingServer.Launcher -ErrorAction SilentlyContinue) {
         throw 'Close server, client and launcher before deploying.'
     }
 }

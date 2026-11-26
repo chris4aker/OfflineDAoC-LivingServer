@@ -1,4 +1,4 @@
-# Developing Offline DAoC
+# Developing DAoC - Living Server
 
 This guide is for people (and AI assistants) who change the code. Players only need
 [PLAY.md](PLAY.md).
@@ -8,18 +8,18 @@ This guide is for people (and AI assistants) who change the code. Players only n
 | Where | What |
 |---|---|
 | `source/server` | OpenDAoC-based server (`Dawn of Light.sln`): game logic, companion bots, autonomous gamebots, tests |
-| `source/tools/OfflineDaoc.Launcher` | Windows launcher (server control, bot creation, dashboards) with tests in `OfflineDaoc.Launcher.Tests`. The same program is the new client's launcher in 0.36c. |
-| `source/tools/OfflineDaoc.ProgressImport` | Progress transfer tool |
-| `source/tools/OfflineDaoc.Passport`, `.Cli`, `.Tests` | Character passport (1.2): take a character to a friend's world and back. See [CHARACTER-PASSPORT.md](CHARACTER-PASSPORT.md). |
+| `source/tools/DAoCLivingServer.Launcher` | Windows launcher (server control, bot creation, dashboards) with tests in `DAoCLivingServer.Launcher.Tests`. The same program is the new client's launcher in 0.36c. |
+| `source/tools/DAoCLivingServer.ProgressImport` | Progress transfer tool |
+| `source/tools/DAoCLivingServer.Passport`, `.Cli`, `.Tests` | Character passport (1.2): take a character to a friend's world and back. See [CHARACTER-PASSPORT.md](CHARACTER-PASSPORT.md). |
 | `source/tools/build_release_036.py`, `assemble_release_036.py`, `seal_release_036.py`, `smoke_release_036.py`, `test_release_import_036.py` | Build, assemble, seal and test the public 0.36 / 0.36b package |
 | `source/tools/build_newclient_036.py`, `seal_newclient_036.py` | Build and seal the 0.36c new-client package |
 | `source/tools/build_release_037.py`, `assemble_release_037.py`, `build_newclient_037.py` | Build the 0.37 reference packages (what a fresh install of 0.37 is; never uploaded) |
-| `source/tools/make_patch.py`, `OfflineDaoc.Patcher`, `make_downloaders_037.py` | Build the 0.37 update patches, the patcher they carry, and the downloader zips |
+| `source/tools/make_patch.py`, `DAoCLivingServer.Patcher`, `make_downloaders_037.py` | Build the 0.37 update patches, the patcher they carry, and the downloader zips |
 | `source/tools/release-baselines/`, `find_changes_since_release.py` | What each full release shipped, and what changed since |
 | `source/tools/make_downloaders_036.py` | Makes the small downloader zips of the three release pages |
 | `source/tools/release-world-defaults.json` | Default owner and level of every keep and the state of every keep door, applied to every release world |
 | `source/new-client` | The new client (Godot 4, C#) and its content pipeline. See its [README](../source/new-client/README.md). |
-| `source/tools/OfflineDaoc.Playtester`, `make_test_world.py` | The automated playtester: a scripted player on the 1.127 protocol and the test world it plays in. See [PLAYTESTER.md](PLAYTESTER.md). |
+| `source/tools/DAoCLivingServer.Playtester`, `make_test_world.py` | The automated playtester: a scripted player on the 1.127 protocol and the test world it plays in. See [PLAYTESTER.md](PLAYTESTER.md). |
 | `source/development-tools` | Navigation mesh builder and pathing source |
 | `tools/pet-art`, `tools/asset-tool` | Client art pipeline and the MPK and texture helpers |
 | `tools/claude-version` | Small database and client helpers used since 0.33 |
@@ -40,7 +40,7 @@ You need the **.NET 10 SDK** on Windows. The playable download bundles only the 
 cp source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
 dotnet build "source/server/Dawn of Light.sln" -c Release
 dotnet test source/server/Tests/Tests.csproj -c Release
-dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release
+dotnet test source/tools/DAoCLivingServer.Launcher.Tests/DAoCLivingServer.Launcher.Tests.csproj -c Release
 ```
 
 - `serverconfig.xml` is local and ignored by git. The build only needs it to exist.
@@ -91,7 +91,7 @@ tools/check.sh --only lore     # only the checks whose name contains "lore"
 3. **Copy the server build:** `source/server/Release/lib/GameServer.dll` (and its `.pdb`) goes to
    `runtime/server`, `runtime/server/lib` and `runtime/server/win-x64`.
 4. **Copy the launcher build** if you changed it: the `OfflineDAoC.*` files from
-   `source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows` go to `runtime/` (and, in 0.36c, to
+   `source/tools/DAoCLivingServer.Launcher/bin/Release/net10.0-windows` go to `runtime/` (and, in 0.36c, to
    `new-client/runtime/`).
 5. **Test in game.** Automated tests are not a substitute for an in-game check.
 
@@ -170,7 +170,7 @@ design. To make one:
 3. `make_patch.py --version 0.37 …` diffs them against the baseline into a game patch (both editions; world updates
    per edition, checked by applying them to the released world) and a client patch, packs verified zip parts and
    writes the three releases' download manifests; `make_downloaders_037.py` adds the downloader zips.
-4. The patcher (`OfflineDaoc.Patcher`, run with the game's bundled .NET) checks every file it replaces against its
+4. The patcher (`DAoCLivingServer.Patcher`, run with the game's bundled .NET) checks every file it replaces against its
    released fingerprints, backs up to `patch-backups\`, applies the world update once (recorded in
    `offline_patch_log`; a world row changes only if it still has its released values, save tables never), writes
    the files with the launcher last, and rolls back on any failure. Exit codes: 0 updated, 2 already up to date,

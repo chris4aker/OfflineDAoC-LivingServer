@@ -13,7 +13,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 INSTALL = REPO / "tools/fork-build/install-server-build.ps1"
 PACKAGE_README = REPO / "tools/fork-build/README.txt"
-TAB = REPO / "source/tools/OfflineDaoc.Launcher/SocialExpansionSettingsControl.cs"
+TAB = REPO / "source/tools/DAoCLivingServer.Launcher/SocialExpansionSettingsControl.cs"
 SETTINGS = json.loads((REPO / "source/tools/release-server-settings.json").read_text(encoding="utf-8"))["Settings"]
 
 # Wording that says the player-facing features start off (each one was in the package or the tab before this fix).

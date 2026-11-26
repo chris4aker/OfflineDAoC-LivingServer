@@ -35,7 +35,7 @@ param(
     [string]$Shots = '',
     # update114 / update12 / update121: the earlier Living Server's published Setup exe (LivingServer-Setup-1.1.4-beta.exe, -1.2.exe, -1.2.1.exe)
     [string]$FromSetup = '',
-    # classoff: the built playtester (source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll)
+    # classoff: the built playtester (source/tools/DAoCLivingServer.Playtester/bin/Release/net10.0/DAoCLivingServer.Playtester.dll)
     [string]$Playtester = ''
 )
 $ErrorActionPreference = 'Stop'

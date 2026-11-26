@@ -15,10 +15,10 @@
     "docs/BOT-GUILDS.md": [
       {"text": "| Original (`shadowofze/OfflineDAoC`, `1cabc77`)", "why": "a research table that credits the original code"}
     ],
-    "source/tools/OfflineDaoc.Launcher/AboutForm.cs": [
+    "source/tools/DAoCLivingServer.Launcher/AboutForm.cs": [
       {"text": "the original Offline DAoC by shadowofze", "why": "About's fallback credits, if CREDITS.md were missing"}
     ],
-    "source/tools/OfflineDaoc.Launcher/Updates/ReleaseInfo.cs": [
+    "source/tools/DAoCLivingServer.Launcher/Updates/ReleaseInfo.cs": [
       {"text": "OfflineDAoC-LivingServer)-(.+)", "why": "reads a package file of the pre-1.2.3 name"},
       {"text": "LegacyPackagePrefix = \"OfflineDAoC-LivingServer-\"", "why": "the pre-1.2.3 package name, for older releases"}
     ],

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using DOL.Database;
 using DOL.GS.PlayerClass;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests
@@ -77,7 +77,7 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousStarterGear.LauncherCapitalRegion(eRealm.Hibernia), Is.EqualTo(201));
             Assert.That(AutonomousStarterGear.LauncherCapitalRegion(eRealm.None), Is.EqualTo(-1));
 
-            string mainForm = Path.Combine(RepoRoot(), "source", "tools", "OfflineDaoc.Launcher", "MainForm.cs");
+            string mainForm = Path.Combine(RepoRoot(), "source", "tools", "DAoCLivingServer.Launcher", "MainForm.cs");
             if (!File.Exists(mainForm))
                 Assert.Ignore("Launcher source not found beside the tests.");
             string source = File.ReadAllText(mainForm);

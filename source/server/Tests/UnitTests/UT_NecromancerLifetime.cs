@@ -98,7 +98,7 @@ namespace DOL.UnitTests
         public void AnEraBuiltNecromancerKeepsItsStaffAndItsServantPlan(string id, eSpecType family)
         {
             // Era builds 1.2, WP3: the class file for the build's family still sets the Necromancer's staff and plan.
-            BotSpec necro = BotSpec.FromEraBuild(eCharacterClass.Necromancer, OfflineDaoc.Shared.EraBuildCatalog.Default.GetBuild(id));
+            BotSpec necro = BotSpec.FromEraBuild(eCharacterClass.Necromancer, DAoCLivingServer.Shared.EraBuildCatalog.Default.GetBuild(id));
             Assert.That(necro, Is.InstanceOf<NecromancerBotSpec>());
             Assert.That(necro.WeaponOneType, Is.EqualTo(eObjectType.Staff));
             Assert.That(necro.Is2H, Is.True);

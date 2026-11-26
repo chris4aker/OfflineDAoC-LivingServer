@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using OfflineDaoc.Configuration;
+using DAoCLivingServer.Configuration;
 
 namespace DOL.GS;
 

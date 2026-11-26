@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace LivingServerSetup
 {
-    /// <summary>The launcher's palette (OfflineDaoc.Launcher/ThemeControls.cs DaocTheme), fonts, art and drawing helpers.</summary>
+    /// <summary>The launcher's palette (DAoCLivingServer.Launcher/ThemeControls.cs DaocTheme), fonts, art and drawing helpers.</summary>
     internal static class Theme
     {
         public static readonly Color Void = Color.FromArgb(14, 12, 10);

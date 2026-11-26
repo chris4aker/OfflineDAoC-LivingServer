@@ -5,7 +5,7 @@ This tool never writes the database.  Removed database rows supply candidate
 NPC records and exact server coordinates, but a row is accepted only when an
 independent period source corroborates the same monster and location.  The
 output is an immutable migration manifest that can be reviewed, navmesh-tested,
-and then embedded in OfflineDaoc.Setup.
+and then embedded in DAoCLivingServer.Setup.
 """
 
 from __future__ import annotations

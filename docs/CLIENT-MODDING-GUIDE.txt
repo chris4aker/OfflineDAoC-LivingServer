@@ -448,7 +448,7 @@ files; it is all server database rows (and, for scripted NPCs, server code).
   setup tool gives each install's exchange brokers a random name from a list,
   so another player's Camelot broker may not be called Adalyn.
 - Some rows are REWRITTEN by the setup tool on a new install:
-  source/tools/OfflineDaoc.Setup/Program.cs EnsureRealmExchangeBrokers writes
+  source/tools/DAoCLivingServer.Setup/Program.cs EnsureRealmExchangeBrokers writes
   the Realm Exchange brokers and their guards (Mob_ID offline-realm-exchange-*).
   When you move those, change the coordinates there too, or a fresh install
   puts them back.

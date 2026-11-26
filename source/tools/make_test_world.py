@@ -1,4 +1,4 @@
-"""Build a world database for the automated playtester (source/tools/OfflineDaoc.Playtester).
+"""Build a world database for the automated playtester (source/tools/DAoCLivingServer.Playtester).
 
 Two kinds of test world, both written to a NEW file; the source is only ever read:
 
@@ -394,7 +394,7 @@ def build_from_release(world: Path, out: Path, bots_per_realm: int, helper_level
     sys.path.insert(0, str(HERE))
     import build_release_037 as release  # the release builder's own cleaning and checks
 
-    policy = json.loads((HERE / "OfflineDaoc.ProgressImport/progress-policy.json").read_text())
+    policy = json.loads((HERE / "DAoCLivingServer.ProgressImport/progress-policy.json").read_text())
     defaults = json.loads((HERE / "release-world-defaults.json").read_text(encoding="utf-8"))
     read_only_copy(world, out)
     try:

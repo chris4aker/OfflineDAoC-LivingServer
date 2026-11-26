@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.GS
 {
@@ -186,7 +186,7 @@ namespace DOL.GS
 
         /// <summary>
         /// A free name: three in four in the 2003 style (made-up, compound, joke, first name, class joke, stretched), one in
-        /// four a lore name (OfflineDaoc.Shared.EraBotNames has the mix and the research behind it).
+        /// four a lore name (DAoCLivingServer.Shared.EraBotNames has the mix and the research behind it).
         /// </summary>
         private static string GenerateUniqueName(eRealm realm, eGender gender, eCharacterClass characterClass, ISet<string> reservedNames, Random random)
         {

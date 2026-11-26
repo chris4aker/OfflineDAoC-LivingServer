@@ -44,7 +44,7 @@ namespace DOL.AI.Brain
         public static int DungeonRadius(int attackers) =>
             Math.Min(DungeonReinforcementRadius, 250 + 150 * (Math.Max(1, attackers) - 1));
 
-        private const string BafFightProperty = "OfflineDAoC.BafFightTick";
+        private const string BafFightProperty = "DAoCLivingServer.BafFightTick";
         public const long BafFightMilliseconds = 120_000;
 
         /// <summary>Pure rule: a puller still in combat within two minutes of the last adds is in the same fight.</summary>

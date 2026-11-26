@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace OfflineDaoc.Shared;
+namespace DAoCLivingServer.Shared;
 
 /// <summary>
 /// Bot names the way a 2003 DAoC server's names looked (owner 2026-10-29: "75% of names in 2003 style, rest in lore

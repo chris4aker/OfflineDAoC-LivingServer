@@ -508,7 +508,7 @@ namespace DOL.UnitTests
             Assert.That(at, Is.GreaterThan(0));
             string block = properties[properties.LastIndexOf("/// <summary>", at, StringComparison.Ordinal)..at];
             Assert.That(block, Does.Not.Contain("tower").IgnoreCase);
-            string launcher = Source("source", "tools", "OfflineDaoc.Launcher", "SocialExpansionSettings.cs");
+            string launcher = Source("source", "tools", "DAoCLivingServer.Launcher", "SocialExpansionSettings.cs");
             string row = launcher.Split('\n').Single(line => line.TrimStart().StartsWith("(\"bot_guild_claims_keeps\"", StringComparison.Ordinal));
             Assert.That(row, Does.Not.Contain("tower").IgnoreCase);
         }

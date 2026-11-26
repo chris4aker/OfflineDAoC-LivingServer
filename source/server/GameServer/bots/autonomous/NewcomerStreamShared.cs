@@ -1,6 +1,6 @@
 using System;
 
-namespace OfflineDaoc.Shared
+namespace DAoCLivingServer.Shared
 {
     /// <summary>
     /// The fields every new gamebot row starts with, whoever makes it: the launcher's "+ Lv.1", "+ Lv.20" and "+ Lv.50"

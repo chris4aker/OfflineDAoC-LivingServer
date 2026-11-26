@@ -124,10 +124,10 @@ A character's own record travels. Things that belong to one world stay in that w
 
 ## For developers
 
-- Library: `source/tools/OfflineDaoc.Passport` (the file format, the engine and the launcher's flows). The server and the
+- Library: `source/tools/DAoCLivingServer.Passport` (the file format, the engine and the launcher's flows). The server and the
   launcher compile the same files, so both follow the same rules.
-- Command line tool for tests and manual use: `source/tools/OfflineDaoc.Passport.Cli`.
-- Tests: `source/tools/OfflineDaoc.Passport.Tests` (synthetic saves only) and `UT_PassportLock` in the server tests.
+- Command line tool for tests and manual use: `source/tools/DAoCLivingServer.Passport.Cli`.
+- Tests: `source/tools/DAoCLivingServer.Passport.Tests` (synthetic saves only) and `UT_PassportLock` in the server tests.
 - Server: `PassportLock` (the home lock in world entry, character delete, `/account deletecharacter` and
   `/account movecharacter`), `PassportDesk` (the host's desk; `POST /passport/arrive`, `GET /passport/visitors`,
   `POST /passport/depart`, `POST /passport/depart/confirm`, HTTP Basic with the guest's own account in that world), and

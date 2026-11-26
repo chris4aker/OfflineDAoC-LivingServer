@@ -38,7 +38,7 @@ REPO = "chris4aker/OfflineDAoC-LivingServer"
 README = "README.md"
 CHANGELOG = "CHANGELOG-LIVING-SERVER.md"
 FORK_BUILD_INFO = "source/server/GameServer/gameutils/ForkBuildInfo.cs"
-MAIN_FORM = "source/tools/OfflineDaoc.Launcher/MainForm.cs"
+MAIN_FORM = "source/tools/DAoCLivingServer.Launcher/MainForm.cs"
 
 VERSION = r"\d+(?:\.\d+)+"
 BUILD = rf"{VERSION}(?:-beta)?"

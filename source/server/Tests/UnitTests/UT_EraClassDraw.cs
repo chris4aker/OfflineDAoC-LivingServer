@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DOL.GS.ServerProperties;
 using NUnit.Framework;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.GS.Tests
 {

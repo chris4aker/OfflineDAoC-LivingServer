@@ -31,7 +31,7 @@ original game client's files and comes with the 0.36c download.
    with the account from that game's `runtime\account.txt`.
 
 The release package runs it the same way: the launcher in `new-client\runtime` (the main launcher in its new-client
-mode, `source/tools/OfflineDaoc.Launcher`) starts the engine with these arguments and `APPDATA=new-client\save`.
+mode, `source/tools/DAoCLivingServer.Launcher`) starts the engine with these arguments and `APPDATA=new-client\save`.
 
 ## Developer mode
 

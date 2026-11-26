@@ -1,7 +1,7 @@
 param([switch]$Apply)
 $ErrorActionPreference = 'Stop'
 $runtime = 'C:\Users\thedo\Desktop\Offline DAoC\runtime'
-$built = Join-Path $PSScriptRoot 'OfflineDaoc.Launcher\bin\Release\net10.0-windows'
+$built = Join-Path $PSScriptRoot 'DAoCLivingServer.Launcher\bin\Release\net10.0-windows'
 function Assert-Closed {
     if (Get-Process OfflineDAoC -ErrorAction SilentlyContinue) { throw 'Close the launcher before replacing it.' }
 }
@@ -14,7 +14,7 @@ foreach ($dependency in @('OfflineDAoC.deps.json','OfflineDAoC.runtimeconfig.jso
         (Get-FileHash -LiteralPath (Join-Path $built $dependency)).Hash) { throw "Launcher dependency changed: $dependency" }
 }
 if ((Get-FileHash -LiteralPath (Join-Path $built 'OfflineDAoC.dll')).Hash -ne
-    (Get-FileHash -LiteralPath (Join-Path $PSScriptRoot 'OfflineDaoc.Launcher.Tests\bin\Release\net10.0-windows\OfflineDAoC.dll')).Hash) { throw 'Launcher differs from tested assembly.' }
+    (Get-FileHash -LiteralPath (Join-Path $PSScriptRoot 'DAoCLivingServer.Launcher.Tests\bin\Release\net10.0-windows\OfflineDAoC.dll')).Hash) { throw 'Launcher differs from tested assembly.' }
 $entries = foreach ($name in @('OfflineDAoC.dll','OfflineDAoC.pdb')) {
     $target=Join-Path $runtime $name
     if (Test-Path -LiteralPath ($target+'.active-events-new')) { throw 'Unexpected staged file.' }

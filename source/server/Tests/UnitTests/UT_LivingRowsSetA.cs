@@ -12,7 +12,7 @@ using DOL.GS.Effects;
 using DOL.GS.PropertyCalc;
 using DOL.GS.Spells;
 using NUnit.Framework;
-using OfflineDaoc.Configuration;
+using DAoCLivingServer.Configuration;
 using static DOL.UnitTests.DutyLeaseTestKit;
 
 namespace DOL.UnitTests

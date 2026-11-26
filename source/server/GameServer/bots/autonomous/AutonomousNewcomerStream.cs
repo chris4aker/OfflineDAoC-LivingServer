@@ -8,7 +8,7 @@ using DOL.Database;
 using DOL.GS.CraftingEconomy;
 using DOL.GS.ServerProperties;
 using DOL.Logging;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.GS
 {

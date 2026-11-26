@@ -10,7 +10,7 @@ using DOL.GS;
 using DOL.GS.PlayerClass;
 using DOL.GS.ServerProperties;
 using NUnit.Framework;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.UnitTests
 {

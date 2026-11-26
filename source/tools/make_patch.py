@@ -12,7 +12,7 @@ released base (source/tools/release-baselines/<base>/):
                  tools, docs, source, start files) - the editions\\ folder is removed: its files are only used while
                  installing the base - plus the world-data update for each edition (db-<version>b.json, db-<version>.json)
   client patch   every changed, new and removed file of the new client (new-client\\ and its start files)
-Each patch carries the patcher (OfflineDaoc.Patcher, run with the game's bundled .NET), which checks, backs up,
+Each patch carries the patcher (DAoCLivingServer.Patcher, run with the game's bundled .NET), which checks, backs up,
 applies and rolls back. World rows are compared ignoring volatile columns; save tables are never in an update.
 
 Both patches are packed into independent, verified zip parts below GitHub's 2 GB limit, and the download manifests the
@@ -323,9 +323,9 @@ def main():
             raise SystemExit(f"{out / folder} exists; refusing to overwrite release assets")
     baseline = repo / "source/tools/release-baselines" / base_v
     info = json.loads((baseline / "baseline.json").read_text(encoding="utf-8"))
-    policy = json.loads((repo / "source/tools/OfflineDaoc.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
-    patcher = repo / "source/tools/OfflineDaoc.Patcher/bin/Release/net10.0"
-    assert (patcher / "OfflineDaoc.Patcher.dll").is_file(), "build the patcher first (source/tools/OfflineDaoc.Patcher, Release)"
+    policy = json.loads((repo / "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
+    patcher = repo / "source/tools/DAoCLivingServer.Patcher/bin/Release/net10.0"
+    assert (patcher / "OfflineDaoc.Patcher.dll").is_file(), "build the patcher first (source/tools/DAoCLivingServer.Patcher, Release)"
     report = {"version": v, "base": base_v}
 
     # ---- game patch

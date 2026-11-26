@@ -1,6 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.GS.Tests
 {

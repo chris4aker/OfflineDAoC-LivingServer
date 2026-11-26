@@ -315,7 +315,7 @@ Items 1 and 3 need a bot player who owns characters. To make that a migration, n
 
 - Four new tables: `offline_bot_skill`, `offline_bot_places`, `offline_bot_milestones` and, with WP2R,
   `offline_bot_mechanics_seen`. They are saved progress and name the developer's bots.
-- They go into `OptionalProgressTables` in `source/tools/OfflineDaoc.ProgressImport/progress-policy.json`, so
+- They go into `OptionalProgressTables` in `source/tools/DAoCLivingServer.ProgressImport/progress-policy.json`, so
   `build_release_037.py`'s `clean_world` empties them and the progress transfer carries them.
 - The server declares them in one list, `BotPeopleTables.All`, and the release builder checks that the policy covers it,
   as it does for `EconomyTables.All` (`check_policy_covers`). A table missing from the policy stops the build.

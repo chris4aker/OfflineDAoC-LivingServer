@@ -6,7 +6,7 @@
 
 Input: docs/research/bot-builds.draft.json (the record of what the 2002-2003 posts said, kept unchanged).
 Output: source/server/GameServer/bots/autonomous/data/era-builds-165.json (embedded in GameServer.dll and the launcher;
-read by OfflineDaoc.Shared.EraBuildCatalog).
+read by DAoCLivingServer.Shared.EraBuildCatalog).
 
 The owner's review of 2026-11-17 09:48 (docs/ERA-BUILDS-1.2.md, "The owner's review"): "Yes to all except the custom
 class, that should never be played by bots". Applied here:
