@@ -122,6 +122,18 @@ def setup_name(build):
     return f"DAoC-LivingServer-Setup-{build}.exe" if renamed(build) else f"LivingServer-Setup-{build}.exe"
 
 
+# The update contract (docs/RELEASE-TRAIN.md, #685): released launchers download a package only from
+# https://github.com/<repo>/releases/download/ (ReleaseFeed.DownloadPrefix, an ordinal match, so the repository path's
+# case counts), and only with GitHub's digest in this form (PackageDigest.Sha256Of). update_contract.py builds the
+# candidate's release with these, and publish() checks GitHub's answer with them.
+def asset_url(repo, tag, name):
+    return f"https://github.com/{repo}/releases/download/{urllib.parse.quote(tag)}/{urllib.parse.quote(name)}"
+
+
+def github_digest(sha):
+    return f"sha256:{sha}"
+
+
 def sha256_file(path):
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -320,8 +332,8 @@ def publish(gh, tag, commit, title, body, zip_path, dry_run, prerelease=False):
     for each in [name] + ([legacy] if legacy else []):
         attached = next((a for a in draft.get("assets") or [] if a.get("name") == each), None)
         digest = (attached or {}).get("digest") or ""
-        if digest != f"sha256:{zip_sha}":
-            raise Stop(f"GitHub shows {digest or 'no digest'} for {each}, not sha256:{zip_sha}; the draft is left "
+        if digest != github_digest(zip_sha):
+            raise Stop(f"GitHub shows {digest or 'no digest'} for {each}, not {github_digest(zip_sha)}; the draft is left "
                        "unpublished for a person to look at")
     published = gh.publish(draft, prerelease)
     if published.get("draft") or bool(published.get("prerelease")) != prerelease:
