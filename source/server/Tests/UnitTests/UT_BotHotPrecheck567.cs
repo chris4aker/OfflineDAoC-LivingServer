@@ -45,8 +45,7 @@ public class UT_BotHotPrecheck567
         string dir = TestContext.CurrentContext.TestDirectory;
         while (dir != null && !File.Exists(Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs")))
             dir = Path.GetDirectoryName(dir);
-        if (dir == null)
-            Assert.Ignore("Repository not found beside the tests.");
+        Assert.That(dir, Is.Not.Null, "repository root");
         string brain = File.ReadAllText(Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs")).Replace("\r\n", "\n");
         Assert.That(brain, Does.Contain("!LivingHasEffect(spellTarget, BotBody.HealOverTime) &&\n                        " +
                                         "!GroupmateCastsHotAt(spellTarget, BotBody.HealOverTime)"));
