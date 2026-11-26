@@ -18,6 +18,9 @@ namespace DOL.GS
         // 2.5 is a good balance found through empirical testing.
         private const double WORK_SPLIT_BIAS_FACTOR = 2.5;
         private const int MAX_DEGREE_OF_PARALLELISM = 128;
+        // #640: the game loop's barrier wait wakes this often to re-check the count, so a completion whose wake-up was
+        // lost (an interrupt inside CountdownEvent.Signal, after its decrement) costs at most this, never a hung loop.
+        private const int BARRIER_POLL_MS = 100;
 
         // Thread pool configuration and state.
         private bool _running;
@@ -28,6 +31,9 @@ namespace DOL.GS
         // Thread management.
         private Thread[] _workers;                      // Worker threads (excludes caller).
         private long[] _workerCycle;                    // Worker cycle phase, used to detect stuck threads.
+        private int[] _interruptPending;                // #640: 1 when InterruptWorker interrupted the worker (cleared when consumed).
+        private int _interruptedCompletions;            // #640: completion signals that were interrupted (each logged).
+        private Action<CountdownEvent> _completionSignalForTests; // #640: tests only (null in the game): replaces Signal().
         private GameLoopThreadPoolWatchdog _watchdog;   // Monitors worker health; restarts if needed.
         private CancellationTokenSource _shutdownToken;
 
@@ -71,6 +77,7 @@ namespace DOL.GS
                 _workerCount = _degreeOfParallelism - 1;
                 _workers = new Thread[_workerCount];
                 _workerCycle = new long[_workerCount];
+                _interruptPending = new int[_workerCount];
                 _workerStartLatch = new(_workerCount);
                 _workReady = new ManualResetEventSlim[_workerCount];
 
@@ -158,7 +165,8 @@ namespace DOL.GS
                 // waits park the caller, leaving CPU capacity for the workers,
                 // network and database instead of burning a core at a barrier.
                 long waitStarted = System.Diagnostics.Stopwatch.GetTimestamp();
-                _workCompleted.Wait();
+                // #640: Wait(BARRIER_POLL_MS) re-checks the count on every call, so a lost wake-up is picked up.
+                while (!_workCompleted.Wait(BARRIER_POLL_MS)) { }
                 GameLoopWorkMetrics.RecordBarrierWait(waitStarted);
                 if (_workException != null)
                     System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(_workException).Throw();
@@ -234,6 +242,7 @@ namespace DOL.GS
         {
             ManualResetEventSlim workReady = _workReady[id];
             ref long workerCycle = ref _workerCycle[id];
+            ref int interruptPending = ref _interruptPending[id];
             long cycle = GameLoopThreadPoolWatchdog.IDLE_CYCLE;
 
             while (Volatile.Read(ref _running))
@@ -243,6 +252,16 @@ namespace DOL.GS
                 {
                     workReady.Wait(cancellationToken);
                     participating = true;
+                    // #640: Wait returns at once when the batch was signalled
+                    // before this worker reached it, so an interrupt delivered
+                    // earlier (InterruptWorker) is still pending here and would
+                    // fire inside this batch or its completion below. It belongs
+                    // to no work of this cycle: consume it now. In the game
+                    // nothing interrupts a worker, so this costs one volatile
+                    // read per batch; the flag is cleared before consuming, so
+                    // an interrupt arriving meanwhile sets it again.
+                    if (Volatile.Read(ref interruptPending) != 0 && Interlocked.Exchange(ref interruptPending, 0) != 0)
+                        ConsumeStaleInterrupt();
                     workerCycle = ++cycle;
                     ExecutionContext.Run(_workContext, static state => ((GameLoopThreadPoolMultiThreaded) state).ProcessWorkActions(), this);
                 }
@@ -270,16 +289,55 @@ namespace DOL.GS
                 {
                     workerCycle = GameLoopThreadPoolWatchdog.IDLE_CYCLE;
                     if (participating)
-                    {
-                        workReady.Reset();
-                        Interlocked.Increment(ref _workState.CompletedWorkerCount);
-                        _workCompleted.Signal();
-                    }
+                        CompleteParticipation(workReady);
                 }
             }
 
             if (log.IsInfoEnabled)
                 log.Info($"Thread \"{Thread.CurrentThread.Name}\" is stopping");
+        }
+
+        /// <summary>
+        /// #640: the one way to interrupt a worker (tests, tools). It flags the worker first, so the worker consumes the
+        /// interrupt at the start of its next batch instead of letting it fire inside the batch. The watchdog never
+        /// interrupts a worker (GameLoopThreadPoolWatchdog: it waits, then restarts).
+        /// </summary>
+        public void InterruptWorker(int id)
+        {
+            Volatile.Write(ref _interruptPending[id], 1);
+            _workers[id]?.Interrupt();
+        }
+
+        private static void ConsumeStaleInterrupt()
+        {
+            // Thread.Sleep(0) throws at once if an interrupt is pending and
+            // returns at once otherwise.
+            try { Thread.Sleep(0); }
+            catch (ThreadInterruptedException) { }
+        }
+
+        private void CompleteParticipation(ManualResetEventSlim workReady)
+        {
+            workReady.Reset();
+            Interlocked.Increment(ref _workState.CompletedWorkerCount);
+            // #640: CountdownEvent.Signal decrements first; it can block only
+            // after that, while waking the caller, so an interrupt there may
+            // lose the wake-up but never the count. It must not escape this
+            // finally and end the worker loop (that strands the next batch),
+            // and the barrier wait polls (BARRIER_POLL_MS), so it sees the count.
+            try
+            {
+                if (_completionSignalForTests is { } signal)
+                    signal(_workCompleted);
+                else
+                    _workCompleted.Signal();
+            }
+            catch (ThreadInterruptedException)
+            {
+                int count = Interlocked.Increment(ref _interruptedCompletions);
+                if (log.IsWarnEnabled)
+                    log.Warn($"Thread \"{Thread.CurrentThread.Name}\" was interrupted while completing a batch ({count} so far)");
+            }
         }
 
         private void ProcessWorkActions()
