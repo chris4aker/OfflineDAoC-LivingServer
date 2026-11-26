@@ -68,6 +68,12 @@ namespace DOL.GS.Keeps
 		public PathPoint PatrolPath = null;
 
 		/// <summary>
+		/// #697: the key a patrol of this position is kept under in <see cref="AbstractGameKeep.Patrols"/>: its TemplateID,
+		/// the PatrolID (and path id) <see cref="GameKeepComponent.FillPositions"/> gives it. The check there uses this key too.
+		/// </summary>
+		public static string KeyFor(DbKeepPosition position) => position?.TemplateID;
+
+		/// <summary>
 		/// Method to Initialise the Guards
 		/// 
 		/// Here we create the instances of the guard
@@ -77,7 +83,11 @@ namespace DOL.GS.Keeps
 		/// </summary>
 		public void InitialiseGuards()
 		{
-			Component.Keep.Patrols.Add(PatrolID, this);
+			// #697: one patrol per key. FillPositions runs again on every keep level change; a second patrol of the same key
+			// used to throw here (Dictionary.Add) and stop the level change. The one already there keeps its guards, and
+			// AbstractGameKeep.ChangeLevel sets its guard count for the new level (ChangePatrolLevel).
+			if (!Component.Keep.Patrols.TryAdd(PatrolID, this))
+				return;
 
 			//need this here becuase it's checked in add to world
 			PatrolPath = PositionMgr.LoadPatrolPath(PatrolID, Component);
