@@ -113,6 +113,14 @@ namespace DOL.GS
             return false;
         }
 
+        /// <summary>Pure (#568 C8): "Attack spells: None" keeps the caster's self bladeturn up in the fight as well.</summary>
+        public static bool KeepsBladeturnInFight(bool hired, int attackChoice) => hired && attackChoice == AttackNone;
+
+        /// <summary>A hired caster whose player chose "Attack spells: None" (always false for gamebots).</summary>
+        public static bool KeepsBladeturnInFight(GameBot bot) =>
+            bot?.CharacterClass != null && bot.IsHiredCompanion && IsCasterClass((eCharacterClass)bot.CharacterClass.ID) &&
+            KeepsBladeturnInFight(true, CompanionOptions165.Choice(bot, "attackspells"));
+
         /// <summary>
         /// Pure: the "Attack spells" row. Area spells only: no single-target damage (instant, bolt or cast), area damage,
         /// debuffs and crowd control stay. None: no damage spell and no debuff; buffs, crowd control and utility stay.

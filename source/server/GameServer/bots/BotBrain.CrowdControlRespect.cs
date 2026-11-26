@@ -26,6 +26,35 @@ namespace DOL.AI.Brain
         /// <summary>Pure rule: a controlled target is passed over only while an uncontrolled one is in the fight.</summary>
         public static bool PassOverControlled(bool controlled, bool uncontrolledAvailable) => controlled && uncontrolledAvailable;
 
+        /// <summary>
+        /// Pure rule (#568 C1, from DividedRealms 9e18aa53, BotBrain.CrowdControlRespect.cs, GroupFightsUncontrolled): "the
+        /// fight" is not only this bot's own aggro list. A groupmate, or the player the bot assists, fighting an uncontrolled
+        /// monster counts too, so a bot whose own list holds only the mezzed add leaves it alone and joins the group's fight
+        /// instead of breaking the mez (owner 2026-10-29: bots broke the healers' mezzes).
+        /// </summary>
+        public static bool UncontrolledFightRule(bool ownListUncontrolled, bool groupFightsUncontrolled) =>
+            ownListUncontrolled || groupFightsUncontrolled;
+
+        /// <summary>A groupmate or the assisted player is fighting a living, uncontrolled enemy of this bot nearby.</summary>
+        private bool GroupFightsUncontrolled()
+        {
+            Group group = Body.Group;
+            if (group != null)
+                foreach (GameLiving member in group.GetMembersInTheGroup())
+                    if (member != Body && FightsUncontrolled(member))
+                        return true;
+            GamePlayer assisted = AssistedPlayer;
+            return assisted != null && group?.IsInTheGroup(assisted) != true && FightsUncontrolled(assisted);
+        }
+
+        private bool FightsUncontrolled(GameLiving member) =>
+            member is { IsAlive: true } && member.CurrentRegion == Body.CurrentRegion &&
+            (member.IsAttacking || member.InCombat) &&
+            member.TargetObject is GameLiving target && target != Body && target.IsAlive &&
+            target.ObjectState == GameObject.eObjectState.Active && !IsBreakablyControlled(target) &&
+            Body.IsWithinRadius(target, MAX_AGGRO_LIST_DISTANCE) &&
+            GameServer.ServerRules.IsAllowedToAttack(Body, target, true);
+
         /// <summary>The pet leaves a controlled monster for the bot's own (uncontrolled) target.</summary>
         private void RedirectPetFromControlledTarget(GameLiving botTarget)
         {

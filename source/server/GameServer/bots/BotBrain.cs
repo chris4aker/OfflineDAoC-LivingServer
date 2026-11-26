@@ -369,6 +369,9 @@ namespace DOL.AI.Brain
                     break;
                 }
             }
+            // #568 C1: a groupmate's (or the assisted player's) fight counts too, so the mezzed add is not the only choice.
+            if (!uncontrolledAvailable && !AggroList.IsEmpty)
+                uncontrolledAvailable = UncontrolledFightRule(false, GroupFightsUncontrolled());
 
             foreach (var pair in AggroList)
             {
@@ -2459,13 +2462,19 @@ namespace DOL.AI.Brain
             bool crowdControlled, long sinceAttackedMilliseconds) =>
             alive && !hasAggro && !attacking && !busy && !crowdControlled && sinceAttackedMilliseconds >= 3_000;
 
+        /// <summary>Pure (#568 C8): aggro on the group holds the shield back, except in the "Attack spells: None" fight upkeep.</summary>
+        public static bool SelfBladeturnAggroWaits(bool fight, bool hasAggro) => !fight && hasAggro;
+
         /// <summary>
         /// A used-up self bladeturn is recast as soon as it is safe. It used to go
         /// through the general buff upkeep, which waits for the combat flag to
         /// clear, skips offensive casters while they rest, and puts the shield
         /// behind every other long buff, so it came back long after the fight.
         /// </summary>
-        private bool TryRestoreSelfBladeturn()
+        /// <param name="fight">#568 C8 (True165 19eef1d, TryNoAttackSpellsBladeturn): a hired caster set to "Attack spells:
+        /// None" also puts it back up in the fight; aggro on the group is then no reason to wait (still never while hit in
+        /// the last 3 s, swinging or busy).</param>
+        private bool TryRestoreSelfBladeturn(bool fight = false)
         {
             GameBot bot = BotBody;
             if (bot == null || !bot.IsAlive)
@@ -2477,7 +2486,7 @@ namespace DOL.AI.Brain
                 return true;
             if (now < _nextSelfBladeturnTick || bot.IsOnStableMasterRoute ||
                 CompanionFollowPolicy.WaitingForLeaderToStop(bot) || EpicEncounterTactics.NoBladeturnHere(bot) ||
-                !SelfBladeturnSafe(true, HasAggro, bot.IsAttacking,
+                !SelfBladeturnSafe(true, SelfBladeturnAggroWaits(fight, HasAggro), bot.IsAttacking,
                     bot.IsCasting || bot.castingComponent?.HasPendingSkillRequests == true,
                     bot.IsStunned || bot.IsMezzed || bot.IsSilenced,
                     now - bot.LastAttackedByEnemyTick))
@@ -4462,6 +4471,7 @@ namespace DOL.AI.Brain
                 if (TryGroupCelerity()) return true;
                 if (TryShamanPveAddRoot()) return true;
                 if (TryShortCombatShield()) return true;
+                if (TryNoAttackSpellsBladeturn()) return true;
                 if (BotBody.CharacterClass.ID == (int)eCharacterClass.Cleric)
                 {
                     if (!Util.Chance(Math.Max(5, Body.ManaPercent - 50)))
