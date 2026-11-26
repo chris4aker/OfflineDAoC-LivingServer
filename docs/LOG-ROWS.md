@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **754**; pending (#625, not on main yet): **0**; shipped by the pipeline: **722**.
+- Rows in code: **755**; pending (#625, not on main yet): **0**; shipped by the pipeline: **723**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -462,6 +462,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `LORE_PLACED` | server.log | **ships** | `bots/autonomous/AutonomousTales.cs` | `bot`, `channel`, `place`, `player`, `pool` | `bot`, `player` | - | - |
 | `MERCHANT_ITEMS_MISSING` | server.log | **ships** | `gameutils/MerchantTradeItems.cs` | `examples`, `lists`, `note`, `rows`, `this_run` | `examples`, `note` | - | - |
 | `MERCHANT_LIST_TIDIED` | server.log | **ships** | `gameutils/MerchantTradeItems.cs` | `copies_dropped`, `list`, `moved_to_free_slots`, `no_room` | - | - | Was "two merchant items on same page/slot" at error level for every slot on every page view (2,000+ a day). |
+| `MORGANA_QUEST_HELP` | server.log | **ships** | `bots/MorganaQuestHelp.cs` | `companions`, `demon`, `engaged`, `gamebots`, `helpers`, `region`, `support` | `demon` | - | - |
 | `NAV_LINK_LANDING` | server.log | **ships** | `ECS-Components/NpcMovementComponent.cs` | `bot`, `from`, `kind`, `region`, `to`, `zone` | `bot` | - | - |
 | `NECRO_SERVANT_COMMAND_DROPPED` | server.log | **ships** | `ai/brain/Necromancer/NecromancerPetBrain.cs` | `after`, `bot`, `region`, `servant` | `bot` | - | - |
 | `NETWORK_EXPOSURE` | server.log | no: the PC's network setup | `source/server/CoreBase/Network/BaseServer.cs` | - | - | - | - |
