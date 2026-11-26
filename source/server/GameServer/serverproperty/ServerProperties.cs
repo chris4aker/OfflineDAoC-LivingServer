@@ -2770,6 +2770,8 @@ namespace DOL.GS.ServerProperties
 		public static bool RAID_LEARNS_FROM_RAIDERS = true;
 		[ServerProperty("bots", "bot_bard_fills_healer_slot", "Can a Hibernian Bard fill a bot party's Healer slot when no Druid or Warden is in reach, and heal as that party's healer while it holds the slot (#567 B7)? Ordinary groups only, never realm raids. Off: only the healing classes fill it.", true)]
 		public static bool BOT_BARD_FILLS_HEALER_SLOT;
+		[ServerProperty("bots", "bot_morgana_quest_help", "Bots in your group help with Morgana's quest fight (#611): when your Albion level 50 epic event starts at the fallen tower in Lyonesse, your companions and the gamebots grouped with you fight her two demons, Bechard and Silcharde. Bots never attack Morgana, and only a player on the quest starts the event. Off: bots join only once you or the demons start the fight. Log: MORGANA_QUEST_HELP.", true)]
+		public static bool BOT_MORGANA_QUEST_HELP = true;
 
 		/// <summary>
 		/// Bots as people, item 4's master switch (work packages 3 and 4).
