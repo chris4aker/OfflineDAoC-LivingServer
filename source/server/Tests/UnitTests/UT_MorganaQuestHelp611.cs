@@ -89,11 +89,12 @@ namespace DOL.UnitTests
             public override byte EndurancePercent => 0;
             public override int GetModified(eProperty property) => property == eProperty.SpellRange ? 100 : 0;
         }
-        /// <summary>Bechard as MorganaBrain spawns him, without a world.</summary>
+        /// <summary>Bechard as MorganaBrain spawns him, without a world. Built uninitialized (no field initializers run):
+        /// <see cref="MakeBechard()"/> sets the test fields.</summary>
         private sealed class TestBechard : Bechard
         {
-            public int TestX = 400;
-            public bool Alive = true;
+            public int TestX;
+            public bool Alive;
             public override bool IsAlive => Alive;
             public override bool IsCasting => false;
             public override bool IsAttacking => false;
@@ -108,7 +109,7 @@ namespace DOL.UnitTests
         }
         private sealed class TestSilcharde : Silcharde
         {
-            public int TestX = 900;
+            public int TestX;
             public override bool IsAlive => true;
             public override bool IsCasting => false;
             public override bool IsAttacking => false;
@@ -169,8 +170,8 @@ namespace DOL.UnitTests
             var (player, companion, gamebot) = Party();
             Bot solo = MakeBot(new ClassArmsman());
             var (_, otherGroupBot, _) = Party();
-            TestBechard bechard = Actor<TestBechard>();
-            TestSilcharde silcharde = Actor<TestSilcharde>();
+            TestBechard bechard = MakeBechard();
+            TestSilcharde silcharde = MakeSilcharde();
 
             int asked = MorganaQuestHelp.OnEventStarted(player, new GameNPC[] { bechard, silcharde });
 
@@ -188,8 +189,8 @@ namespace DOL.UnitTests
         [Test] public void TheNearerLiveDemonIsTheFirst()
         {
             Player player = Actor<Player>();
-            TestBechard bechard = Actor<TestBechard>();
-            TestSilcharde silcharde = Actor<TestSilcharde>();
+            TestBechard bechard = MakeBechard();
+            TestSilcharde silcharde = MakeSilcharde();
             silcharde.TestX = 100;
             Assert.That(MorganaQuestHelp.FirstDemon(player, new GameNPC[] { bechard, silcharde }), Is.SameAs(silcharde));
             silcharde.TestX = 900;
@@ -203,7 +204,7 @@ namespace DOL.UnitTests
         [Test] public void NothingWithTheSwitchOffOrWithoutAQuestPlayer()
         {
             var (player, companion, gamebot) = Party();
-            TestBechard bechard = Actor<TestBechard>();
+            TestBechard bechard = MakeBechard();
             Assert.That(MorganaQuestHelp.OnEventStarted(null, new GameNPC[] { bechard }), Is.Zero);
             Properties.BOT_MORGANA_QUEST_HELP = false;
             Assert.That(MorganaQuestHelp.OnEventStarted(player, new GameNPC[] { bechard }), Is.Zero);
@@ -214,7 +215,7 @@ namespace DOL.UnitTests
         {
             var (player, companion, gamebot) = Party();
             gamebot.TestX = MorganaQuestHelp.HelpRadius + 500;
-            MorganaQuestHelp.OnEventStarted(player, new GameNPC[] { Actor<TestBechard>() });
+            MorganaQuestHelp.OnEventStarted(player, new GameNPC[] { MakeBechard() });
             Assert.That(B(companion).HasAggro, Is.True);
             Assert.That(B(gamebot).HasAggro, Is.False, "beyond the group-defense radius");
         }
@@ -266,6 +267,8 @@ namespace DOL.UnitTests
             Field(typeof(GameNPC), bot, "m_ownBrain", brain);
             return bot;
         }
+        private TestBechard MakeBechard() { TestBechard d = Actor<TestBechard>(); d.TestX = 400; d.Alive = true; return d; }
+        private TestSilcharde MakeSilcharde() { TestSilcharde d = Actor<TestSilcharde>(); d.TestX = 900; return d; }
         private T Actor<T>() where T : GameLiving
         {
             T actor = (T)RuntimeHelpers.GetUninitializedObject(typeof(T));
