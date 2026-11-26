@@ -5850,6 +5850,9 @@ namespace DOL.GS
         /// <param name="killer">the killer</param>
         public override void ProcessDeath(GameObject killer)
         {
+            // #644: RAID_DEATH when the player is a raider in a live raid attempt (logging only; read before the death clears anything).
+            RaidAttemptRows.NoteDeath(this, killer);
+
             // Ambient trigger upon killing player
             if (killer is GameNPC)
                 (killer as GameNPC).FireAmbientSentence(GameNPC.eAmbientTrigger.killing, killer as GameLiving);

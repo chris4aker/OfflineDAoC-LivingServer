@@ -51,6 +51,12 @@ jobs:
         run: |
           python3 tools/grafana/kit.py --check
           python3 -m unittest discover -s tools/grafana/tests -v
+      # Issue #649: the Grafana Cloud kit's detect, env check, install dry runs and config checks. ubuntu-latest has pwsh,
+      # so the Windows scripts are parsed and dry-run too; ALLOY_BIN (not set here) would also run a real Alloy.
+      - name: Grafana Cloud kit tests
+        run: |
+          python3 tools/grafana/cloud/dashboards.py --check
+          python3 -m unittest discover -s tools/grafana/cloud/tests -v
 
   # The new client as a 0.37c player gets it: the released scripts with tools/fork-build/content-patches.json applied
   # must all compile in Godot against the released class cache, and issue #34's probe (skills onto the quickbar,

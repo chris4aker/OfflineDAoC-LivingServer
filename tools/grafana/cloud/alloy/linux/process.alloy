@@ -1,0 +1,29 @@
+// Server process metrics on Linux (native or Wine). Under Wine the process comm is "MAIN", so match the command line.
+prometheus.exporter.process "game" {
+  track_children = false
+  gather_smaps   = false
+  matcher {
+    name    = "coreserver"
+    cmdline = ["CoreServer\\.exe"]
+  }
+}
+
+prometheus.scrape "process" {
+  targets         = prometheus.exporter.process.game.targets
+  forward_to      = [prometheus.relabel.process.receiver]
+  scrape_interval = "30s"
+}
+
+prometheus.relabel "process" {
+  rule {
+    source_labels = ["__name__"]
+    regex         = "namedprocess_namegroup_(num_procs|cpu_seconds_total|memory_bytes|num_threads|oldest_start_time_seconds)"
+    action        = "keep"
+  }
+  rule {
+    source_labels = ["__name__", "memtype"]
+    regex         = "namedprocess_namegroup_memory_bytes;(proportionalResident|proportionalSwapped|swapped)"
+    action        = "drop"
+  }
+  forward_to = [prometheus.relabel.common.receiver]
+}

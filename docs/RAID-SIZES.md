@@ -74,6 +74,8 @@ stays, with stricter evidence (below). The withdrawn raises and the audit's reas
      (`RealmRaidDungeonRoute.IsWipe`): half of the engaged raiders fallen, or the encounter reset after being taken to
      70% or lower (`ResetWipeLowestPercent`). Raiders really die in it. A model that cannot lose (a spawn count, a phase
      time) cannot show that a size loses.
+     A PC log's real deaths per attempt are in `RAID_ATTEMPT_END died=` (against `left=`, the fallen who did not die)
+     and one `RAID_DEATH` row per death ([RAID-ATTEMPT-ROWS.md](RAID-ATTEMPT-ROWS.md), #644; tests only so far).
    - **b. It reproduces the PC.** At least one PC kill **and** one PC loss, each at the size its log shows, come out of
      the sim as a win and a loss. A target taken from the model's own estimate of a PC fight is not a log figure.
    - **c. The control at the real sizes.** The no-zerg control (the rules from before the tactic) is checked at the

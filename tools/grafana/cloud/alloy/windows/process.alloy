@@ -1,0 +1,23 @@
+// Server process metrics on Windows: the windows exporter's process collector, limited to CoreServer.
+// Tests only: not yet run on a Windows PC (issue #649).
+prometheus.exporter.windows "game" {
+  enabled_collectors = ["process"]
+  process {
+    include = "CoreServer"
+  }
+}
+
+prometheus.scrape "process" {
+  targets         = prometheus.exporter.windows.game.targets
+  forward_to      = [prometheus.relabel.process.receiver]
+  scrape_interval = "30s"
+}
+
+prometheus.relabel "process" {
+  rule {
+    source_labels = ["__name__"]
+    regex         = "windows_process_(cpu_time_total|working_set_private_bytes|working_set_bytes|threads|handles|start_time)"
+    action        = "keep"
+  }
+  forward_to = [prometheus.relabel.common.receiver]
+}

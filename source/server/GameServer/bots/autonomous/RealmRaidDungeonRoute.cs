@@ -752,6 +752,46 @@ namespace DOL.GS
         // A counted wipe arms the next pull as a retry.
         private bool _retryArmed;
 
+        /// <summary>The raid attempt rows of this route (#644: RAID_ATTEMPT, RAID_ATTEMPT_END, RAID_DEATH); null writes none
+        /// (tests, a route no raid owns). Logging only: nothing in the route reads it to decide anything.</summary>
+        public RaidAttemptTracker Attempts { get; set; }
+
+        /// <summary>Raiders join the open attempt (they fight in it), and the attempt rows' live attempt with them.</summary>
+        private void Engage(IEnumerable<GameLiving> raiders)
+        {
+            GameLiving[] joining = raiders as GameLiving[] ?? raiders.ToArray();
+            _engaged.UnionWith(joining);
+            Attempts?.Join(joining);
+        }
+
+        /// <summary>The died/left split of the open attempt's raiders (#644), read before its sets are cleared.</summary>
+        private (int Died, int Left) DiedAndLeft() =>
+            RaidAttemptRows.SplitFallen(_engaged, p => _fellInAttempt.Contains(p) || FallenNow(p), p => Attempts?.Current?.HasDied(p) == true);
+
+        /// <summary>
+        /// Ends the attempt rows' live attempt (#644) when the route's own attempt ended without EndAttempt: its encounter was
+        /// killed (<paramref name="killed"/>, or seen dead), the route moved to another target, or the raid ended. Logging only.
+        /// </summary>
+        public void CloseOpenAttempt(string outcome, long now, bool killed = false)
+        {
+            if (Attempts?.Current is not { } open) return;
+            bool dead = killed || open.Boss != null && !SafeAlive(open.Boss);
+            var (died, left) = DiedAndLeft();
+            int fallen = AttemptFallen(_engaged, _fellInAttempt, FallenNow);
+            Attempts.End(dead ? "killed" : outcome, _engaged.Count, fallen, died, left, dead ? 0 : SafeHealth(open.Boss),
+                dead ? 0 : _attemptLowestPercent, now);
+        }
+
+        private static bool SafeAlive(GameNPC npc)
+        {
+            try { return npc.IsAlive; } catch { return false; }
+        }
+
+        private static int SafeHealth(GameNPC npc)
+        {
+            try { return npc?.HealthPercent ?? -1; } catch { return -1; }
+        }
+
         private void BeginAttempt(GameLiving[] raiders, long now)
         {
             _skirmishHeld = false;
@@ -776,6 +816,8 @@ namespace DOL.GS
             _targetLowestHealth = _targetLastHealth = _target.Health;
             _targetProgressTick = now;
             _regrouping = false;
+            // #644: RAID_ATTEMPT (logging only), after the route's own state is set.
+            Attempts?.Begin(_target, _region, raiders, _attemptParticipants, now, _musterSince > 0 ? now - _musterSince : -1);
         }
 
         /// <summary>Ends the current attempt; true when it was a wipe (the raid now regroups or is defeated).</summary>
@@ -785,13 +827,18 @@ namespace DOL.GS
             _skirmishHeld = false;
             int engaged = _engaged.Count;
             int fallen = AttemptFallen(_engaged, _fellInAttempt, FallenNow);
+            // #644: the attempt's id for the rows below (decision b: appended, the fields before it unchanged), and the
+            // died/left split of its fallen for RAID_ATTEMPT_END.
+            string attempt = Attempts?.CurrentId ?? "-";
+            var (died, left) = DiedAndLeft();
             _engaged.Clear();
             _fellInAttempt.Clear();
             if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent))
             {
                 // Not a wipe: said so, with the counts (2026-11-15: Kvasir's attempt ended with no line at all).
                 log.Info($"REALM_EXPEDITION_ATTEMPT_ENDED region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
-                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False");
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False attempt={attempt}");
+                EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, false, false, how), engaged, fallen, died, left, now);
                 return false;
             }
             // Counted per encounter: the boss that owns the adds (WipeEncounter), so one linked fight is one encounter's.
@@ -802,7 +849,8 @@ namespace DOL.GS
                 int resets = _freeResets[encounter] = _freeResets.GetValueOrDefault(encounter) + 1;
                 log.Warn($"REALM_EXPEDITION_ENCOUNTER_RESET region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
                          $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" resets={resets} of={FreeEncounterResets} " +
-                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\"");
+                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\" attempt={attempt}");
+                EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, true, false, how), engaged, fallen, died, left, now);
                 _regrouping = true;
                 _regroupSince = _musterSince = now;
                 _targetProgressTick = now;
@@ -813,7 +861,8 @@ namespace DOL.GS
                 // Lost skirmish: rest and muster again, but it was not the raid's attempt.
                 log.Warn($"REALM_EXPEDITION_SKIRMISH_LOST region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
                          $"raid={_attemptRaidSize} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" " +
-                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\"");
+                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\" attempt={attempt}");
+                EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, false, true, how), engaged, fallen, died, left, now);
                 _regrouping = true;
                 _regroupSince = _musterSince = now;
                 _targetProgressTick = now;
@@ -823,7 +872,8 @@ namespace DOL.GS
             _wipes.Enqueue((encounter, failures, engaged, fallen));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{encounter}\" level={_target.Level} failures={failures} " +
                      $"of={MaximumFailedAttempts} engaged={engaged} fallen={fallen} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\"" +
-                     (encounter != _target.Name ? $" fought=\"{_target.Name}\"" : ""));
+                     (encounter != _target.Name ? $" fought=\"{_target.Name}\"" : "") + $" attempt={attempt}");
+            EndAttemptRow(RaidAttemptRows.DungeonOutcome(true, false, false, how), engaged, fallen, died, left, now);
             if (failures >= MaximumFailedAttempts)
             {
                 DefeatedAt = encounter;
@@ -837,6 +887,10 @@ namespace DOL.GS
             _targetProgressTick = now;
             return true;
         }
+
+        /// <summary>RAID_ATTEMPT_END for the attempt EndAttempt just judged (#644; logging only).</summary>
+        private void EndAttemptRow(string outcome, int engaged, int fallen, int died, int left, long now) =>
+            Attempts?.End(outcome, engaged, fallen, died, left, SafeHealth(_target), _attemptLowestPercent, now);
 
         public const long TargetNoProgressMilliseconds = 5 * 60_000;
         public const long BlockedTargetRetryMilliseconds = 15 * 60_000;
@@ -1442,8 +1496,10 @@ namespace DOL.GS
             // muster (KilledSinceAttempt; Chthonic Knight Ukobat, 2026-11-16).
             if (_musterTarget == _target && _musterEngaged && KilledSinceAttempt(_musterEngagedTick, _musterDeathSeen, _target.SpawnTick))
             {
+                CloseOpenAttempt("killed", now, killed: true);
                 log.Info($"REALM_EXPEDITION_ATTEMPT_ENDED region={_region} target=\"{_target.Name}\" engaged={_engaged.Count} " +
-                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"killed; it came back since\" wipe=False");
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"killed; it came back since\" wipe=False " +
+                         $"attempt={Attempts?.CurrentId ?? "-"}");
                 _musterTarget = null;
             }
             // The muster was placed while the encounter was out chasing raiders; it is home again, so the muster follows it
@@ -1469,6 +1525,8 @@ namespace DOL.GS
             }
             if (_musterTarget != _target)
             {
+                // #644: an attempt left open on the last muster target ends here (killed, or the route moved on).
+                if (_musterEngaged) CloseOpenAttempt("stopped", now);
                 _musterTarget = _target;
                 _musterDeathSeen = 0;
                 _musterSince = now;
@@ -1560,14 +1618,14 @@ namespace DOL.GS
                         if (choice != EpicEncounterTactics.EarlyPull.Commit)
                         {
                             // Still too few: whoever it reaches fights it, the rest keep gathering at the muster.
-                            _engaged.UnionWith(fighting);
+                            Engage(fighting);
                             NoteFallen();
                             HoldForSkirmish(now);
                             return true;
                         }
                         // Enough of the raid has gathered while it fought the few it caught: everyone goes in now.
                         _skirmishHeld = false;
-                        _engaged.UnionWith(inside);
+                        Engage(inside);
                         _attemptRaidSize = Math.Max(_attemptRaidSize, livingRaid);
                         Destination = Front; Hold = false;
                         _nextTargetCall = 0;
@@ -1622,7 +1680,7 @@ namespace DOL.GS
                     _nextTargetCall = 0;
                 }
                 else
-                    _engaged.UnionWith(fighting);
+                    Engage(fighting);
                 NoteFallen();
                 _pulls.SawCombat();
                 _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
@@ -2903,6 +2961,8 @@ namespace DOL.GS
         private void TargetDefeated(long now)
         {
             GameNPC dead = _target;
+            // #644: the attempt on it was won (RAID_ATTEMPT_END outcome=killed; logging only).
+            if (Attempts?.Current?.Boss == dead) CloseOpenAttempt("killed", now, killed: true);
             log.Info($"REALM_EXPEDITION_TARGET_DEFEATED region={_region} target=\"{dead.Name}\" level={dead.Level} " +
                      $"minutes={(now - _targetStartTick) / 60_000.0:0.0}");
             _cleared.Add(dead);

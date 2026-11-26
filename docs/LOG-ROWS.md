@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **736**; pending (#625, not on main yet): **3**; shipped by the pipeline: **707**.
+- Rows in code: **739**; pending (#625, not on main yet): **3**; shipped by the pipeline: **710**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -478,10 +478,13 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `POPULATION_NEWCOMER` | server.log | **ships** | `bots/autonomous/AutonomousNewcomerStream.cs` | `class`, `excluded`, `floor`, `id`, `level`, `low`, `outcome`, `per_hour`, `race`, `realm`, `reason`, `retired`, `roster` | - | - | - |
 | `POPULATION_RETIRED` | server.log | **ships** | `bots/autonomous/AutonomousNewcomerStream.cs` | `candidates`, `class`, `excluded`, `friends`, `guild`, `id`, `idle_h`, `level`, `newcomer`, `online`, `order`, `outcome`, `realm`, `score` | - | - | - |
 | `QUEST_XP` | server.log | **ships** | `gameobjects/GamePlayer.cs` | `base`, `capped`, `level`, `paid`, `player`, `quest_xp_by_level`, `rate`, `scaled`, `source` | `player` | - | - |
+| `RAID_ATTEMPT` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs`<br>`bots/autonomous/LivingRows.Raid.cs` | `attempt`, `boss`, `build`, `classes`, `event`, `gatherS`, `kind`, `n`, `period`, `players`, `prev`, `region`, `roles`, `sf`, `size`, `sizePct`, `wipeToPullS` | - | - | RAID_ATTEMPT attempt= event= kind= region= boss="" n= size= period= sizePct= sf= roles=T:H:B:A classes= players= build= |
+| `RAID_ATTEMPT_END` | server.log | **ships** | `bots/autonomous/LivingRows.Raid.cs` | `attempt`, `deaths`, `died`, `engaged`, `fallen`, `health`, `left`, `lowest`, `outcome`, `secs` | - | - | RAID_ATTEMPT_END attempt= outcome= secs= engaged= fallen= died= left= deaths= health= lowest=. |
 | `RAID_BOTS_DISPERSED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `keep`, `mode`, `player`, `raid`, `squads` | `player` | - | - |
 | `RAID_BOTS_REGROUPED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `keep`, `minutes`, `mode`, `player`, `reason` | `player` | - | - |
 | `RAID_CURE_MEZZ` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `mezzedInReach`, `rank`, `spell`, `target` | `bot`, `target` | - | - |
 | `RAID_CURE_POISON` | server.log | **ships** | `bots/autonomous/RaidCureLog.cs` | `casts`, `curers`, `dots`, `groups`, `pastDanger`, `region`, `seconds`, `targets` | - | - | - |
+| `RAID_DEATH` | server.log | **ships** | `bots/autonomous/LivingRows.Raid.cs` | `attackers`, `attempt`, `class`, `dist`, `healersIn`, `idx`, `killer`, `killerKind`, `kind`, `level`, `mechanic`, `player`, `role`, `source`, `spellId`, `t` | - | - | RAID_DEATH attempt= t= idx= kind= player= class= role= level= killerKind= killer="" source= spellId= mechanic= dist= |
 | `RAID_LEARN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `familiarity`, `health`, `knowledge`, `mechanic`, `newcomer`, `raid`, `raiders`, `record`, `run`, `seen`, `seenShare`, `specialForces`, `veteran` | - | - | - |
 | `RAID_LEEROY` | server.log | **ships** | `bots/autonomous/AutonomousRaidLeeroy.cs` | `boss`, `bot`, `class`, `raid`, `raiders`, `region` | `bot` | - | - |
 | `RAID_LEEROY_ROLLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event` | - | - | - |
@@ -495,13 +498,13 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RAID_SQUAD_STATUS` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `keep`, `player` | `player` | - | - |
 | `RAID_UNREACHABLE_TARGET` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `heightAbove`, `player`, `position`, `target` | `bot`, `player`, `target` | - | - |
 | `REALM_EVENT_LEDGER` | server.log | no: free text, no key=value fields | `bots/autonomous/RealmEventRecords.cs` | - | - | - | - |
-| `REALM_EXPEDITION_ATTEMPT_ENDED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `engaged`, `fallen`, `health`, `how`, `lowest`, `region`, `target`, `wipe` | `target` | - | Not a wipe: said so, with the counts (2026-11-15: |
+| `REALM_EXPEDITION_ATTEMPT_ENDED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `region`, `target`, `wipe` | `target` | - | Not a wipe: said so, with the counts (2026-11-15: |
 | `REALM_EXPEDITION_BARRED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `reason`, `region`, `target` | `target` | - | Never a target behind a living boss's barrier (Easmarach's falls): |
 | `REALM_EXPEDITION_CLEAR_FIRST` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `boss`, `left`, `names`, `region` | `names` | - | - |
 | `REALM_EXPEDITION_COURT_LEASH` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `atMuster`, `court`, `fromMuster`, `fromPatrol`, `held`, `lord`, `muster`, `reason`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_COURT_WINDOW` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `muster`, `region`, `target`, `verdict` | `target` | - | - |
 | `REALM_EXPEDITION_EARLY_PULL` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `decision`, `health`, `inside`, `muster`, `musterFromSpawn`, `near`, `needed`, `pinned`, `raid`, `reason`, `region`, `resets`, `target`, `tether` | `target` | - | - |
-| `REALM_EXPEDITION_ENCOUNTER_RESET` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `engaged`, `fallen`, `health`, `how`, `lowest`, `of`, `reason`, `region`, `resets`, `target` | `target` | - | - |
+| `REALM_EXPEDITION_ENCOUNTER_RESET` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `of`, `reason`, `region`, `resets`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_FINAL_ENGAGE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `living`, `minutes`, `mustered`, `needed`, `region`, `retry`, `target` | `attempt`, `target` | - | - |
 | `REALM_EXPEDITION_FINAL_MUSTER` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `living`, `minutes`, `mustered`, `needed`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_FORMED_WAIT` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `front`, `inside`, `living`, `minutes`, `outside`, `reason`, `region` | - | - | - |
@@ -533,20 +536,20 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_EXPEDITION_ROUTE_GATE_EMPTY` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `gates`, `reason`, `region` | - | - | - |
 | `REALM_EXPEDITION_ROUTE_LOSSES` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `fallen`, `inside`, `killer`, `raid`, `reason`, `region`, `target` | `killer`, `target` | - | - |
 | `REALM_EXPEDITION_ROUTE_RETRY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `position`, `reason`, `region` | `bot` | - | - |
-| `REALM_EXPEDITION_SKIRMISH_LOST` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `engaged`, `fallen`, `health`, `how`, `lowest`, `raid`, `reason`, `region`, `target` | `target` | - | Lost skirmish: rest and muster again, but it was not the raid's attempt. |
+| `REALM_EXPEDITION_SKIRMISH_LOST` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `raid`, `reason`, `region`, `target` | `target` | - | Lost skirmish: rest and muster again, but it was not the raid's attempt. |
 | `REALM_EXPEDITION_STRANDED_REGROUP` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
 | `REALM_EXPEDITION_TACTIC` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.Earthmenders.cs`<br>`bots/autonomous/RealmRaidDungeonRoute.cs` | `approach`, `assign`, `encounter`, `fights`, `from`, `front`, `heals`, `health`, `kill`, `reason`, `region`, `tactic`, `to` | `fights`, `from`, `to` | - | A boss shielded by its adds, or one that dies with another, is fought through its tactic (EpicEncounterTactics). |
 | `REALM_EXPEDITION_TACTIC_ASIDE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `minutes`, `reason`, `region`, `tactic` | - | - | - |
 | `REALM_EXPEDITION_TACTIC_KEPT` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `note`, `reason`, `region`, `tactic` | `note` | - | - |
 | `REALM_EXPEDITION_TARGET_CALLED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `called`, `health`, `idleSeconds`, `region`, `target` | `target` | - | - |
-| `REALM_EXPEDITION_TARGET_DEFEATED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `level`, `minutes`, `region`, `target` | `target` | - | - |
+| `REALM_EXPEDITION_TARGET_DEFEATED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `level`, `minutes`, `region`, `target` | `target` | - | #644: the attempt on it was won (RAID_ATTEMPT_END outcome=killed; |
 | `REALM_EXPEDITION_TARGET_HEALED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `aggro`, `effects`, `from`, `fromSpawn`, `inCombat`, `inReach`, `lastHitAgoMs`, `model`, `region`, `returning`, `target`, `targeting`, `to` | `target` | - | - |
 | `REALM_EXPEDITION_TARGET_SKIPPED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `front`, `health`, `inside`, `near`, `reason`, `region`, `target` | `encounter`, `target` | - | An add of a boss whose adds die in order is never swapped for the next one (each swap moved the raid's stand): |
 | `REALM_EXPEDITION_TARGET_STATUS` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `busyWith`, `health`, `inCombat`, `itsTarget`, `itsTargetKind`, `level`, `mezzedAvg`, `mezzedPeak`, `raidersWithin1000`, `region`, `samples`, `spawnDistance`, `stunnedPeak`, `target`, `targeting` | `itsTarget`, `target` | - | - |
 | `REALM_EXPEDITION_TARGET_SWITCH` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `approach`, `from`, `front`, `level`, `reason`, `region`, `to` | `from`, `to` | - | - |
 | `REALM_EXPEDITION_TRAIL_GATE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `aggro`, `at`, `from`, `kills`, `level`, `reason`, `region`, `target`, `trail` | `from`, `target` | - | - |
 | `REALM_EXPEDITION_TRAIL_GATE_PASSED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `cap`, `from`, `kills`, `level`, `reason`, `region`, `target` | `from`, `target` | - | Killed on the trail TrailGateRekillCap times with no other named down since: |
-| `REALM_EXPEDITION_WIPE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `engaged`, `failures`, `fallen`, `fought`, `health`, `how`, `killer`, `level`, `lowest`, `of`, `raidTarget`, `region`, `target` | `fought`, `killer`, `raidTarget`, `target` | - | - |
+| `REALM_EXPEDITION_WIPE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `attempt`, `engaged`, `failures`, `fallen`, `fought`, `health`, `how`, `killer`, `level`, `lowest`, `of`, `raidTarget`, `region`, `target` | `fought`, `killer`, `raidTarget`, `target` | - | - |
 | `REALM_LEVEL_SPREAD` | server.log | **ships** | `bots/autonomous/LivingLog.cs` | `band`, `baseline`, `bots`, `gained`, `gone`, `hour`, `levelled`, `new`, `realm`, `rerolled` | - | - | ---- Row 6: REALM_LEVEL_SPREAD ---------------------------------------------------------------------------------- Row 6 (#544): |
 | `REALM_RAID_CALLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.Call.cs` | `after`, `event`, `forced`, `opened`, `realm`, `reason` | - | - | - |
 | `REALM_RAID_CALL_CANCELLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.Call.cs` | `event`, `realm`, `reason` | - | - | - |
