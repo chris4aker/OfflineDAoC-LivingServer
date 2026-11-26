@@ -1502,7 +1502,10 @@ public static partial class AutonomousBotGroupCoordinator
                     return true;
                 }
                 if (session.HeldUnreachableMembers.Add(memberKey))
+                {
                     Log.Warn($"REALM_RAID_HUB_ROUTE_FAILED event={session.RaidMusterEvent} group={session.Id} bot={bot.Name} region={bot.CurrentRegionID} position={bot.X},{bot.Y},{bot.Z} reason={reason}");
+                    AutonomousRealmRaid.NoteFunnelLoss(group, bot, "route"); // #644 RAID_FUNNEL (logging only)
+                }
                 int failures = session.ExpeditionRouteFailures[memberKey] = session.ExpeditionRouteFailures.GetValueOrDefault(memberKey) + 1;
                 // A member stranded on a disconnected patch of navmesh retried the same
                 // route every minute forever (Yrdis, Tuscaran rally, 2026-10-04: 59 times

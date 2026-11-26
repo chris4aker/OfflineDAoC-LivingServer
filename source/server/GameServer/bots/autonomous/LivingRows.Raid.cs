@@ -419,7 +419,49 @@ public sealed class RaidAttempt
                 if (raider == null || _index.ContainsKey(raider)) continue;
                 _index[raider] = _index.Count + 1;
                 RaidAttemptRows.ByRaider[raider] = this;
+                _members = null;
             }
+        }
+    }
+
+    // ---- RAID_FIGHT_SAMPLE's state (#644 part 2): the buffers are the attempt's own, grown only when raiders join -------
+
+    private GameLiving[] _members;
+    private RaidFightSampleRows.Raider[] _sampleRaiders = [];
+    private int[] _sampleDists = [];
+    private long _nextSample = long.MinValue;
+    private string _sampleBudgetTag;
+
+    /// <summary>The attempt's own budget tag for RAID_FIGHT_SAMPLE (4 a minute).</summary>
+    public string SampleBudgetTag => _sampleBudgetTag ??= RaidFightSampleRows.AttemptBudgetTag(Id);
+
+    /// <summary>True (and the next one is set) when a sample is due: at the pull, then every <paramref name="interval"/>.</summary>
+    public bool SampleDue(long now, long interval)
+    {
+        lock (_sync)
+        {
+            if (_closed) return false;
+            if (_nextSample == long.MinValue) _nextSample = Start;
+            if (now < _nextSample) return false;
+            // On time: the next is one interval on from this one's slot; late (a slow pulse): one interval from now.
+            _nextSample = now - _nextSample < interval ? _nextSample + interval : now + interval;
+            return true;
+        }
+    }
+
+    /// <summary>The members (rebuilt only after a join) and the sample buffers sized to them (grown only after a join).</summary>
+    public RaidFightSampleRows.Raider[] SampleBuffer(out GameLiving[] members, out int[] dists)
+    {
+        lock (_sync)
+        {
+            members = _members ??= [.. _index.Keys];
+            if (_sampleRaiders.Length < members.Length)
+            {
+                _sampleRaiders = new RaidFightSampleRows.Raider[members.Length];
+                _sampleDists = new int[members.Length];
+            }
+            dists = _sampleDists;
+            return _sampleRaiders;
         }
     }
 
@@ -496,7 +538,12 @@ public sealed class RaidAttempt
             _closed = true;
             members = _index.Keys.ToArray();
             _lastHits.Clear();
+            _members = null;
+            _sampleRaiders = [];
+            _sampleDists = [];
         }
+        // The attempt's RAID_FIGHT_SAMPLE budget window goes with it (#644 part 2).
+        if (_sampleBudgetTag != null) RvrRecordBudget.Forget(_sampleBudgetTag);
         foreach (GameLiving raider in members)
             RaidAttemptRows.ByRaider.TryRemove(new KeyValuePair<GameLiving, RaidAttempt>(raider, this));
     }
@@ -538,6 +585,17 @@ public sealed class RaidAttemptTracker
     /// <summary>The id the existing attempt rows carry: the live attempt's, else the last one's, else "-".</summary>
     public string CurrentId => Current?.Id ?? LastId ?? "-";
 
+    private int _mostMembers;
+
+    /// <summary>The most raiders any of this tracker's attempts had (RAID_FUNNEL's atBoss; #644 part 2).</summary>
+    public int MostMembers => Math.Max(_mostMembers, Current?.Members ?? 0);
+
+    /// <summary>When the first attempt began (RAID_FUNNEL's bossS), or -1 before any.</summary>
+    public long FirstBegin { get; private set; } = -1;
+
+    /// <summary>A RAID_FIGHT_SAMPLE of the live attempt when one is due (#644 part 2). Called from the raid pulse; never throws.</summary>
+    public void Sample(long now) => RaidFightSampleRows.SampleIfDue(Current, now);
+
     private GameLiving[] GuestsIn(ushort region)
     {
         try
@@ -572,6 +630,7 @@ public sealed class RaidAttemptTracker
             var attempt = new RaidAttempt(id, EventId, Kind, region, boss, bossName, now);
             attempt.Join((raiders ?? []).Concat(guests));
             Current = attempt;
+            if (FirstBegin < 0) FirstBegin = now;
             bool afterFailure = LastId != null && _lastOutcome is "wipe" or "reset" or "skirmish";
             if (LivingRows.Enabled && LivingRows.Take(RaidAttemptRows.AttemptMarker, RaidAttemptRows.AttemptPerMinute))
                 LivingRows.Emit(RaidAttemptRows.FormatAttempt(new RaidAttemptRows.AttemptFacts(id, EventId, Kind, region, bossName, n,
@@ -619,6 +678,7 @@ public sealed class RaidAttemptTracker
         if (attempt == null) return CurrentId;
         Current = null;
         LastId = attempt.Id;
+        _mostMembers = Math.Max(_mostMembers, attempt.Members);
         _lastOutcome = outcome;
         _lastEnd = now;
         try
