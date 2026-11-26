@@ -15,7 +15,7 @@ import kill_xp_report as kxr  # noqa: E402
 
 ROW = ('{t} | INF | DOL.GS.AutonomousKillXpDiagnostics | AUTONOMOUS_KILL_XP seq={seq} every=25 dropped={dropped} '
        'realm={realm} zone="{zone}" region=1 npc="bandit" npcLevel=14 npcXp=52000 con={con} party={party} size=5 '
-       'contributors=4 minLevel=11 maxLevel={maxlevel} avgLevel=12.3 levelDiff={diff} camp="c:1" campTarget="giant frog" '
+       'contributors=4 minLevel={minlevel} maxLevel={maxlevel} avgLevel=12.3 levelDiff={diff} camp="c:1" campTarget="giant frog" '
        '{camplevel}onTarget={on} sameName=0 xpPerMember={xp} xpSum=0 share={share} otherParties={others} lost={lost} '
        'shares="group/{realm}/4/{share}/killer"')
 GOAL = ('{t} | INF | DOL.GS.AutonomousGoalDiagnostics | AUTONOMOUS_GOAL_ATTEMPT '
@@ -24,10 +24,10 @@ GOAL2 = ('{t} | INF | DOL.GS.AutonomousGoalDiagnostics | AUTONOMOUS_GOAL_ATTEMPT
 
 
 def row(t="11/24 10:40:00", seq=25, dropped=0, realm="Albion", zone="Salisbury Plains", con="ORANGE", diff=1, on=1,
-        xp="10000/10000", share="1.000", others=0, lost="0.000", party="group", maxlevel=13, camplevel=None):
+        xp="10000/10000", share="1.000", others=0, lost="0.000", party="group", maxlevel=13, camplevel=None, minlevel=11):
     # camplevel=None: a row from before #544's campLevel field (old logs stay readable)
     return ROW.format(t=t, seq=seq, dropped=dropped, realm=realm, zone=zone, con=con, diff=diff, on=on, xp=xp,
-                      share=share, others=others, lost=lost, party=party, maxlevel=maxlevel,
+                      share=share, others=others, lost=lost, party=party, maxlevel=maxlevel, minlevel=minlevel,
                       camplevel="" if camplevel is None else f"campLevel={camplevel} ")
 
 
@@ -172,6 +172,48 @@ class KillXpReportTest(unittest.TestCase):
         self.assertEqual(alb["solo"]["arrivedShare"], 0.5)
         self.assertEqual(alb["group"]["arrivedShare"], 0.333)
         self.assertIsNone(alb["solo"]["targetConMedian"], "attempts from before targetLevel read as unknown")
+
+
+    def test_level_cap_kills_leave_the_xp_median(self):
+        # #671: level-50 parties are paid nothing by design; their 0s must not make the group median 0.
+        log = self.write(
+            row(party="group", minlevel=50, maxlevel=50, xp="0/0/0"),
+            row(party="group", minlevel=50, maxlevel=50, xp="0/0/0"),
+            row(party="group", minlevel=21, maxlevel=23, xp="100/100"),
+        )
+        kills, goals = kxr.read_logs([log], year=2026)
+        report = kxr.build_report(kills, goals, min_rows=1)
+        parties = report["realmParties"]["Albion"]
+        self.assertEqual(parties["group <50"]["xpPerMemberMedian"], 100)
+        self.assertEqual(parties["group 50"]["cappedRows"], 2)
+        self.assertEqual(parties["group 50"]["cappedValues"], 6)
+        self.assertIsNone(parties["group 50"]["xpPerMemberMedian"])
+        self.assertEqual(parties["group"]["xpPerMemberMedian"], 100, "no 0 median for the group line")
+        self.assertEqual(report["realms"]["Albion"]["xpPerMemberMedian"], 100)
+        text = kxr.render(report)
+        self.assertIn("capped", text)
+        self.assertRegex(text, r"  group <50 .*100")
+        self.assertRegex(text, r"  group 50 .* 2/6")
+        self.assertNotRegex(text, r"\n  group  ")
+        self.assertIn("not XP lost", text)
+
+    def test_solo_at_the_cap_without_min_level(self):
+        fields = kxr.parse_fields("party=solo maxLevel=50 xpPerMember=0")
+        self.assertTrue(kxr.kill_row(fields)["capped"])
+        self.assertFalse(kxr.kill_row(kxr.parse_fields("party=group maxLevel=50 xpPerMember=0/9"))["capped"],
+                         "a mixed group without minLevel is not assumed capped")
+
+    def test_output_unchanged_without_level_cap_kills(self):
+        log = self.write(row(xp="7000/7000"), row(party="solo", xp="9000"), row(realm="Hibernia", zone="Domnann"))
+        kills, goals = kxr.read_logs([log], year=2026)
+        report = kxr.build_report(kills, goals, min_rows=1)
+        self.assertEqual(set(report["realmParties"]["Albion"]), {"solo", "group"})
+        self.assertTrue(all(s["cappedRows"] == 0 for s in report["realms"].values()))
+        text = kxr.render(report)
+        self.assertNotIn("capped", text)
+        tables = text.split("\n\nshare = ")[0]
+        self.assertTrue(tables.splitlines()[1].rstrip().endswith("off"), "no capped column")
+        self.assertRegex(text, r"  group .*7,000")
 
 
 if __name__ == "__main__":
