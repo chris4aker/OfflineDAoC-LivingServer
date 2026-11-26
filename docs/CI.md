@@ -13,7 +13,7 @@ The "main: green checks" ruleset requires these five jobs of `build-and-test.yml
 | Job | Runner | Gates (each fails the job) |
 |---|---|---|
 | `versions` | ubuntu | README, `ForkBuildInfo.BuildName`, the newest released changelog heading and `MainForm.DisplayVersion` name one release (`tools/release/check_versions.py`); no new player-visible "Offline DAoC", "OfflineDAoC" or "shadowofze" outside `tools/release/brand-allowlist.json` and the compatibility names (`tools/release/check_brand.py`, #641); no old internal project or namespace name outside the kept names and legacy paths of `docs/NAMING.md` (`check_brand.py --internal`, #645); the release scripts' tests (`tools/release/tests`); the installer seeding tests (`tools/installer/tests`). |
-| `encounter-catalog` | ubuntu | `docs/encounters` matches the boss scripts (`source/tools/epic_encounter_catalog.py --check`); every `changelog.d/` fragment parses and names the version in development (`source/tools/assemble_changelog.py --check`); every test in `source/tools/tests` (the tools, `ALL SERVER COMMANDS.txt` up to date, `tools/check.py`'s mirror, the CI glue `ci_test_results.py` and the excluded-test list's format). |
+| `encounter-catalog` | ubuntu | `docs/encounters` matches the boss scripts (`source/tools/epic_encounter_catalog.py --check`); every `changelog.d/` fragment parses and names the version in development (`source/tools/assemble_changelog.py --check`); every test in `source/tools/tests` (the tools, `ALL SERVER COMMANDS.txt` up to date, `tools/check.py`'s mirror, the CI glue `ci_test_results.py` and the excluded-test list's format); the Grafana kit (`tools/grafana/kit.py --check`: `docs/LOG-ROWS.md`, the Alloy allowlist and the dashboards match the server code and name only real or pending rows) and its filter tests (`tools/grafana/tests`, synthetic lines). |
 | `new-client` | ubuntu | The 0.37c new client's released scripts plus `tools/fork-build/content-patches.json` compile in Godot 4.7.2 (pinned by SHA-512) against the released class cache, and issue #34's probe passes (`tools/newclient-compat/installed_check.py`). |
 | `server` | windows | See below. |
 | `launcher` | windows | Every launcher test (`DAoCLivingServer.Launcher.Tests`), and at least 400 of them ran (411 in 1.2.3). |
@@ -60,9 +60,9 @@ The "main: green checks" ruleset requires these five jobs of `build-and-test.yml
 | `wayback-fetch` | pushes and pull requests touching `tools/wayback-fetch` | Its tests in Windows PowerShell 5.1 and PowerShell 7, `-RequireE2E` (a missing Python fails). | Sound. |
 | `upstream-watch` | weekly, by hand | Lists upstream commits and updates one issue per repo. | A report by design. `gh label create ... \|\| true` only tolerates an existing label. |
 | `branch-cleanup` | by hand (mode `show` by default, or `APPLY`); also callable from another workflow | Its rules' tests (`tools/release/tests/test_branch_cleanup.py`), then `tools/release/branch_cleanup.py`. It classifies each branch as protected, open PR, recent (14 days), merged, replaced or never merged, and writes the list to the run page and the `branch-cleanup-<mode>` artifact. | #645; it replaced the 2026-10-18 one-off `cleanup-branches`. A dry run changes nothing. APPLY first tags each unmerged branch `archive/<branch>`, reads the tag back, then deletes the branch with a lease on its tip. It never deletes a tag. The owner approves the dry run's list before APPLY. A branch it could not archive or delete fails the run. |
-| `installer` | pushes touching `tools/installer/**` and the launcher's update code; by hand; called by `release` | Setup builds; newest-release choice; the launcher's update path; real installs (e2e). | **Release workflow: audited, not edited (#618 rule).** Soft spot: "Pictures of every page" prints each screenshot run's exit code but never fails on a non-zero one. The `package_release` default is still `v1.0-beta`. |
+| `installer` | pushes touching `tools/installer/**` and the launcher's update code; by hand; called by `release` | Setup builds; newest-release choice; the launcher's update path; real installs (e2e). | **Release workflow (#618 audit; fixed in #623).** "Pictures of every page" runs both scales, then `tools/installer/check_shots.py` fails the job on a non-zero exit code or a missing page picture, before Setup is uploaded (the pictures are uploaded either way). The `package_release` default is still `v1.0-beta`. |
 | `release` | a published release; by hand | Plans, runs `installer`, attaches Setup (real run) or shows what it would (dry run). | **Audited, not edited.** Sound: every check exits 1, and a dry run has a read-only token. |
-| `publish-release` | by hand | Publishes from a build-and-test push run on main whose conclusion is `success`. | **Audited, not edited.** It trusts the run's conclusion: before #618 a run with failing launcher tests still concluded `success` (continue-on-error), so this gate is only now as strong as it looks. |
+| `publish-release` | by hand | Publishes from a build-and-test push run on main whose conclusion is `success`. | **Audited in #618; fixed in #623.** Besides the run's conclusion, "Every required job succeeded" (`publish_release.py check-jobs`) refuses the run unless `server`, `launcher`, `encounter-catalog`, `new-client` and `versions` each concluded `success` in its latest attempt. |
 
 ## Excluded tests
 
@@ -76,6 +76,16 @@ UT_InstalledKeepRoutes  # read-only installed keep navigation: needs the install
 - A whole class goes on the list only when all of it needs the installed game files (navmeshes, a played or release
   database, captured logs), and its fixture is `[Explicit]`. `source/tools/tests/test_ci_test_results.py` fails
   otherwise. Issue #619 tracks the list and how to run them on the owner's PC.
+- **Running them** (on a PC with a playable folder and the .NET SDK; #619):
+  ```
+  python source/tools/run_installed_tests.py --list                     # each class, its reason, the variables it reads
+  python source/tools/run_installed_tests.py --game D:\Games\LivingServer [--only UT_A UT_B] [--dry-run]
+  ```
+  It sets `OFFLINE_DAOC_NAV_ROOT` (`<game>/runtime/server`, read in place), `OFFLINE_DAOC_DB_PATH` and `OFFLINE_DAOC_DB`
+  (a copy of the world made with SQLite's backup API, never the world itself) and `OFFLINE_DAOC_PROOF_OUT`; other
+  variables a class reads pass through from the environment. It refuses to run while a server answers on port 10300,
+  never starts one, and sums up `installed.trx`. No schedule runs them yet: that needs a self-hosted runner on the
+  owner's PC or fixture meshes in Git, both the owner's call (#619).
 - **A synthetic test never goes on the list whole-class.** Fix it. If it can't be fixed now, quarantine just it as
   `UT_Class.Method  # why (#issue)` with its own issue, and name it in the pull request. Never delete a test.
 - #618 took six classes off the list. Each had installed-file tests marked `[Explicit]` beside synthetic ones that had
@@ -90,6 +100,7 @@ Each checker CI runs has a test that plants a defect and sees it fail, and sees 
 |---|---|
 | `tools/check.py` (local mirror) | `source/tools/tests/test_check.py` (stale catalog; issue #615) |
 | `source/tools/ci_test_results.py` | `source/tools/tests/test_ci_test_results.py` (missing, unreadable, failed, empty, vanished class, bad excluded list) |
+| `source/tools/run_installed_tests.py` | `source/tools/tests/test_run_installed_tests.py` (server running, not a game folder, unlisted class, no results; the world is copied, never used) |
 | `source/tools/make_command_reference.py --check` | `source/tools/tests/test_checkers_fail.py` |
 | `source/tools/epic_encounter_catalog.py --check` | `source/tools/tests/test_epic_encounter_catalog.py`, `test_check.py` |
 | `source/tools/chat_audit.py` | `source/tools/tests/test_chat_audit*.py` |
@@ -99,6 +110,7 @@ Each checker CI runs has a test that plants a defect and sees it fail, and sees 
 | `tools/lore/lint_lore.py`, `repetition.py`, `continuity.py`, `depth_report.py`, `fourth_wall.py` | `tools/lore/tests/` |
 | `tools/lore/reachability.py --check` | `tools/lore/tests/test_reachability_check.py` |
 | `tools/release/check_versions.py` | `tools/release/tests/test_check_versions.py` |
+| `tools/grafana/kit.py --check` | `tools/grafana/tests/test_kit.py` (stale catalog, hand-edited Alloy config, stray dashboard, unknown policy row, a dashboard row or field that doesn't exist or is dropped) |
 | `tools/release/check_brand.py` (and `--internal`) | `tools/release/tests/test_check_brand.py` (planted launcher string, doc line and script message; planted namespace and workflow path) |
 | `tools/fork-build/test-install-scripts.ps1`, `tools/wayback-fetch/tests/run-tests.ps1` | they are tests themselves; each exits 1 on a failed check |
 | `tools/newclient-compat/installed_check.py` | none: it needs Godot and the 0.37 release commit (only the `new-client` job has them) |

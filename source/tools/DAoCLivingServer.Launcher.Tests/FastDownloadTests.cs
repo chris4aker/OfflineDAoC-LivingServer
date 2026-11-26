@@ -199,6 +199,65 @@ public sealed class FastDownloadTests
         Assert.That(File.ReadAllBytes(part.Path), Is.EqualTo(data));
     }
 
+    // #677: on .NET Framework (Setup), a retry after a timeout can reuse the connection the timeout closed and throw
+    // ObjectDisposedException ("Object name: 'System.Net.Connection'"); that stopped the whole downloader after one error.
+    [Test]
+    public void A_connection_a_timeout_closed_is_retried_like_a_network_error()
+    {
+        Assert.That(FastDownload.Retryable(new ObjectDisposedException("System.Net.Connection")), Is.True);
+        Assert.That(FastDownload.Retryable(new WebException("The operation has timed out", WebExceptionStatus.Timeout)), Is.True);
+        Assert.That(FastDownload.Retryable(new IOException("the connection closed early")), Is.True);
+        Assert.That(FastDownload.Retryable(new BadHashException("game.zip.001", "aa", "bb")), Is.False, "a wrong SHA-256 is not retried");
+        Assert.That(FastDownload.Retryable(new InvalidOperationException("a bug")), Is.False, "a bug is not hidden by retries");
+    }
+
+    // #677: when Setup's downloader stopped, the original script fetched the parts under their own names, and the
+    // stopped run's pre-sized .partial files (about 4.8 GB for the base game) stayed on the disk for good.
+    [Test]
+    public void An_unfinished_copy_beside_a_checked_part_is_removed_and_one_still_needed_is_kept()
+    {
+        using var server = new LocalServer();
+        var data = Data(2 * 1024 * 1024, 9);
+        var placed = Part(server, "game.zip.001", data);
+        File.WriteAllBytes(placed.Path, data);
+        File.WriteAllBytes(placed.Path + ".partial", new byte[data.Length]);
+        File.WriteAllText(placed.Path + ".partial.state", "bytes=" + data.Length + " sha256=" + placed.Sha256 + "\n0 " + data.Length + " 0\n");
+
+        var other = Data(1024 * 1024, 10);
+        var missing = Part(server, "game.zip.002", other);
+        File.WriteAllBytes(missing.Path + ".partial", new byte[other.Length]);
+        var damaged = Part(server, "game.zip.003", other);
+        var bad = (byte[])other.Clone();
+        bad[10] ^= 0xff;
+        File.WriteAllBytes(damaged.Path, bad);
+        File.WriteAllBytes(damaged.Path + ".partial", new byte[other.Length]);
+
+        long freed = FastDownload.RemoveLeftovers(new[] { placed, missing, damaged });
+
+        Assert.That(freed, Is.GreaterThanOrEqualTo(data.Length));
+        Assert.That(File.Exists(placed.Path + ".partial"), Is.False, "the copy beside a checked part is removed");
+        Assert.That(File.Exists(placed.Path + ".partial.state"), Is.False);
+        Assert.That(File.ReadAllBytes(placed.Path), Is.EqualTo(data), "the checked part itself is kept");
+        Assert.That(File.Exists(missing.Path + ".partial"), Is.True, "a part not yet in place keeps its copy for the next run");
+        Assert.That(File.Exists(damaged.Path + ".partial"), Is.True, "a part that fails its SHA-256 keeps its copy too");
+        Assert.That(server.Requests, Is.Empty);
+    }
+
+    [Test]
+    public void A_run_with_the_part_in_place_removes_its_unfinished_copy()
+    {
+        using var server = new LocalServer();
+        var data = Data(2 * 1024 * 1024, 11);
+        var part = Part(server, "game.zip.001", data);
+        File.WriteAllBytes(part.Path, data);
+        File.WriteAllBytes(part.Path + ".partial", new byte[data.Length]);
+        Downloader().Run(new[] { part });
+
+        Assert.That(server.Requests, Is.Empty, "a checked part is not downloaded again");
+        Assert.That(Directory.GetFiles(dir, "*.partial*"), Is.Empty, "the unfinished copy beside it is gone");
+        Assert.That(File.ReadAllBytes(part.Path), Is.EqualTo(data));
+    }
+
     [Test]
     public void A_server_that_ignores_byte_ranges_still_gives_the_whole_part()
     {

@@ -79,16 +79,22 @@ jobs:
           python -c "import sys; sys.path.insert(0, 'tools/release'); import publish_release as p; p.write_zip(sys.argv[1], sys.argv[2])" "$folder" "candidate-zip/OfflineDAoC-LivingServer-$build.zip"
           python tools/installer/build.py --package "candidate-zip/OfflineDAoC-LivingServer-$build.zip"
           echo "::notice title=Setup from run $RUN_ID::$build ($(grep '^Commit=' "$folder/BUILD-INFO.txt" | tr -d '\r'))"
+      # Both scales always run; then check_shots.py fails the job when either run failed or a page picture is missing
+      # (#623), before Setup is uploaded. The pictures are uploaded either way (if: always(), below).
       - name: Pictures of every page (100 % and 150 %)
         shell: pwsh
         run: |
           $exe = Get-ChildItem tools/installer/dist/*.exe | Select-Object -First 1
+          New-Item -ItemType Directory -Force tools/installer/shots | Out-Null
           foreach ($s in '1', '1.5') {
             $p = Start-Process $exe.FullName -ArgumentList '--screenshots', "tools/installer/shots/scale-$s", '--scale', $s, '--log', "tools/installer/shots/scale-$s.log" -Wait -PassThru
             Write-Host "scale $s exit $($p.ExitCode)"
-            Get-Content "tools/installer/shots/scale-$s.log" | Select-Object -Last 4
+            Set-Content -NoNewline -Path "tools/installer/shots/scale-$s.exit" -Value "$($p.ExitCode)"
+            Get-Content "tools/installer/shots/scale-$s.log" -ErrorAction SilentlyContinue | Select-Object -Last 4
           }
           Get-ChildItem -Recurse tools/installer/shots/*.png | ForEach-Object { "$($_.Directory.Name)/$($_.Name)  $($_.Length)" }
+          python tools/installer/check_shots.py --root tools/installer/shots --scales 1 1.5
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - uses: actions/upload-artifact@v4
         with:
           name: LivingServer-Setup

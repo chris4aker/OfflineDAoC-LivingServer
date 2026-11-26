@@ -1,0 +1,6 @@
+apiVersion: folder.grafana.app/v1beta1
+kind: Folder
+metadata:
+  name: offlinedaoc-living-server
+spec:
+  title: Offline DAoC Living Server

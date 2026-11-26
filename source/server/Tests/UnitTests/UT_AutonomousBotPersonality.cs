@@ -251,6 +251,118 @@ namespace DOL.GS.Tests
             Assert.That(P.PlannedFirst(new eAutonomousObjectiveKind?[4]), Is.EqualTo(new[] { 0, 1, 2, 3 }), "personalities off: pool order");
         }
 
+        /// <summary>
+        /// #670: the issue's open slots (solo 0, group 40, RvR 12, battleground 48) and pool sizes. A pool of every size takes
+        /// battleground goals in proportion to the open slots (48%); before the fix pools of 1-5 took none and 10 took 20%.
+        /// No goal ever runs over its open slots, and never more battleground goals than bots that can go.
+        /// </summary>
+        [TestCase(1, 2.0)] [TestCase(2, 3.0)] [TestCase(3, 3.0)] [TestCase(5, 3.0)] [TestCase(10, 2.0)] [TestCase(60, 1.0)]
+        public void PlanGoals_SmallPoolsTakeBattlegroundsInProportion(int pool, double tolerancePoints)
+        {
+            int[] open = [0, 40, 12, 48];
+            const int runs = 10_000;
+            long battleground = 0, group = 0, rvr = 0;
+            for (int seed = 0; seed < runs; seed++)
+            {
+                var plan = P.PlanGoals(new BotPersonalityType?[pool], Enumerable.Repeat(true, pool).ToArray(),
+                    open[0], open[1], open[2], open[3], new Random(seed));
+                int b = plan.Count(k => k == eAutonomousObjectiveKind.Battleground);
+                int g = plan.Count(k => k == eAutonomousObjectiveKind.GroupPve);
+                int r = plan.Count(k => k == eAutonomousObjectiveKind.RvR);
+                Assert.That(plan.Count(k => k == eAutonomousObjectiveKind.SoloPve), Is.Zero, $"seed {seed}: no solo slot is open");
+                Assert.That(b, Is.LessThanOrEqualTo(open[3]));
+                Assert.That(g, Is.LessThanOrEqualTo(open[1]));
+                Assert.That(r, Is.LessThanOrEqualTo(open[2]));
+                Assert.That(b + g + r, Is.EqualTo(pool), $"seed {seed}: every bot of a pool below the open slots gets a goal");
+                battleground += b; group += g; rvr += r;
+            }
+            double share = battleground * 100.0 / ((long)runs * pool);
+            TestContext.Out.WriteLine($"pool {pool}: battleground {share:F1}%, group {group * 100.0 / ((long)runs * pool):F1}%, " +
+                                      $"RvR {rvr * 100.0 / ((long)runs * pool):F1}%");
+            Assert.That(share, Is.EqualTo(48).Within(tolerancePoints));
+            Assert.That(group * 100.0 / ((long)runs * pool), Is.EqualTo(40).Within(tolerancePoints));
+            Assert.That(rvr * 100.0 / ((long)runs * pool), Is.EqualTo(12).Within(tolerancePoints));
+        }
+
+        [TestCase(1)] [TestCase(5)]
+        public void PlanGoals_NoBattlegroundWhenNoBotCanGo_TheOtherGoalsTakeTheShare(int pool)
+        {
+            for (int seed = 0; seed < 2_000; seed++)
+            {
+                var plan = P.PlanGoals(new BotPersonalityType?[pool], new bool[pool], 0, 40, 12, 48, new Random(seed));
+                Assert.That(plan.Count(k => k == eAutonomousObjectiveKind.Battleground), Is.Zero);
+                Assert.That(plan.Count(k => k != null), Is.EqualTo(pool), "the battleground's share goes back to group and RvR");
+            }
+        }
+
+        [Test]
+        public void PlanGoals_BattlegroundCappedAtTheBotsThatCanGo()
+        {
+            for (int seed = 0; seed < 2_000; seed++)
+            {
+                // 5 bots, 1 in a bracket, nearly every open slot a battleground slot.
+                bool[] can = [true, false, false, false, false];
+                var plan = P.PlanGoals(new BotPersonalityType?[5], can, 0, 2, 1, 97, new Random(seed));
+                Assert.That(plan.Count(k => k == eAutonomousObjectiveKind.Battleground), Is.LessThanOrEqualTo(1));
+                Assert.That(Enumerable.Range(1, 4).All(i => plan[i] != eAutonomousObjectiveKind.Battleground), Is.True);
+                Assert.That(plan.Count(k => k == eAutonomousObjectiveKind.GroupPve), Is.LessThanOrEqualTo(2));
+                Assert.That(plan.Count(k => k == eAutonomousObjectiveKind.RvR), Is.LessThanOrEqualTo(1));
+            }
+        }
+
+        [Test]
+        public void ShareOut_IsExactInTotalAndNeverPastAGoalsSlots()
+        {
+            var random = new Random(5);
+            for (int run = 0; run < 5_000; run++)
+            {
+                int[] open = [random.Next(60), random.Next(60), random.Next(30), random.Next(60)];
+                int total = open.Sum();
+                if (total < 2) continue;
+                int count = random.Next(1, total);
+                int[] shares = P.ShareOut(open, count, random);
+                Assert.That(shares.Sum(), Is.EqualTo(count));
+                for (int k = 0; k < 4; k++)
+                {
+                    Assert.That(shares[k], Is.LessThanOrEqualTo(open[k]));
+                    double exact = (double)open[k] * count / total;
+                    Assert.That(shares[k], Is.InRange((int)Math.Floor(exact), (int)Math.Ceiling(exact)));
+                }
+            }
+        }
+
+        /// <summary>
+        /// #670's pass test: a band whose battleground holders are at 2 of 47, with 1-2 free bots a minute for 60 minutes. The
+        /// battleground's share of the new goals follows the open slots of each pass (within 5 points), not 0.
+        /// </summary>
+        [Test]
+        public void ThePass_WithOneOrTwoFreeBotsAMinute_GivesBattlegroundsAtTheOpenShare()
+        {
+            double given = 0, expected = 0, total = 0;
+            for (int seed = 0; seed < 300; seed++)
+            {
+                var random = new Random(seed);
+                int[] open = [0, 40, 12, 45];
+                for (int minute = 0; minute < 60; minute++)
+                {
+                    int pool = random.Next(1, 3);
+                    int sum = open.Sum();
+                    if (sum == 0) break;
+                    expected += (double)open[3] / sum * Math.Min(pool, sum);
+                    var plan = P.PlanGoals(new BotPersonalityType?[pool], Enumerable.Repeat(true, pool).ToArray(),
+                        open[0], open[1], open[2], open[3], random);
+                    for (int k = 0; k < 4; k++)
+                        open[k] -= plan.Count(kind => kind == (eAutonomousObjectiveKind)k);
+                    Assert.That(open.All(n => n >= 0), Is.True);
+                    given += plan.Count(kind => kind == eAutonomousObjectiveKind.Battleground);
+                    total += plan.Count(kind => kind != null);
+                }
+            }
+            TestContext.Out.WriteLine($"battleground share of new goals {given / total:P1}, open share {expected / total:P1}");
+            Assert.That(given / total * 100, Is.EqualTo(expected / total * 100).Within(5));
+            Assert.That(given, Is.GreaterThan(0));
+        }
+
         [Test]
         public void PlanGoals_DrawsBattlegroundsBeforeRvR_SoBracketBotsArentUsedUp()
         {

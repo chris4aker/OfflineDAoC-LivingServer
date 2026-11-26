@@ -186,7 +186,8 @@ public static class AutonomousBotPersonality
 
     /// <summary>
     /// Goals for a pool of bots that need one (the allocator's pass). The open slots of the owner's mix are filled
-    /// exactly (shared out in proportion when the pool is smaller than the open slots); personality only decides who
+    /// exactly (shared out in proportion when the pool is smaller than the open slots, <see cref="ShareOut"/>; then no
+    /// more battleground goals than bots that can go, #670); personality only decides who
     /// takes which: RvR goes to the bots that want it most relative to their other choices, then battlegrounds,
     /// then groups versus solo. Still random (a weighted draw), never a fixed ranking. Types are null for bots
     /// without a personality (weight 1). Bots beyond the open slots get null (the caller's usual over-quota rule).
@@ -200,21 +201,27 @@ public static class AutonomousBotPersonality
         var plan = new eAutonomousObjectiveKind?[count];
         int[] open = [Math.Max(0, solo), Math.Max(0, group), Math.Max(0, rvr), Math.Max(0, battleground)];
         int battlegroundPool = canBattleground.Count(can => can);
-        open[3] = Math.Min(open[3], battlegroundPool);
-        int totalOpen = open.Sum();
-        if (totalOpen > count)
+        // #670: share the pool out by the open slots as they are, and only then cap the battleground at the bots that can
+        // go. Clamping first turned about 48 open battleground slots into 1-2 for a pool of 1-2 bots, so the share-out
+        // never gave a small pool a battleground goal (and the one-minute pass's pool is small in steady state).
+        int[] wanted = open;
+        if (open.Sum() > count)
+            open = ShareOut(open, count, random);
+        if (open[3] > battlegroundPool)
         {
-            // Share the pool out in proportion to the open slots (largest remainder), as the old draw did on average.
-            double[] exact = open.Select(n => (double)n * count / totalOpen).ToArray();
-            int[] floor = exact.Select(x => (int)Math.Floor(x)).ToArray();
-            int left = count - floor.Sum();
-            foreach (int k in Enumerable.Range(0, 4).OrderByDescending(k => exact[k] - floor[k]).ThenBy(_ => random.Next()))
+            // The battleground's extra goes back to the other goals, in proportion to the room each still has (never past
+            // its open slots); with no room left the extra bots get null (the caller's usual over-quota rule).
+            int extra = open[3] - battlegroundPool;
+            open[3] = battlegroundPool;
+            int[] room = [wanted[0] - open[0], wanted[1] - open[1], wanted[2] - open[2]];
+            for (; extra > 0 && room.Sum() > 0; extra--)
             {
-                if (left == 0) break;
-                floor[k]++;
-                left--;
+                int pick = random.Next(room.Sum());
+                int k = 0;
+                while (pick >= room[k]) pick -= room[k++];
+                open[k]++;
+                room[k]--;
             }
-            open = floor;
         }
         double A(int i, eAutonomousObjectiveKind kind) => types[i] is { } type ? GoalAffinity(type, kind) : 1.0;
         void Take(eAutonomousObjectiveKind kind, int slots, Func<int, bool> eligible, Func<int, double> weight)
@@ -242,6 +249,42 @@ public static class AutonomousBotPersonality
             i => Relative(i, eAutonomousObjectiveKind.GroupPve, eAutonomousObjectiveKind.SoloPve));
         Take(eAutonomousObjectiveKind.SoloPve, open[0], _ => true, _ => 1.0);
         return plan;
+    }
+
+    /// <summary>
+    /// #670: shares <paramref name="count"/> goals out over the open slots (whose sum is above it) in proportion, with
+    /// unbiased rounding: each goal gets the floor of its exact share, and one more with a chance equal to the fraction
+    /// (systematic sampling over a random order, in whole numbers, so the total is exactly <paramref name="count"/>). A
+    /// goal never gets more than its open slots. A pool of one bot takes each goal with a chance of its open slots over
+    /// all open slots; the old largest remainder gave it the goal with the most open slots every time.
+    /// </summary>
+    public static int[] ShareOut(int[] open, int count, Random random)
+    {
+        long total = open.Sum(n => (long)n);
+        var shares = new int[open.Length];
+        if (count <= 0 || total <= 0)
+            return shares;
+        var remainder = new long[open.Length];
+        int left = count;
+        for (int k = 0; k < open.Length; k++)
+        {
+            long exact = (long)open[k] * count;
+            shares[k] = (int)(exact / total);
+            remainder[k] = exact % total;
+            left -= shares[k];
+        }
+        if (left <= 0)
+            return shares;
+        // The remainders sum to left * total; the points u, u + total, ... fall in left of them, at most one each.
+        long u = random.NextInt64(total);
+        long cumulative = 0;
+        long Points(long x) => x <= u ? 0 : (x - u + total - 1) / total;
+        foreach (int k in Enumerable.Range(0, open.Length).OrderBy(_ => random.Next()).ToArray())
+        {
+            shares[k] += (int)(Points(cumulative + remainder[k]) - Points(cumulative));
+            cumulative += remainder[k];
+        }
+        return shares;
     }
 
     /// <summary>The planner's type for a bot, or null when personalities don't apply to it.</summary>

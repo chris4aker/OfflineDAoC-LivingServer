@@ -256,6 +256,11 @@ if ($Scenario -contains 'fresh') {
     Check ($lnk.IconLocation -like '*runtime\living-server.ico*' -and (Test-Path (Join-Path $fresh 'runtime\living-server.ico'))) "fresh: the shortcut has Living Server's icon ($($lnk.IconLocation))"
     $setupDir = Join-Path $root 'Living Server setup files'
     Check (Test-Path (Join-Path $setupDir 'Get-OfflineDAoC.ps1')) 'fresh: the official downloader sits in the setup files folder'
+    # Setup's own downloader leaves no unfinished copy of a part beside it, also when it stopped part-way and the original
+    # script fetched the parts (#677: about 4.8 GB of pre-sized .partial files stayed, and C: ran out in update036)
+    $left = @(Get-ChildItem (Join-Path $setupDir '.downloads') -Recurse -File -Filter '*.partial*' -ErrorAction SilentlyContinue)
+    Check ($left.Count -eq 0) "fresh: no unfinished download files are left in the setup files folder ($(($left | ForEach-Object { $_.Name }) -join ', '))"
+    if ($r.Log -match "download: Setup's downloader stopped") { Write-Host "   (Setup's downloader stopped and the original one took over in this run)" }
     # the steps were recognised from the downloader's own output, not only marked done at the end
     Check ($r.Log -match '\] Downloading the base game \| [\d.]+ (MB|GB) of ') 'fresh: download progress measured in bytes'
     Check ($r.Log -match '\] Unpacking the game \| [\d.]+ (MB|GB) of ') 'fresh: unpacking progress measured in bytes'
