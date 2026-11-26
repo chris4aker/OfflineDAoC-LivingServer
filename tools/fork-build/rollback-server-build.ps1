@@ -1,7 +1,7 @@
 # Undoes the most recent fork server build install (docs/RELEASE-PLAN.md).
 #
 #   ROLLBACK.cmd
-#   ROLLBACK.cmd -GameFolder "C:\Games\OfflineDAoC\playable-v0.37b"
+#   ROLLBACK.cmd -GameFolder "C:\Games\LivingServer"
 #   ROLLBACK.cmd -DryRun
 #   PREPARE-FOR-UPDATE.cmd     (= ROLLBACK.cmd -ToRelease)
 #

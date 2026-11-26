@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install a Living Server add-on build into an Offline DAoC game folder on Linux.
+"""Install a DAoC - Living Server build into a game folder on Linux.
 
 A faithful port of the add-on's own install-server-build.ps1 (INSTALL.cmd needs Windows PowerShell):
 same checks, same backup layout and install-record.json, so the add-on's ROLLBACK.cmd still understands it.
@@ -180,7 +180,7 @@ def main():
     for k in ("BuildName", "BaseRelease", "Commit", "GameServer.dll", "GameServer.pdb"):
         if not info.get(k):
             stop("BUILD-INFO.txt has no %s." % k)
-    print("Fork server build %s (commit %s) for Offline DAoC %s" % (info["BuildName"], info["Commit"], info["BaseRelease"]))
+    print("Living Server build %s (commit %s) for base game %s" % (info["BuildName"], info["Commit"], info["BaseRelease"]))
 
     # 1. this build's own files
     for name in ("GameServer.dll", "GameServer.pdb"):
@@ -220,7 +220,7 @@ def main():
 
     # 2. the game, closed
     if not os.path.isfile(p(game, "runtime/server/GameServer.dll")):
-        stop("No Offline DAoC game in '%s' (runtime/server/GameServer.dll is missing)." % game)
+        stop("No game in '%s' (runtime/server/GameServer.dll is missing)." % game)
     print("Game folder: " + game)
     r = running()
     if r:
@@ -231,10 +231,10 @@ def main():
     manifest = read_manifest(os.path.join(game, "PACKAGE MANIFEST.sha256"))
     if manifest is None:
         if not force:
-            stop("No PACKAGE MANIFEST.sha256 in the game folder, so it can't be checked as Offline DAoC %s." % base)
+            stop("No PACKAGE MANIFEST.sha256 in the game folder, so it can't be checked as base game %s." % base)
         manifest = {}
     elif not release_ok(manifest, base) and not force:
-        stop("This game folder isn't Offline DAoC %s; this build only fits that release." % base)
+        stop("This game folder isn't base game %s; this build only fits that release." % base)
 
     # 4. what is there now
     records = install_records(game)

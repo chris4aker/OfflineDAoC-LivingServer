@@ -55,12 +55,12 @@ function Test-GameFolder([string]$Path) {
 }
 
 # The game folder: the one given, else the folder this build sits in (or its parents), or a
-# playable*/OfflineDAoC* folder inside one of those.
+# playable*/OfflineDAoC*/LivingServer* folder inside one of those.
 function Find-GameFolder([string]$Given, [string]$BuildDir) {
     if ($Given) {
         $full = [IO.Path]::GetFullPath($Given)
         if (Test-GameFolder $full) { return $full }
-        Stop-WithMessage "No Offline DAoC game in '$full' (runtime\server\GameServer.dll is missing)."
+        Stop-WithMessage "No game in '$full' (runtime\server\GameServer.dll is missing)."
     }
     $parent = Split-Path -Parent $BuildDir
     # The documented place is inside the game folder: when the build sits there, that folder wins, even if other
@@ -73,7 +73,7 @@ function Find-GameFolder([string]$Given, [string]$BuildDir) {
     foreach ($start in $starts) {
         if (Test-GameFolder $start) { $found += [IO.Path]::GetFullPath($start); continue }
         foreach ($child in @(Get-ChildItem -LiteralPath $start -Directory -ErrorAction SilentlyContinue |
-                Where-Object { $_.Name -like 'playable*' -or $_.Name -like 'OfflineDAoC*' })) {
+                Where-Object { $_.Name -like 'playable*' -or $_.Name -like 'OfflineDAoC*' -or $_.Name -like 'LivingServer*' })) {
             if (Test-GameFolder $child.FullName) { $found += $child.FullName }
         }
     }
@@ -82,8 +82,8 @@ function Find-GameFolder([string]$Given, [string]$BuildDir) {
     if ($found.Count -gt 1) {
         Stop-WithMessage ("More than one game folder found. Run again with -GameFolder and one of:`n  " + ($found -join "`n  "))
     }
-    Stop-WithMessage ("Can't find the game. Put this build's folder inside your Offline DAoC folder (the one with " +
-        "START OFFLINE DAOC.cmd), or run INSTALL.cmd -GameFolder ""C:\path\to\playable-v0.37b"".")
+    Stop-WithMessage ("Can't find the game. Put this build's folder inside your game folder (the one with " +
+        "START OFFLINE DAOC.cmd), or run INSTALL.cmd -GameFolder ""C:\Games\LivingServer"".")
 }
 
 function Assert-GameClosed {

@@ -141,7 +141,9 @@ $toDll = LauncherDll $toInfo
 Check ((Sha (Join-Path $game "runtime\$toDll")) -eq $toInfo["launcher/$toDll"]) "the launcher is the $($toPkg.Build) build"
 $record = Get-ChildItem (Join-Path $game 'runtime\server\deployment-backups') -Directory -Filter 'fork-build-*' | Sort-Object Name | Select-Object -Last 1
 Check ($record -and (Get-Content (Join-Path $record.FullName 'install-record.json') -Raw | ConvertFrom-Json).BuildName -eq $toPkg.Build) 'the newest install record names it'
-Check (Test-Path (Join-Path $game "runtime\updates\$(Split-Path -Leaf $toPkg.Zip)")) 'the package is kept in runtime\updates'
+# Kept under the launcher's own package name: DAoC-LivingServer-<build>.zip from 1.2.3 (#641), whatever the file was called.
+Check ((Test-Path (Join-Path $game "runtime\updates\DAoC-LivingServer-$($toPkg.Build).zip")) -or
+       (Test-Path (Join-Path $game "runtime\updates\$(Split-Path -Leaf $toPkg.Zip)"))) 'the package is kept in runtime\updates'
 Check (Test-Path (Join-Path $game "$($fromPkg.Folder)\INSTALL.cmd")) "the $From package folder is still there to reinstall"
 Check ((Sha (Join-Path $game 'runtime\data\opendaoc.sqlite3.db')) -eq $world) 'the database was not touched'
 $logText = if (Test-Path $updateLog) { Get-Content -LiteralPath $updateLog -Raw } else { '' }

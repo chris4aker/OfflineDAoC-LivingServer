@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start Offline DAoC (with Living Server) on Linux under Wine: the Linux counterpart of START OFFLINE DAOC.cmd.
+# Start DAoC - Living Server on Linux under Wine: the Linux counterpart of START OFFLINE DAOC.cmd.
 #
 #   linux/start-offline-daoc.sh [game folder]
 #

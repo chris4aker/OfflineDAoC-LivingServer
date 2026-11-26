@@ -154,6 +154,7 @@ internal sealed partial class MainForm : Form
     // Living Server 1.2, play with friends (from rambodolphin13/DividedRealms 3c6cc9d).
     private readonly Button _joinFriendButton;
     private readonly Button _hostFriendsButton;
+    private readonly Button _aboutButton;
     private Process? _serverProcess;
     private RollingServerLog? _serverLog;
     private bool _stoppingServer;
@@ -229,6 +230,9 @@ internal sealed partial class MainForm : Form
         _hostFriendsButton = ActionButton("HOST FOR FRIENDS", Color.FromArgb(150, 112, 52));
         _joinFriendButton.Click += (_, _) => OpenJoinFriend();
         _hostFriendsButton.Click += (_, _) => OpenHostForFriends();
+        // About (#641): the product, its license and every project and person whose work is in it (CREDITS.md).
+        _aboutButton = ActionButton("ABOUT", DaocTheme.Iron);
+        _aboutButton.Click += (_, _) => { using var about = new AboutForm(); about.ShowDialog(this); };
 
         rootLayout.Controls.Add(BuildHeader(), 0, 0);
         rootLayout.Controls.Add(BuildCards(), 0, 1);
@@ -429,7 +433,7 @@ internal sealed partial class MainForm : Form
         header.Controls.Add(titlePanel, 0, 0);
 
         var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = true, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
-        foreach (var button in new[] { _startButton, _stopButton, _playButton, _joinFriendButton, _hostFriendsButton })
+        foreach (var button in new[] { _startButton, _stopButton, _playButton, _joinFriendButton, _hostFriendsButton, _aboutButton })
         {
             button.Width = 132;
             button.Height = 26;
@@ -442,6 +446,7 @@ internal sealed partial class MainForm : Form
         actions.SetFlowBreak(_playButton, true);
         actions.Controls.Add(_joinFriendButton);
         actions.Controls.Add(_hostFriendsButton);
+        actions.Controls.Add(_aboutButton);
         if (_newClient)
         {
             // Join Friend starts the original client; the new client is not supported yet.
@@ -450,6 +455,7 @@ internal sealed partial class MainForm : Form
         }
         else
             SetToolTip(_joinFriendButton, "Play in a friend's world over your home network, Tailscale or the internet. Your own server and save are not touched.");
+        SetToolTip(_aboutButton, "DAoC - Living Server: its license (GPL v3), credits and the projects it is built on.");
         SetToolTip(_hostFriendsButton, "Let friends join this game's server over your home network or Tailscale, with a password, and set up the firewall for it.");
         header.Controls.Add(actions, 1, 0);
         banner.Controls.Add(header);
