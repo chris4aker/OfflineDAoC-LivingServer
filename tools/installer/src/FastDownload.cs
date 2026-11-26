@@ -10,7 +10,9 @@
 //   stopped Setup continues where it stopped (a retry continues the range, a new run continues the part);
 // - checks each finished part against its SHA-256 and refuses it on a mismatch (the bytes are deleted, nothing is
 //   kept under the part's name);
-// - keeps a part already in place with the right size and SHA-256.
+// - keeps a part already in place with the right size and SHA-256, and removes an unfinished copy of it left beside it
+//   (RemoveLeftovers, #677: when this downloader stops, the original script fetches the part under its own name, and
+//   the pre-sized "<part>.partial" of the stopped run would otherwise stay, about 4.8 GB for the base game).
 // A finished part lands under the same name and folder the original script uses (.downloads\v<release>\<part>), so
 // that script finds it verified and only joins and unpacks.
 //
@@ -127,7 +129,13 @@ namespace LivingServerSetup
             var jobs = new List<PartJob>();
             foreach (var part in parts)
             {
-                if (IsInPlace(part)) { Interlocked.Add(ref done, part.Bytes); Log(part.Name + ": already downloaded and checked"); continue; }
+                if (IsInPlace(part))
+                {
+                    Interlocked.Add(ref done, part.Bytes);
+                    Log(part.Name + ": already downloaded and checked");
+                    RemoveLeftover(part, Log);
+                    continue;
+                }
                 var job = Plan(part);
                 Interlocked.Add(ref done, job.Ranges.Sum(r => r.Done));
                 jobs.Add(job);
@@ -167,6 +175,54 @@ namespace LivingServerSetup
             var f = new FileInfo(part.Path);
             return f.Exists && f.Length == part.Bytes && string.Equals(Sha256Of(part.Path), part.Sha256, StringComparison.OrdinalIgnoreCase);
         }
+
+        /// <summary>
+        /// Removes the unfinished copy ("&lt;part&gt;.partial" and its ".partial.state") of every part that is in place under its
+        /// own name with the right size and SHA-256 (#677). Setup calls it after the original download script ran: when
+        /// this downloader stopped part-way, the script fetched the part itself, and the stopped run's copy, pre-sized to
+        /// the whole part, would otherwise stay on the player's disk for good. A part that isn't in place keeps its copy,
+        /// so a later run still continues it. Returns the bytes freed.
+        /// </summary>
+        public static long RemoveLeftovers(IEnumerable<DownloadPart> parts, Action<string> log = null)
+        {
+            long freed = 0;
+            foreach (var part in parts)
+            {
+                if (!File.Exists(part.Path + ".partial") && !File.Exists(part.Path + ".partial.state")) continue;
+                if (!IsInPlace(part)) continue;
+                freed += RemoveLeftover(part, log);
+            }
+            return freed;
+        }
+
+        /// <summary>Deletes a part's unfinished copy; the caller has checked that the part itself is in place.</summary>
+        static long RemoveLeftover(DownloadPart part, Action<string> log)
+        {
+            long freed = 0;
+            foreach (var path in new[] { part.Path + ".partial", part.Path + ".partial.state" })
+            {
+                try
+                {
+                    var f = new FileInfo(path);
+                    if (!f.Exists) continue;
+                    long bytes = f.Length;
+                    f.Delete();
+                    freed += bytes;
+                }
+                catch (Exception e) when (e is IOException || e is UnauthorizedAccessException) { log?.Invoke(part.Name + ": could not remove " + System.IO.Path.GetFileName(path) + " (" + e.Message + ")"); }
+            }
+            if (freed > 0) log?.Invoke(part.Name + ": removed an unfinished copy beside the checked part (" + (freed / 1048576) + " MB)");
+            return freed;
+        }
+
+        /// <summary>
+        /// Whether an error from one request is worth a retry of its range: the network's WebException and IOException,
+        /// and the ObjectDisposedException .NET Framework's HttpWebRequest throws when a request reuses a connection that a
+        /// timeout closed ("Cannot access a disposed object. Object name: 'System.Net.Connection'", #677: after one timeout
+        /// it stopped this whole downloader). A server that ignores byte ranges is planned again instead.
+        /// </summary>
+        public static bool Retryable(Exception e) =>
+            !(e is NoRangesException) && (e is WebException || e is IOException || e is ObjectDisposedException);
 
         /// <summary>The ranges of a part: those of an unfinished earlier run when its state file fits, else new ones.</summary>
         PartJob Plan(DownloadPart part)
@@ -246,7 +302,7 @@ namespace LivingServerSetup
                 {
                     FetchOnce(job, range);
                 }
-                catch (Exception e) when ((e is WebException || e is IOException) && !(e is NoRangesException))
+                catch (Exception e) when (Retryable(e))
                 {
                     if (range.Done > before) tries = 0;
                     if (++tries > Retries) throw new IOException(job.Part.Name + ": the download kept failing (" + e.Message + "); run Setup again to continue.", e);
@@ -323,8 +379,13 @@ namespace LivingServerSetup
                     }
                 }
             }
-            catch (IOException) { FlushAfterError(job); throw; }
-            catch (WebException) { FlushAfterError(job); throw; }
+            catch (Exception e) when (Retryable(e) || e is NoRangesException)
+            {
+                // Drop the request's connection, so the retry doesn't get the one the error broke (#677).
+                try { request.Abort(); } catch (Exception) { }
+                FlushAfterError(job);
+                throw;
+            }
             finally { Interlocked.Decrement(ref open); }
         }
 
