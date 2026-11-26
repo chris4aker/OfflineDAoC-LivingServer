@@ -34,6 +34,19 @@ public class UT_BotTravelCastHold567
     }
 
     [Test]
+    public void AHeldUpkeepLooksAgainWithinASecond()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(BotTravelCastHold.NextScanAfter(true, 8_000), Is.EqualTo(1_000), "held: within a second");
+            Assert.That(BotTravelCastHold.NextScanAfter(true, 500), Is.EqualTo(500), "never later than it would be");
+            Assert.That(BotTravelCastHold.NextScanAfter(false, 8_000), Is.EqualTo(8_000), "not held: as before");
+            Assert.That(BotTravelCastHold.HeldRecheckMilliseconds, Is.LessThan(BotTravelCastHold.SettleMilliseconds),
+                "the walk is sampled inside the settle");
+        });
+    }
+
+    [Test]
     public void TheUpkeepHoldsOnlyOrdinaryBuffsAndTheWalkToAMember()
     {
         string dir = TestContext.CurrentContext.TestDirectory;
@@ -43,11 +56,16 @@ public class UT_BotTravelCastHold567
             Assert.Ignore("Repository not found beside the tests.");
         string brain = File.ReadAllText(Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs")).Replace("\r\n", "\n");
         int upkeep = brain.IndexOf("private bool TryMaintainTravelAndClassBuffs()", StringComparison.Ordinal);
-        string body = brain.Substring(upkeep, brain.IndexOf("CompleteCompanionPerformerBuffBatch(bot);\n            return false;\n        }",
-            upkeep, StringComparison.Ordinal) - upkeep);
+        Assert.That(upkeep, Is.GreaterThanOrEqualTo(0), "the upkeep method");
+        int end = brain.IndexOf("private int _pendingMaintenancePetBuffId;", upkeep, StringComparison.Ordinal);
+        Assert.That(end, Is.GreaterThan(upkeep), "the end of the upkeep method");
+        string body = brain.Substring(upkeep, end - upkeep);
         Assert.That(body, Does.Contain("bool partyTravelHold = HoldsUpkeepForGroupTravel();"));
         Assert.That(body, Does.Contain("(!partyTravelHold || !CompanionFollowPolicy.IsOrdinaryBuff(bot, spell))"),
             "only the buffs the formation follow refuses anyway (no heals, songs or travel speed)");
         Assert.That(body, Does.Contain("!waitingForLeader && !partyTravelHold && ApproachSupportTarget(outOfRangeBuffTarget)"));
+        Assert.That(body, Does.Contain("_nextMaintenanceBuffTick = GameLoop.GameLoopTime + BotTravelCastHold.HeldRecheckMilliseconds;"),
+            "a held pass with nothing left waits a second, not one think");
+        Assert.That(body, Does.Contain("BotTravelCastHold.NextScanAfter(partyTravelHold, 8_000)"), "a held complete scan rechecks within a second");
     }
 }

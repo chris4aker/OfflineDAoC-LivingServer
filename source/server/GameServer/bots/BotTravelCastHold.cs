@@ -19,6 +19,18 @@ namespace DOL.GS
         public const long SettleMilliseconds = 6_000;
 
         /// <summary>
+        /// While held, the upkeep looks again within this long (main-session review of #700): a held pass that casts nothing
+        /// must not rescan on every think, and must sample the walk well inside <see cref="SettleMilliseconds"/> so a pause
+        /// between path legs is never mistaken for a stop.
+        /// </summary>
+        public const long HeldRecheckMilliseconds = 1_000;
+
+        /// <summary>Pure: the wait before the upkeep's next scan, the ordinary <paramref name="milliseconds"/> or, while held,
+        /// at most <see cref="HeldRecheckMilliseconds"/>.</summary>
+        public static long NextScanAfter(bool held, long milliseconds) =>
+            held && milliseconds > HeldRecheckMilliseconds ? HeldRecheckMilliseconds : milliseconds;
+
+        /// <summary>
         /// Pure: an autonomous party holds its ordinary upkeep while the bot or its leader walks, or within
         /// <see cref="SettleMilliseconds"/> of last being seen walking (-1: never seen). A known stop (the bot or its leader
         /// sitting or resting) ends the settle at once. Never while anyone in it fights.

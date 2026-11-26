@@ -2316,6 +2316,9 @@ namespace DOL.AI.Brain
                 .ToList();
             if (known.Count == 0)
             {
+                // #567 A1: a held pass with nothing left looks again in a second, not on every think.
+                if (partyTravelHold)
+                    _nextMaintenanceBuffTick = GameLoop.GameLoopTime + BotTravelCastHold.HeldRecheckMilliseconds;
                 CompleteCompanionPerformerBuffBatch(bot);
                 return false;
             }
@@ -2418,8 +2421,8 @@ namespace DOL.AI.Brain
             }
 
             // A complete scan found nothing missing. Avoid rescanning the whole
-            // spellbook on every lightweight AI tick.
-            _nextMaintenanceBuffTick = GameLoop.GameLoopTime + 8_000;
+            // spellbook on every lightweight AI tick (held: again within a second, #567 A1).
+            _nextMaintenanceBuffTick = GameLoop.GameLoopTime + BotTravelCastHold.NextScanAfter(partyTravelHold, 8_000);
             CompleteCompanionPerformerBuffBatch(bot);
             return false;
         }
