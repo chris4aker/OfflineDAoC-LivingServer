@@ -109,29 +109,33 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      # PowerShell, as build-and-test's server job builds: from Git Bash the restore fails with no error logged (#694).
       - name: Build the server tests
         if: steps.status.outputs.published == 'true'
-        shell: bash
+        shell: pwsh
         run: |
-          cp source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
+          Copy-Item source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
           dotnet build source/server/Tests/Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+          if ($LASTEXITCODE -ne 0) { exit 1 }
 
       # The tests load lib/Detour beside the test assembly (as the server does beside GameServer.dll), the meshes from
       # OFFLINE_DAOC_NAV_ROOT/navmesh and the world from OFFLINE_DAOC_DB_PATH or ../data beside it (the checked copy).
       # They are [Explicit]: only a filter that names them runs them.
       - name: Run the navmesh tests
         if: steps.status.outputs.published == 'true'
-        shell: bash
+        shell: pwsh
         run: |
-          tests=$(python source/tools/ci_test_results.py find Tests.dll --root source/server/build/Tests/Release)
-          test -n "$tests" || { echo "::error title=Navmesh tests::Tests.dll was not built"; exit 1; }
-          mkdir -p "$(dirname "$tests")/lib"
-          cp navmesh-ci/set/lib/Detour.dll "$(dirname "$tests")/lib/Detour.dll"
-          export OFFLINE_DAOC_NAV_ROOT="$(pwd -W)/navmesh-ci/set"   # a Windows path for the tests (pwd -W)
-          if [ -f navmesh-ci/data/opendaoc.sqlite3.db ]; then export OFFLINE_DAOC_DB_PATH="$(pwd -W)/navmesh-ci/data/opendaoc.sqlite3.db"; fi
-          export OFFLINE_DAOC_PROOF_OUT="$RUNNER_TEMP/navmesh-proof.txt"
-          filter=$(python tools/navmesh/navmesh_set.py filter .github/navmesh-tests.txt)
-          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=navmesh.trx" || true
+          $tests = python source/tools/ci_test_results.py find Tests.dll --root source/server/build/Tests/Release
+          if (!$tests) { Write-Host "::error title=Navmesh tests::Tests.dll was not built"; exit 1 }
+          $lib = Join-Path (Split-Path -Parent $tests) 'lib'
+          New-Item -ItemType Directory -Force $lib | Out-Null
+          Copy-Item navmesh-ci/set/lib/Detour.dll (Join-Path $lib 'Detour.dll')
+          $env:OFFLINE_DAOC_NAV_ROOT = (Resolve-Path navmesh-ci/set).Path
+          if (Test-Path navmesh-ci/data/opendaoc.sqlite3.db) { $env:OFFLINE_DAOC_DB_PATH = (Resolve-Path navmesh-ci/data/opendaoc.sqlite3.db).Path }
+          $env:OFFLINE_DAOC_PROOF_OUT = Join-Path $env:RUNNER_TEMP 'navmesh-proof.txt'
+          $filter = python tools/navmesh/navmesh_set.py filter .github/navmesh-tests.txt
+          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=navmesh.trx"
+          exit 0
 
       # Every result on the run page; fails when an entry has no result or any test did not pass.
       - name: Navmesh test results
