@@ -148,7 +148,7 @@ namespace DOL.GS.Tests
             Assert.Multiple(() =>
             {
                 Assert.That(coordinator, Does.Contain("BardHealerSlot.Mark(session.Id, group, BotMembers(group), session.PveRoles, MemberKey, Log)"));
-                Assert.That(coordinator, Does.Contain("bool bardHealers = BardHealerSlot.Allowed(leader, pool);"));
+                Assert.That(coordinator, Does.Contain("bool bardHealers = allowBardHealer && BardHealerSlot.Allowed(leader, pool);"));
                 Assert.That(handover, Does.Contain("if (session.PlayerRole != BotPveGroupRole.Healer)"));
                 Assert.That(handover, Does.Contain("BardHealerSlot.Mark(session.Id, group, bots, session.PveRoles, MemberKey, Log)"));
                 Assert.That(coordinator, Does.Contain("BardHealerSlot.Mark(session.Id, group, exact, session.PveRoles, MemberKey, Log)"),
