@@ -290,6 +290,20 @@ public class SocialExpansionSettingsTests
         Assert.That((off with { BotMovementHabits = true }).IsAllOff, Is.False);
     }
 
+    [Test] public void HealerPeriodRulesAreOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #567 B1-B5 (owner 2026-11-26): bot_healer_period_rules, a bot combat rule rather than a Living Server life feature,
+        // on by default and in Setup; no checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.HealerPeriodRules && SocialExpansionSettings.Recommended.HealerPeriodRules, Is.True);
+        Assert.That(d.AllOff().HealerPeriodRules, Is.True);
+        (d with { HealerPeriodRules = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_healer_period_rules"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).HealerPeriodRules, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void DeathFallIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // 1.2.1 (owner 2026-11-21, "Death animations need fixed absolutely"): bot_death_animation, a display fix in the
