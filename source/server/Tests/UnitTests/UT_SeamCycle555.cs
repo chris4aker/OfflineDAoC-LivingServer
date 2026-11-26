@@ -48,6 +48,12 @@ public class UT_SeamCycle555
                 $"goal={AutonomousZoneRoads.AreaAt(destination, goal)} mains 211={AutonomousZoneSeams.MainArea(200, 211)} 207={AutonomousZoneSeams.MainArea(200, 207)} 200={AutonomousZoneSeams.MainArea(200, 200)}");
             TestContext.Out.WriteLine($"SEAM555 areaRoute from211=[{string.Join(">", AutonomousZoneItinerary.AreaRouteForTests(zoneList, 200, current, destination, start, goal))}] " +
                 $"from207=[{string.Join(">", AutonomousZoneItinerary.AreaRouteForTests(zoneList, 200, connacht, destination, arrival, goal))}]");
+            var trace = new List<string>();
+            bool probed = AutonomousZoneItinerary.ProbeNextStep(zoneList, 200, connacht, destination, arrival, goal, nav,
+                out AutonomousZoneBoundaryRouting.Step probeStep, trace);
+            TestContext.Out.WriteLine($"SEAM555 probe207 routed={probed} step={probeStep} traced={trace.Count}");
+            foreach (string line in trace.Count > 160 ? trace.GetRange(0, 160) : trace)
+                TestContext.Out.WriteLine("SEAM555 trace " + line);
             var left = new List<ushort>();
             for (int hop = 0; hop < 16 && current != destination; hop++)
             {
