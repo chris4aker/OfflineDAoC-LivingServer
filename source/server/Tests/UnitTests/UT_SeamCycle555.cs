@@ -39,6 +39,15 @@ public class UT_SeamCycle555
             Zone current = region.GetZone((int)start.X, (int)start.Y);
             Zone destination = region.GetZone((int)goal.X, (int)goal.Y);
             Assert.That((current?.ID, destination?.ID), Is.EqualTo(((ushort?)211, (ushort?)200)), "the logged zones");
+            // What the planner reads: the ground under the start, the arrival and the goal, and its area route from each.
+            Vector3 arrival = new(334880, 417856, 6561.641f);
+            Zone connacht = region.GetZone((int)arrival.X, (int)arrival.Y);
+            var zoneList = new List<Zone>(region.Zones);
+            TestContext.Out.WriteLine($"SEAM555 ground start={AutonomousZoneItinerary.SeamGroundAt(zoneList, 200, current, start)}/{AutonomousZoneRoads.AreaAt(current, start)} " +
+                $"arrival={AutonomousZoneItinerary.SeamGroundAt(zoneList, 200, connacht, arrival)}/{AutonomousZoneRoads.AreaAt(connacht, arrival)} " +
+                $"goal={AutonomousZoneRoads.AreaAt(destination, goal)} mains 211={AutonomousZoneSeams.MainArea(200, 211)} 207={AutonomousZoneSeams.MainArea(200, 207)} 200={AutonomousZoneSeams.MainArea(200, 200)}");
+            TestContext.Out.WriteLine($"SEAM555 areaRoute from211=[{string.Join(">", AutonomousZoneItinerary.AreaRouteForTests(zoneList, 200, current, destination, start, goal))}] " +
+                $"from207=[{string.Join(">", AutonomousZoneItinerary.AreaRouteForTests(zoneList, 200, connacht, destination, arrival, goal))}]");
             var left = new List<ushort>();
             for (int hop = 0; hop < 16 && current != destination; hop++)
             {
