@@ -1,0 +1,9 @@
+# Server tests the navmesh workflow (.github/workflows/navmesh.yml) runs against the published navmesh set (issue #684).
+#   UT_Name[.Method]  # what it checks with the navmeshes and the Detour library only (#issue)
+# Each one is an [Explicit] class that stays on .github/ci-excluded-tests.txt (the server job has no navmeshes), and needs
+# nothing but runtime/server/navmesh and runtime/server/lib/Detour.dll: no world database, no captured log, no input file.
+# A tool with no assertion is not listed: its pass would prove nothing. tools/navmesh/navmesh_set.py check checks the list.
+# A test that fails here gets a real fix, or its own issue and a quarantine line in ci-excluded-tests.txt.
+UT_DragonLairProbe  # the three dragon lairs' homes are grounded, reachable from outside and keep safe teleports (#684)
+UT_SneezerCampNavigation  # the Domnann camp spawns have walkable floors reachable from the original spot (#684)
+UT_ExchangePlacementNavigation.InspectCapitalFloors  # the Jordheim and Tir na Nog meshes load and answer queries (#684)
