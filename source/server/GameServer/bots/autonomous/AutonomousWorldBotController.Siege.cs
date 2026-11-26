@@ -28,6 +28,8 @@ namespace DOL.GS
         private string _siegePreSupplyKeep;
         // #525: the synthetic engine under construction (AutonomousSiegeBuild).
         private long _siegeBuildStarted, _siegeBuildLastWorked, _siegeBuildNextEmote, _siegeNextStockLog;
+        // #612: the last door-cap refusal logged (at most one RVR_SIEGE action=door_cap a minute per bot).
+        private long _siegeNextCapLog;
         private Vector3? _siegeBuildSpot;
         private BotSiegeKind _siegeBuildKind;
         private bool _siegeSynthetic = true;
@@ -53,7 +55,8 @@ namespace DOL.GS
             if (_siegeJobKeep != null && _siegeJobKeep != _rvrDestination.Id) ReleaseSiegeJob(bot);
             bool attackingKeep = keep.Realm != bot.Realm;
             if (!AutonomousSiegeJobs.TryAcquire(bot, _rvrDestination.Id, 64, attackingKeep, !attackingKeep,
-                out var kind, out var slot, _rvrDestination.RegionId, CarriedSiegeKind(bot)))
+                out var kind, out var slot, _rvrDestination.RegionId, CarriedSiegeKind(bot),
+                BattlegroundBrackets.IsBattlegroundRegion(_rvrDestination.RegionId)))
             { _siegeNextAttempt = now + 10_000; return false; }
             _siegeJobKeep = _siegePreSupplyKeep = _rvrDestination.Id;
             _siegeKind = kind; _siegeSlot = slot;
@@ -96,6 +99,14 @@ namespace DOL.GS
             if (keep == null || bot.GetDistanceTo(new Point3D(keep.X, keep.Y, keep.Z)) > 6000) return false;
             bool attacking = keep.Realm != bot.Realm;
             GameKeepDoor door = attacking ? SiegeDoor(bot, keep) : null;
+            // #666 (owner 2026-11-26): in a battleground, siege only for an attacker with a closed door. The realm holding
+            // the keep builds no defensive engines, and an attacker stops building once the doors are down.
+            bool battleground = BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID);
+            if (!AutonomousSiegeJobs.HasObjective(battleground, attacking, door != null))
+            {
+                if (_siegeJobKeep != null || AutonomousSiegeOwnership.All(bot).Any()) ReleaseSiegeJob(bot);
+                return false;
+            }
             if (_siegeJobKeep != _rvrDestination.Id)
             {
                 ReleaseSiegeJob(bot);
@@ -110,7 +121,7 @@ namespace DOL.GS
             int present = nearby.OfType<GameBot>().Count(b => b.IsAlive && b.Realm == bot.Realm) +
                 bot.GetPlayersInRadius(6000).Count(p => p.IsAlive && p.Realm == bot.Realm);
             if (!AutonomousSiegeJobs.TryAcquire(bot, _siegeJobKeep, present, attacking && door!=null, enemyEngines, out _siegeKind, out _siegeSlot,
-                    carried: CarriedSiegeKind(bot) ?? AbandonedSiegeKind(bot, engines)))
+                    carried: CarriedSiegeKind(bot) ?? AbandonedSiegeKind(bot, engines), battleground: battleground))
             { _siegeNextAttempt = now + 10_000; return false; }
             // #525: siege work at the keep keeps this siege's engine stock alive and sized to the army.
             _siegeStockLeft = AutonomousSiegeBuild.Remaining(bot.CurrentRegionID, _siegeJobKeep, bot.Realm, present, now, out _siegeStock);
@@ -149,6 +160,9 @@ namespace DOL.GS
             if (owned != null && (owned.CurrentRegion != bot.CurrentRegion || BotSiegeRuntime.Kind(owned) != _siegeKind)) { owned.ReleaseControl(); owned = null; }
             if (_siegeWeapon != null && !_siegeWeapon.IsAlive) SiegeLog(bot, "destroyed", _siegeWeapon, "replacement requested");
             _siegeWeapon = owned;
+            // #612: no new, reclaimed or built engine past the realm's 3 standing engines at this door.
+            if (owned == null && door != null && DoorCapRefuses(bot, door, engines, battleground, now))
+            { ReleaseSiegeJob(bot); _siegeNextAttempt = now + 15_000; return false; }
             if (owned == null)
             {
                 GameSiegeWeapon abandoned = engines.Where(w => w.Realm == bot.Realm && w.Owner == null &&
@@ -240,6 +254,16 @@ namespace DOL.GS
                 }
                 lock (AutonomousSiegeOwnership.ChangeGate)
                 {
+                    // #612: the door cap again, from the world as it is now, before the engine appears.
+                    if (door != null)
+                    {
+                        int standingNow = StandingAtDoor(bot.Realm, door.GetNPCsInRadius(DoorCapRadius).OfType<GameSiegeWeapon>());
+                        if (AutonomousSiegeJobs.DoorCapReached(standingNow, 0))
+                        {
+                            LogDoorCap(bot, door, standingNow, 0, battleground, now, force: true);
+                            ResetSiegeBuild(bot); ReleaseSiegeJob(bot); _siegeNextAttempt = now + 15_000; return false;
+                        }
+                    }
                     // Recheck the shared cap immediately before consuming any kit.
                     if (target.GetNPCsInRadius(_siegeKind == BotSiegeKind.Ram ? (ushort)650 : (ushort)6000)
                         .OfType<GameSiegeWeapon>().Count(w => w.IsAlive && w.Realm == bot.Realm && w.Health > w.DecayedHp && CountsAgainstBotEngineCap(w) &&
@@ -291,6 +315,35 @@ namespace DOL.GS
             return true;
         }
 
+        /// <summary>#612: engines within this distance of a door are its siege (a trebuchet's reach is 5,000).</summary>
+        public const ushort DoorCapRadius = 6000;
+
+        /// <summary>#612: one engine as the door cap counts it. Players' engines are counted (owner 2026-11-26).</summary>
+        public static AutonomousSiegeJobs.EngineAtDoor DoorCapFact(GameSiegeWeapon w) =>
+            new(w.Realm, w.IsAlive, w.Health > w.DecayedHp, w.Owner != null);
+
+        public static int StandingAtDoor(eRealm realm, System.Collections.Generic.IEnumerable<GameSiegeWeapon> engines) =>
+            AutonomousSiegeJobs.StandingAtDoor(engines.Where(w => w != null).Select(DoorCapFact), realm);
+
+        /// <summary>#612 (owner 2026-11-26): true when this bot may not bring another engine to the door. A bot already
+        /// building counts only the standing engines (it was let in when it started); a bot about to start also counts the
+        /// other bots of its realm mid-build there. Logs the refusal.</summary>
+        private bool DoorCapRefuses(GameBot bot, GameKeepDoor door, GameSiegeWeapon[] engines, bool battleground, long now)
+        {
+            int standing = StandingAtDoor(bot.Realm, engines.Where(w => w.IsWithinRadius(door, DoorCapRadius)));
+            int building = _siegeBuildStarted != 0 ? 0 : AutonomousSiegeJobs.OthersBuilding(bot, bot.CurrentRegionID, _siegeJobKeep);
+            if (!AutonomousSiegeJobs.DoorCapReached(standing, building)) return false;
+            LogDoorCap(bot, door, standing, building, battleground, now);
+            return true;
+        }
+
+        private void LogDoorCap(GameBot bot, GameKeepDoor door, int standing, int building, bool battleground, long now, bool force = false)
+        {
+            if (!force && now < _siegeNextCapLog) return;
+            _siegeNextCapLog = now + 60_000;
+            SiegeLog(bot, "door_cap", null, AutonomousSiegeJobs.DoorCapDetail(door.DoorId, _siegeKind, standing, building, battleground));
+        }
+
         /// <summary>#525: an engine operated by a player does not take one of the bots' engine places (siege.md finding 5:
         /// the player's ram took one of the two ram places).</summary>
         public static bool CountsAgainstBotEngineCap(GameSiegeWeapon w) => w?.Owner is not GamePlayer;
@@ -308,7 +361,7 @@ namespace DOL.GS
             if (interrupted != null)
             {
                 SiegeLog(bot, "build_interrupted", null, $"kind={_siegeBuildKind} reason={interrupted} after={(now - _siegeBuildStarted) / 1000}s");
-                ResetSiegeBuild();
+                ResetSiegeBuild(bot);
                 _siegeNextAttempt = now + 5_000;
                 return -1;
             }
@@ -321,13 +374,14 @@ namespace DOL.GS
                     ReleaseSiegeJob(bot); _siegeNextAttempt = now + 60_000; return -1;
                 }
                 _siegeBuildStarted = now; _siegeBuildKind = _siegeKind; _siegeBuildSpot = _siegePosition; _siegeBuildNextEmote = 0;
+                AutonomousSiegeJobs.MarkBuilding(bot, true);
                 SiegeLog(bot, "build_started", null, $"kind={_siegeKind} seconds={AutonomousSiegeBuild.BuildMilliseconds(_siegeKind) / 1000} " +
                     $"target={target.Name} at={(int)_siegePosition.Value.X},{(int)_siegePosition.Value.Y},{(int)_siegePosition.Value.Z} stockLeft={_siegeStockLeft}/{_siegeStock}");
                 Message.SystemToArea(bot, $"{bot.Name} begins to build a siege {_siegeKind.ToString().ToLowerInvariant()}.", eChatType.CT_Emote, bot);
             }
             _siegeBuildLastWorked = now;
             if (AutonomousSiegeBuild.Complete(_siegeBuildKind, _siegeBuildStarted, now))
-            { ResetSiegeBuild(); return 1; }
+            { ResetSiegeBuild(bot); return 1; }
             if (now >= _siegeBuildNextEmote) { bot.Emote(eEmote.PlayerPrepare); _siegeBuildNextEmote = now + AutonomousSiegeBuild.BuildEmoteMilliseconds; }
             AutonomousSiegeJobs.Refresh(bot);
             AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.SiegeParticipation);
@@ -335,7 +389,11 @@ namespace DOL.GS
             return 0;
         }
 
-        private void ResetSiegeBuild() { _siegeBuildStarted = 0; _siegeBuildLastWorked = 0; _siegeBuildSpot = null; }
+        private void ResetSiegeBuild(GameBot bot)
+        {
+            if (_siegeBuildStarted != 0) AutonomousSiegeJobs.MarkBuilding(bot, false);
+            _siegeBuildStarted = 0; _siegeBuildLastWorked = 0; _siegeBuildSpot = null;
+        }
 
         private static BotSiegeKind? CarriedSiegeKind(GameBot bot)
         {
@@ -554,7 +612,7 @@ namespace DOL.GS
             _siegeJobKeep=null; _siegeWeapon=null; _siegePosition=null; _siegeRepair=null; _siegeRepairUntil=0;
             _siegeSupplyItem=null; _siegeNoTargetSince=0;
             _siegeMoveTo=null;
-            ResetSiegeBuild();
+            ResetSiegeBuild(bot);
         }
         private bool ContinueSiegeMove(GameBot bot,long now)
         {
