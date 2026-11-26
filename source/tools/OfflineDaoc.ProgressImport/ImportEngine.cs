@@ -122,7 +122,7 @@ public static class ImportEngine
             string name=process.ProcessName;
             if(name.Equals("CoreServer",StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("Stop the DAoC server before importing progress.");
-            if(name is not ("OfflineDAoC" or "game" or "camelot" or "connect" or "Godot_v4.7.2-stable_mono_win64"))continue;
+            if(name is not ("DAoCLivingServer" or "OfflineDAoC" or "game" or "camelot" or "connect" or "Godot_v4.7.2-stable_mono_win64"))continue;
             try
             {
                 string? file=process.MainModule?.FileName;

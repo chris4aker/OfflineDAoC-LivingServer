@@ -16,7 +16,7 @@ namespace LivingServerSetup
     /// </summary>
     internal static class PackageUpdate
     {
-        public const string UserAgent = "OfflineDAoC-LivingServer-Setup";
+        public const string UserAgent = "DAoC-LivingServer-Setup";
 
         /// <summary>What was decided, for the progress page's first step and the log. Null until Run.</summary>
         public static string Note { get; private set; }
@@ -79,7 +79,7 @@ namespace LivingServerSetup
                     // A package for another Offline DAoC release needs a Setup that downloads and updates to that release.
                     if (Payload.NewestRelease(got.Contents.BaseRelease) != Payload.BaseRelease)
                     {
-                        Fallback(newest, "it is made for Offline DAoC " + got.Contents.BaseRelease + ", and this Setup installs " + Payload.BaseRelease +
+                        Fallback(newest, "it is made for base game " + got.Contents.BaseRelease + ", and this Setup installs " + Payload.BaseRelease +
                                          "; a newer Setup is on the release page", inside);
                         return;
                     }
@@ -88,7 +88,7 @@ namespace LivingServerSetup
                     UsedNewer = true;
                     Decide("Installing Living Server " + Payload.DisplayName + ", downloaded from its GitHub release and checked against its " +
                            "SHA-256 digest (Setup itself has " + embedded.DisplayName + ").");
-                    Log.Write("Living Server package now: " + Payload.BuildName + " for Offline DAoC " + Payload.BaseRelease + ", commit " + Payload.Commit +
+                    Log.Write("Living Server package now: " + Payload.BuildName + " for base game " + Payload.BaseRelease + ", commit " + Payload.Commit +
                               ", sha256 " + PackageDigest.FileSha256(got.Path));
                 }
             }

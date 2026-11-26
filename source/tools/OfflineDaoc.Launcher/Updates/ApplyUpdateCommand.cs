@@ -1,6 +1,6 @@
 namespace OfflineDaoc.Updates;
 
-// OfflineDAoC.exe --apply-update <package.zip> [--sha256 <hex>] [--tag v<build>] [--game <folder>] [--no-restart] [--no-pause]
+// DAoCLivingServer.exe --apply-update <package.zip> [--sha256 <hex>] [--tag v<build>] [--game <folder>] [--no-restart] [--no-pause]
 //
 // The update path without the window or the dialog, for tests and support: the same checks and hand-over as the
 // GET UPDATE button, from a package already on disk. Its SHA-256 must be given (as GitHub lists it for the release
@@ -21,7 +21,7 @@ public static class ApplyUpdateCommand
         string? zip = Get("--apply-update");
         if (zip == null)
         {
-            Console.WriteLine("Usage: OfflineDAoC.exe --apply-update <package.zip> [--sha256 <hex>] [--tag v<build>] [--game <folder>] [--no-restart] [--no-pause]");
+            Console.WriteLine("Usage: DAoCLivingServer.exe --apply-update <package.zip> [--sha256 <hex>] [--tag v<build>] [--game <folder>] [--no-restart] [--no-pause]");
             return 4;
         }
         string game = Get("--game") ?? LauncherUpdater.GameFolderFor(serverRoot);

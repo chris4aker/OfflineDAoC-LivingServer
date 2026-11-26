@@ -60,7 +60,7 @@ public sealed record PreparedUpdate(BuildVersion Build, string ZipPath, string P
 // Nothing runs while the server, the game or another launcher does, and the player's saves are never touched.
 public sealed class LauncherUpdater
 {
-    public const string UserAgent = "OfflineDAoC-LivingServer-Launcher";
+    public const string UserAgent = "DAoC-LivingServer-Launcher";
     public const string ResultFile = "last-update.txt";
     /// <summary>
     /// runtime\updates\installed-test-build.txt: the test build (release candidate) handed to INSTALL.cmd and the
@@ -72,7 +72,7 @@ public sealed class LauncherUpdater
 
     /// <summary>The programs whose running blocks an update: the server, both clients, and another launcher.</summary>
     public static readonly string[] BlockingProcesses =
-        ["CoreServer", "DOLServer", "game", "camelot", "connect", "Godot_v4.7.2-stable_mono_win64", "OfflineDAoC"];
+        ["CoreServer", "DOLServer", "game", "camelot", "connect", "Godot_v4.7.2-stable_mono_win64", "DAoCLivingServer", "OfflineDAoC"];
 
     private readonly IReleaseWeb _web;
 
@@ -198,7 +198,7 @@ public sealed class LauncherUpdater
             int others = found.Count(p => p.Id != ownProcessId);
             foreach (Process p in found) p.Dispose();
             if (others > 0)
-                running.Add(name == "OfflineDAoC" ? "another launcher" : name == "CoreServer" || name == "DOLServer" ? "the server" : name + ".exe");
+                running.Add(name is "DAoCLivingServer" or "OfflineDAoC" ? "another launcher" : name == "CoreServer" || name == "DOLServer" ? "the server" : name + ".exe");
         }
         return running.Distinct().ToList();
     }
@@ -229,9 +229,8 @@ public sealed class LauncherUpdater
     public PreparedUpdate PrepareFromFile(string zipPath, string? sha256, string? tag)
     {
         string zip = Path.GetFullPath(zipPath);
-        Match fromName = Regex.Match(Path.GetFileName(zip), @"^OfflineDAoC-LivingServer-(.+)\.zip$", RegexOptions.IgnoreCase);
-        string? name = tag ?? (fromName.Success ? fromName.Groups[1].Value : null);
-        BuildVersion build = BuildVersion.Parse(name) ?? throw Refuse("Can't tell which build " + Path.GetFileName(zip) + " is: name it OfflineDAoC-LivingServer-<build>.zip or give --tag.");
+        string? name = tag ?? ReleaseInfo.BuildFromPackageFileName(Path.GetFileName(zip));
+        BuildVersion build = BuildVersion.Parse(name) ?? throw Refuse("Can't tell which build " + Path.GetFileName(zip) + " is: name it DAoC-LivingServer-<build>.zip or give --tag.");
         if (!File.Exists(zip))
             throw Refuse("There's no " + zip + ".");
         string? expected = (sha256 ?? ReadSidecar(zip + ".sha256"))?.Trim();
@@ -297,10 +296,10 @@ public sealed class LauncherUpdater
     public void KeepNewestPackages(BuildVersion current)
     {
         var older = new List<(BuildVersion Build, string Path)>();
-        foreach (string file in Directory.GetFiles(UpdatesFolder, "OfflineDAoC-LivingServer-*.zip"))
+        foreach (string file in Directory.GetFiles(UpdatesFolder, "*.zip"))
         {
-            var m = Regex.Match(Path.GetFileName(file), @"^OfflineDAoC-LivingServer-(.+)\.zip$", RegexOptions.IgnoreCase);
-            BuildVersion? b = m.Success ? BuildVersion.Parse(m.Groups[1].Value) : null;
+            string? fromName = ReleaseInfo.BuildFromPackageFileName(Path.GetFileName(file));
+            BuildVersion? b = fromName != null ? BuildVersion.Parse(fromName) : null;
             if (b != null && !b.SameBuildAs(current))
                 older.Add((b, file));
         }

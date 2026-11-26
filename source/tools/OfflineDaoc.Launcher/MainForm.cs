@@ -154,6 +154,7 @@ internal sealed partial class MainForm : Form
     // Living Server 1.2, play with friends (from rambodolphin13/DividedRealms 3c6cc9d).
     private readonly Button _joinFriendButton;
     private readonly Button _hostFriendsButton;
+    private readonly Button _aboutButton;
     private Process? _serverProcess;
     private RollingServerLog? _serverLog;
     private bool _stoppingServer;
@@ -229,6 +230,9 @@ internal sealed partial class MainForm : Form
         _hostFriendsButton = ActionButton("HOST FOR FRIENDS", Color.FromArgb(150, 112, 52));
         _joinFriendButton.Click += (_, _) => OpenJoinFriend();
         _hostFriendsButton.Click += (_, _) => OpenHostForFriends();
+        // About (#641): the product, its license and every project and person whose work is in it (CREDITS.md).
+        _aboutButton = ActionButton("ABOUT", DaocTheme.Iron);
+        _aboutButton.Click += (_, _) => { using var about = new AboutForm(); about.ShowDialog(this); };
 
         rootLayout.Controls.Add(BuildHeader(), 0, 0);
         rootLayout.Controls.Add(BuildCards(), 0, 1);
@@ -402,7 +406,7 @@ internal sealed partial class MainForm : Form
         titlePanel.Controls.Add(new Label
         {
             AutoSize = true,
-            Text = "OFFLINE DAoC",
+            Text = "DAoC - LIVING SERVER",
             Font = new Font("Georgia", 28f, FontStyle.Bold),
             ForeColor = DaocTheme.GoldLight,
             Location = new Point(94, 5),
@@ -429,7 +433,7 @@ internal sealed partial class MainForm : Form
         header.Controls.Add(titlePanel, 0, 0);
 
         var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = true, Padding = new Padding(3, 5, 0, 0), BackColor = Color.Transparent };
-        foreach (var button in new[] { _startButton, _stopButton, _playButton, _joinFriendButton, _hostFriendsButton })
+        foreach (var button in new[] { _startButton, _stopButton, _playButton, _joinFriendButton, _hostFriendsButton, _aboutButton })
         {
             button.Width = 132;
             button.Height = 26;
@@ -442,6 +446,7 @@ internal sealed partial class MainForm : Form
         actions.SetFlowBreak(_playButton, true);
         actions.Controls.Add(_joinFriendButton);
         actions.Controls.Add(_hostFriendsButton);
+        actions.Controls.Add(_aboutButton);
         if (_newClient)
         {
             // Join Friend starts the original client; the new client is not supported yet.
@@ -450,6 +455,7 @@ internal sealed partial class MainForm : Form
         }
         else
             SetToolTip(_joinFriendButton, "Play in a friend's world over your home network, Tailscale or the internet. Your own server and save are not touched.");
+        SetToolTip(_aboutButton, "DAoC - Living Server: its license (GPL v3), credits and the projects it is built on.");
         SetToolTip(_hostFriendsButton, "Let friends join this game's server over your home network or Tailscale, with a password, and set up the firewall for it.");
         header.Controls.Add(actions, 1, 0);
         banner.Controls.Add(header);
@@ -1747,8 +1753,8 @@ internal sealed partial class MainForm : Form
         command.Parameters.AddWithValue("@updated", DateTime.UtcNow.ToString("O"));
         foreach (var (name, text, on) in new[]
         {
-            ("rvr_battleground_announcements", "RvR and battleground announcements (keeps, relics, sieges), set in the Offline DAoC launcher.", rvr),
-            ("pve_realm_event_announcements", "PvE realm event announcements (raids forming, raid final bosses), set in the Offline DAoC launcher.", pve),
+            ("rvr_battleground_announcements", "RvR and battleground announcements (keeps, relics, sieges), set in the launcher.", rvr),
+            ("pve_realm_event_announcements", "PvE realm event announcements (raids forming, raid final bosses), set in the launcher.", pve),
         })
         {
             key.Value = name;
@@ -1843,8 +1849,8 @@ internal sealed partial class MainForm : Form
 
         string stored = multiplier.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture);
         string description = key == "xp_rate"
-            ? "Real player character experience rate selected in the Offline DAoC launcher."
-            : "Autonomous player-bot experience rate selected in the Offline DAoC launcher.";
+            ? "Real player character experience rate selected in the launcher."
+            : "Autonomous player-bot experience rate selected in the launcher.";
         using var connection = new SQLiteConnection($"Data Source={_database};Version=3;Pooling=False;Default Timeout=10");
         connection.Open();
         using var transaction = connection.BeginTransaction();
@@ -2334,8 +2340,11 @@ internal sealed partial class MainForm : Form
     internal static string VersionLabel() => DisplayVersion.ToUpperInvariant();
 
     // The window title names the Living Server build too; the new client's launcher (old 0.37c installs) says which client.
+    // The product's full name (owner, 2026-11-25, #641): "DAoC - Living Server"; "Living Server" alone is the short form.
+    internal const string ProductName = "DAoC - Living Server";
+
     internal static string WindowTitle(bool newClient) =>
-        newClient ? $"Offline DAoC {DisplayVersion} — New client" : $"Offline DAoC {DisplayVersion} — Classic + Shrouded Isles";
+        newClient ? $"DAoC - {DisplayVersion} — New client" : $"DAoC - {DisplayVersion} — Classic + Shrouded Isles";
 
     private static bool InstalledEditionHasCustomClass(string database)
     {
@@ -2866,7 +2875,7 @@ internal sealed partial class MainForm : Form
             : _savingXpRates ? "a setting is being saved"
             : _serverProcess is { HasExited: false } ? "this launcher's server is still running"
             : FindExactServerProcess() is not null ? "this game's server (CoreServer) is already running"
-            : IsServerRunning() ? $"another program is using port {ServerPortProbe.GameServerPort} (another Offline DAoC server?)"
+            : IsServerRunning() ? $"another program is using port {ServerPortProbe.GameServerPort} (another Living Server game?)"
             : null;
         if (busy != null)
         {

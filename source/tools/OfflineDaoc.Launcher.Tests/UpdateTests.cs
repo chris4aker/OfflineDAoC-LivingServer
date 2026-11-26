@@ -67,7 +67,8 @@ public class UpdateVersionTests
         Assert.That(final.DisplayName, Is.EqualTo("1.2"), "the launcher shows LIVING SERVER 1.2");
         Assert.That(final.SameBuildAs(BuildVersion.Parse("1.2.0")), Is.True);
         Assert.That(final.SameBuildAs(BuildVersion.Parse("1.2-beta")), Is.False, "the candidates' 1.2-beta is another build");
-        Assert.That(ReleaseInfo.PackageName(final), Is.EqualTo("OfflineDAoC-LivingServer-1.2.zip"));
+        Assert.That(ReleaseInfo.PackageName(final), Is.EqualTo("DAoC-LivingServer-1.2.zip"));
+        Assert.That(ReleaseInfo.LegacyPackageName(final), Is.EqualTo("OfflineDAoC-LivingServer-1.2.zip"));
         Assert.That(PackageCheck.TopFolderFor(final), Is.EqualTo("LivingServer-1.2"));
     }
 
@@ -581,7 +582,7 @@ public class UpdateDownloadTests
         long reported = 0;
         PreparedUpdate prepared = updater.PrepareFromRelease(release, (done, _) => reported = done, CancellationToken.None);
         Assert.That(reported, Is.EqualTo(package.Length));
-        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.1.2-beta.zip")));
+        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "DAoC-LivingServer-1.1.2-beta.zip")));
         Assert.That(File.ReadAllText(prepared.ZipPath + ".sha256"), Does.StartWith(UpdateFixtures.Sha(package)));
         Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.1.2-beta")));
         Assert.That(File.Exists(Path.Combine(prepared.PackageFolder, "ROLLBACK.cmd")), Is.True, "ROLLBACK.cmd where a player would put it");
@@ -605,7 +606,7 @@ public class UpdateDownloadTests
         Assert.That(offered?.TagName, Is.EqualTo("v1.2"));
         PreparedUpdate prepared = updater.PrepareFromRelease(offered!, null, CancellationToken.None);
         Assert.That(prepared.Build.Name, Is.EqualTo("1.2"));
-        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.2.zip")));
+        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "DAoC-LivingServer-1.2.zip")));
         Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.2")));
         Assert.That(File.ReadAllText(Path.Combine(prepared.PackageFolder, "BUILD-INFO.txt")), Does.Contain("BuildName=1.2\r\n"));
     }
@@ -622,7 +623,7 @@ public class UpdateDownloadTests
         Assert.That(offered?.TagName, Is.EqualTo("v1.2.1"));
         PreparedUpdate prepared = updater.PrepareFromRelease(offered!, null, CancellationToken.None);
         Assert.That(prepared.Build.Name, Is.EqualTo("1.2.1"));
-        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.2.1.zip")));
+        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "DAoC-LivingServer-1.2.1.zip")));
         Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.2.1")));
         Assert.That(File.ReadAllText(Path.Combine(prepared.PackageFolder, "BUILD-INFO.txt")), Does.Contain("BuildName=1.2.1\r\n"));
     }
@@ -639,7 +640,7 @@ public class UpdateDownloadTests
         Assert.That(offered?.TagName, Is.EqualTo("v1.2.2"));
         PreparedUpdate prepared = updater.PrepareFromRelease(offered!, null, CancellationToken.None);
         Assert.That(prepared.Build.Name, Is.EqualTo("1.2.2"));
-        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.2.2.zip")));
+        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(Updates, "DAoC-LivingServer-1.2.2.zip")));
         Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.2.2")));
         Assert.That(File.ReadAllText(Path.Combine(prepared.PackageFolder, "BUILD-INFO.txt")), Does.Contain("BuildName=1.2.2\r\n"));
     }
@@ -653,7 +654,7 @@ public class UpdateDownloadTests
         ReleaseInfo release = ReleaseInfo.Parse(UpdateFixtures.ReleaseJson("v1.1.2-beta", published))!;
         Assert.That(() => updater.PrepareFromRelease(release, null, CancellationToken.None),
             Throws.TypeOf<PackageRefusedException>().With.Message.Contains("doesn't match the SHA-256"));
-        Assert.That(Directory.GetFiles(Updates), Has.None.Contains("OfflineDAoC-LivingServer"));
+        Assert.That(Directory.GetFiles(Updates), Has.None.Contains("LivingServer-"));
         Assert.That(Directory.Exists(Path.Combine(_game, "LivingServer-1.1.2-beta")), Is.False);
         Assert.That(File.ReadAllText(updater.Log.Path), Does.Contain("REFUSED"));
     }
@@ -688,7 +689,7 @@ public class UpdateDownloadTests
         var updater = new LauncherUpdater(_game, web);
         ReleaseInfo release = ReleaseInfo.Parse(UpdateFixtures.ReleaseJson("v1.1.2-beta", package))!;
         Assert.That(() => updater.PrepareFromRelease(release, null, CancellationToken.None), Throws.TypeOf<PackageRefusedException>());
-        Assert.That(File.Exists(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.1.2-beta.zip")), Is.False);
+        Assert.That(File.Exists(Path.Combine(Updates, "DAoC-LivingServer-1.1.2-beta.zip")), Is.False);
     }
 
     [Test]
@@ -703,7 +704,7 @@ public class UpdateDownloadTests
         Assert.That(File.Exists(zip), Is.True, "a file the player gave is never deleted");
         PreparedUpdate prepared = updater.PrepareFromFile(zip, "sha256:" + UpdateFixtures.Sha(package), null);
         Assert.That(prepared.Build.Name, Is.EqualTo("1.1.2-beta"));
-        Assert.That(File.Exists(Path.Combine(Updates, "OfflineDAoC-LivingServer-1.1.2-beta.zip.sha256")), Is.True, "kept with its SHA-256 to reinstall");
+        Assert.That(File.Exists(Path.Combine(Updates, "DAoC-LivingServer-1.1.2-beta.zip.sha256")), Is.True, "kept with its SHA-256 to reinstall");
         // The kept copy is checked again from its .sha256 file.
         Assert.That(updater.PrepareFromFile(prepared.ZipPath, null, null).PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.1.2-beta")));
     }

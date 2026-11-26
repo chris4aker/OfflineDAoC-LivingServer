@@ -6,7 +6,7 @@ using NUnit.Framework;
 [TestFixture, NonParallelizable, Apartment(ApartmentState.STA)]
 public class RealmEventsPresentationTests
 {
-    private static readonly Type Main = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.MainForm")!;
+    private static readonly Type Main = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.MainForm")!;
     private const BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
     private Form _form;
     private T Field<T>(string name) => (T)Main.GetField(name, Hidden)!.GetValue(_form)!;

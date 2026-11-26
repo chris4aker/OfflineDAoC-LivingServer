@@ -237,7 +237,12 @@ public static class HostForFriends
         }
     }
 
-    public static string FirewallRuleName(string protocol, int port) => $"Offline DAoC friends {protocol} {port}";
+    // New rules carry the product name (#641); rules an earlier build made keep their name and are still found and removed.
+    public const string FirewallRulePrefix = "DAoC - Living Server friends ";
+    public const string LegacyFirewallRulePrefix = "Offline DAoC friends ";
+    public static bool IsOurFirewallRule(string name) =>
+        name.StartsWith(FirewallRulePrefix, StringComparison.Ordinal) || name.StartsWith(LegacyFirewallRulePrefix, StringComparison.Ordinal);
+    public static string FirewallRuleName(string protocol, int port) => $"{FirewallRulePrefix}{protocol} {port}";
 
     /// <summary>
     /// The game's two ports, and the Passport Desk's (login port + <see cref="OfflineDaoc.Passport.PassportDeskClient.PortOffset"/>),
@@ -262,8 +267,8 @@ public static class HostForFriends
         var script = new StringBuilder();
         script.AppendLine("@echo off");
         script.AppendLine(add
-            ? "rem Offline DAoC Living Server: let friends reach this game's server."
-            : "rem Offline DAoC Living Server: remove the Host for Friends firewall rules.");
+            ? "rem DAoC - Living Server: let friends reach this game's server."
+            : "rem DAoC - Living Server: remove the Host for Friends firewall rules.");
         foreach (var (protocol, port) in FirewallPorts(state))
         {
             string name = FirewallRuleName(protocol, port);
@@ -282,7 +287,7 @@ public static class HostForFriends
     public static IReadOnlyList<string> RulesToRemove(State state, Settings settings)
     {
         var ours = new HashSet<string>(FirewallRuleNames(state), StringComparer.OrdinalIgnoreCase);
-        IEnumerable<string> recorded = settings.FirewallRules.Where(name => name.StartsWith("Offline DAoC friends ", StringComparison.Ordinal));
+        IEnumerable<string> recorded = settings.FirewallRules.Where(IsOurFirewallRule);
         List<string> names = recorded.Concat(ours).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         return names;
     }
@@ -292,11 +297,11 @@ public static class HostForFriends
     {
         var script = new StringBuilder();
         script.AppendLine("@echo off");
-        script.AppendLine("rem Offline DAoC Living Server: remove the Host for Friends firewall rules (by name, nothing else).");
+        script.AppendLine("rem DAoC - Living Server: remove the Host for Friends firewall rules (by name, nothing else).");
         script.AppendLine("set failed=0");
         foreach (string name in names)
         {
-            if (name.Contains('"') || !name.StartsWith("Offline DAoC friends ", StringComparison.Ordinal))
+            if (name.Contains('"') || !IsOurFirewallRule(name))
                 continue;
             script.AppendLine($"netsh advfirewall firewall show rule name=\"{name}\" >nul 2>&1 && (netsh advfirewall firewall delete rule name=\"{name}\" >nul || set failed=1)");
         }

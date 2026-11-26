@@ -47,7 +47,8 @@ HEADING = re.compile(rf"^## (Beta )?({VERSION})\b(.*)$", re.MULTILINE)
 RELEASED_FINAL = re.compile(r"^\s+—\s")   # "## 1.2 — 2026-11-20", not "## 0.37-se.1 — ..." or "## 1.2 (in development)"
 IS_OUT = re.compile(rf"\*\*(?:(Beta|Living Server) )?({VERSION}) is out\.\*\*")
 RELEASE_LINK = re.compile(rf"github\.com/{re.escape(REPO)}/releases/(?:tag|download)/v({BUILD}){END}", re.IGNORECASE)
-FILE_NAME = re.compile(rf"\b(?:LivingServer-Setup|OfflineDAoC-LivingServer)-({BUILD})\.(?:exe|zip)\b")
+# Old and new names (#641): LivingServer-Setup / OfflineDAoC-LivingServer up to 1.2.2, DAoC-LivingServer(-Setup) from 1.2.3.
+FILE_NAME = re.compile(rf"\b(?:LivingServer-Setup|OfflineDAoC-LivingServer|DAoC-LivingServer)-({BUILD})\.(?:exe|zip)\b")
 FORK_BUILD_NAME = re.compile(rf"FORK_BUILD name=({BUILD}){END}")
 BUILD_NAME = re.compile(r'const string BuildName = "([^"]+)"')
 BASE_RELEASE = re.compile(r'const string BaseRelease = "([^"]+)"')

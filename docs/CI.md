@@ -12,7 +12,7 @@ The "main: green checks" ruleset requires these five jobs of `build-and-test.yml
 
 | Job | Runner | Gates (each fails the job) |
 |---|---|---|
-| `versions` | ubuntu | README, `ForkBuildInfo.BuildName`, the newest released changelog heading and `MainForm.DisplayVersion` name one release (`tools/release/check_versions.py`); the release scripts' tests (`tools/release/tests`); the installer seeding tests (`tools/installer/tests`). |
+| `versions` | ubuntu | README, `ForkBuildInfo.BuildName`, the newest released changelog heading and `MainForm.DisplayVersion` name one release (`tools/release/check_versions.py`); no new player-visible "Offline DAoC", "OfflineDAoC" or "shadowofze" outside `tools/release/brand-allowlist.json` and the compatibility names (`tools/release/check_brand.py`, #641); the release scripts' tests (`tools/release/tests`); the installer seeding tests (`tools/installer/tests`). |
 | `encounter-catalog` | ubuntu | `docs/encounters` matches the boss scripts (`source/tools/epic_encounter_catalog.py --check`); every `changelog.d/` fragment parses and names the version in development (`source/tools/assemble_changelog.py --check`); every test in `source/tools/tests` (the tools, `ALL SERVER COMMANDS.txt` up to date, `tools/check.py`'s mirror, the CI glue `ci_test_results.py` and the excluded-test list's format). |
 | `new-client` | ubuntu | The 0.37c new client's released scripts plus `tools/fork-build/content-patches.json` compile in Godot 4.7.2 (pinned by SHA-512) against the released class cache, and issue #34's probe passes (`tools/newclient-compat/installed_check.py`). |
 | `server` | windows | See below. |
@@ -99,6 +99,7 @@ Each checker CI runs has a test that plants a defect and sees it fail, and sees 
 | `tools/lore/lint_lore.py`, `repetition.py`, `continuity.py`, `depth_report.py`, `fourth_wall.py` | `tools/lore/tests/` |
 | `tools/lore/reachability.py --check` | `tools/lore/tests/test_reachability_check.py` |
 | `tools/release/check_versions.py` | `tools/release/tests/test_check_versions.py` |
+| `tools/release/check_brand.py` | `tools/release/tests/test_check_brand.py` (planted launcher string, doc line and script message) |
 | `tools/fork-build/test-install-scripts.ps1`, `tools/wayback-fetch/tests/run-tests.ps1` | they are tests themselves; each exits 1 on a failed check |
 | `tools/newclient-compat/installed_check.py` | none: it needs Godot and the 0.37 release commit (only the `new-client` job has them) |
 

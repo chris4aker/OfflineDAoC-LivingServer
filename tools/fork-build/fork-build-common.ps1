@@ -6,14 +6,31 @@
 $Script:ServerFolders = @('runtime/server', 'runtime/server/lib', 'runtime/server/win-x64')
 # The launcher (its Living Server tab): the game's own copy, and the 0.37c new client's copy when present.
 $Script:LauncherFolders = @('runtime', 'new-client/runtime')
-$Script:LauncherFiles = @('OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json')
+# From 1.2.3 (#641) the launcher is DAoCLivingServer.*, and OfflineDAoC.exe is a byte copy of its apphost (it runs
+# DAoCLivingServer.dll whatever its own name), so the game's START OFFLINE DAOC.cmd, old shortcuts and 1.2.x updaters
+# that open runtime\OfflineDAoC.exe open the new launcher. The older launcher's other files (LegacyLauncherFiles) are
+# left where they are: a rollback puts OfflineDAoC.exe back beside them.
+$Script:LauncherFiles = @('DAoCLivingServer.dll', 'DAoCLivingServer.exe', 'DAoCLivingServer.pdb', 'DAoCLivingServer.deps.json',
+    'DAoCLivingServer.runtimeconfig.json', 'OfflineDAoC.exe')
+$Script:LauncherDll = 'DAoCLivingServer.dll'
+$Script:LegacyLauncherDll = 'OfflineDAoC.dll'
+$Script:LegacyLauncherFiles = @('OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json')
+$Script:AllLauncherFiles = @($Script:LauncherFiles + $Script:LegacyLauncherFiles | Select-Object -Unique)
+
+# The file that tells a folder's launcher apart: DAoCLivingServer.dll once a 1.2.3 or later build is installed, else the
+# older OfflineDAoC.dll. $null when the folder has neither.
+function Get-LauncherDllName([string]$folder) {
+    if (Test-Path -LiteralPath (Join-Path $folder $Script:LauncherDll)) { return $Script:LauncherDll }
+    if (Test-Path -LiteralPath (Join-Path $folder $Script:LegacyLauncherDll)) { return $Script:LegacyLauncherDll }
+    return $null
+}
 # The server's own libraries beside GameServer.dll, shipped in the build's core\ folder (Living Server 1.1.2: save safety
 # changed CoreDatabase, CoreBase and CoreServer, and a server whose GameServer.dll was new but CoreDatabase.dll released
 # stopped at start, playtest 2026-11-04). Each one replaces the folder's copy only where the folder has one; its .pdb
 # goes with it where the folder has a .pdb too.
 $Script:CoreFiles = @('CoreBase.dll', 'CoreDatabase.dll', 'CoreServer.dll')
 # Also the 0.37c new client and its launcher, which share the game's runtime.
-$Script:ProcessNames = @('CoreServer', 'DOLServer', 'OfflineDAoC', 'game', 'camelot', 'connect', 'Godot_v4.7.2-stable_mono_win64')
+$Script:ProcessNames = @('CoreServer', 'DOLServer', 'DAoCLivingServer', 'OfflineDAoC', 'game', 'camelot', 'connect', 'Godot_v4.7.2-stable_mono_win64')
 
 function Stop-WithMessage([string]$Message) {
     Write-Host ''
@@ -38,12 +55,12 @@ function Test-GameFolder([string]$Path) {
 }
 
 # The game folder: the one given, else the folder this build sits in (or its parents), or a
-# playable*/OfflineDAoC* folder inside one of those.
+# playable*/OfflineDAoC*/LivingServer* folder inside one of those.
 function Find-GameFolder([string]$Given, [string]$BuildDir) {
     if ($Given) {
         $full = [IO.Path]::GetFullPath($Given)
         if (Test-GameFolder $full) { return $full }
-        Stop-WithMessage "No Offline DAoC game in '$full' (runtime\server\GameServer.dll is missing)."
+        Stop-WithMessage "No game in '$full' (runtime\server\GameServer.dll is missing)."
     }
     $parent = Split-Path -Parent $BuildDir
     # The documented place is inside the game folder: when the build sits there, that folder wins, even if other
@@ -56,7 +73,7 @@ function Find-GameFolder([string]$Given, [string]$BuildDir) {
     foreach ($start in $starts) {
         if (Test-GameFolder $start) { $found += [IO.Path]::GetFullPath($start); continue }
         foreach ($child in @(Get-ChildItem -LiteralPath $start -Directory -ErrorAction SilentlyContinue |
-                Where-Object { $_.Name -like 'playable*' -or $_.Name -like 'OfflineDAoC*' })) {
+                Where-Object { $_.Name -like 'playable*' -or $_.Name -like 'OfflineDAoC*' -or $_.Name -like 'LivingServer*' })) {
             if (Test-GameFolder $child.FullName) { $found += $child.FullName }
         }
     }
@@ -65,8 +82,8 @@ function Find-GameFolder([string]$Given, [string]$BuildDir) {
     if ($found.Count -gt 1) {
         Stop-WithMessage ("More than one game folder found. Run again with -GameFolder and one of:`n  " + ($found -join "`n  "))
     }
-    Stop-WithMessage ("Can't find the game. Put this build's folder inside your Offline DAoC folder (the one with " +
-        "START OFFLINE DAOC.cmd), or run INSTALL.cmd -GameFolder ""C:\path\to\playable-v0.37b"".")
+    Stop-WithMessage ("Can't find the game. Put this build's folder inside your game folder (the one with " +
+        "START OFFLINE DAOC.cmd), or run INSTALL.cmd -GameFolder ""C:\Games\LivingServer"".")
 }
 
 function Assert-GameClosed {

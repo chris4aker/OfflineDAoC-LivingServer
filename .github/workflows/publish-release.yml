@@ -1,11 +1,12 @@
 # Publishes a Living Server release from a build-and-test push run on main, for when it can't be done by hand
-# (tools/release/publish_release.py): takes that run's package artifact, zips it as OfflineDAoC-LivingServer-<build>.zip,
+# (tools/release/publish_release.py): takes that run's package artifact, zips it as DAoC-LivingServer-<build>.zip (#641;
+# OfflineDAoC-LivingServer-<build>.zip up to 1.2.2, and a copy under that name for 1.2.x launchers from 1.2.3),
 # fills the zip's SHA-256 into docs/RELEASE-NOTES-<version>.md's notes, then creates the tag and the release on the
 # run's commit, attaches the zip and publishes it as Latest. A dry run (the default) does every check, prints the notes
 # and keeps the zip as a workflow artifact, with a read-only token.
 #
 # Test builds (issue #637): with prerelease on, the tag is a release candidate (v1.2.3-rc.1) of the version in
-# development. Its package is the push run's build 1.2.3, zipped as OfflineDAoC-LivingServer-1.2.3-rc.1.zip with the
+# development. Its package is the push run's build 1.2.3, zipped as DAoC-LivingServer-1.2.3-rc.1.zip with the
 # same checks and GitHub digest check, under short generated notes; it is published as a pre-release that never becomes
 # Latest (make_latest false), so the launcher's normal channel and /releases/latest keep the final release. Testers
 # get it with the launcher's "Offer test builds (pre-releases)" (docs/CONTRIBUTING.md, "Test builds").
@@ -121,11 +122,11 @@ jobs:
           python3 tools/release/publish_release.py package --artifact "$RUNNER_TEMP/artifact" --tag "$TAG" --commit "$COMMIT" --out out $FLAG
           if [ -n "$FLAG" ]; then
             # A test build's notes are short and generated (publish_release.py prerelease_body).
-            python3 tools/release/publish_release.py notes --prerelease --tag "$TAG" --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --out out/release-notes.md
+            python3 tools/release/publish_release.py notes --prerelease --tag "$TAG" --zip "$(ls out/*.zip)" --out out/release-notes.md
           else
             # docs/RELEASE-NOTES-<version>.md: v1.2 reads RELEASE-NOTES-1.2.md, and so did v1.1.2-beta RELEASE-NOTES-1.1.2.md.
             version="${TAG#v}"; version="${version%-beta}"
-            python3 tools/release/publish_release.py notes --notes "docs/RELEASE-NOTES-$version.md" --tag "$TAG" --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --out out/release-notes.md
+            python3 tools/release/publish_release.py notes --notes "docs/RELEASE-NOTES-$version.md" --tag "$TAG" --zip "$(ls out/*.zip)" --out out/release-notes.md
           fi
           sha256sum out/*.zip
           echo "--- release notes ---"; cat out/release-notes.md; echo "--- end ---"
@@ -156,7 +157,7 @@ jobs:
           TITLE: ${{ inputs.title }}
           COMMIT: ${{ needs.prepare.outputs.commit }}
           FLAG: ${{ needs.prepare.outputs.prerelease_flag }}
-        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --dry-run $FLAG
+        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "$(ls out/*.zip)" --dry-run $FLAG
 
   publish:
     needs: prepare
@@ -180,4 +181,4 @@ jobs:
           TITLE: ${{ inputs.title }}
           COMMIT: ${{ needs.prepare.outputs.commit }}
           FLAG: ${{ needs.prepare.outputs.prerelease_flag }}
-        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" $FLAG
+        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "$(ls out/*.zip)" $FLAG

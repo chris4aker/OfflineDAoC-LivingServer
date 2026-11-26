@@ -20,7 +20,7 @@ namespace LivingServerSetup
             StartPosition = FormStartPosition.CenterScreen;
             ClientSize = new Size(Theme.S(W), Theme.S(H));
             BackColor = Theme.Void;
-            Text = "Offline DAoC: Living Server Setup";
+            Text = Program.SetupTitle;
             try { Icon = Theme.AppIcon(); } catch { }
             DoubleBuffered = true;
             KeyPreview = true;
@@ -162,7 +162,7 @@ namespace LivingServerSetup
             PaintBody(g);
             var header = Theme.Img("header.jpg");
             Theme.DrawCover(g, header, R(0, 0, SetupForm.W, 110), 0f, 0.5f);
-            var ver = "Living Server " + Payload.DisplayName + "  ·  for Offline DAoC " + Payload.FitsLabel;
+            var ver = "Living Server " + Payload.DisplayName + "  ·  for Dark Age of Camelot";
             Theme.DrawText(g, ver, Theme.Serif(8.25f, FontStyle.Italic), R(560, 76, 380, 20), Theme.Muted, TextFormatFlags.Right | TextFormatFlags.SingleLine);
 
             if (!string.IsNullOrEmpty(Title))

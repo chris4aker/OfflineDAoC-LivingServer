@@ -76,7 +76,7 @@ public class KeepRelicResetTests
 
     [Test, Apartment(ApartmentState.STA)] public void ButtonFitsMarkedHeaderAtCompactAndLargeWidths()
     {
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.MainForm")!;
+        var type = Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.MainForm")!;
         using var form = (Form)Activator.CreateInstance(type)!;
         var flags = BindingFlags.Instance | BindingFlags.NonPublic;
         using var header = (Control)type.GetMethod("BuildActiveRvrHeader",flags)!.Invoke(form,null)!;

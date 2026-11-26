@@ -485,13 +485,13 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// The Server Message of the Day
 		/// </summary>
-		[ServerProperty("server", "motd", "The Server Message of the Day - Edit this to set what is displayed when a level 2+ character enters the game for the first time, set to \"\" for nothing", "Welcome back to Offline DAoC. Adventure alone or alongside autonomous player bots across the three realms.")]
+		[ServerProperty("server", "motd", "The Server Message of the Day - Edit this to set what is displayed when a level 2+ character enters the game for the first time, set to \"\" for nothing", "Welcome back to DAoC - Living Server. Adventure alone or alongside autonomous player bots across the three realms.")]
 		public static string MOTD;
 
 		/// <summary>
 		/// The message players get when they enter the game past level 1
 		/// </summary>
-		[ServerProperty("server", "starting_msg", "The Starting Mesage - Edit this to set what is displayed when a level 1 character enters the game for the first time, set to \"\" for nothing", "Welcome to Offline DAoC, a private Classic and Shrouded Isles world built to play alone or with player bot companions.")]
+		[ServerProperty("server", "starting_msg", "The Starting Mesage - Edit this to set what is displayed when a level 1 character enters the game for the first time, set to \"\" for nothing", "Welcome to DAoC - Living Server, a private Classic and Shrouded Isles world built to play alone or with player bot companions.")]
 		public static string STARTING_MSG;
 
 		/// <summary>

@@ -1,7 +1,7 @@
-# Installs this fork server build into an Offline DAoC game folder (docs/RELEASE-PLAN.md).
+# Installs this Living Server build into a game folder (docs/RELEASE-PLAN.md).
 #
 #   INSTALL.cmd                                  (finds the game folder this build sits in)
-#   INSTALL.cmd -GameFolder "C:\Games\OfflineDAoC\playable-v0.37b"
+#   INSTALL.cmd -GameFolder "C:\Games\LivingServer"
 #   INSTALL.cmd -DryRun                          (checks everything, changes nothing)
 #
 # Safe by design:
@@ -12,7 +12,7 @@
 #   installed; anything else is refused unless -Force;
 # - the same for the server's own libraries (core\: CoreBase, CoreDatabase, CoreServer, Living Server 1.1.2), in each
 #   server folder that has them;
-# - the same for the launcher (OfflineDAoC.exe and its files, with the Living Server tab) in runtime\
+# - the same for the launcher (DAoCLivingServer.exe and its files, with the Living Server tab, and OfflineDAoC.exe, a copy that opens it) in runtime\
 #   and, on 0.37c, in new-client\runtime\ (checked against new-client\PACKAGE MANIFEST.sha256);
 # - backs up every file it replaces under runtime\server\deployment-backups\fork-build-<time>\ and
 #   verifies every copy by SHA-256. ROLLBACK.cmd restores the backup;
@@ -40,7 +40,7 @@ $info = Read-KeyValueFile $infoPath
 foreach ($key in @('BuildName', 'BaseRelease', 'Commit', 'GameServer.dll', 'GameServer.pdb')) {
     if (!$info[$key]) { Stop-WithMessage "BUILD-INFO.txt has no $key." }
 }
-Write-Host "Fork server build $($info['BuildName']) (commit $($info['Commit'])) for Offline DAoC $($info['BaseRelease'])"
+Write-Host "Living Server build $($info['BuildName']) (commit $($info['Commit'])) for base game $($info['BaseRelease'])"
 
 # 1. This build's own files must be intact.
 foreach ($name in @('GameServer.dll', 'GameServer.pdb')) {
@@ -98,11 +98,11 @@ Assert-GameClosed
 $manifest = Read-PackageManifest $game
 $base = $info['BaseRelease']
 if ($null -eq $manifest) {
-    if (!$Force) { Stop-WithMessage "No PACKAGE MANIFEST.sha256 in the game folder, so it can't be checked as Offline DAoC $base. (-Force skips this check.)" }
+    if (!$Force) { Stop-WithMessage "No PACKAGE MANIFEST.sha256 in the game folder, so it can't be checked as base game $base. (-Force skips this check.)" }
     $manifest = @{}
 } elseif (!(Test-ReleaseManifest $manifest $base)) {
     $fits = (Get-BaseReleases $base) -join ' or '
-    if (!$Force) { Stop-WithMessage "This game folder isn't Offline DAoC $fits (or their b editions). This build only fits $fits; installing it on another release would undo that release's server changes." }
+    if (!$Force) { Stop-WithMessage "This game folder isn't base game $fits (or their b editions). This build only fits $fits; installing it on another release would undo that release's server changes." }
 }
 
 # 4. What is there now.
@@ -169,22 +169,22 @@ $newClientManifest = Read-ManifestFile (Join-Path $game 'new-client\PACKAGE MANI
 $launcherPlan = @()
 if ($launcherNew.Count -gt 0) {
     foreach ($folder in $Script:LauncherFolders) {
-        $dll = Join-Path $game (Join-Path $folder 'OfflineDAoC.dll')
-        if (!(Test-Path -LiteralPath $dll)) {
-            if ($folder -eq 'runtime') { Stop-WithMessage 'No launcher (runtime\OfflineDAoC.dll) in this game folder. Is the download complete?' }
+        $dllName = Get-LauncherDllName (Join-Path $game $folder)
+        if (!$dllName) {
+            if ($folder -eq 'runtime') { Stop-WithMessage 'No launcher (runtime\OfflineDAoC.dll or runtime\DAoCLivingServer.dll) in this game folder. Is the download complete?' }
             continue
         }
-        $hash = Get-Sha256 $dll
-        # 'this build' only when all five launcher files match; a half-copied launcher is installed again.
+        $hash = Get-Sha256 (Join-Path $game (Join-Path $folder $dllName))
+        # 'this build' only when every launcher file matches; a half-copied launcher is installed again.
         $allNew = $true
         foreach ($name in $Script:LauncherFiles) {
             $path = Join-Path $game (Join-Path $folder $name)
             if (!(Test-Path -LiteralPath $path) -or (Get-Sha256 $path) -ne $launcherNew[$name]) { $allNew = $false }
         }
-        $state = if ($hash -eq $launcherNew['OfflineDAoC.dll'] -and $allNew) { 'this build' }
-            elseif ($hash -eq $launcherNew['OfflineDAoC.dll']) { 'this build, other files differ' }
-            elseif ($manifest["$folder/OfflineDAoC.dll"] -and $hash -eq $manifest["$folder/OfflineDAoC.dll"]) { "original $base launcher" }
-            elseif ($newClientManifest -and $newClientManifest["$folder/OfflineDAoC.dll"] -and $hash -eq $newClientManifest["$folder/OfflineDAoC.dll"]) { "original $($base)c launcher" }
+        $state = if ($hash -eq $launcherNew[$Script:LauncherDll] -and $allNew) { 'this build' }
+            elseif ($hash -eq $launcherNew[$Script:LauncherDll]) { 'this build, other files differ' }
+            elseif ($manifest["$folder/$dllName"] -and $hash -eq $manifest["$folder/$dllName"]) { "original $base launcher" }
+            elseif ($newClientManifest -and $newClientManifest["$folder/$dllName"] -and $hash -eq $newClientManifest["$folder/$dllName"]) { "original $($base)c launcher" }
             elseif ($knownLauncher.ContainsKey($hash)) { "fork build $($knownLauncher[$hash]) launcher" }
             else { 'unknown' }
         $launcherPlan += [pscustomobject]@{ Folder = $folder; Hash = $hash; State = $state }
@@ -192,7 +192,7 @@ if ($launcherNew.Count -gt 0) {
     }
 }
 if (@($launcherPlan | Where-Object { $_.State -eq 'unknown' }).Count -gt 0 -and !$Force) {
-    Stop-WithMessage ("A launcher (OfflineDAoC.dll) above is neither the original $base file nor a fork build this script installed. " +
+    Stop-WithMessage ("A launcher above is neither the original $base file nor a fork build this script installed. " +
         'Restore the original first, or run with -Force to replace it anyway (it is still backed up).')
 }
 # Game files this build fixes in place: only the released file is changed, or an earlier Living Server version of a file
@@ -318,7 +318,7 @@ foreach ($item in $launcherPlan) {
         }
         $files += [pscustomobject]@{ Name = $name; OldHash = $old; NewHash = $launcherNew[$name] }
     }
-    $launcherEntries += [pscustomobject]@{ Folder = $item.Folder; OldDll = $item.Hash; NewDll = $launcherNew['OfflineDAoC.dll']; Files = $files }
+    $launcherEntries += [pscustomobject]@{ Folder = $item.Folder; OldDll = $item.Hash; NewDll = $launcherNew[$Script:LauncherDll]; Files = $files }
 }
 
 $contentEntries = @()

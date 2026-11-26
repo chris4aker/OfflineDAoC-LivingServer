@@ -7,7 +7,7 @@ using NUnit.Framework;
 [TestFixture, NonParallelizable, Apartment(ApartmentState.STA)]
 public sealed class ExchangeDisplayTests
 {
-    private static readonly Assembly Launcher = Assembly.Load("OfflineDAoC");
+    private static readonly Assembly Launcher = Assembly.Load("DAoCLivingServer");
     private const BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
 
     [TestCase(100, "1s")]

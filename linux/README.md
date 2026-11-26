@@ -1,4 +1,4 @@
-# Offline DAoC on Linux (Wine)
+# DAoC - Living Server on Linux (Wine)
 
 `start-offline-daoc.sh` is the Linux counterpart of `START OFFLINE DAOC.cmd`. It needs Wine and Python 3, and a Wine
 prefix that already runs the game (.NET Framework 3.5, Visual C++ 2019, core fonts).
@@ -39,7 +39,7 @@ WINEPREFIX=~/OfflineDAoC/wineprefix linux/install-desktop-entry.sh ~/OfflineDAoC
 
 It writes `~/.local/share/applications/offline-daoc-living-server.desktop` and the icon into
 `~/.local/share/icons/hicolor` (nothing needs root). The entry runs this clone's `start-offline-daoc.sh` with that game
-folder, and keeps `WINEPREFIX` if you set it. Press Super, type "Offline DAoC", and right-click it to add it to the dock.
+folder, and keeps `WINEPREFIX` if you set it. Press Super, type "Living Server", and right-click it to add it to the dock.
 Run it again after moving the clone or the game folder; `linux/install-desktop-entry.sh --uninstall` removes it.
 
 The icon (`icons/`, an original sword-and-shield drawing with no game art) is drawn in

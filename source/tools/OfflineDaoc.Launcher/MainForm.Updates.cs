@@ -355,7 +355,9 @@ internal sealed partial class MainForm
             refused = TestFolderInstall.RunningRefusal(() => ServerPortProbe.IsListening(), RunningGameParts());
             if (refused != null)
                 throw new PackageRefusedException(refused + " The test folder is ready; install the test build from its own launcher.");
-            string testLauncher = Path.Combine(target, "runtime", "OfflineDAoC.exe");
+            // DAoCLivingServer.exe from 1.2.3 (#641); OfflineDAoC.exe in a test folder of an older build.
+            string testLauncher = Path.Combine(target, "runtime", "DAoCLivingServer.exe");
+            if (!File.Exists(testLauncher)) testLauncher = Path.Combine(target, "runtime", "OfflineDAoC.exe");
             bool open = MessageBox.Show(this,
                 $"The test folder {target} is ready with a new world. This launcher now closes while {name} installs there." +
                 Environment.NewLine + Environment.NewLine + "Open the test folder's launcher when it's done? (No opens this one again.)",

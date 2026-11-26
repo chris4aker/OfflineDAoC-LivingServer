@@ -3,9 +3,9 @@
 # ~/.local/share/applications. Don't copy this file there by hand: the placeholders would stay.
 Type=Application
 Version=1.5
-Name=Offline DAoC
+Name=DAoC - Living Server
 GenericName=Living Server
-Comment=Start Offline DAoC with Living Server under Wine
+Comment=Start DAoC - Living Server under Wine
 Icon=offline-daoc-living-server
 Exec=@START@ @GAME@
 Path=@GAME@

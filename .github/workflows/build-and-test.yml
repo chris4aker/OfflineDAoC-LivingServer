@@ -25,6 +25,7 @@ jobs:
       - name: Check the README and release versions agree
         run: |
           python3 tools/release/check_versions.py
+          python3 tools/release/check_brand.py
           python3 -m unittest discover -s tools/release/tests -v
           python3 -m unittest discover -s tools/installer/tests -v
 
@@ -287,9 +288,14 @@ jobs:
           $launcher = "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
           New-Item -ItemType Directory -Path "$dir/launcher" -Force | Out-Null
           $launcherInfo = @()
-          foreach ($file in 'OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json') {
+          # DAoCLivingServer.* from 1.2.3 (#641), plus OfflineDAoC.exe: a byte copy of the apphost, which runs
+          # DAoCLivingServer.dll whatever its own name, for the game's start file, old shortcuts and 1.2.x updaters.
+          foreach ($file in 'DAoCLivingServer.dll', 'DAoCLivingServer.exe', 'DAoCLivingServer.pdb', 'DAoCLivingServer.deps.json', 'DAoCLivingServer.runtimeconfig.json') {
             if (!(Test-Path "$launcher/$file")) { throw "No $file in $launcher" }
             Copy-Item "$launcher/$file" "$dir/launcher"
+          }
+          Copy-Item "$dir/launcher/DAoCLivingServer.exe" "$dir/launcher/OfflineDAoC.exe"
+          foreach ($file in 'DAoCLivingServer.dll', 'DAoCLivingServer.exe', 'DAoCLivingServer.pdb', 'DAoCLivingServer.deps.json', 'DAoCLivingServer.runtimeconfig.json', 'OfflineDAoC.exe') {
             $launcherInfo += "launcher/$file=$((Get-FileHash "$dir/launcher/$file" -Algorithm SHA256).Hash.ToLowerInvariant())"
           }
           # The server's own libraries (1.1.2 on): a GameServer.dll built against changed ones fails at start beside the

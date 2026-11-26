@@ -66,7 +66,7 @@ internal sealed class HostForFriendsForm : Form
         _startServer = startServer;
         _stopServer = stopServer;
 
-        Text = "Host for Friends — Offline DAoC Living Server";
+        Text = "Host for Friends — DAoC - Living Server";
         ClientSize = new Size(700, 540);
         MinimumSize = new Size(640, 500);
         StartPosition = FormStartPosition.CenterParent;

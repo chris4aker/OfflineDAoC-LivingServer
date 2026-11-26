@@ -43,7 +43,7 @@ public class TestBuildVersionTests
         Assert.That(rc.SameBuildAs(BuildVersion.Parse("1.2.3")), Is.False);
         BuildVersion final = BuildVersion.Parse("1.2.3")!;
         Assert.That(final.PackageBuild, Is.SameAs(final));
-        Assert.That(ReleaseInfo.PackageName(rc), Is.EqualTo("OfflineDAoC-LivingServer-1.2.3-rc.2.zip"));
+        Assert.That(ReleaseInfo.PackageName(rc), Is.EqualTo("DAoC-LivingServer-1.2.3-rc.2.zip"));
     }
 
     [TestCase("1.2.3-rc.0")]
@@ -157,7 +157,7 @@ public class TestBuildChannelTests
         Assert.That(prepared.Build.Name, Is.EqualTo("1.2.3"), "INSTALL.cmd is handed the package's build");
         Assert.That(prepared.ReleaseBuild.Name, Is.EqualTo("1.2.3-rc.1"));
         Assert.That(prepared.PackageFolder, Is.EqualTo(Path.Combine(_game, "LivingServer-1.2.3")));
-        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(_game, "runtime", "updates", "OfflineDAoC-LivingServer-1.2.3-rc.1.zip")));
+        Assert.That(prepared.ZipPath, Is.EqualTo(Path.Combine(_game, "runtime", "updates", "DAoC-LivingServer-1.2.3-rc.1.zip")));
         Assert.That(prepared.GameServerSha256, Is.EqualTo(UpdateFixtures.Sha("a server build"u8.ToArray())));
     }
 
@@ -171,7 +171,7 @@ public class TestBuildChannelTests
         Assert.That(() => updater.PrepareFromRelease(release, null, CancellationToken.None),
             Throws.TypeOf<PackageRefusedException>().With.Message.Contains("doesn't match the SHA-256"));
         Assert.That(Directory.Exists(Path.Combine(_game, "LivingServer-1.2.3")), Is.False);
-        Assert.That(Directory.GetFiles(Path.Combine(_game, "runtime", "updates")), Has.None.Contains("OfflineDAoC-LivingServer"));
+        Assert.That(Directory.GetFiles(Path.Combine(_game, "runtime", "updates")), Has.None.Contains("LivingServer-"));
     }
 
     [Test]

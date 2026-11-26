@@ -313,7 +313,7 @@ public static class HeraldPage
         h.Append("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">");
         h.Append("<title>The Camelot Herald</title><style>").Append(Css).Append("</style></head><body><main>");
         h.Append("<header><div class=\"rule\"></div><h1>The Camelot Herald</h1>");
-        h.Append($"<p class=\"dateline\">News from the three realms · Offline DAoC · {E(now.ToString("dddd, d MMMM yyyy, h:mm tt", CultureInfo.InvariantCulture))}</p>");
+        h.Append($"<p class=\"dateline\">News from the three realms · DAoC - Living Server · {E(now.ToString("dddd, d MMMM yyyy, h:mm tt", CultureInfo.InvariantCulture))}</p>");
         h.Append("<div class=\"rule\"></div></header>");
 
         // The war: relics and keeps.
@@ -486,7 +486,7 @@ public static class HeraldPage
             h.Append("</section>");
         }
 
-        h.Append("<footer>Written by the Offline DAoC launcher from this game's own records. Nothing here leaves your computer.</footer>");
+        h.Append("<footer>Written by the Living Server launcher from this game's own records. Nothing here leaves your computer.</footer>");
         h.Append("</main></body></html>");
         return h.ToString();
     }

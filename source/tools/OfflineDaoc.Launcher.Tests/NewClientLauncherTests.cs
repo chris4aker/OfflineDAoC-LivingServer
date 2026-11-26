@@ -9,7 +9,7 @@ namespace OfflineDaoc.Launcher.Tests;
 /// </summary>
 public sealed class NewClientLauncherTests
 {
-    private static readonly Assembly Launcher = Assembly.Load("OfflineDAoC");
+    private static readonly Assembly Launcher = Assembly.Load("DAoCLivingServer");
     private static readonly BindingFlags HiddenStatic = BindingFlags.Static | BindingFlags.NonPublic;
 
     private static string ServerRootFor(string folder) =>

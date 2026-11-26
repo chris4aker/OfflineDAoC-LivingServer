@@ -12,7 +12,7 @@ using NUnit.Framework;
 [TestFixture, NonParallelizable, Apartment(ApartmentState.STA)]
 public sealed class LauncherWindowSizeTests
 {
-    private static readonly Assembly Launcher = Assembly.Load("OfflineDAoC");
+    private static readonly Assembly Launcher = Assembly.Load("DAoCLivingServer");
     private static readonly BindingFlags HiddenInstance = BindingFlags.Instance | BindingFlags.NonPublic;
     private static readonly string[] HeaderButtons = ["_startButton", "_stopButton", "_playButton", "_joinFriendButton", "_hostFriendsButton"];
 

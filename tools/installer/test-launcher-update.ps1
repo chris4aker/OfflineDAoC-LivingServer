@@ -44,16 +44,20 @@ New-Item -ItemType Directory -Force -Path $downloads, $logs | Out-Null
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 
 # The two published packages, checked against the digests GitHub's API gives (as the launcher does).
-$headers = @{ 'User-Agent' = 'OfflineDAoC-LivingServer-tests' }
+$headers = @{ 'User-Agent' = 'DAoC-LivingServer-tests' }
 if ($env:GH_TOKEN) { $headers['Authorization'] = "Bearer $env:GH_TOKEN" }
 $packages = @{}
 foreach ($tag in @($From, $To)) {
     $release = Invoke-RestMethod -Uri "https://api.github.com/repos/chris4aker/OfflineDAoC-LivingServer/releases/tags/$tag" -Headers $headers
-    $name = "OfflineDAoC-LivingServer-$($tag.TrimStart('v')).zip"
-    $asset = @($release.assets | Where-Object { $_.name -eq $name })[0]
+    # DAoC-LivingServer-<build>.zip from 1.2.3 (#641); OfflineDAoC-LivingServer-<build>.zip before (and as a copy after).
+    $asset = $null
+    foreach ($name in @("DAoC-LivingServer-$($tag.TrimStart('v')).zip", "OfflineDAoC-LivingServer-$($tag.TrimStart('v')).zip")) {
+        $asset = @($release.assets | Where-Object { $_.name -eq $name })[0]
+        if ($asset) { break }
+    }
     if (!$asset) { throw "The $tag release has no $name." }
     $zip = Join-Path $downloads $name
-    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zip -UseBasicParsing -Headers @{ 'User-Agent' = 'OfflineDAoC-LivingServer-tests' }
+    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zip -UseBasicParsing -Headers @{ 'User-Agent' = 'DAoC-LivingServer-tests' }
     $digest = ($asset.digest -replace '^sha256:', '').ToLowerInvariant()
     Check ($digest.Length -eq 64 -and (Sha $zip) -eq $digest) "$name matches GitHub's digest $($asset.digest)"
     $packages[$tag] = [pscustomobject]@{ Zip = $zip; Digest = $digest; Build = $tag.TrimStart('v'); Folder = "LivingServer-$($tag.TrimStart('v'))" }
@@ -96,7 +100,7 @@ Check ($LASTEXITCODE -eq 0 -and (Sha (Join-Path $game 'runtime\server\GameServer
 function Launch([string]$name, [string[]]$arguments) {
     $all = @('--apply-update') + $arguments + @('--game', $game, '--no-restart', '--no-pause')
     $p = Start-Process -FilePath $Launcher -ArgumentList ($all | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } }) -Wait -PassThru
-    Write-Host "   OfflineDAoC.exe $($all -join ' ')  -> exit $($p.ExitCode)"
+    Write-Host "   $(Split-Path -Leaf $Launcher) $($all -join ' ')  -> exit $($p.ExitCode)"
     return $p.ExitCode
 }
 $updateLog = Join-Path $game 'runtime\logs\launcher-updates.log'
@@ -131,10 +135,15 @@ Check ($toInfo['BuildName'] -eq $toPkg.Build) "BUILD-INFO.txt in the game's $($t
 foreach ($folder in @('runtime\server', 'runtime\server\lib', 'runtime\server\win-x64')) {
     Check ((Sha (Join-Path $game "$folder\GameServer.dll")) -eq $toInfo['GameServer.dll']) "$folder\GameServer.dll is the $($toPkg.Build) build"
 }
-Check ((Sha (Join-Path $game 'runtime\OfflineDAoC.dll')) -eq $toInfo['launcher/OfflineDAoC.dll']) "the launcher is the $($toPkg.Build) build"
+# The launcher's own file: DAoCLivingServer.dll from 1.2.3 (#641), OfflineDAoC.dll before.
+function LauncherDll($info) { if ($info['launcher/DAoCLivingServer.dll']) { 'DAoCLivingServer.dll' } else { 'OfflineDAoC.dll' } }
+$toDll = LauncherDll $toInfo
+Check ((Sha (Join-Path $game "runtime\$toDll")) -eq $toInfo["launcher/$toDll"]) "the launcher is the $($toPkg.Build) build"
 $record = Get-ChildItem (Join-Path $game 'runtime\server\deployment-backups') -Directory -Filter 'fork-build-*' | Sort-Object Name | Select-Object -Last 1
 Check ($record -and (Get-Content (Join-Path $record.FullName 'install-record.json') -Raw | ConvertFrom-Json).BuildName -eq $toPkg.Build) 'the newest install record names it'
-Check (Test-Path (Join-Path $game "runtime\updates\$(Split-Path -Leaf $toPkg.Zip)")) 'the package is kept in runtime\updates'
+# Kept under the launcher's own package name: DAoC-LivingServer-<build>.zip from 1.2.3 (#641), whatever the file was called.
+Check ((Test-Path (Join-Path $game "runtime\updates\DAoC-LivingServer-$($toPkg.Build).zip")) -or
+       (Test-Path (Join-Path $game "runtime\updates\$(Split-Path -Leaf $toPkg.Zip)"))) 'the package is kept in runtime\updates'
 Check (Test-Path (Join-Path $game "$($fromPkg.Folder)\INSTALL.cmd")) "the $From package folder is still there to reinstall"
 Check ((Sha (Join-Path $game 'runtime\data\opendaoc.sqlite3.db')) -eq $world) 'the database was not touched'
 $logText = if (Test-Path $updateLog) { Get-Content -LiteralPath $updateLog -Raw } else { '' }
@@ -144,7 +153,8 @@ Check ($logText -match 'Waiting for the launcher' -and $logText -match 'Running 
 $rollback = Join-Path $game "$($toPkg.Folder)\ROLLBACK.cmd"
 $out = & cmd.exe /d /c "`"$rollback`" -GameFolder `"$game`" < NUL" 2>&1 | Out-String
 Check ((Sha (Join-Path $game 'runtime\server\GameServer.dll')) -eq $fromInfo['GameServer.dll'] -and
-       (Sha (Join-Path $game 'runtime\OfflineDAoC.dll')) -eq $fromInfo['launcher/OfflineDAoC.dll']) "ROLLBACK.cmd puts the $From build back`n$out"
+       (Sha (Join-Path $game "runtime\$(LauncherDll $fromInfo)")) -eq $fromInfo["launcher/$(LauncherDll $fromInfo)"] -and
+       ($toDll -eq (LauncherDll $fromInfo) -or !(Test-Path (Join-Path $game "runtime\$toDll")))) "ROLLBACK.cmd puts the $From build back`n$out"
 
 Copy-Item -LiteralPath $updateLog -Destination $logs -ErrorAction SilentlyContinue
 Copy-Item -LiteralPath (Join-Path $game 'runtime\updates') -Destination (Join-Path $logs 'updates') -Recurse -Exclude '*.zip' -ErrorAction SilentlyContinue

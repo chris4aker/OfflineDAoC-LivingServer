@@ -1,10 +1,12 @@
-OFFLINE DAOC: LIVING SERVER 1.2            (github.com/chris4aker/OfflineDAoC-LivingServer)
+DAOC - LIVING SERVER                       (github.com/chris4aker/OfflineDAoC-LivingServer)
 ===========================================================================================
 
-An add-on for Offline DAoC 0.37 / 0.37b (with or without the 0.37c new client) that makes the
-world feel like a live 2003 server. It replaces the server (GameServer.dll and, from 1.1.2, its
-libraries CoreBase, CoreDatabase and CoreServer) and the launcher
-(OfflineDAoC.exe, which gets a Living Server tab).
+Living Server for the base game (also on games of the older 0.37b edition and the 0.37c new
+client) makes the world feel like a live 2003 server. It replaces the server (GameServer.dll and,
+from 1.1.2, its libraries CoreBase, CoreDatabase and CoreServer) and the launcher
+(DAoCLivingServer.exe from 1.2.3, with its Living Server tab; the game's OfflineDAoC.exe becomes a
+copy that opens it, so the game's start file and your shortcuts keep working).
+Credits: CREDITS.md in the repository and the launcher's About.
 
 ALWAYS ON (the bots' own game, nothing to switch):
   - the endgame runs itself: each realm raids its dragon, its epic dungeon, Summoner's Hall,
@@ -55,7 +57,7 @@ Known issues and what hasn't been tested in game yet: docs\KNOWN-ISSUES.md
 INSTALL
 -------
 1. Close the server, the launcher and the game.
-2. Put this folder INSIDE your Offline DAoC game folder (the folder with START OFFLINE DAOC.cmd).
+2. Put this folder INSIDE your game folder (the folder with START OFFLINE DAOC.cmd).
 3. Double-click INSTALL.cmd. If Windows warns about an unknown app: More info -> Run anyway.
 
 The installer checks that the game is 0.37 / 0.37b (with or without the 0.37c new client; its
@@ -78,7 +80,7 @@ The loading screen is Living Server's own and is the exception. The installer pu
 Server loading screen over the base game's or over an earlier Living Server one (1.1); any other
 loading screen is left alone. ROLLBACK.cmd puts back the earlier Living Server loading screen
 when that is what it replaced, but never the base game's: after a first install the Living Server
-one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the Offline DAoC update doesn't touch it).
+one stays. PREPARE-FOR-UPDATE.cmd leaves it too (the base game's update doesn't touch it).
 
 Check: start the game as usual. The server log shows a line like
   FORK_BUILD name=1.2 commit=... bot_guilds=on ... bot_voices=on ... living=memory,grats,...

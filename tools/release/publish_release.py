@@ -82,8 +82,35 @@ def builds_of(tag, prerelease):
     return build, build
 
 
+# Issue #641 (owner, 2026-11-25): from 1.2.3 the files are named for the product, "DAoC - Living Server":
+# DAoC-LivingServer-<build>.zip and DAoC-LivingServer-Setup-<build>.exe. Up to 1.2.2 they were
+# OfflineDAoC-LivingServer-<build>.zip and LivingServer-Setup-<build>.exe, and those releases keep their names. A 1.2.3
+# or later release also carries the package under its old name (legacy_zip_name), because 1.2.0-1.2.2 launchers look
+# for exactly that name to update.
+RENAMED_FROM = (1, 2, 3)
+
+
+def renamed(build):
+    """True for a build named the new way (1.2.3 and later, its candidates included)."""
+    m = re.match(r"^(\d+(?:\.\d+)*)", build or "")
+    if not m:
+        return True
+    parts = tuple(int(p) for p in m.group(1).split("."))
+    parts = parts + (0,) * (3 - len(parts))
+    return parts >= RENAMED_FROM
+
+
 def zip_name(build):
-    return f"OfflineDAoC-LivingServer-{build}.zip"
+    return f"DAoC-LivingServer-{build}.zip" if renamed(build) else f"OfflineDAoC-LivingServer-{build}.zip"
+
+
+def legacy_zip_name(build):
+    """The package's pre-1.2.3 name: the copy a renamed release carries for older launchers, or None if it needs none."""
+    return f"OfflineDAoC-LivingServer-{build}.zip" if renamed(build) else None
+
+
+def setup_name(build):
+    return f"DAoC-LivingServer-Setup-{build}.exe" if renamed(build) else f"LivingServer-Setup-{build}.exe"
 
 
 def sha256_file(path):
@@ -171,9 +198,9 @@ def release_body(notes_text, build, zip_sha):
     except StopIteration:
         raise Stop("the notes file has no '---' line above the release notes")
     body = "".join(lines[start + 1:]).lstrip("\n")
-    exe_row = [l for l in body.splitlines() if l.lstrip().startswith("|") and f"`LivingServer-Setup-{build}.exe`" in l]
+    exe_row = [l for l in body.splitlines() if l.lstrip().startswith("|") and f"`{setup_name(build)}`" in l]
     if len(exe_row) != 1 or SETUP_PLACEHOLDER not in exe_row[0]:
-        raise Stop(f"the notes need one Setup row reading `LivingServer-Setup-{build}.exe` | {SETUP_PLACEHOLDER}")
+        raise Stop(f"the notes need one Setup row reading `{setup_name(build)}` | {SETUP_PLACEHOLDER}")
     zip_rows = [l for l in body.splitlines() if l.lstrip().startswith("|") and f"`{zip_name(build)}`" in l]
     if len(zip_rows) != 1 or ZIP_PLACEHOLDER not in zip_rows[0]:
         raise Stop(f"the notes need one zip row reading `{zip_name(build)}` | {ZIP_PLACEHOLDER}")
@@ -263,8 +290,10 @@ def publish(gh, tag, commit, title, body, zip_path, dry_run, prerelease=False):
     if existing:
         raise Stop(f"a release for {tag} exists already ({'draft' if existing.get('draft') else 'published'}, "
                    f"{existing.get('html_url')}); delete a stray draft by hand first")
+    legacy = legacy_zip_name(release)
     steps = [f"create tag {tag} on {commit} and a draft release \"{title}\"",
-             f"attach {name} (sha256 {zip_sha})",
+             f"attach {name} (sha256 {zip_sha})"] + \
+            ([f"attach the same file as {legacy}, for 1.2.0-1.2.2 launchers"] if legacy else []) + [
              "publish it as a pre-release, never Latest (make_latest false)" if prerelease
              else "publish it as Latest, not a pre-release"]
     if dry_run:
@@ -276,16 +305,20 @@ def publish(gh, tag, commit, title, body, zip_path, dry_run, prerelease=False):
     draft = gh.create_draft(tag, commit, title, body, prerelease)
     print(f"created draft {draft.get('html_url')}")
     gh.upload(draft, zip_path, name)
+    if legacy:
+        gh.upload(draft, zip_path, legacy)
     draft = gh.get(draft)
-    attached = next((a for a in draft.get("assets") or [] if a.get("name") == name), None)
-    digest = (attached or {}).get("digest") or ""
-    if digest != f"sha256:{zip_sha}":
-        raise Stop(f"GitHub shows {digest or 'no digest'} for {name}, not sha256:{zip_sha}; the draft is left "
-                   "unpublished for a person to look at")
+    for each in [name] + ([legacy] if legacy else []):
+        attached = next((a for a in draft.get("assets") or [] if a.get("name") == each), None)
+        digest = (attached or {}).get("digest") or ""
+        if digest != f"sha256:{zip_sha}":
+            raise Stop(f"GitHub shows {digest or 'no digest'} for {each}, not sha256:{zip_sha}; the draft is left "
+                       "unpublished for a person to look at")
     published = gh.publish(draft, prerelease)
     if published.get("draft") or bool(published.get("prerelease")) != prerelease:
         raise Stop("the release didn't publish as a " + ("pre-release" if prerelease else "full release"))
-    print(f"published {published.get('html_url')} ({'pre-release' if prerelease else 'Latest'}), {name} sha256 {zip_sha}")
+    print(f"published {published.get('html_url')} ({'pre-release' if prerelease else 'Latest'}), {name} sha256 {zip_sha}"
+          + (f" (also as {legacy})" if legacy else ""))
     return published
 
 

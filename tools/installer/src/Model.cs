@@ -153,7 +153,7 @@ namespace LivingServerSetup
 
     internal enum LsState { None, ThisBuild, OtherBuild, Modified, Unknown }
 
-    /// <summary>An Offline DAoC game folder as found on disk.</summary>
+    /// <summary>A game folder as found on disk (the base game, with or without Living Server).</summary>
     internal sealed class GameInfo
     {
         public string Path;
@@ -167,7 +167,10 @@ namespace LivingServerSetup
         public Dictionary<string, string> Manifest;
 
         public string Edition => Release == null ? "unknown version" : Release + (NewClient ? "c" : Classic ? "" : "b");
-        public string Title => "Offline DAoC " + Edition;
+        // Player-facing (#641): no base-game edition numbers for a game Living Server fits as it is.
+        public string Title => !IsBase ? "Older game (" + Edition + ")"
+            : (Ls == LsState.ThisBuild || Ls == LsState.OtherBuild) && !string.IsNullOrEmpty(LsBuild) ? "Living Server game (" + LsBuild + ")"
+            : "Game without Living Server";
 
         public int CompareToBase()
         {
@@ -189,7 +192,8 @@ namespace LivingServerSetup
             try
             {
                 return System.IO.File.Exists(System.IO.Path.Combine(dir, "runtime", "server", "GameServer.dll")) &&
-                       (System.IO.File.Exists(System.IO.Path.Combine(dir, "runtime", "OfflineDAoC.exe")) ||
+                       (System.IO.File.Exists(System.IO.Path.Combine(dir, "runtime", "DAoCLivingServer.exe")) ||
+                        System.IO.File.Exists(System.IO.Path.Combine(dir, "runtime", "OfflineDAoC.exe")) ||
                         System.IO.File.Exists(System.IO.Path.Combine(dir, "START OFFLINE DAOC.cmd")));
             }
             catch { return false; }
@@ -249,7 +253,7 @@ namespace LivingServerSetup
                 var name = System.IO.Path.GetFileName(s).ToLowerInvariant();
                 if (Skip.Contains(name) || name.StartsWith(".") && name != ".downloads") continue;
                 // at a drive's root, only folders that look like the game's
-                if (onlyNamed && !(name.Contains("offlinedaoc") || name.Contains("offline daoc") || name.Contains("daoc") || name.StartsWith("playable"))) continue;
+                if (onlyNamed && !(name.Contains("offlinedaoc") || name.Contains("offline daoc") || name.Contains("daoc") || name.Contains("livingserver") || name.Contains("living server") || name.StartsWith("playable"))) continue;
                 try { if ((new DirectoryInfo(s).Attributes & (FileAttributes.ReparsePoint | FileAttributes.System)) != 0) continue; } catch { continue; }
                 Walk(s, depth - 1, found, seen, ref budget, false);
             }
@@ -325,7 +329,7 @@ namespace LivingServerSetup
             }
         }
 
-        public static readonly string[] GameProcesses = { "CoreServer", "DOLServer", "OfflineDAoC", "game", "camelot", "connect", "Godot_v4.7.2-stable_mono_win64" };
+        public static readonly string[] GameProcesses = { "CoreServer", "DOLServer", "DAoCLivingServer", "OfflineDAoC", "game", "camelot", "connect", "Godot_v4.7.2-stable_mono_win64" };
 
         /// <summary>Names of Offline DAoC programs still running (the same list the package's scripts refuse on).</summary>
         public static List<string> RunningGameProcesses()
@@ -391,6 +395,59 @@ namespace LivingServerSetup
         public static readonly Dictionary<string, long> ClientPartBytes = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
         public static bool Live;
 
+        /// <summary>
+        /// The base-game files a new install of <paramref name="release"/> downloads, for Setup's own downloader (#641):
+        /// the full game the release builds on (NewInstallBase's parts) and the release's game update (GamePatch), each
+        /// at the place in <paramref name="cache"/> the original downloader script looks for it. Read from the live
+        /// manifests; throws when they can't be read (the script then downloads as before).
+        /// </summary>
+        public static List<LivingServerSetup.DownloadPart> NewInstallParts(string release, string cache)
+        {
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+            var js = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+            Dictionary<string, object> Fetch(string v)
+            {
+                using (var wc = new QuickClient())
+                {
+                    wc.Headers[HttpRequestHeader.UserAgent] = "DAoC-LivingServer-Setup";
+                    var text = Encoding.UTF8.GetString(wc.DownloadData(Upstream + v + "/download-manifest.json")).TrimStart('\uFEFF');
+                    return js.Deserialize<Dictionary<string, object>>(text);
+                }
+            }
+            var list = new List<LivingServerSetup.DownloadPart>();
+            void Add(string from, object parts)
+            {
+                foreach (var p in ((System.Collections.ArrayList)parts).OfType<Dictionary<string, object>>())
+                {
+                    var name = (string)p["Name"];
+                    var sha = (string)p["SHA256"];
+                    if (!Regex.IsMatch(name, @"^[A-Za-z0-9._-]+$") || !Regex.IsMatch(sha, "^[A-Fa-f0-9]{64}$") || !Regex.IsMatch(from, @"^[\d.]+[bc]?$"))
+                        throw new InvalidDataException("unexpected part in the v" + from + " manifest");
+                    list.Add(new LivingServerSetup.DownloadPart
+                    {
+                        Url = Upstream + from + "/" + name,
+                        Path = Path.Combine(cache, "v" + from, name),
+                        Bytes = Convert.ToInt64(p["Bytes"]),
+                        Sha256 = sha.ToLowerInvariant(),
+                    });
+                }
+            }
+            var top = Fetch(release);
+            if (!top.TryGetValue("NewInstallBase", out var nbObj) || !(nbObj is string nb)) throw new InvalidDataException("the v" + release + " manifest names no base game");
+            var baseManifest = Fetch(nb);
+            // An edition without the custom class ("0.36") is the same download as its "b" game: follow it there.
+            if (baseManifest.TryGetValue("Mode", out var mode) && (mode as string) == "edition" && baseManifest.TryGetValue("BaseVersion", out var bv) && bv is string bvs)
+            {
+                nb = bvs;
+                baseManifest = Fetch(nb);
+            }
+            if (!baseManifest.TryGetValue("Parts", out var baseParts)) throw new InvalidDataException("the v" + nb + " manifest lists no parts");
+            Add(nb, baseParts);
+            if (top.TryGetValue("GamePatch", out var gpObj) && gpObj is Dictionary<string, object> gp && gp.TryGetValue("Release", out var rel) && gp.TryGetValue("Parts", out var gparts))
+                Add((string)rel, gparts);
+            return list;
+        }
+
         /// <summary>Refreshes the sizes from the live manifests. Quiet on failure.</summary>
         public static void TryRefresh()
         {
@@ -402,7 +459,7 @@ namespace LivingServerSetup
                 {
                     using (var wc = new QuickClient())
                     {
-                        wc.Headers[HttpRequestHeader.UserAgent] = "OfflineDAoC-LivingServer-Setup";
+                        wc.Headers[HttpRequestHeader.UserAgent] = "DAoC-LivingServer-Setup";
                         var text = Encoding.UTF8.GetString(wc.DownloadData(Upstream + v + "/download-manifest.json")).TrimStart('\uFEFF');
                         return js.Deserialize<Dictionary<string, object>>(text);
                     }

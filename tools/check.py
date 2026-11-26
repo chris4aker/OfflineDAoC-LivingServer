@@ -30,6 +30,7 @@ WORKFLOW = Path(".github/workflows/build-and-test.yml")
 # (CI job, command) as the workflow writes it, without "python"/"python3" and without unittest's "-v".
 CHECKS: list[tuple[str, str]] = [
     ("versions", "tools/release/check_versions.py"),
+    ("versions", "tools/release/check_brand.py"),
     ("versions", "-m unittest discover -s tools/release/tests"),
     ("versions", "-m unittest discover -s tools/installer/tests"),
     ("encounter-catalog", "source/tools/epic_encounter_catalog.py --check"),

@@ -9,7 +9,11 @@ Claude Code as `CLAUDE.md`.
 Offline DAoC Living Server is a single-player DAoC server (built on OpenDAoC, .NET 10, SQLite) with autonomous
 gamebots, companion bots and a Windows launcher. It is its own repository, owned by the project owner, not a fork.
 Releases are numbered **1.x** (1.2 is out, 1.2.1 is next) and ship one edition: the classic classes on the
-**original game client** (`LivingServer-Setup-<version>.exe` and `OfflineDAoC-LivingServer-<version>.zip`).
+**original game client**. The product is **DAoC - Living Server** (owner, 2026-11-25, #641): from 1.2.3 the files are
+`DAoC-LivingServer-Setup-<version>.exe`, `DAoC-LivingServer-<version>.zip` (plus a copy as
+`OfflineDAoC-LivingServer-<version>.zip` for 1.2.x launchers) and the launcher `DAoCLivingServer.exe` (with
+`OfflineDAoC.exe` kept as a copy that opens it). Credits live in `CREDITS.md`; `tools/release/check_brand.py` fails on new
+player-visible old names.
 
 **One edition from now on** (owner, 2026-11-22: "I will support players who already installed the B and C with basic
 fixes but I don't want to manage the custom class or incomplete Godot transfer. Everything new moves on as its own

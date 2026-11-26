@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Adds Offline DAoC to the GNOME app grid (and other freedesktop menus) with its launcher icon (linux/icons: an original
+# Adds DAoC - Living Server to the GNOME app grid (and other freedesktop menus) with its launcher icon (linux/icons: an original
 # sword-and-shield drawing, no game art). Everything goes in your home folder; nothing needs root.
 #
 #   linux/install-desktop-entry.sh [game folder]      add (or refresh) the entry
@@ -34,7 +34,7 @@ if [[ "${1:-}" == "--uninstall" ]]; then
     rm -f "$ICONS/$size/apps/$(basename "$icon")"
   done
   refresh
-  echo "Removed Offline DAoC from the app menu."
+  echo "Removed DAoC - Living Server from the app menu."
   exit 0
 fi
 
@@ -84,5 +84,5 @@ mv -f "$tmp" "$APPS/$ID.desktop"
 trap - EXIT
 refresh
 
-echo "Added Offline DAoC to the app menu ($APPS/$ID.desktop)."
-echo "It starts $GAME. Press the Super key and type \"Offline DAoC\"; right-click it to add it to the dock."
+echo "Added DAoC - Living Server to the app menu ($APPS/$ID.desktop)."
+echo "It starts $GAME. Press the Super key and type \"Living Server\"; right-click it to add it to the dock."

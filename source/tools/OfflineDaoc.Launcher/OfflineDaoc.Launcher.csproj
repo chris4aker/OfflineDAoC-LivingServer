@@ -5,9 +5,13 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>OfflineDAoC</AssemblyName>
-    <Product>Offline DAoC: Classic + Shrouded Isles</Product>
-    <AssemblyTitle>Offline DAoC Launcher and Population Monitor</AssemblyTitle>
+    <!-- DAoCLivingServer.exe from 1.2.3 (#641). The package also ships OfflineDAoC.exe, a byte copy of this apphost (it
+         runs DAoCLivingServer.dll whatever its own name), so the game's start file, old shortcuts and 1.2.x updaters that
+         open runtime\OfflineDAoC.exe still open this launcher. -->
+    <AssemblyName>DAoCLivingServer</AssemblyName>
+    <Product>DAoC - Living Server</Product>
+    <AssemblyTitle>DAoC - Living Server launcher</AssemblyTitle>
+    <Description>The launcher of DAoC - Living Server, a single-player server for Dark Age of Camelot. Not affiliated with Electronic Arts or Broadsword.</Description>
     <!-- Windows enlarges fonts for display scaling; UiScale scales the pixel layout to match. -->
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <!-- Living Server: the build this launcher ships with, read from the server's ForkBuildInfo.BuildName, so the
@@ -19,6 +23,8 @@
     <AssemblyMetadata Include="LivingServerBuild" Value="$(LivingServerBuild)" />
     <!-- Written to runtime\updates when an update is applied: it runs INSTALL.cmd once the launcher has closed. -->
     <EmbeddedResource Include="Updates\apply-update.ps1" LogicalName="OfflineDaoc.Updates.apply-update.ps1" />
+    <!-- The launcher's About (#641) shows the repository's CREDITS.md. -->
+    <EmbeddedResource Include="../../../CREDITS.md" LogicalName="OfflineDaoc.Launcher.CREDITS.md" />
     <!-- "Install into a new test folder" (issue #637) cleans the test world by the release builder's own lists. -->
     <EmbeddedResource Include="../OfflineDaoc.ProgressImport/progress-policy.json" LogicalName="OfflineDaoc.Updates.progress-policy.json" />
     <EmbeddedResource Include="../release-world-defaults.json" LogicalName="OfflineDaoc.Updates.release-world-defaults.json" />

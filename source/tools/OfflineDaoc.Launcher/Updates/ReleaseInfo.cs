@@ -37,10 +37,25 @@ public sealed class ReleaseInfo
     public bool IsTestBuild => !Draft && Prerelease && Version is { IsCandidate: true };
 
     /// <summary>
-    /// The package a release of this build carries: OfflineDAoC-LivingServer-&lt;build&gt;.zip, named by the tag's build
-    /// (OfflineDAoC-LivingServer-1.2.3-rc.1.zip for a candidate, whose package inside is build 1.2.3).
+    /// The package a release of this build carries: DAoC-LivingServer-&lt;build&gt;.zip, named by the tag's build
+    /// (DAoC-LivingServer-1.2.3-rc.1.zip for a candidate, whose package inside is build 1.2.3). Issue #641 renamed it.
     /// </summary>
-    public static string PackageName(BuildVersion build) => "OfflineDAoC-LivingServer-" + build.Name + ".zip";
+    public static string PackageName(BuildVersion build) => PackagePrefix + build.Name + ".zip";
+
+    public const string PackagePrefix = "DAoC-LivingServer-";
+    /// <summary>
+    /// The package's name up to 1.2.2 (OfflineDAoC-LivingServer-&lt;build&gt;.zip). Releases up to 1.2.2 carry only it, and from
+    /// 1.2.3 on every release carries a copy under it too, because 1.2.0-1.2.2 launchers look for exactly that name.
+    /// </summary>
+    public const string LegacyPackagePrefix = "OfflineDAoC-LivingServer-";
+    public static string LegacyPackageName(BuildVersion build) => LegacyPackagePrefix + build.Name + ".zip";
+
+    /// <summary>The build a package file's name gives (either name), or null for another file.</summary>
+    public static string? BuildFromPackageFileName(string fileName)
+    {
+        Match m = Regex.Match(fileName, @"^(?:DAoC-LivingServer|OfflineDAoC-LivingServer)-(.+)\.zip$", RegexOptions.IgnoreCase);
+        return m.Success ? m.Groups[1].Value : null;
+    }
 
     /// <summary>The release's package asset, or null when it has none.</summary>
     public ReleaseAsset? Package
@@ -50,8 +65,9 @@ public sealed class ReleaseInfo
             BuildVersion? build = Version;
             if (build == null || Assets == null)
                 return null;
-            string name = PackageName(build);
-            return Assets.FirstOrDefault(a => string.Equals(a.Name, name, StringComparison.OrdinalIgnoreCase));
+            string name = PackageName(build), legacy = LegacyPackageName(build);
+            return Assets.FirstOrDefault(a => string.Equals(a.Name, name, StringComparison.OrdinalIgnoreCase)) ??
+                   Assets.FirstOrDefault(a => string.Equals(a.Name, legacy, StringComparison.OrdinalIgnoreCase));
         }
     }
 

@@ -38,7 +38,7 @@ public class RealmEventRecordsTests
     [Test]public async Task RecordsPanelReadsRealLedgerWithoutStartingServerOrLauncherServices()
     {
         RealmEventRecordStore.Save(_path,[Example("a",outcome:"Boss defeated"),Example("b","Relic keep","Hibernia","Captured")]);
-        var type=Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.RealmEventRecordsControl")!;
+        var type=Assembly.Load("DAoCLivingServer").GetType("OfflineDaoc.Launcher.RealmEventRecordsControl")!;
         using var panel=(Control)Activator.CreateInstance(type,BindingFlags.Instance|BindingFlags.NonPublic,null,[_path],null)!;
         using var host=new Form{ClientSize=new Size(1050,500),ShowInTaskbar=false,Opacity=0,Location=new Point(-20000,-20000),StartPosition=FormStartPosition.Manual};
         host.Controls.Add(panel);host.Show();
