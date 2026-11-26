@@ -237,6 +237,7 @@ namespace DOL.AI.Brain
         {
             if (HasAggro && Body.IsAlive)
             {
+                RaidBossMechanics.Spawn(Body, "adds"); // #644 measurement only
                 for (int i = 0; i < Util.Random(1, 2); i++)
                 {
                     SBAdds Add = new SBAdds();
@@ -296,7 +297,7 @@ namespace DOL.AI.Brain
                 {
                     Body.TargetObject = RandomTarget;
                     Body.TurnTo(RandomTarget);
-                    Body.CastSpell(BossMezz, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                    RaidBossMechanics.Cast(Body.CastSpell(BossMezz, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "mezz", BossMezz); // #644 measurement only
                 }
                 if (oldTarget != null) Body.TargetObject = oldTarget;//return to old target
             }

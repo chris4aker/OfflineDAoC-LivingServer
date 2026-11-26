@@ -175,8 +175,10 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.BroadcastCommandHandler
 
 /buff
-  Buff the target
+  Buff the target, or refuse a buff from bots
   /buff <(buffList) | all | help> [playerName | npcName]
+  /buff refuse [short[,short...]] - bots stop casting these buffs on you and your pet (no argument lists your refusals)
+  /buff allow <short[,short...] | all> - bots may cast them on you again
   Handler: DOL.GS.Commands.BuffCommandHandler
 
 /cancelstyle

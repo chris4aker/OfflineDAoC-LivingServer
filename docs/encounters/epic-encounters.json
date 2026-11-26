@@ -47,7 +47,7 @@
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordBaln.cs": "b13ba341e71eaa6aabd5c6370b26b9c18582686ee007ce661a28eda0a5617e22",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordOro.cs": "f96bc108d2e858edd2ffb64ffd984369aae2e6ab6b6f27cf7d25b6977097e26f",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/HighLordSaeor.cs": "cd2cfb4f2cdd265bf3061f3a33af97ef034bae88712e1f0ed3a40396e2878691",
-  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "125507e83dc024d8ee1fdc985450d0cefdf4f7262c6c9768ceb1af592215de72",
+  "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "3deee449c9cebeb1594bfcec9c0773ebae4e3e240b21aec9905b186f5026aaf4",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAbdin.cs": "fa9b3318a8cfa33957552bfde7a2659f6438cb4a3c53f4dbbf7b829f6d42db09",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceAsmoien.cs": "53d2bd1b0496e80129543cca4e017ac6e5504d5410e629011ce357e6e573cadc",
   "source/server/GameServer/scripts/namedmobs/DarknessFalls/PrinceBaalorien.cs": "ec7005401968848e5295ecddf0d94ed26c02da0068e3de07559036cb3d65c0f4",
@@ -76,7 +76,7 @@
   "source/server/GameServer/scripts/namedmobs/EncounterDisplacement.cs": "ebab87b045c8d05df4de0a23b7b05ae3d4678d8f2eda04153b47d799c2c0b111",
   "source/server/GameServer/scripts/namedmobs/EncounterFloodGuard.cs": "64a95af9f337614ccdfd78221efba27096c87725a2c3c8f3d204f9566412213d",
   "source/server/GameServer/scripts/namedmobs/EncounterPacks.cs": "f85b58b56d9582b7029d953040e11f3fb5ed12bfae39e9f92e55abe70ce54cb8",
-  "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "28c34dec1840c590c674a26de40d6ac8321c182c004765f3cb553d76c0eca10c",
+  "source/server/GameServer/scripts/namedmobs/EncounterSignals.cs": "3dfaff5603f570a0dee4d2d85909e9614e526cf98f770b5da6f5e51b0c93d1aa",
   "source/server/GameServer/scripts/namedmobs/EncounterTargets.cs": "25da681fa8a3bd7e96d89b02f6d0622363d00ce77445f6c4c3e3444e9a47df39",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterActors.cs": "0118bb340add80b277db0e3372d347f226d4ada760e4cff6f39a5234ee697bbc",
   "source/server/GameServer/scripts/namedmobs/EpicEncounterMechanics.cs": "5dc125e76917efb343216bca38490453c93fbec7cd1cc32b886dddef0cd3c1fd",
@@ -96,7 +96,7 @@
   "source/server/GameServer/scripts/namedmobs/Galladoria/Olcasar Geomancer.cs": "e4a4c685603dcd217bf1f5d22ef0ec02cd6e0cc99fa43c1f49328ac70810bb04",
   "source/server/GameServer/scripts/namedmobs/Galladoria/OlcasgeanAndPrimals.cs": "3b7a93abef6f39a4d08511e9522d6234703a44f2acff590c1c4527e0e58fc2b2",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Organic-EnergyMechanism.cs": "9d610a662e6d40d389558bc46f7d111775f6de4060424ed6bf224267cde8e52c",
-  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "a520d4f6606866450020b02fc6decfc1c274b611fd57fced859cb7906cc08662",
+  "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "e56b6cf40ec6fe8984f76d9943a2cb026c19cb40f23d44ccc9619554bc6702a2",
   "source/server/GameServer/scripts/namedmobs/Galladoria/UaimhLairmaster.cs": "db0a97bcbcffb9823f7c7e3a875be6b4293d04b4642c66eefc96bec4733b148b",
   "source/server/GameServer/scripts/namedmobs/Galladoria/Xaga.cs": "f90f81de1ecc601123d4c42f610a7d2ca45dda7e6abad867dc4de13142b98566",
   "source/server/GameServer/scripts/namedmobs/GlacierGiant.cs": "12c06112f7f057486c362e7b5faec6604e7739fb03319f9a9c68ad21ab2c9b07",
@@ -186,8 +186,8 @@
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Valmak.cs": "459dd23c05add851e92b2f6fd78efd957c3af1a068a3377807552a6d9ab9a725",
   "source/server/GameServer/scripts/namedmobs/Midgard Named Mobs/Shrouded Isles/Vasrem.cs": "5a6d0d84e1cea4cb4ccaf5c14e582941a6780b5083e5ba5ca17294d5f7430556",
   "source/server/GameServer/scripts/namedmobs/MoranTheMighty.cs": "0910d05368679747498798d6268eca22db6da480cdb879e7c522938f225ea86f",
-  "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "36282f9c40a027363c38d43058829ec7c9bc2cbcf6a4fa99b8ee77dff3b53ee1",
-  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "9efeb9594d0b54d78ded8433fde7bc597df93230618d3f92a27e96e3395cefba",
+  "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "c6df1df2b0b11c90d604124084cb054f51c3a4da305cbf07237ae629bbb7d7a8",
+  "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "696550f57597284f65dbe9ea98db9dcc848f1f3c12d6d932700e7987a3b8c7ee",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerCunovinda.cs": "71371583d6bed9cab527981da675b0a7d501642eb66f584d00692147801cd770",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerLossren.cs": "4e29cc3cad285bfe8914e07bd980df3c0cd9a9a45c1aa04f92593a1c4245dd85",
   "source/server/GameServer/scripts/namedmobs/SummonersHall/SummonerRoesia.cs": "a11dc500e720562928b31c3f1079bbac635db52cb9899978742fff9105c99d58",
@@ -214,7 +214,7 @@
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/IcelordSteinvorAndSkuf .cs": "1cdc6e4e909d849e8f375cface245c3da49aa49683181429de911c23889561d7",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Issorden.cs": "047313701e409de109730137f1f89fb90f7596bd0247952ad7d929ce0b9ee055",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/JailerVifil.cs": "5f2fcb43996e4f359e1adbb3589f8bf4f1d9f01a09939f6540cc35b1b1556d11",
-  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764",
+  "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8d44847675e7139b9b949a880470d9adeefd64cc6199429a81748a8cba47ca6c",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/Ozur.cs": "79b05c5cd0d0a976643381cb00c4f121d424a538bf470a481db3dad9f0b4e7ac",
   "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/TorstAndHurika.cs": "9d5019fcddceef72b67442a6f9bde3a2a388f979e0e14eb1546bcc0f00f19d0a",
   "source/server/GameServer/scripts/namedmobs/Yar.cs": "9e919f2a641bc86fe7652fe8af16cc736f5f86468873a9b31b7f0eeedb72a058"
@@ -848,7 +848,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 3167
+   "line": 3169
   },
   {
    "id": "openworld-albion-coliath",
@@ -860,7 +860,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 3169
+   "line": 3171
   },
   {
    "id": "openworld-albion-emthoro",
@@ -872,7 +872,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 3171
+   "line": 3173
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -884,7 +884,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 3174
+   "line": 3176
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -896,7 +896,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 3176
+   "line": 3178
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -908,7 +908,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 3178
+   "line": 3180
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -920,7 +920,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 3180
+   "line": 3182
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -932,7 +932,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 3182
+   "line": 3184
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -944,7 +944,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 3184
+   "line": 3186
   },
   {
    "id": "openworld-midgard-revenant",
@@ -956,7 +956,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 3186
+   "line": 3188
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -968,7 +968,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 3188
+   "line": 3190
   },
   {
    "id": "openworld-hibernia-evern",
@@ -980,7 +980,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 3191
+   "line": 3193
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -992,7 +992,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 3193
+   "line": 3195
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -1004,7 +1004,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 3195
+   "line": 3197
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1016,7 +1016,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 3197
+   "line": 3199
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1028,7 +1028,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 3199
+   "line": 3201
   }
  ],
  "neutralObjectives": {
@@ -8336,7 +8336,7 @@
      "maxHealth": 1200,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 575
+     "line": 576
     }
    ],
    "rules": [
@@ -8361,8 +8361,8 @@
      "kind": "adds",
      "summary": "Spawns graspering soul (LegionAdd): from SpawnAdds; count 1 spawn call in SpawnAdds",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 467,
-     "lineEnd": 467,
+     "line": 468,
+     "lineEnd": 468,
      "anchor": "LegionAdd add = new LegionAdd();",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -8377,7 +8377,7 @@
      "tactic": "Kill the adds as they spawn (the route already puts script-spawned adds near the front first).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "adds@467"
+     "key": "adds@468"
     },
     {
      "kind": "reset",
@@ -8400,8 +8400,8 @@
      "kind": "teleport",
      "summary": "Teleports player to a fixed spot (MoveTo 249, 48200, 49566, 20833, 1028)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 528,
-     "lineEnd": 528,
+     "line": 529,
+     "lineEnd": 529,
      "anchor": "EncounterDisplacement.Move(player, 249, 48200, 49566, 20833, 1028, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "LegionBrain",
@@ -8411,7 +8411,7 @@
      "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands in Behemoth's hall; since the 1.2 Legion plan it walks across the hall on its north side, past Behemoth out of his aggro, to the zone point DF LEGION PURGATORY and is put where it puts players (EncounterDisplacementRecovery's way out, EpicEncounterTactics.LegionWayDown); with no path, no progress, over its time bound or with Behemoth about to notice it, it is recalled to its party. Companions of a thrown player stay down. Real players use the zone point as before. Tests only.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "teleport@528"
+     "key": "teleport@529"
     }
    ],
    "spells": [
@@ -8426,7 +8426,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 549,
+     "line": 550,
      "sourceClass": "LegionBrain"
     }
    ],
@@ -8480,8 +8480,8 @@
    "brain": "BehemothBrain",
    "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
    "lines": [
-    659,
-    720
+    660,
+    721
    ],
    "dungeon": "Darkness Falls",
    "region": 249,
@@ -8500,8 +8500,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home at full health (waits until 8 s out of combat: EpicEncounterMechanics.FightIsOver)",
      "file": "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs",
-     "line": 737,
-     "lineEnd": 741,
+     "line": 738,
+     "lineEnd": 742,
      "anchor": "if (!CheckProximityAggro() && DOL.GS.EpicEncounterMechanics.FightIsOver(Body))",
      "confidence": "read",
      "sourceClass": "BehemothBrain",
@@ -8511,7 +8511,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@737"
+     "key": "reset@738"
     }
    ],
    "spells": [],
@@ -14070,7 +14070,7 @@
      "maxHealth": 8000,
      "level": "(byte) Util.Random(56, 59)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 413
+     "line": 414
     },
     {
      "class": "SBDeadAdds",
@@ -14083,7 +14083,7 @@
      "maxHealth": 800,
      "level": "50",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 513
+     "line": 514
     }
    ],
    "rules": [
@@ -14112,8 +14112,8 @@
      "kind": "adds",
      "summary": "Spawns Newly-born spindler (SBAdds): on a timer (10000 ms); count about 1-2 (loop to a random bound)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 242,
-     "lineEnd": 242,
+     "line": 243,
+     "lineEnd": 243,
      "anchor": "SBAdds Add = new SBAdds();",
      "confidence": "inferred",
      "sourceClass": "SpindlerBroodmotherBrain",
@@ -14127,7 +14127,7 @@
      "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one with the least health left); a party's melee peel one off their own casters and healers; the rest stay on her.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@242"
+     "key": "adds@243"
     },
     {
      "kind": "reset",
@@ -14150,8 +14150,8 @@
      "kind": "teleport",
      "summary": "Teleports TeleportTarget to a fixed spot (MoveTo Body.CurrentRegionID, 21115, 53483, 11286, 2100)",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 369,
-     "lineEnd": 369,
+     "line": 370,
+     "lineEnd": 370,
      "anchor": "if (EpicEncounterMechanics.AllowDisplacementFor(Body)) EncounterDisplacement.Move(TeleportTarget, Body.CurrentRegionID, 21115, 53483, 11286, 2100, DisplacementK",
      "confidence": "inferred",
      "sourceClass": "SpindlerBroodmotherBrain",
@@ -14165,14 +14165,14 @@
      "tactic": "On here since 1.2 (AllowDisplacement ships on for this encounter: EpicEncounterMechanics.ShippedPerEncounter). Bots are moved too (AllowBotDisplacement is on for this encounter): a moved bot walks back to its party, or is recalled when it can't (EncounterDisplacementRecovery); healers heal displaced raiders first.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "teleport@369"
+     "key": "teleport@370"
     },
     {
      "kind": "linked_pack",
      "summary": "Brings others into the fight",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 494,
-     "lineEnd": 494,
+     "line": 495,
+     "lineEnd": 495,
      "anchor": "AddToAggroList(player, 400);",
      "confidence": "inferred",
      "sourceClass": "SBAddsBrain",
@@ -14182,7 +14182,7 @@
      "tactic": "Pull its linked pack with it on purpose: clear them first or fight them at the muster.",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "linked_pack@494"
+     "key": "linked_pack@495"
     }
    ],
    "spells": [
@@ -14197,7 +14197,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs",
-     "line": 385,
+     "line": 386,
      "sourceClass": "SpindlerBroodmotherBrain"
     }
    ],
@@ -27884,7 +27884,7 @@
      "maxHealth": 800,
      "level": "(byte) Util.Random(47, 49)",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 706
+     "line": 707
     }
    ],
    "rules": [
@@ -27892,8 +27892,8 @@
      "kind": "adds",
      "summary": "Spawns rotting downy felwood (GKTrees): on a timer (Util.Random(25000, 35000) ms); count 1 spawn call in SpawnTrees",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 640,
-     "lineEnd": 640,
+     "line": 641,
+     "lineEnd": 641,
      "anchor": "GKTrees add = new GKTrees();",
      "confidence": "inferred",
      "sourceClass": "OFGreenKnightBrain",
@@ -27907,7 +27907,7 @@
      "tactic": "In the raid AI (catalog: ranged adds and area on the clump): the raid's casters and archers kill the trees while the melee stay on him. Flood guard: at most 70 a wave (EncounterFloodGuard 'OFGreenKnight.Trees', still the Albion dragon raid's size; his own raid's period size is 40).",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "adds@640"
+     "key": "adds@641"
     },
     {
      "kind": "phase",
@@ -27958,8 +27958,8 @@
      "kind": "reset",
      "summary": "Resets when its aggro list is empty: walks home",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 697,
-     "lineEnd": 698,
+     "line": 698,
+     "lineEnd": 699,
      "anchor": "if (!CheckProximityAggro())",
      "confidence": "read",
      "sourceClass": "GKTreesBrain",
@@ -27969,7 +27969,7 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@697"
+     "key": "reset@698"
     },
     {
      "kind": "aggro_wipe",
@@ -28006,8 +28006,8 @@
      "kind": "heal",
      "summary": "Has a heal spell: Heal (Heal, value 400, target SELF)",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 662,
-     "lineEnd": 662,
+     "line": 663,
+     "lineEnd": 663,
      "anchor": "DbSpell spell = new DbSpell();",
      "confidence": "read",
      "sourceClass": "OFGreenKnightBrain",
@@ -28015,7 +28015,7 @@
      "tactic": "Uninterruptible (a 3 s self heal of 400 at one of four spots, after each 10% he loses): nothing stops it; the raid follows him and keeps hitting. Period: \"Heals himself\" (Albion epic raid guide, Feb 2003).",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "heal@662"
+     "key": "heal@663"
     }
    ],
    "spells": [
@@ -28044,7 +28044,7 @@
      "value": "400",
      "target": "SELF",
      "file": "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs",
-     "line": 662,
+     "line": 663,
      "sourceClass": "OFGreenKnightBrain"
     }
    ],
@@ -28289,7 +28289,7 @@
      "maxHealth": 10000,
      "level": null,
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 591
+     "line": 592
     },
     {
      "class": "SummonedDemon",
@@ -28302,7 +28302,7 @@
      "maxHealth": 6000,
      "level": "(byte)Util.Random(62, 68)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 506
+     "line": 507
     },
     {
      "class": "SummonedSacrifice",
@@ -28315,7 +28315,7 @@
      "maxHealth": 6000,
      "level": "(byte)Util.Random(62, 68)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 421
+     "line": 422
     }
    ],
    "rules": [
@@ -28341,8 +28341,8 @@
      "kind": "adds",
      "summary": "Spawns 2 kinds of add (summoned sacrifice (SummonedSacrifice), summoned demon (SummonedDemon)): from Think when if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 324,
-     "lineEnd": 335,
+     "line": 325,
+     "lineEnd": 336,
      "anchor": "SummonedSacrifice Add1 = new SummonedSacrifice();",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -28358,14 +28358,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@324"
+     "key": "adds@325"
     },
     {
      "kind": "adds",
      "summary": "Spawns the Shade of Aelfgar (one at a time) every time both the sacrifice and the demon of a pair have reached his altar (32063,40896) and died there; killed on the way, they never count. Two pairs a fight (at 80%, and again after he turns), so up to two Shades.",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 356,
-     "lineEnd": 356,
+     "line": 357,
+     "lineEnd": 357,
      "anchor": "ShadeOfAelfgar Add1 = new ShadeOfAelfgar();",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -28378,14 +28378,14 @@
      "tactic": "Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it.",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "adds@356"
+     "key": "adds@357"
     },
     {
      "kind": "phase",
      "summary": "At 80% health (Think): calls SendSpellEffectAnimation; calls SpawnDemonAndSacrifice; Strength = 650",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
      "line": 274,
-     "lineEnd": 289,
+     "lineEnd": 290,
      "anchor": "if (Body.HealthPercent <= 80 && SpawnSacrifices1 == false)",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -28401,8 +28401,8 @@
      "kind": "phase",
      "summary": "At 50% health (Think): calls MorphIntoDemon",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 290,
-     "lineEnd": 294,
+     "line": 291,
+     "lineEnd": 295,
      "anchor": "if(Body.HealthPercent <= 50 && Stage2==false)",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -28411,14 +28411,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon, healed to 75% (to full with AllowGovannonFullHeal on), and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "phase@290"
+     "key": "phase@291"
     },
     {
      "kind": "phase",
      "summary": "Changes form in MorphIntoDemon (calls GovannonDemonHealth; Strength = 800)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 315,
-     "lineEnd": 315,
+     "line": 316,
+     "lineEnd": 316,
      "anchor": "Body.Model = 636;//demon model",
      "confidence": "inferred",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -28427,7 +28427,7 @@
      "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
      "difficulty": "needs new raid AI",
      "verified": true,
-     "key": "phase@315"
+     "key": "phase@316"
     },
     {
      "kind": "reset",
@@ -28450,8 +28450,8 @@
      "kind": "reset",
      "summary": "Resets after 30 s out of combat: aggro cleared, full health",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 298,
-     "lineEnd": 298,
+     "line": 299,
+     "lineEnd": 299,
      "anchor": "Body.Health = Body.MaxHealth;",
      "confidence": "read",
      "sourceClass": "GrandSummonerGovannonBrain",
@@ -28461,14 +28461,14 @@
      "tactic": "Keep someone on its aggro list until it dies; a wipe resets it (the 8 s quiet rule keeps a big raid's gaps from resetting it).",
      "difficulty": "easy for the current raid AI",
      "tacticSource": "default for its kind",
-     "key": "reset@298"
+     "key": "reset@299"
     },
     {
      "kind": "teleport",
      "summary": "Teleports RandomTarget to a fixed spot (MoveTo Body.CurrentRegionID, 32091, 39684, 16302, 4094)",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 712,
-     "lineEnd": 712,
+     "line": 713,
+     "lineEnd": 713,
      "anchor": "EncounterDisplacement.Move(RandomTarget, Body.CurrentRegionID, 32091, 39684, 16302, 4094, DisplacementKind.Teleport, Body);",
      "confidence": "inferred",
      "sourceClass": "ShadeOfAelfgarBrain",
@@ -28479,7 +28479,7 @@
      "tactic": "Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI",
      "verified": true,
-     "key": "teleport@712"
+     "key": "teleport@713"
     },
     {
      "kind": "empowered",
@@ -28561,7 +28561,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 385,
+     "line": 386,
      "sourceClass": "GrandSummonerGovannonBrain"
     },
     {
@@ -28575,7 +28575,7 @@
      "value": null,
      "target": "ENEMY",
      "file": "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs",
-     "line": 646,
+     "line": 647,
      "sourceClass": "ShadeOfAelfgar"
     }
    ],

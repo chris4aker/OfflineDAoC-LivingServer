@@ -4,7 +4,9 @@ against left, and how long the raid took from a failed attempt to its next pull.
 curve per attempt (boss health over the pull, raiders alive and engaged, the healers' power, the boss on the tank).
 RAID_FUNNEL (parts 2-3): each raid's funnel from asked to at the boss, with the drop-outs and the legs' times. No names:
 the rows carry none for raiders; monster names are written. One attempt in detail: source/tools/raid_postmortem.py
-<attempt>."""
+<attempt>. Parts 3-5: RAID_MECHANIC_FIRE per boss and mechanic (fires, exposed, within, hit, died, avoided, the reaction
+median, damage); with the diagnostics switch, RAID_THREAT (target changes, time on a tank, why) and RAID_ROLE_TOTALS (damage,
+healing, overheal, crowd control, interrupts and power-outs by role)."""
 from __future__ import annotations
 
 from collections import Counter, defaultdict
@@ -134,9 +136,89 @@ def summarize(lines) -> str:
                 table(["Attempt", "Boss", "Outcome", "Samples", "Boss %", "Alive", "Engaged", "Healer power (low)",
                        "Healers <10% (peak)", "On tank", "Median distance", "Mezzed / stunned (peak)"],
                       [curve_row(a) for a in sampled[-CURVES:]])]
+    out += mechanic_table(found) + threat_summary(found) + role_table(found)
     if raids:
         out += [""] + funnel_table(raids)
     return "\n".join(out)
+
+
+def _sum(values):
+    known = [v for v in values if v is not None]
+    return sum(known) if known else None
+
+
+def _cell(value):
+    return "-" if value is None else value
+
+
+def mechanic_table(found) -> list[str]:
+    fires = [(a, f) for a in found for _, f in a.mechanics]
+    if not fires:
+        return []
+    groups = defaultdict(list)
+    for a, f in fires:
+        groups[(f.get("boss", "?"), f.get("mechanic", "?"))].append(f)
+    rows = []
+    for (boss, mech), fs in sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0])):
+        exposed = _sum(count(f.get("exposedAtCall")) for f in fs)
+        avoided = _sum(count(f.get("avoided")) for f in fs)
+        avoided_of = _sum(count(f.get("exposedAtCall")) for f in fs if count(f.get("avoided")) is not None)
+        rows.append([boss, mech, len(fs), "yes" if any(f.get("called") == "1" for f in fs) else "no",
+                     _cell(exposed), _cell(_sum(count(f.get("within")) for f in fs)),
+                     _cell(_sum(count(f.get("hit")) for f in fs)), _cell(_sum(count(f.get("died")) for f in fs)),
+                     "-" if avoided is None else f"{avoided} ({pct(avoided, avoided_of)})",
+                     _med([count(f.get("leadMs")) for f in fs], "{:.0f} ms"),
+                     _med([count(f.get("reactMedianMs")) for f in fs], "{:.0f} ms"),
+                     _cell(_sum(count(f.get("damage")) for f in fs))])
+    return ["", f"Mechanics (RAID_MECHANIC_FIRE, {_n(len(fires), 'fire')}; called: the raid AI was told of it, else a "
+                "measure-only signal; avoided: exposed at the call, alive, not in the area at the landing and not hit; "
+                "react: when the exposed stepped out, median of the per-fire medians):", "",
+            table(["Boss", "Mechanic", "Fires", "Called", "Exposed", "Within", "Hit", "Died", "Avoided", "Lead", "React",
+                   "Damage"], rows)]
+
+
+def threat_summary(found) -> list[str]:
+    with_threat = [a for a in found if a.threats]
+    if not with_threat:
+        return []
+    rows = []
+    for a in with_threat[-CURVES:]:
+        ts = [f for _, f in a.threats]
+        held = defaultdict(int)
+        for f in ts:
+            held[f.get("from", "-")] += count(f.get("heldMs")) or 0
+        total = sum(held.values())
+        why = Counter(f.get("why", "-") for f in ts)
+        rows.append([a.key, a.boss, len(ts), pct(held.get("tank", 0), total),
+                     ", ".join(f"{k} {v}" for k, v in why.most_common()),
+                     ", ".join(f"{k} {n}" for k, n in Counter(f.get("to", "-") for f in ts).most_common())])
+    return ["", "Boss threat (RAID_THREAT, diagnostics switch; on a tank: the share of the time between changes the boss "
+                "held a tank, counted from each change's heldMs):", "",
+            table(["Attempt", "Boss", "Changes", "On a tank", "Why", "To"], rows)]
+
+
+def role_table(found) -> list[str]:
+    totals = [f for a in found for _, f in a.roles]
+    if not totals:
+        return []
+    by_role = defaultdict(list)
+    for f in totals:
+        by_role[f.get("role", "-")].append(f)
+    rows = []
+    for role in ("tank", "healer", "buffer", "attacker"):
+        fs = by_role.get(role, [])
+        if not fs:
+            continue
+        healed = _sum(count(f.get("healed")) for f in fs) or 0
+        over = _sum(count(f.get("overheal")) for f in fs) or 0
+        rows.append([role, len(fs), _sum(count(f.get("raiders")) for f in fs) or 0, _sum(count(f.get("dealtBoss")) for f in fs) or 0,
+                     _sum(count(f.get("dealtAdds")) for f in fs) or 0, _sum(count(f.get("took")) for f in fs) or 0, healed,
+                     pct(over, healed + over), _sum(count(f.get("deaths")) for f in fs) or 0, _sum(count(f.get("cc")) for f in fs) or 0,
+                     _sum(count(f.get("interrupts")) for f in fs) or 0, _sum(count(f.get("powerOuts")) for f in fs) or 0])
+    return ["", f"Roles (RAID_ROLE_TOTALS, diagnostics switch; summed over {_n(len({f.get('attempt') for f in totals}), 'attempt')}; "
+                "overheal as a share of all healing cast):", "",
+            table(["Role", "Attempts", "Raiders", "Dealt boss", "Dealt adds", "Took", "Healed", "Overheal", "Deaths", "CC",
+                   "Interrupts", "Power-outs"], rows)]
 
 
 def _at_shares(values, shares=(0, 0.25, 0.5, 0.75)):

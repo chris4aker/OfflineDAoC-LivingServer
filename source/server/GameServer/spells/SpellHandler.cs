@@ -355,6 +355,8 @@ namespace DOL.GS.Spells
 			bool lost = Caster.IsBeingInterruptedByOther && TryInterruptCaster(Caster.LastInterrupter);
 			// #625: the CAST_INTERRUPT row (sampled, logs only), from the decision just made.
 			CastInterruptRows.Observe(Caster, Spell, _castStartTick, _calculatedCastTime, lost, IsInterruptImmune);
+			// #644 RAID_ROLE_TOTALS (diagnostics switch, logging only): a raider interrupted a monster's cast.
+			if (lost) RaidAttemptRows.NoteInterrupt(Caster.LastInterrupter, Caster);
 
 			if (!lost)
 				return false;
@@ -2191,6 +2193,10 @@ namespace DOL.GS.Spells
 			for (int i = 0; i < targets.Count; i++)
 			{
 				GameLiving targetInList = targets[i];
+
+				// #661: a buff a bot casts never lands on a player who refused its type, or on that player's pet.
+				if (HasPositiveEffect && PlayerBuffRefusals.BlocksBotBuff(Caster, targetInList, Spell))
+					continue;
 
 				if (CheckSpellResist(targetInList))
 					continue;

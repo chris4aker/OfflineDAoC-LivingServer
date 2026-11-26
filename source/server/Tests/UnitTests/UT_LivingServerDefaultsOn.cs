@@ -42,7 +42,7 @@ namespace DOL.GS.Tests
         public static readonly string[] KeptOff =
         [
             // diagnostics
-            "craft_made_lines", "econ_trade_lines",
+            "craft_made_lines", "econ_trade_lines", "raid_diagnostic_rows",
             // classic rules for real players (a choice of rule, not a feature)
             "crafting_secondary_caps", "crafting_classic_quality", "crafting_classic_losses", "mana_regen_amount_halved_below_50_percent",
             // epic encounter options, the owner's decisions until a played check

@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **747**; pending (#625, not on main yet): **0**; shipped by the pipeline: **715**.
+- Rows in code: **754**; pending (#625, not on main yet): **0**; shipped by the pipeline: **722**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -272,6 +272,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BUFFBOT_INVITE_DECLINED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `player` | `buffbot`, `player` | - | - |
 | `BUFFBOT_LOGOUT` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `id`, `main`, `reason` | `buffbot`, `main` | - | - |
 | `BUFFBOT_RELOCATED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `from`, `main`, `to`, `why`, `x`, `y` | `buffbot`, `main` | - | - |
+| `BUFF_REFUSAL` | server.log | **ships** | `bots/PlayerBuffRefusals.cs` | `now`, `player`, `why` | `player` | - | - |
 | `CABALIST_REST` | server.log | **ships** | `bots/CabalistRestDiagnostics.cs` | `aggro`, `blocked`, `cast`, `end`, `hp`, `lastAttempt`, `lastMessage`, `leaderDistance`, `level`, `mana`, `moving`, `name`, `pending`, `pet`, `petCast`, `petCombat`, `petMoving`, `petTarget` | `lastMessage`, `name`, `pending`, `petTarget` | - | - |
 | `CAST_INTERRUPT` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attacker`, `attackerPet`, `bg`, `castMs`, `caster`, `every`, `leftMs`, `outcome`, `pet`, `realm`, `region`, `seq`, `spell`, `t`, `why` | - | - | CAST_INTERRUPT (#625 row 2; |
 | `CC_BREAK` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attack`, `bg`, `breaker`, `breakerPet`, `caster`, `cc`, `ms`, `region`, `side`, `t`, `target` | - | - | CC_BREAK (#625 row 3; |
@@ -488,14 +489,17 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RAID_LEARN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `familiarity`, `health`, `knowledge`, `mechanic`, `newcomer`, `raid`, `raiders`, `record`, `run`, `seen`, `seenShare`, `specialForces`, `veteran` | - | - | - |
 | `RAID_LEEROY` | server.log | **ships** | `bots/autonomous/AutonomousRaidLeeroy.cs` | `boss`, `bot`, `class`, `raid`, `raiders`, `region` | `bot` | - | - |
 | `RAID_LEEROY_ROLLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event` | - | - | - |
+| `RAID_MECHANIC_FIRE` | server.log | **ships** | `bots/autonomous/LivingRows.RaidMechanics.cs` | `attempt`, `avoided`, `boss`, `called`, `damage`, `died`, `exposedAtCall`, `hit`, `leadMs`, `mechanic`, `radius`, `reactMedianMs`, `t`, `within` | - | - | RAID_MECHANIC_FIRE attempt= boss="" mechanic= t= radius= exposedAtCall= within= hit= died= avoided= called= leadMs= |
 | `RAID_MECHANIC_SEEN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `already`, `chance`, `credited`, `firstTime`, `health`, `how`, `level50`, `mechanic`, `raid`, `realm`, `record`, `seeded` | - | - | - |
 | `RAID_PLAYER_INVITE` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.RaidGuest.cs`<br>`bots/autonomous/AutonomousRealmRaid.Players.cs`<br>`bots/autonomous/BotLedGroups.cs` | `bots`, `event`, `group`, `leader`, `level`, `outcome`, `party`, `player`, `reason`, `role`, `steppedOut` | `leader`, `player`, `steppedOut` | - | - |
 | `RAID_RELIC_PICKUP` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `keep`, `player`, `relic` | `bot`, `player` | - | - |
+| `RAID_ROLE_TOTALS` | server.log | **ships** | `bots/autonomous/LivingRows.RaidMechanics.cs` | `attempt`, `cc`, `classes`, `dealtAdds`, `dealtBoss`, `deaths`, `healed`, `interrupts`, `overheal`, `powerOuts`, `raiders`, `role`, `took` | - | - | RAID_ROLE_TOTALS attempt= role= raiders= dealtBoss= dealtAdds= took= healed= overheal= deaths= cc= interrupts= powerOuts= |
 | `RAID_SIEGE_BLOCKED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `kind`, `player`, `target` | `bot`, `player`, `target` | - | - |
 | `RAID_SIEGE_FIRING` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `hits`, `kind`, `player`, `shots`, `target`, `targetHp` | `bot`, `player`, `target` | - | - |
 | `RAID_SIEGE_PLACED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `at`, `bot`, `kind`, `player`, `range`, `source`, `target` | `bot`, `player`, `target` | - | - |
 | `RAID_SIEGE_SPAWN_FAILED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `kind`, `player`, `reason`, `target` | `bot`, `player`, `target` | - | - |
 | `RAID_SQUAD_STATUS` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `keep`, `player` | `player` | - | - |
+| `RAID_THREAT` | server.log | **ships** | `bots/autonomous/LivingRows.RaidMechanics.cs` | `attempt`, `boss`, `from`, `heldMs`, `t`, `to`, `toKind`, `why` | - | - | RAID_THREAT attempt= boss="" t= from= to= toKind= why= heldMs=. |
 | `RAID_UNREACHABLE_TARGET` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `heightAbove`, `player`, `position`, `target` | `bot`, `player`, `target` | - | - |
 | `REALM_EVENT_LEDGER` | server.log | no: free text, no key=value fields | `bots/autonomous/RealmEventRecords.cs` | - | - | - | - |
 | `REALM_EXPEDITION_ATTEMPT_ENDED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `region`, `target`, `wipe` | `target` | - | Not a wipe: said so, with the counts (2026-11-15: |
@@ -717,6 +721,9 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_SIEGE_PRESENCE` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `minute`, `target` | - | - | - |
 | `RVR_SIEGE_STALL` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `minute`, `stalledMinutes`, `why` | - | - | - |
 | `RVR_SIEGE_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `present`, `reason`, `target` | - | - | - |
+| `RVR_SIGHT_BACK_OFF` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.SightSizeUp.cs` | `bot`, `called`, `enemies`, `id`, `nearest`, `realm`, `region`, `to`, `waitSeconds` | `bot` | - | - |
+| `RVR_SIGHT_RESUME` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.SightSizeUp.cs` | `bot`, `id`, `realm`, `region`, `why` | `bot` | - | - |
+| `RVR_SIGHT_SIZE_UP` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.SightSizeUp.cs` | `allies`, `allyLevel`, `boldness`, `bot`, `call`, `enemies`, `enemyLevel`, `enemyTop`, `fighters`, `healers`, `id`, `level`, `line`, `mistake`, `nearest`, `odds`, `realm`, `reason`, `region`, `tier` | `bot`, `line` | - | - |
 | `RVR_SIZE_UP` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `bigger`, `contact`, `decision`, `enemy`, `enemyPower`, `friendly`, `friendlyPower`, `group`, `kiteMelee`, `odds`, `read`, `realm`, `reason`, `region`, `skill`, `thirdParty`, `wipes` | - | - | - |
 | `RVR_SPOT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrPerception.cs` | `bot`, `call`, `channel`, `held`, `id`, `kind`, `noticed`, `region`, `relayed`, `target`, `told` | `bot`, `target` | - | - |
 | `RVR_STANCE` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `contact`, `enemies`, `fight`, `from`, `group`, `members`, `realm`, `reason`, `region`, `skill`, `to`, `unlogged`, `wipes` | - | - | - |
