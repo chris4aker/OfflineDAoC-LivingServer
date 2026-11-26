@@ -50,7 +50,10 @@ public class UT_SeptemberFourteenWorkerRecovery
             }
 
             Assert.That(RunBatch(), Is.EqualTo(2));
-            Assert.That((int)interrupted.GetValue(pool), Is.EqualTo(1), "the interrupted completion was counted");
+            // The hook signals first, so the batch can end before the worker's
+            // catch counts the interruption: wait for the count, briefly.
+            Assert.That(SpinWait.SpinUntil(() => (int)interrupted.GetValue(pool) == 1, 5000), Is.True,
+                "the interrupted completion was counted");
             hook.SetValue(pool, null);
             Assert.That(RunBatch(), Is.EqualTo(2), "the next batch has its worker");
             Assert.That(workers[0], Is.SameAs(worker), "the worker was kept, not restarted");
