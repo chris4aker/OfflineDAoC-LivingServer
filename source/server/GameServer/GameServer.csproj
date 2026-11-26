@@ -64,6 +64,7 @@
         <EmbeddedResource Include=".\config\*" />
         <EmbeddedResource Include=".\bots\autonomous\data\capnbry_classic_si_goals.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\rvr-checkspots.json" />
+        <EmbeddedResource Include=".\keeps\data\keep_patrols_dbpublic.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\corpus.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\voices.json" />
         <EmbeddedResource Include=".\bots\autonomous\data\chat\places.json" />

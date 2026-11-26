@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **740**; pending (#625, not on main yet): **3**; shipped by the pipeline: **711**.
+- Rows in code: **741**; pending (#625, not on main yet): **3**; shipped by the pipeline: **712**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -438,6 +438,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `HIRE_WORD_165` | server.log | **ships** | `mode165/HireCommand165.cs` | `args`, `from`, `player`, `word` | `player` | - | every word, typed or a dialog link (quiet), for the owner's PC log: |
 | `HOST_PASSWORD` | server.log | no: free text with the account name and the IP address | `packets/Client/168/LoginRequestHandler.cs` | - | - | - | - |
 | `KEEP_LEVEL_DEFAULT_RAISED` | server.log | **ships** | `keeps/FrontierKeepLevelRepair.cs` | `claimed`, `doors`, `id`, `keep`, `level`, `realm`, `reason` | - | - | - |
+| `KEEP_PATROL_IMPORTED` | server.log | **ships** | `keeps/KeepPatrolImport.cs` | `paths`, `points`, `positions`, `reason`, `source` | - | - | - |
 | `LIVING_FEATURE_DROPPED` | server.log | **ships** | `bots/autonomous/AutonomousChatExchange.cs` | `ex`, `feature`, `realm`, `reason`, `waited_s` | - | - | - |
 | `LIVING_FEATURE_DUE` | server.log | **ships** | `bots/autonomous/AutonomousChatExchange.cs` | `ex`, `feature`, `realm` | - | - | - |
 | `LIVING_SERVER_ALARM` | server.log | **ships** | `bots/autonomous/AutonomousLivingServer.Events.cs` | `count`, `enemy`, `place`, `realm`, `speaker` | `speaker` | - | - |

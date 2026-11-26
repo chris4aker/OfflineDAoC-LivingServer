@@ -1,0 +1,1730 @@
+{
+ "about": "#577: the New Frontiers keep and tower patrols, as Eve-of-Darkness/db-public has them (commit e67704598b102b220c5f54a10d8835132f28ee57, 'Add Patrol paths to all old/new keeps', 2022-11-14; MIT since e0e6ed2; the rows are Mythic game data). One patrol per keep layout (KeepType 1-7) and one per tower (KeepType 0), each for the old keep models (ComponentSkin 0, tower 11) and the new ones (24, tower 31). Path points are relative to the keep (PositionMgr.LoadXY); every Z is 0: ground loops near the structure. Owner decision 2026-11-26 on #577: (a) yes. Added to a world once by KeepPatrolImport.",
+ "source": "https://github.com/Eve-of-Darkness/db-public/commit/e67704598b102b220c5f54a10d8835132f28ee57",
+ "positions": [
+  {
+   "KeepPosition_ID": "d7f6a47c-6f00-4772-97ac-57b534de255f",
+   "TemplateID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 7,
+   "ComponentSkin": 24,
+   "ComponentRotation": 1,
+   "Height": 0,
+   "XOff": 2108,
+   "YOff": -1335,
+   "ZOff": 0,
+   "HOff": 1005,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "b9a84794-cc60-4973-b5da-986e7cedbc6b",
+   "TemplateID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 7,
+   "ComponentSkin": 0,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 731,
+   "YOff": -789,
+   "ZOff": 0,
+   "HOff": 1797,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "5f0fd036-b666-49fb-9cdb-01d7e61e0df1",
+   "TemplateID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 3,
+   "ComponentSkin": 24,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 682,
+   "YOff": -1312,
+   "ZOff": 0,
+   "HOff": 1229,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "82813d11-20c9-4e96-a9c5-1d0a44cf29ea",
+   "TemplateID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 3,
+   "ComponentSkin": 0,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 842,
+   "YOff": -900,
+   "ZOff": 0,
+   "HOff": 1661,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "875a1165-72a7-4b8c-b5a1-fbe01ae8e7df",
+   "TemplateID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 1,
+   "ComponentSkin": 24,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 162,
+   "YOff": -1342,
+   "ZOff": 0,
+   "HOff": 2167,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "bafb7a55-c68b-44a8-a1fe-fccedd7797e8",
+   "TemplateID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 1,
+   "ComponentSkin": 0,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 674,
+   "YOff": -1042,
+   "ZOff": 0,
+   "HOff": 1838,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "6bd8daee-d048-4bba-906f-c0d0cdc586b2",
+   "TemplateID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 2,
+   "ComponentSkin": 24,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 398,
+   "YOff": -1104,
+   "ZOff": 0,
+   "HOff": 1976,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "f51646c0-0f63-4077-b065-55ef518ce88f",
+   "TemplateID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 2,
+   "ComponentSkin": 0,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 502,
+   "YOff": -963,
+   "ZOff": 0,
+   "HOff": 2042,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "82cc4d19-f5a4-411a-982d-47a11ec1f29c",
+   "TemplateID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 5,
+   "ComponentSkin": 24,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 315,
+   "YOff": -1159,
+   "ZOff": 0,
+   "HOff": 1674,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "8142dc53-1b86-4427-8ca4-f7c96186f7e4",
+   "TemplateID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 5,
+   "ComponentSkin": 0,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 1155,
+   "YOff": -678,
+   "ZOff": 0,
+   "HOff": 1333,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "87a590ea-2150-49b5-be97-fc54fa11fb4d",
+   "TemplateID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 6,
+   "ComponentSkin": 24,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": -86,
+   "YOff": -1488,
+   "ZOff": 0,
+   "HOff": -1663,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "e9e3c833-7a17-4f61-8230-ea0ec58cd5af",
+   "TemplateID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 6,
+   "ComponentSkin": 0,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 634,
+   "YOff": -673,
+   "ZOff": 0,
+   "HOff": 1570,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "2be3be07-249d-4dbd-b371-5cf7f597d779",
+   "TemplateID": "Tower_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 0,
+   "ComponentSkin": 31,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 95,
+   "YOff": 384,
+   "ZOff": 101,
+   "HOff": 3503,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "563a54a3-6e4b-4080-9f81-0d563d23d141",
+   "TemplateID": "Tower_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 0,
+   "ComponentSkin": 11,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 154,
+   "YOff": 264,
+   "ZOff": 13,
+   "HOff": 3852,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "e93d8086-93b9-4899-ae76-8a0ef48ba107",
+   "TemplateID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 4,
+   "ComponentSkin": 24,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 253,
+   "YOff": -1233,
+   "ZOff": 0,
+   "HOff": 1824,
+   "TemplateType": 0
+  },
+  {
+   "KeepPosition_ID": "24984a36-420b-4064-a4c2-26c764b1b489",
+   "TemplateID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "ClassType": "DOL.GS.Keeps.Patrol",
+   "KeepType": 4,
+   "ComponentSkin": 0,
+   "ComponentRotation": 0,
+   "Height": 0,
+   "XOff": 996,
+   "YOff": -876,
+   "ZOff": 0,
+   "HOff": 1440,
+   "TemplateType": 0
+  }
+ ],
+ "paths": [
+  {
+   "Path_ID": "0819d70a-cbd2-48df-bc01-3b7471335443",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "9fab4065-6b43-4062-89d3-a860385055cd",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "eaf52023-6ece-4861-bd46-cb9f11c26ecc",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "e3e98612-c71c-4067-b575-db6f71f0930e",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "b7f45b6c-bdee-495d-8feb-be59d1894ec2",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "7e1be036-a954-4abb-a0e0-1427a7aa249d",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "96df5c05-45d8-423b-9a33-50a63fd649bc",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "2c1aa6f1-a127-4824-8d89-b66fb9296cfe",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "dd66f50d-e566-4fa6-8ff2-31ad4a1415c4",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "61bdcc2c-3afa-4844-8695-567dae3e34ab",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "febf1eba-9bb4-409a-a3ce-f3e130c3c379",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "0b90928b-9433-402e-8871-3d4a0ad4d9b7",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "fd460259-128b-4faf-8b6a-c94c18cc6522",
+   "PathID": "Tower_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "6e970ee4-02a8-4c44-87b7-ac1c6b32a12f",
+   "PathID": "Tower_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "6bbd7489-6ae3-43aa-9167-7fdde136774e",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "PathType": 3,
+   "RegionID": 0
+  },
+  {
+   "Path_ID": "95537d31-9ca3-45d7-b641-c57fea40386c",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "PathType": 3,
+   "RegionID": 0
+  }
+ ],
+ "points": [
+  {
+   "PathPoints_ID": "05f24cf5-22e0-4386-8222-b6cd88a9fd47",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 1,
+   "X": 2286,
+   "Y": -3552,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "8b384f94-5fc6-4ce1-ab8f-a33c841fe0c6",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 2,
+   "X": 1766,
+   "Y": -4051,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d85a82e7-f6d8-4c5d-89b6-dbc5ce545c4f",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 3,
+   "X": -2424,
+   "Y": -4031,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f32c8e53-5de3-41b7-b2b9-d6c8426241a6",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 4,
+   "X": -3294,
+   "Y": -3148,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "fa9a74b5-0abe-4bf6-9cad-86b80a18ed97",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 5,
+   "X": -3324,
+   "Y": 1036,
+   "Z": -70,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "b0229877-866b-4db8-9340-153c9ebdb542",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 6,
+   "X": -2819,
+   "Y": 1535,
+   "Z": -12,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "abdeab47-889d-420a-b60c-c923ff53eac2",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 7,
+   "X": 1776,
+   "Y": 1546,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "7144a48c-4b35-4c14-93d9-5000b4617244",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_new",
+   "Step": 8,
+   "X": 2275,
+   "Y": 1053,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "58b84c16-c005-4345-abe1-7ef67b83f1ba",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 1,
+   "X": -1184,
+   "Y": -1541,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "128d9c1d-8fad-45e3-863d-13dbe259b8ef",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 2,
+   "X": -1684,
+   "Y": -1041,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e1b8c214-b0f4-4883-9323-0d6caa5d634e",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 3,
+   "X": -1586,
+   "Y": 1733,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "6c9ff026-86a4-4f33-b19a-5126a30157db",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 4,
+   "X": -823,
+   "Y": 2956,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "2acfc811-cc9b-4a98-96b8-3ea6c21aa7b5",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 5,
+   "X": 1267,
+   "Y": 3079,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "37a34744-8f5c-4d26-b677-5e25abaa2539",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 6,
+   "X": 2088,
+   "Y": 2387,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d9cdc055-5f35-440a-8b63-16927c306caf",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 7,
+   "X": 2342,
+   "Y": 1955,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d680db6a-4947-4e96-a6f5-177590d10597",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 8,
+   "X": 2429,
+   "Y": -1036,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "81b39485-5d36-41c2-8113-52a074122abe",
+   "PathID": "Ailinne_Arvakr_Hurbury_Patrol_old",
+   "Step": 9,
+   "X": 1929,
+   "Y": -1536,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "44102187-0522-43e2-91ff-1207eb71f4e5",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 1,
+   "X": -1924,
+   "Y": -1399,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "fcceb11b-5929-4fe4-8af9-4f31b1537b9d",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 2,
+   "X": -2424,
+   "Y": -899,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e28508ad-cd8b-4c3f-b4e9-653bf621d222",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 3,
+   "X": -2436,
+   "Y": 3256,
+   "Z": -3,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "9b964b68-2221-4274-8e90-9ff35245f02a",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 4,
+   "X": -1936,
+   "Y": 3756,
+   "Z": -168,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d9627cf1-5238-46c7-87fa-bdc2b84786cd",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 5,
+   "X": 1592,
+   "Y": 3574,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "01241cde-735a-442d-a61f-bf56775cd54f",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 6,
+   "X": 2092,
+   "Y": 3074,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "6d40738a-b07c-43b9-b018-83765551c0d4",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 7,
+   "X": 2100,
+   "Y": -694,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d511fc86-8aa3-4c1d-8c33-ac765d6c5570",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_new",
+   "Step": 8,
+   "X": 1600,
+   "Y": -1194,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "fdf590d1-b029-4c76-93a1-615b16672bbc",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 1,
+   "X": -1036,
+   "Y": -1097,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d56ed2e4-7a9b-4c17-a7d2-49e9a22bd9be",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 2,
+   "X": -1536,
+   "Y": -597,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "8b6df518-4988-4917-a718-746be2592abb",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 3,
+   "X": -1542,
+   "Y": 3108,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "355b68fd-edbc-498e-b33e-49461319cd7a",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 4,
+   "X": -1042,
+   "Y": 3608,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "4df77b35-ee60-4074-b80f-7554d2a7b18e",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 5,
+   "X": 817,
+   "Y": 3364,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "15512e8a-04f8-4f8c-ac3d-d03cb398aacc",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 6,
+   "X": 2032,
+   "Y": 2785,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "b5852f5f-7fe6-4bc2-b128-063addea0536",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 7,
+   "X": 2257,
+   "Y": 1773,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "93029665-9ed0-4212-9f62-9fa66cb5dfc3",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 8,
+   "X": 1837,
+   "Y": 148,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e869fdfd-f1e5-47e6-9112-665110ceaeee",
+   "PathID": "Bolg_Hlidskialf_Erasleigh_Patrol_old",
+   "Step": 9,
+   "X": 981,
+   "Y": -857,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "0be13310-35e7-42ee-a7fb-1da9c047a916",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 1,
+   "X": -993,
+   "Y": -1356,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "c7786118-2bab-4fbd-9eba-cf9f97a83132",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 2,
+   "X": -1936,
+   "Y": -624,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "c810e711-cb43-4d79-9a4b-ba08fbdca0ac",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 3,
+   "X": -1981,
+   "Y": 2717,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "52aafe7c-e56f-4966-97b5-533a536adf1b",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 4,
+   "X": -1586,
+   "Y": 3303,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e68904b2-62e8-49c9-9699-96743bd67e87",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 5,
+   "X": 1743,
+   "Y": 3280,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f913c3ed-2f51-487e-9953-1d8e7266ca13",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 6,
+   "X": 2688,
+   "Y": 2526,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d4840b80-5a08-4e48-bc21-ea29d43adf99",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 7,
+   "X": 2689,
+   "Y": -415,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d9c2b8c5-7da2-4dd3-b462-d413c80c4a2a",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_new",
+   "Step": 8,
+   "X": 1947,
+   "Y": -1351,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "247191f0-f7a3-484a-aad9-a80e77148a68",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 1,
+   "X": -263,
+   "Y": -846,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "78a5abc4-48fe-4180-93d5-91c4b1e71bd7",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 2,
+   "X": -784,
+   "Y": -629,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d31d65ad-dedf-426a-8d74-27089307b5a8",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 3,
+   "X": -1633,
+   "Y": 554,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "df433201-37d8-4537-be39-fc193b4e5937",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 4,
+   "X": -1599,
+   "Y": 1631,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "43e6d80c-b752-438b-ab5d-31db41b59902",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 5,
+   "X": -1339,
+   "Y": 2319,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "02b6ac0e-aaa2-40f7-9218-b6b6d360db75",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 6,
+   "X": -9,
+   "Y": 3068,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "7d071078-3932-49a4-8575-29f50af515c6",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 7,
+   "X": 1552,
+   "Y": 2840,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d655eac0-e621-41a4-9425-7339b5090cf0",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 8,
+   "X": 2070,
+   "Y": 2307,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "ec635875-71b1-47c5-aabc-b981dc79e3e5",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 9,
+   "X": 2407,
+   "Y": 1155,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "5b61b035-8f85-48a4-a2c4-ea06a6ca745e",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 10,
+   "X": 2014,
+   "Y": -194,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "96e9503f-0b1c-4378-9dd1-6c23fdf6c7cd",
+   "PathID": "Crauchon_Bledmeer_Benowyc_Patrol_old",
+   "Step": 11,
+   "X": 936,
+   "Y": -872,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "04f78e19-bbfc-4ba8-9935-ecdf7d7088fc",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 1,
+   "X": -666,
+   "Y": -1368,
+   "Z": 7,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "22ac2fb3-9760-43ad-b8eb-e35684b8ad67",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 2,
+   "X": -1500,
+   "Y": -529,
+   "Z": 7,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "85d57a69-f42d-4b96-b573-39cef85c35dc",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 3,
+   "X": -1548,
+   "Y": 3256,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "880754d6-b3a3-4dec-b1e5-74e33db9ca44",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 4,
+   "X": -1048,
+   "Y": 3756,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "5bf33d0c-f216-4297-be39-8b618ba7083c",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 5,
+   "X": 1776,
+   "Y": 3768,
+   "Z": 38,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e738ef40-c799-4447-a8c6-937026f4e3fa",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 6,
+   "X": 2276,
+   "Y": 3268,
+   "Z": 109,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "4c8f0c14-72de-4512-ae07-3decb39f2110",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 7,
+   "X": 2245,
+   "Y": -505,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "9503d823-51e8-4cdf-a95b-5e486e4b5098",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_new",
+   "Step": 8,
+   "X": 1402,
+   "Y": -1364,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "ceb63c81-99fe-424f-b1ba-371cd8f2d62b",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 1,
+   "X": -323,
+   "Y": -816,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "243218a3-b3db-4a4a-98f8-d8cebcb9188f",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 2,
+   "X": -1018,
+   "Y": -475,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "6d3dbadb-d762-4a94-ba29-146235fab8d7",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 3,
+   "X": -1482,
+   "Y": 119,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "a4eafc21-b021-4ba9-988a-4203eb761cd0",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 4,
+   "X": -1430,
+   "Y": 2364,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "2d1ea566-eefc-4a3a-b652-174166f16370",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 5,
+   "X": -959,
+   "Y": 2887,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e6c20936-4156-4427-977e-1779cde0d08b",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 6,
+   "X": 1332,
+   "Y": 3022,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "3807cfd3-d585-4f91-8d56-17b8039396bd",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 7,
+   "X": 1832,
+   "Y": 2522,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "2e9cb14b-47ee-4897-8b90-a7f3ff166ff1",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 8,
+   "X": 2277,
+   "Y": 582,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "65bcc8fd-ea12-4d97-81a5-88118647265f",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 9,
+   "X": 1524,
+   "Y": -629,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "2c656625-567d-4bd2-a917-570dc5abe66d",
+   "PathID": "Crimthain_Nottmoor_Berkstead_Patrol_old",
+   "Step": 10,
+   "X": 940,
+   "Y": -871,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "a5366326-3f89-49ea-bc89-c122bc6aadca",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 1,
+   "X": -1036,
+   "Y": -1399,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f03c9731-1251-4874-bb60-444e7d8c3004",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 2,
+   "X": -1536,
+   "Y": -899,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "5f18da90-0b64-4c0f-b211-71029f08764e",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 3,
+   "X": -1546,
+   "Y": 2368,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f2fa5d3d-b441-4b5a-a4be-f59820f5b838",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 4,
+   "X": -1046,
+   "Y": 2868,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "b5abf6cf-b703-4539-ac46-a3cf145a6c9a",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 5,
+   "X": 3552,
+   "Y": 2878,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "602908de-dc14-4cc8-8481-91363ea9783d",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 6,
+   "X": 4052,
+   "Y": 2378,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "2d7580c3-d808-4b61-a82c-7f59d03ceeb9",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 7,
+   "X": 4064,
+   "Y": -888,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "36a1cbd9-1e0a-4f88-add8-be559f51680d",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_new",
+   "Step": 8,
+   "X": 3564,
+   "Y": -1388,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "ab0824ca-7205-42f2-a063-465fa42ea3c2",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 1,
+   "X": -1036,
+   "Y": -949,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "db9d7714-0442-4580-a271-63edac3bf77d",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 2,
+   "X": -1536,
+   "Y": -449,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f4aa1f33-98ec-4d00-be3b-8e8ded4b65ba",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 3,
+   "X": -1540,
+   "Y": 1924,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "b5714c98-5096-4de2-9de5-7d8003446f51",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 4,
+   "X": -1040,
+   "Y": 2424,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "2ce82beb-6ef4-473a-8010-e54c9a8edee4",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 5,
+   "X": 2664,
+   "Y": 2428,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e0b9cbef-e4a2-4e23-bd5b-c66b4a9d2f3c",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 6,
+   "X": 3164,
+   "Y": 1928,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "285e52d4-bfd2-4904-b10f-fe6d5fcbe3d9",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 7,
+   "X": 3170,
+   "Y": -444,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "cd31cd95-369a-4602-a56a-c2e2bf70d932",
+   "PathID": "DaBehnn_Blendrake_Sursbrooke_Patrol_old",
+   "Step": 8,
+   "X": 2670,
+   "Y": -944,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "67d3ea33-5fb8-4b0d-9f33-57d472660d83",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 1,
+   "X": -1480,
+   "Y": -1399,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "dd10f825-11da-4ee0-8652-c1e2f894c124",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 2,
+   "X": -1980,
+   "Y": -899,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "ebb5d763-4c70-4bbc-b943-ebbb5ee06af6",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 3,
+   "X": -1990,
+   "Y": 3700,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "cf2752b5-5f07-4295-9b6f-ca42aa7d614c",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 4,
+   "X": -1490,
+   "Y": 4200,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "8f83facd-18a2-4f9e-8495-0a196bcc4c20",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 5,
+   "X": 2220,
+   "Y": 4211,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "56f85420-0dd2-4d57-9ebd-8f46f7a26eee",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 6,
+   "X": 2720,
+   "Y": 3710,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e8c1fe8c-bc40-4aaa-b817-4623bbafb39d",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 7,
+   "X": 2732,
+   "Y": -888,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "6df62015-21bf-4348-8fdf-dfecf9271cf9",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_new",
+   "Step": 8,
+   "X": 2232,
+   "Y": -1388,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "12d427b0-a469-4a09-aa7c-9966a1076b9a",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 1,
+   "X": -1036,
+   "Y": -949,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "73a68738-b835-477e-9261-f3d3fb68e34b",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 2,
+   "X": -1536,
+   "Y": -449,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f13aa417-7dfc-4bf4-a3f0-4eae7c937c5a",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 3,
+   "X": -1540,
+   "Y": 2812,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "2900f67e-bbac-4cf9-b5a0-c15ba1f2f00b",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 4,
+   "X": -1040,
+   "Y": 3312,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "221601ca-89d4-4495-b5e6-22a9cfb68abd",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 5,
+   "X": 1776,
+   "Y": 3317,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "c8bdeaf4-adf1-48e3-926b-3c8a5e13a5b7",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 6,
+   "X": 2276,
+   "Y": 2816,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "23b67dce-0d24-46d1-be89-b8b405a114ae",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 7,
+   "X": 2282,
+   "Y": -444,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "c1db1444-2b82-448d-b8ef-ef9da656168a",
+   "PathID": "Scathaig_Fensalir_Renaris_Patrol_old",
+   "Step": 8,
+   "X": 1781,
+   "Y": -944,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "7bfc50b5-0420-4b73-8751-f11f216d4715",
+   "PathID": "Tower_Patrol_new",
+   "Step": 1,
+   "X": 1230,
+   "Y": 421,
+   "Z": 31,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "16207562-5b38-4f9c-bc07-3fdfd332076c",
+   "PathID": "Tower_Patrol_new",
+   "Step": 2,
+   "X": 1730,
+   "Y": -79,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "99d43f01-cb26-4bb7-986e-374ad1bf89b7",
+   "PathID": "Tower_Patrol_new",
+   "Step": 3,
+   "X": 1753,
+   "Y": -1408,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "e09937ab-a609-4a74-8bfb-5c79d1a14af7",
+   "PathID": "Tower_Patrol_new",
+   "Step": 4,
+   "X": 1253,
+   "Y": -1908,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "775b50f9-dc56-4ccd-977e-c5deda5ddb5c",
+   "PathID": "Tower_Patrol_new",
+   "Step": 5,
+   "X": 107,
+   "Y": -1932,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "6bc819fb-ba28-4198-8385-07db4740514c",
+   "PathID": "Tower_Patrol_new",
+   "Step": 6,
+   "X": -393,
+   "Y": -1432,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "7044a065-1508-4f60-89c0-896fad9b6c2b",
+   "PathID": "Tower_Patrol_new",
+   "Step": 7,
+   "X": -419,
+   "Y": -105,
+   "Z": 24,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "ac17e000-4859-4fa6-b481-17bcbd879454",
+   "PathID": "Tower_Patrol_new",
+   "Step": 8,
+   "X": 81,
+   "Y": 395,
+   "Z": 101,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "9dcdef8f-6bfb-475f-b981-55447cd7bfdd",
+   "PathID": "Tower_Patrol_old",
+   "Step": 1,
+   "X": 827,
+   "Y": 289,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "c8307bff-ffcd-4d64-8352-edce2cecf35c",
+   "PathID": "Tower_Patrol_old",
+   "Step": 2,
+   "X": 1431,
+   "Y": -329,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "9552fc2c-280b-4e6f-8163-7534394ffac5",
+   "PathID": "Tower_Patrol_old",
+   "Step": 3,
+   "X": 1420,
+   "Y": -1033,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "fcd51103-d596-469d-ba1f-932eb15da3ea",
+   "PathID": "Tower_Patrol_old",
+   "Step": 4,
+   "X": 796,
+   "Y": -1756,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "3ea4b195-9543-4bb6-b529-b94d1dbddab8",
+   "PathID": "Tower_Patrol_old",
+   "Step": 5,
+   "X": 233,
+   "Y": -1755,
+   "Z": -6,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "325d408d-2482-441a-989a-d681b0001050",
+   "PathID": "Tower_Patrol_old",
+   "Step": 6,
+   "X": -434,
+   "Y": -1121,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "76dced57-33dd-4fe5-aedb-c342644375ba",
+   "PathID": "Tower_Patrol_old",
+   "Step": 7,
+   "X": -415,
+   "Y": -225,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "3bdc860b-7b5f-493d-b657-bf518c9bcb6f",
+   "PathID": "Tower_Patrol_old",
+   "Step": 8,
+   "X": 145,
+   "Y": 283,
+   "Z": 13,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "dd6abe6a-1723-44ed-a23d-4e7fdd10ca83",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 1,
+   "X": 67,
+   "Y": -2220,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "bf59547f-cd79-4af5-b941-b1b5301849eb",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 2,
+   "X": -432,
+   "Y": -2720,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f6364aa2-0741-4cd9-8d2f-e0d720f9190d",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 3,
+   "X": -2377,
+   "Y": -2731,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "8758a759-0cf4-4a79-8357-6137a9411e52",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 4,
+   "X": -2877,
+   "Y": -2231,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "69e00d3c-f809-4a77-bfed-25a2a84ffdc0",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 5,
+   "X": -2878,
+   "Y": 2368,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "9912e9f8-4614-4e02-83a9-d64d2e617661",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 6,
+   "X": -2378,
+   "Y": 2868,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "aae146a1-29a4-4265-93f7-b4545b97496c",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 7,
+   "X": 2220,
+   "Y": 2878,
+   "Z": -4,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "5506c38f-1bfe-441a-8dbd-83fa97fba1b5",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 8,
+   "X": 2720,
+   "Y": 2378,
+   "Z": -4,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "73adcdd9-8eab-4340-971e-bc0c42dde78f",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 9,
+   "X": 2732,
+   "Y": -888,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "4d77a379-8c29-4ceb-a534-8d0b05d81a0f",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_new",
+   "Step": 10,
+   "X": 2232,
+   "Y": -1388,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "4f687cf9-a4cc-4c3c-b20b-4382fb7e30be",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 1,
+   "X": 357,
+   "Y": -1036,
+   "Z": 0,
+   "MaxSpeed": 5000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "20baa6d7-527c-4ae8-85c1-1ca1c93654a9",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 2,
+   "X": -142,
+   "Y": -1536,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "f2fa57f0-f371-4b09-a7ec-b02cba50d13c",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 3,
+   "X": -1253,
+   "Y": -1237,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "c15c5e76-03c8-4f62-bce9-cc73feac644d",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 4,
+   "X": -1673,
+   "Y": -349,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "d1f1df0f-ec5b-4a66-97ff-f1db68a5909c",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 5,
+   "X": -1688,
+   "Y": 2220,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "9a345b26-f361-4bf7-95c0-9aa7b00247c4",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 6,
+   "X": -1188,
+   "Y": 2720,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "4baea2ca-01ee-4a22-9f3b-0779efe46990",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 7,
+   "X": 1184,
+   "Y": 3169,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "28d99bf1-8a58-497b-8738-2fec9d3fa1c3",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 8,
+   "X": 1684,
+   "Y": 2669,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "3ad2d040-8d55-4dfb-b2a2-5e43366ab65b",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 9,
+   "X": 2176,
+   "Y": 447,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "40cfc816-cac8-4b8e-a0e8-11ef96d0094a",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 10,
+   "X": 2282,
+   "Y": -592,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  },
+  {
+   "PathPoints_ID": "ae2a621e-eefb-470c-8c27-116cc4476246",
+   "PathID": "nGed_Glenlock_Boldiam_Patrol_old",
+   "Step": 11,
+   "X": 1781,
+   "Y": -1092,
+   "Z": 0,
+   "MaxSpeed": 1000,
+   "WaitTime": 0
+  }
+ ]
+}

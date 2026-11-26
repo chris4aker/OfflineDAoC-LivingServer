@@ -480,6 +480,9 @@ namespace DOL.GS
 					return false;
 
 				//---------------------------------------------------------------
+				//One-time import of the New Frontiers keep patrols (#577), before the keeps load their positions. Never stops the start.
+				InitComponent(KeepPatrolImport.Run(), "Keep patrol import");
+
 				//Load the keep manager
 				if (!InitComponent(StartKeepManager(), "Keep Manager"))
 					return false;
