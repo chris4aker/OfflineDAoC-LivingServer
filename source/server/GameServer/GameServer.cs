@@ -788,6 +788,9 @@ namespace DOL.GS
 					log.Info("Server rules: true");
 
 				//---------------------------------------------------------------
+				//One-time fix of the charm spells' body types (#579), before the skills load the spells. Never stops the start.
+				Spells.CharmBodyTypeRepair.Run();
+
 				//Load the skills
 				SkillBase.LoadSkills();
                 BotPoisonSupply.Load();

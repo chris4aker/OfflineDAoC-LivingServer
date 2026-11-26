@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **740**; pending (#625, not on main yet): **3**; shipped by the pipeline: **711**.
+- Rows in code: **741**; pending (#625, not on main yet): **3**; shipped by the pipeline: **712**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -279,6 +279,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BUFFBOT_RELOCATED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `from`, `main`, `to`, `why`, `x`, `y` | `buffbot`, `main` | - | - |
 | `CABALIST_REST` | server.log | **ships** | `bots/CabalistRestDiagnostics.cs` | `aggro`, `blocked`, `cast`, `end`, `hp`, `lastAttempt`, `lastMessage`, `leaderDistance`, `level`, `mana`, `moving`, `name`, `pending`, `pet`, `petCast`, `petCombat`, `petMoving`, `petTarget` | `lastMessage`, `name`, `pending`, `petTarget` | - | - |
 | `CC_BREAK` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attack`, `attacker`, `attackerPet`, `bg`, `breaker`, `breakerPet`, `castMs`, `caster`, `cc`, `every`, `leftMs`, `ms`, `outcome`, `pet`, `realm`, `region`, `seq`, `side`, `spell`, `t`, `target`, `why` | - | - | CC_BREAK (#625 row 3; |
+| `CHARM_BODY_TYPE_REPAIRED` | server.log | **ships** | `spells/CharmBodyTypeRepair.cs` | `amnesia`, `bodyTypes`, `reason`, `spell`, `spellId` | - | - | - |
 | `CHAT_EMOTE` | server.log | **ships** | `bots/autonomous/BotChatTranscript.cs` | `emote`, `from`, `kind`, `realm` | `from` | - | - |
 | `CHAT_FLAG` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `at`, `ch`, `lines`, `note`, `realm`, `seq`, `t`, `to`, `zone` | - | - | - |
 | `CHAT_HEAR` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `ch`, `from`, `grouped`, `heard`, `intent`, `realm`, `room`, `seq`, `t`, `text`, `to`, `zone` | - | - | - |
