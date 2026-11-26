@@ -14,7 +14,9 @@ attempt it prints, as markdown:
   healers in range and attackers; the deaths per 15 s; when the first raider and a quarter and half of the pull's size
   had died;
 - the timeline: each 15 s fight sample (RAID_FIGHT_SAMPLE: boss health, raiders alive and engaged by role, the healers'
-  power, whom the boss fights, the median distance, mezzed and stunned) with the deaths between them, by second;
+  power, whom the boss fights, the median distance, mezzed and stunned) with the deaths, the mechanic fires
+  (RAID_MECHANIC_FIRE) and the boss's target changes (RAID_THREAT, diagnostics switch) between them, by second;
+- the role totals at the end (RAID_ROLE_TOTALS, diagnostics switch);
 - every other row that carries the same attempt= (REALM_EXPEDITION_ATTEMPT_ENDED, _WIPE, _ENCOUNTER_RESET,
   _SKIRMISH_LOST), at its second into the pull.
 
@@ -167,6 +169,7 @@ def report(attempt, lines) -> str:
         out.append("No raider died in this attempt.")
 
     out += timeline(attempt)
+    out += role_totals(attempt)
 
     rest = other_rows(lines, attempt.id, attempt.pulled_at, attempt.ended_at)
     if rest:
@@ -208,17 +211,52 @@ def death_text(d: dict) -> str:
             f"{d.get('source', '-')}" + (f", during {mech}" if mech not in (None, "-") else ""))
 
 
+def mechanic_text(f: dict) -> str:
+    area = f.get("exposedAtCall") not in (None, "-")
+    parts = [f"{f.get('mechanic', '?')} of {f.get('boss', '?')}" + (" (called)" if f.get("called") == "1" else " (measure only)"),
+             f"lands in {f.get('leadMs', '-')} ms"]
+    if area:
+        parts.append(f"radius {f.get('radius', '-')}: exposed {f.get('exposedAtCall')}, within {f.get('within', '-')}, "
+                     f"avoided {f.get('avoided', '-')}" + (f", stepped out in {f['reactMedianMs']} ms (median)"
+                                                         if f.get("reactMedianMs") not in (None, "-") else ""))
+    parts.append(f"hit {f.get('hit', '-')}, died {f.get('died', '-')}, damage {f.get('damage', '-')}")
+    return "mechanic: " + ", ".join(parts)
+
+
+def threat_text(f: dict) -> str:
+    return (f"threat: {f.get('from', '-')} -> {f.get('to', '-')} ({f.get('toKind', '-')}), {f.get('why', '-')}, "
+            f"held {mmss((count(f.get('heldMs')) or 0) // 1000)}")
+
+
+def role_totals(attempt) -> list[str]:
+    if not attempt.roles:
+        return []
+    rows = [[f.get("role", "-"), f.get("raiders", "-"), f.get("dealtBoss", "-"), f.get("dealtAdds", "-"), f.get("took", "-"),
+             f.get("healed", "-"), f.get("overheal", "-"), f.get("deaths", "-"), f.get("cc", "-"), f.get("interrupts", "-"),
+             f.get("powerOuts", "-"), (f.get("classes") or "-").replace(",", ", ")] for _, f in attempt.roles]
+    return ["", "## Roles at the end", "", "Classes: class:raiders/dealt/healed.", "",
+            table(["Role", "Raiders", "Dealt boss", "Dealt adds", "Took", "Healed", "Overheal", "Deaths", "CC", "Interrupts",
+                   "Power-outs", "Classes"], rows)]
+
+
 def timeline(attempt) -> list[str]:
-    """The samples with the deaths between them, by second into the pull (a death and a sample at the same second: the
-    sample first, as it was taken at the start of that second's pulse)."""
-    if not attempt.samples:
+    """The samples with the deaths, mechanic fires and target changes between them, by second into the pull (at the same
+    second: the sample first, as it was taken at the start of that second's pulse, then mechanics, threat, deaths)."""
+    if not (attempt.samples or attempt.mechanics or attempt.threats):
         return ["", "## Timeline", "", "No RAID_FIGHT_SAMPLE rows for this attempt (an older build, or a budget drop)."]
     events = [(count(f.get("t")) or 0, 0, sample_text(f)) for _, f in attempt.samples]
-    events += [(count(d.get("t")) or 0, 1, death_text(d)) for _, d in attempt.deaths]
+    events += [(count(f.get("t")) or 0, 1, mechanic_text(f)) for _, f in attempt.mechanics]
+    events += [(count(f.get("t")) or 0, 2, threat_text(f)) for _, f in attempt.threats]
+    events += [(count(d.get("t")) or 0, 3, death_text(d)) for _, d in attempt.deaths]
     events.sort(key=lambda e: (e[0], e[1]))
     gaps = [b - a for a, b in zip(sorted(count(f.get("t")) or 0 for _, f in attempt.samples)[:-1],
                                   sorted(count(f.get("t")) or 0 for _, f in attempt.samples)[1:])]
-    out = ["", f"## Timeline ({len(attempt.samples)} samples, {len(attempt.deaths)} deaths)", ""]
+    head = f"{len(attempt.samples)} samples, {len(attempt.deaths)} deaths"
+    if attempt.mechanics:
+        head += f", {len(attempt.mechanics)} mechanic fires"
+    if attempt.threats:
+        head += f", {len(attempt.threats)} target changes"
+    out = ["", f"## Timeline ({head})", ""]
     if any(g > 20 for g in gaps):
         out.append(f"_Gaps between samples: up to {max(gaps)} s (a budget drop or a slow pulse)._")
         out.append("")

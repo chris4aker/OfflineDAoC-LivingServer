@@ -876,6 +876,9 @@ NOT_ACTIONS = {"if", "for", "foreach", "while", "new", "return", "switch", "Rand
 
 
 def summarize_actions(world: World, code: str) -> str:
+    # #644 decision d: the measure-only mechanic signals are no action of the boss (RaidBossMechanics.Cast wraps the cast, which
+    # is still read as "casts X"; "Cast" is in NOT_ACTIONS).
+    code = re.sub(r"RaidBossMechanics\.Spawn\([^;]*\);", "", code)
     parts = []
     for name in re.findall(r"ECSTimerCallback\s*\(\s*(\w+)\s*\)", code):
         parts.append(f"starts timer {name}")
