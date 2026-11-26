@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -367,3 +368,69 @@ class PrereleaseTests(unittest.TestCase):
             out = Path(d) / "notes.md"
             self.assertEqual(pr.run(["notes", "--prerelease", "--tag", self.TAG, "--zip", str(path), "--out", str(out)]), 0)
             self.assertIn(sha(b"zip"), out.read_text(encoding="utf-8"))
+
+
+class CheckJobsTests(unittest.TestCase):
+    """Issue #623: publish-release refuses a run where any required job did not succeed."""
+
+    @staticmethod
+    def jobs(**overrides):
+        names = list(pr.REQUIRED_JOBS) + ["candidate-install", "report: chat audit"]
+        rows = [{"name": n, "status": "completed", "conclusion": overrides.get(n, "success")} for n in names]
+        return {"total_count": len(rows), "jobs": [r for r in rows if r["conclusion"] != "absent"]}
+
+    def test_all_required_jobs_green_passes(self):
+        checked = pr.check_jobs(self.jobs(**{"report: chat audit": "failure"}))
+        self.assertEqual([n for n, _ in checked], list(pr.REQUIRED_JOBS))
+
+    def test_a_failed_required_job_is_refused(self):
+        with self.assertRaisesRegex(pr.Stop, r"launcher: failure"):
+            pr.check_jobs(self.jobs(launcher="failure"))
+
+    def test_a_skipped_or_cancelled_required_job_is_refused(self):
+        with self.assertRaisesRegex(pr.Stop, r"new-client: skipped.*versions: cancelled"):
+            pr.check_jobs(self.jobs(**{"new-client": "skipped", "versions": "cancelled"}))
+
+    def test_a_missing_required_job_is_refused(self):
+        data = self.jobs(server="absent")
+        data["total_count"] = len(data["jobs"])
+        with self.assertRaisesRegex(pr.Stop, r"server: not in the run"):
+            pr.check_jobs(data)
+
+    def test_an_unfinished_job_is_refused(self):
+        data = self.jobs()
+        data["jobs"][0].update(status="in_progress", conclusion=None)
+        with self.assertRaisesRegex(pr.Stop, r"server: in_progress"):
+            pr.check_jobs(data)
+
+    def test_a_truncated_job_list_is_refused(self):
+        data = self.jobs()
+        data["total_count"] = 150
+        with self.assertRaisesRegex(pr.Stop, r"only 7 were listed"):
+            pr.check_jobs(data)
+
+    def test_the_command_line_exits_1_and_says_nothing_was_published(self):
+        import contextlib
+        import io
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "jobs.json"
+            path.write_text(json.dumps(self.jobs(**{"encounter-catalog": "failure"})))
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                code = pr.run(["check-jobs", "--jobs", str(path)])
+        self.assertEqual(code, 1)
+        self.assertIn("encounter-catalog: failure", out.getvalue())
+
+    def test_required_jobs_are_build_and_test_jobs_with_their_own_names(self):
+        text = (Path(__file__).resolve().parents[3] / ".github/workflows/build-and-test.yml").read_text(encoding="utf-8")
+        for name in pr.REQUIRED_JOBS:
+            m = re.search(rf"(?m)^  {re.escape(name)}:\n((?:    .*\n|\n)*)", text)
+            self.assertIsNotNone(m, f"{name} is not a build-and-test job")
+            # A `name:` on the job would change the name the jobs API reports.
+            self.assertNotRegex(m.group(1), r"(?m)^    name:", f"{name} has its own display name")
+
+    def test_the_workflow_checks_the_jobs_before_downloading_the_package(self):
+        text = (Path(__file__).resolve().parents[3] / ".github/workflows/publish-release.yml").read_text(encoding="utf-8")
+        check = text.index("publish_release.py check-jobs")
+        self.assertLess(text.index("- name: The run to publish from"), check)
+        self.assertLess(check, text.index("- name: Download the run's package"))
+        self.assertIn("jobs?filter=latest&per_page=100", text)
