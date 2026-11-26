@@ -84,6 +84,10 @@ public class UT_BotHealTriage567
             Assert.That(T.Applies(true, true, false), Is.False, "a realm raid or warband: its own healer rules");
             Assert.That(T.Applies(true, false, true), Is.False, "a boss with a tactic");
             Assert.That(T.Applies(false, false, false), Is.False, "the setting off");
+            Assert.That(T.IsBossTarget(null), Is.False);
+            Assert.That(T.PicksApply(true, false), Is.True, "an ordinary patient");
+            Assert.That(T.PicksApply(true, true), Is.False, "a displaced or marked raider keeps the heal it got before");
+            Assert.That(T.PicksApply(false, false), Is.False);
         });
     }
 
@@ -152,16 +156,20 @@ public class UT_BotHealTriage567
         {
             Assert.That(heals, Does.Contain("bool raidSupport = AutonomousRealmRaid.HasSharedSupport(BotBody);"));
             Assert.That(heals, Does.Contain("bool periodRules = BotHealTriage165.Applies(BotHealTriage165.On, raidSupport,"), "raid gate");
-            Assert.That(heals, Does.Contain("EpicEncounterTactics.For(healerTarget) != null"), "boss gate");
+            Assert.That(heals, Does.Contain("BotHealTriage165.IsBossTarget(AssistedPlayer?.TargetObject)"), "boss gate: the assisted player's target");
+            Assert.That(heals, Does.Contain("BotHealTriage165.IsBossTarget(Body.Group?.LivingLeader?.TargetObject)"), "and the leader's");
+            Assert.That(heals, Does.Contain("BotHealTriage165.PicksApply(periodRules, displacedPatient != null || markedPatient != null)"),
+                "a boss mechanic's patient keeps its heal");
+            Assert.That(heals, Does.Contain("bool groupHealOk = !periodPicks ||"), "B5 follows the picks gate");
+            Assert.That(heals, Does.Contain("spellToCast == null && periodPicks && numEmergency == 0"), "B4 follows the picks gate");
             Assert.That(heals, Does.Contain("if (raidSupport)"), "the raid patient uses the same value");
             Assert.That(heals, Does.Contain("!EpicEncounterTactics.GreenKnightHoldsHeal(BotBody, tank) &&"), "the Green Knight hold before B4");
             Assert.That(heals, Does.Not.Contain(".OrderBy(member => member.HealthPercent)"), "B4 walks the group once");
             Assert.That(heals, Does.Contain("else if (IsHealer && triage < healerNeedAt)"), "B1");
             Assert.That(heals, Does.Contain("triage < TriageHealth(spellTarget)"), "B2");
-            Assert.That(heals, Does.Contain("BotHealTriage165.NonEmergencyPick(periodRules, numEmergency,"), "B3");
+            Assert.That(heals, Does.Contain("BotHealTriage165.NonEmergencyPick(periodPicks, numEmergency,"), "B3");
             Assert.That(heals, Does.Contain("BotHealTriage165.PreHotTank("), "B4");
             Assert.That(heals, Does.Contain("BotHealTriage165.EmergencyPick(canCastInstantHeal, canCastInstantGroupHeal, isCastingHeal,"), "B5");
-            Assert.That(heals, Does.Contain("bool groupHealOk = !periodRules ||"), "off: the group heal as before");
         });
     }
 }

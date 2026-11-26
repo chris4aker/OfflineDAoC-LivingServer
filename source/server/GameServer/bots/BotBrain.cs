@@ -5761,8 +5761,11 @@ namespace DOL.AI.Brain
             // #567 B1-B5 (bot_healer_period_rules, on by default): the 1.65 healer (BotHealTriage165). Off: the rules before.
             // Never in a raid or a warband (shared support) or against a boss with a tactic: those keep their own rules.
             bool raidSupport = AutonomousRealmRaid.HasSharedSupport(BotBody);
-            bool periodRules = BotHealTriage165.Applies(BotHealTriage165.On, raidSupport,
-                Body.TargetObject is GameNPC healerTarget && EpicEncounterTactics.For(healerTarget) != null);
+            // A boss fight holds steady from think to think: the healer's, the assisted player's or the party leader's target.
+            bool bossFight = BotHealTriage165.IsBossTarget(Body.TargetObject) ||
+                BotHealTriage165.IsBossTarget(AssistedPlayer?.TargetObject) ||
+                BotHealTriage165.IsBossTarget(Body.Group?.LivingLeader?.TargetObject);
+            bool periodRules = BotHealTriage165.Applies(BotHealTriage165.On, raidSupport, bossFight);
             // B4's tank: the most hurt living tank in reach, found in the group walk below (no second walk, no allocation).
             GameLiving preHotTank = null;
             int healerNeedAt = BotHealTriage165.HealerNeedAt(periodRules);
@@ -6035,7 +6038,9 @@ namespace DOL.AI.Brain
                 _healFightStart = 0;
             else if (_healFightStart == 0)
                 _healFightStart = healNow;
-            bool groupHealOk = !periodRules ||
+            // A patient a boss mechanic chose (displaced or marked) is healed by the rules before B3-B5.
+            bool periodPicks = BotHealTriage165.PicksApply(periodRules, displacedPatient != null || markedPatient != null);
+            bool groupHealOk = !periodPicks ||
                 BotHealTriage165.GroupHealWorthwhile(numNeedHealing, partyInFight, partyInFight ? healNow - _healFightStart : 0);
 
             if (spellToCast == null && numEmergency > 0)
@@ -6143,14 +6148,14 @@ namespace DOL.AI.Brain
                     bool bigWorthIt = bigReady && spellTarget != null &&
                         (spellTarget.MaxHealth - spellTarget.Health) >= GameBot.HealAmount(BotBody.HealBig, spellTarget);
                     // B3: outside an emergency the small (efficient) heal before the big one (BotHealTriage165.NonEmergencyPick).
-                    spellToCast = HealSpellFor(BotHealTriage165.NonEmergencyPick(periodRules, numEmergency, hotReady, efficientReady,
+                    spellToCast = HealSpellFor(BotHealTriage165.NonEmergencyPick(periodPicks, numEmergency, hotReady, efficientReady,
                         bigWorthIt, !hotReady && !efficientReady && !bigWorthIt && CheckHealSpell(BotBody.HealGroup), groupHealOk));
                 }
             }
 
             // B4: a heal over time on the tank as a fight wears it down (below 90%, before it needs a heal), never moving
             // or stopping the healer: the tank already in range, a cast-time one only on a healer standing free.
-            if (spellToCast == null && periodRules && numEmergency == 0 && partyInFight && !BotBody.IsCasting &&
+            if (spellToCast == null && periodPicks && numEmergency == 0 && partyInFight && !BotBody.IsCasting &&
                 BotBody.HealOverTime is Spell preHot && CheckHealSpell(preHot) &&
                 BotHealTriage165.PreHotHealerFree(preHot.IsInstantCast, Body.IsAttacking, Body.IsMoving))
             {

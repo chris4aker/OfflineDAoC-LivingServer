@@ -49,6 +49,14 @@ namespace DOL.GS
         /// support) and not targeting a boss with a tactic (owner 2026-11-26: "stay out of raids and boss fights"). Pure.</summary>
         public static bool Applies(bool on, bool raidSupport, bool bossFight) => on && !raidSupport && !bossFight;
 
+        /// <summary>A boss with a tactic (EpicEncounterTactics). CheckHeals asks it of the healer's, the assisted player's and
+        /// the party leader's targets, so the gate holds steady while the healer's own target moves between patients.</summary>
+        public static bool IsBossTarget(GameObject target) => target is GameNPC npc && EpicEncounterTactics.For(npc) != null;
+
+        /// <summary>Whether B3-B5's picks apply: the rules apply and no boss mechanic chose this patient (a displaced or a
+        /// marked raider keeps the heal it got before the rules). Pure.</summary>
+        public static bool PicksApply(bool periodRules, bool mechanicPatient) => periodRules && !mechanicPatient;
+
         /// <summary>A heal CheckHeals may pick (BotBrain.HealSpellFor names the spell).</summary>
         public enum HealPick { None, Instant, InstantGroup, OverTime, Efficient, Big, Group }
 
