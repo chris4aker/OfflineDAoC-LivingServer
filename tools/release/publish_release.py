@@ -131,7 +131,7 @@ def asset_url(repo, tag, name):
 
 
 def github_digest(sha):
-    return f"sha256:{sha}"
+    return f"SHA-256:{sha}"
 
 
 def sha256_file(path):
