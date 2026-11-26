@@ -127,6 +127,7 @@
   "population_newcomers": "True",
   "population_retire": "True",
   "raid_learns_from_raiders": "True",
+  "bot_bard_fills_healer_slot": "True",
   "realm_commissions": "doubled",
   "realm_raid_frontier_raid_post": "True",
   "realm_raid_hold_epic_respawn": "True",

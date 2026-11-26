@@ -147,6 +147,9 @@ public static partial class AutonomousBotGroupCoordinator
             };
             foreach ((long key, BotPveGroupRole role) in RolesForHandBack(bots, leader))
                 session.PveRoles[key] = role;
+            // #567 B7: a Bard in a Healer role heals for the party, unless the player is its healer.
+            if (session.PlayerRole != BotPveGroupRole.Healer)
+                BardHealerSlot.Mark(session.Id, group, bots, session.PveRoles, MemberKey, Log);
             if (!HasViablePveComposition(session, bots))
             {
                 refusal = "no_core_roster";
