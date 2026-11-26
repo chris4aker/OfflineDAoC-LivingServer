@@ -377,7 +377,7 @@ namespace DOL.GS
                 return false;
             if (Refuse(player, [spell.SpellType], $"right-click cancel of {spell.Name}").Count == 0)
                 return false;
-            player.Out?.SendMessage(CancelledLine(spell.Name, ShortNameOf(spell.SpellType)), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+            player.Client?.Out?.SendMessage(CancelledLine(spell.Name, ShortNameOf(spell.SpellType)), eChatType.CT_System, eChatLoc.CL_SystemWindow);
             return true;
         }
 
