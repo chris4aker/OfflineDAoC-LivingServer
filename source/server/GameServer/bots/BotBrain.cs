@@ -2299,6 +2299,8 @@ namespace DOL.AI.Brain
 
             bool autonomousPetUpkeep = bot.CharacterClass != null &&
                 AutonomousPetSupport.OwnsPetUpkeep((eCharacterClass)bot.CharacterClass.ID);
+            // #567 A1: an autonomous party walking (or just stopped) holds the buffs the formation follow would refuse.
+            bool partyTravelHold = HoldsUpkeepForGroupTravel();
             List<Spell> known = (bot.MiscSpells ?? [])
                 .Concat(bot.InstantMiscSpells ?? [])
                 .Where(spell => spell != null && !spell.IsHarmful && spell.Level <= bot.Level &&
@@ -2308,11 +2310,15 @@ namespace DOL.AI.Brain
                                 (spell.Target is not (eSpellTarget.PET or eSpellTarget.CONTROLLED) ||
                                  AutonomousPetSupport.ShouldMaintainRoutinePetBuff(spell, false)) &&
                                 (!waitingForLeader || CompanionFollowPolicy.CanStopForNativeTravelSpeed(bot, spell)) &&
+                                (!partyTravelHold || !CompanionFollowPolicy.IsOrdinaryBuff(bot, spell)) &&
                                 !BotSongTwistPolicy.IsReservedPulse(bot, spell))
                 .DistinctBy(spell => spell.ID)
                 .ToList();
             if (known.Count == 0)
             {
+                // #567 A1: a held pass with nothing left looks again in a second, not on every think.
+                if (partyTravelHold)
+                    _nextMaintenanceBuffTick = GameLoop.GameLoopTime + BotTravelCastHold.HeldRecheckMilliseconds;
                 CompleteCompanionPerformerBuffBatch(bot);
                 return false;
             }
@@ -2408,15 +2414,15 @@ namespace DOL.AI.Brain
 
             // Nothing castable from here, but a group member out of range still needs
             // a buff: walk toward them (not while following a moving leader).
-            if (outOfRangeBuffTarget != null && !waitingForLeader && ApproachSupportTarget(outOfRangeBuffTarget))
+            if (outOfRangeBuffTarget != null && !waitingForLeader && !partyTravelHold && ApproachSupportTarget(outOfRangeBuffTarget))
             {
                 _nextMaintenanceBuffTick = GameLoop.GameLoopTime + 1_000;
                 return true;
             }
 
             // A complete scan found nothing missing. Avoid rescanning the whole
-            // spellbook on every lightweight AI tick.
-            _nextMaintenanceBuffTick = GameLoop.GameLoopTime + 8_000;
+            // spellbook on every lightweight AI tick (held: again within a second, #567 A1).
+            _nextMaintenanceBuffTick = GameLoop.GameLoopTime + BotTravelCastHold.NextScanAfter(partyTravelHold, 8_000);
             CompleteCompanionPerformerBuffBatch(bot);
             return false;
         }
