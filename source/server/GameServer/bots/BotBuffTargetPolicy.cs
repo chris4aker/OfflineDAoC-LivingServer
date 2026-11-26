@@ -47,7 +47,8 @@ namespace DOL.GS
 
         /// <summary>
         /// Whether a buff of this type does anything for this target. Pets never get endurance or power regen (they don't use
-        /// either the way characters do) or acuity (a pet's spells read its intelligence, which acuity doesn't raise). A
+        /// either the way characters do), fatigue buffs (#567 A2: StyleProcessor charges style endurance only to players and
+        /// bots) or acuity (a pet's spells read its intelligence, which acuity doesn't raise). A
         /// character with no power gets no power regen; acuity goes only to list casters. Everything else is allowed. Pure.
         /// </summary>
         public static bool Benefits(eSpellType type, TargetKind kind, eCharacterClass characterClass = eCharacterClass.Unknown,
@@ -56,7 +57,8 @@ namespace DOL.GS
             switch (kind)
             {
                 case TargetKind.Pet:
-                    return type is not (eSpellType.EnduranceRegenBuff or eSpellType.PowerRegenBuff or eSpellType.AcuityBuff);
+                    return type is not (eSpellType.EnduranceRegenBuff or eSpellType.PowerRegenBuff or eSpellType.AcuityBuff or
+                        eSpellType.FatigueConsumptionBuff);
                 case TargetKind.Character:
                     return type switch
                     {
