@@ -33,8 +33,9 @@ public readonly record struct RvrSightDecision(RvrSightCall Call, double Odds, d
 /// #662 (owner decision 2026-11-26): a solo or duo autonomous gamebot sizes up a fight when the enemies come into its
 /// perception range, in the frontier and the battlegrounds (keep assaults included), and either opens or backs off. The
 /// odds weigh both sides by head count (a main healer counts twice) and level. Boldness (personality) moves the line: a
-/// Daredevil takes worse odds, a careful bot wants better. A casual bot sometimes makes a mild bad call: a misread can flip
-/// only a close call. No solo bot ever opens on <see cref="SoloNeverOpensOn"/> or more enemies, whatever the roll. A bot
+/// bolder bot takes worse odds; nobody needs better than even odds, so every bot takes a fair fight. A casual bot sometimes
+/// makes a mild bad call: a misread opens on odds a little short of its line, never far short, and never makes it pass up a
+/// fight its line takes. No solo bot ever opens on <see cref="SoloNeverOpensOn"/> or more enemies, whatever the roll. A bot
 /// that is attacked always fights back. Period reading: docs/RVR-FIELD-1.2.md, "Soloers and stealthers". Pure.
 /// </summary>
 public static class RvrSightSizeUp
@@ -52,7 +53,8 @@ public static class RvrSightSizeUp
     /// <summary>The boldness that takes even odds: a middling Risk trait (AutonomousRvrPerception.Boldness gives an ordinary
     /// bot Risk/9 x 0.8, so Risk 4-5 is about 0.4; a bot with no personality is 0.5).</summary>
     public const double BoldnessAnchor = 0.4;
-    /// <summary>How far the line moves per unit of boldness: the most careful (0) needs 1.24, a Daredevil (1.0) takes 0.64.</summary>
+    /// <summary>How far the line falls per unit of boldness above <see cref="BoldnessAnchor"/>: a Daredevil (1.0) takes 0.64.
+    /// Below the anchor the line stays at even odds.</summary>
     public const double BoldnessSlope = 0.6;
     /// <summary>A misread flips only a call this close to the line ("a mild bad call").</summary>
     public const double MistakeBand = 0.2;
@@ -84,9 +86,10 @@ public static class RvrSightSizeUp
     /// fresh one walks away and calls friends; a repeat while waiting just extends the wait). Pure.</summary>
     public static (long Until, bool Fresh) Rearm(long now, long holdUntil) => (now + WaitMilliseconds, holdUntil <= now);
 
-    /// <summary>The line the odds must reach, by boldness (0 to 1; 0.5 when the bot has no personality). Bolder: lower.</summary>
+    /// <summary>The line the odds must reach, by boldness (0 to 1; 0.5 when the bot has no personality). Bolder: lower;
+    /// never above even odds.</summary>
     public static double LineFor(double boldness) =>
-        EvenLine - (Math.Clamp(boldness, 0, 1) - BoldnessAnchor) * BoldnessSlope;
+        EvenLine - Math.Max(0, Math.Clamp(boldness, 0, 1) - BoldnessAnchor) * BoldnessSlope;
 
     /// <summary>Strength of one side: heads (a main healer twice) weighted by level against the other side's level.</summary>
     public static double Strength(int heads, int healers, int level, int otherLevel) =>
@@ -119,9 +122,9 @@ public static class RvrSightSizeUp
         if (fighters <= 1 && facts.Enemies >= SoloNeverOpensOn)
             return new(RvrSightCall.BackOff, odds, line, false, "solo_outnumbered");
         bool read = odds >= line;
-        bool close = Math.Abs(odds - line) <= MistakeBand;
-        bool mistake = close && roll < RvrSoloEngage.MistakeChance(tier);
-        bool engage = mistake ? !read : read;
+        // The bad call is the one in the report: opening on odds a little short of the line. Never far short.
+        bool mistake = !read && line - odds <= MistakeBand && roll < RvrSoloEngage.MistakeChance(tier);
+        bool engage = read || mistake;
         return new(engage ? RvrSightCall.Engage : RvrSightCall.BackOff, odds, line, mistake,
             mistake ? "misread" : read ? "odds" : "outmatched");
     }

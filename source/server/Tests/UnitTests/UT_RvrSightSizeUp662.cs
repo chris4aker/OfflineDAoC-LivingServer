@@ -79,8 +79,9 @@ public class UT_RvrSightSizeUp662
         RvrSightFacts upHill = Fight(30, 1, 1, 33); // a 1v1 three levels up: odds about 0.79
         Assert.Multiple(() =>
         {
-            Assert.That(S.LineFor(1.0), Is.LessThan(S.LineFor(0.4)), "bolder: a lower line");
-            Assert.That(S.LineFor(0), Is.GreaterThan(S.LineFor(0.4)));
+            Assert.That(S.LineFor(1.0), Is.LessThan(S.LineFor(0.5)), "bolder: a lower line");
+            Assert.That(S.LineFor(0.5), Is.LessThan(S.LineFor(0.4)));
+            Assert.That(S.LineFor(0), Is.EqualTo(S.EvenLine), "nobody needs better than even odds: every bot takes a fair fight");
             Assert.That(S.LineFor(S.BoldnessAnchor), Is.EqualTo(S.EvenLine), "the middle takes even odds");
             Assert.That(S.Decide(upHill, 1.0, RvrSkillTier.Veteran, 0.99).Call, Is.EqualTo(RvrSightCall.Engage), "a Daredevil goes");
             Assert.That(S.Decide(upHill, 0.0, RvrSkillTier.Veteran, 0.99).Call, Is.EqualTo(RvrSightCall.BackOff), "a careful bot doesn't");
@@ -98,6 +99,10 @@ public class UT_RvrSightSizeUp662
             Assert.That((misread.Call, misread.Mistake), Is.EqualTo((RvrSightCall.Engage, true)), "a casual bot sometimes takes a close one");
             Assert.That(S.Decide(close, 0.4, RvrSkillTier.Casual, 0.5).Call, Is.EqualTo(RvrSightCall.BackOff), "but mostly reads it");
             Assert.That(S.Decide(close, 0.4, RvrSkillTier.Veteran, 0.05).Call, Is.EqualTo(RvrSightCall.BackOff), "a veteran misreads less");
+            foreach (RvrSkillTier tier in Tiers)
+                foreach (double roll in Rolls)
+                    Assert.That(S.Decide(Fight(30, 1, 1, 30), 0, tier, roll).Call, Is.EqualTo(RvrSightCall.Engage),
+                        $"a misread never makes a bot pass up a fair fight: {tier} {roll}");
             foreach (RvrSkillTier tier in Tiers)
                 foreach (double roll in Rolls)
                     Assert.That(S.Decide(far, 0.4, tier, roll).Call, Is.EqualTo(RvrSightCall.BackOff), $"never far off: {tier} {roll}");
