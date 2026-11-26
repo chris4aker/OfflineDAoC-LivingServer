@@ -76,6 +76,19 @@ jobs:
           echo "## Navmesh set navmesh-$VERSION ($([ "$DRY_RUN" = "true" ] && echo 'dry run' || echo 'publish'))" >> "$GITHUB_STEP_SUMMARY"
           date -u +%s > "$RUNNER_TEMP/start"
 
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      # Before Setup runs: after the fresh install, NuGet's restore failed at once with no error logged (MSB4181, in Git
+      # Bash and in PowerShell; dry runs of #694), while the same build passes on a clean runner.
+      - name: Build the server tests
+        shell: pwsh
+        run: |
+          Copy-Item source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
+          dotnet build source/server/Tests/Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
       # A green main push run of build-and-test made Candidate-Setup: the Setup exe with that build's package, the same
       # one its candidate-install job installed.
       - name: The Setup of a green main build
@@ -164,19 +177,6 @@ jobs:
           python tools/navmesh/clean_world.py verify 'D:\nmset\ci\set\world\opendaoc.sqlite3.db' | tee "$RUNNER_TEMP/verify.txt"
           { echo "- Packed world checked clean again:"; grep -v '^{\|^ \|^}' "$RUNNER_TEMP/verify.txt" | sed 's/^/  - /'; } >> "$GITHUB_STEP_SUMMARY"
           python -c "import json,sys; m=json.load(open(sys.argv[1])); print('manifest:', len(m['files']), 'files,', m['total_bytes'], 'bytes,', len(m['parts']), 'parts; world', m['world']['bytes'], 'bytes', m['world']['sha256'])" "$up\\navmesh-manifest.json" | tee -a "$GITHUB_STEP_SUMMARY"
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-
-      # PowerShell, as build-and-test's server job builds: from Git Bash the restore fails at once with no error logged
-      # (MSB4181, first dry run of #694).
-      - name: Build the server tests
-        shell: pwsh
-        run: |
-          Copy-Item source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
-          dotnet build source/server/Tests/Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
-          if ($LASTEXITCODE -ne 0) { exit 1 }
 
       # The navmesh job's own steps on the set just made (its world as a copy at ../data beside the meshes).
       - name: Run the navmesh tests on the set
