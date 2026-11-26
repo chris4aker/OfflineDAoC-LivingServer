@@ -153,11 +153,7 @@ public sealed class RealmRaidDragonFight
         landed && regroupMilliseconds >= RegroupMinimumMilliseconds && staged >= RegroupNeeded(roster, regroupMilliseconds);
 
     /// <summary>The raid goes in from its staging ring (the start): everyone staged is in the attempt.</summary>
-    public void Engage(IEnumerable<long> staged, Dragon dragon, long now)
-    {
-        BeginAttempt(staged, dragon, now);
-        LastGatherMilliseconds = -1;
-    }
+    public void Engage(IEnumerable<long> staged, Dragon dragon, long now) => BeginAttempt(staged, dragon, now);
 
     /// <summary>The next wipe the raid has not reacted to yet (the realm's notice, the Special Forces).</summary>
     public bool TryTakeWipe(out int failures) => TryTakeWipe(out failures, out _, out _);
