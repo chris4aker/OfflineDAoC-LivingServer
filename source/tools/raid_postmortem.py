@@ -4,6 +4,7 @@
     python source/tools/raid_postmortem.py dungeon-albion-krondon.3 runtime/server/logs
     python source/tools/raid_postmortem.py dragon-albion.2 server.log detail.log --run 2 --out krondon-3.md
     python source/tools/raid_postmortem.py --list runtime/server/logs
+    python source/tools/raid_postmortem.py --check raid-sim/raid-sims.raid.log
 
 Reads the logs as living_report.py does (files, or folders with server.log, detail.log and their rotated copies). For the
 attempt it prints, as markdown:
@@ -22,7 +23,11 @@ attempt it prints, as markdown:
 
 The attempt id's count starts again at 1 when the server restarts, so one id can be two pulls in a log set: --list shows
 them, and --run picks one (default: the last). No raider names: the rows carry none. Local logs only.
-Exit codes: 0 printed, 1 the attempt is not in the logs, 2 bad arguments.
+
+--check reads the logs as a row check (the server job runs it on the rows the raid sims write, #644 part 6): every raid row
+has the server's fields in order, every attempt has its pull, a simulated one (build=sim) its end, the RAID_DEATH rows are
+the end's deaths= and died + left is fallen. It lists the attempts and exits 1 on any problem (or when there is no attempt).
+Exit codes: 0 printed (or checked clean), 1 the attempt is not in the logs (or --check found a problem), 2 bad arguments.
 """
 from __future__ import annotations
 
@@ -36,7 +41,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import living_report as lr  # noqa: E402
-from living_report_sections._raid import ROWS, attempts, count, killer_of, split  # noqa: E402
+from living_report_sections._raid import ROWS, attempts, check, count, killer_of, split  # noqa: E402
 from living_report_sections._util import fields, message, stamp, table, tag  # noqa: E402
 
 BUCKET_S = 15
@@ -277,10 +282,12 @@ def main(argv=None) -> int:
     ap.add_argument("paths", nargs="+", metavar="ATTEMPT LOGS",
                     help="the attempt id (e.g. dungeon-albion-krondon.3; none with --list), then log files or folders")
     ap.add_argument("--list", action="store_true", help="list the attempts in the logs")
+    ap.add_argument("--check", action="store_true", help="check the raid rows (fields, pull, end, death counts); exit 1 on a problem")
     ap.add_argument("--run", type=int, help="which pull of an id seen more than once (1, 2, ...; default the last)")
     ap.add_argument("--out", type=Path, help="write the markdown here instead of printing it")
+    ap.add_argument("--github", action="store_true", help="with --check: problems as GitHub ::error lines")
     args = ap.parse_args(argv)
-    if args.list:
+    if args.list or args.check:
         args.attempt, logs = None, args.paths
     else:
         args.attempt, logs = args.paths[0], args.paths[1:]
@@ -294,6 +301,15 @@ def main(argv=None) -> int:
         return 2
     lines = read(files)
     found = attempts(lines)
+    if args.check:
+        problems = check(lines)
+        if not found:
+            problems.append("no raid attempt in these logs")
+        print(listing(found), end="")
+        for p in problems:
+            print(f"::error title=Raid rows::{p}" if args.github else f"problem: {p}")
+        print(f"{len(found)} attempts, {len(problems)} problems.")
+        return 1 if problems else 0
     if args.list:
         text = listing(found)
     else:

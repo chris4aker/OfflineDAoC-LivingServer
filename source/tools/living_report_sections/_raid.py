@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from living_report_sections._util import fields, stamp, tag
+from living_report_sections._util import FIELD, fields, message, stamp, tag
 
 ROWS = ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH", "RAID_FIGHT_SAMPLE", "RAID_MECHANIC_FIRE", "RAID_THREAT",
         "RAID_ROLE_TOTALS"]
@@ -179,3 +179,67 @@ def killer_of(death: dict) -> str:
 def mechanics_of(death: dict) -> list[str]:
     value = death.get("mechanic", "-")
     return [] if not value or value == "-" else [m for m in value.split("+") if m]
+
+
+# The fields of each row, in the order the server's Format* functions write them (docs/RAID-ATTEMPT-ROWS.md). The tests hold
+# them to the rows the C# tests pin, so a change to a row fails there. RAID_ATTEMPT may end with its optional fields.
+KEYS = {
+    "RAID_ATTEMPT": ["attempt", "event", "kind", "region", "boss", "n", "size", "period", "sizePct", "sf", "roles", "classes",
+                     "players", "build"],
+    "RAID_ATTEMPT_END": ["attempt", "outcome", "secs", "engaged", "fallen", "died", "left", "deaths", "health", "lowest"],
+    "RAID_DEATH": ["attempt", "t", "idx", "kind", "player", "class", "role", "level", "killerKind", "killer", "source", "spellId",
+                   "mechanic", "dist", "healersIn", "attackers"],
+    "RAID_FIGHT_SAMPLE": ["attempt", "t", "bossPct", "phase", "adds", "alive", "engaged", "healerPow", "healersLow", "onTank",
+                          "tgtKind", "medDist", "mezzed", "stunned"],
+    "RAID_MECHANIC_FIRE": ["attempt", "boss", "mechanic", "t", "radius", "exposedAtCall", "within", "hit", "died", "avoided",
+                           "called", "leadMs", "reactMedianMs", "damage"],
+    "RAID_THREAT": ["attempt", "boss", "t", "from", "to", "toKind", "why", "heldMs"],
+    "RAID_ROLE_TOTALS": ["attempt", "role", "raiders", "dealtBoss", "dealtAdds", "took", "healed", "overheal", "deaths", "cc",
+                         "interrupts", "powerOuts", "classes"],
+}
+OPTIONAL = {"RAID_ATTEMPT": ["prev", "wipeToPullS", "gatherS"]}
+
+
+def keys_problem(kind: str, keys: list[str]) -> str | None:
+    """Why a row's field names are not its row's (None when they are): KEYS in order, then only its optional fields."""
+    want = KEYS.get(kind)
+    if want is None:
+        return None
+    if keys[:len(want)] != want:
+        return f"fields {' '.join(keys)}; the server writes {' '.join(want)}"
+    rest = keys[len(want):]
+    optional = OPTIONAL.get(kind, [])
+    if any(k not in optional for k in rest) or rest != [k for k in optional if k in rest]:
+        return f"extra fields {' '.join(rest)}"
+    return None
+
+
+def check(lines) -> list[str]:
+    """Problems with the raid rows of a log (raid_postmortem.py --check; the server job reads the sims' rows with it): every
+    row has its row's fields in order, every attempt has a pull and an end, its RAID_DEATH rows are the end's deaths= and
+    died + left is fallen. An attempt still open when the log stops is no problem in a server log, so only the sims' attempts
+    (build=sim) must have their end."""
+    problems = []
+    for line in lines:
+        kind = tag(line)
+        if kind in KEYS:
+            rest = message(line).split(" ", 1)
+            names = [m.group(1) for m in FIELD.finditer(rest[1] if len(rest) == 2 else "")]
+            why = keys_problem(kind, names)
+            if why:
+                problems.append(f"{kind} {stamp(line)}: {why}")
+    for a in attempts(lines):
+        sim = a.pull.get("build") == "sim"
+        if not a.pull:
+            problems.append(f"{a.key}: rows but no RAID_ATTEMPT")
+        if a.end is None:
+            if sim:
+                problems.append(f"{a.key}: no RAID_ATTEMPT_END")
+            continue
+        deaths = count(a.end.get("deaths"))
+        if deaths is not None and deaths != len(a.deaths):
+            problems.append(f"{a.key}: deaths={deaths} but {len(a.deaths)} RAID_DEATH rows")
+        died, left, fallen = (count(a.end.get(k)) for k in ("died", "left", "fallen"))
+        if None not in (died, left, fallen) and died + left != fallen:
+            problems.append(f"{a.key}: died {died} + left {left} is not fallen {fallen}")
+    return problems

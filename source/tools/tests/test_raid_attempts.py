@@ -480,5 +480,69 @@ class MechanicPostmortemTests(unittest.TestCase):
         self.assertNotIn("`RAID_MECHANIC_FIRE", out, "in the timeline, not repeated under other rows")
 
 
+S = "summoners-albion.1"
+SIM = [
+    at("00:00:00") + (f"RAID_ATTEMPT attempt={S} event=summoners-albion kind=dungeon region=248 boss=\"Summoner Roesia\" n=1 "
+                      "size=16 period=64 sizePct=25 sf=0 roles=2:4:0:10 classes=Mercenary:6,Wizard:4,Armsman:2,Cleric:4 players=0 build=sim"),
+    at("00:00:00") + f"RAID_THREAT attempt={S} boss=\"Summoner Roesia\" t=0 from=none to=tank toKind=gamebot why=threat heldMs=0",
+    at("00:00:00") + (f"RAID_FIGHT_SAMPLE attempt={S} t=0 bossPct=100 phase=- adds=- alive=2:4:0:10 engaged=2:4:0:10 healerPow=- "
+                      "healersLow=0 onTank=1 tgtKind=tank medDist=- mezzed=0 stunned=0"),
+    at("00:00:50") + (f"RAID_DEATH attempt={S} t=50 idx=7 kind=gamebot player=0 class=Cleric role=healer level=50 killerKind=boss "
+                      "killer=\"Summoner Roesia\" source=dot spellId=11756 mechanic=- dist=- healersIn=3 attackers=0"),
+    at("00:01:30") + f"RAID_ATTEMPT_END attempt={S} outcome=wipe secs=90 engaged=16 fallen=1 died=1 left=0 deaths=1 health=80 lowest=80",
+    at("00:01:30") + (f"RAID_ROLE_TOTALS attempt={S} role=tank raiders=2 dealtBoss=300 dealtAdds=0 took=9000 healed=0 overheal=0 "
+                      "deaths=0 cc=0 interrupts=0 powerOuts=0 classes=Armsman:2/300/0"),
+]
+
+
+class CheckTests(unittest.TestCase):
+    """--check (#644 part 6): the server job reads the rows the raid sims write (UT_SimRaidRows644) with it."""
+
+    def test_the_field_lists_are_the_rows_the_csharp_tests_pin(self):
+        pinned = {}
+        for path in (PINS, SAMPLE_PINS, MECHANIC_PINS):
+            text = path.read_text(encoding="utf-8")
+            for m in re.finditer(r'Is\.EqualTo\(("RAID_[A-Z_]+ [^;]+?)\)\);', text):
+                row = "".join(re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))).replace('\\"', '"')
+                pinned[row.split(" ", 1)[0]] = row
+        self.assertEqual(set(pinned) - {"RAID_FUNNEL"}, set(_raid.KEYS))
+        for kind, row in pinned.items():
+            if kind in _raid.KEYS:
+                keys = [m.group(1) for m in re.finditer(r'(\w+)=("([^"]*)"|\S+)', row.split(" ", 1)[1])]
+                self.assertIsNone(_raid.keys_problem(kind, keys), row)
+
+    def test_a_simulated_attempt_checks_clean(self):
+        self.assertEqual(_raid.check(SIM), [])
+        self.assertEqual(_raid.check(NIGHT[:6]), [], "a server attempt passes too")
+        self.assertEqual(_raid.check(NIGHT[-1:]), [], "a server attempt still open when the log stops is no problem")
+
+    def test_problems_are_named(self):
+        self.assertEqual(_raid.check(SIM[:4]), [f"{S}: no RAID_ATTEMPT_END"], "a sim's attempt must end")
+        swapped = SIM[:4] + [SIM[4].replace("deaths=1", "deaths=2")]
+        self.assertEqual(_raid.check(swapped), [f"{S}: deaths=2 but 1 RAID_DEATH rows"])
+        self.assertEqual(_raid.check([SIM[4].replace("left=0", "left=1")])[-1], f"{S}: died 1 + left 1 is not fallen 1")
+        extra = _raid.check([SIM[0] + " junk=1"])
+        self.assertTrue(extra and extra[0].startswith("RAID_ATTEMPT 11/25 00:00:00: extra fields junk"), extra)
+        order = _raid.check([SIM[2].replace("phase=- adds=-", "adds=- phase=-")])
+        self.assertTrue(order and "the server writes" in order[0], order)
+        self.assertIn(f"{S}: rows but no RAID_ATTEMPT", _raid.check(SIM[1:]))
+
+    def test_the_command_exits_one_on_a_problem(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            good, bad = Path(tmp, "good.raid.log"), Path(tmp, "bad.raid.log")
+            good.write_text("\n".join(SIM) + "\n", encoding="utf-8")
+            bad.write_text("\n".join(SIM[:4]) + "\n", encoding="utf-8")
+            code, out, _ = quiet(pm.main, ["--check", str(good)])
+            self.assertEqual(code, 0, out)
+            self.assertIn("1 attempts, 0 problems.", out)
+            self.assertIn(f"| {S} |", out)
+            code, out, _ = quiet(pm.main, ["--check", "--github", str(bad)])
+            self.assertEqual(code, 1)
+            self.assertIn(f"::error title=Raid rows::{S}: no RAID_ATTEMPT_END", out)
+            empty = Path(tmp, "empty.raid.log")
+            empty.write_text("", encoding="utf-8")
+            self.assertEqual(quiet(pm.main, ["--check", str(empty)])[0], 1, "no attempt is a failure, not a pass")
+
+
 if __name__ == "__main__":
     unittest.main()
