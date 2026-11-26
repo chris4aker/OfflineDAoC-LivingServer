@@ -144,6 +144,8 @@ public static class AutonomousObjectiveAssignments
 
     public static bool IsRvrEligible(OfflineWorldBotRecord record, DateTime utcNow)
     {
+        // #669: still file-only. Without a file this is the kept rule "one PvE task after an RvR tour"
+        // (PveCompletionRequired); the pass's targets come from the defaults either way.
         if (AutonomousBotGoalPolicy.IsConfigured)
             return record == null || AutonomousBotGoalPolicy.Settings.ForLevel(record.Level).RvR > 0;
         if (record?.ObjectiveRvrEligibleUtc == PveCompletionRequired) return false;
@@ -291,6 +293,8 @@ public static class AutonomousObjectiveAssignments
             }
             _epoch++;
             Interlocked.Exchange(ref _nextRebalanceTick, nowTick + RebalanceIntervalMilliseconds);
+            // #670: GOAL_PASS rows, on one pass in five minutes (logging only).
+            bool goalPassRows = BotGoalRows.PassDue(nowTick);
             foreach (IGrouping<(eRealm Realm, int Band), GameBot> bucket in roster.GroupBy(bot =>
                          (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0)))
             {
@@ -315,12 +319,10 @@ public static class AutonomousObjectiveAssignments
                     bool useRvr = IsRvrEligible(bot.PersistentRecord, utcNow) && currentRvr < target.RvR;
                     eAutonomousObjectiveKind fallback = useRvr
                         ? eAutonomousObjectiveKind.RvR : eAutonomousObjectiveKind.SoloPve;
-                    if (AutonomousBotGoalPolicy.IsConfigured)
-                    {
-                        var weights = AutonomousBotGoalPolicy.Settings.ForLevel(bot.Level);
-                        if (!weights.Allows((int)fallback))
-                            fallback = AutonomousBotGoalPolicy.Choose(bot.Level, excludeGroup: true);
-                    }
+                    // #669: the shares govern with or without a file (the defaults allow both fallbacks, so a file-less
+                    // world is unchanged here).
+                    if (!AutonomousBotGoalPolicy.Settings.ForLevel(bot.Level).Allows((int)fallback))
+                        fallback = AutonomousBotGoalPolicy.Choose(bot.Level, excludeGroup: true);
                     if (useRvr) currentRvr++;
                     DOL.Logging.LoggerManager.Create(typeof(AutonomousObjectiveAssignments)).Warn(
                         $"AUTONOMOUS_GROUP_MATCHMAKING_TIMEOUT bot=\"{bot.Name}\" id={bot.DatabaseID} " +
@@ -367,6 +369,7 @@ public static class AutonomousObjectiveAssignments
                 GameBot[] pvePool = members.Where(bot => !groupOwned.Contains(bot) && !HasActiveRvrTenure(bot.PersistentRecord, utcNow) &&
                                                          !HasActivePveAssignment(bot.PersistentRecord, utcNow) &&
                                                          !IsRvrEligible(bot.PersistentRecord, utcNow)).ToArray();
+                var held = new Allocation(assignedSolo, assignedGroup, assignedRvr, assignedBattleground);
                 eAutonomousObjectiveKind?[] pvePlan = Plan(pvePool, false);
                 foreach (int i in AutonomousBotPersonality.PlannedFirst(pvePlan))
                 {
@@ -401,6 +404,8 @@ public static class AutonomousObjectiveAssignments
                         kind = eAutonomousObjectiveKind.RvR;
                     else if (TakesBattleground(bot, soloNeeded + groupNeeded))
                         kind = eAutonomousObjectiveKind.Battleground;
+                    // #669: still file-only. A bot over every target of the pass (whose targets already come from the
+                    // defaults without a file) keeps solo/group in the targets' ratio there, as before.
                     else if (AutonomousBotGoalPolicy.IsConfigured && rvrNeeded + soloNeeded + groupNeeded == 0)
                         kind = AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level));
                     else
@@ -414,6 +419,16 @@ public static class AutonomousObjectiveAssignments
                         case eAutonomousObjectiveKind.Battleground: assignedBattleground++; break;
                     }
                     Assign(bot, kind, bucket.Key, _epoch);
+                }
+                if (goalPassRows)
+                {
+                    GameBot[] pool = pvePool.Concat(rvrPool).ToArray();
+                    int Planned(eAutonomousObjectiveKind kind) => pool.Count(bot => Is(bot, kind));
+                    BotGoalRows.EmitPass(BotGoalRows.Pass(nowTick, bucket.Key.Realm, bucket.Key.Band, members.Length, pool.Length,
+                        pool.Count(CanTakeBattleground), target, held,
+                        new Allocation(Planned(eAutonomousObjectiveKind.SoloPve), Planned(eAutonomousObjectiveKind.GroupPve),
+                            Planned(eAutonomousObjectiveKind.RvR), Planned(eAutonomousObjectiveKind.Battleground)),
+                        AutonomousBotPersonality.Enabled));
                 }
                 // #598 C: what this pass left open, for a bot group that finishes its task before the next pass.
                 PublishOpenSlots(bucket.Key, new OpenSlots(Math.Max(0, target.Battlegrounds - assignedBattleground),
@@ -530,9 +545,7 @@ public static class AutonomousObjectiveAssignments
             bot.PersistentRecord.ObjectiveRvrEligibleUtc = AutonomousBotGoalPolicy.IsConfigured ? string.Empty : PveCompletionRequired;
         if (TryBeginBetweenTaskServices(bot))
             return;
-        Assign(bot, AutonomousBotGoalPolicy.IsConfigured ? AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)) :
-            bot.Level >= 50 && !leavingRvr ? RollLevelFiftyObjective() : eAutonomousObjectiveKind.SoloPve,
-            (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
+        Assign(bot, TaskBreakGoal(bot, leavingRvr), (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
         bot.PersistentRecord.CurrentCampId = string.Empty;
         bot.PersistentRecord.TargetName = string.Empty;
         bot.PersistentRecord.TravelDestination = string.Empty;
@@ -545,9 +558,11 @@ public static class AutonomousObjectiveAssignments
     public static void EndBattlegroundTour(GameBot bot, string reason)
     {
         if (bot?.PersistentRecord == null || !Is(bot, eAutonomousObjectiveKind.Battleground)) return;
-        eAutonomousObjectiveKind next = AutonomousBotGoalPolicy.IsConfigured
-            ? AutonomousBotGoalPolicy.Choose(bot.Level, excludeBattlegrounds: true)
-            : eAutonomousObjectiveKind.SoloPve;
+        // #669: the shares without a battleground (untilted, as before), also without a file; a file-less world keeps
+        // its one solo PvE task after an RvR tour.
+        eAutonomousObjectiveKind next = TaskBreakGoal(bot.Level,
+            bot.PersistentRecord.ObjectiveRvrEligibleUtc == PveCompletionRequired,
+            () => AutonomousBotGoalPolicy.Choose(bot.Level, excludeBattlegrounds: true));
         Assign(bot, next, (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
         bot.PersistentRecord.CurrentCampId = bot.PersistentRecord.TargetName = bot.PersistentRecord.TravelDestination = string.Empty;
         bot.PersistentRecord.ObjectivePhase = reason;
@@ -632,13 +647,13 @@ public static class AutonomousObjectiveAssignments
     private static void Assign(GameBot bot, eAutonomousObjectiveKind kind, (eRealm Realm, int Band) bucket, long epoch, bool forcedRaid = false)
     {
         // Recovery and task-boundary callers cannot reintroduce a disabled goal.
-        if (AutonomousBotGoalPolicy.IsConfigured && !forcedRaid)
+        // #669: with or without a file (the defaults then decide what is allowed).
+        if (!forcedRaid)
             kind = AutonomousBotGoalPolicy.EnsureAllowed(bot.Level, kind);
         // No healer free for the queue at this level: solo instead of a 20-minute wait that ends solo anyway (AutonomousGroupSupply).
         if (kind == eAutonomousObjectiveKind.GroupPve && !forcedRaid && !AutonomousGroupSupply.ShouldQueue(bot))
         {
-            eAutonomousObjectiveKind solo = AutonomousBotGoalPolicy.IsConfigured
-                ? AutonomousBotGoalPolicy.EnsureAllowed(bot.Level, eAutonomousObjectiveKind.SoloPve) : eAutonomousObjectiveKind.SoloPve;
+            eAutonomousObjectiveKind solo = AutonomousBotGoalPolicy.EnsureAllowed(bot.Level, eAutonomousObjectiveKind.SoloPve);
             if (solo != eAutonomousObjectiveKind.GroupPve)
             {
                 kind = solo;
@@ -820,8 +835,29 @@ public static class AutonomousObjectiveAssignments
                 $"goal=\"{bot.PersistentRecord.CurrentGoal}\" activity=\"{bot.PersistentRecord.Activity}\" " +
                 $"assignment=\"{bot.PersistentRecord.ObjectiveAssignmentId}\"");
         bool pveRequired = bot.PersistentRecord.ObjectiveRvrEligibleUtc == PveCompletionRequired;
-        Assign(bot, AutonomousBotGoalPolicy.IsConfigured ? AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)) :
-            bot.Level >= 50 && !pveRequired ? RollLevelFiftyObjective() : eAutonomousObjectiveKind.SoloPve,
-            (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
+        Assign(bot, TaskBreakGoal(bot, pveRequired), (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
+    }
+
+    /// <summary>The goal a bot draws when its task break ends: <see cref="TaskBreakGoal(int, bool, Func{eAutonomousObjectiveKind}, Random)"/>
+    /// with the configured mix, tilted by personality.</summary>
+    private static eAutonomousObjectiveKind TaskBreakGoal(GameBot bot, bool pveRequired) =>
+        TaskBreakGoal(bot.Level, pveRequired, () => AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)));
+
+    /// <summary>
+    /// #669 (owner, 2026-11-26): the goal at a task break follows the Bot Goals shares (<see cref="AutonomousBotGoalPolicy.Settings"/>,
+    /// the defaults when there is no bot-goals.json, as the launcher shows them) through <paramref name="draw"/>. Until 1.2.3 a
+    /// world without the file gave every bot below 50 SoloPve here, so the battleground, RvR and group shares came only
+    /// from the one-minute pass. A world without a file keeps the two rules it already had: one solo PvE task after an RvR
+    /// tour (<paramref name="pveRequired"/>, <see cref="PveCompletionRequired"/>) and level 50's untilted draw. A world with
+    /// a file (or the test override) is unchanged: always <paramref name="draw"/>.
+    /// </summary>
+    public static eAutonomousObjectiveKind TaskBreakGoal(int level, bool pveRequired, Func<eAutonomousObjectiveKind> draw, Random random = null)
+    {
+        if (!AutonomousBotGoalPolicy.IsConfigured)
+        {
+            if (pveRequired) return eAutonomousObjectiveKind.SoloPve;
+            if (level >= 50) return RollLevelFiftyObjective(random);
+        }
+        return draw();
     }
 }
