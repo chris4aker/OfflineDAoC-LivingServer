@@ -4,6 +4,8 @@
 # are never in Git, and is also [Explicit], so it runs only when named, on the owner's PC. Issue #619 tracks the list: an
 # entry comes off when its class no longer needs installed files. A synthetic test never goes here; fix it, or quarantine
 # it as UT_Name.Method with its own issue (docs/CI.md, "Excluded tests"). source/tools/ci_test_results.py checks the format.
+# Run them on a PC with a playable folder: python source/tools/run_installed_tests.py --game <folder> (--list shows each
+# class's variables; the tests get a copy of the world, never the world itself).
 UT_AllFrontierKeepRoutes  # installed frontier route simulation; read only: needs the installed game files, [Explicit] (#619)
 UT_AnimistInstalledCatalog  # read-only installed spell/template catalog check: needs the installed game files, [Explicit] (#619)
 UT_AuditHotspotProbe  # read-only installed-navmesh hotspot probe: needs the installed game files, [Explicit] (#619)
