@@ -1,10 +1,13 @@
 <#
 .SYNOPSIS
-    Packs an install's navmeshes into the files of a navmesh-vN release, for CI's navmesh tests (issue #684).
+    Packs an install's navmeshes (and, from issue #687, a clean world database) into the files of a navmesh-vN release,
+    for CI's navmesh tests (issue #684).
 
 .DESCRIPTION
-    Run it once on the PC that has the install (double-click RUN-ME.cmd beside this file). Windows PowerShell 5.1, nothing
-    to install. It:
+    Since issue #687 CI makes and publishes the set itself (.github/workflows/navmesh-publish.yml: a fresh Setup install on
+    a runner, its never-played world cleaned and checked by tools/navmesh/clean_world.py, then this script with
+    -WorldDatabase). On the owner's PC it is the fallback for a navmesh-only set: double-click RUN-ME.cmd beside this file.
+    Windows PowerShell 5.1, nothing to install. It:
       1. checks the navmesh folder (zoneNNN.nav files with a Detour header, roads.json, seams.json, pockets.json) and the
          Detour library beside it (..\lib\Detour.dll);
       2. hashes every file (SHA-256);
@@ -29,7 +32,13 @@
     Where the version folder is written. Leave the default; tests point it at a temp folder.
 
 .PARAMETER NoBrowser
-    Don't open the browser (tests).
+    Don't open the browser (tests, CI).
+
+.PARAMETER WorldDatabase
+    A clean world database to add as world/opendaoc.sqlite3.db (issue #687). Only a file that
+    tools/navmesh/clean_world.py cleaned or checked is taken: its report must sit beside it as <file>.clean.json, say
+    "clean": true and name this file's SHA-256. A database inside the game install (a played world) is refused. CI's
+    navmesh-publish workflow passes it; the PC fallback leaves it out (no Python there to run the release builder's check).
 #>
 [CmdletBinding()]
 param(
@@ -37,7 +46,8 @@ param(
     [string]$Version = 'v1',
     [string]$OutputRoot = 'C:\Games\OfflineDAoC\navmesh-upload',
     [switch]$NoBrowser,
-    [long]$PartLimit = 1900000000
+    [long]$PartLimit = 1900000000,
+    [string]$WorldDatabase = ''
 )
 
 Set-StrictMode -Version 2
@@ -134,6 +144,24 @@ foreach ($name in 'roads.json', 'seams.json', 'pockets.json') {
 }
 if (!(Test-Path -LiteralPath $detour -PathType Leaf)) { Stop-WithMessage "The Detour library is missing: $detour." }
 $plan.Add([pscustomobject]@{ Path = 'lib/Detour.dll'; Full = $detour; Size = (Get-Item -LiteralPath $detour).Length })
+# The clean world (issue #687): only with clean_world.py's report beside it, naming this very file. Never a played world.
+$world = $null
+if ($WorldDatabase) {
+    if (!(Test-Path -LiteralPath $WorldDatabase -PathType Leaf)) { Stop-WithMessage "No world database at $WorldDatabase." }
+    $worldFull = Get-FullPath $WorldDatabase
+    if ((Split-Path -Leaf $worldFull) -ne 'opendaoc.sqlite3.db') { Stop-WithMessage "The world database must be named opendaoc.sqlite3.db: $worldFull" }
+    if (Test-Inside $worldFull $game) { Stop-WithMessage "$worldFull is inside the game install: a played world is never published. Give the clean copy clean_world.py made." }
+    $reportPath = "$worldFull.clean.json"
+    if (!(Test-Path -LiteralPath $reportPath -PathType Leaf)) { Stop-WithMessage "No clean_world.py report at $reportPath: only a world the release builder's check passed is packed." }
+    $report = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
+    $worldSha = Get-Sha256 $worldFull
+    if (!$report.PSObject.Properties['clean'] -or $report.clean -ne $true -or !$report.PSObject.Properties['sha256'] -or $report.sha256 -ne $worldSha) {
+        Stop-WithMessage "$reportPath doesn't say this file is clean (its sha256 must be $worldSha): run clean_world.py verify on it again."
+    }
+    $world = [pscustomobject]@{ Path = 'world/opendaoc.sqlite3.db'; Full = $worldFull; Size = (Get-Item -LiteralPath $worldFull).Length; Checked = $worldSha }
+    $plan.Add($world)
+    Write-Host "World database : $worldFull (clean_world.py report: clean, SHA-256 $worldSha)"
+}
 $taken = @{}; foreach ($p in $plan) { $taken[$p.Full.ToLowerInvariant()] = $true }
 $skipped = @(Get-ChildItem -LiteralPath $nav -Recurse -File | Where-Object { !$taken.ContainsKey($_.FullName.ToLowerInvariant()) })
 if ($skipped.Count -gt 0) {
@@ -147,7 +175,7 @@ foreach ($p in $plan) { $names.Add($p.Path) }
 $names.Sort([StringComparer]::Ordinal)
 foreach ($n in $names) { $ordered.Add(($plan | Where-Object { $_.Path -ceq $n } | Select-Object -First 1)) }
 $total = [long]0; foreach ($p in $ordered) { $total += $p.Size }
-Write-Host ("Found {0} zone navmeshes, 3 road/seam/pocket files and Detour.dll: {1:N0} bytes." -f $zones.Count, $total)
+Write-Host ("Found {0} zone navmeshes, 3 road/seam/pocket files and Detour.dll{2}: {1:N0} bytes." -f $zones.Count, $total, $(if ($world) { ' and the clean world' } else { '' }))
 
 # The build the install runs, for the manifest: BUILD-INFO.txt if one is there, else the newest install record.
 $build = @{ BuildName = 'unknown'; Commit = 'unknown'; BaseRelease = 'unknown' }
@@ -196,6 +224,7 @@ foreach ($p in $ordered) {
     Write-Progress -Activity 'Hashing' -Status $p.Path -PercentComplete ([int](100 * $i / $ordered.Count))
     $p | Add-Member -NotePropertyName Sha -NotePropertyValue (Get-Sha256 $p.Full)
 }
+if ($world -and $world.Sha -ne $world.Checked) { Stop-WithMessage "The world database changed after its check: it is packed only as checked." }
 Write-Progress -Activity 'Hashing' -Completed
 
 # ---- 3. zip parts -----------------------------------------------------------------------------------------------
@@ -276,6 +305,11 @@ $j = New-Object Text.StringBuilder
 [void]$j.Append('  "source": {"build": ' + (ConvertTo-JsonString $build.BuildName) + ', "commit": ' + (ConvertTo-JsonString $build.Commit) +
     ', "base_release": ' + (ConvertTo-JsonString $build.BaseRelease) + '},' + $nl)
 [void]$j.Append('  "total_bytes": ' + $total + ',' + $nl)
+if ($world) {
+    [void]$j.Append('  "world": {"name": "opendaoc.sqlite3.db", "path": "world/opendaoc.sqlite3.db", "bytes": ' + $world.Size +
+        ', "sha256": "' + $world.Sha + '", "clean": true, "checked_by": ' +
+        (ConvertTo-JsonString 'tools/navmesh/clean_world.py (build_release_037.clean_world, verify_clean, verify_tables_empty)') + '},' + $nl)
+}
 [void]$j.Append('  "parts": [' + $nl)
 for ($k = 0; $k -lt $parts.Count; $k++) {
     $pt = $parts[$k]

@@ -4,7 +4,9 @@
 # Checks: the script packs a small set into several parts (a small -PartLimit forces the split), the same files give
 # byte-identical zips twice, navmesh_set.py accepts its manifest and parts (fetch --from) and refuses a planted
 # mismatch, the install is left exactly as it was, and it stops on a reused version folder, a bad version, a damaged
-# navmesh, a missing Detour.dll and an output folder inside the install.
+# navmesh, a missing Detour.dll and an output folder inside the install. Issue #687: -WorldDatabase packs a clean world
+# with its "world" manifest block (read back by navmesh_set.py), and refuses one without clean_world.py's report, with a
+# report naming another file, or inside the game install (a played world).
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2
 $script = Join-Path $PSScriptRoot '..\Publish-NavmeshSet.ps1'
@@ -83,6 +85,37 @@ try {
     [IO.File]::WriteAllText($planted, $text.Replace($first, ('0' * 64)))
     $log = & $python $tool fetch $planted --dest (Join-Path $work 'set2') --from $outA 2>&1 | Out-String
     Check ($LASTEXITCODE -eq 1 -and $log -match '::error') "a planted hash mismatch fails`n$log"
+
+    Write-Host '== -WorldDatabase: only a world clean_world.py checked (#687)'
+    $clean = Join-Path $work 'clean\world'
+    New-Item -ItemType Directory -Path $clean -Force | Out-Null
+    $db = Join-Path $clean 'opendaoc.sqlite3.db'
+    [IO.File]::WriteAllBytes($db, [byte[]](@(83, 81, 76, 105, 116, 101, 32, 102, 111, 114, 109, 97, 116, 32, 51, 0) + @(New-Object byte[] 4096)))
+    $dbSha = (Get-FileHash -LiteralPath $db -Algorithm SHA256).Hash.ToLowerInvariant()
+    $r = Run-Publish @('-NavmeshFolder', $nav, '-OutputRoot', (Join-Path $work 'out-w0'), '-NoBrowser', '-WorldDatabase', $db)
+    Check ($r.Code -eq 1 -and $r.Output -match 'clean_world\.py report' -and !(Test-Path (Join-Path $work 'out-w0'))) 'a world without its clean report is refused'
+    [IO.File]::WriteAllText("$db.clean.json", '{"clean": true, "sha256": "' + ('0' * 64) + '"}')
+    $r = Run-Publish @('-NavmeshFolder', $nav, '-OutputRoot', (Join-Path $work 'out-w1'), '-NoBrowser', '-WorldDatabase', $db)
+    Check ($r.Code -eq 1 -and !(Test-Path (Join-Path $work 'out-w1'))) 'a report that names another file is refused'
+    [IO.File]::WriteAllText("$db.clean.json", '{"clean": false, "sha256": "' + $dbSha + '"}')
+    $r = Run-Publish @('-NavmeshFolder', $nav, '-OutputRoot', (Join-Path $work 'out-w2'), '-NoBrowser', '-WorldDatabase', $db)
+    Check ($r.Code -eq 1 -and !(Test-Path (Join-Path $work 'out-w2'))) 'a report that does not say clean is refused'
+    $played = Join-Path $game 'runtime\data\opendaoc.sqlite3.db'
+    New-Item -ItemType Directory -Path (Split-Path -Parent $played) -Force | Out-Null
+    Copy-Item $db $played; Copy-Item "$db.clean.json" "$played.clean.json"
+    [IO.File]::WriteAllText("$played.clean.json", '{"clean": true, "sha256": "' + $dbSha + '"}')
+    $r = Run-Publish @('-NavmeshFolder', $nav, '-OutputRoot', (Join-Path $work 'out-w3'), '-NoBrowser', '-WorldDatabase', $played)
+    Check ($r.Code -eq 1 -and $r.Output -match 'inside the game install' -and !(Test-Path (Join-Path $work 'out-w3'))) 'the install''s own (played) world is refused'
+    Remove-Item -LiteralPath (Join-Path $game 'runtime\data') -Recurse -Force
+    [IO.File]::WriteAllText("$db.clean.json", '{"clean": true, "sha256": "' + $dbSha + '"}')
+    $w = Run-Publish @('-NavmeshFolder', $nav, '-OutputRoot', (Join-Path $work 'out-w'), '-NoBrowser', '-WorldDatabase', $db, '-PartLimit', $limit)
+    Check ($w.Code -eq 0) "packs the set with the clean world (exit $($w.Code))`n$($w.Output)"
+    $wm = Get-Content -LiteralPath (Join-Path $work 'out-w\v1\navmesh-manifest.json') -Raw | ConvertFrom-Json
+    Check ($wm.world.path -eq 'world/opendaoc.sqlite3.db' -and $wm.world.sha256 -eq $dbSha -and $wm.world.clean -eq $true) 'the manifest''s world block names it'
+    Check (@($wm.files | Where-Object { $_.path -eq 'world/opendaoc.sqlite3.db' }).Count -eq 1) 'the world is one of the files'
+    $log = & $python $tool fetch (Join-Path $work 'out-w\v1\navmesh-manifest.json') --dest (Join-Path $work 'set-w') --from (Join-Path $work 'out-w\v1') 2>&1 | Out-String
+    Check ($LASTEXITCODE -eq 0 -and (Test-Path (Join-Path $work 'set-w\world\opendaoc.sqlite3.db'))) "navmesh_set.py fetches and checks it`n$log"
+    Check ((Snapshot $game) -eq $before) 'the install is unchanged after the world cases'
 
     Write-Host '== it stops, and writes nothing, when it should'
     $r = Run-Publish @('-NavmeshFolder', $nav, '-OutputRoot', (Join-Path $work 'out-a'), '-NoBrowser')

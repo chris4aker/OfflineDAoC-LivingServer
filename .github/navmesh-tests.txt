@@ -1,9 +1,41 @@
-# Server tests the navmesh workflow (.github/workflows/navmesh.yml) runs against the published navmesh set (issue #684).
-#   UT_Name[.Method]  # what it checks with the navmeshes and the Detour library only (#issue)
+# Server tests the navmesh workflow (.github/workflows/navmesh.yml) runs against the published navmesh set (issues #684,
+# #687).
+#   UT_Name[.Method]  # what it checks, and what of the set it reads (#issue)
 # Each one is an [Explicit] class that stays on .github/ci-excluded-tests.txt (the server job has no navmeshes), and needs
-# nothing but runtime/server/navmesh and runtime/server/lib/Detour.dll: no world database, no captured log, no input file.
-# A tool with no assertion is not listed: its pass would prove nothing. tools/navmesh/navmesh_set.py check checks the list.
-# A test that fails here gets a real fix, or its own issue and a quarantine line in ci-excluded-tests.txt.
+# nothing but the set: runtime/server/navmesh, runtime/server/lib/Detour.dll and (#687) the set's clean world database,
+# which the job puts at ../data/opendaoc.sqlite3.db beside the meshes and in OFFLINE_DAOC_DB_PATH. No played state, no
+# captured log, no input file. A tool with no assertion is not listed: its pass would prove nothing.
+# tools/navmesh/navmesh_set.py check checks the list. A test that fails here gets a real fix, or its own issue and a
+# quarantine line in ci-excluded-tests.txt.
+# Navmeshes and Detour only (#684)
 UT_DragonLairProbe  # the three dragon lairs' homes are grounded, reachable from outside and keep safe teleports (#684)
 UT_SneezerCampNavigation  # the Domnann camp spawns have walkable floors reachable from the original spot (#684)
 UT_ExchangePlacementNavigation.InspectCapitalFloors  # the Jordheim and Tir na Nog meshes load and answer queries (#684)
+# Navmeshes and the clean world database (#687)
+UT_AllFrontierKeepRoutes  # every frontier keep's routes simulated on the meshes from the world's keeps (#687)
+UT_AuditHotspotProbe  # the audited navigation hotspots, from the world's spawns (#687)
+UT_AuditedDungeonInstalledMesh  # dungeon coverage of the meshes for the world's dungeon regions (#687)
+UT_CrauchonResponseRoutes  # the Crauchon response routes with the world's doors (#687)
+UT_CurrentDungeonGoalRoutes  # native routes for every current ordinary dungeon goal (#687)
+UT_ExpeditionHubFailures  # the captured expedition routes, replayed on the meshes and the world (#687)
+UT_ExpeditionInteriorCapacity  # epic interior formation room on the meshes (#687)
+UT_InstalledKeepRoutes  # keep navigation from the world's keeps and doors (#687)
+UT_InstalledPorterWaiting  # teleporter waiting spots on the meshes (#687)
+UT_LongRunNavigationProbe  # long-run navigation probes on the meshes and the world (#687)
+UT_PlayerTravelInstalledMesh  # player travel points (zone points, town centres) on the meshes (#687)
+UT_RealmEventAuditReadOnly  # the captured realm event routes on the meshes (#687)
+UT_RealmExchangeRelocation  # the Realm Exchange relocation proof on the meshes (#687)
+UT_RealmRepairNavigation  # the navigation repair probes (#687)
+UT_RecentHibDungeonSeams  # the Hibernian dungeon exterior routes (#687)
+UT_September11HotspotProbe  # the September 11 hotspot navigation checks (#687)
+UT_SeptemberFourteenInstalledNavigation  # the September 14 incident probes (#687)
+UT_SeptemberNineInstalledRoutes  # the September 9 routing proof (#687)
+UT_SeptemberTenRouteProbe  # the September 10 route evidence (#687)
+UT_SeptemberThirteenInstalledRoutes  # the September 13 route probes, from the world's bot goals (#687)
+UT_SiegeFiringPositions  # keep siege firing positions on the meshes (#687)
+UT_SiegeIncidentNavigation  # keep-approach incident checks (#687)
+UT_StarterDungeonInstalledMesh  # the starter dungeons on the meshes (#687)
+# The clean world database only (#687)
+UT_AnimistInstalledCatalog  # the Animist spell and template catalog in the world (#687)
+UT_InstalledClassicMeleeAudit  # the Classic styles and poisons in the world (#687)
+UT_SiegeMerchantCatalog  # the siege merchants' lists in the world (#687)
