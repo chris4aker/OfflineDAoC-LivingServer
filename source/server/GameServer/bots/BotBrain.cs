@@ -220,6 +220,7 @@ namespace DOL.AI.Brain
         public void ForceAddToAggroList(GameLiving living, long aggroAmount)
         {
             if (IsUntargetableForMe(living)) return;
+            if (MorganaQuestHelp.IsMorgana(living)) return;   // #611: bots never attack Morgana, whatever her flags
             if (!CompanionEngagementMode.Allows(Body, living)) return;
             if (_autonomousWorldController?.IgnoresAggro(living, BotBody) == true) return;
             if (CompanionRaidSiege.Ignores(Body as GameBot, living)) return;
@@ -435,6 +436,7 @@ namespace DOL.AI.Brain
 
         public virtual bool CanAggroTarget(GameLiving target)
         {
+            if (MorganaQuestHelp.IsMorgana(target)) return false;   // #611: never a pull, an assist or a defense
             if (!CompanionEngagementMode.Allows(Body, target)) return false;
             if (!GameServer.ServerRules.IsAllowedToAttack(Body, target, true))
                 return false;

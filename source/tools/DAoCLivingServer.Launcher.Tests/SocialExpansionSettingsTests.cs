@@ -332,6 +332,21 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void MorganaQuestHelpIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #611 (owner decision 2026-11-25): bot_morgana_quest_help, bots in the player's group fight Morgana's demons when the
+        // player's epic event starts. A bot combat rule: on by default and in Setup; no checkbox, so the tab keeps what it
+        // read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.MorganaQuestHelp && SocialExpansionSettings.Recommended.MorganaQuestHelp, Is.True);
+        Assert.That(d.AllOff().MorganaQuestHelp, Is.True);
+        (d with { MorganaQuestHelp = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_morgana_quest_help"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).MorganaQuestHelp, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void DeathFallIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // 1.2.1 (owner 2026-11-21, "Death animations need fixed absolutely"): bot_death_animation, a display fix in the

@@ -1143,6 +1143,8 @@ namespace DOL.GS.Spells
 								if (Spell.IsHarmful && Spell.SpellType is not eSpellType.PetSpell)
 									SendCastAnimation(0);
 
+								// #644: a boss mechanic's measure-only signal, now that the spell really goes off (logging only).
+								RaidBossMechanics.CastBegan(Caster, Spell, Target, 0);
 								CastState = eCastState.Finished;
 								NotifyCompanionsOfHarmfulCast();
 							}
@@ -1151,6 +1153,8 @@ namespace DOL.GS.Spells
 						{
 							SendSpellMessages();
 							SendCastAnimation();
+							// #644: a boss mechanic's measure-only signal, now that its cast really began (logging only).
+							RaidBossMechanics.CastBegan(Caster, Spell, Target, _calculatedCastTime);
 							CastState = eCastState.Casting;
 							NotifyCompanionsOfHarmfulCast();
 							// The bots fighting this caster react to the cast at once: stun, interrupt (True165 8abbc61a8).

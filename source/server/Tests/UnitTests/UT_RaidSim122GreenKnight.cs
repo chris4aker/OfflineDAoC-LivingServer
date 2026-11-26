@@ -84,10 +84,21 @@ namespace DOL.UnitTests
             public int Contributed, Walks;
         }
 
+        /// <summary>His name (OFGreenKnight), his trees' (GKTrees.AddToWorld) and his heat proc's spell (GreenKnightHeatDD:
+        /// Might of the Forrest, id 11755, radius 500 around him, no cast time) and heal's cast time (GreenKnightHeal, 3 s), as the
+        /// rows write them (#644 part 6; UT_SimRaidRows644 checks them against his script).</summary>
+        public const string GreenKnightName = "Green Knight", TreeName = "rotting downy felwood";
+        public const int HeatSpellId = 11755, HeatSpellRadius = 500, HealCastMs = 3_000;
+
+        /// <summary>The class each model role stands for in the rows (#644 part 6; the role is the server's for it).</summary>
+        public static readonly eCharacterClass[] RowClasses = [eCharacterClass.Armsman, eCharacterClass.Mercenary, eCharacterClass.Sorcerer,
+            eCharacterClass.Cleric, eCharacterClass.Wizard, eCharacterClass.Scout, eCharacterClass.Cabalist, eCharacterClass.Theurgist];
+
         /// <summary>The fight (gk_mirror.fight). Returns whether he died, the minutes, the most trees alive, the fallen raiders
-        /// and his health left in percent.</summary>
+        /// and his health left in percent. <paramref name="rows"/> (#644 part 6) writes it as the server's RAID_* rows: logging
+        /// only, the fight is the same with and without it (<see cref="SimRaidRows"/>, UT_SimRaidRows644).</summary>
         public static (bool Won, double Minutes, int MaxTrees, int Fallen, double Left) GreenKnightFight(int seed, GkRule rule, int n,
-            double dps, bool buffed, int minutes = 45, Stats stats = null)
+            double dps, bool buffed, int minutes = 45, Stats stats = null, SimRaidRows rows = null)
         {
             double tankHit = buffed ? GkBuffed : GkUnbuffed;
             var rng = new Rng(seed);
@@ -159,8 +170,18 @@ namespace DOL.UnitTests
             int[] credit = Enumerable.Range(0, N).Select(i => i < n ? i : owner[i]).ToArray();
             var lastHit = new Dictionary<int, int>();
             stats ??= new Stats();
+            // #644 part 6 (rows only): who hit each raider last this step (0 him, 1 a tree) and his lowest health.
+            int[] lastBy = new int[n];
+            int lowest = 100;
+            long Ms() => (long)Math.Round(now * 1000);
+            if (rows != null)
+            {
+                rows.Join(Enumerable.Range(0, n).Select(i => RowClasses[role[i]]));
+                rows.Pull(0);
+            }
             void HitTree(Tree t, int i, double d)
             {
+                rows?.Dealt(Ms(), credit[i], d, false);
                 contrib[credit[i]] += d;
                 t.Hp -= d;
                 t.Threat[i] = t.ThreatOf(i) + d;
@@ -170,6 +191,7 @@ namespace DOL.UnitTests
             (bool, double, int, int, double)? result = null;
             while (now < end)
             {
+                rows?.Pulse(Ms());
                 bool paused = walking;
                 if (now >= nextWave)
                 {
@@ -185,6 +207,7 @@ namespace DOL.UnitTests
                         trees.Add(t);
                         byId[t.Id] = t;
                     }
+                    rows?.Mechanic(Ms(), GreenKnightName, "trees", 0, false, null, null, 0);
                     nextWave = now + 25 + rng.Below(10_001) / 1000.0;
                 }
                 if (now >= nextPick && !walking)
@@ -222,6 +245,8 @@ namespace DOL.UnitTests
                     {
                         walkEnd = now + AfterHealS;
                         gk = Math.Min(100_000.0, gk + 400);
+                        // His heal names himself (TargetObject = Body): no raider is in its area.
+                        rows?.Mechanic(Ms(), GreenKnightName, "heal", 0, true, [], [], HealCastMs);
                     }
                     else if (now >= walkEnd)
                         walking = false;
@@ -241,6 +266,19 @@ namespace DOL.UnitTests
                     guard[tank] = false;
                 }
                 int target = now < pickUntil && picked >= 0 && !dead[picked] ? picked : tank;
+                if (rows != null)
+                {
+                    long ms = Ms();
+                    rows.Threat(ms, target);
+                    if (rows.SampleDue(ms))
+                    {
+                        var seen = new RaidFightSampleRows.Raider[n];
+                        for (int i = 0; i < n; i++)
+                            seen[i] = new RaidFightSampleRows.Raider { Role = rows.Raiders[i].Role, Alive = !dead[i], InRegion = true,
+                                InCombat = !dead[i] && rows.InCombat(i, ms), Dist = dead[i] ? -1 : (int)Dist(px[i], py[i], gkx, gky), Mana = -1 };
+                        rows.Sample(ms, Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)), seen, rows.TargetKind(target));
+                    }
+                }
                 if (!walking)
                 {
                     (double ax, double ay) = target != tank ? (px[target], py[target]) : (ox, oy);
@@ -345,6 +383,7 @@ namespace DOL.UnitTests
                         }
                         else if (on[i] < 0 && Dist(px[i], py[i], gkx, gky) <= GkReach)
                         {
+                            rows?.Dealt(Ms(), credit[i], OnGk * share * Step, true);
                             gk -= OnGk * share * Step;
                             stats.OnHim[r] += OnGk * share * Step;
                             contrib[credit[i]] += OnGk * share * Step;
@@ -402,6 +441,7 @@ namespace DOL.UnitTests
                         }
                         else if (Dist(px[i], py[i], gkx, gky) <= ShootRange(r))
                         {
+                            rows?.Dealt(Ms(), i, OnGk * Step, true);
                             gk -= OnGk * Step;
                             stats.OnHim[r] += OnGk * Step;
                             contrib[i] += OnGk * Step;
@@ -415,6 +455,7 @@ namespace DOL.UnitTests
                         {
                             double amount = Math.Min(Heal, mx[m] - hp[m]);
                             hp[m] += amount;
+                            rows?.Healed(i, amount, Heal - amount);
                             stats.Heals[Healer] += amount;
                             contrib[i] += amount;
                             if (hitting.TryGetValue(m, out var onM))
@@ -439,18 +480,48 @@ namespace DOL.UnitTests
                 // ---- damage on the raid and its pets ----
                 foreach (int v in hitting.Keys.OrderBy(v => v))
                     if (!dead[v])
-                        hp[v] -= (buffed ? Armour[role[v]].Buffed : Armour[role[v]].Unbuffed) * Step * hitting[v].Count(t => t.Hp > 0);
+                    {
+                        double treeHit = (buffed ? Armour[role[v]].Buffed : Armour[role[v]].Unbuffed) * Step * hitting[v].Count(t => t.Hp > 0);
+                        hp[v] -= treeHit;
+                        if (rows != null && v < n)
+                        {
+                            rows.Hit(Ms(), v, AttackData.eAttackType.MeleeOneHand, treeHit);
+                            lastBy[v] = 1;
+                        }
+                    }
                 if (!paused && Dist(gkx, gky, px[target], py[target]) <= GkReach + 20)
                 {
                     if (now >= nextSwing)
                     {
                         nextSwing = now + Swing;
-                        hp[target] -= tankHit * Swing * (role[target] == Tank ? 1.0 : 1.106);
+                        double swingHit = tankHit * Swing * (role[target] == Tank ? 1.0 : 1.106);
+                        hp[target] -= swingHit;
+                        if (rows != null && target < n)
+                        {
+                            rows.Hit(Ms(), target, AttackData.eAttackType.MeleeTwoHand, swingHit);
+                            lastBy[target] = 0;
+                        }
                         if (rng.Next() < 0.3)
                         {
                             double cx = px[target], cy = py[target];
+                            // The row's area is the model's own: around his target, HeatRadius, raiders inside (the script's
+                            // spell lands around him; that difference is the model's, #730, not the row's).
+                            if (rows != null)
+                            {
+                                int[] area = Enumerable.Range(0, n).Where(q => !dead[q] && inside[q] && Dist(px[q], py[q], cx, cy) <= HeatRadius).ToArray();
+                                rows.Mechanic(Ms(), GreenKnightName, "heat", (int)HeatRadius, true, area, area, 0);
+                            }
                             for (int i = 0; i < N; i++)
-                                if (!dead[i] && inside[i] && Dist(px[i], py[i], cx, cy) <= HeatRadius) hp[i] -= HeatHit;
+                                if (!dead[i] && inside[i] && Dist(px[i], py[i], cx, cy) <= HeatRadius)
+                                {
+                                    hp[i] -= HeatHit;
+                                    if (rows != null && i < n)
+                                    {
+                                        rows.Hit(Ms(), i, AttackData.eAttackType.Spell, HeatHit, HeatSpellId, eSpellType.DirectDamageNoVariance,
+                                            HeatSpellRadius, GreenKnightName);
+                                        lastBy[i] = 0;
+                                    }
+                                }
                         }
                     }
                 }
@@ -462,12 +533,34 @@ namespace DOL.UnitTests
                         dead[i] = true;
                         if (i < n) fallen++;
                         else if (role[i] == Pet) backAt[i] = now + PetBackS;
+                        if (rows != null && i < n)
+                        {
+                            bool byHim = lastBy[i] == 0;
+                            int attackers = (hitting.TryGetValue(i, out var treesOn) ? treesOn.Count(t => t.Hp > 0) : 0) + (target == i ? 1 : 0);
+                            rows.Death(Ms(), i, byHim ? "boss" : "add", byHim ? GreenKnightName : TreeName, (int)Dist(px[i], py[i], gkx, gky),
+                                rows.HealersIn(i, j => Dist(px[i], py[i], px[j], py[j])), attackers);
+                        }
                     }
+                if (rows != null)
+                {
+                    lowest = Math.Min(lowest, Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)));
+                    // The game's wipe (RealmRaidDragonFight.IsWipe = RealmRaidDungeonRoute.IsWipe): half of the engaged fallen. The
+                    // row attempt ends here and nothing more is written for it; the model fights on unchanged.
+                    if (!rows.Ended && gk > 0 && fallen * 2 >= n)
+                        rows.End(Ms(), RaidAttemptRows.DragonOutcome(true), Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)), lowest);
+                }
                 if (gk <= 0) { result = (true, now / 60, maxTrees, fallen, 0.0); break; }
                 if (!Enumerable.Range(0, n).Any(i => !dead[i] && inside[i])) { result = (false, now / 60, maxTrees, fallen, gk / 1000); break; }
                 now += Step;
             }
             result ??= (false, now / 60, maxTrees, fallen, gk / 1000);
+            if (rows != null && !rows.Ended)
+            {
+                // Not wiped the game's way: killed, else "stopped" (his clock ran out, or the model's own loss, no raider left
+                // fighting, came before half had fallen: the pet owners stand outside his trees' reach). Never "wipe".
+                string outcome = result.Value.Item1 ? RaidAttemptRows.RaidEndOutcome(null, true) : RaidAttemptRows.RaidEndOutcome(null, false);
+                rows.End(Ms(), outcome, Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)), lowest);
+            }
             stats.Contributed = contrib.Count(c => c > 0);
             stats.Walks = walks;
             return result.Value;

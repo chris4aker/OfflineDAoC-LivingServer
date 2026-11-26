@@ -160,6 +160,9 @@ public sealed record SocialExpansionSettings
     /// <summary>A Hibernian Bard may fill a bot party's Healer slot when no Druid or Warden is in reach, ordinary groups only,
     /// never realm raids (bot_bard_fills_healer_slot, #567 B7). No checkbox: kept as read. On by default (1.2.3).</summary>
     public bool BardFillsHealerSlot { get; init; } = true;
+    /// <summary>Bots in the player's group fight Morgana's two demons when the player's Albion level 50 epic event starts, and
+    /// never Morgana (bot_morgana_quest_help, #611). No checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool MorganaQuestHelp { get; init; } = true;
     /// <summary>The newcomer stream (#630, population_newcomers): new level-1 gamebots join a realm whose levels 1-19 run low.
     /// On by default.</summary>
     public bool PopulationNewcomers { get; init; } = true;
@@ -227,7 +230,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, DeathFall = true, HealerPeriodRules = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true,
     };
@@ -307,6 +310,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_milestones", "bots", "Server life, Bots as people (1.2, docs/BOTS-AS-PEOPLE-1.2.md): autonomous gamebots chase a personal goal (the ding to 50 from level 45; at 50 realm rank 5 if they lean to RvR, or a dragon trophy, an item really won from a dragon or epic boss raid's loot, if they lean to raids) and say so as they get close, in their group, in /say near you, in their guild or in /faction, within the chat budgets; the realm cheers when one gets there, the Camelot Herald lists it under Milestones of the Realm, and the goal leans the bot's plans (fewer town breaks near 50, more RvR near realm rank 5). Log: BOT_MILESTONE_ARC, BOT_MILESTONE_PROGRESS, BOT_MILESTONE_TALK, BOT_MILESTONE_REACHED, BOT_MILESTONE_SUMMARY."),
         ("raid_learns_from_raiders", "bots", "Bots as people (1.2, owner decision 1, 2026-11-17): a realm raid's familiarity with a boss mechanic follows how many of the raiders present have seen it (full from 60% of the raid, a quarter with nobody), and each raider's own reactions follow its own count; Epic Special Forces have seen everything; companions and buffbots are not counted, and a raid with a real player in it (or a player's own group) keeps the record's familiarity. Wired for Xanxicar's stomp. A played world is seeded once at its first start with the switch (each level 50 of a realm with a counted attempt, with a chance of the record's familiarity but at least 80%), so its familiarity stays the same on average. False: the record's familiarity alone, as before. Log: RAID_LEARN, RAID_MECHANIC_SEEN."),
         ("bot_bard_fills_healer_slot", "bots", "Can a Hibernian Bard fill a bot party's Healer slot when no Druid or Warden is in reach, and heal as that party's healer while it holds the slot (#567 B7)? Ordinary groups only, never realm raids. Off: only the healing classes fill it."),
+        ("bot_morgana_quest_help", "bots", "Bots in your group help with Morgana's quest fight (#611): when your Albion level 50 epic event starts at the fallen tower in Lyonesse, your companions and the gamebots grouped with you fight her two demons, Bechard and Silcharde. Bots never attack Morgana, and only a player on the quest starts the event. Off: bots join only once you or the demons start the fight. Log: MORGANA_QUEST_HELP."),
         ("xp_rate_by_level", "rates", "Optional XP rate by level range for real player characters, for example 1-19:3;20-34:5;35-50:12. Inside a listed range its rate replaces xp_rate; other levels keep xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate. Empty (the default) or an invalid value keeps the flat xp_rate."),
         ("bot_xp_rate_by_level", "rates", "Optional XP rate by level range for autonomous gamebots, for example 1-19:1.5;20-34:2.5;35-50:6. Inside a listed range its rate replaces bot_xp_rate; other levels keep bot_xp_rate. In RvR zones the result is still multiplied by rvr_zones_xp_rate, as bot_xp_rate is. Empty (the default) or an invalid value keeps the flat bot_xp_rate. Companion bots and real players are not affected."),
         ("mana_regen_amount_modifier", "rates", "Power regeneration multiplier for real players and gamebots alike. 1 is the classic rate before patch 1.87, which doubled it; 1.5 (the Living Server default) is a middle ground."),
@@ -398,6 +402,7 @@ public sealed record SocialExpansionSettings
         ["bot_living_milestones"] = Bool(LivingMilestones),
         ["raid_learns_from_raiders"] = Bool(RaidLearnsFromRaiders),
         ["bot_bard_fills_healer_slot"] = Bool(BardFillsHealerSlot),
+        ["bot_morgana_quest_help"] = Bool(MorganaQuestHelp),
         ["population_newcomers"] = Bool(PopulationNewcomers),
         ["population_newcomer_floor"] = NewcomerFloor.ToString(CultureInfo.InvariantCulture),
         ["population_newcomer_per_hour"] = NewcomerPerHour.ToString(CultureInfo.InvariantCulture),
@@ -741,6 +746,7 @@ public sealed record SocialExpansionSettings
             LivingMilestones = ReadBool("bot_living_milestones", d.LivingMilestones),
             RaidLearnsFromRaiders = ReadBool("raid_learns_from_raiders", d.RaidLearnsFromRaiders),
             BardFillsHealerSlot = ReadBool("bot_bard_fills_healer_slot", d.BardFillsHealerSlot),
+            MorganaQuestHelp = ReadBool("bot_morgana_quest_help", d.MorganaQuestHelp),
             PopulationNewcomers = ReadBool("population_newcomers", d.PopulationNewcomers),
             NewcomerFloor = ReadCraftingInt("population_newcomer_floor", d.NewcomerFloor, 0, MaxNewcomerFloor),
             NewcomerPerHour = ReadCraftingInt("population_newcomer_per_hour", d.NewcomerPerHour, 0, MaxNewcomerPerHour),
