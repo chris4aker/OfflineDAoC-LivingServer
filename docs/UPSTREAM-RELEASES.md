@@ -60,7 +60,7 @@ checklist for that day, written for 0.38.
      both entries.
    - The classic client's loading screen (`pregame/splash.mpk`, Living Server 1.2) is marked "Keep": ROLLBACK.cmd and
      PREPARE-FOR-UPDATE.cmd leave Living Server's in place (owner 2026-11-07). The patcher checks only the files an
-     update lists (`OfflineDaoc.Patcher`, step 3), and 0.37 doesn't list it (same SHA-256 in the 0.36b and 0.37b
+     update lists (`DAoCLivingServer.Patcher`, step 3), and 0.37 doesn't list it (same SHA-256 in the 0.36b and 0.37b
      baselines). If a new update lists it, its patcher stops on it as a changed file: run the update with its
      overwrite option (the patcher backs it up), then INSTALL.cmd, whose entry would need that release's file as
      "Released".

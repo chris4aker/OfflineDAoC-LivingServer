@@ -526,7 +526,7 @@ public static class AutonomousPopulationController
         {
             foreach (string line in EraBuildCensus.Lines(roster.Select(record =>
                          new EraBuildCensus.Entry(record.Realm, record.ClassId, record.SerializedBuildPlan)),
-                         OfflineDaoc.Shared.EraBuildCatalog.Default))
+                         DAoCLivingServer.Shared.EraBuildCatalog.Default))
                 Log.Info(line);
         }
         catch (Exception exception)

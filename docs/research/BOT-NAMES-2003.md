@@ -1,7 +1,7 @@
 # Bot names: what a 2003 server's names looked like
 
 Research for Living Server 1.1's bot names (owner 2026-10-29: "75% of names in 2003 style, rest in lore focused
-names. Do research first."). The generator is `OfflineDaoc.Shared.EraBotNames`
+names. Do research first."). The generator is `DAoCLivingServer.Shared.EraBotNames`
 (`source/server/GameServer/bots/autonomous/EraBotNames.cs`, linked into the launcher).
 
 ## What was looked at

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.Json;
 using DOL.UnitTests;
 using NUnit.Framework;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.GS.Tests
 {

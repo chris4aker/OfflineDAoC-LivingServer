@@ -5,7 +5,7 @@ The removed-row archive is never treated as authority.  A row is eligible only
 when a 2002 map corroborates its zone, monster name, level, and approximate map
 location (outdoors), or its dungeon roster and room cluster (dungeons).  This
 tool is read-only with respect to SQLite; the generated immutable ID manifest is
-consumed by OfflineDaoc.Setup after the native navmesh test has rejected unsafe
+consumed by DAoCLivingServer.Setup after the native navmesh test has rejected unsafe
 rows.
 """
 

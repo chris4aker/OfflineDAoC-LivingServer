@@ -7,7 +7,7 @@ live=base/'Offline DaOC/runtime'
 extra=base/'Offline DAOC extra files'
 release=extra/'releases/Offline DAoC v0.2'
 tools=extra/'development source/tools'
-policy=json.loads((tools/'OfflineDaoc.ProgressImport/progress-policy.json').read_text())
+policy=json.loads((tools/'DAoCLivingServer.ProgressImport/progress-policy.json').read_text())
 if release.exists(): raise SystemExit('Staging already exists; refusing overwrite')
 release.mkdir(parents=True)
 source_hashes={}
@@ -67,7 +67,7 @@ for sub in ['host/fxr/10.0.11','shared/Microsoft.NETCore.App/10.0.11','shared/Mi
     copytree(dotnet/sub,bundled/sub)
 for name in ['dotnet.exe','LICENSE.txt','ThirdPartyNotices.txt']:
     if (dotnet/name).exists():shutil.copy2(dotnet/name,bundled/name)
-copytree(tools/'OfflineDaoc.ProgressImport/bin/Release/net10.0-windows',release/'tools/ProgressImporter')
+copytree(tools/'DAoCLivingServer.ProgressImport/bin/Release/net10.0-windows',release/'tools/ProgressImporter')
 builder=extra/'development tools/OpenDAoC-BuildNav'
 copytree(builder/'bin/Release/net10.0-windows7.0',release/'tools/NavmeshBuilder')
 copytree(builder,release/'tools/NavmeshBuilder/source',lambda p: not any(x.lower() in {'.git','bin','obj'} for x in p.parts))
@@ -76,6 +76,6 @@ for name in ['ignorelist.txt','log4net.xml']:
 for p in (release/'tools/NavmeshBuilder').rglob('cem.json'):
     p.write_text(json.dumps({'CEM':{'GamePath':'../../runtime/client-opendaoc/app'}},indent=2))
 # Built importer source is included for transparent offline maintenance.
-copytree(tools/'OfflineDaoc.ProgressImport',release/'tools/ProgressImporter/source',lambda p:not any(x in {'bin','obj'} for x in p.parts))
+copytree(tools/'DAoCLivingServer.ProgressImport',release/'tools/ProgressImporter/source',lambda p:not any(x in {'bin','obj'} for x in p.parts))
 (extra/'releases/source-runtime-hashes.json').write_text(json.dumps(source_hashes,indent=2))
 print('STAGED '+str(release),flush=True)

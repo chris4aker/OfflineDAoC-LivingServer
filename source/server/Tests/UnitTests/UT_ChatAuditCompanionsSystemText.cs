@@ -239,11 +239,11 @@ namespace DOL.UnitTests
         public void Every_launcher_setting_text_is_the_servers_own()
         {
             string dir = TestContext.CurrentContext.TestDirectory;
-            while (dir != null && !File.Exists(Path.Combine(dir, "source", "tools", "OfflineDaoc.Launcher", "SocialExpansionSettings.cs")))
+            while (dir != null && !File.Exists(Path.Combine(dir, "source", "tools", "DAoCLivingServer.Launcher", "SocialExpansionSettings.cs")))
                 dir = Path.GetDirectoryName(dir);
             if (dir == null)
                 Assert.Ignore("Launcher source not found beside the tests.");
-            string launcher = File.ReadAllText(Path.Combine(dir, "source", "tools", "OfflineDaoc.Launcher", "SocialExpansionSettings.cs"));
+            string launcher = File.ReadAllText(Path.Combine(dir, "source", "tools", "DAoCLivingServer.Launcher", "SocialExpansionSettings.cs"));
             var server = new[] { typeof(DOL.GS.ServerProperties.Properties), typeof(CraftingEconomyProperties), typeof(HiredCompanionsMode) }
                 .SelectMany(type => type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                 .Select(field => field.GetCustomAttribute<ServerPropertyAttribute>())

@@ -12,7 +12,7 @@ assert not c.execute("select 1 from DOLCharacters where Name='OfflineDaOC' colla
 oldbots=[tuple(r) for r in c.execute('select * from offline_world_bots order by BotId')]
 oldplayers=[tuple(r) for r in c.execute('select * from DOLCharacters order by Name')]
 reserved={r[0].lower() for r in c.execute('select Name from offline_world_bots union select Name from DOLCharacters')}
-source=(root.parent/'tools/OfflineDaoc.Launcher/BotCharacterGenerator.cs').read_text()
+source=(root.parent/'tools/DAoCLivingServer.Launcher/BotCharacterGenerator.cs').read_text()
 classes=[]
 for m in re.finditer(r'new\((\d+), "([^"]+)", ([^\n]+)\)',source):
  cid=int(m[1]); races=[(int(x),y) for x,y in re.findall(r'\((\d+), "([^"]+)"\)',m[3])]

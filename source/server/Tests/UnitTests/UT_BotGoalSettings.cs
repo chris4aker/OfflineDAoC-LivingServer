@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using DOL.GS;
 using NUnit.Framework;
-using OfflineDaoc.Configuration;
+using DAoCLivingServer.Configuration;
 
 [TestFixture, NonParallelizable]
 public class UT_BotGoalSettings

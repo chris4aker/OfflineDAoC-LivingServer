@@ -12,8 +12,8 @@ namespace DOL.GS.Spells
     {
         public const int LifetimeMilliseconds = 600_000;
         public const int PageSize = 12;
-        private const string MenuKey = "OfflineDAoC.PlayerCharmMenu";
-        private const string ChoiceKey = "OfflineDAoC.PlayerCharmChoice";
+        private const string MenuKey = "DAoCLivingServer.PlayerCharmMenu";
+        private const string ChoiceKey = "DAoCLivingServer.PlayerCharmChoice";
         private sealed record Choice(int SpellId, int Level, ushort Region, long Expires, DbMob Template);
         private readonly GamePlayer _owner;
         private readonly Spell _spell;

@@ -8,7 +8,7 @@ function Assert-Stopped {
     }
 }
 Assert-Stopped
-$launcher = Join-Path (Split-Path $sourceRoot -Parent) 'tools\OfflineDaoc.Launcher\bin\Release\net10.0-windows'
+$launcher = Join-Path (Split-Path $sourceRoot -Parent) 'tools\DAoCLivingServer.Launcher\bin\Release\net10.0-windows'
 $map = @(
     @('server\GameServer.dll', (Join-Path $sourceRoot 'Release\lib\GameServer.dll')),
     @('server\GameServer.pdb', (Join-Path $sourceRoot 'Release\lib\GameServer.pdb')),
@@ -25,7 +25,7 @@ if ((Get-FileHash -LiteralPath (Join-Path $runtime 'OfflineDAoC.deps.json')).Has
     (Get-FileHash -LiteralPath (Join-Path $launcher 'OfflineDAoC.deps.json')).Hash) { throw 'Launcher dependencies changed.' }
 if ((Get-FileHash -LiteralPath (Join-Path $sourceRoot 'Release\lib\GameServer.dll')).Hash -ne
     (Get-FileHash -LiteralPath (Join-Path $sourceRoot 'build\Tests\Release\lib\GameServer.dll')).Hash) { throw 'Server build differs from tested assembly.' }
-$testRoot = Join-Path (Split-Path $sourceRoot -Parent) 'tools\OfflineDaoc.Launcher.Tests\bin\Release\net10.0-windows'
+$testRoot = Join-Path (Split-Path $sourceRoot -Parent) 'tools\DAoCLivingServer.Launcher.Tests\bin\Release\net10.0-windows'
 if ((Get-FileHash -LiteralPath (Join-Path $launcher 'OfflineDAoC.dll')).Hash -ne (Get-FileHash -LiteralPath (Join-Path $testRoot 'OfflineDAoC.dll')).Hash) { throw 'Launcher differs from tested assembly.' }
 foreach ($suite in @(@('launcher',89),@('server',1672))) {
     [xml]$result = Get-Content -LiteralPath ("C:\Users\thedo\Desktop\new class test\reports\realm-event-records-tests\realm-event-records-" + $suite[0] + ".trx") -Raw

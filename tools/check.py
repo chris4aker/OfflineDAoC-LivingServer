@@ -31,6 +31,7 @@ WORKFLOW = Path(".github/workflows/build-and-test.yml")
 CHECKS: list[tuple[str, str]] = [
     ("versions", "tools/release/check_versions.py"),
     ("versions", "tools/release/check_brand.py"),
+    ("versions", "tools/release/check_brand.py --internal"),
     ("versions", "-m unittest discover -s tools/release/tests"),
     ("versions", "-m unittest discover -s tools/installer/tests"),
     ("encounter-catalog", "source/tools/epic_encounter_catalog.py --check"),

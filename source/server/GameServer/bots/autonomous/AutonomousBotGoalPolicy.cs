@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using OfflineDaoc.Configuration;
+using DAoCLivingServer.Configuration;
 
 namespace DOL.GS;
 

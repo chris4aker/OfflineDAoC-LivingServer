@@ -7,7 +7,7 @@ internal static class Program
     static void Main()
     {
         Application.SetHighDpiMode(HighDpiMode.DpiUnaware);
-        var type = Assembly.Load("OfflineDAoC").GetType("OfflineDaoc.Launcher.MainForm", true)!;
+        var type = Assembly.Load("OfflineDAoC").GetType("DAoCLivingServer.Launcher.MainForm", true)!;
         // Never show the form: its Shown handler reads the live database.
         using var form = (Form)Activator.CreateInstance(type, true)!;
         ((Label)type.GetField("_serverState", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(form)!).Text = "STARTING…";

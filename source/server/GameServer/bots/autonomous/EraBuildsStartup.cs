@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using DOL.Events;
 using DOL.Logging;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.GS
 {

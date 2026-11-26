@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "source/tools/OfflineDaoc.Playtester/**"
-      - "source/tools/OfflineDaoc.Playtester.Tests/**"
+      - "source/tools/DAoCLivingServer.Playtester/**"
+      - "source/tools/DAoCLivingServer.Playtester.Tests/**"
       - "source/tools/make_test_world.py"
       - "source/server/GameServer/packets/Client/168/CharacterCreateRequestHandler.cs"
       - "source/server/GameServer/bots/BotDeathAnimation.cs"
@@ -46,7 +46,7 @@ jobs:
         run: python3 -m unittest discover -s source/tools/tests -v
 
       - name: Test the playtester
-        run: dotnet test source/tools/OfflineDaoc.Playtester.Tests/OfflineDaoc.Playtester.Tests.csproj -c Release
+        run: dotnet test source/tools/DAoCLivingServer.Playtester.Tests/DAoCLivingServer.Playtester.Tests.csproj -c Release
 
       - name: Build the server
         run: |
@@ -62,8 +62,8 @@ jobs:
 
       - name: Run the scenarios
         run: |
-          dotnet build source/tools/OfflineDaoc.Playtester -c Release
-          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+          dotnet build source/tools/DAoCLivingServer.Playtester -c Release
+          dotnet source/tools/DAoCLivingServer.Playtester/bin/Release/net10.0/DAoCLivingServer.Playtester.dll run \
             --world "$RUNNER_TEMP/minimal.db" --server-dir source/server/Release \
             --scenarios login-save-restart,chat-players,group-players,class-switch --out "$RUNNER_TEMP/playtest"
 
@@ -73,7 +73,7 @@ jobs:
         if: always()
         run: |
           set -o pipefail
-          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+          dotnet source/tools/DAoCLivingServer.Playtester/bin/Release/net10.0/DAoCLivingServer.Playtester.dll run \
             --world "$RUNNER_TEMP/minimal-classoff.db" --server-dir source/server/Release \
             --scenarios class-switch,login-save-restart --out "$RUNNER_TEMP/playtest-classoff" | tee "$RUNNER_TEMP/classoff.txt"
           grep -q "edition: class off" "$RUNNER_TEMP/classoff.txt" || { echo "::error::the class-off world did not run the class-off rules"; exit 1; }
@@ -87,7 +87,7 @@ jobs:
         if: always()
         run: |
           set -o pipefail
-          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+          dotnet source/tools/DAoCLivingServer.Playtester/bin/Release/net10.0/DAoCLivingServer.Playtester.dll run \
             --world "$RUNNER_TEMP/minimal-death.db" --server-dir source/server/Release \
             --scenarios bot-death,bot-corpse-target,bot-rez,bot-jump --out "$RUNNER_TEMP/playtest-death" | tee "$RUNNER_TEMP/death.txt"
           logs=("$RUNNER_TEMP"/playtest-death/server-console-*.log)
@@ -109,7 +109,7 @@ jobs:
         if: always()
         run: |
           set -o pipefail
-          dotnet source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll run \
+          dotnet source/tools/DAoCLivingServer.Playtester/bin/Release/net10.0/DAoCLivingServer.Playtester.dll run \
             --world "$RUNNER_TEMP/minimal-companions.db" --server-dir source/server/Release \
             --scenarios bot-click-target,hire-train,gamebot-kill-xp --out "$RUNNER_TEMP/playtest-companions" | tee "$RUNNER_TEMP/companions.txt"
           logs=("$RUNNER_TEMP"/playtest-companions/server-console-*.log)

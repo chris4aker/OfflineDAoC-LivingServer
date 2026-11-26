@@ -4,7 +4,7 @@ using System.Linq;
 using DOL.GS;
 using DOL.GS.ServerProperties;
 using NUnit.Framework;
-using OfflineDaoc.Configuration;
+using DAoCLivingServer.Configuration;
 
 namespace DOL.UnitTests
 {

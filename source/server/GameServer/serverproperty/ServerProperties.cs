@@ -2291,7 +2291,7 @@ namespace DOL.GS.ServerProperties
 		/// <summary>
 		/// Living Server 1.2 era builds (docs/ERA-BUILDS-1.2.md, WP2): the launcher's + Lv.1, + Lv.20 and + Lv.50 batches (and
 		/// AutonomousBotIdentityGenerator.Generate) draw each new gamebot's class from its realm's 2003 share
-		/// (OfflineDaoc.Shared.EraBuildCatalog: Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class.
+		/// (DAoCLivingServer.Shared.EraBuildCatalog: Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class.
 		/// The launcher reads the row (a missing row is on); bots never play the custom class either way (owner 2026-11-17).
 		/// </summary>
 		[ServerProperty("bots", "bot_era_class_shares", "Era builds: the launcher's bot batches draw each new gamebot's class from its realm's 2003 class share (estimates from 2002-2003 forum posts; Cleric 12% of Albion, Reaver 3%) instead of evenly. Existing bots keep their class.", true)]

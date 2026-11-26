@@ -1,4 +1,4 @@
-"""Builds the Living Server setup's art from the launcher's own art (source/tools/OfflineDaoc.Launcher/Assets).
+"""Builds the Living Server setup's art from the launcher's own art (source/tools/DAoCLivingServer.Launcher/Assets).
 
     python tools/installer/art/make_art.py
 
@@ -27,7 +27,7 @@ import random
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[3]
-LAUNCHER_ART = ROOT / "source/tools/OfflineDaoc.Launcher/Assets"
+LAUNCHER_ART = ROOT / "source/tools/DAoCLivingServer.Launcher/Assets"
 ART = Path(__file__).resolve().parent
 FONT = ART / "fonts/Cinzel-wght.ttf"
 OUT = ROOT / "tools/installer/src/Assets"
@@ -197,7 +197,7 @@ def write_splash_title():
 
 
 def make_header(shield):
-    src = Image.open(LAUNCHER_ART / "offline-daoc-header-source.png").convert("RGB")
+    src = Image.open(LAUNCHER_ART / "DAoC-LivingServer-header-source.png").convert("RGB")
     W, H = 1920, 220
     # the mountain hall, the party on the road and the gate: the middle of the panorama
     head = cover(src, (W, H), focus=(0.48, 0.52))
@@ -226,7 +226,7 @@ def make_header(shield):
 
 
 def make_shield():
-    src = Image.open(LAUNCHER_ART / "offline-daoc-realm-shield-source.png").convert("RGBA")
+    src = Image.open(LAUNCHER_ART / "DAoC-LivingServer-realm-shield-source.png").convert("RGBA")
     src = src.crop(src.getbbox())
     return src.resize((int(src.width * 256 / src.height), 256), Image.LANCZOS)
 

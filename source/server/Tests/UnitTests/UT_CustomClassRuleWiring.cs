@@ -11,7 +11,7 @@ using DOL.Database;
 using DOL.GS;
 using DOL.GS.Database;
 using NUnit.Framework;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 
 namespace DOL.UnitTests
 {
