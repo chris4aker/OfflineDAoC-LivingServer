@@ -2,10 +2,11 @@
  "note": "The evening ratchet (evening_read.py --ratchet): seven counts of the player's evenings (UT_ChatBudgetSimulation.PlayerEvenings) that need no judgement may not get worse. Tighten with --write after a fix; never loosen it to pass. Tests only.",
  "evenings": 18,
  "party_banter_after_60": 0,
- "say_stock_share": 0.6185,
- "faction_top10_share": 0.4965,
- "how_much_paying_per_hour": 25.13,
- "name_first_share": 0.2593,
- "laughing_calls_share": 0.1006,
- "party_unanswered": 5.0
+ "say_stock_share": 0.6184,
+ "faction_top10_share": 0.503,
+ "how_much_paying_per_hour": 25.16,
+ "name_first_share": 0.2773,
+ "laughing_calls_share": 0.097,
+ "party_unanswered": 5.0,
+ "rebaselined": "#622 (2026-11-26): one random stream per subsystem reshuffles every evening's draws, so the baseline was re-derived once from CI run 45805246219 (build-and-test on 2499c4bb, 18 evenings), as the issue asks. No server code changed. Before: faction_top10_share 0.4965, how_much_paying_per_hour 25.13, name_first_share 0.2593, say_stock_share 0.6185, laughing_calls_share 0.1006."
 }

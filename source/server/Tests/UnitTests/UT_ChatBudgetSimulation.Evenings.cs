@@ -200,11 +200,59 @@ public partial class UT_ChatBudgetSimulation
 
         private static readonly UT_ChatQuestionBench.Bench Loaded = UT_ChatQuestionBench.Load();
 
-        private static List<Row> Evening(Scenario s, int seed, bool speaks, int minutes = 120)
+        /// <summary>
+        /// #622: one seeded random stream per subsystem, so a change that alters one subsystem's draws (a /group reply, a fight call,
+        /// a /trade line) can't reshuffle every later draw of the others. Each stream's seed is derived from the evening's seed and
+        /// the stream's name (FNV-1a, stable across runs and machines); "setup" is the evening's own seed, so the roster is the one the
+        /// single stream drew. The evening switches <c>random</c> to a subsystem's stream where that subsystem's code starts; its
+        /// local functions capture the variable, so every helper it calls (Pick, Styled, Generated, Near, ...) draws from it.
+        /// Streams isolate the draws only: shared state (the recent-line memory, the channel meter, the field memory) still links them.
+        /// </summary>
+        internal sealed class Streams
+        {
+            internal static readonly string[] Names =
+            [
+                "setup", "ambient", "faction", "say", "lfg", "trade", "guild", "scenes", "stories", "group", "fights", "solo", "tell", "player",
+            ];
+            private readonly Dictionary<string, Random> _byName = new(StringComparer.Ordinal);
+
+            /// <param name="skew">Test only: the stream whose seed is moved by one, as if that subsystem's code had changed its draws.</param>
+            internal Streams(int seed, string skew = null)
+            {
+                foreach (string name in Names)
+                    _byName[name] = new Random(SeedOf(seed, name) + (name == skew ? 1 : 0));
+            }
+
+            internal Random this[string name] => _byName[name];
+
+            /// <summary>The seed of stream <paramref name="name"/>: the evening's seed for "setup", else FNV-1a of the name over it.</summary>
+            internal static int SeedOf(int seed, string name)
+            {
+                if (name == "setup")
+                    return seed;
+                unchecked
+                {
+                    uint hash = 2166136261u ^ (uint)seed;
+                    foreach (char c in name)
+                        hash = (hash ^ c) * 16777619u;
+                    return (int)(hash & 0x7FFF_FFFF);
+                }
+            }
+
+            /// <summary>The stream that plays a queued line of a channel.</summary>
+            internal static string OfChannel(string channel) => channel switch
+            {
+                "faction" or "say" or "lfg" or "trade" or "guild" or "group" or "tell" => channel,
+                _ => "ambient",
+            };
+        }
+
+        private static List<Row> Evening(Scenario s, int seed, bool speaks, int minutes = 120, string skew = null)
         {
             eRealm realm = s.Realm;
             string realmName = GlobalConstants.RealmToName(realm);
-            var random = new Random(seed);
+            var streams = new Streams(seed, skew);
+            Random random = streams["setup"];
             var recent = new VC.RecentLines();
             var meter = new Budget.ChannelMeter();
             Budget.Settings settings = Budget.Current;
@@ -568,6 +616,7 @@ public partial class UT_ChatBudgetSimulation
                 bool regularFirst = Regular(bot, now) && options.Count > 0 && options[0].Name == "faction";
                 while (options.Count > 0)
                 {
+                    random = streams["ambient"];
                     double total = options.Sum(o => Budget.ChoiceWeight(o.Band.Item2, o.Measured));
                     double draw = random.NextDouble() * total;
                     int pick = 0;
@@ -585,6 +634,7 @@ public partial class UT_ChatBudgetSimulation
                     }
                     var choice = options[pick];
                     options.RemoveAt(pick);
+                    random = streams[choice.Name];
                     // AutonomousChatExchange.SinkHold "hog" (1.2.3): a bot that said one of /faction's last four lines starts nothing new.
                     if (choice.Name == "faction" && lastFactionSpeakers.Contains(bot.Id) && now - lastFactionLine < AutonomousChatExchange.SpeakerShareQuietMs)
                         continue;
@@ -745,6 +795,16 @@ public partial class UT_ChatBudgetSimulation
             long xp = 0;
             Bot downMate = null;
             var groupDue = new List<(long At, Action Act)>();
+            // #622: a queued group line plays under the stream that queued it.
+            void Later(long at, Action act)
+            {
+                Random queuedBy = random;
+                groupDue.Add((at, () =>
+                {
+                    random = queuedBy;
+                    act();
+                }));
+            }
             var events = new SortedDictionary<long, string>();
             if (s.Grouped)
             {
@@ -777,7 +837,7 @@ public partial class UT_ChatBudgetSimulation
                 string text = Pick(now, "group", leader, out VC.Picked picked, topic: BotLedGroups.Topic(what), flags: ["lead_call"], extra: slots)
                     ? picked.Text
                     : BotLedGroups.Fill(BotLedGroups.Fallback(what), slots);
-                groupDue.Add((now + 800 + random.Next(1_500), () => GroupSay(now + 1_500, leader, text, "lead:" + what)));
+                Later(now + 800 + random.Next(1_500), () => GroupSay(now + 1_500, leader, text, "lead:" + what));
             }
 
             void CombatCall(long now, string topic, Bot preferred)
@@ -826,11 +886,11 @@ public partial class UT_ChatBudgetSimulation
                 {
                     Bot bot = from[i];
                     long at = now + 1_200 + i * 1_700 + random.Next(1_500);
-                    groupDue.Add((at, () =>
+                    Later(at, () =>
                     {
                         if (Pick(at, "grats", bot, out VC.Picked line, topic: "general", extra: slots, repeat: true))
                             Say(at, channel, line.Text, bot.Id, false, "grats", 0, 0);
-                    }));
+                    });
                 }
             }
 
@@ -884,6 +944,7 @@ public partial class UT_ChatBudgetSimulation
                             Sys(now, $"{downMate.Name} was just killed by a {downMate.Monster}!");
                             break;
                         case "player_dies":
+                            random = streams["fights"];
                             if (!fighting)
                             {
                                 events[now + 5_000] = "player_dies";
@@ -897,11 +958,11 @@ public partial class UT_ChatBudgetSimulation
                             {
                                 Bot speaker = healer ?? party[random.Next(party.Length)];
                                 long at = now + 1_500 + random.Next(2_000);
-                                groupDue.Add((at, () =>
+                                Later(at, () =>
                                 {
                                     if (alive * 2 >= 6 && Pick(at, "combat", speaker, out VC.Picked down, topic: "player_down", flags: ["in_combat"]))
                                         GroupSay(at, speaker, down.Text, "combat:player_down");
-                                }));
+                                });
                             }
                             break;
                         case "mate_dings":
@@ -925,6 +986,7 @@ public partial class UT_ChatBudgetSimulation
                     }
                 }
                 // The fights.
+                random = streams["fights"];
                 if (!fighting && now >= nextFight)
                 {
                     fighting = true;
@@ -992,6 +1054,7 @@ public partial class UT_ChatBudgetSimulation
                 if (!fighting)
                     healerMana = Math.Min(100, healerMana + (now % 4_000 == 0 ? 1 : 0));
                 // AutonomousBotGroupChatter.TryGroupLine: the banter, out of combat, on the group channel's budget.
+                random = streams["group"];
                 if (!fighting && now % 5_000 == 0)
                 {
                     Bot bot = party[random.Next(party.Length)];
@@ -1024,7 +1087,7 @@ public partial class UT_ChatBudgetSimulation
                                 filter: line => AutonomousBotVoices.ShapedFits(answers, said.Text, line.Text) && AutonomousChatEngagement.FitsGroup(line.Text, 6, false)))
                             continue;
                         long at = now + AutonomousBotChatCoordinator.ReplyDelayMs(reply.Text, 0, random);
-                        groupDue.Add((at, () => GroupSay(at, mate, reply.Text, "group:reply:" + answers, ex, 1)));
+                        Later(at, () => GroupSay(at, mate, reply.Text, "group:reply:" + answers, ex, 1));
                         break;
                     }
                 }
@@ -1042,7 +1105,7 @@ public partial class UT_ChatBudgetSimulation
                         {
                             long at = now + 2_500 + random.Next(3_000);
                             string text = Styled(near[0], AutonomousChatEngagement.DeathSympathy(Player, false, random));
-                            groupDue.Add((at, () => Say(at, "say", text, near[0].Id, false, "engage:death", 0, 0)));
+                            Later(at, () => Say(at, "say", text, near[0].Id, false, "engage:death", 0, 0));
                         }
                         break;
                     case "solo_ding":
@@ -1179,6 +1242,7 @@ public partial class UT_ChatBudgetSimulation
             // ------------------------------------------------------------------------------------------------------- the clock
             for (long now = 0; now < end; now += 1_000)
             {
+                random = streams["scenes"];
                 if (now >= debateUntil && adsLeft < 0 && Budget.SceneDue(debatePlanned, debateDue, now, Bots))
                 {
                     StartDebate(now);
@@ -1211,6 +1275,7 @@ public partial class UT_ChatBudgetSimulation
                     }
                 }
                 // Stories from real events (AutonomousBotChatCoordinator.TellStory), at the budget simulation's modelled rate.
+                random = streams["stories"];
                 if (now % 60_000 == 0 && random.NextDouble() < 0.17 * Bots / 1_000.0)
                 {
                     Bot teller = all[random.Next(all.Count)];
@@ -1227,10 +1292,18 @@ public partial class UT_ChatBudgetSimulation
                                     step.Who != 0, "story:" + story + ":" + step.Who, ex, index++));
                 }
                 if (s.Grouped)
+                {
+                    random = streams["group"];
                     GroupTick(now);
+                }
                 else if (events.TryGetValue(now, out string solo))
+                {
+                    random = streams["solo"];
                     SoloEvent(now, solo);
+                }
+                random = streams["tell"];
                 TellTick(now);
+                random = streams["player"];
                 PlayerTick(now);
                 for (int i = groupDue.Count - 1; i >= 0; i--)
                     if (groupDue[i].At <= now)
@@ -1246,6 +1319,7 @@ public partial class UT_ChatBudgetSimulation
                         int i = dueReplies.IndexOf(due);
                         if (i < 0)
                             continue;   // moved on with an earlier line of its exchange
+                        random = streams[Streams.OfChannel(due.Channel)];
                         // AutonomousBotChatCoordinator.PlayThread/PlayStory: not within 2 s of the channel's last line.
                         if (due.Channel == "faction" && now - lastFactionLine < 2_000 && deferred.GetValueOrDefault(due.Text) < 3)
                         {
@@ -1278,6 +1352,7 @@ public partial class UT_ChatBudgetSimulation
                     sayPressure = Pressure(Budget.Channel.Say, Bots), guildPressure = Pressure(Budget.Channel.Guild, guildSize);
                 foreach (Bot bot in all)
                 {
+                    random = streams["ambient"];
                     if (bot.NextCheck > now)
                         continue;
                     bot.NextCheck = now + 15_000 + random.Next(20_001) + bot.Id % 4_000;
@@ -1291,6 +1366,7 @@ public partial class UT_ChatBudgetSimulation
                     if (bot.InGuild && (regular || random.NextDouble() < AutonomousChatRegulars.OthersShare ||
                                         meter.PerMinute(Budget.Channel.Guild, 1, now) < Budget.Band(settings, Budget.Channel.Guild, guildSize, 20, false, Rate).Floor))
                     {
+                        random = streams["guild"];
                         bool turn = meter.TryStart(Budget.Channel.Guild, 1, now, Budget.Band(settings, Budget.Channel.Guild, guildSize, 20, false, Rate), random)
                             is Budget.Verdict.Speak or Budget.Verdict.SpeakUnderFloor;
                         if (turn && random.NextDouble() < Field.Share("guild") &&
@@ -1326,6 +1402,10 @@ public partial class UT_ChatBudgetSimulation
         }
 
         // ------------------------------------------------------------------------------------------------------------------ run
+
+        /// <summary>#622 test hook: the Albion bot-led dungeon evening (the player grouped and speaking), with one stream skewed.</summary>
+        internal static List<Row> DungeonEvening(int seed, string skew, int minutes = 60) =>
+            Evening(new Scenario("L24-dungeon-alb", eRealm.Albion, 24, "dungeon", true, true), seed, true, minutes, skew);
 
         private static string Clean(string text) => (text ?? string.Empty).Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
 
@@ -1379,6 +1459,52 @@ public partial class UT_ChatBudgetSimulation
     /// The player's evenings (PlayerEvenings): writes evening-transcripts/evenings.tsv (EVENINGS_OUT to put it elsewhere), and with
     /// EVENING_PRINT_ROWS=1 prints every row as EVENING_ROW. The CI step "Evening transcripts ratchet" runs evening_read.py on it.
     /// </summary>
+    // #622: one random stream per subsystem in the player's evenings.
+    [Test]
+    public void EachEveningStreamHasAStableSeedOfItsOwn()
+    {
+        Assert.That(PlayerEvenings.Streams.SeedOf(1101, "setup"), Is.EqualTo(1101), "the roster is the one the single stream drew");
+        // FNV-1a of the name over the evening's seed: the same on every machine and run (string.GetHashCode is not).
+        Assert.That(PlayerEvenings.Streams.SeedOf(1101, "group"), Is.EqualTo(484401835));
+        Assert.That(PlayerEvenings.Streams.SeedOf(1101, "trade"), Is.EqualTo(1427446806));
+        int[] seeds = PlayerEvenings.Streams.Names.Select(name => PlayerEvenings.Streams.SeedOf(1101, name)).ToArray();
+        Assert.That(seeds, Is.Unique);
+        Assert.That(PlayerEvenings.Streams.OfChannel("tell"), Is.EqualTo("tell"));
+        Assert.That(PlayerEvenings.Streams.OfChannel("meta"), Is.EqualTo("ambient"));
+        Assert.That(PlayerEvenings.Streams.Names.Contains(PlayerEvenings.Streams.OfChannel("group")));
+    }
+
+    [Test]
+    public void AGroupChangeLeavesTheTradeLinesAndTheFightCallsAlone()
+    {
+        List<PlayerEvenings.Row> before = PlayerEvenings.DungeonEvening(1101, null);
+        List<PlayerEvenings.Row> again = PlayerEvenings.DungeonEvening(1101, null);
+        Assert.That(again, Is.EqualTo(before), "control: the same evening twice is the same (no state carried between runs)");
+        List<PlayerEvenings.Row> after = PlayerEvenings.DungeonEvening(1101, "group");
+        static bool Banter(PlayerEvenings.Row row) => row.Channel == "group" && row.Src.StartsWith("group:", StringComparison.Ordinal);
+        Assert.That(after.Where(Banter).Select(row => (row.At, row.Text)), Is.Not.EqualTo(before.Where(Banter).Select(row => (row.At, row.Text))),
+            "the skew changed the /group banter (else this test proves nothing)");
+        static bool Trade(PlayerEvenings.Row row) => row.Channel == "trade";
+        Assert.That(after.Where(Trade).Select(row => (row.At, row.Who, row.Src, row.Text)),
+            Is.EqualTo(before.Where(Trade).Select(row => (row.At, row.Who, row.Src, row.Text))), "/trade unchanged");
+        static bool Call(PlayerEvenings.Row row) => row.Src.StartsWith("combat:", StringComparison.Ordinal);
+        Assert.That(after.Where(Call).Select(row => (row.At, row.Src)), Is.EqualTo(before.Where(Call).Select(row => (row.At, row.Src))),
+            "the fight calls come at the same moments");
+    }
+
+    [Test]
+    public void ATradeChangeLeavesTheFightCallsAlone()
+    {
+        List<PlayerEvenings.Row> before = PlayerEvenings.DungeonEvening(1101, null);
+        List<PlayerEvenings.Row> after = PlayerEvenings.DungeonEvening(1101, "trade");
+        static bool Trade(PlayerEvenings.Row row) => row.Channel == "trade";
+        Assert.That(after.Where(Trade).Select(row => (row.At, row.Text)), Is.Not.EqualTo(before.Where(Trade).Select(row => (row.At, row.Text))),
+            "the skew changed /trade (else this test proves nothing)");
+        static bool Call(PlayerEvenings.Row row) => row.Src.StartsWith("combat:", StringComparison.Ordinal);
+        Assert.That(after.Where(Call).Select(row => (row.At, row.Src, row.Text)),
+            Is.EqualTo(before.Where(Call).Select(row => (row.At, row.Src, row.Text))), "the fight calls unchanged");
+    }
+
     [Test]
     public void PlaysThePlayersEvenings()
     {
