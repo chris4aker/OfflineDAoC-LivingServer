@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **739**; pending (#625, not on main yet): **3**; shipped by the pipeline: **710**.
+- Rows in code: **740**; pending (#625, not on main yet): **3**; shipped by the pipeline: **711**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -217,6 +217,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_DEBATE_RECAST` | server.log | **ships** | `bots/autonomous/AutonomousBotDebates.cs` | `beat`, `realm`, `role`, `scene` | - | - | - |
 | `BOT_DEBATE_START` | server.log | **ships** | `bots/autonomous/AutonomousBotDebates.cs` | `realm`, `scene`, `speakers`, `tale`, `teller` | `teller` | - | - |
 | `BOT_DEBATE_WAIT` | server.log | **ships** | `bots/autonomous/AutonomousBotDebates.cs` | `beat`, `realm`, `reason`, `role`, `scene` | - | - | - |
+| `BOT_GOALS` | server.log | **ships** | `bots/autonomous/LivingRows.Goals.cs` | `l1_19`, `l20_49`, `l50`, `reason`, `source` | - | - | The goal rows (#669, #670). |
 | `BOT_GOALS_OVERRIDE` | server.log | no: free text, no key=value fields | `bots/autonomous/AutonomousBotGoalPolicy.cs` | - | - | - | - |
 | `BOT_GROUP_RELEASE` | server.log | **ships** | `bots/BotGroupRelease.cs` | `bot`, `id`, `returning`, `to` | `bot` | - | - |
 | `BOT_GROUP_RELEASE_FAILED` | server.log | **ships** | `bots/BotGroupRelease.cs` | `bot` | `bot` | - | The bot's own death timer goes on and retries. |

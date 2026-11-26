@@ -15,6 +15,11 @@ For sessions that can't create releases or upload files themselves: the workflow
         publishes the release as Latest (not a pre-release). Stops, changing nothing, when the tag or a release for it
         exists already. --dry-run does every check and prints what it would do.
 
+    python tools/release/publish_release.py check-jobs --jobs FILE
+        FILE is the run's jobs (`gh api repos/<repo>/actions/runs/<id>/jobs?filter=latest&per_page=100`). Fails unless
+        each job main requires (REQUIRED_JOBS: server, launcher, encounter-catalog, new-client, versions) is there and
+        concluded success (issue #623): the run's own conclusion alone is not trusted.
+
 Test builds (issue #637): with --prerelease, the tag is a release candidate v<X>-rc.<N> (v1.2.3-rc.1). The push
 run's package is still build X (its LivingServer-<X> folder and BUILD-INFO.txt BuildName=X, checked the same way), zipped
 as OfflineDAoC-LivingServer-<X>-rc.<N>.zip; `notes --prerelease` writes short player-facing notes (no notes file
@@ -48,6 +53,10 @@ TAG = re.compile(r"^v((\d+)(?:\.\d+)+(?:-beta)?)$")
 # A release candidate, published as a GitHub pre-release (issue #637): v1.2.3-rc.1. Its package is build 1.2.3.
 RC_TAG = re.compile(r"^v((\d+)(?:\.\d+)+)-rc\.([1-9]\d*)$")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
+# The build-and-test jobs main's branch rule requires (docs/DEVELOPMENT.md, "Recommended settings for main"). A run is
+# published only when each of them concluded success (issue #623); test_publish_release.py keeps this in step with
+# build-and-test.yml.
+REQUIRED_JOBS = ("server", "launcher", "encounter-catalog", "new-client", "versions")
 LEFTOVER = re.compile(r"\((?:owner|zip SHA-256)[^)]*\)|@@[A-Z_]+@@")
 
 
@@ -334,6 +343,30 @@ def publish(gh, tag, commit, title, body, zip_path, dry_run, prerelease=False):
     return published
 
 
+def check_jobs(jobs_json):
+    """Raises Stop unless every REQUIRED_JOBS job is in the run's latest attempt and concluded success. Returns the
+    (name, conclusion) pairs checked."""
+    jobs = jobs_json.get("jobs") if isinstance(jobs_json, dict) else None
+    if not isinstance(jobs, list):
+        raise Stop("the run's jobs could not be read (no 'jobs' list)")
+    if isinstance(jobs_json.get("total_count"), int) and jobs_json["total_count"] > len(jobs):
+        raise Stop(f"the run has {jobs_json['total_count']} jobs but only {len(jobs)} were listed: page through them")
+    problems, checked = [], []
+    for name in REQUIRED_JOBS:
+        found = [j for j in jobs if j.get("name") == name]
+        if not found:
+            problems.append(f"{name}: not in the run")
+            continue
+        for j in found:
+            conclusion = j.get("conclusion") or j.get("status") or "unknown"
+            checked.append((name, conclusion))
+            if conclusion != "success":
+                problems.append(f"{name}: {conclusion}")
+    if problems:
+        raise Stop("required jobs did not all succeed: " + "; ".join(problems))
+    return checked
+
+
 def notice(kind, title, text):
     if os.environ.get("GITHUB_ACTIONS"):
         print(f"::{kind} title={title}::{text}")
@@ -372,9 +405,14 @@ def run(argv=None, gh=None):
     p.add_argument("--zip", required=True)
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--prerelease", action="store_true")
+    p = sub.add_parser("check-jobs")
+    p.add_argument("--jobs", required=True, help="the run's jobs as JSON (actions/runs/<id>/jobs?filter=latest)")
     a = ap.parse_args(argv)
     try:
-        if a.command == "package":
+        if a.command == "check-jobs":
+            checked = check_jobs(json.loads(Path(a.jobs).read_text(encoding="utf-8")))
+            print("required jobs: " + ", ".join(f"{n} {c}" for n, c in checked))
+        elif a.command == "package":
             target, digest = package(a.artifact, a.tag, a.commit, a.out, a.prerelease)
             print(f"{target.name} sha256 {digest}")
             output(zip=str(target), zip_sha256=digest)
