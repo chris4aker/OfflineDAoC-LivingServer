@@ -22,7 +22,9 @@ namespace DOL.GS.PacketHandler.Client.v168
             {
                 EffectListComponent effectListComponent = player.effectListComponent;
                 ECSGameEffect effect = effectListComponent.TryGetEffectFromEffectId(effectId);
-                effect?.End(true);
+                // #661: a buff a bot cast, cancelled by the player, is refused until /buff allow.
+                if (effect?.End(true) == true && effect is ECSGameSpellEffect spellEffect)
+                    PlayerBuffRefusals.OnPlayerCancelled(player, spellEffect.SpellHandler);
                 return;
             }
 
@@ -44,6 +46,8 @@ namespace DOL.GS.PacketHandler.Client.v168
                 }
 
                 found?.Cancel(true);
+                if (found is GameSpellEffect spellEffect)
+                    PlayerBuffRefusals.OnPlayerCancelled(player, spellEffect.SpellHandler);
             }
         }
     }

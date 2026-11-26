@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **753**; pending (#625, not on main yet): **0**; shipped by the pipeline: **721**.
+- Rows in code: **754**; pending (#625, not on main yet): **0**; shipped by the pipeline: **722**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -272,6 +272,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BUFFBOT_INVITE_DECLINED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `player` | `buffbot`, `player` | - | - |
 | `BUFFBOT_LOGOUT` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `id`, `main`, `reason` | `buffbot`, `main` | - | - |
 | `BUFFBOT_RELOCATED` | server.log | **ships** | `bots/autonomous/NoLiferBuffBots.cs` | `buffbot`, `from`, `main`, `to`, `why`, `x`, `y` | `buffbot`, `main` | - | - |
+| `BUFF_REFUSAL` | server.log | **ships** | `bots/PlayerBuffRefusals.cs` | `now`, `player`, `why` | `player` | - | - |
 | `CABALIST_REST` | server.log | **ships** | `bots/CabalistRestDiagnostics.cs` | `aggro`, `blocked`, `cast`, `end`, `hp`, `lastAttempt`, `lastMessage`, `leaderDistance`, `level`, `mana`, `moving`, `name`, `pending`, `pet`, `petCast`, `petCombat`, `petMoving`, `petTarget` | `lastMessage`, `name`, `pending`, `petTarget` | - | - |
 | `CAST_INTERRUPT` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attacker`, `attackerPet`, `bg`, `castMs`, `caster`, `every`, `leftMs`, `outcome`, `pet`, `realm`, `region`, `seq`, `spell`, `t`, `why` | - | - | CAST_INTERRUPT (#625 row 2; |
 | `CC_BREAK` | server.log | **ships** | `bots/autonomous/LivingRows.Combat.cs` | `attack`, `bg`, `breaker`, `breakerPet`, `caster`, `cc`, `ms`, `region`, `side`, `t`, `target` | - | - | CC_BREAK (#625 row 3; |

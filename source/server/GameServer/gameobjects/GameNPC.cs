@@ -2280,7 +2280,8 @@ namespace DOL.GS
 			get
 			{
 				ArrayList brains = m_brains;
-				if (brains.Count > 0)
+				// #661: null-safe for an NPC built without its constructor (tests); live NPCs always have the list.
+				if (brains != null && brains.Count > 0)
 					return (ABrain)brains[brains.Count - 1];
 				return m_ownBrain;
 			}
