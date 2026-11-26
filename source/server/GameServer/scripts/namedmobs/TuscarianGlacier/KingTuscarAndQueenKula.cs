@@ -188,11 +188,11 @@ namespace DOL.GS
                 if(!kingTuscarUp || HealthPercent <= 50)
                 {
                     if (Util.Chance(50))
-                        CastSpell(Cold_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                        RaidBossMechanics.Cast(CastSpell(Cold_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "cold", Cold_DD); // #644 measurement only
                 }
                 if (kingTuscarUp || HealthPercent > 50)
                     if (Util.Chance(10))
-                    CastSpell(Cold_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                    RaidBossMechanics.Cast(CastSpell(Cold_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "cold", Cold_DD); // #644 measurement only
             }
             base.OnAttackedByEnemy(ad);
         }
@@ -322,7 +322,7 @@ namespace DOL.AI.Brain
                                     if (!player.effectListComponent.ContainsEffectForEffectType(eEffect.Mez) && !player.effectListComponent.ContainsEffectForEffectType(eEffect.MezImmunity)
                                     && !player.effectListComponent.ContainsEffectForEffectType(eEffect.MovementSpeedDebuff))
                                     {
-                                        Body.CastSpell(Mezz, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//cast mezz
+                                        RaidBossMechanics.Cast(Body.CastSpell(Mezz, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "frostMezz", Mezz); // #644 measurement only//cast mezz
                                     }
                                 }
                                 break;
@@ -331,7 +331,7 @@ namespace DOL.AI.Brain
                                     if (!player.effectListComponent.ContainsEffectForEffectType(eEffect.Mez) && !player.effectListComponent.ContainsEffectForEffectType(eEffect.MovementSpeedDebuff) 
                                     && !player.effectListComponent.ContainsEffectForEffectType(eEffect.SnareImmunity))
                                     {
-                                        Body.CastSpell(Root, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//cast root
+                                        RaidBossMechanics.Cast(Body.CastSpell(Root, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "frostRoot", Root); // #644 measurement only//cast root
                                     }
                                 }
                                 break;
@@ -621,26 +621,26 @@ namespace DOL.GS
             {
                 styleComponent.NextCombatStyle = after_block;//target blocked boss attack so use after block style
                 if(Util.Chance(50))
-                    CastSpell(Hammers_aoe2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//aoe mjolnirs after style big dmg
+                    RaidBossMechanics.Cast(CastSpell(Hammers_aoe2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "hammers", Hammers_aoe2); // #644 measurement only//aoe mjolnirs after style big dmg
             }
             if (ad != null && ad.AttackResult == eAttackResult.Parried)
             {
                 if (Util.Chance(50))
-                    CastSpell(Thunder_aoe2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//aoe mjolnirs after style big dmg
+                    RaidBossMechanics.Cast(CastSpell(Thunder_aoe2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "thunder", Thunder_aoe2); // #644 measurement only//aoe mjolnirs after style big dmg
             }
             if (!IsQueenKulaUp() || (HealthPercent <= 50 && Brain is KingTuscarBrain tuscarBrain && tuscarBrain.TuscarRage))
             {
                 if (ad.AttackResult == eAttackResult.HitStyle && ad.Style.ID == 175 && ad.Style.ClassID == 22)
                 {
-                    CastSpell(Hammers_aoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//aoe mjolnirs after style big dmg
+                    RaidBossMechanics.Cast(CastSpell(Hammers_aoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "hammers", Hammers_aoe); // #644 measurement only//aoe mjolnirs after style big dmg
                 }
                 if (ad.AttackResult == eAttackResult.HitStyle && ad.Style.ID == 302 && ad.Style.ClassID == 44)
                 {
-                    CastSpell(Thunder_aoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//aoe lightining after style medium dmg
+                    RaidBossMechanics.Cast(CastSpell(Thunder_aoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "thunder", Thunder_aoe); // #644 measurement only//aoe lightining after style medium dmg
                 }
                 if (ad.AttackResult == eAttackResult.HitStyle && ad.Style.ID == 173 && ad.Style.ClassID == 22)
                 {
-                    CastSpell(Bleed, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//bleed after style low dot bleed dmg
+                    RaidBossMechanics.Cast(CastSpell(Bleed, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "bleed", Bleed); // #644 measurement only//bleed after style low dot bleed dmg
                 }
             }
             base.OnAttackEnemy(ad);

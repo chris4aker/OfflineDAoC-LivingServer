@@ -422,7 +422,7 @@ namespace DOL.AI.Brain
                 if (!Body.IsCasting)
                 {
                     BroadcastMessage("Legion unleashing massive soul consumption blast.");
-                    Body.CastSpell(LegionLifetapAoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+                    RaidBossMechanics.Cast(Body.CastSpell(LegionLifetapAoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "soulBlast", LegionLifetapAoe); // #644 measurement only
                 }
             }
             bladeturnConsumed = 0;
@@ -438,6 +438,7 @@ namespace DOL.AI.Brain
             int spawnAmount = 0;
             if (Body.InCombat && Body.IsAlive && HasAggro)
             {
+                RaidBossMechanics.Spawn(Body, "adds"); // #644 measurement only
                 foreach (GameLiving playerNearby in EncounterTargets.InRadius(Body, 2000))
                 {
                     if (playerNearby != null && EncounterTargets.NotGm(playerNearby))
