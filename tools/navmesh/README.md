@@ -166,3 +166,20 @@ It uses `dfprobe batch` `snap` (a floor within 181) and `los` (the server's rayc
 him). All 128 have a spot: 109 straight on the line, 19 after a turn. The misses straight on the line are a hill north-west of the second point
 (no line of sight) and the zone 14 border south of his spawn. The pet owners' 4,600 spots mostly lie in other zones,
 where the server snaps them on that zone's mesh. `dfprobe batch` gained `snap` and `los` for this.
+
+## The navmesh set for CI (#684, #687)
+
+CI's navmesh tests read a versioned copy of a fresh install's meshes, Detour library and clean world database, the
+assets of a `navmesh-vN` pre-release (never in Git, never a game update). `docs/CI.md`, "The navmesh job", has the whole
+flow. The pieces here:
+
+| File | What it does |
+|---|---|
+| `navmesh_set.py` | The manifest (`manifest.json` in Git, a placeholder until a set is published), `fetch`/`verify` by SHA-256, the test list filter and results, `check` (the installer's navmesh patches agree with the set), `tag-free` and `publish` (a draft pre-release, digests checked, then published with `make_latest: false`) |
+| `clean_world.py` | The set's world: `clean` a fresh install's world with `build_release_037.clean_world()` (a read-only online backup copy; `--require-fresh` refuses one with an account, character or gamebot), `verify` it with the release builder's own verify step. Fails closed. |
+| `Publish-NavmeshSet.ps1` | Packs the set into zip parts under 1.9 GB and writes `navmesh-manifest.json`. `-WorldDatabase` adds the clean world, only with clean_world.py's report naming its SHA-256 and never from inside a game install. |
+| `RUN-ME.cmd` | The fallback on a PC (#684): the packer for a navmesh-only set and a browser upload. |
+| `tests/` | `test_navmesh_set.py`, `test_clean_world.py` (a planted row in any saved-progress table fails the check) and `test-publish-script.ps1` (Windows PowerShell 5.1, in the `navmesh` workflow). |
+
+The set is made by `.github/workflows/navmesh-publish.yml` on a runner from a fresh Setup install, never on a PC: no
+played database is ever published. A dry run (the default) builds, checks and tests it and publishes nothing.

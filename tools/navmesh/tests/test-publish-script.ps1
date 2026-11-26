@@ -90,7 +90,10 @@ try {
     $clean = Join-Path $work 'clean\world'
     New-Item -ItemType Directory -Path $clean -Force | Out-Null
     $db = Join-Path $clean 'opendaoc.sqlite3.db'
-    [IO.File]::WriteAllBytes($db, [byte[]](@(83, 81, 76, 105, 116, 101, 32, 102, 111, 114, 109, 97, 116, 32, 51, 0) + @(New-Object byte[] 4096)))
+    $dbBytes = New-Object byte[] 4112
+    $header = [Text.Encoding]::ASCII.GetBytes('SQLite format 3')
+    [Array]::Copy($header, $dbBytes, $header.Length)
+    [IO.File]::WriteAllBytes($db, $dbBytes)
     $dbSha = (Get-FileHash -LiteralPath $db -Algorithm SHA256).Hash.ToLowerInvariant()
     $r = Run-Publish @('-NavmeshFolder', $nav, '-OutputRoot', (Join-Path $work 'out-w0'), '-NoBrowser', '-WorldDatabase', $db)
     Check ($r.Code -eq 1 -and $r.Output -match 'clean_world\.py report' -and !(Test-Path (Join-Path $work 'out-w0'))) 'a world without its clean report is refused'
