@@ -152,7 +152,7 @@ if ($WorldDatabase) {
     if ((Split-Path -Leaf $worldFull) -ne 'opendaoc.sqlite3.db') { Stop-WithMessage "The world database must be named opendaoc.sqlite3.db: $worldFull" }
     if (Test-Inside $worldFull $game) { Stop-WithMessage "$worldFull is inside the game install: a played world is never published. Give the clean copy clean_world.py made." }
     $reportPath = "$worldFull.clean.json"
-    if (!(Test-Path -LiteralPath $reportPath -PathType Leaf)) { Stop-WithMessage "No clean_world.py report at $reportPath: only a world the release builder's check passed is packed." }
+    if (!(Test-Path -LiteralPath $reportPath -PathType Leaf)) { Stop-WithMessage "No clean_world.py report at ${reportPath}: only a world the release builder's check passed is packed." }
     $report = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
     $worldSha = Get-Sha256 $worldFull
     if (!$report.PSObject.Properties['clean'] -or $report.clean -ne $true -or !$report.PSObject.Properties['sha256'] -or $report.sha256 -ne $worldSha) {
