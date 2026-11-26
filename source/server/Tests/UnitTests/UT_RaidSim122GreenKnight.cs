@@ -548,7 +548,7 @@ namespace DOL.UnitTests
             {
                 // killed; wipe when no raider is left fighting (the model's loss); else his clock ran out ("stopped").
                 bool lost = !Enumerable.Range(0, n).Any(i => !dead[i] && inside[i]);
-                string outcome = result.Value.Won ? RaidAttemptRows.RaidEndOutcome(null, true) : lost ? RaidAttemptRows.DragonOutcome(true)
+                string outcome = result.Value.Item1 ? RaidAttemptRows.RaidEndOutcome(null, true) : lost ? RaidAttemptRows.DragonOutcome(true)
                     : RaidAttemptRows.RaidEndOutcome(null, false);
                 rows.End(Ms(), outcome, Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)), lowest);
             }
