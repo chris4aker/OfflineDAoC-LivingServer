@@ -10,7 +10,7 @@ namespace OfflineDaoc.Launcher.Tests;
 /// </summary>
 public sealed class ClaudeTakeoverEditionTests
 {
-    private static readonly Assembly Launcher = Assembly.Load("OfflineDAoC");
+    private static readonly Assembly Launcher = Assembly.Load("DAoCLivingServer");
     private static readonly BindingFlags HiddenStatic = BindingFlags.Static | BindingFlags.NonPublic;
 
     [Test]
@@ -64,8 +64,8 @@ public sealed class ClaudeTakeoverEditionTests
         Assert.That(form.GetMethod("VersionLabel", HiddenStatic)!.Invoke(null, null), Is.EqualTo(expected));
         Assert.That(expected, Does.Not.StartWith("VERSION"));
         MethodInfo title = form.GetMethod("WindowTitle", HiddenStatic)!;
-        Assert.That(title.Invoke(null, [false]), Is.EqualTo("Offline DAoC Living Server " + BuildDisplay(buildName) + " — Classic + Shrouded Isles"));
-        Assert.That(title.Invoke(null, [true]), Is.EqualTo("Offline DAoC Living Server " + BuildDisplay(buildName) + " — New client"));
+        Assert.That(title.Invoke(null, [false]), Is.EqualTo("DAoC - Living Server " + BuildDisplay(buildName) + " — Classic + Shrouded Isles"));
+        Assert.That(title.Invoke(null, [true]), Is.EqualTo("DAoC - Living Server " + BuildDisplay(buildName) + " — New client"));
     }
 
     [TestCase("1.2.2", "Living Server 1.2.2")]

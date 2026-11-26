@@ -57,7 +57,7 @@ internal sealed class JoinFriendForm : Form
         _client = JoinClient.For(runtime);
         _logsDirectory = Path.Combine(runtime, "logs");
 
-        Text = "Join a Friend — Offline DAoC Living Server";
+        Text = "Join a Friend — DAoC - Living Server";
         ClientSize = new Size(640, 560);
         MinimumSize = new Size(600, 540);
         StartPosition = FormStartPosition.CenterScreen;

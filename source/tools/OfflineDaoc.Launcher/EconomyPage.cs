@@ -252,7 +252,7 @@ public static class EconomyPage
         h.Append("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">");
         h.Append("<title>The Realms' Purses</title><style>").Append(Css).Append("</style></head><body><main>");
         h.Append("<header><div class=\"rule\"></div><h1>The Realms' Purses</h1>");
-        h.Append($"<p class=\"dateline\">The economy as the ledger records it · Offline DAoC · {E(now.ToString("dddd, d MMMM yyyy, h:mm tt", CultureInfo.InvariantCulture))}</p>");
+        h.Append($"<p class=\"dateline\">The economy as the ledger records it · DAoC - Living Server · {E(now.ToString("dddd, d MMMM yyyy, h:mm tt", CultureInfo.InvariantCulture))}</p>");
         h.Append("<div class=\"rule\"></div><p class=\"nav\"><a href=\"index.html\">The Camelot Herald</a></p></header>");
 
         // What the server is set to do.
@@ -365,7 +365,7 @@ public static class EconomyPage
 
         if (s.Unreadable.Count > 0)
             h.Append($"<p class=\"muted\">Skipped {s.Unreadable.Count} unreadable value{(s.Unreadable.Count == 1 ? "" : "s")}: {E(string.Join("; ", s.Unreadable.Take(5)))}.</p>");
-        h.Append("<footer>Written by the Offline DAoC launcher from this game's own records (docs/ECONOMY-LEDGER.md). Nothing here leaves your computer.</footer>");
+        h.Append("<footer>Written by the Living Server launcher from this game's own records (docs/ECONOMY-LEDGER.md). Nothing here leaves your computer.</footer>");
         h.Append("</main></body></html>");
         return h.ToString();
     }

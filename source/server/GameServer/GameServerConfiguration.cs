@@ -368,7 +368,7 @@ namespace DOL.GS
 		/// </summary>
 		public GameServerConfiguration() : base()
 		{
-			m_ServerName = "Offline DAoC";
+			m_ServerName = "DAoC - Living Server";
 			m_ServerNameShort = "DOLSERVER";
 
 			if (Assembly.GetEntryAssembly() != null)
