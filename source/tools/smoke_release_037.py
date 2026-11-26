@@ -63,8 +63,15 @@ def main():
     shutil.copytree(runtime / "data", test / "data")
     if edition == "no-custom-class":
         shutil.copy2(package / "editions/0.37-no-custom-class/runtime/data/opendaoc.sqlite3.db", test / "data/opendaoc.sqlite3.db")
-    for name in ("OfflineDAoC.exe", "OfflineDAoC.dll", "OfflineDAoC.deps.json", "OfflineDAoC.runtimeconfig.json",
-                 "System.Data.SQLite.dll", "SQLite.Interop.dll"):
+    # The launcher: DAoCLivingServer.* from 1.2.3 (#641; OfflineDAoC.exe is then a copy of its apphost, which needs
+    # DAoCLivingServer.dll beside it), else the older OfflineDAoC.*.
+    renamed = (runtime / "DAoCLivingServer.dll").exists()
+    launcher = "DAoCLivingServer" if renamed else "OfflineDAoC"
+    names = [f"{launcher}.exe", f"{launcher}.dll", f"{launcher}.deps.json", f"{launcher}.runtimeconfig.json",
+             "System.Data.SQLite.dll", "SQLite.Interop.dll"]
+    if renamed and (runtime / "OfflineDAoC.exe").exists():
+        names.append("OfflineDAoC.exe")
+    for name in names:
         shutil.copy2(runtime / name, test / name)
     if (runtime / "runtimes").exists():
         shutil.copytree(runtime / "runtimes", test / "runtimes")
@@ -73,6 +80,8 @@ def main():
     env["DOTNET_ROOT"] = str(package / "tools/dotnet")
     env["DOTNET_ROOT_X64"] = env["DOTNET_ROOT"]
     env["DOTNET_MULTILEVEL_LOOKUP"] = "0"
+    # Through OfflineDAoC.exe, as the game's start file and old shortcuts open it: from 1.2.3 that copy must open the new
+    # launcher (#641).
     subprocess.run([str(test / "OfflineDAoC.exe"), "--prepare-portable-account"], cwd=test, env=env, check=True, timeout=120)
     creds = dict(line.split(":", 1) for line in (test / "account.txt").read_text().splitlines() if ":" in line)
     account, password = creds["Account"].strip(), creds["Password"].strip()
