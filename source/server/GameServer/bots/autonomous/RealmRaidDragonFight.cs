@@ -107,6 +107,21 @@ public sealed class RealmRaidDragonFight
     /// <summary>What the launcher shows while the raid regroups or is defeated; null while it fights as before.</summary>
     public string Status { get; private set; }
 
+    /// <summary>An attempt is open now.</summary>
+    public bool AttemptOpen => _attempt;
+    /// <summary>The raiders of the open attempt (#644: the attempt rows join them; read-only, logging only).</summary>
+    public IReadOnlyCollection<long> EngagedIds => _engaged;
+    /// <summary>Attempts begun so far (#644: the raid writes RAID_ATTEMPT for each new one).</summary>
+    public int AttemptsBegun { get; private set; }
+    /// <summary>Attempts ended so far, and the last one's verdict (#644: RAID_ATTEMPT_END).</summary>
+    public int AttemptsEnded { get; private set; }
+    public AttemptEnd? LastEnd { get; private set; }
+    /// <summary>How long the regroup waited before the open attempt went in (-1: the first attempt, or none open).</summary>
+    public long LastGatherMilliseconds { get; private set; } = -1;
+
+    /// <summary>An attempt's verdict as EndAttempt made it, with its raiders and the fallen among them (logging only).</summary>
+    public readonly record struct AttemptEnd(bool Wipe, long[] Engaged, HashSet<long> Fallen, int HealthPercent, int LowestPercent, string How);
+
     /// <summary>The dungeon rule: at least eight in the attempt and half of them fallen, or the dragon reset after real damage.</summary>
     public static bool IsWipe(int engaged, int fallen, int healthPercent, int lowestPercent) =>
         RealmRaidDungeonRoute.IsWipe(engaged, fallen, healthPercent, lowestPercent);
@@ -199,6 +214,8 @@ public sealed class RealmRaidDragonFight
     private void BeginAttempt(IEnumerable<long> raiders, Dragon dragon, long now)
     {
         _attempt = true;
+        AttemptsBegun++;
+        LastGatherMilliseconds = -1;
         _heldLogged = false;
         _attemptSince = _progressTick = now;
         _engaged.Clear();
@@ -218,7 +235,12 @@ public sealed class RealmRaidDragonFight
         var standing = new HashSet<long>(raiders.Where(r => r.Standing).Select(r => r.Id));
         // Seen fallen at any pulse of the attempt (dead, or released and walking back), not standing now, or no longer
         // in the raid at all.
-        int fallen = _engaged.Count(id => _fell.Contains(id) || !standing.Contains(id));
+        var fallenIds = _engaged.Where(id => _fell.Contains(id) || !standing.Contains(id)).ToHashSet();
+        int fallen = fallenIds.Count;
+        // #644: the verdict as made here, for RAID_ATTEMPT_END (logging only).
+        LastEnd = new AttemptEnd(IsWipe(engaged, fallen, dragon.HealthPercent, _attemptLowestPercent), _engaged.ToArray(), fallenIds,
+            dragon.HealthPercent, _attemptLowestPercent, how);
+        AttemptsEnded++;
         _engaged.Clear();
         _fell.Clear();
         if (!IsWipe(engaged, fallen, dragon.HealthPercent, _attemptLowestPercent))
@@ -264,6 +286,7 @@ public sealed class RealmRaidDragonFight
         if (GoesInAgain(staged, roster, regroupMilliseconds, dragon.Landed))
         {
             BeginAttempt(raiders.Where(r => r.AtStaging).Select(r => r.Id), dragon, now);
+            LastGatherMilliseconds = regroupMilliseconds;
             if (Log.IsInfoEnabled)
                 Log.Info($"REALM_RAID_DRAGON_ENGAGE dragon=\"{_dragon}\" staged={staged} needed={needed} roster={roster} " +
                          $"minutes={regroupMilliseconds / 60_000.0:0.0} attempt={FailedAttempts + 1} retry=true");

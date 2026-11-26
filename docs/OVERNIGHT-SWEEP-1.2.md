@@ -162,6 +162,10 @@ Select-String -Path server*.log -Pattern 'event=epic-midgard|region=160 ' |
 # 4. Stalls and blocked routes anywhere.
 Select-String -Path server*.log -Pattern 'REALM_RAID_STALLED|REALM_EXPEDITION_ROUTE_BLOCKED|REALM_EXPEDITION_MUSTER_STALLED|EPIC_SWEEP_CAP' | ForEach-Object Line
 
+# 4b. Every pull and how it ended (#644), then one attempt in order (replace the id; docs/RAID-ATTEMPT-ROWS.md).
+Select-String -Path server*.log -Pattern 'RAID_ATTEMPT(_END)? ' | ForEach-Object Line
+Select-String -Path server*.log -Pattern 'attempt=epic-midgard\.2\b' | ForEach-Object Line
+
 # 5. Server stalls per hour, for the overnight row (owner decision 9: none of 2.0 s or more, at most 5 of 1.0 s or more an hour).
 Select-String -Path server*.log -Pattern 'SERVER_STALL worstTickMs=(\d+)' | ForEach-Object {
     [pscustomobject]@{ Hour = $_.Line.Substring(0, 8); Ms = [int]$_.Matches[0].Groups[1].Value } } |
