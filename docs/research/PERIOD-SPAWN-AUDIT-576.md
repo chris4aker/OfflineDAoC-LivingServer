@@ -24,8 +24,9 @@ and no row from any other source, is copied here: this file holds counts, zone n
      Pennine 93%, Snowdonia 89%, Cruachan 87%. The restore manifests bring back 2-14% of them. These are the first zones to
      compare camp counts with the logs.
   2. **The restores favour Albion.** Of the 2,273 rows the manifests bring back, 1,657 are in Albion, 450 in Midgard and 166 in
-     Hibernia. Midgard's and Hibernia's home zones were thinned as much as Albion's (14,009 and 10,721 rows archived, against
-     Albion's 12,290), but almost nothing came back there. Shannon Estuary lost 82% and Vanern Swamp 77%, with 0 restored.
+     Hibernia. Midgard's and Hibernia's home zones (each main region without its four Old Frontier zones) were thinned as much as
+     Albion's or more: 8,967 and 7,044 rows archived, against Albion's 6,867. Albion's home zones got 795 back, Midgard's and
+     Hibernia's none. Shannon Estuary lost 82% and Vanern Swamp 77%, with 0 restored.
   3. **The True 1.65 Prima corrections are 206 UPDATE statements touching 10,934 spawns, not "about 1,090".**
      `docs/TRUE165-CONTENT.md` and this issue say "about 1,090". 1,098 of the 10,934 IDs are not in the OpenDAoC data, so
      True 1.65's own rows may be where that number came from. Of the 9,836 found:
@@ -34,14 +35,16 @@ and no row from any other source, is copied here: this file holds counts, zone n
      - 813 change speed.
      Every corrected row is a row the Setup keeps. Whether these corrections are in the shipped world is not checked
      (TRUE165-CONTENT.md, "To ship it (not done)").
-  4. **Latent Setup break.** `classic165_period_restored_spawn_ids.txt` has grown from 1,290 IDs (2026-09-15) to 7,754 IDs plus
-     two `#` comment lines (since `dcdf5ef6`, 2026-10-08). `DAoCLivingServer.Setup` still expects 1,290
+  4. **Latent Setup break.** `classic165_period_restored_spawn_ids.txt` grew past its 1,290 IDs (2026-09-15) in `dcdf5ef6`
+     (2026-10-08), and has held 7,754 IDs plus two `#` comment lines since `7b127a90` (2026-10-16). `DAoCLivingServer.Setup` still expects 1,290
      (`ExpectedPeriodMapRestoredSpawnCount`), and its `LoadRestoredSpawnIds` throws on any line that is not an ID. So a fresh
      Setup world build (`--apply-classic165-spawns` or the default path) stops at the period restore. The game server's
      `AutonomousClassic165RestoredSpawnCatalog` skips those lines and is not affected. The release pipeline builds its world
      from a local install, not from Setup, so no shipped package is known to be affected. Not checked on a PC.
-     - The extra 6,464 IDs are name-based UUIDs (version 5) from research scripts that are not in the repository
-       (`research/period-data/bestiary/goal9_camp_ids.py`, `.../quests/camp_ids.py`). None of them is in the OpenDAoC data. Whether
+     - The extra 6,464 IDs are 5,836 name-based (v5) and 628 random (v4) UUIDs (the v4 ones all in the goal 9 / Howth-Connla
+       section, lines 1292-7589; the 166 quest-camp IDs are all v5), from research scripts that are not in the repository
+       (`research/period-data/bestiary/goal9_camp_ids.py`, `.../quests/camp_ids.py`). None of them is in the OpenDAoC data. 1,063 of the 1,098 Prima-corrected
+       IDs that are not in the OpenDAoC data (finding 3) are in this extra section, so it is largely True 1.65 / Prima rows. Whether
        our shipped world has them could not be checked here.
   5. **DataLoggin may have a licence after all.** A web search shows the SourceForge project page (sourceforge.net/p/doldataloggin)
      listing "GNU General Public License version 2.0 (GPLv2)". The page itself could not be opened to confirm it, and a project
