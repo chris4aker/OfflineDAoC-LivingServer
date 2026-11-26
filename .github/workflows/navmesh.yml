@@ -21,6 +21,7 @@ on:
       - 'source/server/Tests/UnitTests/UT_DragonLairProbe.cs'
       - 'source/server/Tests/UnitTests/UT_SneezerCampNavigation.cs'
       - 'source/server/Tests/UnitTests/UT_ExchangePlacementNavigation.cs'
+      - 'source/server/Tests/UnitTests/InstalledDetour.cs'
       - 'tools/fork-build/content-patches.json'
       # The clean-world rules the set's world is checked against (#687)
       - 'source/tools/build_release_037.py'

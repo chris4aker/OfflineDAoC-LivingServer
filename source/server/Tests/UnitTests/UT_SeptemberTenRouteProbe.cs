@@ -22,9 +22,7 @@ namespace DOL.UnitTests
             var loaded = new List<Zone>();
             try
             {
-                string native = Path.Combine(root, "lib", "Detour.dll");
-                NativeLibrary.SetDllImportResolver(typeof(LocalPathfindingMgr).Assembly,
-                    (name, assembly, search) => name == "lib/Detour" ? NativeLibrary.Load(native) : IntPtr.Zero);
+                DOL.UnitTests.InstalledDetour.Use(root);
                 Environment.CurrentDirectory = root;
                 using var db = new SQLiteConnection($"Data Source={Path.GetFullPath(Path.Combine(root, "..", "data", "opendaoc.sqlite3.db"))};Read Only=True;Pooling=False;");
                 db.Open();
