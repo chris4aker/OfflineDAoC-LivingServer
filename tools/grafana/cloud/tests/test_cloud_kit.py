@@ -26,7 +26,7 @@ REQUIRED = ["GC_PROM_URL", "GC_PROM_USER", "GC_LOKI_URL", "GC_LOKI_USER", "GC_TO
 SECRET = "glc_THIS_MUST_NEVER_BE_PRINTED"
 # Values in the fixture that must never reach Loki: a player's and a bot's name, chat text, a Windows user folder, an IP.
 PRIVATE = ["Testplayer", "Testaccount", "Aelwynbot", "Knights", "secret words", "player1", "192.168.1.20", "10.0.0.5",
-           "C:\\Users", "boom", "Bot.cs"]
+           "C:\\Users", "boom", "Bot.cs", "mill", "dark"]
 
 
 def _stub(folder: Path, name: str, body: str) -> None:
@@ -132,7 +132,9 @@ class InstallDryRun(unittest.TestCase):
             out = subprocess.run(["bash", str(KIT / "install.sh"), "--dry-run", "--port", "12350"], env=env,
                                  capture_output=True, text=True, check=True).stdout
             self.assertEqual(list(tmp.iterdir()), [], "a dry run must not create files")
-            self.assertIn("systemctl --user enable --now livingserver-alloy.service", out)
+            self.assertIn("systemctl --user enable livingserver-alloy.service", out)
+            self.assertIn("systemctl --user restart livingserver-alloy.service", out)
+            self.assertRegex(out, r"ExecStart=/bin/bash \"[^\"]+/run-alloy.sh\"")
             self.assertIn("EnvironmentFile=", out)
             self.assertNotIn("sudo", out)
             self.assertNotIn("/etc/", out)
@@ -195,7 +197,8 @@ class Dashboards(unittest.TestCase):
                                   "Living Server ✦ Server Health"])
         gcx = sorted(f.name for f in (self.DIR / "gcx").glob("*.json"))
         self.assertEqual(gcx, ["dashboard-living-server-bots-world-showcase.json", "dashboard-living-server-health-showcase.json",
-                               "dashboard-living-server-overview-showcase.json", "folder-living-server.json"])
+                               "dashboard-living-server-overview-showcase.json"])
+        self.assertTrue((self.DIR / "gcx-folder" / "folder-living-server.json").exists())
 
     def test_no_hard_coded_datasource_or_stack(self):
         for name, d in self.boards().items():
@@ -233,6 +236,31 @@ def _loki_exprs(node):
     elif isinstance(node, list):
         for v in node:
             yield from _loki_exprs(v)
+
+
+class Docs(unittest.TestCase):
+    """RUNBOOK.md (for agents) and USER-ACTIONS.md (for players) stay in step with each other and with the kit."""
+
+    def test_user_steps_match(self):
+        runbook = (KIT / "RUNBOOK.md").read_text()
+        actions = (KIT / "USER-ACTIONS.md").read_text()
+        steps = re.findall(r"^## (U[\w-]+)\.", actions, re.M)
+        self.assertEqual(steps, ["U0", "U1", "U-B", "U2", "U3", "U4"])
+        for step in steps:
+            self.assertRegex(runbook, rf"(?m)^## {re.escape(step)} \[USER\]", f"RUNBOOK.md has no [USER] section for {step}")
+            self.assertIn(f"USER-ACTIONS.md {step}", runbook, f"RUNBOOK.md's {step} doesn't point to USER-ACTIONS.md")
+
+    def test_paths_named_in_the_docs_exist(self):
+        repo = KIT.parents[2]
+        for doc in ("RUNBOOK.md", "USER-ACTIONS.md", "README.md"):
+            for rel in set(re.findall(r"tools[/\\]grafana[/\\]cloud[/\\][\w./\\-]+", (KIT / doc).read_text())):
+                path = repo / rel.replace("\\", "/").rstrip(".")
+                self.assertTrue(path.exists(), f"{doc} names {rel}, which doesn't exist")
+
+    def test_env_keys_in_user_actions(self):
+        actions = (KIT / "USER-ACTIONS.md").read_text()
+        for k in REQUIRED:
+            self.assertIn(k, actions)
 
 
 def _free_port() -> int:
@@ -280,7 +308,7 @@ class RealAlloy(unittest.TestCase):
             for _ in range(40):
                 time.sleep(0.5)
                 metrics = urllib.request.urlopen(f"http://{addr}/metrics", timeout=2).read().decode()
-                if "loki_process_custom_server_memory_heap_mb" in metrics and "AUTONOMOUS_TICK_FAILED" in (tmp / "alloy.out").read_text():
+                if "loki_process_custom_server_memory_heap_mb" in metrics and "BOT_MILESTONE_TALK" in (tmp / "alloy.out").read_text():
                     break
             echoed = (tmp / "alloy.out").read_text()
             self.assertRegex(metrics, r'loki_process_custom_bots_online\{[^}]*\} 147')
@@ -290,10 +318,12 @@ class RealAlloy(unittest.TestCase):
             self.assertTrue(any("AUTONOMOUS_BOT_DEATH" in e and "realm=Albion" in e and "zone=Salisbury" in e for e in entries), entries)
             self.assertTrue(any("WRN | DOL.GS.Db | ~" in e for e in entries), entries)
             # Reviewed structural keys keep their value; source= does not (EPIC_FUNUS_HEALED writes a name there).
-            self.assertTrue(any('zone=\\"Salisbury Plains\\"' in e for e in entries), entries)
+            self.assertTrue(any('zone=\\"Salisbury_Plains\\"' in e for e in entries), entries)
             self.assertTrue(any("EPIC_FUNUS_HEALED source=~ kind=player" in e for e in entries), entries)
             self.assertTrue(any('\\"members\\":[\\"~\\",\\"~\\"]' in e for e in entries), entries)
             self.assertTrue(any("AUTONOMOUS_TICK_FAILED bot=~ error=~" in e and e.endswith("error=~") for e in entries), entries)
+            # A quoted chat line with quotes inside: the whole tail goes, the next field stays.
+            self.assertTrue(any(e.endswith("BOT_MILESTONE_TALK bot=~ line=~ realm=Hibernia") for e in entries), entries)
             self.assertFalse(any("ACCOUNT_LOGIN" in e or "CLIENT_HANDSHAKE" in e for e in entries), entries)
             joined = "\n".join(entries)
             for word in PRIVATE:

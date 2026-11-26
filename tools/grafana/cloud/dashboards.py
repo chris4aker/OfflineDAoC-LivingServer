@@ -4,11 +4,12 @@
 Hero tiles, gauges, bar gauges, a realm donut, a state timeline and gradient fills; built-in Grafana panels only, no
 plugins, no external images, no datasource UIDs. Writes, under tools/grafana/cloud/dashboards/:
   <uid>.json          the dashboard model (Grafana's Import dialog takes it as is)
-  gcx/*.json          gcx resources: the "Living Server" folder and the three dashboards in it
+  gcx/*.json          gcx resources: the three dashboards, placed in folder "living-server" by annotation
+  gcx-folder/*.json   the "Living Server" folder, for a service account that may create folders
 
     python3 tools/grafana/cloud/dashboards.py           # regenerate
     python3 tools/grafana/cloud/dashboards.py --check   # fail when the files are stale (tools/check.py, CI)
-    gcx resources validate -p tools/grafana/cloud/dashboards/gcx && gcx resources push -p tools/grafana/cloud/dashboards/gcx
+    gcx resources validate -p tools/grafana/cloud/dashboards/gcx && gcx resources push -p tools/grafana/cloud/dashboards/gcx --on-error abort
 """
 import json
 import os
@@ -347,7 +348,7 @@ def outputs():
     files = {}
     folder = {"apiVersion": "folder.grafana.app/v1beta1", "kind": "Folder", "metadata": {"name": FOLDER_UID},
               "spec": {"title": FOLDER_TITLE, "description": "Offline DAoC Living Server monitoring (tools/grafana/cloud)"}}
-    files["gcx/folder-living-server.json"] = folder
+    files["gcx-folder/folder-living-server.json"] = folder
     for key, fn in [("overview", overview), ("health", health), ("bots", bots_world)]:
         d = fn()
         files[UIDS[key] + ".json"] = d

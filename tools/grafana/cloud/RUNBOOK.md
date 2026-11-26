@@ -1,130 +1,175 @@
 # Grafana Cloud setup: agent runbook
 
-For an AI agent (Claude Code or similar) with a shell on the player's PC, Ubuntu or Windows. Issue #649.
+**Start here if you are an AI agent** (Claude Code or similar) asked to set up Living Server monitoring on this PC.
+People who want to know what they will be asked to do: read [USER-ACTIONS.md](USER-ACTIONS.md). Issue #649.
 
-## Rules for the agent
-- Run the steps in order. **[AGENT]** steps are yours. At a **[USER]** step, show the player the prompt text exactly
-  (fill in the `<...>` parts), then wait until the step's check passes.
-- **Never ask for a token or password in chat**, and never put one on a command line or in a file in the repository.
-  Tokens go into `monitoring.env` (the player edits it in a text editor) or into gcx's own prompt.
-- Before a download, say what (Alloy version, file, source, about 180 MB) and get a yes. The installs check the SHA256.
-- Never change the game install, `serverconfig.xml`, or start or stop the server (port 10300). Never change an Alloy or
-  Grafana Agent that is already there unless the player says yes to that change (issue #650 covers migrations).
-- At the end, report which checks ran live against Grafana Cloud and which did not.
+Goal: the player's server sends sanitized log rows and metrics to their own Grafana Cloud stack, and three dashboards
+show them. You do every **[AGENT]** step. At each **[USER]** step you show the player the text from USER-ACTIONS.md
+(same step ID, `<...>` filled in), wait, and run that step's check before going on.
 
-Commands below: Ubuntu first, then Windows (PowerShell; `PS>` means
-`powershell -NoProfile -ExecutionPolicy Bypass -File`). Run them from the repository root.
+## Rules
+1. **No secrets in chat.** Never ask for a token or password, never put one on a command line, in a file in the
+   repository, or in your output. Tokens go into `monitoring.env` (the player edits it) or gcx's own prompt.
+   `detect --check-env` checks the file without printing values; don't `cat` it.
+2. **Ask before:** a download, a change to an Alloy or Grafana Agent that is already there, overwriting dashboards
+   that already exist, anything that costs money. One yes per thing.
+3. **Never touch the game:** no edits to the install or `serverconfig.xml`, never start or stop the server (port 10300).
+4. **Leave other collectors alone.** This kit runs its own user-level Alloy beside them.
+5. **Report honestly:** say which checks ran live against Grafana Cloud and which didn't.
+
+## Prerequisites
+| | Ubuntu (20.04+, native server or Wine) | Windows 10/11 |
+|---|---|---|
+| Shell | bash, `curl`, `python3`, `sha256sum` (all stock) | Windows PowerShell 5.1 (stock) or PowerShell 7 |
+| Service | systemd user session (`systemctl --user` works) | Task Scheduler, or the Startup folder |
+| Rights | your user; no sudo | your user; no admin |
+| Network | HTTPS to github.com (download) and `*.grafana.net` (sending) | same |
+| This repository | a checkout; run every command from its root | same |
+
+Command forms below: Ubuntu first, then Windows. `PS>` means
+`powershell -NoProfile -ExecutionPolicy Bypass -File` (in PowerShell 7, `pwsh` works the same).
+
+## The steps at a glance
+| Step | Who | Ubuntu | Windows | Done when |
+|---|---|---|---|---|
+| A0 Detect | agent | `tools/grafana/cloud/detect.sh` | `PS> tools\grafana\cloud\detect.ps1` | JSON with `path` A-D |
+| U0 Plan and yes | player | | | logs folder, account answer, yes to download |
+| U1 Sign up (A, B) | player | | | `/api/health` answers |
+| A1 Existing stack (C, D) | agent | | | `/api/health` answers |
+| U-B Keep existing collector (B, D) | player | | | yes |
+| A2 Install | agent | `install.sh --port <p>` | `PS> install.ps1 -Port <p>` | binary verified, env file created |
+| U2 Token and settings | player | | | `detect --check-env` exits 0 |
+| A3 Start | agent | `install.sh` again | `PS> install.ps1` again | collector healthy |
+| U3 gcx access | player | | | `gcx config check` passes |
+| A4 Dashboards | agent | `gcx resources push -p tools/grafana/cloud/dashboards/gcx` | same | three dashboards read back |
+| U4 Start the server | player | | | |
+| A5 Verify | agent | `curl` + gcx queries | `Invoke-WebRequest` + gcx | data under `instance=<LS_INSTANCE>` |
 
 ---
 
-## Step A0 [AGENT] Detect
+## A0 [AGENT] Detect
 ```bash
 tools/grafana/cloud/detect.sh
 ```
 ```
 PS> tools\grafana\cloud\detect.ps1
 ```
-Show the player a short summary (logs folder, Alloy or Grafana Agent found, gcx, free port). If `logs_dirs` is empty,
-ask: "Where is your Living Server installed? I need the folder that contains `runtime\server\logs`." and rerun with
-`--logs <folder>` / `-Logs <folder>`. If there are several, ask which one.
-
-Ask once: **"Do you already have a Grafana Cloud account (a stack at `<name>.grafana.net`)?"** Rerun with
-`--has-account yes|no` / `-HasAccount yes|no`. The `path` field is then:
+Read the JSON: `logs_dirs`, `alloy`, `grafana_agent`, `existing_collector`, `kit`, `gcx`, `free_port`, `env`, `next`.
+- `logs_dirs` empty: ask for the folder (U0) and rerun with `--logs <dir>` / `-Logs <dir>`. Several: ask which.
+- `kit.running` true: it is already set up; go to A5.
+- Then ask whether they have a Grafana Cloud account (U0) and rerun with `--has-account yes|no` /
+  `-HasAccount yes|no`. `path` is now set:
 
 | | No Alloy | Alloy or Grafana Agent already installed |
 |---|---|---|
 | **No Grafana Cloud account** | A | B |
 | **Has a Grafana Cloud account** | C | D |
 
-- A, B: do U1 (new account). C, D: do A1 (existing account).
-- B, D: tell the player: "You already have <Alloy / Grafana Agent>. I'll leave it exactly as it is and run a separate,
-  user-level Alloy just for the game, on port <free_port>." Get a yes.
-- `next` says where to continue: `user_credentials` (U2), `install` (A2), `verify` (A4).
+`next` tells you where to go: `ask_has_account`, `ask_logs_folder`, `user_credentials` (A2 then U2), `install`
+(A2/A3), `verify` (A5).
 
-## Step U1 [USER] Create a Grafana Cloud account (paths A, B)
-> I need you to create a free Grafana Cloud account. It takes about 3 minutes:
-> 1. Open https://grafana.com/auth/sign-up/create-user and sign up. The free tier is enough.
-> 2. Confirm your email address.
-> 3. Pick a stack name (your Grafana will be at `https://<name>.grafana.net`) and a region close to you.
-> 4. Tell me the stack name. Don't send me any password or token.
+## U0 [USER] Plan and yes
+Summarise what detect found in two or three lines, then show USER-ACTIONS.md U0. Download only after a yes.
 
-Check [AGENT]: `https://<name>.grafana.net/api/health` answers with `"database": "ok"`.
+## U1 [USER] Create a Grafana Cloud account (paths A, B)
+Show USER-ACTIONS.md U1. **Check:** `https://<name>.grafana.net/api/health` returns JSON with `"database": "ok"`
+(`curl -fsS <url>` / `Invoke-RestMethod <url>`).
 
-## Step A1 [AGENT] Existing account (paths C, D)
-Ask for the stack name only, then check `/api/health` as above. If gcx is already logged in (`gcx.logged_in`), run
-`gcx dashboards list` and tell the player if a "Living Server" folder or dashboards already exist; ask before reusing them.
+## A1 [AGENT] Existing stack (paths C, D)
+Ask for the stack name only, then the same health check. If `gcx.logged_in` is true, run `gcx dashboards list` and
+tell the player whether "Living Server" dashboards already exist; ask before A4 overwrites them.
 
-## Step A2 [AGENT] Install this kit's Alloy
-Say what will be downloaded, get a yes, then:
+## U-B [USER] Keep the existing collector (paths B, D)
+Say: "You already have <Alloy / Grafana Agent>. I'll leave it as it is and run a separate Alloy just for the game on
+port <free_port>." (USER-ACTIONS.md U-B has the full text.) Wait for a yes. If the existing one ships host metrics (`node_*`), the dashboards' host panels use
+them.
+
+## A2 [AGENT] Install
 ```bash
 tools/grafana/cloud/install.sh --port <free_port>
 ```
 ```
 PS> tools\grafana\cloud\install.ps1 -Port <free_port>
 ```
-It creates `monitoring.env` (readable by the player only) and does not start Alloy until the file is complete.
+It downloads Alloy (cached in the kit's `downloads/`), refuses it unless the SHA256 matches `pins.json`, copies the
+configs, creates `monitoring.env` from the example (mode 600 / this user only), registers the service or logon start,
+and **doesn't start** Alloy until the env file is complete. Add `--dry-run` / `-DryRun` to show the plan first.
+**Check:** the output ends with `done.`; the env file exists.
+Then fill in what you know: in `monitoring.env` set `LS_LOG_DIR=<logs_dirs[0]>` and `LS_INSTANCE=<short name>`
+(ask, or propose `living-server-1`). Edit only those two lines.
 
-## Step U2 [USER] Write token and stack details
-> Now two things from your Grafana Cloud account go into a settings file on this PC. Please don't paste them here.
-> 1. Open https://grafana.com/orgs/<org>/access-policies (My Account > Security > Access Policies) > **Create access policy**.
->    Name: `livingserver-alloy`. Realm: your stack `<name>`. Scopes: **metrics: Write** and **logs: Write**, nothing else. Create.
-> 2. On that policy, **Add token**, name it `alloy-<this PC>`, pick an expiry, Create, and copy the token (it is shown once).
-> 3. Open `<env file>` in a text editor (Ubuntu: `gedit <env file>` or `nano <env file>`; Windows: `notepad <env file>`),
->    and paste the token after `GC_TOKEN=`.
-> 4. On https://grafana.com, open your stack's page (**Details**):
->    - Prometheus: copy "Remote Write Endpoint" after `GC_PROM_URL=` and "Username / Instance ID" after `GC_PROM_USER=`;
->    - Loki: copy "URL" after `GC_LOKI_URL=` and "User" after `GC_LOKI_USER=`.
-> 5. Save the file and tell me "done".
-
-The agent fills in, or proposes, `LS_LOG_DIR` (from detect) and `LS_INSTANCE` (a short name for this PC, for example
-`living-server-1`) itself; it may edit those two lines, but never reads the token lines aloud.
-
-Check [AGENT]: `detect.sh --check-env <env file>` / `detect.ps1 -CheckEnv <env file>` exits 0. It never prints values.
-
-## Step A3 [AGENT] Start
-Run the install again (A2). With a complete env file it starts Alloy:
-- Ubuntu: `systemctl --user status livingserver-alloy`. It runs while the player is logged in; to keep it running after
-  logout the player may run `loginctl enable-linger` (optional; ask).
-- Windows: a scheduled task `LivingServerAlloy` (or a Startup-folder shortcut) starts it at logon; it is running now.
-
-## Step A4 [AGENT] Verify
-About 2 minutes after the start (the server must be running for game data; ask the player whether it is, never start it):
-1. Alloy's own page, `http://127.0.0.1:<port>/-/healthy`, says all components are healthy.
-2. `http://127.0.0.1:<port>/metrics`: `prometheus_remote_storage_samples_total` is rising and
-   `prometheus_remote_storage_samples_failed_total` is 0; `loki_write_sent_entries_total` is rising (Ubuntu:
-   `curl -s`; Windows: `(Invoke-WebRequest -UseBasicParsing <url>).Content`).
-3. With gcx (step U3): `loki_process_custom_lines_total{instance="<LS_INSTANCE>"}` returns data, and while the server runs
-   so do `loki_process_custom_bots_online{instance="<LS_INSTANCE>"}` and the process metrics.
-Report each check as live or not run.
-
-## Step U3 [USER] Let the agent manage dashboards (gcx)
-Only needed for dashboards and alerts (issue #652). Install gcx first [AGENT, with a yes]:
-Ubuntu `curl -fsSL https://raw.githubusercontent.com/grafana/gcx/main/scripts/install.sh | sh`,
-Windows `irm https://raw.githubusercontent.com/grafana/gcx/main/scripts/install.ps1 | iex`.
-> 1. Open `https://<name>.grafana.net` > Administration > Users and access > Service accounts > **Add service account**.
->    Name `gcx-<this PC>`, role **Editor**, Create. Then **Add service account token**, expiry 90 days, Generate.
-> 2. Dashboards > **New folder** "Living Server". Open its Permissions and give the `gcx-<this PC>` service account **Edit**.
->    (An Editor service account can't create folders itself, so this one is yours.)
-> 3. In a terminal, run `gcx login livingserver --server https://<name>.grafana.net`, choose "Service account token" and
->    paste the token at gcx's prompt, not here. Tell me "done".
-
-Check [AGENT]: `gcx config check`, then read-only `gcx dashboards list`.
-
-## Step A5 [AGENT] Push the dashboards
-The three ✦ dashboards (Overview, Server Health, Bots & World) go into the "Living Server" folder from U3:
+## U2 [USER] Token and settings
+Show USER-ACTIONS.md U2 with the env file's real path. **Check:**
 ```bash
-gcx resources validate -p tools/grafana/cloud/dashboards/gcx/dashboard-*.json
-gcx resources push -p tools/grafana/cloud/dashboards/gcx/dashboard-*.json --dry-run --on-error abort
-gcx resources push -p tools/grafana/cloud/dashboards/gcx/dashboard-*.json --on-error abort
+tools/grafana/cloud/detect.sh --check-env ~/.local/share/livingserver-monitoring/monitoring.env
 ```
-(Windows: the same commands; PowerShell expands nothing, so list the three files.) The folder manifest is only pushed if
-the service account may create folders. Read each back with `gcx dashboards get <uid>` and give the player the links
-`https://<name>.grafana.net/d/living-server-overview-showcase` (and `-health-showcase`, `-bots-world-showcase`).
-If the stack already has dashboards with these UIDs, ask before overwriting them.
-Without gcx, the player can import `tools/grafana/cloud/dashboards/<uid>.json` in Grafana (Dashboards > New > Import).
+```
+PS> tools\grafana\cloud\detect.ps1 -CheckEnv "$env:LOCALAPPDATA\LivingServerMonitoring\monitoring.env"
+```
+Exit 0 and `env ok: all 7 keys set`. Otherwise it names the missing keys; tell the player which.
+
+## A3 [AGENT] Start
+Run the install command again (same port). With a complete env file it (re)starts Alloy.
+- Ubuntu: `systemctl --user status livingserver-alloy` shows `active (running)`.
+- Windows: a hidden PowerShell runs `run-alloy.ps1`, which runs `alloy.exe`; scheduled task `LivingServerAlloy` (or a
+  Startup-folder shortcut) starts it at every logon.
+
+**Check** (after about 30 s): `http://127.0.0.1:<port>/-/healthy` says all components are healthy
+(`curl -s` / `(Invoke-WebRequest -UseBasicParsing <url>).Content`).
+
+## U3 [USER] gcx access
+If `gcx.installed` is false, install it first (ask; it is Grafana's CLI from github.com/grafana/gcx):
+Ubuntu `curl -fsSL https://raw.githubusercontent.com/grafana/gcx/main/scripts/install.sh | sh`;
+Windows `irm https://raw.githubusercontent.com/grafana/gcx/main/scripts/install.ps1 | iex`.
+Then show USER-ACTIONS.md U3. **Check:** `gcx config check`, then `gcx dashboards list` (read-only).
+
+## A4 [AGENT] Dashboards
+The three ✦ dashboards (Overview, Server Health, Bots & World) go into the "Living Server" folder:
+```bash
+gcx resources validate -p tools/grafana/cloud/dashboards/gcx
+gcx resources push -p tools/grafana/cloud/dashboards/gcx --dry-run --on-error abort
+gcx resources push -p tools/grafana/cloud/dashboards/gcx --on-error abort
+```
+(Windows: the same with `tools\grafana\cloud\dashboards\gcx`.) That folder holds only the three dashboards, which
+land in the folder `living-server` the player made in U3. If the service account may create folders, push
+`dashboards/gcx-folder` first instead of U3 step 3. **Check:** `gcx dashboards get <uid>` for each of
+`living-server-overview-showcase`, `living-server-health-showcase` and `living-server-bots-world-showcase`, then give
+the player `https://<name>.grafana.net/d/<uid>`. Without gcx, the player can import `dashboards/<uid>.json` in
+Grafana (Dashboards > New > Import) into the Living Server folder.
+
+## U4 [USER] Start the server
+Show USER-ACTIONS.md U4. Game data only exists while the server runs.
+
+## A5 [AGENT] Verify
+About 2 minutes after the server starts:
+1. `http://127.0.0.1:<port>/metrics`: `prometheus_remote_storage_samples_total` rising,
+   `prometheus_remote_storage_samples_failed_total` 0, `loki_write_sent_entries_total` rising.
+2. With gcx, metrics: `loki_process_custom_lines_total{instance="<LS_INSTANCE>"}` has data; while the server runs,
+   `loki_process_custom_bots_online{instance="<LS_INSTANCE>"}` too (Ubuntu also `namedprocess_namegroup_num_procs`).
+3. With gcx, logs: `{job="livingserver", instance="<LS_INSTANCE>"}` has lines from the last 10 minutes; spot-check
+   that names show as `~`.
+4. Report each check as **live** or **not run**, and the dashboard links.
+
+---
+
+## Troubleshooting
+| Symptom | Likely cause | What to do |
+|---|---|---|
+| detect finds no logs folder | non-standard install path | ask for it; rerun with `--logs` / `-Logs` |
+| `SHA256 mismatch ... refusing it` | broken or tampered download | the file is deleted; rerun once; if it repeats, stop and tell the player |
+| `not started: fill in ...` | env file incomplete | U2; `--check-env` names the missing keys |
+| `systemctl --user` fails (Ubuntu) | no user session (e.g. over plain SSH) | run from a desktop login, or the player enables lingering: `loginctl enable-linger "$USER"` |
+| `scheduled task refused` (Windows) | policy blocks per-user tasks | handled: the install uses a Startup-folder shortcut instead |
+| `/-/healthy` doesn't answer | Alloy not running or another port | Ubuntu `journalctl --user -u livingserver-alloy -n 50`; Windows `%LOCALAPPDATA%\LivingServerMonitoring\logs\alloy.log` |
+| port in use | another program, or an older hand-run copy of this pipeline (#658) | rerun install with `--port <free_port>`; stop the old copy only with a yes |
+| `samples_failed_total` rising, HTTP 401/403 in the log | wrong user ID or token, or missing write scope | recheck U2 (each URL with its own user ID; scopes metrics:write and logs:write) |
+| gcx push 403 "access denied to folder" | service account can't create or write the folder | U3 step 3 (create the folder, give the service account Edit) |
+| tiles say "No data: collector off" | collector not sending, or the dashboards' `job`/`instance` doesn't match | A5 step 1; set the dashboard's Job to `livingserver` and Server to `<LS_INSTANCE>` |
+| tiles say "Server stopped" | the server is off | normal; start it (U4) |
+| Windows: process tiles empty while running | known gap (#656) | logs and log-derived tiles still work |
+| host panels empty | no node_exporter on the PC (#657) | known gap |
 
 ## Undo
 - Ubuntu: `tools/grafana/cloud/uninstall.sh` (add `--purge` to delete `monitoring.env` too).
 - Windows: `PS> tools\grafana\cloud\uninstall.ps1` (add `-Purge`).
-- [USER] In Grafana Cloud: delete the `livingserver-alloy` access policy token and the `gcx-<this PC>` service account if
-  they are no longer used.
+- Then show the player USER-ACTIONS.md "Removing it" (revoke the token and the service account).

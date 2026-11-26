@@ -258,27 +258,49 @@ loki.process "game" {
     expression = "=(\"[^\"]*\"|[^\\s\"]*[A-Za-z][^\\s]*)"
     replace    = "~"
   }
+  // 3b. Whatever is glued to a replaced value (a quoted value with a quote inside: line="a "b c" d") goes too.
+  stage.replace {
+    source     = "kv"
+    expression = "=~([^\\s]+)"
+    replace    = ""
+  }
   // 4. IPv4 addresses (with or without a port) become "~", whatever the key.
   stage.replace {
     source     = "kv"
     expression = "(\\d{1,3}(?:\\.\\d{1,3}){3}(?::\\d+)?)"
     replace    = "~"
   }
-  // 5. Stray words (the tail of an unquoted value with spaces, such as a guild name) are removed. Three passes, since
-  //    each match takes the space after its word.
+  // 5. Stray words (the tail of an unquoted value with spaces, such as a guild name, or of a quoted value with quotes
+  //    inside, such as a line of chat) are removed, a whole run at a time. A reviewed key's quoted value keeps its words
+  //    joined with "_" first (up to six words), so it isn't cut.
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)([^\\s=~:\"{}\\[\\],]+)(?:\\s|$)"
-    replace    = ""
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    replace    = "_"
   }
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)([^\\s=~:\"{}\\[\\],]+)(?:\\s|$)"
-    replace    = ""
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    replace    = "_"
   }
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)([^\\s=~:\"{}\\[\\],]+)(?:\\s|$)"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    replace    = "_"
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    replace    = "_"
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    replace    = "_"
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)((?:[^\\s=~:{}\\[\\],]+(?:\\s+|$))+)"
     replace    = ""
   }
   stage.replace {

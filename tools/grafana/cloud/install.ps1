@@ -72,6 +72,12 @@ if (-not (Test-Path $envFile)) {
         & icacls $envFile /inheritance:r /grant:r "$($env:USERNAME):(R,W)" | Out-Null
     }
     Say "the player fills in $envFile (runbook step U2)"
+} elseif ($PSBoundParameters.ContainsKey('Port')) {
+    # A rerun keeps its port unless -Port is given.
+    Step "set LS_ALLOY_ADDR=127.0.0.1:$Port in $envFile" {
+        $lines = @(Get-Content -LiteralPath $envFile | Where-Object { $_ -notmatch '^\s*LS_ALLOY_ADDR=' })
+        Set-Content -LiteralPath $envFile -Value ($lines + "LS_ALLOY_ADDR=127.0.0.1:$Port")
+    }
 }
 
 # 4. Start at logon: a per-user scheduled task, else a Startup-folder shortcut
@@ -107,7 +113,13 @@ if (-not $NoStart) {
         $ok = ($LASTEXITCODE -eq 0)
     }
     if (-not $ok) { Say "not started: fill in $envFile, then run install.ps1 again"; exit 0 }
-    Step 'start Alloy now' { Start-Process -FilePath $psExe -ArgumentList $runArgs -WindowStyle Hidden -WorkingDirectory $AddonHome }
+    Step 'stop a running copy of this kit (a rerun), then start Alloy now' {
+        Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" -ErrorAction SilentlyContinue |
+            Where-Object { $_.CommandLine -and $_.CommandLine -like "*$AddonHome*run-alloy.ps1*" } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+        Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.Path -and $_.Path.StartsWith($AddonHome, [StringComparison]::OrdinalIgnoreCase) } |
+            Stop-Process -Force -ErrorAction SilentlyContinue
+        Start-Process -FilePath $psExe -ArgumentList $runArgs -WindowStyle Hidden -WorkingDirectory $AddonHome }
     Say "started; Alloy's own page: http://127.0.0.1:$Port"
 }
 Say 'done. Undo: tools\grafana\cloud\uninstall.ps1'

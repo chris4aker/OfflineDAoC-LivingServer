@@ -92,10 +92,10 @@ alloy_version=""; [ -n "$alloy_bin" ] && alloy_version=$(alloy --version 2>/dev/
 alloy_system=0; active is-active alloy.service && alloy_system=1
 kit_installed=0; [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/$UNIT_NAME" ] && kit_installed=1
 kit_running=0; active --user is-active "$UNIT_NAME" && kit_running=1
-alloy_procs=0; other_alloy_procs=0
+other_alloy_procs=0
 if have pgrep; then
-  alloy_procs=$(pgrep -c -f '(^|/)alloy[^ ]* run' 2>/dev/null || true); alloy_procs=${alloy_procs:-0}
-  other_alloy_procs=$(pgrep -a -f '(^|/)alloy[^ ]* run' 2>/dev/null | grep -vc 'livingserver-monitoring' || true)
+  # This kit's own Alloy runs from $ADDON_HOME (run-alloy.sh uses absolute paths); anything else is another collector.
+  other_alloy_procs=$(pgrep -a -f '(^|/)alloy[^ ]* run' 2>/dev/null | grep -vcF "$ADDON_HOME/" || true)
   other_alloy_procs=${other_alloy_procs:-0}
 fi
 agent_system=0; active is-active grafana-agent.service && agent_system=1

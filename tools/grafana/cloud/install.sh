@@ -12,10 +12,10 @@ KIT="$(cd "$(dirname "$0")" && pwd)"
 ADDON_HOME="${LS_ADDON_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/livingserver-monitoring}"
 UNIT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 UNIT_NAME="livingserver-alloy.service"
-port=12347; start=1; dry=0
+port=12347; port_given=0; start=1; dry=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    --port) port="$2"; shift 2 ;;
+    --port) port="$2"; port_given=1; shift 2 ;;
     --home) ADDON_HOME="$2"; shift 2 ;;
     --no-start) start=0; shift ;;
     --dry-run) dry=1; shift ;;
@@ -71,8 +71,13 @@ if [ ! -f "$ENV_FILE" ]; then
   run install -m 0600 "$KIT/monitoring.env.example" "$ENV_FILE"
   say "created $ENV_FILE (mode 600): the player fills it in (runbook step U2)"
 fi
-if [ "$dry" = 0 ] && ! grep -q '^LS_ALLOY_ADDR=' "$ENV_FILE"; then
-  printf '\nLS_ALLOY_ADDR=127.0.0.1:%s\n' "$port" >> "$ENV_FILE"
+# The Alloy address: added once; changed only when --port is given (a rerun keeps the port it had).
+if [ "$dry" = 0 ]; then
+  if ! grep -q '^LS_ALLOY_ADDR=' "$ENV_FILE"; then
+    printf '\nLS_ALLOY_ADDR=127.0.0.1:%s\n' "$port" >> "$ENV_FILE"
+  elif [ "$port_given" = 1 ]; then
+    sed -i "s/^LS_ALLOY_ADDR=.*/LS_ALLOY_ADDR=127.0.0.1:$port/" "$ENV_FILE"
+  fi
 fi
 
 # 4. systemd user unit
@@ -84,7 +89,7 @@ After=network-online.target
 Type=simple
 WorkingDirectory=$ADDON_HOME
 EnvironmentFile=$ENV_FILE
-ExecStart=/bin/bash "$ADDON_HOME/run-alloy.sh"
+ExecStart=/bin/bash \"$ADDON_HOME/run-alloy.sh\"
 Restart=on-failure
 RestartSec=30
 
@@ -97,10 +102,11 @@ run systemctl --user daemon-reload
 # 5. Start only with a complete env file
 if [ "$start" = 1 ]; then
   if [ "$dry" = 0 ] && ! "$KIT/detect.sh" --check-env "$ENV_FILE"; then
-    say "not started: fill in $ENV_FILE, then run: systemctl --user enable --now $UNIT_NAME"
+    say "not started: fill in $ENV_FILE, then run this install again"
     exit 0
   fi
-  run systemctl --user enable --now "$UNIT_NAME"
+  run systemctl --user enable "$UNIT_NAME"
+  run systemctl --user restart "$UNIT_NAME"   # a rerun picks up the new configs and binary
   say "started. It runs while you are logged in. To keep it running after logout: loginctl enable-linger \"${USER:-$(id -un)}\" (optional)."
 fi
 say "done. Undo: tools/grafana/cloud/uninstall.sh"
