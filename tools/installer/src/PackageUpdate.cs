@@ -2,13 +2,13 @@ using System;
 using System.IO;
 using System.Net;
 using System.Threading;
-using OfflineDaoc.Updates;
+using DAoCLivingServer.Updates;
 
 namespace LivingServerSetup
 {
     /// <summary>
     /// Beta 1.1.2: before installing, Setup asks GitHub for the newest Living Server release (the same request and the
-    /// same checks as the launcher's update, from the shared source/tools/OfflineDaoc.Launcher/Updates). When its
+    /// same checks as the launcher's update, from the shared source/tools/DAoCLivingServer.Launcher/Updates). When its
     /// package is newer than the one inside Setup and made for the same Offline DAoC release, Setup downloads it,
     /// checks it against GitHub's SHA-256 digest and the package rules, and installs it instead. Anything that fails
     /// (offline, a rate limit, a bad hash, a package for another release) leaves the embedded package in place, and the

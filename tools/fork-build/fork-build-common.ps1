@@ -185,7 +185,7 @@ function Get-ContentPatchReplaces($Patch) {
 # (Living Server 1.2: the loading screen; owner 2026-11-07, "I don't want the original splash screens, I want mine").
 # ROLLBACK.cmd puts back only an earlier Living Server version of it, never the released file: after a first install it
 # leaves the file as it is. PREPARE-FOR-UPDATE.cmd (-ToRelease) leaves it too: the Offline DAoC patcher
-# (source/tools/OfflineDaoc.Patcher) checks only the files an update replaces or removes, and pregame/splash.mpk is the
+# (source/tools/DAoCLivingServer.Patcher) checks only the files an update replaces or removes, and pregame/splash.mpk is the
 # same in 0.36, 0.36b and 0.37b (release-baselines), so the 0.37 update doesn't list it. Should an update ever list it,
 # the patcher stops and names it (UPDATE-<version>-CHANGED-FILES.txt) before changing anything.
 # Keyed by Path: the content patches of the build folder a script runs from.

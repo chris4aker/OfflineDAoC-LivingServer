@@ -12,11 +12,11 @@ The "main: green checks" ruleset requires these five jobs of `build-and-test.yml
 
 | Job | Runner | Gates (each fails the job) |
 |---|---|---|
-| `versions` | ubuntu | README, `ForkBuildInfo.BuildName`, the newest released changelog heading and `MainForm.DisplayVersion` name one release (`tools/release/check_versions.py`); no new player-visible "Offline DAoC", "OfflineDAoC" or "shadowofze" outside `tools/release/brand-allowlist.json` and the compatibility names (`tools/release/check_brand.py`, #641); the release scripts' tests (`tools/release/tests`); the installer seeding tests (`tools/installer/tests`). |
+| `versions` | ubuntu | README, `ForkBuildInfo.BuildName`, the newest released changelog heading and `MainForm.DisplayVersion` name one release (`tools/release/check_versions.py`); no new player-visible "Offline DAoC", "OfflineDAoC" or "shadowofze" outside `tools/release/brand-allowlist.json` and the compatibility names (`tools/release/check_brand.py`, #641); no old internal project or namespace name outside the kept names and legacy paths of `docs/NAMING.md` (`check_brand.py --internal`, #645); the release scripts' tests (`tools/release/tests`); the installer seeding tests (`tools/installer/tests`). |
 | `encounter-catalog` | ubuntu | `docs/encounters` matches the boss scripts (`source/tools/epic_encounter_catalog.py --check`); every `changelog.d/` fragment parses and names the version in development (`source/tools/assemble_changelog.py --check`); every test in `source/tools/tests` (the tools, `ALL SERVER COMMANDS.txt` up to date, `tools/check.py`'s mirror, the CI glue `ci_test_results.py` and the excluded-test list's format). |
 | `new-client` | ubuntu | The 0.37c new client's released scripts plus `tools/fork-build/content-patches.json` compile in Godot 4.7.2 (pinned by SHA-512) against the released class cache, and issue #34's probe passes (`tools/newclient-compat/installed_check.py`). |
 | `server` | windows | See below. |
-| `launcher` | windows | Every launcher test (`OfflineDaoc.Launcher.Tests`), and at least 400 of them ran (411 in 1.2.3). |
+| `launcher` | windows | Every launcher test (`DAoCLivingServer.Launcher.Tests`), and at least 400 of them ran (411 in 1.2.3). |
 
 ### The `server` job, step by step
 
@@ -59,7 +59,7 @@ The "main: green checks" ruleset requires these five jobs of `build-and-test.yml
 | `playtester` | nightly, by hand, pull requests touching the playtester | `source/tools/tests`, the playtester's tests, the scenarios on the minimal worlds (each step `set -o pipefail`; the class-off and death steps also grep for their log lines). | The companion step's `grep ... \|\| true` only prints lines; its scenarios still gate. |
 | `wayback-fetch` | pushes and pull requests touching `tools/wayback-fetch` | Its tests in Windows PowerShell 5.1 and PowerShell 7, `-RequireE2E` (a missing Python fails). | Sound. |
 | `upstream-watch` | weekly, by hand | Lists upstream commits and updates one issue per repo. | A report by design. `gh label create ... \|\| true` only tolerates an existing label. |
-| `cleanup-branches` | by hand | One-off from 2026-10-18 (its header says to remove the file afterwards). | Left as it is; the owner may delete it. |
+| `branch-cleanup` | by hand (mode `show` by default, or `APPLY`); also callable from another workflow | Its rules' tests (`tools/release/tests/test_branch_cleanup.py`), then `tools/release/branch_cleanup.py`. It classifies each branch as protected, open PR, recent (14 days), merged, replaced or never merged, and writes the list to the run page and the `branch-cleanup-<mode>` artifact. | #645; it replaced the 2026-10-18 one-off `cleanup-branches`. A dry run changes nothing. APPLY first tags each unmerged branch `archive/<branch>`, reads the tag back, then deletes the branch with a lease on its tip. It never deletes a tag. The owner approves the dry run's list before APPLY. A branch it could not archive or delete fails the run. |
 | `installer` | pushes touching `tools/installer/**` and the launcher's update code; by hand; called by `release` | Setup builds; newest-release choice; the launcher's update path; real installs (e2e). | **Release workflow: audited, not edited (#618 rule).** Soft spot: "Pictures of every page" prints each screenshot run's exit code but never fails on a non-zero one. The `package_release` default is still `v1.0-beta`. |
 | `release` | a published release; by hand | Plans, runs `installer`, attaches Setup (real run) or shows what it would (dry run). | **Audited, not edited.** Sound: every check exits 1, and a dry run has a read-only token. |
 | `publish-release` | by hand | Publishes from a build-and-test push run on main whose conclusion is `success`. | **Audited, not edited.** It trusts the run's conclusion: before #618 a run with failing launcher tests still concluded `success` (continue-on-error), so this gate is only now as strong as it looks. |
@@ -99,7 +99,7 @@ Each checker CI runs has a test that plants a defect and sees it fail, and sees 
 | `tools/lore/lint_lore.py`, `repetition.py`, `continuity.py`, `depth_report.py`, `fourth_wall.py` | `tools/lore/tests/` |
 | `tools/lore/reachability.py --check` | `tools/lore/tests/test_reachability_check.py` |
 | `tools/release/check_versions.py` | `tools/release/tests/test_check_versions.py` |
-| `tools/release/check_brand.py` | `tools/release/tests/test_check_brand.py` (planted launcher string, doc line and script message) |
+| `tools/release/check_brand.py` (and `--internal`) | `tools/release/tests/test_check_brand.py` (planted launcher string, doc line and script message; planted namespace and workflow path) |
 | `tools/fork-build/test-install-scripts.ps1`, `tools/wayback-fetch/tests/run-tests.ps1` | they are tests themselves; each exits 1 on a failed check |
 | `tools/newclient-compat/installed_check.py` | none: it needs Godot and the 0.37 release commit (only the `new-client` job has them) |
 

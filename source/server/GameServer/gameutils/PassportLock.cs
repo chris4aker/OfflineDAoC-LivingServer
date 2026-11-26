@@ -7,7 +7,7 @@ namespace DOL.GS
 {
     /// <summary>
     /// A character is playable in one world at a time. While it visits another world, its rows stay
-    /// here with these custom params (written by OfflineDaoc.Passport, see docs/CHARACTER-PASSPORT.md)
+    /// here with these custom params (written by DAoCLivingServer.Passport, see docs/CHARACTER-PASSPORT.md)
     /// and nothing may load, delete or move it.
     /// </summary>
     public static class PassportLock

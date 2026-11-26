@@ -21,7 +21,7 @@ import build_release_037 as release  # noqa: E402
 import make_patch  # noqa: E402
 from test_release_economy_tables import played_world  # noqa: E402
 
-POLICY = json.loads((HERE / "OfflineDaoc.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
+POLICY = json.loads((HERE / "DAoCLivingServer.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
 BOT_PEOPLE = ["offline_bot_skill", "offline_bot_places", "offline_bot_milestones", "offline_bot_mechanics_seen"]
 
 
@@ -60,7 +60,7 @@ class BotPeopleTablesShipEmpty(unittest.TestCase):
                 release.check_policy_covers(missing, BOT_PEOPLE)
 
     def test_the_passport_decides_each_table(self):
-        source = (HERE / "OfflineDaoc.Passport/PassportEngine.cs").read_text(encoding="utf-8")
+        source = (HERE / "DAoCLivingServer.Passport/PassportEngine.cs").read_text(encoding="utf-8")
         for table in BOT_PEOPLE:
             self.assertRegex(source, r'\["%s"\] = new\(PassportDecision\.StaysInWorld' % table)
 
@@ -105,7 +105,7 @@ class BotPeopleDescriptionsMatch(unittest.TestCase):
 
     def test_the_launcher_and_the_server_describe_each_master_switch_alike(self):
         server = (REPO / "source/server/GameServer/serverproperty/ServerProperties.cs").read_text(encoding="utf-8")
-        launcher = (HERE / "OfflineDaoc.Launcher/SocialExpansionSettings.cs").read_text(encoding="utf-8")
+        launcher = (HERE / "DAoCLivingServer.Launcher/SocialExpansionSettings.cs").read_text(encoding="utf-8")
         server_text = dict(re.findall(r'\[ServerProperty\("bots", "(\w+)", "([^"]*)"', server))
         launcher_text = dict(re.findall(r'\("(\w+)", "bots", "([^"]*)"\)', launcher))
         for key in self.MASTERS:
@@ -115,7 +115,7 @@ class BotPeopleDescriptionsMatch(unittest.TestCase):
 
     def test_no_switch_says_it_changes_nothing_yet(self):
         server = (REPO / "source/server/GameServer/serverproperty/ServerProperties.cs").read_text(encoding="utf-8")
-        card = (HERE / "OfflineDaoc.Launcher/SocialExpansionSettingsControl.cs").read_text(encoding="utf-8")
+        card = (HERE / "DAoCLivingServer.Launcher/SocialExpansionSettingsControl.cs").read_text(encoding="utf-8")
         server_text = dict(re.findall(r'\[ServerProperty\("bots", "(\w+)", "([^"]*)"', server))
         waiting = sorted(key for key, text in server_text.items() if "changes nothing yet" in text)
         self.assertEqual(waiting, [], "work package 6 (milestones) is built: every package is")

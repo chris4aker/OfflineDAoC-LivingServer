@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DOL.GS.ServerProperties;
 using NUnit.Framework;
-using OfflineDaoc.Shared;
+using DAoCLivingServer.Shared;
 using Stream = DOL.GS.AutonomousNewcomerStream;
 using Upgrade = DOL.GS.ServerProperties.LivingServerSettingsUpgrade;
 

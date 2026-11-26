@@ -45,12 +45,12 @@
 
   <ItemGroup>
     <!-- Beta 1.1.2: the release check, digest check and package check the launcher's updates use (PackageUpdate.cs). -->
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\BuildVersion.cs" Link="Updates\BuildVersion.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\ReleaseInfo.cs" Link="Updates\ReleaseInfo.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\PackageDigest.cs" Link="Updates\PackageDigest.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\PackageCheck.cs" Link="Updates\PackageCheck.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\ReleaseFeed.cs" Link="Updates\ReleaseFeed.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\HttpReleaseWeb.cs" Link="Updates\HttpReleaseWeb.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\BuildVersion.cs" Link="Updates\BuildVersion.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\ReleaseInfo.cs" Link="Updates\ReleaseInfo.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\PackageDigest.cs" Link="Updates\PackageDigest.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\PackageCheck.cs" Link="Updates\PackageCheck.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\ReleaseFeed.cs" Link="Updates\ReleaseFeed.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\HttpReleaseWeb.cs" Link="Updates\HttpReleaseWeb.cs" />
   </ItemGroup>
 
   <ItemGroup>

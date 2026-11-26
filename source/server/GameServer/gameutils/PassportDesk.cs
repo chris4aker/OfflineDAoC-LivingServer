@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using OfflineDaoc.Passport;
+using DAoCLivingServer.Passport;
 
 namespace DOL.GS
 {
@@ -34,7 +34,7 @@ namespace DOL.GS
         private static readonly Logger log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
         private const long MAX_PASSPORT_BYTES = 64L * 1024 * 1024;
         private const string TEST_SWITCH = "OFFLINEDAOC_PASSPORT_DESK"; // Opens the Desk on a private test copy that listens on this PC only.
-        /// <summary>The Desk listens this far above the login port (OfflineDaoc.Passport.PassportDeskClient.PortOffset).</summary>
+        /// <summary>The Desk listens this far above the login port (DAoCLivingServer.Passport.PassportDeskClient.PortOffset).</summary>
         public const int PortOffset = 10;
         private static readonly TimeSpan WrongLoginDelay = TimeSpan.FromSeconds(1);
         private static readonly SemaphoreSlim Gate = new(1, 1);

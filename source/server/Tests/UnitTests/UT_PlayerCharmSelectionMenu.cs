@@ -75,7 +75,7 @@ namespace DOL.UnitTests
             Type choiceType = typeof(PlayerCharmSelectionMenu).GetNestedType("Choice", BindingFlags.NonPublic);
             object choice = Activator.CreateInstance(choiceType, spellId, savedLevel, (ushort)savedRegion,
                 GameLoop.GameLoopTime + (expired ? -1L : 30_000L), mob);
-            player.TempProperties.SetProperty("OfflineDAoC.PlayerCharmChoice", choice);
+            player.TempProperties.SetProperty("DAoCLivingServer.PlayerCharmChoice", choice);
             var spell = new Spell(new DbSpell { SpellID = 954, Type = "Charm", Target = "Enemy" }, 20);
             Assert.That(PlayerCharmSelectionMenu.TakeChoice(player, spell), expected ? Is.SameAs(mob) : Is.Null);
             Assert.That(PlayerCharmSelectionMenu.TakeChoice(player, spell), Is.Null);

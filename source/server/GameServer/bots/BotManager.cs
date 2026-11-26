@@ -44,9 +44,9 @@ namespace DOL.GS
             if (owner == null) return null;
 
             // Bots never play the custom class (owner 2026-11-17, BotCustomClassRule).
-            if (!OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay(classId))
+            if (!DAoCLivingServer.Shared.BotCustomClassRule.BotsMayPlay(classId))
             {
-                owner.Out.SendMessage(OfflineDaoc.Shared.BotCustomClassRule.RefusedMessage, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                owner.Out.SendMessage(DAoCLivingServer.Shared.BotCustomClassRule.RefusedMessage, eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return null;
             }
 

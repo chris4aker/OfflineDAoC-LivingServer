@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace OfflineDaoc.Shared;
+namespace DAoCLivingServer.Shared;
 
 /// <summary>
 /// The era builds of patch 1.65 (Living Server 1.2, docs/ERA-BUILDS-1.2.md, WP1): each realm's class shares and each
@@ -31,7 +31,7 @@ namespace OfflineDaoc.Shared;
 /// </summary>
 public sealed class EraBuildCatalog
 {
-    public const string ResourceName = "OfflineDaoc.era-builds-165.json";
+    public const string ResourceName = "DAoCLivingServer.era-builds-165.json";
     public const int SupportedSchema = 1;
     public static readonly string[] RealmNames = ["Albion", "Midgard", "Hibernia"];
 

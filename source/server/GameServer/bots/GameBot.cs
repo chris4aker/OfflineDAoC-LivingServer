@@ -3040,9 +3040,9 @@ namespace DOL.GS
             // today's plans; /spawn and /bot companions use the other constructor.
             EraBuildDecision eraBuild = null;
             if (!buildLocked && EraLifetimeBuild.Applies(ServerProperties.Properties.BOT_ERA_BUILDS, ClassId, IsInMemoryOnly,
-                    hiredCompanion, OfflineDaoc.Shared.EraBuildCatalog.Default))
+                    hiredCompanion, DAoCLivingServer.Shared.EraBuildCatalog.Default))
             {
-                eraBuild = EraLifetimeBuild.Choose(OfflineDaoc.Shared.EraBuildCatalog.Default, persistentClass, record.BotId,
+                eraBuild = EraLifetimeBuild.Choose(DAoCLivingServer.Shared.EraBuildCatalog.Default, persistentClass, record.BotId,
                     TrainedSpecLevels(), ServerProperties.Properties.BOT_ERA_OFFMETA_PERCENT);
                 if (eraBuild.Plan != null)
                     BotSpec = eraBuild.Plan;
@@ -4752,7 +4752,7 @@ namespace DOL.GS
 
         /// <summary>The spec points for reaching <paramref name="level"/>; with <paramref name="halfLevel"/>, above level 40,
         /// also the half level before it (level - 1).5. Pure; the sum over levels 2-50 with half levels is
-        /// OfflineDaoc.Shared.EraBuildCatalog.PointBudget.</summary>
+        /// DAoCLivingServer.Shared.EraBuildCatalog.PointBudget.</summary>
         public static int SpecPointsForLevel(int multiplier, int level, bool halfLevel)
         {
             int specpoints = 0;

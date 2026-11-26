@@ -10,7 +10,7 @@ the rows of shadowofze's True 1.65 Prima batch (v0.4-v0.7, GPL-3.0) that the wor
 reports what it would add.
 
 It refuses any world with saved progress (a row in one of the progress tables of
-OfflineDaoc.ProgressImport/progress-policy.json): only a clean reference world is ever changed, never a played one.
+DAoCLivingServer.ProgressImport/progress-policy.json): only a clean reference world is ever changed, never a played one.
 
 What it adds, set by set (all by default except corrections):
   templates   NpcTemplate rows of the Prima monsters and encounter adds (not when the TemplateId is taken)
@@ -39,7 +39,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-POLICY = HERE / "OfflineDaoc.ProgressImport" / "progress-policy.json"
+POLICY = HERE / "DAoCLivingServer.ProgressImport" / "progress-policy.json"
 
 SETS = ("templates", "items", "paths", "spawns", "encounters", "quests", "drops")
 FILES = {

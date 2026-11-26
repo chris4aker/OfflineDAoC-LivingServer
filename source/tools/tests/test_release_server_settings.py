@@ -21,7 +21,7 @@ import build_release_037 as release  # noqa: E402
 import make_patch  # noqa: E402
 
 SETTINGS_FILE = json.loads((HERE / "release-server-settings.json").read_text(encoding="utf-8"))
-POLICY = json.loads((HERE / "OfflineDaoc.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
+POLICY = json.loads((HERE / "DAoCLivingServer.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
 ATTRIBUTE = re.compile(r'\[(?:[\w.]+\.)?ServerProperty\(\s*"[^"]+"\s*,\s*"([^"]+)"\s*,\s*"(?:[^"\\]|\\.)*"\s*,\s*([^)]*?)\)\]')
 
 
@@ -44,7 +44,7 @@ def code_defaults() -> dict:
 
 def launcher_tab_keys() -> list:
     """The settings the launcher's Living Server tab writes (SocialExpansionSettings.Settings)."""
-    text = (REPO / "source/tools/OfflineDaoc.Launcher/SocialExpansionSettings.cs").read_text(encoding="utf-8")
+    text = (REPO / "source/tools/DAoCLivingServer.Launcher/SocialExpansionSettings.cs").read_text(encoding="utf-8")
     return re.findall(r'\(\s*"([a-z0-9_]+)"\s*,\s*"[a-z]+"\s*,', text)
 
 

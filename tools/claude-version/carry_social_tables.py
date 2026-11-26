@@ -23,7 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]  # <playable>/tools/claude-version/
 DB_IN_GAME = Path('runtime/data/opendaoc.sqlite3.db')
-# The same list as OptionalProgressTables in source/tools/OfflineDaoc.ProgressImport/progress-policy.json.
+# The same list as OptionalProgressTables in source/tools/DAoCLivingServer.ProgressImport/progress-policy.json.
 TABLES = ['offline_bot_guilds', 'offline_bot_guild_members', 'offline_bot_scenes_heard', 'offline_bot_memory',
           'offline_bot_nemesis', 'offline_server_firsts', 'offline_bot_lines_heard',
           'offline_bot_ragequits', 'offline_player_reputation', 'offline_bot_storylines', 'offline_bot_bonds',

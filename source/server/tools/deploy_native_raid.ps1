@@ -8,7 +8,7 @@ $probeBackup = Join-Path $clientRoot 'rollback-native-raid-probe'
 $stage = Join-Path $sourceRoot 'build\native-raid'
 function Assert-Stopped {
     $running = Get-CimInstance Win32_Process | Where-Object {
-        $_.Name -in @('CoreServer.exe','game.dll','game.exe','camelot.exe','OfflineDaoc.Launcher.exe') -or
+        $_.Name -in @('CoreServer.exe','game.dll','game.exe','camelot.exe','DAoCLivingServer.Launcher.exe') -or
         ($_.ExecutablePath -and $_.ExecutablePath.StartsWith($runtimeRoot, [StringComparison]::OrdinalIgnoreCase))
     }
     if ($running) { throw 'Close the game, server and launcher before deploying the raid update.' }

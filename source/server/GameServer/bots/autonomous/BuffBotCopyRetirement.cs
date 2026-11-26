@@ -128,7 +128,7 @@ public static class BuffBotCopyRetirement
 
     /// <summary>Retires one copy: IsRetired (never logged in again, out of the roster, guilds and friends), offline, and the
     /// launcher's Activity says why ("Retired: copy of Ashfury's buffbot (kept, never logs in)"; the launcher shows that
-    /// instead of "Deletion pending", OfflineDaoc.Shared.BuffBotCopyMarker). Nothing is deleted. True when the record
+    /// instead of "Deletion pending", DAoCLivingServer.Shared.BuffBotCopyMarker). Nothing is deleted. True when the record
     /// changed (and needs saving).</summary>
     public static bool Retire(Copy copy)
     {
@@ -137,7 +137,7 @@ public static class BuffBotCopyRetirement
             return false;
         record.IsRetired = true;
         record.IsOnline = false;
-        record.Activity = OfflineDaoc.Shared.BuffBotCopyMarker.ActivityFor(copy.Main?.Name);
+        record.Activity = DAoCLivingServer.Shared.BuffBotCopyMarker.ActivityFor(copy.Main?.Name);
         record.Dirty = true;
         return true;
     }

@@ -26,6 +26,7 @@ jobs:
         run: |
           python3 tools/release/check_versions.py
           python3 tools/release/check_brand.py
+          python3 tools/release/check_brand.py --internal
           python3 -m unittest discover -s tools/release/tests -v
           python3 -m unittest discover -s tools/installer/tests -v
 
@@ -229,12 +230,12 @@ jobs:
       - name: Build launcher and test the Living Server tab
         shell: bash
         run: |
-          dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+          dotnet build source/tools/DAoCLivingServer.Launcher/DAoCLivingServer.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
           classes="SocialExpansionSettingsTests HeraldPageTests LoreBestiaryTests Tests.Update HostForFriendsTests JoinFriendTests JoinFriendFormTests GmAccessTests HostForFriendsFirewallTests CraftingEconomyLauncherTests LauncherWindowSizeTests"
           filter=""
           for c in $classes; do filter="${filter:+$filter|}FullyQualifiedName~$c"; done
           rc=0
-          dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=launcher-tab.trx" || rc=1
+          dotnet test source/tools/DAoCLivingServer.Launcher.Tests/DAoCLivingServer.Launcher.Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }} --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=launcher-tab.trx" || rc=1
           python source/tools/ci_test_results.py trx TestResults/launcher-tab.trx --title "Living Server tab tests" --classes "$classes" || rc=1
           exit $rc
 
@@ -256,19 +257,19 @@ jobs:
         run: |
           # The server's passport lock tests (UT_PassportLock) gate in the server test results step above (#618; they were
           # run a second time here with "|| true").
-          dotnet build source/tools/OfflineDaoc.Passport.Cli/OfflineDaoc.Passport.Cli.csproj -c Release
+          dotnet build source/tools/DAoCLivingServer.Passport.Cli/DAoCLivingServer.Passport.Cli.csproj -c Release
           rc=0
-          dotnet test source/tools/OfflineDaoc.Passport.Tests/OfflineDaoc.Passport.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=passport.trx" || rc=1
+          dotnet test source/tools/DAoCLivingServer.Passport.Tests/DAoCLivingServer.Passport.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=passport.trx" || rc=1
           python source/tools/ci_test_results.py trx TestResults/passport.trx --title "Character passport tests" || rc=1
           exit $rc
 
-      # Progress transfer (OfflineDaoc.ProgressImport): its engine's tests on synthetic saves (1.2: a play test sweep's
+      # Progress transfer (DAoCLivingServer.ProgressImport): its engine's tests on synthetic saves (1.2: a play test sweep's
       # guest record is never carried, so a transfer can't give GM back).
       - name: Test the progress transfer engine
         shell: bash
         run: |
           rc=0
-          dotnet test source/tools/OfflineDaoc.ProgressImport.Tests/OfflineDaoc.ProgressImport.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=progress-transfer.trx" || rc=1
+          dotnet test source/tools/DAoCLivingServer.ProgressImport.Tests/DAoCLivingServer.ProgressImport.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=progress-transfer.trx" || rc=1
           python source/tools/ci_test_results.py trx TestResults/progress-transfer.trx --title "Progress transfer tests" || rc=1
           exit $rc
 
@@ -291,7 +292,7 @@ jobs:
           Copy-Item tools/fork-build/content "$dir/content" -Recurse
           Copy-Item tools/claude-version/set_bot_guilds.py, tools/claude-version/set_bot_social.py, tools/claude-version/set_xp_by_level.py, tools/claude-version/carry_social_tables.py, tools/claude-version/epic_chains.py, tools/claude-version/epic_chains_data.json, tools/claude-version/lore_books.py "$dir/tools/claude-version"
           Copy-Item docs/BOT-GUILDS.md, docs/BOT-PERSONALITIES.md, docs/XP-BY-LEVEL-RANGE.md, docs/LIVING-SERVER.md, docs/KNOWN-ISSUES.md, docs/PLAY-WITH-FRIENDS.md "$dir/docs"
-          $launcher = "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
+          $launcher = "source/tools/DAoCLivingServer.Launcher/bin/Release/net10.0-windows"
           New-Item -ItemType Directory -Path "$dir/launcher" -Force | Out-Null
           $launcherInfo = @()
           # DAoCLivingServer.* from 1.2.3 (#641), plus OfflineDAoC.exe: a byte copy of the apphost, which runs
@@ -375,7 +376,7 @@ jobs:
         shell: bash
         run: |
           rc=0
-          dotnet test source/tools/OfflineDaoc.Launcher.Tests/OfflineDaoc.Launcher.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=launcher.trx" || rc=1
+          dotnet test source/tools/DAoCLivingServer.Launcher.Tests/DAoCLivingServer.Launcher.Tests.csproj -c Release --results-directory TestResults --logger "trx;LogFileName=launcher.trx" || rc=1
           python source/tools/ci_test_results.py trx TestResults/launcher.trx --title "Launcher tests" --min-executed 400 || rc=1
           exit $rc
       - uses: actions/upload-artifact@v4

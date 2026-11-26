@@ -49,7 +49,7 @@ current gear rules), realm abilities, races, spells, the class AI, any raid code
 
 | Step | Where | What it does |
 |---|---|---|
-| Class of a gamebot | `source/tools/OfflineDaoc.Launcher/BotCharacterGenerator.cs` `Generate`, called by `MainForm.GenerateBotCharacters` (`+ Lv.1` / `+ Lv.50` / `+ Lv.20` batches of 1, 10 or 100) | `pool[Random.Shared.Next(pool.Length)]`: every class of the realm equally likely; class 63 left out when `enable_sluaghbinder` is False. The row goes into `offline_world_bots` with no build. **The server never creates gamebots itself** (only in-memory Epic Special Forces and buffbots). |
+| Class of a gamebot | `source/tools/DAoCLivingServer.Launcher/BotCharacterGenerator.cs` `Generate`, called by `MainForm.GenerateBotCharacters` (`+ Lv.1` / `+ Lv.50` / `+ Lv.20` batches of 1, 10 or 100) | `pool[Random.Shared.Next(pool.Length)]`: every class of the realm equally likely; class 63 left out when `enable_sluaghbinder` is False. The row goes into `offline_world_bots` with no build. **The server never creates gamebots itself** (only in-memory Epic Special Forces and buffbots). |
 | Same, server copy | `bots/autonomous/AutonomousBotIdentityGenerator.cs` `Generate` | The same even draw (`random.Next`); used by tests only. `GenerateForClass` serves Epic Special Forces, buffbots and `/spawn`. |
 | Build family of a gamebot | `bots/GameBot.cs` (record constructor, about line 2700) | `BotSpec.ChoosePersistentSpecialization(class, BotId)`: a hash of the bot ID picks one of `GetSpecializationChoices(class)` evenly |
 | Build variant | `bots/specs/<Realm>/<Class>.cs` | Each class file picks a variant of the family with `Util.Random`: spec lines with a cap and a `levelRatio` (how fast the line rises while levelling; 0 = only at 50), weapon types and `SpecType` |
@@ -269,7 +269,7 @@ back to today's picker for that class and says so. The bots never stop loading o
 
 ### The class draw (launcher, and the server's copy)
 
-A shared, pure `OfflineDaoc.Shared.EraBuildCatalog` (one file under `bots/autonomous/`, linked into the launcher like
+A shared, pure `DAoCLivingServer.Shared.EraBuildCatalog` (one file under `bots/autonomous/`, linked into the launcher like
 `EraBotNames.cs`) reads the resource and offers `DrawClass(realm, random)` (never the custom class, in either edition). The launcher's
 `BotCharacterGenerator.Generate` uses it when `bot_era_class_shares` is True (read from the world's `ServerProperty`
 row by `EraClassShares.IsOn`, as `Level50Kit` is read; a missing row means True), otherwise today's even draw. Races, names and start
@@ -323,7 +323,7 @@ edition.** `ENABLE_SLUAGHBINDER` (`classes / enable_sluaghbinder`) stays the edi
 - **Data:** Hibernia's era shares hold the 13 Classic + SI classes only, summing to 100% (the draft already left the
   class out, so no scaling was needed). The data file lists the class under `excludedClasses`; the loader refuses a share
   or builds for it whatever the file says (`BotCustomClassRule`).
-- **No path makes one** (WP0-2, `OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay`): the launcher's batches
+- **No path makes one** (WP0-2, `DAoCLivingServer.Shared.BotCustomClassRule.BotsMayPlay`): the launcher's batches
   (`BotCharacterGenerator`, class 63 removed from its pool); the server's generator (`AutonomousBotIdentityGenerator`:
   `Generate`, `GenerateForClass`, `GetEraClasses`, `IsClassAvailable`), and through it Epic Special Forces and No Lifer
   buffbots; `/spawn`, `/classes` and `/raid` helpers (`TemporaryGroupClassCatalog`); hired companions (`Hire165.Classes`
@@ -381,17 +381,17 @@ Each package is its own branch and PR into `integration/1.2`, tests in `source/s
 
 ### WP1 — The shared catalog (0.5 day)
 
-- **Files:** `source/server/GameServer/bots/autonomous/EraBuildCatalog.cs` (new, `OfflineDaoc.Shared`, pure: load,
+- **Files:** `source/server/GameServer/bots/autonomous/EraBuildCatalog.cs` (new, `DAoCLivingServer.Shared`, pure: load,
   validate, `DrawClass`, `DrawBuild(class, seed)`, `Jitter`, `NearestBuild`, budget), linked into
-  `OfflineDaoc.Launcher.csproj` with the JSON as an embedded resource.
+  `DAoCLivingServer.Launcher.csproj` with the JSON as an embedded resource.
 - **Tests:** `UT_EraBuildCatalog`: draws over 100,000 seeds match the shares and weights within 0.5 points; a seed always
   gives the same draw; jitter stays inside the budget and the caps; never the Sluaghbinder, in either edition; a broken
   file or build falls back per class.
 - **Log tags:** `ERA_BUILDS_LOADED version=1 status="approved 2026-11-17" classes=39 builds=106 dropped=0
   sharesSourced=0/3 weightsSourced=0/106 offMeta=10% jitter=2 customClass=never loaded=yes classShares=on` (server
   start, `EraBuildsStartup`); `ERA_BUILDS_INVALID class= build= reason=`.
-- **Public API (built 2026-11-17, for WP3 and WP5):** `OfflineDaoc.Shared.EraBuildCatalog.Default` (the embedded file,
-  resource `OfflineDaoc.era-builds-165.json`); `GetClass(name|classId)`, `GetBuild(id)`, `Shares(realm)`;
+- **Public API (built 2026-11-17, for WP3 and WP5):** `DAoCLivingServer.Shared.EraBuildCatalog.Default` (the embedded file,
+  resource `DAoCLivingServer.era-builds-165.json`); `GetClass(name|classId)`, `GetBuild(id)`, `Shares(realm)`;
   `DrawClass(realm, Random|ulong seed)`, `DrawBuild(className, ulong seed)`, `IsOffMeta(ulong seed, int? percent)`,
   `Jitter(build, ulong seed, out string moves, int? points)`, `NearestBuild(className, trained)`,
   `DerivedRatio(build, line)`, `PointBudget(multiplier, level)`, `LineCost`, `BuildCost`; records `EraBuild` (`Id`,

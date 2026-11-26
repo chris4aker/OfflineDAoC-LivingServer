@@ -63,5 +63,79 @@ class BrandCheckTests(unittest.TestCase):
         self.assertEqual(problems, [], "\n".join(f"{p[0]}:{p[1]}: {p[2]}" for p in problems))
 
 
+NAMING = """# Naming
+<!-- naming-allowlist:start -->
+| Pattern | Where | Why it stays |
+|---|---|---|
+| `OfflineDaoc\\.ProgressImport\\b` | assembly | installed games run the exe |
+| `xq1\\|xq2` | test | an escaped pipe is part of the pattern |
+<!-- naming-allowlist:end -->
+<!-- naming-legacy:start -->
+| Path | Why |
+|---|---|
+| `docs/history/**` | records |
+<!-- naming-legacy:end -->
+"""
+
+
+class InternalNameTests(unittest.TestCase):
+    """Issue #645: the internal check fails on a planted OfflineDaoc name and passes kept names and legacy paths."""
+
+    def run_on(self, files, naming=NAMING):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "NAMING.md").write_text(naming, encoding="utf-8")
+            for rel, text in files.items():
+                (root / rel).parent.mkdir(parents=True, exist_ok=True)
+                (root / rel).write_text(text, encoding="utf-8")
+            return cb.check_internal(root, cb.load_naming(root / "NAMING.md"), sorted(files))
+
+    def test_a_planted_namespace_fails(self):
+        problems, _ = self.run_on({"src/Form.cs": "namespace OfflineDaoc.Launcher;\n",
+                                   ".github/workflows/x.yml": "run: dotnet build source/tools/OfflineDaoc.Launcher\n"})
+        self.assertEqual(sorted((p[0], p[1]) for p in problems), [(".github/workflows/x.yml", 1), ("src/Form.cs", 1)])
+
+    def test_the_new_names_pass(self):
+        problems, allowed = self.run_on({"src/Form.cs": "namespace DAoCLivingServer.Launcher; // DAoC-LivingServer\n"})
+        self.assertEqual((problems, allowed), ([], []))
+
+    def test_a_kept_name_passes_with_its_reason(self):
+        problems, allowed = self.run_on({"x.csproj": "<AssemblyName>OfflineDaoc.ProgressImport</AssemblyName>\n"})
+        self.assertEqual(problems, [])
+        self.assertEqual([a[3] for a in allowed], ["installed games run the exe"])
+
+    def test_a_kept_name_does_not_cover_another_on_the_same_line(self):
+        problems, _ = self.run_on({"x.py": "copy('OfflineDaoc.ProgressImport.exe', 'OfflineDaoc.Launcher')\n"})
+        self.assertEqual(len(problems), 1)
+
+    def test_legacy_paths_are_skipped(self):
+        problems, allowed = self.run_on({"docs/history/OLD.md": "source/tools/OfflineDaoc.Launcher\n"})
+        self.assertEqual((problems, allowed), ([], []))
+
+    def test_an_escaped_pipe_belongs_to_the_pattern(self):
+        kept, _ = self.load(NAMING)
+        self.assertEqual(kept[1][0].pattern, "xq1|xq2")
+
+    def test_a_row_without_a_reason_or_pattern_is_refused(self):
+        for bad in (NAMING.replace("installed games run the exe", ""),
+                    NAMING.replace("`OfflineDaoc\\.ProgressImport\\b`", "OfflineDaoc")):
+            with self.assertRaises(SystemExit):
+                self.load(bad)
+
+    def test_missing_markers_are_refused(self):
+        with self.assertRaises(SystemExit):
+            self.load("# Naming\n")
+
+    def test_the_repository_passes(self):
+        problems, _ = cb.check_internal()
+        self.assertEqual(problems, [], "\n".join(f"{p[0]}:{p[1]}: {p[2]}" for p in problems))
+
+    def load(self, text):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "NAMING.md"
+            path.write_text(text, encoding="utf-8")
+            return cb.load_naming(path)
+
+
 if __name__ == "__main__":
     unittest.main()

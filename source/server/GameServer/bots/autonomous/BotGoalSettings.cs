@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace OfflineDaoc.Configuration;
+namespace DAoCLivingServer.Configuration;
 
 // Linked into the launcher: validation, defaults and disk format have one owner.
 // Battlegrounds (added 2026-10-07) is 0 in a row that omits it, so settings files saved before it stay valid.

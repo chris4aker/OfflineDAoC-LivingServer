@@ -64,7 +64,7 @@ namespace DOL.GS.Tests
                 Assert.That(copy.IsRetired, Is.True, "never logged in again");
                 Assert.That(copy.IsOnline, Is.False);
                 Assert.That(copy.Activity, Is.EqualTo("Retired: copy of Mainguy's buffbot (kept, never logs in)"));
-                Assert.That(OfflineDaoc.Shared.BuffBotCopyMarker.IsRetiredCopy(copy.IsRetired, copy.ClassName, copy.Activity), Is.True,
+                Assert.That(DAoCLivingServer.Shared.BuffBotCopyMarker.IsRetiredCopy(copy.IsRetired, copy.ClassName, copy.Activity), Is.True,
                     "the launcher shows it as kept, not as a deletion");
                 Assert.That(sameName.IsRetired || similar.IsRetired || main.IsRetired, Is.False);
             });

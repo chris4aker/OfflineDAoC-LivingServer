@@ -92,13 +92,13 @@ jobs:
           name: Candidate-Setup
           path: setup
       - name: Build the playtester
-        run: dotnet build source/tools/OfflineDaoc.Playtester -c Release
+        run: dotnet build source/tools/DAoCLivingServer.Playtester -c Release
       - name: New install, Setup's paths, smoke, class-off edition
         shell: pwsh
         run: |
           $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
           $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
-          $pt = (Resolve-Path source/tools/OfflineDaoc.Playtester/bin/Release/net10.0/OfflineDaoc.Playtester.dll).Path
+          $pt = (Resolve-Path source/tools/DAoCLivingServer.Playtester/bin/Release/net10.0/DAoCLivingServer.Playtester.dll).Path
           powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& 'tools/installer/test-installer.ps1' -Exe '$($exe.FullName)' -Package '$($pkg.FullName)' -Work 'D:\lstest' -Scenario fresh,smoke,classoff -Playtester '$pt'; exit `$LASTEXITCODE"
           exit $LASTEXITCODE
       - name: Put the playtester's report on the run page

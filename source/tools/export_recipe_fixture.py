@@ -27,7 +27,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 DEFAULT_OUT = HERE.parent / "server" / "Tests" / "Rehearsal" / "fixtures" / "recipes.json"
-POLICY = HERE / "OfflineDaoc.ProgressImport" / "progress-policy.json"
+POLICY = HERE / "DAoCLivingServer.ProgressImport" / "progress-policy.json"
 
 # The only tables this script reads. All are world data, the same in a fresh install unless a patch changed them.
 WORLD_TABLES = ("crafteditem", "craftedxitem", "itemtemplate", "merchantitem", "mob")

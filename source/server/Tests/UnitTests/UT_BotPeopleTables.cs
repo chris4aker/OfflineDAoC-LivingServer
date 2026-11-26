@@ -51,9 +51,9 @@ namespace DOL.UnitTests
         public void The_policy_and_the_passport_know_every_table()
         {
             string root = Root();
-            string policy = File.ReadAllText(Path.Combine(root, "source/tools/OfflineDaoc.ProgressImport/progress-policy.json"));
+            string policy = File.ReadAllText(Path.Combine(root, "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json"));
             string optional = Regex.Match(policy, "\"OptionalProgressTables\"\\s*:\\s*\\[([^\\]]*)\\]").Groups[1].Value;
-            string passport = File.ReadAllText(Path.Combine(root, "source/tools/OfflineDaoc.Passport/PassportEngine.cs"));
+            string passport = File.ReadAllText(Path.Combine(root, "source/tools/DAoCLivingServer.Passport/PassportEngine.cs"));
             foreach (string table in BotPeopleTables.All)
             {
                 Assert.That(optional, Does.Contain($"\"{table}\""), table + " is emptied by the release build and carried by the transfer");
@@ -64,7 +64,7 @@ namespace DOL.UnitTests
         private static string Root()
         {
             string dir = TestContext.CurrentContext.TestDirectory;
-            while (dir != null && !File.Exists(Path.Combine(dir, "source/tools/OfflineDaoc.ProgressImport/progress-policy.json")))
+            while (dir != null && !File.Exists(Path.Combine(dir, "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json")))
                 dir = Path.GetDirectoryName(dir);
             if (dir == null)
                 Assert.Ignore("The repository is not beside the tests.");

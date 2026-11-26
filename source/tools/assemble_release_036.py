@@ -58,7 +58,7 @@ def main():
     counts["source"] = copy_tree(repo / "source", package / "source", keep)
     for tool in ("pet-art", "claude-version", "asset-tool"):
         counts[f"tools/{tool}"] = copy_tree(repo / "tools" / tool, package / "tools" / tool, keep)
-    importer = repo / "source/tools/OfflineDaoc.ProgressImport/bin/Release/net10.0-windows"
+    importer = repo / "source/tools/DAoCLivingServer.ProgressImport/bin/Release/net10.0-windows"
     counts["tools/ProgressImporter"] = copy_tree(importer, package / "tools/ProgressImporter")
     (package / "editions/README.txt").write_text(
         "The 0.36 edition without the custom Sluaghbinder class is this 0.36b game plus the files in\r\n"

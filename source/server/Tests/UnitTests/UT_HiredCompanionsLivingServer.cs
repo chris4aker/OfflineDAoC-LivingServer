@@ -121,13 +121,13 @@ namespace DOL.UnitTests
         public void TheReleaseBuildEmptiesTheHireTable()
         {
             string root = TestContext.CurrentContext.TestDirectory;
-            for (int i = 0; i < 8 && root != null && !System.IO.File.Exists(System.IO.Path.Combine(root, "source/tools/OfflineDaoc.ProgressImport/progress-policy.json")); i++)
+            for (int i = 0; i < 8 && root != null && !System.IO.File.Exists(System.IO.Path.Combine(root, "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json")); i++)
                 root = System.IO.Path.GetDirectoryName(root);
-            if (root == null || !System.IO.File.Exists(System.IO.Path.Combine(root, "source/tools/OfflineDaoc.ProgressImport/progress-policy.json")))
+            if (root == null || !System.IO.File.Exists(System.IO.Path.Combine(root, "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json")))
                 Assert.Ignore("Repository not found beside the tests.");
-            string policy = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "source/tools/OfflineDaoc.ProgressImport/progress-policy.json"));
+            string policy = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json"));
             Assert.That(policy, Does.Contain("\"offline_hired_companions\""));
-            string passport = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "source/tools/OfflineDaoc.Passport/PassportEngine.cs"));
+            string passport = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "source/tools/DAoCLivingServer.Passport/PassportEngine.cs"));
             Assert.That(passport, Does.Contain("[\"offline_hired_companions\"] = new(PassportDecision.StaysInWorld"));
         }
     }

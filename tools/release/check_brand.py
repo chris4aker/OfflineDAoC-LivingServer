@@ -6,6 +6,11 @@ The owner, 2026-11-25: the product is "DAoC - Living Server"; no player-visible 
 
     python3 tools/release/check_brand.py           # check (CI: the versions job; tools/check.py)
     python3 tools/release/check_brand.py --list    # every hit it allows, with the reason
+    python3 tools/release/check_brand.py --internal  # internal names (issue #645), allowlist in docs/NAMING.md
+
+The internal check (#645, owner 2026-11-25: "DAoC-LivingServer should be the name, and standard") reads every tracked
+text file outside docs/NAMING.md's legacy paths and fails on the old code spelling "OfflineDaoc" (the former project,
+namespace and assembly names) unless a pattern of NAMING.md's kept-names table covers it.
 
 What it reads (SURFACES): the text players see. That is the string literals of the launcher, Setup and the game server,
 the messages of the install scripts, and the player docs shipped in the package or linked from the README. In C# and
@@ -25,24 +30,27 @@ import argparse
 import fnmatch
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 ALLOWLIST = Path(__file__).resolve().parent / "brand-allowlist.json"
+NAMING = REPO / "docs" / "NAMING.md"
+INTERNAL = re.compile(r"OfflineDaoc")
 OLD = re.compile(r"Offline DAoC|OfflineDAoC|shadowofze")
 
 # (kind, glob relative to the repository). kind: "cs" (string literals), "ps" (PowerShell and cmd: non-comment lines),
 # "text" (every line).
 SURFACES: list[tuple[str, str]] = [
-    ("cs", "source/tools/OfflineDaoc.Launcher/**/*.cs"),
+    ("cs", "source/tools/DAoCLivingServer.Launcher/**/*.cs"),
     ("cs", "tools/installer/src/**/*.cs"),
     ("cs", "source/server/GameServer/**/*.cs"),
     ("ps", "tools/fork-build/install-server-build.ps1"),
     ("ps", "tools/fork-build/rollback-server-build.ps1"),
     ("ps", "tools/fork-build/fork-build-common.ps1"),
     ("ps", "tools/fork-build/*.cmd"),
-    ("ps", "source/tools/OfflineDaoc.Launcher/Updates/apply-update.ps1"),
+    ("ps", "source/tools/DAoCLivingServer.Launcher/Updates/apply-update.ps1"),
     ("text", "README.md"),
     ("text", "QUICK COMMANDS.txt"),
     ("text", "docs/PLAY.md"),
@@ -81,7 +89,6 @@ COMPATIBILITY: list[tuple[str, str]] = [
     (r"'OfflineDAoC\*'", "game folders found by their old name"),
     (r"%LOCALAPPDATA%\\OfflineDAoC\b", "where existing saved friend profiles and passports live"),
     (r"~/OfflineDAoC/", "the Linux scripts' default game folder, where existing Linux installs are"),
-    (r"\"OfflineDAoC\.[A-Z]\w+\"", "internal temporary property keys, never shown"),
     (r"\bOfflineDAoC Join Friend v1\b|\"Offline DAoC Join Friend\"",
      "the DPAPI entropy and description that encrypt saved friend passwords: changing them loses those passwords"),
 ]
@@ -163,10 +170,104 @@ def check(repo: Path = REPO, allowlist: dict | None = None, surfaces=SURFACES):
     return problems, allowed
 
 
+def _table(text: str, name: str) -> list[list[str]]:
+    """The body rows of the Markdown table between <!-- naming-<name>:start --> and :end -->, as cells."""
+    start, end = f"<!-- naming-{name}:start -->", f"<!-- naming-{name}:end -->"
+    if start not in text or end not in text:
+        raise SystemExit(f"docs/NAMING.md: no {start} ... {end} table")
+    rows = []
+    for line in text.split(start, 1)[1].split(end, 1)[0].splitlines():
+        line = line.strip()
+        if not line.startswith("|") or set(line) <= set("|- "):
+            continue
+        cells = [c.strip() for c in re.split(r"(?<!\\)\|", line.strip("|"))]
+        rows.append(cells)
+    return rows[1:]  # without the header
+
+
+def _code(cell: str) -> str:
+    m = re.fullmatch(r"`(.+)`", cell)
+    return m.group(1).replace("\\|", "|") if m else ""
+
+
+def load_naming(path: Path = NAMING):
+    """(kept, legacy): kept is [(compiled pattern, why)], legacy is [(glob, why)]. Refuses a row without either."""
+    text = path.read_text(encoding="utf-8")
+    kept, legacy = [], []
+    for cells in _table(text, "allowlist"):
+        pattern, why = _code(cells[0]), cells[-1] if len(cells) >= 3 else ""
+        if not pattern or not why:
+            raise SystemExit(f"{path}: a kept-names row needs a `pattern` and a reason: {cells}")
+        kept.append((re.compile(pattern), why))
+    for cells in _table(text, "legacy"):
+        glob, why = _code(cells[0]), cells[-1] if len(cells) >= 2 else ""
+        if not glob or not why:
+            raise SystemExit(f"{path}: a legacy-path row needs a `path` and a reason: {cells}")
+        legacy.append((glob, why))
+    return kept, legacy
+
+
+def tracked_files(repo: Path) -> list[str]:
+    try:
+        out = subprocess.run(["git", "-C", str(repo), "ls-files", "-z"], check=True, capture_output=True).stdout
+        names = [n for n in out.decode("utf-8").split("\0") if n]
+        if names:
+            return names
+    except (OSError, subprocess.CalledProcessError):
+        pass
+    return sorted(p.relative_to(repo).as_posix() for p in repo.rglob("*") if p.is_file() and ".git" not in p.parts)
+
+
+def check_internal(repo: Path = REPO, naming=None, files=None):
+    """(problems, allowed) for the internal names: each a list of (file, line number, line, reason)."""
+    kept, legacy = load_naming() if naming is None else naming
+    problems, allowed = [], []
+    for rel in (tracked_files(repo) if files is None else files):
+        if any(fnmatch.fnmatch(rel, g) for g, _ in legacy) or "/bin/" in rel or "/obj/" in rel:
+            continue
+        path = repo / rel
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8-sig")
+        except (UnicodeDecodeError, OSError):
+            continue
+        if not INTERNAL.search(text):
+            continue
+        for number, line in enumerate(text.splitlines(), 1):
+            if not INTERNAL.search(line):
+                continue
+            rest, why = line, ""
+            for pattern, reason in kept:
+                if pattern.search(rest):
+                    rest, why = pattern.sub("", rest), why or reason
+            if INTERNAL.search(rest):
+                problems.append((rel, number, line.strip(), ""))
+            else:
+                allowed.append((rel, number, line.strip(), why))
+    return problems, allowed
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--list", action="store_true", help="print every allowed hit with its reason")
+    ap.add_argument("--internal", action="store_true", help="check the internal names against docs/NAMING.md (#645)")
     a = ap.parse_args(argv)
+    if a.internal:
+        problems, allowed = check_internal()
+        if a.list:
+            for rel, number, line, why in allowed:
+                print(f"allowed  {rel}:{number}: {line[:120]}  ({why})")
+        for rel, number, line, _ in problems:
+            print(f"{rel}:{number}: old internal name: {line[:160]}")
+        if problems:
+            print(f"\n{len(problems)} use(s) of the old internal name OfflineDaoc (issue #645). Namespaces, projects and "
+                  "assemblies are DAoCLivingServer.*, files and tools DAoC-LivingServer (docs/NAMING.md). Rename it, or, "
+                  "if an installed game or an older launcher needs it, add a kept-names row with the reason to "
+                  "docs/NAMING.md.")
+            return 1
+        print(f"Internal names: no old OfflineDaoc name ({len(allowed)} allowed by docs/NAMING.md's kept names).")
+        return 0
     problems, allowed = check()
     if a.list:
         for rel, number, line, why in allowed:

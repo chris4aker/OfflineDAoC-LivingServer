@@ -8,7 +8,7 @@ function Assert-Stopped {
     }
 }
 Assert-Stopped
-$launcher = Join-Path (Split-Path $sourceRoot -Parent) 'tools\OfflineDaoc.Launcher\bin\Release\net10.0-windows'
+$launcher = Join-Path (Split-Path $sourceRoot -Parent) 'tools\DAoCLivingServer.Launcher\bin\Release\net10.0-windows'
 $map = @(
     @('server\GameServer.dll', (Join-Path $sourceRoot 'Release\lib\GameServer.dll')),
     @('server\GameServer.pdb', (Join-Path $sourceRoot 'Release\lib\GameServer.pdb')),

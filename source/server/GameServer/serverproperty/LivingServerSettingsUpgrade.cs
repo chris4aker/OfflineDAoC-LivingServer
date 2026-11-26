@@ -109,7 +109,7 @@ namespace DOL.GS.ServerProperties
 		public static readonly FileChange[] FileChanges =
 		[
 			// 1.2.3 (#598 option A): 1-19 60/40/0/0 -> 55/35/0/10, 20-49 35/35/15/15 -> 30/30/15/25 (BotGoalSettings).
-			new("1.2.3", OfflineDaoc.Configuration.BotGoalSettings.FileName, "Bot Goals default shares (battlegrounds 10% at 15-19, 25% at 20-35)"),
+			new("1.2.3", DAoCLivingServer.Configuration.BotGoalSettings.FileName, "Bot Goals default shares (battlegrounds 10% at 15-19, 25% at 20-35)"),
 		];
 
 		/// <summary>The file changes still to run on a world that recorded <paramref name="doneVersion"/>. Pure.</summary>
@@ -197,7 +197,7 @@ namespace DOL.GS.ServerProperties
 				}
 				foreach (FileChange change in PlanFileChanges(version.Item3.Value))
 				{
-					if (change.File == OfflineDaoc.Configuration.BotGoalSettings.FileName && AutonomousBotGoalPolicy.UpgradeUntouchedDefaults())
+					if (change.File == DAoCLivingServer.Configuration.BotGoalSettings.FileName && AutonomousBotGoalPolicy.UpgradeUntouchedDefaults())
 						log.Info($"Living Server {change.Since}: {change.File} set to the new defaults ({change.Description}; the file held " +
 						         "the untouched old defaults; change it in the launcher's Bot Goals Setting tab)");
 				}

@@ -4,7 +4,7 @@ A scripted player and a test world that check the game the way a person in the g
 type in the client or read the chat window. It runs overnight on your PC or in CI and writes a report.
 
 - **`source/tools/make_test_world.py`** makes the test world: a **new** database file.
-- **`source/tools/OfflineDaoc.Playtester`** is the scripted player. It is a .NET 10 console tool that speaks the
+- **`source/tools/DAoCLivingServer.Playtester`** is the scripted player. It is a .NET 10 console tool that speaks the
   original 1.127 client protocol to a server on `127.0.0.1:10300`.
 
 Everything it does is automated. A passing report means the scenario's checks passed on that run. It is not an
@@ -32,7 +32,7 @@ You need the .NET 10 SDK (as for building the server) and Python 3.
 
 1. **Build the playtester** (once, and after each pull):
    ```
-   dotnet build source\tools\OfflineDaoc.Playtester -c Release
+   dotnet build source\tools\DAoCLivingServer.Playtester -c Release
    ```
 2. **Close the launcher and the game.** The server of that folder must not be running.
 3. **Make the test world** from the clean world of the fresh install. Use a folder outside the install:
@@ -53,7 +53,7 @@ You need the .NET 10 SDK (as for building the server) and Python 3.
    each time. A run adds characters and moves bots.
    ```
    copy C:\Games\OfflineDAoC\playtest\test-world.db C:\Games\OfflineDAoC\playtest\run.db
-   dotnet source\tools\OfflineDaoc.Playtester\bin\Release\net10.0\OfflineDaoc.Playtester.dll run ^
+   dotnet source\tools\DAoCLivingServer.Playtester\bin\Release\net10.0\DAoCLivingServer.Playtester.dll run ^
        --world C:\Games\OfflineDAoC\playtest\run.db ^
        --server-dir C:\Games\OfflineDAoC\playable-v0.37b-fresh\runtime\server ^
        --out C:\Games\OfflineDAoC\playtest\reports\first
