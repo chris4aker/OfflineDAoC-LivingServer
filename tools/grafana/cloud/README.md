@@ -1,6 +1,6 @@
 # Grafana Cloud kit
 
-Issue #647 (tracker), #649 (this part). Sends a Living Server's health, bots and world to **your own Grafana Cloud stack**:
+Issue #647 (tracker); #649 (setup) and #652 (dashboards). Sends a Living Server's health, bots and world to **your own Grafana Cloud stack**:
 - `server.log` goes to Loki, sanitized: no chat, names, accounts, paths or IPs leave the PC;
 - log-derived metrics (AI tick percentiles, game-loop stages, memory, bots online by realm) and the server process's
   CPU and memory go to Prometheus.
@@ -22,6 +22,7 @@ are new and have run in tests and in a real Alloy on Linux, not yet on a Windows
 | `run-alloy.sh`, `run-alloy.ps1` | What the service or logon task runs |
 | `monitoring.env.example` | The settings; the install copies it to `monitoring.env` (gitignored) for you to fill in |
 | `alloy/common`, `alloy/linux`, `alloy/windows` | The Alloy pipeline; the install copies `common` plus your OS's folder |
+| `dashboards.py`, `dashboard_parts.py` | Generate the three ✦ dashboards (Overview, Server Health, Bots & World) into `dashboards/`, plus gcx resources in `dashboards/gcx/`; `--check` fails when they are stale (#652) |
 | `pins.json` | The pinned Alloy release and its SHA256, from the release's own `SHA256SUMS` |
 
 Where it installs: `~/.local/share/livingserver-monitoring` on Ubuntu, `%LOCALAPPDATA%\LivingServerMonitoring` on Windows.

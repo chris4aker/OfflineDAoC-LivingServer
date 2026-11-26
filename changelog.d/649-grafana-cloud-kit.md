@@ -11,4 +11,5 @@ section: Tests
   - this kit's own user-level Alloy (a systemd user service on Ubuntu, a logon task on Windows), with no sudo or admin,
     and an existing Alloy left alone.
 
-  The player only signs up, makes the tokens and fills in the settings file. Tools and docs only; no game change.
+  The player only signs up, makes the tokens and fills in the settings file. Three dashboards (#652), Overview, Server
+  Health and Bots & World, are generated and pushed with gcx. Tools and docs only; no game change.

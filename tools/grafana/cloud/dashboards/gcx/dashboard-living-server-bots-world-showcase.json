@@ -1,0 +1,2154 @@
+{
+  "apiVersion": "dashboard.grafana.app/v1beta1",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "living-server-bots-world-showcase",
+    "annotations": {
+      "grafana.app/folder": "living-server"
+    }
+  },
+  "spec": {
+    "uid": "living-server-bots-world-showcase",
+    "title": "Living Server ✦ Bots & World",
+    "tags": [
+      "living-server-showcase",
+      "bots",
+      "world"
+    ],
+    "editable": true,
+    "schemaVersion": 39,
+    "version": 1,
+    "timezone": "browser",
+    "graphTooltip": 1,
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "refresh": "1m",
+    "templating": {
+      "list": [
+        {
+          "name": "ds_prom",
+          "label": "Prometheus",
+          "type": "datasource",
+          "query": "prometheus",
+          "current": {},
+          "hide": 0,
+          "refresh": 1,
+          "regex": "/^(?!.*(usage|insights|alert-state|billing|cardinality)).*$/"
+        },
+        {
+          "name": "ds_loki",
+          "label": "Loki",
+          "type": "datasource",
+          "query": "loki",
+          "current": {},
+          "hide": 0,
+          "refresh": 1,
+          "regex": "/^(?!.*(usage|insights|alert-state|billing|cardinality)).*$/"
+        },
+        {
+          "name": "job",
+          "label": "Job",
+          "type": "custom",
+          "query": "livingserver,livingserver-test",
+          "current": {
+            "text": "livingserver",
+            "value": "livingserver"
+          },
+          "options": [],
+          "hide": 0
+        },
+        {
+          "name": "instance",
+          "label": "Server",
+          "type": "query",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${ds_prom}"
+          },
+          "query": {
+            "query": "label_values(loki_process_custom_lines_total{job=\"$job\"}, instance)",
+            "refId": "v"
+          },
+          "definition": "label_values(loki_process_custom_lines_total{job=\"$job\"}, instance)",
+          "refresh": 2,
+          "includeAll": true,
+          "multi": false,
+          "allValue": ".*",
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "hide": 0,
+          "sort": 1
+        },
+        {
+          "name": "event",
+          "label": "Event",
+          "type": "custom",
+          "query": "AUTONOMOUS_BOT_DEATH,AUTONOMOUS_DEATH_ROUTE_REPLAN,BOT_SOLO_BAIL,BOT_RETREAT_ENDED,BOT_SKILL_MISTAKE,AUTONOMOUS_XP_PROGRESS,AUTONOMOUS_EQUIPMENT_UPGRADE,AUTONOMOUS_EXCHANGE_SOLD,RVR_BOT_KILLED,RVR_SIEGE,RVR_FIGHT_BOARD,BG_WAVE_STATUS,CRAFT_RECIPE_BROKEN,other",
+          "includeAll": true,
+          "multi": true,
+          "allValue": ".+",
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "options": [],
+          "hide": 0
+        }
+      ]
+    },
+    "annotations": {
+      "list": []
+    },
+    "links": [
+      {
+        "type": "dashboards",
+        "tags": [
+          "living-server-showcase"
+        ],
+        "asDropdown": true,
+        "title": "Living Server",
+        "includeVars": true,
+        "keepTime": true
+      }
+    ],
+    "panels": [
+      {
+        "type": "text",
+        "title": "",
+        "transparent": true,
+        "options": {
+          "mode": "html",
+          "content": "<div style=\"padding:6px 14px;border-left:6px solid #56A64B;background:linear-gradient(90deg, rgba(242,204,12,0.18), rgba(50,116,217,0.10) 60%, transparent)\"><div style=\"font-size:30px;font-weight:700;letter-spacing:1px\">Living Server ✦ Bots & World</div><div style=\"font-size:15px;opacity:0.85;margin-top:2px\">Three realms, one war. Who's online, who's fighting, who just died.</div><div style=\"font-size:14px;margin-top:6px\"><a href=\"/d/living-server-overview-showcase?${__url_time_range}&var-job=${job}\" style=\"color:#bbbbbb\">Overview</a> &nbsp;·&nbsp; <a href=\"/d/living-server-health-showcase?${__url_time_range}&var-job=${job}\" style=\"color:#bbbbbb\">Server Health</a> &nbsp;·&nbsp; <a href=\"/d/living-server-bots-world-showcase?${__url_time_range}&var-job=${job}\" style=\"color:#56A64B\">Bots & World</a></div></div>"
+        },
+        "id": 1,
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 24,
+          "h": 4
+        }
+      },
+      {
+        "type": "stat",
+        "title": "⚔️ Bots online",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "(max(loki_process_custom_bots_online{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)) or on() ((sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) == 0) - 1)",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "No data: collector off",
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "-1": {
+                    "text": "Server stopped",
+                    "color": "#8e8e8e"
+                  }
+                }
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#F2CC0C",
+                  "value": null
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false,
+          "text": {
+            "valueSize": 72
+          }
+        },
+        "id": 2,
+        "gridPos": {
+          "x": 0,
+          "y": 4,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "piechart",
+        "title": "🏰 Bots by realm",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_bots_online_albion{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)",
+            "legendFormat": "Albion",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_bots_online_midgard{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)",
+            "legendFormat": "Midgard",
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_bots_online_hibernia{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)",
+            "legendFormat": "Hibernia",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "No data: collector off",
+            "color": {
+              "mode": "palette-classic"
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Albion"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#E02F44"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Midgard"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#3274D9"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Hibernia"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#56A64B"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "pieType": "donut",
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent"
+            ]
+          },
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "id": 3,
+        "gridPos": {
+          "x": 6,
+          "y": 4,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Albion",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "(max(loki_process_custom_bots_online_albion{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)) or on() ((sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) == 0) - 1)",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "No data: collector off",
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "-1": {
+                    "text": "Server stopped",
+                    "color": "#8e8e8e"
+                  }
+                }
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E02F44",
+                  "value": null
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false,
+          "text": {
+            "valueSize": 48
+          }
+        },
+        "id": 4,
+        "gridPos": {
+          "x": 12,
+          "y": 4,
+          "w": 4,
+          "h": 7
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Midgard",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "(max(loki_process_custom_bots_online_midgard{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)) or on() ((sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) == 0) - 1)",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "No data: collector off",
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "-1": {
+                    "text": "Server stopped",
+                    "color": "#8e8e8e"
+                  }
+                }
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#3274D9",
+                  "value": null
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false,
+          "text": {
+            "valueSize": 48
+          }
+        },
+        "id": 5,
+        "gridPos": {
+          "x": 16,
+          "y": 4,
+          "w": 4,
+          "h": 7
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Hibernia",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "(max(loki_process_custom_bots_online_hibernia{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)) or on() ((sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) == 0) - 1)",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "No data: collector off",
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "-1": {
+                    "text": "Server stopped",
+                    "color": "#8e8e8e"
+                  }
+                }
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#56A64B",
+                  "value": null
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "textMode": "value",
+          "orientation": "auto",
+          "wideLayout": true,
+          "showPercentChange": false,
+          "text": {
+            "valueSize": 48
+          }
+        },
+        "id": 6,
+        "gridPos": {
+          "x": 20,
+          "y": 4,
+          "w": 4,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "📊 Bots online by realm",
+        "description": "Per realm and total. Gaps = server stopped or collector off.",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "(label_replace(max(loki_process_custom_bots_online_albion{job=\"$job\", instance=~\"$instance\"}), \"realm\", \"Albion\", \"\", \"\") or label_replace(max(loki_process_custom_bots_online_midgard{job=\"$job\", instance=~\"$instance\"}), \"realm\", \"Midgard\", \"\", \"\") or label_replace(max(loki_process_custom_bots_online_hibernia{job=\"$job\", instance=~\"$instance\"}), \"realm\", \"Hibernia\", \"\", \"\")) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)",
+            "legendFormat": "{{realm}}",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "max(loki_process_custom_bots_online{job=\"$job\", instance=~\"$instance\"}) and on() (sum(namedprocess_namegroup_num_procs{job=\"$job\", instance=~\"$instance\", groupname=\"coreserver\"}) > 0)",
+            "legendFormat": "total",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "No data: collector off",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Albion"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#E02F44"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Midgard"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#3274D9"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Hibernia"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#56A64B"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "total"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#F2CC0C"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 7,
+        "gridPos": {
+          "x": 0,
+          "y": 11,
+          "w": 24,
+          "h": 8
+        }
+      },
+      {
+        "type": "row",
+        "title": "🌍 World pulse",
+        "id": 8,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 19,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "timeseries",
+        "title": "Events per minute",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum by (event) (rate(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=~\"$event\", event!=\"other\", level=\"INF\"}[5m])) * 60",
+            "legendFormat": "{{event}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 40,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "normal",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 9,
+        "gridPos": {
+          "x": 0,
+          "y": 20,
+          "w": 16,
+          "h": 9
+        }
+      },
+      {
+        "type": "bargauge",
+        "title": "🏆 Top events in range",
+        "description": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "topk(10, sum by (event) (increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=~\"$event\", event!=\"other\"}[$__range])))",
+            "legendFormat": "{{event}}",
+            "refId": "A",
+            "instant": true,
+            "range": false
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "noValue": "Server stopped",
+            "min": 0,
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "gradient",
+          "showUnfilled": true,
+          "valueMode": "color",
+          "namePlacement": "left",
+          "sizing": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          }
+        },
+        "id": 10,
+        "gridPos": {
+          "x": 16,
+          "y": 20,
+          "w": 8,
+          "h": 9
+        }
+      },
+      {
+        "type": "row",
+        "title": "💀 Deaths & retreats",
+        "id": 11,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 29,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "timeseries",
+        "title": "Bot deaths",
+        "description": "AUTONOMOUS_BOT_DEATH per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"AUTONOMOUS_BOT_DEATH\"}[1h]))",
+            "legendFormat": "Bot deaths",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Bot deaths"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#E02F44"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 12,
+        "gridPos": {
+          "x": 0,
+          "y": 30,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Death route replans",
+        "description": "AUTONOMOUS_DEATH_ROUTE_REPLAN per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"AUTONOMOUS_DEATH_ROUTE_REPLAN\"}[1h]))",
+            "legendFormat": "Death route replans",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Death route replans"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#FF9830"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 13,
+        "gridPos": {
+          "x": 6,
+          "y": 30,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Retreats ended",
+        "description": "BOT_RETREAT_ENDED per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"BOT_RETREAT_ENDED\"}[1h]))",
+            "legendFormat": "Retreats ended",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Retreats ended"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#8F3BB8"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 14,
+        "gridPos": {
+          "x": 12,
+          "y": 30,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Solo bails",
+        "description": "BOT_SOLO_BAIL per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"BOT_SOLO_BAIL\"}[1h]))",
+            "legendFormat": "Solo bails",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Solo bails"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#5794F2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 15,
+        "gridPos": {
+          "x": 18,
+          "y": 30,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "row",
+        "title": "⚔️ RvR & battlegrounds",
+        "id": 16,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 37,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "timeseries",
+        "title": "RvR kills",
+        "description": "RVR_BOT_KILLED per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"RVR_BOT_KILLED\"}[1h]))",
+            "legendFormat": "RvR kills",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "RvR kills"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#E02F44"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 17,
+        "gridPos": {
+          "x": 0,
+          "y": 38,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Sieges",
+        "description": "RVR_SIEGE per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"RVR_SIEGE\"}[1h]))",
+            "legendFormat": "Sieges",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Sieges"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#F2CC0C"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 18,
+        "gridPos": {
+          "x": 6,
+          "y": 38,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Fight boards",
+        "description": "RVR_FIGHT_BOARD per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"RVR_FIGHT_BOARD\"}[1h]))",
+            "legendFormat": "Fight boards",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Fight boards"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#3274D9"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 19,
+        "gridPos": {
+          "x": 12,
+          "y": 38,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "BG waves",
+        "description": "BG_WAVE_STATUS per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"BG_WAVE_STATUS\"}[1h]))",
+            "legendFormat": "BG waves",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "BG waves"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#56A64B"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 20,
+        "gridPos": {
+          "x": 18,
+          "y": 38,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "row",
+        "title": "📈 Progress & economy",
+        "id": 21,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 45,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "timeseries",
+        "title": "XP progress",
+        "description": "AUTONOMOUS_XP_PROGRESS per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"AUTONOMOUS_XP_PROGRESS\"}[1h]))",
+            "legendFormat": "XP progress",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "XP progress"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#56A64B"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 22,
+        "gridPos": {
+          "x": 0,
+          "y": 46,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Gear upgrades",
+        "description": "AUTONOMOUS_EQUIPMENT_UPGRADE per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"AUTONOMOUS_EQUIPMENT_UPGRADE\"}[1h]))",
+            "legendFormat": "Gear upgrades",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Gear upgrades"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#F2CC0C"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 23,
+        "gridPos": {
+          "x": 6,
+          "y": 46,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Exchange sales",
+        "description": "AUTONOMOUS_EXCHANGE_SOLD per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"AUTONOMOUS_EXCHANGE_SOLD\"}[1h]))",
+            "legendFormat": "Exchange sales",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Exchange sales"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#5794F2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 24,
+        "gridPos": {
+          "x": 12,
+          "y": 46,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Skill mistakes",
+        "description": "BOT_SKILL_MISTAKE per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"BOT_SKILL_MISTAKE\"}[1h]))",
+            "legendFormat": "Skill mistakes",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Skill mistakes"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#FF9830"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 25,
+        "gridPos": {
+          "x": 18,
+          "y": 46,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "timeseries",
+        "title": "Broken craft recipes",
+        "description": "CRAFT_RECIPE_BROKEN per hour",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${ds_prom}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${ds_prom}"
+            },
+            "expr": "sum(increase(loki_process_custom_lines_total{job=\"$job\", instance=~\"$instance\", event=\"CRAFT_RECIPE_BROKEN\"}[1h]))",
+            "legendFormat": "Broken craft recipes",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "noValue": "Server stopped",
+            "custom": {
+              "drawStyle": "bars",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "mode": "none",
+                "group": "A"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Broken craft recipes"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "#E02F44"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "id": 26,
+        "gridPos": {
+          "x": 0,
+          "y": 53,
+          "w": 6,
+          "h": 7
+        }
+      },
+      {
+        "type": "row",
+        "title": "🗡️ Kill feed",
+        "id": 27,
+        "collapsed": false,
+        "gridPos": {
+          "x": 0,
+          "y": 60,
+          "w": 24,
+          "h": 1
+        },
+        "panels": []
+      },
+      {
+        "type": "logs",
+        "title": "Kill feed: RvR kills and bot deaths (names blanked as ~)",
+        "description": "",
+        "datasource": {
+          "type": "loki",
+          "uid": "${ds_loki}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "${ds_loki}"
+            },
+            "expr": "{job=\"$job\", instance=~\"$instance\", event=~\"RVR_BOT_KILLED|AUTONOMOUS_BOT_DEATH\"}",
+            "refId": "A",
+            "queryType": "range"
+          }
+        ],
+        "options": {
+          "showTime": true,
+          "wrapLogMessage": true,
+          "sortOrder": "Descending",
+          "enableLogDetails": true,
+          "dedupStrategy": "none",
+          "prettifyLogMessage": false
+        },
+        "id": 28,
+        "gridPos": {
+          "x": 0,
+          "y": 61,
+          "w": 24,
+          "h": 12
+        }
+      },
+      {
+        "type": "logs",
+        "title": "Event lines (filter with the Event dropdown)",
+        "description": "",
+        "datasource": {
+          "type": "loki",
+          "uid": "${ds_loki}"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "${ds_loki}"
+            },
+            "expr": "{job=\"$job\", instance=~\"$instance\", event=~\"$event\"}",
+            "refId": "A",
+            "queryType": "range"
+          }
+        ],
+        "options": {
+          "showTime": true,
+          "wrapLogMessage": true,
+          "sortOrder": "Descending",
+          "enableLogDetails": true,
+          "dedupStrategy": "none",
+          "prettifyLogMessage": false
+        },
+        "id": 29,
+        "gridPos": {
+          "x": 0,
+          "y": 73,
+          "w": 24,
+          "h": 10
+        }
+      }
+    ]
+  }
+}

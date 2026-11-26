@@ -177,6 +177,63 @@ class Configs(unittest.TestCase):
         self.assertEqual(out.returncode, 0, "monitoring.env must be gitignored")
 
 
+class Dashboards(unittest.TestCase):
+    """The three ✦ dashboards (issue #652)."""
+    DIR = KIT / "dashboards"
+
+    def boards(self):
+        return {f.stem: json.loads(f.read_text()) for f in sorted(self.DIR.glob("*.json"))}
+
+    def test_generated_files_are_current(self):
+        r = subprocess.run(["python3", str(KIT / "dashboards.py"), "--check"], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_only_the_three_star_dashboards(self):
+        titles = sorted(d["title"] for d in self.boards().values())
+        self.assertEqual(titles, ["Living Server ✦ Bots & World", "Living Server ✦ Overview",
+                                  "Living Server ✦ Server Health"])
+        gcx = sorted(f.name for f in (self.DIR / "gcx").glob("*.json"))
+        self.assertEqual(gcx, ["dashboard-living-server-bots-world-showcase.json", "dashboard-living-server-health-showcase.json",
+                               "dashboard-living-server-overview-showcase.json", "folder-living-server.json"])
+
+    def test_no_hard_coded_datasource_or_stack(self):
+        for name, d in self.boards().items():
+            text = json.dumps(d)
+            uids = set(re.findall(r'"uid": "([^"]*)"', text)) - {d["uid"]}
+            self.assertLessEqual(uids, {"${ds_prom}", "${ds_loki}"}, name)
+            for bad in (".grafana.net", "/home/", "C:\\Users"):
+                self.assertNotIn(bad, text, name)
+
+    def test_gcx_manifests_wrap_the_dashboards(self):
+        for name, d in self.boards().items():
+            m = json.loads((self.DIR / "gcx" / f"dashboard-{name}.json").read_text())
+            self.assertEqual(m["apiVersion"], "dashboard.grafana.app/v1beta1")
+            self.assertEqual(m["metadata"]["annotations"]["grafana.app/folder"], "living-server")
+            self.assertEqual(m["spec"], d)
+
+    def test_queries_read_metrics_the_pipeline_makes(self):
+        alloy = "\n".join(f.read_text() for f in (KIT / "alloy").rglob("*.alloy"))
+        made = set(re.findall(r'name\s+=\s+"([a-z0-9_]+)"', alloy))
+        for name, d in self.boards().items():
+            for metric in set(re.findall(r"loki_process_custom_([a-z0-9_]+)", json.dumps(d))):
+                self.assertIn(metric, made, f"{name} reads loki_process_custom_{metric}, which the pipeline doesn't make")
+            for expr in _loki_exprs(d):
+                for label in re.findall(r"(\w+)=~?\"", expr.split("}")[0]):
+                    self.assertIn(label, {"job", "instance", "level", "event"}, f"{name}: Loki label {label}")
+
+
+def _loki_exprs(node):
+    """The expr of every query target that uses the Loki datasource variable."""
+    if isinstance(node, dict):
+        if "expr" in node and node.get("datasource", {}).get("uid") == "${ds_loki}":
+            yield node["expr"]
+        for v in node.values():
+            yield from _loki_exprs(v)
+    elif isinstance(node, list):
+        for v in node:
+            yield from _loki_exprs(v)
+
+
 def _free_port() -> int:
     with socket.socket() as s:
         s.bind(("127.0.0.1", 0))

@@ -1,0 +1,11 @@
+{
+  "apiVersion": "folder.grafana.app/v1beta1",
+  "kind": "Folder",
+  "metadata": {
+    "name": "living-server"
+  },
+  "spec": {
+    "title": "Living Server",
+    "description": "Offline DAoC Living Server monitoring (tools/grafana/cloud)"
+  }
+}

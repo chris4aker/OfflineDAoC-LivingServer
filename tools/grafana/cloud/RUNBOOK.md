@@ -110,6 +110,19 @@ Windows `irm https://raw.githubusercontent.com/grafana/gcx/main/scripts/install.
 
 Check [AGENT]: `gcx config check`, then read-only `gcx dashboards list`.
 
+## Step A5 [AGENT] Push the dashboards
+The three ✦ dashboards (Overview, Server Health, Bots & World) go into the "Living Server" folder from U3:
+```bash
+gcx resources validate -p tools/grafana/cloud/dashboards/gcx/dashboard-*.json
+gcx resources push -p tools/grafana/cloud/dashboards/gcx/dashboard-*.json --dry-run --on-error abort
+gcx resources push -p tools/grafana/cloud/dashboards/gcx/dashboard-*.json --on-error abort
+```
+(Windows: the same commands; PowerShell expands nothing, so list the three files.) The folder manifest is only pushed if
+the service account may create folders. Read each back with `gcx dashboards get <uid>` and give the player the links
+`https://<name>.grafana.net/d/living-server-overview-showcase` (and `-health-showcase`, `-bots-world-showcase`).
+If the stack already has dashboards with these UIDs, ask before overwriting them.
+Without gcx, the player can import `tools/grafana/cloud/dashboards/<uid>.json` in Grafana (Dashboards > New > Import).
+
 ## Undo
 - Ubuntu: `tools/grafana/cloud/uninstall.sh` (add `--purge` to delete `monitoring.env` too).
 - Windows: `PS> tools\grafana\cloud\uninstall.ps1` (add `-Purge`).
