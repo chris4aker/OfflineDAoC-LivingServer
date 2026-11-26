@@ -42,8 +42,9 @@ password and removes the firewall rules (Windows asks for permission). Your earl
 
 The firewall rules admit only this game's server (`CoreServer.exe`), only on TCP 10300 and UDP 10400, and only from your
 home network and Tailscale (100.64.0.0/10). With internet hosting they admit any address. STOP HOSTING removes exactly
-the rules START HOSTING made, by their names (`Offline DAoC friends TCP 10300`, `Offline DAoC friends UDP 10400`), and
-nothing else. If it can't (for example you said no to Windows), the window says so in red. Then run
+the rules START HOSTING made, by their names (`DAoC - Living Server friends TCP 10300`,
+`DAoC - Living Server friends UDP 10400`; rules an earlier build made are named `Offline DAoC friends ...` and are
+removed too), and nothing else. If it can't (for example you said no to Windows), the window says so in red. Then run
 `runtime\host-for-friends-firewall-remove.cmd` as administrator.
 
 ### Internet hosting (opt-in)

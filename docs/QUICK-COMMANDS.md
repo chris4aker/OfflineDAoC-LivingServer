@@ -1,6 +1,6 @@
-# Offline DAoC quick commands
+# DAoC - Living Server quick commands
 
-These are the everyday Offline DAoC commands, not the exhaustive list of every
+These are the everyday commands, not the exhaustive list of every
 inherited game/server command. They are registered for normal players in this
 release; some still have level, target, party or state requirements.
 
