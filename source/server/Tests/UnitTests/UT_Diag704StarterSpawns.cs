@@ -19,6 +19,7 @@ namespace DOL.UnitTests
             string root = Environment.GetEnvironmentVariable("OFFLINE_DAOC_NAV_ROOT");
             string previous = Environment.CurrentDirectory;
             var loaded = new List<Zone>();
+            var report = new System.Text.StringBuilder();
             try
             {
                 Environment.CurrentDirectory = root;
@@ -54,11 +55,11 @@ namespace DOL.UnitTests
                         Vector3? floor = nav.GetClosestPoint(zone, spawn, 64, 64, 256, nav.DefaultFilters);
                         bool there = floor.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, entrance, floor.Value);
                         bool back = floor.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, floor.Value, entrance);
-                        TestContext.Out.WriteLine($"DIAG704 UNAUDITED region={regionId} id={id} name=\"{name}\" level={reader.GetInt32(2)} " +
+                        report.AppendLine($"DIAG704 UNAUDITED region={regionId} id={id} name=\"{name}\" level={reader.GetInt32(2)} " +
                             $"spawn={spawn.X:0},{spawn.Y:0},{spawn.Z:0} floor={(floor.HasValue ? $"{floor.Value.X:0.0},{floor.Value.Y:0.0},{floor.Value.Z:0.0}" : "none")} " +
                             $"there={there} back={back} restored={AutonomousClassic165RestoredSpawnCatalog.Contains(id)}");
                     }
-                    TestContext.Out.WriteLine($"DIAG704 REGION region={regionId} eligible={eligible} unaudited={missing}");
+                    report.AppendLine($"DIAG704 REGION region={regionId} eligible={eligible} unaudited={missing}");
                 }
             }
             finally
@@ -66,6 +67,7 @@ namespace DOL.UnitTests
                 foreach (Zone zone in loaded) LocalPathfindingMgr.UnloadNavMesh(zone);
                 Environment.CurrentDirectory = previous;
             }
+            Assert.Fail("DIAGNOSTIC REPORT\n" + report);
         }
     }
 }
