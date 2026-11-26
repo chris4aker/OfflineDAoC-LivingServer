@@ -84,11 +84,11 @@ class CheckTests(unittest.TestCase):
     def test_removing_a_pending_row_fails_the_dashboards_that_read_it(self):
         path = self.root / "tools/grafana/pending-rows.json"
         pending = json.loads(path.read_text(encoding="utf-8"))
-        del pending["rows"]["PLAYER_LINE_OUTCOME"]
+        del pending["rows"]["BG_POPULATION"]
         path.write_text(json.dumps(pending), encoding="utf-8")
         code, out = run_check(self.root)
         self.assertEqual(code, 1)
-        self.assertIn("row PLAYER_LINE_OUTCOME is neither in code nor pending", out)
+        self.assertIn("row BG_POPULATION is neither in code nor pending", out)
 
 
 class DashboardRuleTests(unittest.TestCase):
@@ -123,8 +123,15 @@ class DashboardRuleTests(unittest.TestCase):
         self.assertTrue(any("ACCOUNT_LOGIN is not shipped" in e for e in errors), errors)
 
     def test_a_field_of_a_row_whose_fields_are_not_known_fails(self):
-        errors = self.plant(dashboards.Panel("x", dashboards.count_by("GROUP_ENDED", "reason"), ["GROUP_ENDED"], ["reason"]))
-        self.assertTrue(any("GROUP_ENDED's fields are not known yet" in e for e in errors), errors)
+        # Every #625 row is on main now, so plant a pending row with no known fields (only its marker and realm ship).
+        marker = "PLANTED_ROW_628"
+        self.kit.pending[marker] = {"issue": 628, "branch": "planted", "log": "server.log", "frequency": "-",
+                                    "meaning": "-", "fields": None}
+        self.kit.ship[marker], self.kit.why_not[marker] = True, ""
+        self.kit.marker_only.add(marker)
+        self.kit.drops[marker] = {"*": "pending row, fields not known yet: only the marker and realm ship"}
+        errors = self.plant(dashboards.Panel("x", dashboards.count_by(marker, "reason"), [marker], ["reason"]))
+        self.assertTrue(any(f"{marker}'s fields are not known yet" in e for e in errors), errors)
 
 
 class ScanTests(unittest.TestCase):

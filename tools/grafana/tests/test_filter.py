@@ -121,15 +121,17 @@ class FilterTests(unittest.TestCase):
         self.assertEqual(self.ship(msg).line, msg)
         self.assertNotIn("realm", self.ship(msg).labels)
 
-    def test_pending_625_rows_ship(self):
+    def test_625_rows_ship(self):
+        # #625's rows are on main now (set A and set B), so their real lines ship whole: counts and kinds, no names.
         msg = ("PLAYER_LINE_OUTCOME seq=3 t=100 ch=say realm=Albion intent=Question answered=1 latencyMs=2400 "
                "kind=answer bots=2 replies=2 window=30000")
         self.assertEqual(self.ship(msg).line, msg)
-        # Set B's fields are not known yet: only the marker and the realm ship, whatever the keys are called.
-        out = self.ship('GROUP_ENDED realm=Albion reason=wipe leader=Aldwyn note="Sirwhatever left" size=5')
-        self.assertEqual(out.line, "GROUP_ENDED realm=Albion")
+        msg = ("GROUP_ENDED seq=1 every=1 dropped=0 group=albion-21308c-052 realm=Albion objective=GroupPve "
+               "reason=recovery cause=member_stuck last_left=- phase=\"Meeting up\" task_started=0 camp=0 dur_s=156 "
+               "size_start=6 size_end=6 alive_end=6 left=0 left_by=- wipes=0")
+        out = self.ship(msg)
+        self.assertEqual(out.line, msg)
         self.assertEqual(out.labels["realm"], "Albion")
-        self.assertEqual(self.ship("STUCK_HOTSPOT zone=1 who=Sirwhatever").line, "STUCK_HOTSPOT")
 
     def test_names_the_first_filter_missed_are_dropped(self):
         # Review of #633: these shipped a player's name before the filter failed closed.
