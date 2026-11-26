@@ -63,6 +63,9 @@ public sealed record SocialExpansionSettings
     /// <summary>Dead bots fall in the original client and come back standing when raised (bot_death_animation, 1.2.1). On by
     /// default. A display fix, not a feature: ALL OFF leaves it as it is.</summary>
     public bool DeathFall { get; init; } = true;
+    /// <summary>Bot and companion healers heal like a 1.65 healer outside raids and boss fights (bot_healer_period_rules,
+    /// #567 B1-B5). No checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool HealerPeriodRules { get; init; } = true;
     /// <summary>Gamebots show as bots: [Playerbot] in /who and "gamebot"/"buffbot" in refused invites (bot_show_as_bots, 1.2.3). Off by
     /// default (owner 2026-11-24, #485: bots look like players). A display choice, not a feature: ALL OFF leaves it as it is.</summary>
     public bool ShowBotsAsBots { get; init; }
@@ -218,7 +221,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, DeathFall = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, DeathFall = true, HealerPeriodRules = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
     };
 
@@ -259,6 +262,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
         ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
+        ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers start healing at two-thirds health, heal the tank first, use the small heal before the big one outside an emergency, put a heal over time on the tank as a fight wears it down, and cast a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
         ("bot_show_as_bots", "bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
@@ -351,6 +355,7 @@ public sealed record SocialExpansionSettings
         ["mana_regen_amount_halved_below_50_percent"] = Bool(ManaHalvedBelowHalf),
         ["endurance_regen_amount_modifier"] = EnduranceRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
         ["bot_death_animation"] = Bool(DeathFall),
+        ["bot_healer_period_rules"] = Bool(HealerPeriodRules),
         ["bot_show_as_bots"] = Bool(ShowBotsAsBots),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
@@ -690,6 +695,7 @@ public sealed record SocialExpansionSettings
             ManaHalvedBelowHalf = ReadBool("mana_regen_amount_halved_below_50_percent", d.ManaHalvedBelowHalf),
             EnduranceRegenModifier = enduranceRate,
             DeathFall = ReadBool("bot_death_animation", d.DeathFall),
+            HealerPeriodRules = ReadBool("bot_healer_period_rules", d.HealerPeriodRules),
             ShowBotsAsBots = ReadBool("bot_show_as_bots", d.ShowBotsAsBots),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,
