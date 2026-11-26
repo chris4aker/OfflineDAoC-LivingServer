@@ -58,8 +58,9 @@ namespace DOL.UnitTests
                 Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, vale, boarding, interaction), Is.True);
                 // #704: when this was written (September, 0.33) the raw horse origin had no corridor, the reason for the boarding
                 // point above. Today it has one: on the owner's install and in navmesh-v1 (byte-identical), whose zone100.nav the
-                // release baselines show unchanged since 0.36. So the cause is untraced, probably a routing-code change since then,
-                // not the mesh. The boarding point checks above still hold; the corridor is now asserted, not its absence.
+                // release baselines show unchanged since 0.36. The cause is untraced: the mesh is unchanged since 0.36, and either a mesh
+                // change before 0.36 or a routing-code change since September could explain it. The boarding point checks above
+                // still hold; the corridor is now asserted, not its absence.
                 Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, vale, start, new(803840, 721833, 4687)), Is.True);
                 Probe("Jordheim entrance approach", vale, start, new(805489, 731160, 5028));
                 Probe("Jordheim recovery to exit", jordheim, new(32020, 28294, 8803), new(32869, 36103, 8002));

@@ -511,8 +511,9 @@ namespace DOL.UnitTests
                     new(422093, 448048, 5955), new(422351, 446567, 5976));
                 // #704: when this was written (September, 0.32) Iian's interior approach was blocked and had to be rejected. Today
                 // it is connected: the probe above finds a complete corridor (107 nodes) on the owner's install and in navmesh-v1
-                // (byte-identical), whose zone181.nav the release baselines show unchanged since 0.36. So the cause is untraced,
-                // probably a routing-code change since then, not the mesh. A connected approach is now asserted.
+                // (byte-identical), whose zone181.nav the release baselines show unchanged since 0.36. The cause is untraced: the mesh
+                // is unchanged since 0.36, and either a mesh change before 0.36 or a routing-code change since September could
+                // explain it. A connected approach is now asserted.
                 Assert.That(TryFindConnectedApproach(regions[181], nav,
                     new(422093, 448048, 5955), new(422351, 446567, 5976), 280, out _), Is.True,
                     "Iian's interior approach is connected on the 1.2 meshes");
