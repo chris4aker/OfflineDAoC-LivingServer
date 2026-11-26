@@ -1,0 +1,275 @@
+// Living Server -> Grafana Cloud: server.log to Loki, sanitized, plus log-derived metrics (issue #649).
+// Every setting comes from the environment (monitoring.env): GC_LOKI_URL, GC_LOKI_USER, GC_TOKEN, LS_LOG_DIR, LS_TZ,
+// LS_INSTANCE, LS_JOB. Nothing here is specific to one PC.
+//
+// Privacy (AGENTS.md "Protect player data"):
+// - CHAT_LINE and DBG lines are dropped first; INF free text (no EVENT_KEY) is dropped; WRN/ERR free text keeps only
+//   time, level and logger.
+// - JSON string values become "~".
+// - Every key=value whose value holds a letter becomes key~ unless the key is a reviewed structural key (realm, stage,
+//   zone, ...). So bot, player, guild and account names, paths and free text never leave the PC. Numbers are kept.
+// - Labels: level, event (a fixed list of kept keys, else "other"), instance, job. The file path label is dropped.
+// #651 replaces this sanitizer with #628's generated, fail-closed row filter.
+
+local.file_match "server_log" {
+  path_targets = [{
+    "__path__" = file.path_join(sys.env("LS_LOG_DIR"), "server.log"),
+  }]
+}
+
+loki.source.file "server_log" {
+  targets       = local.file_match.server_log.targets
+  forward_to    = [loki.process.game.receiver]
+  tail_from_end = true
+}
+
+loki.process "game" {
+  stage.multiline {
+    firstline     = "^\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d \\|"
+    max_wait_time = "3s"
+  }
+  stage.drop {
+    expression          = ".*CHAT_LINE.*"
+    drop_counter_reason = "chat"
+  }
+  stage.drop {
+    expression          = "^\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d \\| DBG +\\|.*"
+    drop_counter_reason = "debug"
+  }
+
+  stage.regex {
+    expression = "^(?P<ts>\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d) \\| (?P<level>\\w+) +\\| (?P<logger>\\S+) +\\| (?:(?P<event>[A-Z][A-Z0-9]*_[A-Z0-9_]+)(?:$| (?P<kv>.*)))?"
+  }
+  stage.timestamp {
+    source   = "ts"
+    format   = "01/02 15:04:05"
+    location = coalesce(sys.env("LS_TZ"), "Local")
+  }
+  stage.template {
+    source   = "rawevent"
+    template = "{{ if .event }}{{ .event }}{{ else }}NONE{{ end }}"
+  }
+  stage.template {
+    source   = "event_kept"
+    template = "{{ if eq .rawevent \"SERVER_WORK\" \"SERVER_STALL\" \"SERVER_MEMORY\" \"SERVER_GC_PAUSE\" \"AI_PROFILE\" \"AI_PROFILE_BUDGET\" \"AUTONOMOUS_BOT_DEATH\" \"AUTONOMOUS_DEATH_ROUTE_REPLAN\" \"BOT_SOLO_BAIL\" \"BOT_RETREAT_ENDED\" \"BOT_SKILL_MISTAKE\" \"AUTONOMOUS_XP_PROGRESS\" \"AUTONOMOUS_EQUIPMENT_UPGRADE\" \"AUTONOMOUS_EXCHANGE_SOLD\" \"RVR_BOT_KILLED\" \"RVR_SIEGE\" \"RVR_FIGHT_BOARD\" \"BG_WAVE_STATUS\" \"CRAFT_RECIPE_BROKEN\" \"BOT_SKILL_BUDGET\" }}{{ .rawevent }}{{ else }}other{{ end }}"
+  }
+  stage.labels {
+    values = { level = "", event = "event_kept" }
+  }
+  stage.label_drop {
+    values = ["filename"]
+  }
+
+  stage.metrics {
+    metric.counter {
+      name        = "lines_total"
+      description = "server.log lines by level and (kept) event key"
+      match_all   = true
+      action      = "inc"
+    }
+  }
+
+  stage.match {
+    selector = "{event=\"AI_PROFILE\"}"
+    stage.logfmt {
+      source  = "kv"
+      mapping = { tick_p50 = "", p95 = "", p99 = "", max = "", over_budget = "", serial_ms = "", parallel_ms = "" }
+    }
+    stage.metrics {
+      metric.gauge {
+        name   = "ai_tick_p50_ms"
+        source = "tick_p50"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "ai_tick_p95_ms"
+        source = "p95"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "ai_tick_p99_ms"
+        source = "p99"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "ai_tick_max_ms"
+        source = "max"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "ai_over_budget"
+        source = "over_budget"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "ai_serial_ms"
+        source = "serial_ms"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "ai_parallel_ms"
+        source = "parallel_ms"
+        action = "set"
+      }
+    }
+  }
+
+  stage.match {
+    selector = "{event=\"SERVER_WORK\"}"
+    stage.logfmt {
+      source  = "kv"
+      mapping = { stage = "", avgMs = "", maxMs = "", overBudget = "" }
+    }
+    stage.labels {
+      values = { stage = "" }
+    }
+    stage.metrics {
+      metric.gauge {
+        name   = "server_work_avg_ms"
+        source = "avgMs"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "server_work_max_ms"
+        source = "maxMs"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "server_work_over_budget"
+        source = "overBudget"
+        action = "set"
+      }
+    }
+    stage.label_drop {
+      values = ["stage"]
+    }
+  }
+
+  stage.match {
+    selector = "{event=\"SERVER_MEMORY\"}"
+    stage.logfmt {
+      source  = "kv"
+      mapping = { heapMB = "", liveMB = "", handles = "", threads = "" }
+    }
+    stage.metrics {
+      metric.gauge {
+        name   = "server_memory_heap_mb"
+        source = "heapMB"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "server_memory_live_mb"
+        source = "liveMB"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "server_handles"
+        source = "handles"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "server_threads"
+        source = "threads"
+        action = "set"
+      }
+    }
+  }
+
+  // Bots online (BOT_SKILL_BUDGET, every 5 min): online=N plus per-realm triplets alb=a/b/c mid=.. hib=..
+  // whose sum is that realm's online bots. Numbers only.
+  stage.match {
+    selector = "{event=\"BOT_SKILL_BUDGET\"}"
+    stage.regex {
+      expression = "online=(?P<bots_online>\\d+) alb=(?P<a1>\\d+)/(?P<a2>\\d+)/(?P<a3>\\d+) mid=(?P<m1>\\d+)/(?P<m2>\\d+)/(?P<m3>\\d+) hib=(?P<h1>\\d+)/(?P<h2>\\d+)/(?P<h3>\\d+)"
+    }
+    stage.template {
+      source   = "bots_alb"
+      template = "{{ if .a1 }}{{ add (atoi .a1) (atoi .a2) (atoi .a3) }}{{ end }}"
+    }
+    stage.template {
+      source   = "bots_mid"
+      template = "{{ if .m1 }}{{ add (atoi .m1) (atoi .m2) (atoi .m3) }}{{ end }}"
+    }
+    stage.template {
+      source   = "bots_hib"
+      template = "{{ if .h1 }}{{ add (atoi .h1) (atoi .h2) (atoi .h3) }}{{ end }}"
+    }
+    stage.metrics {
+      metric.gauge {
+        name        = "bots_online"
+        description = "Autonomous bots online (BOT_SKILL_BUDGET online=)"
+        source      = "bots_online"
+        action      = "set"
+      }
+      metric.gauge {
+        name   = "bots_online_albion"
+        source = "bots_alb"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "bots_online_midgard"
+        source = "bots_mid"
+        action = "set"
+      }
+      metric.gauge {
+        name   = "bots_online_hibernia"
+        source = "bots_hib"
+        action = "set"
+      }
+    }
+  }
+
+  // ---- Sanitize before anything leaves the machine ----
+  // INF free text (no EVENT_KEY) is dropped.
+  stage.match {
+    selector = "{level=\"INF\", event=\"other\"}"
+    stage.drop {
+      source              = "rawevent"
+      value               = "NONE"
+      drop_counter_reason = "free_text_info"
+    }
+  }
+  // WRN/ERR free text: keep time, level and logger only.
+  stage.template {
+    source   = "out"
+    template = "{{ if eq .rawevent \"NONE\" }}{{ .ts }} | {{ .level }} | {{ .logger }} | ~{{ else }}{{ .Entry }}{{ end }}"
+  }
+  stage.output {
+    source = "out"
+  }
+  // JSON payloads (e.g. AUTONOMOUS_GROUP_*): every JSON string value becomes "~" (names, activities).
+  stage.replace {
+    expression = "\"[A-Za-z_]+\":(\"(?:[^\"\\\\]|\\\\.)*\")"
+    replace    = "~"
+  }
+  // Reviewed structural keys: hide their '=' as ':' so the next pass skips them.
+  stage.replace {
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|source|action)(=)"
+    replace    = ":"
+  }
+  // Every other value containing a letter (names, free strings, lists, paths) becomes "~".
+  stage.replace {
+    expression = "=(\"[^\"]*\"|[^\\s\"]*[A-Za-z][^\\s]*)"
+    replace    = "~"
+  }
+  stage.replace {
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|source|action)(:)"
+    replace    = "="
+  }
+
+  forward_to = [loki.write.cloud.receiver]
+}
+
+loki.write "cloud" {
+  endpoint {
+    url = sys.env("GC_LOKI_URL")
+    basic_auth {
+      username = sys.env("GC_LOKI_USER")
+      password = sys.env("GC_TOKEN")
+    }
+  }
+  external_labels = {
+    instance = sys.env("LS_INSTANCE"),
+    job      = coalesce(sys.env("LS_JOB"), "livingserver"),
+  }
+}

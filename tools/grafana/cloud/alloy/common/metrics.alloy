@@ -1,0 +1,44 @@
+// Metrics side (issue #649): Alloy's own /metrics carries the log-derived gauges (loki_process_custom_*), so Alloy
+// scrapes itself and sends them on with the process metrics. LS_ALLOY_ADDR must be the address Alloy listens on
+// (the install scripts pass the same value to --server.http.listen-addr).
+
+prometheus.scrape "self" {
+  targets         = [{"__address__" = coalesce(sys.env("LS_ALLOY_ADDR"), "127.0.0.1:12347")}]
+  forward_to      = [prometheus.relabel.self.receiver]
+  scrape_interval = "30s"
+}
+
+prometheus.relabel "self" {
+  rule {
+    source_labels = ["__name__"]
+    regex         = "loki_process_custom_.*"
+    action        = "keep"
+  }
+  rule {
+    regex  = "component_id|component_path|filename"
+    action = "labeldrop"
+  }
+  forward_to = [prometheus.relabel.common.receiver]
+}
+
+prometheus.relabel "common" {
+  rule {
+    target_label = "instance"
+    replacement  = sys.env("LS_INSTANCE")
+  }
+  rule {
+    target_label = "job"
+    replacement  = coalesce(sys.env("LS_JOB"), "livingserver")
+  }
+  forward_to = [prometheus.remote_write.cloud.receiver]
+}
+
+prometheus.remote_write "cloud" {
+  endpoint {
+    url = sys.env("GC_PROM_URL")
+    basic_auth {
+      username = sys.env("GC_PROM_USER")
+      password = sys.env("GC_TOKEN")
+    }
+  }
+}

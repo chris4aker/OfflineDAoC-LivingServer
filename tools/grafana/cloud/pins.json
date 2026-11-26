@@ -1,0 +1,24 @@
+{
+  "_comment": "Pinned downloads (issue #649). Hashes are copied from the release's own SHA256SUMS file, never from a download.",
+  "alloy": {
+    "version": "1.22.0",
+    "linux-amd64": {
+      "file": "alloy-linux-amd64.zip",
+      "url": "https://github.com/grafana/alloy/releases/download/v1.22.0/alloy-linux-amd64.zip",
+      "sha256": "62d177feb18c9b6ffd636c8273aa82a6afc75a507d096ff951749df23c3176f9",
+      "exe": "alloy-linux-amd64"
+    },
+    "linux-arm64": {
+      "file": "alloy-linux-arm64.zip",
+      "url": "https://github.com/grafana/alloy/releases/download/v1.22.0/alloy-linux-arm64.zip",
+      "sha256": "cc2c4d7bc25d3ef7df8c95395759879ba4eb0d016db068c07dcb7aa88f436ad3",
+      "exe": "alloy-linux-arm64"
+    },
+    "windows-amd64": {
+      "file": "alloy-windows-amd64.exe.zip",
+      "url": "https://github.com/grafana/alloy/releases/download/v1.22.0/alloy-windows-amd64.exe.zip",
+      "sha256": "ba0303f8aaa8f7b457015e1454aff509a18358ebe0b583b3b276c5652ca679a7",
+      "exe": "alloy-windows-amd64.exe"
+    }
+  }
+}
