@@ -24,13 +24,26 @@ public interface IReleaseWeb
 // player; a failure is reported to the caller, who stays quiet about it unless the player asked.
 public static class ReleaseFeed
 {
+    /// <summary>
+    /// The repository the launcher asks (the API URLs below) and publish-release attaches to. Changing it is step 2 of
+    /// the two-step rule (docs/RELEASE-TRAIN.md, contract item 1): launchers before 1.2.3 accept only this path.
+    /// </summary>
     public const string Repository = "chris4aker/OfflineDAoC-LivingServer";
+    /// <summary>
+    /// The project's name after a rename (#689). Step 1 of the two-step rule: packages are accepted from it already, so
+    /// this launcher keeps finding updates once the repository moves there. Nothing is asked of it until step 2.
+    /// </summary>
+    public const string RenamedRepository = "chris4aker/DAoC-LivingServer";
+    /// <summary>The repository paths a package may come from, compared without regard to case (#689).</summary>
+    public static readonly IReadOnlyList<string> AcceptedRepositories = new[] { Repository, RenamedRepository };
     /// <summary>The newest final release (GitHub leaves drafts and prereleases out of /latest).</summary>
     public const string LatestUrl = "https://api.github.com/repos/" + Repository + "/releases/latest";
     /// <summary>The newest releases, pre-releases included (read only with "Offer test builds" on, issue #637).</summary>
     public const string ReleasesUrl = "https://api.github.com/repos/" + Repository + "/releases?per_page=30";
-    /// <summary>Packages are downloaded only from this repository's own release files.</summary>
+    /// <summary>The release files of Repository, as publish-release attaches them. The check is IsReleaseFileUrl.</summary>
     public const string DownloadPrefix = "https://github.com/" + Repository + "/releases/download/";
+    private const string DownloadHost = "https://github.com/";
+    private const string DownloadPath = "/releases/download/";
     public static readonly TimeSpan CheckTimeout = TimeSpan.FromSeconds(10);
 
     /// <summary>The newest release, or null with the reason (offline, rate limit, not a release). Never throws.</summary>
@@ -89,7 +102,7 @@ public static class ReleaseFeed
         if (PackageDigest.Sha256Of(asset.Digest) == null)
             throw new PackageRefusedException("GitHub gave no SHA-256 digest for " + asset.Name + ", so it can't be checked. Nothing was downloaded.");
         string url = asset.DownloadUrl ?? "";
-        if (!url.StartsWith(DownloadPrefix, StringComparison.Ordinal))
+        if (!IsReleaseFileUrl(url))
             throw new PackageRefusedException("The package's address isn't one of this project's release files: " + url);
 
         Directory.CreateDirectory(folder);
@@ -123,6 +136,49 @@ public static class ReleaseFeed
         // What it was checked against, so a later reinstall of the kept file can check it again offline.
         File.WriteAllText(final + ".sha256", PackageDigest.Sha256Of(asset.Digest) + "  " + Path.GetFileName(final) + Environment.NewLine);
         return (final, contents);
+    }
+
+    /// <summary>
+    /// Whether url is one of this project's release files: https://github.com/, then one of AcceptedRepositories in any
+    /// case, then /releases/download/ and the file (#689). Nothing else is: no other owner or repository (a lookalike such
+    /// as chris4aker/OfflineDAoC-LivingServer-evil included), no other host, scheme or port, no user part, no dot segment
+    /// that would leave the release files, and only plain printable ASCII (so no escaped or lookalike letters). The
+    /// "https://github.com/" and "/releases/download/" parts are compared exactly, as GitHub gives them.
+    /// </summary>
+    public static bool IsReleaseFileUrl(string? url)
+    {
+        if (url == null)
+            return false;
+        foreach (char c in url)
+        {
+            if (c <= ' ' || c > '~' || c == '\\' || c == '%')
+                return false;
+        }
+        if (!url.StartsWith(DownloadHost, StringComparison.Ordinal))
+            return false;
+        string? repository = null;
+        foreach (string accepted in AcceptedRepositories)
+        {
+            int end = DownloadHost.Length + accepted.Length;
+            if (url.Length > end + DownloadPath.Length
+                && string.Compare(url, DownloadHost.Length, accepted, 0, accepted.Length, StringComparison.OrdinalIgnoreCase) == 0
+                && string.CompareOrdinal(url, end, DownloadPath, 0, DownloadPath.Length) == 0)
+            {
+                repository = accepted;
+                break;
+            }
+        }
+        if (repository == null)
+            return false;
+        string file = url.Substring(DownloadHost.Length + repository.Length + DownloadPath.Length);
+        foreach (string segment in file.Split('/'))
+        {
+            if (segment == "." || segment == "..")
+                return false;
+        }
+        // The address as the download resolves it: GitHub itself, over HTTPS, on its own port, with no user part.
+        return Uri.TryCreate(url, UriKind.Absolute, out Uri? uri) && uri.Scheme == Uri.UriSchemeHttps &&
+               uri.Host == "github.com" && uri.IsDefaultPort && uri.UserInfo.Length == 0;
     }
 
     public static Exception Innermost(Exception e)

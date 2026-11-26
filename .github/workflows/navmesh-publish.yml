@@ -1,0 +1,243 @@
+# Makes the navmesh set CI's navmesh tests read (issues #684, #687) and, when asked, publishes it as the navmesh-vN
+# pre-release. The set is what a NEW player gets, made on a runner, never on a PC:
+#   1. a fresh install with the real Setup (Offline DAoC from Living Server's copy of the base release files, then the
+#      Living Server package of a green main build, its content patches included), on D:;
+#   2. the installed meshes (runtime/server/navmesh) and Detour library, counted and checked;
+#   3. its world database, whose server has never started, copied and cleaned by the release builder's own code and
+#      checked by its own verify step (tools/navmesh/clean_world.py: every saved-progress table empty, no account,
+#      character or gamebot; fail closed);
+#   4. packed by tools/navmesh/Publish-NavmeshSet.ps1 (zip parts under 1.9 GB and navmesh-manifest.json);
+#   5. read back as the navmesh job reads it (fetch, every hash), the packed world checked clean again, the installer's
+#      navmesh patches checked against it, and the navmesh tests run on it (a report: a failing test is a test to fix);
+#   6. published (main only, dry_run off): a draft pre-release, every file's digest checked, then published as a
+#      pre-release that never becomes Latest (make_latest false). An existing tag or release is refused: a published
+#      set is never replaced.
+# No played database and nothing from the owner's PC is in it. A pull request that changes this workflow or its tools runs
+# it as a dry run. docs/CI.md, "The navmesh job", has the steps.
+name: navmesh-publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The set's version: v1, v2, ... (a published version is never replaced)"
+        required: true
+        default: v1
+      dry_run:
+        description: "Dry run: build, check and test the set, publish nothing"
+        type: boolean
+        default: true
+      run_id:
+        description: "A green build-and-test push run on main whose Candidate-Setup is installed (empty: the newest one)"
+        required: false
+        default: ''
+  pull_request:
+    paths:
+      - '.github/workflows/navmesh-publish.yml'
+      - 'tools/navmesh/clean_world.py'
+      - 'tools/navmesh/Publish-NavmeshSet.ps1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: navmesh-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  set:
+    runs-on: windows-latest
+    timeout-minutes: 150
+    permissions:
+      contents: write   # the publish step only (dry runs and pull requests never reach it)
+      actions: read     # the build-and-test run's Candidate-Setup artifact
+    env:
+      # Not VERSION: MSBuild reads environment variables as properties, and Version=v1 broke the restore (MSB4181).
+      SET_VERSION: ${{ inputs.version || 'v1' }}
+      DRY_RUN: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}
+      RUN_ID: ${{ inputs.run_id }}
+      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+
+      # Publishing is for main only; a dry run may run anywhere. The tag must be free (checked again before publishing).
+      - name: What this run does
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "version=$SET_VERSION dry_run=$DRY_RUN event=${{ github.event_name }} ref=${{ github.ref }}"
+          if [ "$DRY_RUN" != "true" ] && [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "::error title=Navmesh set::a set is published from main only; run it from main, or as a dry run"; exit 1
+          fi
+          if ! python tools/navmesh/navmesh_set.py tag-free "$SET_VERSION"; then
+            if [ "$DRY_RUN" = "true" ]; then echo "::warning title=Navmesh set::navmesh-$SET_VERSION exists: this dry run could not be published as it"; else exit 1; fi
+          fi
+          echo "## Navmesh set navmesh-$SET_VERSION ($([ "$DRY_RUN" = "true" ] && echo 'dry run' || echo 'publish'))" >> "$GITHUB_STEP_SUMMARY"
+          date -u +%s > "$RUNNER_TEMP/start"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build the server tests
+        shell: pwsh
+        run: |
+          Copy-Item source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
+          dotnet build source/server/Tests/Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      # A green main push run of build-and-test made Candidate-Setup: the Setup exe with that build's package, the same
+      # one its candidate-install job installed.
+      - name: The Setup of a green main build
+        id: setup
+        shell: bash
+        run: |
+          set -euo pipefail
+          repo="${{ github.repository }}"
+          if [ -z "$RUN_ID" ]; then
+            RUN_ID=$(gh api "repos/$repo/actions/workflows/build-and-test.yml/runs?branch=main&event=push&status=success&per_page=1" --jq '.workflow_runs[0].id')
+          fi
+          what=$(gh api "repos/$repo/actions/runs/$RUN_ID" --jq '[.path, .head_branch, .event, .conclusion] | join(" ")')
+          [ "$what" = ".github/workflows/build-and-test.yml main push success" ] \
+            || { echo "::error title=Navmesh set::run $RUN_ID ($what) is not a green build-and-test push run on main"; exit 1; }
+          sha=$(gh api "repos/$repo/actions/runs/$RUN_ID" --jq .head_sha)
+          mkdir -p /d/nmset/setup
+          gh run download "$RUN_ID" --repo "$repo" --name Candidate-Setup --dir /d/nmset/setup
+          ls -la /d/nmset/setup /d/nmset/setup/* | head -20
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "- Setup from build-and-test run [$RUN_ID](https://github.com/$repo/actions/runs/$RUN_ID) (main, commit \`${sha:0:9}\`)" >> "$GITHUB_STEP_SUMMARY"
+
+      # The real Setup, as a player runs it, on D: (C: is tight on the runners, #680). --no-update: the package it embeds.
+      # From Windows PowerShell 5.1, as installer.yml's e2e runs it: started from pwsh, the downloader Setup runs in 5.1
+      # inherits pwsh's module path and can't find Get-FileHash.
+      - name: Fresh install with Setup
+        shell: powershell
+        run: |
+          Get-PSDrive -PSProvider FileSystem | Format-Table Name, @{n='FreeGB';e={[math]::Round($_.Free/1GB,1)}} | Out-String | Write-Host
+          $exe = Get-ChildItem D:\nmset\setup -Recurse -Filter *.exe | Select-Object -First 1
+          New-Item -ItemType Directory -Force D:\nmset\logs, D:\nmset\games | Out-Null
+          $start = Get-Date
+          $p = Start-Process -FilePath $exe.FullName -ArgumentList '--silent', '--no-update', '--new', '--dest', 'D:\nmset\games\fresh', '--no-shortcuts', '--log', 'D:\nmset\logs\setup.log' -Wait -PassThru -NoNewWindow
+          $secs = [int]((Get-Date) - $start).TotalSeconds
+          Get-Content D:\nmset\logs\setup.log | Where-Object { $_ -match 'STEP |RESULT ' } | Select-Object -Last 20 | Write-Host
+          Write-Host "Setup exit $($p.ExitCode) after $secs s"
+          if ($p.ExitCode -ne 0) { Write-Host "::error title=Navmesh set::Setup failed (exit $($p.ExitCode))"; exit 1 }
+          "- Fresh install: $($exe.Name), $secs s" | Add-Content $env:GITHUB_STEP_SUMMARY
+          Get-PSDrive -PSProvider FileSystem | Format-Table Name, @{n='FreeGB';e={[math]::Round($_.Free/1GB,1)}} | Out-String | Write-Host
+
+      - name: The installed navmeshes
+        shell: pwsh
+        run: |
+          $server = 'D:\nmset\games\fresh\runtime\server'
+          $zones = @(Get-ChildItem "$server\navmesh" -File | Where-Object { $_.Name -match '^zone[0-9]{3}\.nav$' })
+          $bytes = ($zones | Measure-Object Length -Sum).Sum
+          $missing = @('navmesh\roads.json', 'navmesh\seams.json', 'navmesh\pockets.json', 'lib\Detour.dll') | Where-Object { !(Test-Path (Join-Path $server $_)) }
+          $line = "- Installed navmeshes: $($zones.Count) zoneNNN.nav files, {0:N0} bytes ({1:N2} GB); the owner's 1.2.3 test install has 104 (about 2.2 GB)" -f $bytes, ($bytes / 1GB)
+          Write-Host $line; $line | Add-Content $env:GITHUB_STEP_SUMMARY
+          ($zones | ForEach-Object { $_.Name -replace '\.nav$','' }) -join ' ' | Write-Host
+          if ($missing) { Write-Host "::error title=Navmesh set::missing from the install: $($missing -join ', ')"; exit 1 }
+          if ($zones.Count -eq 0) { Write-Host "::error title=Navmesh set::no zone navmeshes in the install"; exit 1 }
+          Write-Host "::notice title=Navmesh set::$($zones.Count) zone navmeshes (104 in the owner's test install)"
+
+      # The installed world is only read (an online backup into a new file). --require-fresh: it must hold no account,
+      # character or gamebot, as a world whose server never started holds none.
+      - name: Clean world (the release builder's cleaning and verify step)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /d/nmset/world
+          python tools/navmesh/clean_world.py clean 'D:\nmset\games\fresh\runtime\data\opendaoc.sqlite3.db' --require-fresh \
+            --out 'D:\nmset\world\opendaoc.sqlite3.db' --report 'D:\nmset\world\opendaoc.sqlite3.db.clean.json' | tee "$RUNNER_TEMP/clean.txt"
+          { echo "- Clean world (before packing):"; grep -v '^{\|^ \|^}' "$RUNNER_TEMP/clean.txt" | sed 's/^/  - /'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Pack the set
+        shell: powershell
+        run: |
+          $start = Get-Date
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/navmesh/Publish-NavmeshSet.ps1 -NavmeshFolder 'D:\nmset\games\fresh\runtime\server\navmesh' -Version $env:SET_VERSION -OutputRoot 'D:\nmset\upload' -NoBrowser -WorldDatabase 'D:\nmset\world\opendaoc.sqlite3.db'
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $secs = [int]((Get-Date) - $start).TotalSeconds
+          Get-ChildItem "D:\nmset\upload\$env:SET_VERSION" | ForEach-Object { "  - $($_.Name): {0:N0} bytes" -f $_.Length } | Tee-Object -Variable parts | Write-Host
+          @("- Packed in $secs s:") + @($parts) | Add-Content $env:GITHUB_STEP_SUMMARY
+
+      # As the navmesh job reads it: every part and file by its hash, the world clean again (the packed copy), and the
+      # installer's navmesh patches (content-patches.json) the same as the set's meshes.
+      - name: Read the set back and check it
+        shell: bash
+        run: |
+          set -euo pipefail
+          up="D:\\nmset\\upload\\$SET_VERSION"
+          python tools/navmesh/navmesh_set.py fetch "$up\\navmesh-manifest.json" --dest 'D:\nmset\ci\set' --from "$up"
+          python tools/navmesh/navmesh_set.py verify "$up\\navmesh-manifest.json" --root 'D:\nmset\ci\set'
+          python tools/navmesh/navmesh_set.py check --manifest "$up\\navmesh-manifest.json"
+          python tools/navmesh/clean_world.py verify 'D:\nmset\ci\set\world\opendaoc.sqlite3.db' | tee "$RUNNER_TEMP/verify.txt"
+          { echo "- Packed world checked clean again:"; grep -v '^{\|^ \|^}' "$RUNNER_TEMP/verify.txt" | sed 's/^/  - /'; } >> "$GITHUB_STEP_SUMMARY"
+          python -c "import json,sys; m=json.load(open(sys.argv[1])); print('manifest:', len(m['files']), 'files,', m['total_bytes'], 'bytes,', len(m['parts']), 'parts; world', m['world']['bytes'], 'bytes', m['world']['sha256'])" "$up\\navmesh-manifest.json" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      # The navmesh job's own steps on the set just made (its world as a copy at ../data beside the meshes).
+      - name: Run the navmesh tests on the set
+        shell: pwsh
+        run: |
+          $tests = python source/tools/ci_test_results.py find Tests.dll --root source/server/build/Tests/Release
+          if (!$tests) { Write-Host "::error title=Navmesh tests::Tests.dll was not built"; exit 1 }
+          $lib = Join-Path (Split-Path -Parent $tests) 'lib'
+          New-Item -ItemType Directory -Force $lib, 'D:\nmset\ci\data' | Out-Null
+          Copy-Item 'D:\nmset\ci\set\lib\Detour.dll' (Join-Path $lib 'Detour.dll')
+          Copy-Item 'D:\nmset\ci\set\world\opendaoc.sqlite3.db' 'D:\nmset\ci\data\opendaoc.sqlite3.db'
+          $env:OFFLINE_DAOC_NAV_ROOT = 'D:\nmset\ci\set'
+          $env:OFFLINE_DAOC_DB_PATH = 'D:\nmset\ci\data\opendaoc.sqlite3.db'
+          $env:OFFLINE_DAOC_PROOF_OUT = Join-Path $env:RUNNER_TEMP 'navmesh-proof.txt'
+          $filter = python tools/navmesh/navmesh_set.py filter .github/navmesh-tests.txt
+          $start = Get-Date
+          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --results-directory 'D:\nmset\TestResults' --logger "trx;LogFileName=navmesh.trx"
+          "- Navmesh tests ran in $([int]((Get-Date) - $start).TotalSeconds) s" | Add-Content $env:GITHUB_STEP_SUMMARY
+          python tools/navmesh/navmesh_set.py results 'D:\nmset\TestResults\navmesh.trx' .github/navmesh-tests.txt --report-only
+          exit $LASTEXITCODE
+
+      - name: Release notes
+        shell: bash
+        run: |
+          cat > "$RUNNER_TEMP/notes.md" <<EOF
+          Navmeshes and a clean world database for CI's navmesh tests (issues #684, #687). **Not a game update**: the
+          launcher and Setup never offer it. Never replace these files; a rebuild is a new navmesh-vN.
+
+          Made by the navmesh-publish workflow ([run ${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})):
+          a fresh Setup install on a CI runner of build-and-test run ${{ steps.setup.outputs.run_id }} (main, commit ${{ steps.setup.outputs.sha }}).
+          The world database is that install's never-played world, cleaned and checked by the release builder's own code
+          (every saved-progress table empty; no account, character or gamebot). \`navmesh-manifest.json\` lists every
+          file's size and SHA-256.
+          EOF
+
+      # Main and dry_run off only. navmesh_set.py publish checks the tag again, every part against the manifest, then
+      # GitHub's digest of every upload, and publishes a pre-release with make_latest false.
+      - name: Publish navmesh-${{ env.SET_VERSION }}
+        if: env.DRY_RUN != 'true' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          python tools/navmesh/navmesh_set.py publish "D:\\nmset\\upload\\$SET_VERSION\\navmesh-manifest.json" --from "D:\\nmset\\upload\\$SET_VERSION" \
+            --commit "${{ github.sha }}" --notes "$RUNNER_TEMP/notes.md"
+          echo "- **Published** navmesh-$SET_VERSION: https://github.com/${{ github.repository }}/releases/tag/navmesh-$SET_VERSION" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dry run (what publishing would do)
+        if: env.DRY_RUN == 'true'
+        shell: bash
+        run: |
+          python tools/navmesh/navmesh_set.py publish "D:\\nmset\\upload\\$SET_VERSION\\navmesh-manifest.json" --from "D:\\nmset\\upload\\$SET_VERSION" \
+            --commit "${{ github.sha }}" --notes "$RUNNER_TEMP/notes.md" --dry-run || echo "::warning title=Navmesh set::the publish check refused (above)"
+          echo "- Dry run: nothing published. Total $(( $(date -u +%s) - $(cat "$RUNNER_TEMP/start") )) s" >> "$GITHUB_STEP_SUMMARY"
+
+      # The manifest, the clean-world reports, Setup's log and the test results (the set itself is not kept here).
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: navmesh-set-${{ env.SET_VERSION }}-report
+          path: |
+            D:\nmset\upload\*\navmesh-manifest.json
+            D:\nmset\world\opendaoc.sqlite3.db.clean.json
+            D:\nmset\logs\
+            D:\nmset\TestResults\
+          if-no-files-found: warn
+          retention-days: 30

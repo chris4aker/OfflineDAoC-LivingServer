@@ -5306,6 +5306,31 @@ namespace DOL.AI.Brain
                 ? spell.EffectGroup == existing.EffectGroup
                 : spell.SpellType == existing.SpellType);
 
+        /// <summary>
+        /// #567 A3: whether a present heal-over-time or regeneration effect holds a new one back: the server's conflict rule
+        /// (<see cref="DotsConflict"/>), and an effect with no spell is still a block. Pure.
+        /// </summary>
+        public static bool HotBlockedBy(Spell hot, Spell existing) => existing == null || DotsConflict(hot, existing);
+
+        /// <summary>
+        /// #567 A3: a groupmate bot is casting (or has queued) a heal over time at this target that the server would make
+        /// conflict with this one, so a second would only overwrite it.
+        /// </summary>
+        private bool GroupmateCastsHotAt(GameLiving target, Spell hot)
+        {
+            if (target == null || hot == null || Body.Group is not Group group)
+                return false;
+            foreach (GameLiving member in group.GetMembersInTheGroup())
+                if (member != Body && member is GameBot mate &&
+                    (CastsAt(mate.castingComponent?.SpellHandler) || CastsAt(mate.castingComponent?.QueuedSpellHandler)))
+                    return true;
+            return false;
+
+            bool CastsAt(ISpellHandler handler) =>
+                handler?.Spell is Spell other && handler.Target == target &&
+                EffectHelper.GetEffectFromSpell(other) == EffectHelper.GetEffectFromSpell(hot) && DotsConflict(hot, other);
+        }
+
         public bool LivingHasEffect(GameLiving target, Spell spell)
         {
             if (target == null)
@@ -5356,6 +5381,14 @@ namespace DOL.AI.Brain
 
             if (pulseEffect != null)
                 return true;
+
+            // #567 A3 (port of OfflineDAoC-True165 BotHotPrecheck, 03dce76ee): a heal over time or a regeneration is held back
+            // only by an effect the server would make it conflict with (SpellHandler.HasConflictingEffectWith), as DoTs are
+            // below: a Skald's Song of Rest (effect group 72) no longer stops a Shaman's regeneration (71). Immunities as before.
+            if (spellEffect is eEffect.HealOverTime or eEffect.HealthRegenBuff)
+                return target.effectListComponent.GetSpellEffects(spellEffect).Any(effect => HotBlockedBy(spell, effect?.SpellHandler?.Spell)) ||
+                       HasImmunityEffect(EffectHelper.GetImmunityEffectFromSpell(spell)) ||
+                       HasImmunityEffect(EffectHelper.GetNpcImmunityEffectFromSpell(spell));
 
             // DoTs from different effect groups stack (Sluaghbinder Rot + Bane), so
             // only a DoT the server would treat as conflicting blocks a new one.
@@ -6082,7 +6115,8 @@ namespace DOL.AI.Brain
             {
                 if (!BotBody.IsCasting || (numEmergency > 0 && !isCastingHeal))
                 {
-                    if (CheckHealSpell(BotBody.HealOverTime) && !LivingHasEffect(spellTarget, BotBody.HealOverTime))
+                    if (CheckHealSpell(BotBody.HealOverTime) && !LivingHasEffect(spellTarget, BotBody.HealOverTime) &&
+                        !GroupmateCastsHotAt(spellTarget, BotBody.HealOverTime))
                         spellToCast = BotBody.HealOverTime;
                     else if (BotBody.ManaPercent >= ManaThreshold && CheckHealSpell(BotBody.HealBig)
                         && (spellTarget.MaxHealth - spellTarget.Health) >= GameBot.HealAmount(BotBody.HealBig, spellTarget))

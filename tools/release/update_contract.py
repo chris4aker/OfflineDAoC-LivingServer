@@ -13,9 +13,14 @@ source/tools/DAoCLivingServer.UpdateContract harness.
     python tools/release/update_contract.py released --repository OWNER/REPO --below BUILD --out DIR
         The newest full release older than BUILD (today v1.2.2): its package and Setup downloaded from their release
         files and checked against GitHub's digests. Writes released.json.
+    python tools/release/update_contract.py paths --package-dir DIR --out DIR
+        Step 1 of #689: the candidate release again under every repository path this commit's launcher must accept
+        (ReleaseFeed.AcceptedRepositories, as written and in lower and upper case) and under lookalikes it must refuse
+        (another owner, a longer name). One candidate folder each, listed in paths.json with "accept": true or false,
+        for the job's check of this commit's own launcher.
     python tools/release/update_contract.py repository --live OWNER/REPO
         Fails unless the repository GitHub runs this in is exactly (case included) the one the launcher names: the
-        download prefix check of every released launcher is an ordinal match (#645).
+        download prefix check of every launcher before 1.2.3 is an ordinal match (#645).
 
 Standard library only. GITHUB_TOKEN or GH_TOKEN, when set, is sent to the API (rate limits).
 """
@@ -47,6 +52,75 @@ def repository_from_source(path=RELEASE_FEED):
     if not m:
         raise Stop(f"{path} declares no ReleaseFeed.Repository")
     return m.group(1)
+
+
+def accepted_repositories_from_source(path=RELEASE_FEED):
+    """ReleaseFeed.AcceptedRepositories as this commit's launcher compiles it (#689): Repository, then RenamedRepository."""
+    text = Path(path).read_text(encoding="utf-8")
+    consts = dict(re.findall(r'public const string (Repository|RenamedRepository) = "([^"]+)";', text))
+    m = re.search(r"AcceptedRepositories = new\[\] \{ ([^}]*) \};", text)
+    if not m:
+        raise Stop(f"{path} declares no ReleaseFeed.AcceptedRepositories")
+    names = [n.strip() for n in m.group(1).split(",")]
+    if any(n not in consts for n in names):
+        raise Stop(f"ReleaseFeed.AcceptedRepositories names {names}, not the constants {sorted(consts)}")
+    return [consts[n] for n in names]
+
+
+DOWNLOAD_HOST = "https://github.com/"
+DOWNLOAD_PATH = "/releases/download/"
+
+
+def is_release_file_url(url, repositories):
+    """A mirror of ReleaseFeed.IsReleaseFileUrl (1.2.3 on, #689) for the fast tests; the Windows job runs the real code.
+    https://github.com/, one of repositories in any case, /releases/download/, a file; printable ASCII only, no
+    backslash, no escape, no dot segment."""
+    if not url or any(c <= " " or c > "~" or c in "\\%" for c in url) or not url.startswith(DOWNLOAD_HOST):
+        return False
+    for repo in repositories:
+        end = len(DOWNLOAD_HOST) + len(repo)
+        if (len(url) > end + len(DOWNLOAD_PATH) and url[len(DOWNLOAD_HOST):end].lower() == repo.lower()
+                and url[end:end + len(DOWNLOAD_PATH)] == DOWNLOAD_PATH):
+            return all(seg not in (".", "..") for seg in url[end + len(DOWNLOAD_PATH):].split("/"))
+    return False
+
+
+def path_cases(accepted):
+    """(repository, accept) pairs for `paths`: every accepted path as written, lower and upper case; and lookalikes."""
+    cases = []
+    for repo in accepted:
+        for variant in (repo, repo.lower(), repo.upper()):
+            if (variant, True) not in cases:
+                cases.append((variant, True))
+    owner = accepted[0].split("/")[0]
+    for repo in accepted:
+        name = repo.split("/")[1]
+        cases += [(repo + "-evil", False), ("someone-else/" + name, False), (owner + "-evil/" + name, False)]
+    return cases
+
+
+def paths(package_dir, out):
+    """The candidate once (its zips in out/files), then one release answer per path case that lists the same zips
+    under that repository's URLs."""
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    base = candidate(package_dir, out / "files")
+    latest = (out / "files" / "latest.json").read_text(encoding="utf-8")
+    old_prefix = DOWNLOAD_HOST + base["repository"] + "/"
+    listed = []
+    for i, (repo, accept) in enumerate(path_cases(accepted_repositories_from_source())):
+        folder = out / f"{i:02d}"
+        folder.mkdir(parents=True, exist_ok=True)
+        release = json.loads(latest.replace(old_prefix, DOWNLOAD_HOST + repo + "/"))
+        (folder / "latest.json").write_text(json.dumps(release, indent=2), encoding="utf-8")
+        (folder / "releases.json").write_text(json.dumps([release], indent=2), encoding="utf-8")
+        files = {url.replace(old_prefix, DOWNLOAD_HOST + repo + "/", 1): str((out / "files" / name).resolve())
+                 for url, name in base["files"].items()}
+        feed = dict(base, repository=repo, files=files)
+        (folder / "feed.json").write_text(json.dumps(feed, indent=2), encoding="utf-8")
+        listed.append({"repository": repo, "accept": accept, "feed": str((folder / "feed.json").resolve())})
+    (out / "paths.json").write_text(json.dumps(listed, indent=2), encoding="utf-8")
+    return listed
 
 
 def version_key(build):
@@ -163,9 +237,9 @@ def released(repository, below, out):
 def check_repository(live):
     declared = repository_from_source()
     if live != declared:
-        raise Stop(f"the repository is {live}, but ReleaseFeed.Repository (and every released launcher's download "
-                   f"prefix, an ordinal match) is {declared}: released launchers refuse its release files (#645). "
-                   "Change it only by the two-step rule (docs/RELEASE-TRAIN.md).")
+        raise Stop(f"the repository is {live}, but ReleaseFeed.Repository (and the download prefix of every launcher "
+                   f"before 1.2.3, an ordinal match) is {declared}: those launchers refuse its release files (#645). "
+                   "Change it only by the two-step rule (docs/RELEASE-TRAIN.md, #689).")
     print(f"repository {live} is the one the launcher names")
 
 
@@ -181,12 +255,17 @@ def main(argv=None):
     r.add_argument("--repository", required=True)
     r.add_argument("--below", required=True)
     r.add_argument("--out", required=True)
+    q = sub.add_parser("paths")
+    q.add_argument("--package-dir", required=True)
+    q.add_argument("--out", required=True)
     g = sub.add_parser("repository")
     g.add_argument("--live", required=True)
     a = p.parse_args(argv)
     try:
         if a.cmd == "candidate":
             candidate(a.package_dir, a.out, a.repository, a.tag)
+        elif a.cmd == "paths":
+            paths(a.package_dir, a.out)
         elif a.cmd == "released":
             released(a.repository, a.below, a.out)
         else:

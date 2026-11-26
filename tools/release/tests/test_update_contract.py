@@ -22,6 +22,8 @@ UPDATES = ROOT / "source/tools/DAoCLivingServer.Launcher/Updates"
 
 # What every released launcher since 1.2 relies on (1.2.2's own copy of the code has the same values).
 FROZEN_REPO = "chris4aker/OfflineDAoC-LivingServer"
+# Step 1 of #689 (owner, 2026-11-26): from 1.2.3 the launcher and Setup also accept this path, in any case.
+RENAMED_REPO = "chris4aker/DAoC-LivingServer"
 FROZEN_PREFIX = "https://github.com/" + FROZEN_REPO + "/releases/download/"
 FROZEN_LEGACY_ASSET = "OfflineDAoC-LivingServer-{}.zip"
 FROZEN_DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -51,6 +53,18 @@ def released_launcher_accepts(feed_dir, build="1.2.3"):
     if not FROZEN_DIGEST.match(asset.get("digest") or ""):
         return "no SHA-256 digest"
     if not asset["browser_download_url"].startswith(FROZEN_PREFIX):
+        return "the address isn't one of this project's release files"
+    return None
+
+
+def new_launcher_accepts(feed_dir, build="1.2.3"):
+    """What this commit's launcher (1.2.3 on) checks, through update_contract's mirror of ReleaseFeed.IsReleaseFileUrl.
+    None when it accepts, else why not."""
+    latest = json.loads((Path(feed_dir) / "latest.json").read_text(encoding="utf-8"))
+    asset = next((a for a in latest["assets"] if a["name"] == f"DAoC-LivingServer-{build}.zip"), None)
+    if asset is None:
+        return "no package asset"
+    if not uc.is_release_file_url(asset["browser_download_url"], uc.accepted_repositories_from_source()):
         return "the address isn't one of this project's release files"
     return None
 
@@ -94,6 +108,48 @@ class CandidateTests(unittest.TestCase):
     def test_planted_repo_path_case_breaks_it(self):
         self.candidate(repository="chris4aker/offlinedaoc-livingserver")
         self.assertIn("address", released_launcher_accepts(self.root / "feed"))
+
+    def test_the_new_launcher_takes_either_path_in_any_case(self):
+        for repo in (FROZEN_REPO, RENAMED_REPO, FROZEN_REPO.lower(), RENAMED_REPO.lower(), RENAMED_REPO.upper()):
+            with self.subTest(repo=repo):
+                self.candidate(name=repo.replace("/", "_"), repository=repo)
+                self.assertIsNone(new_launcher_accepts(self.root / repo.replace("/", "_")))
+
+    def test_the_released_launcher_still_takes_only_the_current_path(self):
+        # Why the repository can't be renamed yet (step 2 waits for the owner): 1.2.2 and earlier refuse the new path.
+        self.candidate(repository=RENAMED_REPO)
+        self.assertIn("address", released_launcher_accepts(self.root / "feed"))
+
+    def test_the_new_launcher_refuses_lookalikes_and_other_owners(self):
+        for repo in (FROZEN_REPO + "-evil", RENAMED_REPO + "-evil", "someone-else/DAoC-LivingServer",
+                     "chris4aker-evil/OfflineDAoC-LivingServer", "chris4aker/LivingServer"):
+            with self.subTest(repo=repo):
+                self.candidate(name=repo.replace("/", "_"), repository=repo)
+                self.assertIn("address", new_launcher_accepts(self.root / repo.replace("/", "_")))
+
+    def test_paths_lists_every_case_with_the_same_zips(self):
+        listed = uc.paths(self.root / "pkg", self.root / "paths")
+        self.assertEqual(listed, json.loads((self.root / "paths/paths.json").read_text()))
+        accepted = {c["repository"] for c in listed if c["accept"]}
+        self.assertEqual(accepted, {FROZEN_REPO, FROZEN_REPO.lower(), FROZEN_REPO.upper(),
+                                    RENAMED_REPO, RENAMED_REPO.lower(), RENAMED_REPO.upper()})
+        refused = [c["repository"] for c in listed if not c["accept"]]
+        self.assertIn(FROZEN_REPO + "-evil", refused)
+        self.assertIn("someone-else/DAoC-LivingServer", refused)
+        zips = {p.name for p in (self.root / "paths").rglob("*.zip")}
+        self.assertEqual(zips, {"DAoC-LivingServer-1.2.3.zip", "OfflineDAoC-LivingServer-1.2.3.zip"})
+        for case in listed:
+            feed_dir = Path(case["feed"]).parent
+            feed = json.loads(Path(case["feed"]).read_text())
+            self.assertEqual(feed["repository"], case["repository"])
+            latest = json.loads((feed_dir / "latest.json").read_text())
+            for a in latest["assets"]:
+                self.assertEqual(a["browser_download_url"],
+                                 f"https://github.com/{case['repository']}/releases/download/v1.2.3/{a['name']}")
+                self.assertTrue(Path(feed["files"][a["browser_download_url"]]).is_file())
+            self.assertEqual(new_launcher_accepts(feed_dir) is None, case["accept"], case["repository"])
+            # The old launchers: only the current path, exact case.
+            self.assertEqual(released_launcher_accepts(feed_dir) is None, case["repository"] == FROZEN_REPO)
 
     def test_planted_asset_rename_breaks_it(self):
         with mock.patch.object(pr, "legacy_zip_name", lambda build: None):
@@ -151,6 +207,34 @@ class RepositoryTests(unittest.TestCase):
                 uc.check_repository(other)
 
 
+class ReleaseFileUrlMirrorTests(unittest.TestCase):
+    """The Python mirror agrees with the launcher's own cases (RepositoryPathTests.cs)."""
+    REPOS = [FROZEN_REPO, RENAMED_REPO]
+    FILE = "/releases/download/v1.2.3/DAoC-LivingServer-1.2.3.zip"
+
+    def test_both_paths_any_case(self):
+        for repo in (FROZEN_REPO, RENAMED_REPO, FROZEN_REPO.swapcase(), RENAMED_REPO.lower()):
+            self.assertTrue(uc.is_release_file_url("https://github.com/" + repo + self.FILE, self.REPOS), repo)
+
+    def test_anything_else(self):
+        for url in ("https://github.com/chris4aker/OfflineDAoC-LivingServer-evil" + self.FILE,
+                    "https://github.com/someone-else/DAoC-LivingServer" + self.FILE,
+                    "https://objects.githubusercontent.com/chris4aker/DAoC-LivingServer" + self.FILE,
+                    "https://github.com.evil.example/chris4aker/DAoC-LivingServer" + self.FILE,
+                    "http://github.com/chris4aker/DAoC-LivingServer" + self.FILE,
+                    "https://github.com/chris4aker/DAoC-LivingServer/releases/download/../../x/a.zip",
+                    "https://github.com/chris4aker/DAoC-LivingServer/releases/download/%2e%2e/a.zip",
+                    "https://github.com/chri\u017f4aker/DAoC-LivingServer" + self.FILE,
+                    "https://github.com/chris4aker/DAoC-LivingServer/releases/download/", "", None):
+            self.assertFalse(uc.is_release_file_url(url, self.REPOS), url)
+
+    def test_the_launcher_tests_cover_the_same_cases(self):
+        text = (ROOT / "source/tools/DAoCLivingServer.Launcher.Tests/RepositoryPathTests.cs").read_text(encoding="utf-8")
+        for needle in ("OfflineDAoC-LivingServer-evil", "someone-else/DAoC-LivingServer", "objects.githubusercontent.com",
+                       "github.com.evil.example", "HttpReleaseWebFollowsGitHubsRedirects"):
+            self.assertIn(needle, text)
+
+
 class FrozenContractTests(unittest.TestCase):
     """The contract's values in the code that ships (docs/RELEASE-TRAIN.md, "The frozen update contract")."""
 
@@ -162,7 +246,12 @@ class FrozenContractTests(unittest.TestCase):
         self.assertEqual(uc.repository_from_source(), FROZEN_REPO)
         self.assertIn('LatestUrl = "https://api.github.com/repos/" + Repository + "/releases/latest"', feed)
         self.assertIn('DownloadPrefix = "https://github.com/" + Repository + "/releases/download/"', feed)
-        self.assertIn("url.StartsWith(DownloadPrefix, StringComparison.Ordinal)", feed)
+        # #689 step 1: the download check is IsReleaseFileUrl over both paths, in any case; the API stays on Repository.
+        self.assertIn("if (!IsReleaseFileUrl(url))", feed)
+        self.assertNotIn("url.StartsWith(DownloadPrefix", feed)
+        self.assertIn(f'RenamedRepository = "{RENAMED_REPO}"', feed)
+        self.assertEqual(uc.accepted_repositories_from_source(), [FROZEN_REPO, RENAMED_REPO])
+        self.assertIn("StringComparison.OrdinalIgnoreCase", feed)
         self.assertIn(f'ProjectUrl = "https://github.com/{FROZEN_REPO}"',
                       (ROOT / "tools/installer/src/Program.cs").read_text(encoding="utf-8"))
         self.assertIn(f'"GITHUB_REPOSITORY", "{FROZEN_REPO}"', (ROOT / "tools/release/publish_release.py").read_text())
