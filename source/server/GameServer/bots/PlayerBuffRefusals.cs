@@ -375,7 +375,7 @@ namespace DOL.GS
             if (player == null || spell == null || !handler.HasPositiveEffect || !IsRefusable(spell.SpellType) ||
                 !IsBotCaster(handler.Caster))
                 return false;
-            if (Refuse(player, [spell.SpellType], $"cancelled {spell.Name} from {handler.Caster?.Name}").Count == 0)
+            if (Refuse(player, [spell.SpellType], $"right-click cancel of {spell.Name}").Count == 0)
                 return false;
             player.Out?.SendMessage(CancelledLine(spell.Name, ShortNameOf(spell.SpellType)), eChatType.CT_System, eChatLoc.CL_SystemWindow);
             return true;
