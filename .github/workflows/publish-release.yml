@@ -93,6 +93,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ steps.run.outputs.commit }}
+      # The run's "success" alone is not trusted (#623): each job main requires must have concluded success.
+      - name: Every required job succeeded
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/jobs?filter=latest&per_page=100" > "$RUNNER_TEMP/jobs.json"
+          python3 tools/release/publish_release.py check-jobs --jobs "$RUNNER_TEMP/jobs.json"
       - name: Versions agree, and the tag is the newest release's
         env:
           TAG: ${{ inputs.tag }}
