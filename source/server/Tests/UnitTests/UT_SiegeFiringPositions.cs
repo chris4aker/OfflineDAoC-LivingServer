@@ -50,27 +50,34 @@ namespace DOL.UnitTests
                 db.Open();
                 var nav=PathfindingProvider.LocalPathfindingMgr;
                 typeof(PathfindingProvider).GetProperty(nameof(PathfindingProvider.Instance)).SetValue(null,nav);
-                var choose=typeof(AutonomousWorldBotController).GetMethod("ChooseSiegePosition",BindingFlags.Instance|BindingFlags.NonPublic);
+                // #704: ChooseSiegePosition is static since #525 and takes the keep and an out reason (the old instance lookup
+                // returned null, so the test threw before reading the mesh).
+                var choose=typeof(AutonomousWorldBotController).GetMethod("ChooseSiegePosition",BindingFlags.Static|BindingFlags.NonPublic);
+                Assert.That(choose,Is.Not.Null,"AutonomousWorldBotController.ChooseSiegePosition");
                 foreach (var (id,regionId) in new[]{(50,1),(82,100),(110,200)})
                 {
                     Region region=UT_AuditedDungeonInstalledMesh.BuildRegion(db,regionId,loaded);
                     using var q=db.CreateCommand();
-                    q.CommandText=$"select Name,X,Y,Z from [Keep] where KeepID={id}";
-                    string name; Vector3 keep;
-                    using (var r=q.ExecuteReader()) { Assert.That(r.Read(),Is.True); name=r.GetString(0); keep=new(r.GetInt32(1),r.GetInt32(2),r.GetInt32(3)); }
-                    q.CommandText=$"select X,Y,Z from Door where abs(X-{keep.X})<2200 and abs(Y-{keep.Y})<2200 and IsPostern=0";
-                    var doors=new List<Vector3>();
-                    using(var r=q.ExecuteReader()) while(r.Read()) doors.Add(new(r.GetInt32(0),r.GetInt32(1),r.GetInt32(2)));
-                    Vector3 door=doors.OrderByDescending(d=>Vector2.Distance(new(d.X,d.Y),new(keep.X,keep.Y))).First();
+                    q.CommandText=$"select Name,X,Y,Z,Realm from [Keep] where KeepID={id}";
+                    string name; Vector3 keep; byte keepRealm;
+                    using (var r=q.ExecuteReader()) { Assert.That(r.Read(),Is.True); name=r.GetString(0); keep=new(r.GetInt32(1),r.GetInt32(2),r.GetInt32(3)); keepRealm=(byte)r.GetInt32(4); }
+                    q.CommandText=$"select X,Y,Z,Heading from Door where abs(X-{keep.X})<2200 and abs(Y-{keep.Y})<2200 and IsPostern=0";
+                    var doors=new List<(Vector3 At,ushort Heading)>();
+                    using(var r=q.ExecuteReader()) while(r.Read()) doors.Add((new(r.GetInt32(0),r.GetInt32(1),r.GetInt32(2)),(ushort)r.GetInt32(3)));
+                    var (door,doorHeading)=doors.OrderByDescending(d=>Vector2.Distance(new(d.At.X,d.At.Y),new(keep.X,keep.Y))).First();
+                    var gameKeep=(DOL.GS.Keeps.GameKeep)RuntimeHelpers.GetUninitializedObject(typeof(DOL.GS.Keeps.GameKeep));
+                    gameKeep.DBKeep=new DbKeep { KeepID=id, Name=name, Region=(ushort)regionId, X=(int)keep.X, Y=(int)keep.Y, Z=(int)keep.Z, Realm=keepRealm };
+                    gameKeep.Doors=new Dictionary<string,DOL.GS.Keeps.GameKeepDoor>();
                     Vector3 direction=Vector3.Normalize(new(door.X-keep.X,door.Y-keep.Y,0));
                     var zone=region.GetZone((int)door.X,(int)door.Y);
                     var origin=nav.GetClosestPoint(zone,door+direction*900,96,96,4096,nav.DefaultFilters);
                     Assert.That(origin.HasValue,Is.True,name+" exterior floor");
                     var bot=(Bot)RuntimeHelpers.GetUninitializedObject(typeof(Bot));
                     bot.CurrentRegion=region; bot.X=(int)origin.Value.X;bot.Y=(int)origin.Value.Y;bot.Z=(int)origin.Value.Z;
-                    var target=new Target { X=(int)door.X,Y=(int)door.Y,Z=(int)door.Z };
-                    var point=(Vector3?)choose.Invoke(new AutonomousWorldBotController(),new object[]{bot,target,BotSiegeKind.Ram,Array.Empty<GameSiegeWeapon>()});
-                    TestContext.WriteLine($"{name}: door={door} origin={origin} ram={point}");
+                    var target=new Target { X=(int)door.X,Y=(int)door.Y,Z=(int)door.Z,Heading=doorHeading };
+                    var args=new object[]{bot,target,BotSiegeKind.Ram,Array.Empty<GameSiegeWeapon>(),gameKeep,null};
+                    var point=(Vector3?)choose.Invoke(null,args);
+                    TestContext.WriteLine($"{name}: door={door} heading={doorHeading} origin={origin} ram={point} reason={args[5]}");
                     if (!point.HasValue)
                     {
                         for(int degrees=0;degrees<360;degrees+=30)
