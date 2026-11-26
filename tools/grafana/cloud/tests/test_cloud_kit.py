@@ -55,8 +55,8 @@ class DetectLinux(unittest.TestCase):
         self.sysbin.mkdir()
         for folder in ("/usr/local/bin", "/usr/bin", "/bin"):
             for tool in Path(folder).iterdir() if Path(folder).is_dir() else []:
-                if tool.name in ("alloy", "grafana-agent", "grafana-agent-flow") or (self.sysbin / tool.name).exists():
-                    continue
+                if tool.name in ("alloy", "grafana-agent", "grafana-agent-flow") or os.path.lexists(self.sysbin / tool.name):
+                    continue  # lexists: a broken link from an earlier folder (usr-merge /bin) counts as taken
                 (self.sysbin / tool.name).symlink_to(tool)
 
     def tearDown(self):
