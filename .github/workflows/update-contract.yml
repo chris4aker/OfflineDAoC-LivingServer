@@ -1,0 +1,92 @@
+# The frozen update contract (issue #685, docs/RELEASE-TRAIN.md): would the newest RELEASED launcher and Setup take
+# this commit as their update? build-and-test.yml calls it after its server job with that run's package artifact, on
+# every push and pull request (about 5 runner minutes, no game download).
+#   - the candidate release: this commit's package zipped and named as publish_release.py attaches it, with the release
+#     JSON GitHub would answer (asset names, download URLs under ReleaseFeed.Repository, "sha256:" digests);
+#   - the newest full release older than the candidate (today v1.2.2): its package and Setup, digests checked;
+#   - the released launcher's own update code (its installed dll, run by source/tools/DAoCLivingServer.UpdateContract
+#     against a fake GitHub) checks, downloads, verifies and installs the candidate through its own apply-update.ps1 on a
+#     fake game it was installed on; the released Setup's --info chooses the candidate
+#     (tools/release/test-update-contract.ps1);
+#   - the repository GitHub runs this in is exactly the one the launcher names (#645).
+# A failure means players on that release would not get this build without downloading a new Setup.
+name: update-contract
+
+on:
+  workflow_call:
+    inputs:
+      package_artifact:
+        description: "Name of this run's package artifact (OfflineDAoC-LivingServer-<build>-<sha7>)"
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "A build-and-test run whose package artifact to test"
+        required: true
+      package_artifact:
+        description: "Its package artifact's name (OfflineDAoC-LivingServer-<build>-<sha7>)"
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  old-launcher:
+    name: released launcher takes this build
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      # On D: (C: is tight on these runners, #680).
+      - name: The package (this run)
+        if: ${{ !inputs.run_id }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.package_artifact }}
+          path: D:/uc-in/package
+      - name: The package (run ${{ inputs.run_id }})
+        if: ${{ inputs.run_id }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.package_artifact }}
+          path: D:/uc-in/package
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+      - name: The candidate release, as publish-release would make it
+        id: candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/release/update_contract.py candidate --package-dir D:/uc-in/package --out D:/uc-in/candidate
+          echo "build=$(python -c "import json; print(json.load(open('D:/uc-in/candidate/feed.json'))['build'])")" >> "$GITHUB_OUTPUT"
+      - name: The newest full release older than the candidate
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/release/update_contract.py released --repository "${{ github.repository }}" --below "${{ steps.candidate.outputs.build }}" --out D:/uc-in/released
+      - name: Build the harness
+        run: dotnet build source/tools/DAoCLivingServer.UpdateContract/DAoCLivingServer.UpdateContract.csproj -c Release
+      - name: The released launcher and Setup take the candidate
+        shell: pwsh
+        run: |
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/release/test-update-contract.ps1 -Released D:\uc-in\released -Candidate D:\uc-in\candidate -Harness source/tools/DAoCLivingServer.UpdateContract/bin/Release/net10.0/DAoCLivingServer.UpdateContract.dll -Work D:\uc
+          exit $LASTEXITCODE
+      # Also after a failure above, so a rename shows as its own error.
+      - name: The repository is the one released launchers accept
+        if: ${{ always() && steps.candidate.outcome == 'success' }}
+        shell: bash
+        run: python tools/release/update_contract.py repository --live "${{ github.repository }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: update-contract-logs
+          path: |
+            D:\uc\logs\
+            D:\uc-in\candidate\*.json
+            D:\uc-in\released\released.json
+          if-no-files-found: warn

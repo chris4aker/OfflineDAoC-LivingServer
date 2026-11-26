@@ -366,6 +366,17 @@ jobs:
     with:
       package_artifact: ${{ needs.server.outputs.artifact }}
 
+  # The frozen update contract (update-contract.yml, #685): the newest released launcher and Setup take this commit's
+  # package as their update. About 5 runner minutes, no game download, so on every push and pull request.
+  update-contract:
+    needs: server
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/update-contract.yml
+    with:
+      package_artifact: ${{ needs.server.outputs.artifact }}
+
   # Every launcher test. A required check and a gate since #618: 58d407288 (2026-10-12) made the job continue-on-error
   # ("some launcher tests expect a particular local setup"), so a failing test still left the run green. All 411 tests
   # pass on a clean runner (1.2.3), and a test that needs a local setup must say so itself (Assume / Ignore), not hide the
