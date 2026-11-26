@@ -625,6 +625,8 @@ namespace DOL.GS
             {
                 // #644 part 2: RAID_FIGHT_SAMPLE runs on its own 5 s look, so a 15 s sample is not held to the 10 s pulse.
                 PulseFightSamples(now);
+                // #644 parts 3-5: mechanic fires (their landing and count) and, behind the diagnostics switch, boss target changes.
+                RaidAttemptRows.PulseLive(now);
                 if (now < _nextPulse) return;
                 _nextPulse = now + 10_000;
                 foreach (GameNPC expired in CompletedLoot.Where(p => p.Value.Expires <= now).Select(p => p.Key).ToArray())

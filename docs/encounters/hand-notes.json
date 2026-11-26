@@ -835,7 +835,7 @@
   "darkness-falls/behemoth": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "125507e83dc024d8ee1fdc985450d0cefdf4f7262c6c9768ceb1af592215de72"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "3deee449c9cebeb1594bfcec9c0773ebae4e3e240b21aec9905b186f5026aaf4"
    },
    "notes": "Level 99, 600,000 health, any hit kills (OnAttackEnemy). Reached only by Legion's throw into his hall (period: 'the only way to get to him is to be randomly teleported by the Legion mob', Grab Bag, Jan 2008). 1.2 Legion plan (tests only): no bot hits him or sends its pet (a dungeon rule's MustNotHit and NoPets), a bot that targets him stands 1,000 off, and a thrown bot's way down keeps out of his aggro range (recalled if it comes within it and 20). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): Legion's brain state is per brain (same script); Behemoth unchanged. 1.2.3 (#414, owner 2026-11-24): no raid, by design. Period sources: Mythic's Grab Bag (11 January 2008) 'This mob is not killable. It has no loot. You have to be sent there.'; the Camelot Herald (relayed 11 April 2002) 'The Behemoth will now stay in his own area' (Legion had been summoning him); Allakhazam comments 2002-2009 (a Legion raid's two ported groups got him to about 35% several times and gave up; a claimed kill is hearsay). Bots keep away from him and tell him as a legend."
   },
@@ -927,14 +927,14 @@
      "tactic": "Everyone fights within 1,400 of him (casters too). Ranged gamebots cap their stand-off at 1,300 against him (he declares the 1,400 as RaidMaxDamageRange, IRaidBossTraits, 1.2 True 1.65 port), the raid AI steps a raider farther out in to 1,100, and since the 1.2 Legion plan casters, archers and healers stand 1,200 from him on the raid's side.",
      "difficulty": "needs new raid AI"
     },
-    "teleport@528": {
+    "teleport@529": {
      "tactic": "Bots too since 1.2 wave 3 (AllowBotDisplacement for Legion): a thrown bot lands in Behemoth's hall; since the 1.2 Legion plan it walks across the hall on its north side, past Behemoth out of his aggro, to the zone point DF LEGION PURGATORY and is put where it puts players (EncounterDisplacementRecovery's way out, EpicEncounterTactics.LegionWayDown); with no path, no progress, over its time bound or with Behemoth about to notice it, it is recalled to its party. Companions of a thrown player stay down. Real players use the zone point as before. Tests only.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "125507e83dc024d8ee1fdc985450d0cefdf4f7262c6c9768ceb1af592215de72"
+    "source/server/GameServer/scripts/namedmobs/DarknessFalls/Legion.cs": "3deee449c9cebeb1594bfcec9c0773ebae4e3e240b21aec9905b186f5026aaf4"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -1544,14 +1544,14 @@
      "tactic": "In the raid AI (EpicEncounterTactics): death adds: the route clears them at her body, though she is dead, before moving on.",
      "difficulty": "easy for the current raid AI"
     },
-    "adds@242": {
+    "adds@243": {
      "tactic": "In the raid AI (EpicEncounterTactics): focused ranged adds: every caster and archer takes the same newborn (the one with the least health left); a party's melee peel one off their own casters and healers; the rest stay on her.",
      "difficulty": "needs new raid AI"
     }
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "a520d4f6606866450020b02fc6decfc1c274b611fd57fced859cb7906cc08662"
+    "source/server/GameServer/scripts/namedmobs/Galladoria/SpindlerBroodmother.cs": "e56b6cf40ec6fe8984f76d9943a2cb026c19cb40f23d44ccc9619554bc6702a2"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2756,7 +2756,7 @@
   "open-world/ofgreenknight": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "36282f9c40a027363c38d43058829ec7c9bc2cbcf6a4fa99b8ee77dff3b53ee1"
+    "source/server/GameServer/scripts/namedmobs/OFGreenKnight.cs": "c6df1df2b0b11c90d604124084cb054f51c3a4da305cbf07237ae629bbb7d7a8"
    },
    "notes": "1.2: a tree grows at every raider within 4,000 every 25-35 s, bots too (EncounterTargets). Flood guard (EncounterFloodGuard 'OFGreenKnight.Trees'): at most 70 trees a wave, the period size of the Albion dragon raid whose way he is on. 1.2 (wave 3): his fight starts by a real player's whisper (\"defend it\") as before, or for a bot raid: eight or more level 50 raiders of an autonomous raid expedition standing within 1,000 of him for 20 s, and the one nearest him challenges him (OFGreenKnight.TryStartFight). Passing bot groups and a player's companions never start him. No raid route goes to him today. 1.2 upstream port (tests only): his walks to the four tree spots use PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spots, same speed. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): his walk, tree, healer-pick, port and heal flags and his random target are per brain instead of static, so a reset or a respawn starts clean. No mechanic changed.",
    "aiTactics": {
@@ -2770,15 +2770,15 @@
     "since": "1.2"
    },
    "rules": {
-    "adds@658": {
+    "adds@641": {
      "tactic": "In the raid AI (catalog: ranged adds and area on the clump): the raid's casters and archers kill the trees while the melee stay on him. Flood guard: at most 70 a wave (EncounterFloodGuard 'OFGreenKnight.Trees', still the Albion dragon raid's size; his own raid's period size is 40).",
      "difficulty": "easy for the current raid AI"
     },
-    "aggro_wipe@350": {
+    "aggro_wipe@332": {
      "tactic": "In the raid AI (catalog: tanks taunt): when he turns on a healer, the raid's nearest tank that fights him taunts him back.",
      "difficulty": "easy for the current raid AI"
     },
-    "heal@680": {
+    "heal@663": {
      "tactic": "Uninterruptible (a 3 s self heal of 400 at one of four spots, after each 10% he loses): nothing stops it; the raid follows him and keeps hitting. Period: \"Heals himself\" (Albion epic raid guide, Feb 2003).",
      "difficulty": "easy for the current raid AI"
     }
@@ -2793,7 +2793,7 @@
   "summoner-s-hall/grandsummonergovannon": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "9efeb9594d0b54d78ded8433fde7bc597df93230618d3f92a27e96e3395cefba"
+    "source/server/GameServer/scripts/namedmobs/SummonersHall/GrandSummonerGovannon.cs": "696550f57597284f65dbe9ea98db9dcc848f1f3c12d6d932700e7987a3b8c7ee"
    },
    "notes": "Level 80, 200,000 health (AllowGovannonFullHealth, off by default until a played check, server property epic_govannon_full_health; on, the original 300,000), 40% melee and 70% magic resists, tether 1,300. At 80% he gains strength (650) and summons a sacrifice and a demon (6,000 health each, they never attack) at 31018,40889 and 33215,40883; they walk at 35 to his altar (32063,40896, beside his spawn) and die there, and only if both reach it the Shade of Aelfgar comes (10,000 health, a 500-radius stun, sends a raider to the gallery, bots too since 1.2). Killed on the way, no Shade. At 50% he turns into a demon (model 636): healed to 75% (AllowGovannonFullHeal, off by default, server property epic_govannon_full_heal; on, the original: healed to full), strength 800, a bleed on melee hits, and every 20-35 s Govannon's Shroud of Agony (Matter, 120 every 2 s for 24 s, radius 300 around his target); the sacrifice and demon come a second time: at once as he turns (he is at 75%, under the 80% mark), or when the demon falls to 80% with AllowGovannonFullHeal on. Each pair that both reach the altar brings a Shade, one at a time (1.2, True 1.65 port: before, the first Shade's death stopped every later Shade until a restart). A reset puts him back in his own form (template model, size and Strength) at once. Only his summoned Shade comes into the world: the database Shade that stood 137 from him is no longer loaded (1.2, True 1.65 port). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The sacrifices' and demons' walk to the altar uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed 35. 1.2 upstream port by hand (tests only; OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220): his stage flags are per brain; the sacrifice and the demon tell their own Govannon (OwnerBrain) when they reach the centre instead of static kill counts, and the Shade's port target is per Shade. The one-Shade-at-a-time scan is ours. No mechanic changed.",
    "currentRaidAi": "2026-11-06 (build 86eddd8, the 1.1.2 RC): the Midgard raid lost Summoner's Hall to him. Attempt 1: engaged 11:11 with 55 mustered, 100% to 53% in 3 minutes with one death; at 11:14:45 he became the demon at full health (REALM_EXPEDITION_TARGET_HEALED 53->99, model 636). Then 88 raider deaths credited to him in 11:15-11:18, 47 in the first minute, 61 with no attacker on the raider (attackers=0: damage over time, the Shroud), 27 of them inside one 100-unit square (the raid stood in a pile on his target); healers were out of power (AUTONOMOUS_RESURRECTION_BLOCKED, mana 11-66 of about 420). WIPE 11:18 engaged=85 fallen=85 lowest=53. Attempt 2 (82 mustered, Special Forces in): 100% to 51% in 2.7 minutes, demon at 11:40:12, 101 deaths credited to him in 11:40-11:42 (61 in the first 48 s, 76 with attackers=0), WIPE 11:42 engaged=101 fallen=100 lowest=51. No sacrifice, demon or Shade line in the log; whether they spawned is not known. 2026-11-15 (owner's PC, build 1dc66b6): the sweep's Albion Summoner's Hall raid lost at Aidon the Archwizard (two wipes) and never reached him.",
@@ -2819,24 +2819,24 @@
     "reset@234": {
      "summary": "Resets when its aggro list is empty (after 8 s out of combat: EpicEncounterMechanics.FightIsOver): walks home at full health in his own form (template model, size and Strength), his sacrifice, demon and Shade removed; before 1.2's True 1.65 port only the later 30-35 s window restored his form, so a raid back within 30 s met Strength 800 and the demon model."
     },
-    "adds@324": {
+    "adds@325": {
      "tactic": "In the raid AI (EpicEncounterTactics): ranged adds: casters and archers kill the sacrifice and the demon on their walk to the altar; the rest stay on him.",
      "difficulty": "needs new raid AI"
     },
-    "adds@356": {
+    "adds@357": {
      "summary": "Spawns the Shade of Aelfgar (one at a time) every time both the sacrifice and the demon of a pair have reached his altar (32063,40896) and died there; killed on the way, they never count. Two pairs a fight (at 80%, and again after he turns), so up to two Shades.",
      "tactic": "Kill the sacrifice and the demon before they reach the altar (ranged adds); a Shade that comes anyway attacks the raid and the route turns on it.",
      "difficulty": "needs new raid AI"
     },
-    "phase@290": {
+    "phase@291": {
      "tactic": "In the raid AI (EpicEncounterTactics): at 50% he becomes the demon, healed to 75% (to full with AllowGovannonFullHeal on), and starts his Shroud of Agony (radius 300 around his target): the raid spreads, and steps out of the Shroud while he casts it (see his tactic).",
      "difficulty": "needs new raid AI"
     },
-    "phase@315": {
+    "phase@316": {
      "tactic": "In the raid AI (EpicEncounterTactics): spread while he has the demon model (636).",
      "difficulty": "needs new raid AI"
     },
-    "teleport@712": {
+    "teleport@713": {
      "tactic": "Shade of Aelfgar's gallery port: on since 1.2 for bots too (AllowBotDisplacement for ShadeOfAelfgar). A moved bot lands on the gallery 834 above his floor and walks back to its party (EncounterDisplacementRecovery: no path, no progress or past its budget and it recalls to the raid after 5 s); healers heal displaced raiders first and the party calls it in /group.",
      "difficulty": "easy for the current raid AI"
     }
@@ -3206,7 +3206,7 @@
   "tuscaran-glacier/kingtuscar": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8d44847675e7139b9b949a880470d9adeefd64cc6199429a81748a8cba47ca6c"
    },
    "aiTactics": {
     "after": "QueenKula",
@@ -3275,7 +3275,7 @@
   "tuscaran-glacier/queenkula": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "3e9fc314b6f82857156348fe8d066481850554d6fdda67d868156de7dd904764"
+    "source/server/GameServer/scripts/namedmobs/TuscarianGlacier/KingTuscarAndQueenKula.cs": "8d44847675e7139b9b949a880470d9adeefd64cc6199429a81748a8cba47ca6c"
    },
    "aiTactics": {
     "fightAtHomeRadius": 1400,

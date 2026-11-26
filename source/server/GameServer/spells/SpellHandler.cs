@@ -355,6 +355,8 @@ namespace DOL.GS.Spells
 			bool lost = Caster.IsBeingInterruptedByOther && TryInterruptCaster(Caster.LastInterrupter);
 			// #625: the CAST_INTERRUPT row (sampled, logs only), from the decision just made.
 			CastInterruptRows.Observe(Caster, Spell, _castStartTick, _calculatedCastTime, lost, IsInterruptImmune);
+			// #644 RAID_ROLE_TOTALS (diagnostics switch, logging only): a raider interrupted a monster's cast.
+			if (lost) RaidAttemptRows.NoteInterrupt(Caster.LastInterrupter, Caster);
 
 			if (!lost)
 				return false;

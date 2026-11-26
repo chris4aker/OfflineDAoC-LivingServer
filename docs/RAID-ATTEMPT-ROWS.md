@@ -1,10 +1,11 @@
-# Raid attempt rows (#644, parts 1-3)
+# Raid attempt rows (#644, parts 1-5)
 
 Server-log rows that say, for one pull of a raid boss, who was there, who died, to what, and how it ended. Logging only:
 they change no boss, no tactic and no raid rule ("raise a size, never weaken a boss" stands). On by default. No player,
 account or bot names; monster names are written. Code: `source/server/GameServer/bots/autonomous/LivingRows.Raid.cs`
 (pure `Format*` functions, `RaidAttemptTracker`, `RaidAttempt`); tests: `UT_RaidAttemptRows644`. The fight samples and
-the funnel (parts 2-3): `LivingRows.RaidSample.cs` (`RaidFightSampleRows`, `RaidFunnel`); tests: `UT_RaidFightSampleRows644`.
+the funnel (parts 2-3): `LivingRows.RaidSample.cs` (`RaidFightSampleRows`, `RaidFunnel`); tests: `UT_RaidFightSampleRows644`. Mechanics, threat and role totals (parts 3-5):
+`LivingRows.RaidMechanics.cs` (`RaidBossMechanics`, `RaidMechanicRows`, `RaidDiagnosticRows`); tests: `UT_RaidMechanicRows644`.
 
 Status: **tests only**. Not yet seen in a PC log.
 
@@ -150,11 +151,105 @@ RAID_FUNNEL event= stage=start|end asked= recruited= parties= atHub= staged= atB
 
 No budget: two rows a raid.
 
+### `RAID_MECHANIC_FIRE`: each mechanic of a live attempt (parts 3-5)
+
+```
+RAID_MECHANIC_FIRE attempt= boss="" mechanic= t= radius= exposedAtCall= within= hit= died= avoided= called= leadMs= reactMedianMs= damage=
+```
+
+One row for every encounter signal of a live attempt's boss (or of a monster in the attempt's region, such as an add's)
+and its aftermath, `EPIC_BLAST_LANDED`'s fields as the template. It hears both kinds of signal: those the raid AI reacts to
+(`EncounterSignals.Raise`: the dragons, Xanxicar, Olcasgean, Nosdoden, Balor) and the measure-only ones of decision d
+(below). The row is written 6 s after the landing (or at the signal's end, if later), or when the attempt ends first.
+
+| Field | Meaning |
+|---|---|
+| `boss`, `mechanic` | the monster that signalled (a name) and the mechanic's name |
+| `t` | seconds into the pull at the signal |
+| `radius` | its area; 0 for a mechanic with no area (an adds wave, a summon) |
+| `exposedAtCall` | the attempt's living raiders in the area when it was signalled (around its target, or the boss); for a single-target spell, its target; `-` with no area |
+| `within` | the same at the landing; `-` with no area, or when the attempt ended before it landed |
+| `hit` | raiders hit by a spell of the signalling monster from 0.5 s before the landing to the signal's end (its melee is not counted) |
+| `died` | raiders within at the landing or hit, dead at the count |
+| `avoided` | raiders exposed at the call, alive, neither within at the landing nor hit; `-` with no area or no landing |
+| `called` | `1` when the raid AI was told of it (`Raise`), `0` for a measure-only signal |
+| `leadMs` | from the signal to the landing (the warning the raid had; the spell's cast time for a measure-only cast) |
+| `reactMedianMs` | the median time the exposed raiders took to step out of the area before the landing (looked at every 100 ms); `-` with no area or when none stepped out |
+| `damage` | the damage of those hits |
+
+Budget: 20 a minute (`LivingRows.Take`), on by default.
+
+**Decision d (owner, 2026-11-25; approved again 2026-11-26): measure-only signals.** The raid bosses that raised none now
+call `RaidBossMechanics` beside what they already do:
+
+| Boss | Mechanics |
+|---|---|
+| Legion | `soulBlast` (the soul consumption blast), `adds` (each adds wave) |
+| Grand Summoner Govannon | `dot` (the demon form's DoT), `sacrifice` (the 80% sacrifice and demon) |
+| Green Knight | `heat` (the heat proc), `heal` (the heal at each walk point), `trees` (each tree wave) |
+| Spindler Broodmother | `mezz` (the mez on a random raider), `adds` (each spawn) |
+| Queen Kula | `cold` (the cold DD), `frostMezz`, `frostRoot` (the centre rule) |
+| King Tuscar | `hammers`, `thunder`, `bleed` (the after-style spells) |
+
+Each `RaidBossMechanics.Cast` takes the script's own `CastSpell(...)` call as its first argument, so the cast, its spell,
+its timing and its target are exactly as before; the signal is written only when the cast started. Each signal goes through
+`EncounterSignals.Measure`, **not** `Raise`: it is not live for the tactics, the /group calls or the lore engine, so the
+raid AI does not react to it and the fight is unchanged. `UT_RaidMechanicRows644` checks each boss's script and the
+signal. Making any of them a full `Raise` (so the bots react) would be a tactic change, with its own research and issue.
+Other raid bosses with no signal yet: Apocalypse, Orylle, Duraek, Aidon, Iarnvidiur, Aros, the Black Lady, Myrddraxis and
+the open-world bosses other than the Green Knight.
+
+### `RAID_THREAT`: each change of the boss's target (diagnostics switch)
+
+```
+RAID_THREAT attempt= boss="" t= from= to= toKind= why= heldMs=
+```
+
+| Field | Meaning |
+|---|---|
+| `from`, `to` | whom the boss fought before and now: `tank`, `healer`, `buffer`, `attacker` (a raider of the attempt), `raider` (one with no class), `pet` (a raider's pet), `other`, `none` |
+| `toKind` | `player`, `companion`, `gamebot`, `pet`, `npc`, or `-` for none |
+| `why` | `death` (the last target died), `taunt` (the new target landed a taunt spell on the boss in the last 3 s; taunt styles count as threat), `mechanic` (a raid-visible signal of the boss was in force), else `threat` |
+| `heldMs` | how long the last target held the boss (from the pull for the first change) |
+
+The raid pulse compares the boss's target every game tick. Budget: 20 a minute per attempt (one boss).
+
+### `RAID_ROLE_TOTALS`: per role at each attempt end (diagnostics switch)
+
+```
+RAID_ROLE_TOTALS attempt= role= raiders= dealtBoss= dealtAdds= took= healed= overheal= deaths= cc= interrupts= powerOuts= classes=
+```
+
+Four rows (tank, healer, buffer, attacker) right after `RAID_ATTEMPT_END`. Budget: 40 a minute.
+
+| Field | Meaning |
+|---|---|
+| `raiders` | the attempt's raiders of the role (a raider with no class is in no role) |
+| `dealtBoss`, `dealtAdds` | damage (with critical damage) the role's raiders and their pets did to the boss, and to every other monster |
+| `took` | damage the role's raiders took |
+| `healed`, `overheal` | health the role's heal spells restored, and the rest of what they cast (`HealSpellHandler`) |
+| `deaths` | every death of the role's raiders in the attempt |
+| `cc` | mezzes and stuns the role's raiders put on monsters (counted after the spell's immunity checks; a resist may still follow) |
+| `interrupts` | monster casts the role's raiders interrupted |
+| `powerOuts` | the role's raiders seen at 0% power at a fight sample (every 15 s; a short power-out between samples is missed) |
+| `classes` | per class, `Class:raiders/dealt/healed` |
+
+### The diagnostics switch
+
+`RAID_THREAT` and `RAID_ROLE_TOTALS` are written only with the server property **`raid_diagnostic_rows`** (category
+`autonomous_diagnostics`) set to `True`. It is off by default, release worlds write it `False`
+(`release-server-settings.json`, `KeptOff`), and player installs never turn it on (#644 decision c). To turn it on in a test
+install, set it in the `ServerProperty` table (`UPDATE ServerProperty SET Value = 'True' WHERE Key = 'raid_diagnostic_rows';`
+with the server stopped, or `/serverproperties refresh` as an admin after the change). With it off the hit path is part 1's.
+With it on, a hit on a monster during a live attempt adds one lookup of the attacker (and its pet's owner).
+
 ## Volume [I]
 
 At about 160 raiders and one live raid: `RAID_ATTEMPT` and `RAID_ATTEMPT_END` 2-10 an hour each (budget 10 a minute
 each); `RAID_DEATH` 20-300 an hour, up to the raid's size in one minute at a wipe; `RAID_FIGHT_SAMPLE` 240 an hour per
-live attempt (at most 1,800 an hour overall); `RAID_FUNNEL` 2 a raid. Not measured.
+live attempt (at most 1,800 an hour overall); `RAID_FUNNEL` 2 a raid; `RAID_MECHANIC_FIRE` 30-240 an hour per live raid
+(at most 1,200); with the diagnostics switch, `RAID_THREAT` 60-600 an hour per boss (at most 1,200 per attempt) and
+`RAID_ROLE_TOTALS` 4 an attempt. Not measured.
 
 ## Cost
 
@@ -180,9 +275,12 @@ death and, for a raider, one pass over the attempt's raiders (healers in range).
   reused.
 - Both read the rows through one parser (`living_report_sections/_raid.py`). A restart starts the attempt count at 1 again,
   so an id pulled a second time in a log set is a new attempt (`<id> (run 2)`). Tests: `source/tools/tests/test_raid_attempts.py`,
-  on synthetic rows; it also parses the rows `UT_RaidAttemptRows644` and `UT_RaidFightSampleRows644` pin for the `Format*`
-  functions, so a change to the rows fails there.
+  on synthetic rows; it also parses the rows `UT_RaidAttemptRows644`, `UT_RaidFightSampleRows644` and `UT_RaidMechanicRows644`
+  pin for the `Format*` functions, so a change to the rows fails there.
+- From parts 3-5 the section adds a **mechanics table** per boss and mechanic (fires, called, exposed, within, hit, died,
+  avoided and its share, lead, reaction, damage), and, with the diagnostics rows, a **boss threat** table per attempt
+  (changes, the share of time on a tank, why, to whom) and a **roles** table summed over the attempts. The post-mortem puts
+  the mechanic fires and target changes in its timeline and the role totals at the end.
 
-Not yet (later parts of #644): `RAID_MECHANIC_FIRE`, `RAID_THREAT` and
-`RAID_ROLE_TOTALS` (the last two behind the diagnostics switch, decision c), damage and heal totals on the end row,
-`rezzed=`, the sims writing these rows, and the Grafana panels.
+Not yet (#644): damage and heal totals on the end row (they are in `RAID_ROLE_TOTALS`, with the diagnostics switch),
+`rezzed=`, signals for the other raid bosses (above), the sims writing these rows, and the Grafana panels.

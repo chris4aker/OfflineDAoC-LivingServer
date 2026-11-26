@@ -24,7 +24,7 @@ namespace DOL.GS;
 // a whole attempt. The four existing attempt-end rows carry the same attempt= at their end (#644 decision b).
 
 /// <summary>The pure formatters and helpers of the raid attempt rows (#644 part 1), and the hooks the server calls.</summary>
-public static class RaidAttemptRows
+public static partial class RaidAttemptRows
 {
     public const string AttemptMarker = "RAID_ATTEMPT";
     public const string EndMarker = "RAID_ATTEMPT_END";
@@ -64,6 +64,7 @@ public static class RaidAttemptRows
     {
         lock (Sequence) Sequence.Clear();
         ByRaider.Clear();
+        ResetLiveForTests();
     }
 
     // ---- pure helpers ------------------------------------------------------------------------------------------------
@@ -256,10 +257,16 @@ public static class RaidAttemptRows
         if (ByRaider.IsEmpty || victim == null || ad == null) return;
         try
         {
-            if (!ByRaider.TryGetValue(victim, out RaidAttempt attempt)) return;
-            Spell spell = ad.SpellHandler?.Spell;
-            attempt.NoteHit(victim, new LastHit(LivingRows.Now(), false, ad.AttackType, spell?.ID ?? 0, spell?.SpellType ?? eSpellType.None,
-                spell?.Radius ?? 0));
+            if (ByRaider.TryGetValue(victim, out RaidAttempt attempt))
+            {
+                Spell spell = ad.SpellHandler?.Spell;
+                long now = LivingRows.Now();
+                attempt.NoteHit(victim, new LastHit(now, false, ad.AttackType, spell?.ID ?? 0, spell?.SpellType ?? eSpellType.None,
+                    spell?.Radius ?? 0), ad, now);
+                return;
+            }
+            // #644 parts 4-5 (behind the diagnostics switch): a hit on a monster, for RAID_ROLE_TOTALS and RAID_THREAT's taunts.
+            if (RaidDiagnosticRows.On) NoteMonsterHit(victim, ad);
         }
         catch
         {
@@ -363,7 +370,7 @@ public static class RaidAttemptRows
 /// One live raid attempt (#644): its raiders by per-attempt index, who died in it and their last hits. Written by the raid pulse
 /// (Join) and by the hit and death hooks on game-loop threads, so every member read and write takes the attempt's lock.
 /// </summary>
-public sealed class RaidAttempt
+public sealed partial class RaidAttempt
 {
     private readonly object _sync = new();
     private readonly Dictionary<GameLiving, int> _index = new(ReferenceEqualityComparer.Instance);
@@ -482,10 +489,15 @@ public sealed class RaidAttempt
         lock (_sync) return _died.ToArray();
     }
 
-    internal void NoteHit(GameLiving victim, RaidAttemptRows.LastHit hit)
+    internal void NoteHit(GameLiving victim, RaidAttemptRows.LastHit hit, AttackData ad = null, long now = 0)
     {
         lock (_sync)
-            if (!_closed) _lastHits[victim] = hit;
+        {
+            if (_closed) return;
+            _lastHits[victim] = hit;
+            // #644 parts 3-5: a mechanic's hits, and the raider's damage taken (diagnostics).
+            if (ad != null) NoteTakenLocked(victim, ad, now);
+        }
     }
 
     /// <summary>A raider of this attempt died: one RAID_DEATH row, no cap (#644 decision a).</summary>
@@ -499,6 +511,7 @@ public sealed class RaidAttempt
             if (_closed || !_index.TryGetValue(victim, out idx)) return;
             _died.Add(victim);
             _deaths++;
+            DeathCounts[victim] = DeathCounts.GetValueOrDefault(victim) + 1;
             hit = _lastHits.TryGetValue(victim, out var h) ? h : null;
             _lastHits.Remove(victim);
             members = _index.Keys.ToArray();
@@ -544,6 +557,9 @@ public sealed class RaidAttempt
         }
         // The attempt's RAID_FIGHT_SAMPLE budget window goes with it (#644 part 2).
         if (_sampleBudgetTag != null) RvrRecordBudget.Forget(_sampleBudgetTag);
+        // #644 parts 3-5: its mechanic fires still open are written with what is known, and it leaves the live list.
+        CloseExtras(LivingRows.Now());
+        RaidAttemptRows.Unregister(this);
         foreach (GameLiving raider in members)
             RaidAttemptRows.ByRaider.TryRemove(new KeyValuePair<GameLiving, RaidAttempt>(raider, this));
     }
@@ -629,6 +645,7 @@ public sealed class RaidAttemptTracker
             int n = _pulls[pullKey] = _pulls.GetValueOrDefault(pullKey) + 1;
             var attempt = new RaidAttempt(id, EventId, Kind, region, boss, bossName, now);
             attempt.Join((raiders ?? []).Concat(guests));
+            RaidAttemptRows.Register(attempt);
             Current = attempt;
             if (FirstBegin < 0) FirstBegin = now;
             bool afterFailure = LastId != null && _lastOutcome is "wipe" or "reset" or "skirmish";
@@ -687,6 +704,8 @@ public sealed class RaidAttemptTracker
             if (LivingRows.Enabled && LivingRows.Take(RaidAttemptRows.EndMarker, RaidAttemptRows.EndPerMinute))
                 LivingRows.Emit(RaidAttemptRows.FormatEnd(new RaidAttemptRows.EndFacts(attempt.Id, outcome, (now - attempt.Start) / 1000,
                     engaged, fallen, died, left, attempt.Deaths, health, lowest)));
+            // #644 part 5 (diagnostics switch): one RAID_ROLE_TOTALS a role.
+            if (RaidDiagnosticRows.On) attempt.WriteRoleTotals();
         }
         catch
         {

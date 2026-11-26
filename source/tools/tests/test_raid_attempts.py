@@ -20,6 +20,7 @@ from living_report_sections._util import fields  # noqa: E402
 REPO = HERE.parents[1]
 PINS = REPO / "source/server/Tests/UnitTests/UT_RaidAttemptRows644.cs"
 SAMPLE_PINS = REPO / "source/server/Tests/UnitTests/UT_RaidFightSampleRows644.cs"
+MECHANIC_PINS = REPO / "source/server/Tests/UnitTests/UT_RaidMechanicRows644.cs"
 
 
 def at(clock):
@@ -115,7 +116,8 @@ class SectionTests(unittest.TestCase):
         self.text = raid_attempts.summarize(NIGHT)
 
     def test_has_the_section_interface(self):
-        self.assertEqual(raid_attempts.ROWS, ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH", "RAID_FIGHT_SAMPLE", "RAID_FUNNEL"])
+        self.assertEqual(raid_attempts.ROWS, ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH", "RAID_FIGHT_SAMPLE",
+                                              "RAID_MECHANIC_FIRE", "RAID_THREAT", "RAID_ROLE_TOTALS", "RAID_FUNNEL"])
         self.assertTrue(raid_attempts.TITLE)
 
     def test_attempts_per_boss_outcomes_and_time_to_kill(self):
@@ -371,6 +373,111 @@ class SamplePostmortemTests(unittest.TestCase):
     def test_the_list_counts_samples(self):
         _, out, _ = quiet(pm.main, ["--list", str(self.log)])
         self.assertIn(f"| {K}.1 | 11/25 22:00:00 | Orylle | 96 | wipe | 6:52 | 3 | 6 |", out)
+
+
+# ---- #644 parts 3-5: RAID_MECHANIC_FIRE, RAID_THREAT, RAID_ROLE_TOTALS -------------------------------------------------
+
+def fire(clock, aid, t, mech="soulBlast", boss="Orylle", radius=1000, exposed=22, within=14, hit=12, died=5, avoided=8, called=0,
+         lead=0, react=450, damage=41200):
+    return at(clock) + (f"RAID_MECHANIC_FIRE attempt={aid} boss=\"{boss}\" mechanic={mech} t={t} radius={radius} "
+                        f"exposedAtCall={exposed} within={within} hit={hit} died={died} avoided={avoided} called={called} "
+                        f"leadMs={lead} reactMedianMs={react} damage={damage}")
+
+
+def threat(clock, aid, t, from_="tank", to="healer", kind="gamebot", why="threat", held=12400, boss="Orylle"):
+    return at(clock) + (f"RAID_THREAT attempt={aid} boss=\"{boss}\" t={t} from={from_} to={to} toKind={kind} why={why} "
+                        f"heldMs={held}")
+
+
+def roles(clock, aid, role, raiders=10, boss=40000, adds=5000, took=60000, healed=0, over=0, deaths=1, cc=0, intr=2, outs=0,
+          classes="Armsman:10/45000/0"):
+    return at(clock) + (f"RAID_ROLE_TOTALS attempt={aid} role={role} raiders={raiders} dealtBoss={boss} dealtAdds={adds} "
+                        f"took={took} healed={healed} overheal={over} deaths={deaths} cc={cc} interrupts={intr} "
+                        f"powerOuts={outs} classes={classes}")
+
+
+MECH = NIGHT[:4] + [
+    fire("22:01:24", f"{K}.1", 84),
+    fire("22:01:40", f"{K}.1", 100, mech="adds", radius=0, exposed="-", within="-", hit=3, died=1, avoided="-", react="-",
+         damage=900),
+    threat("22:00:05", f"{K}.1", 5, from_="none", to="tank", held=5000),
+    threat("22:00:35", f"{K}.1", 35, from_="tank", to="healer", held=30000),
+    threat("22:00:45", f"{K}.1", 45, from_="healer", to="tank", why="taunt", held=10000),
+] + NIGHT[4:6] + [
+    roles("22:06:52", f"{K}.1", "tank"),
+    roles("22:06:52", f"{K}.1", "healer", raiders=30, boss=0, adds=100, took=9000, healed=16000, over=4000, deaths=2, intr=0,
+          outs=3, classes="Cleric:20/100/12000,Friar:10/0/4000"),
+] + NIGHT[6:]
+
+
+class MechanicParserTests(unittest.TestCase):
+    def test_the_rows_join_their_attempt(self):
+        a = _raid.attempts(MECH)[0]
+        self.assertEqual((len(a.mechanics), len(a.threats), len(a.roles)), (2, 3, 2))
+
+    def test_the_rows_pinned_in_the_csharp_tests_parse(self):
+        text = MECHANIC_PINS.read_text(encoding="utf-8")
+        pinned = {}
+        for m in re.finditer(r'Is\.EqualTo\(("RAID_[A-Z_]+ [^;]+?)\)\);', text):
+            row = "".join(re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))).replace('\\"', '"')
+            pinned[row.split(" ", 1)[0]] = row
+        self.assertEqual(set(pinned), {"RAID_MECHANIC_FIRE", "RAID_THREAT", "RAID_ROLE_TOTALS"})
+        found = _raid.attempts([at("22:00:00") + pinned[k] for k in sorted(pinned)])
+        a = next(x for x in found if x.mechanics)
+        f = a.mechanics[0][1]
+        self.assertEqual((a.id, f["boss"], f["mechanic"], f["exposedAtCall"], f["avoided"], f["reactMedianMs"], f["damage"]),
+                         ("darkness-albion.2", "Legion", "soulBlast", "22", "8", "450", "41200"))
+        t = a.threats[0][1]
+        self.assertEqual((t["from"], t["to"], t["why"], t["heldMs"]), ("tank", "healer", "threat", "12400"))
+        r = next(x for x in found if x.roles).roles[0][1]
+        self.assertEqual((r["role"], r["dealtBoss"], r["interrupts"], r["classes"]), ("tank", "40000", "2", "Armsman:1/45000/0"))
+
+
+class MechanicSectionTests(unittest.TestCase):
+    def setUp(self):
+        self.text = raid_attempts.summarize(MECH)
+
+    def test_a_mechanic_table_per_boss_and_mechanic(self):
+        self.assertIn("Mechanics (RAID_MECHANIC_FIRE, 2 fires", self.text)
+        self.assertIn("| Orylle | soulBlast | 1 | no | 22 | 14 | 12 | 5 | 8 (36%) | 0 ms | 450 ms | 41200 |", self.text)
+        self.assertIn("| Orylle | adds | 1 | no | - | - | 3 | 1 | - | 0 ms | - | 900 |", self.text)
+
+    def test_threat_and_roles(self):
+        self.assertIn("Boss threat (RAID_THREAT", self.text)
+        # Held from tank 30 s, from healer 10 s, from none 5 s: 30 of 45 s on a tank.
+        self.assertIn(f"| {K}.1 | Orylle | 3 | 67% | threat 2, taunt 1 | tank 2, healer 1 |", self.text)
+        self.assertIn("Roles (RAID_ROLE_TOTALS, diagnostics switch; summed over 1 attempt;", self.text)
+        self.assertIn("| tank | 1 | 10 | 40000 | 5000 | 60000 | 0 | - | 1 | 0 | 2 | 0 |", self.text)
+        self.assertIn("| healer | 1 | 30 | 0 | 100 | 9000 | 16000 | 20% | 2 | 0 | 0 | 3 |", self.text)
+
+    def test_none_without_the_rows(self):
+        text = raid_attempts.summarize(NIGHT)
+        for title in ("Mechanics (", "Boss threat", "Roles ("):
+            self.assertNotIn(title, text)
+
+
+class MechanicPostmortemTests(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.log = Path(self._tmp.name) / "server.log"
+        self.log.write_text("\n".join(MECH) + "\n", encoding="utf-8")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_mechanics_and_threat_in_the_timeline_and_the_roles_at_the_end(self):
+        code, out, err = quiet(pm.main, [f"{K}.1", str(self.log)])
+        self.assertEqual(code, 0, err)
+        self.assertIn("## Timeline (0 samples, 3 deaths, 2 mechanic fires, 3 target changes)", out)
+        kinds = [m.group(1) for m in re.finditer(r"^- \d+:\d\d (sample|mechanic|threat|death):", out, re.M)]
+        self.assertEqual(kinds, ["threat", "threat", "threat", "death", "death", "death", "mechanic", "mechanic"])
+        self.assertIn("- 1:24 mechanic: soulBlast of Orylle (measure only), lands in 0 ms, radius 1000: exposed 22, within 14, "
+                      "avoided 8, stepped out in 450 ms (median), hit 12, died 5, damage 41200", out)
+        self.assertIn("- 1:40 mechanic: adds of Orylle (measure only), lands in 0 ms, hit 3, died 1, damage 900", out)
+        self.assertIn("- 0:45 threat: healer -> tank (gamebot), taunt, held 0:10", out)
+        self.assertIn("## Roles at the end", out)
+        self.assertIn("| healer | 30 | 0 | 100 | 9000 | 16000 | 4000 | 2 | 0 | 0 | 3 | Cleric:20/100/12000, Friar:10/0/4000 |", out)
+        self.assertNotIn("`RAID_MECHANIC_FIRE", out, "in the timeline, not repeated under other rows")
 
 
 if __name__ == "__main__":

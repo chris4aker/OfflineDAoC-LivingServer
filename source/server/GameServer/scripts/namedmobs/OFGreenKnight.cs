@@ -220,7 +220,7 @@ namespace DOL.GS
             if (Util.Chance(30))
             {
                 //Here boss cast very X s aoe heat dmg, we can adjust it in spellrecast delay
-                CastSpell(GreenKnightHeatDD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                RaidBossMechanics.Cast(CastSpell(GreenKnightHeatDD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "heat", GreenKnightHeatDD); // #644 measurement only
             }
             base.OnAttackEnemy(ad);
         }
@@ -476,7 +476,7 @@ namespace DOL.AI.Brain
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(StartHeal), 4000);
                     Body.TargetObject = Body;
                     if (Util.Chance(100))
-                        Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+                        RaidBossMechanics.Cast(Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "heal", GreenKnightHeal); // #644 measurement only
                     if (PortPoints.Contains(string1))
                         PortPoints.Remove(string1);
 
@@ -491,7 +491,7 @@ namespace DOL.AI.Brain
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(StartHeal), 4000);
                     Body.TargetObject = Body;
                     if (Util.Chance(100))
-                        Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+                        RaidBossMechanics.Cast(Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "heal", GreenKnightHeal); // #644 measurement only
                     if (PortPoints.Contains(string2))
                         PortPoints.Remove(string2);
                     PickPortPoint = false;
@@ -505,7 +505,7 @@ namespace DOL.AI.Brain
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(StartHeal), 4000);
                     Body.TargetObject = Body;
                     if (Util.Chance(100))
-                        Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+                        RaidBossMechanics.Cast(Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "heal", GreenKnightHeal); // #644 measurement only
                     if (PortPoints.Contains(string3))
                         PortPoints.Remove(string3);
                     PickPortPoint = false;
@@ -519,7 +519,7 @@ namespace DOL.AI.Brain
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(StartHeal), 4000);
                     Body.TargetObject = Body;
                     if(Util.Chance(100))
-                        Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+                        RaidBossMechanics.Cast(Body.CastSpell(GreenKnightHeal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "heal", GreenKnightHeal); // #644 measurement only
                     if (PortPoints.Contains(string4))
                         PortPoints.Remove(string4);
                     PickPortPoint = false;
@@ -624,6 +624,7 @@ namespace DOL.AI.Brain
             if (Body.IsAlive && Body.InCombat && HasAggro)
             {
                 //spawning each tree in radius of 4000 on every player
+                RaidBossMechanics.Spawn(Body, "trees"); // #644 measurement only
                 List<GameLiving> player = new List<GameLiving>();
                 // Flood guard (1.2): one wave grows trees at most at the period raid's count of raiders (EncounterFloodGuard).
                 int grown = 0;

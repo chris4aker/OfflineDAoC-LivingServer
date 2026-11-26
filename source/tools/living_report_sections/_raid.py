@@ -6,6 +6,11 @@ raid_postmortem.py. Not a section itself (the loader skips "_" modules).
     RAID_DEATH         a death:  attempt= t= idx= kind= player= class= role= level= killerKind= killer="" source= ...
     RAID_FIGHT_SAMPLE  every 15 s of a pull (parts 2-3): attempt= t= bossPct= phase= adds= alive=T:H:B:A engaged=T:H:B:A
                        healerPow= healersLow= onTank= tgtKind= medDist= mezzed= stunned=
+    RAID_MECHANIC_FIRE each signal of a pull and its aftermath (parts 3-5): attempt= boss="" mechanic= t= radius=
+                       exposedAtCall= within= hit= died= avoided= called= leadMs= reactMedianMs= damage=
+    RAID_THREAT        each change of the boss's target (diagnostics switch): attempt= boss="" t= from= to= toKind= why= heldMs=
+    RAID_ROLE_TOTALS   one per role at the end (diagnostics switch): attempt= role= raiders= dealtBoss= dealtAdds= took= healed=
+                       overheal= deaths= cc= interrupts= powerOuts= classes=
     RAID_FUNNEL        per raid, not per attempt (parts 2-3): event= stage=start|end asked= recruited= parties= atHub= staged=
                        atBoss= lost=route:n,travel:n,died:n,logout:n,released:n,other:n hubS= stageS= bossS=
 
@@ -19,7 +24,8 @@ from dataclasses import dataclass, field
 
 from living_report_sections._util import fields, stamp, tag
 
-ROWS = ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH", "RAID_FIGHT_SAMPLE"]
+ROWS = ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH", "RAID_FIGHT_SAMPLE", "RAID_MECHANIC_FIRE", "RAID_THREAT",
+        "RAID_ROLE_TOTALS"]
 FUNNEL = "RAID_FUNNEL"
 ROLES = ("tank", "healer", "buffer", "attacker")
 FAILED = ("wipe", "reset", "skirmish")
@@ -45,6 +51,9 @@ class Attempt:
     ended_at: str = ""
     deaths: list = field(default_factory=list)  # (stamp, fields) of each RAID_DEATH, in log order
     samples: list = field(default_factory=list)  # (stamp, fields) of each RAID_FIGHT_SAMPLE, in log order
+    mechanics: list = field(default_factory=list)  # (stamp, fields) of each RAID_MECHANIC_FIRE
+    threats: list = field(default_factory=list)  # (stamp, fields) of each RAID_THREAT
+    roles: list = field(default_factory=list)  # (stamp, fields) of each RAID_ROLE_TOTALS
 
     @property
     def event(self):
@@ -99,6 +108,12 @@ def attempts(lines) -> list[Attempt]:
             a.end, a.ended_at = f, stamp(line)
         elif kind == "RAID_FIGHT_SAMPLE":
             for_id(aid).samples.append((stamp(line), f))
+        elif kind == "RAID_MECHANIC_FIRE":
+            for_id(aid).mechanics.append((stamp(line), f))
+        elif kind == "RAID_THREAT":
+            for_id(aid).threats.append((stamp(line), f))
+        elif kind == "RAID_ROLE_TOTALS":
+            for_id(aid).roles.append((stamp(line), f))
         else:
             for_id(aid).deaths.append((stamp(line), f))
     return out

@@ -121,6 +121,29 @@ namespace DOL.GS
             return signal;
         }
 
+        /// <summary>
+        /// Every measure-only signal (#644 decision d; RAID_MECHANIC_FIRE's hook). Unlike <see cref="Raised"/> it reaches no
+        /// tactic, no /group call and no lore line, and it is not in <see cref="Active"/>: the raid does not know of it.
+        /// </summary>
+        public static event Action<EncounterSignal> Measured;
+
+        /// <summary>
+        /// A measure-only signal (#644 decision d): the same facts as <see cref="Raise"/>, for a boss whose mechanic the raid AI
+        /// has no tactic for. It changes nothing in the fight: it is not live for the tactics, the calls or the lore engine;
+        /// only <see cref="Measured"/> hears it (the RAID_MECHANIC_FIRE row).
+        /// </summary>
+        public static EncounterSignal Measure(GameNPC boss, string mechanic, GameLiving target, int radius, bool aroundTarget,
+            int landsInMilliseconds, int holdMilliseconds, long now)
+        {
+            if (boss == null || string.IsNullOrEmpty(mechanic)) return null;
+            long lands = now + Math.Max(0, landsInMilliseconds);
+            var signal = new EncounterSignal(boss, mechanic, target, Math.Max(0, radius), aroundTarget, now, lands,
+                lands + (holdMilliseconds > 0 ? holdMilliseconds : AftermathMilliseconds));
+            try { Measured?.Invoke(signal); }
+            catch (Exception) { /* a measurement never breaks the script */ }
+            return signal;
+        }
+
         /// <summary>The boss's signals in force at <paramref name="now"/>.</summary>
         public static EncounterSignal[] Active(GameNPC boss, long now)
         {

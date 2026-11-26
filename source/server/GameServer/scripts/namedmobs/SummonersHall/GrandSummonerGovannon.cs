@@ -260,7 +260,7 @@ namespace DOL.AI.Brain
 			{
 				RemoveAdds = false;
 				if(Stage2==true)//demon form
-					Body.CastSpell(GovannonDot, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+					RaidBossMechanics.Cast(Body.CastSpell(GovannonDot, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dot", GovannonDot); // #644 measurement only
 
 				SpawnShadeOfAelfgar();
 				foreach (GameNPC shade in Body.GetNPCsInRadius(4000))
@@ -284,6 +284,7 @@ namespace DOL.AI.Brain
 						if (player != null)
 							player.Out.SendSpellEffectAnimation(Body, Body, 14215, 0, false, 1);
 					}
+					RaidBossMechanics.Spawn(Body, "sacrifice"); // #644 measurement only
 					SpawnDemonAndSacrifice();
 					SpawnSacrifices1 = true;
 				}

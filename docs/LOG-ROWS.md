@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **750**; pending (#625, not on main yet): **0**; shipped by the pipeline: **718**.
+- Rows in code: **753**; pending (#625, not on main yet): **0**; shipped by the pipeline: **721**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -488,14 +488,17 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RAID_LEARN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `familiarity`, `health`, `knowledge`, `mechanic`, `newcomer`, `raid`, `raiders`, `record`, `run`, `seen`, `seenShare`, `specialForces`, `veteran` | - | - | - |
 | `RAID_LEEROY` | server.log | **ships** | `bots/autonomous/AutonomousRaidLeeroy.cs` | `boss`, `bot`, `class`, `raid`, `raiders`, `region` | `bot` | - | - |
 | `RAID_LEEROY_ROLLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.cs` | `event` | - | - | - |
+| `RAID_MECHANIC_FIRE` | server.log | **ships** | `bots/autonomous/LivingRows.RaidMechanics.cs` | `attempt`, `avoided`, `boss`, `called`, `damage`, `died`, `exposedAtCall`, `hit`, `leadMs`, `mechanic`, `radius`, `reactMedianMs`, `t`, `within` | - | - | RAID_MECHANIC_FIRE attempt= boss="" mechanic= t= radius= exposedAtCall= within= hit= died= avoided= called= leadMs= |
 | `RAID_MECHANIC_SEEN` | server.log | **ships** | `bots/autonomous/RaidLearning.cs` | `already`, `chance`, `credited`, `firstTime`, `health`, `how`, `level50`, `mechanic`, `raid`, `realm`, `record`, `seeded` | - | - | - |
 | `RAID_PLAYER_INVITE` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.RaidGuest.cs`<br>`bots/autonomous/AutonomousRealmRaid.Players.cs`<br>`bots/autonomous/BotLedGroups.cs` | `bots`, `event`, `group`, `leader`, `level`, `outcome`, `party`, `player`, `reason`, `role`, `steppedOut` | `leader`, `player`, `steppedOut` | - | - |
 | `RAID_RELIC_PICKUP` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `keep`, `player`, `relic` | `bot`, `player` | - | - |
+| `RAID_ROLE_TOTALS` | server.log | **ships** | `bots/autonomous/LivingRows.RaidMechanics.cs` | `attempt`, `cc`, `classes`, `dealtAdds`, `dealtBoss`, `deaths`, `healed`, `interrupts`, `overheal`, `powerOuts`, `raiders`, `role`, `took` | - | - | RAID_ROLE_TOTALS attempt= role= raiders= dealtBoss= dealtAdds= took= healed= overheal= deaths= cc= interrupts= powerOuts= |
 | `RAID_SIEGE_BLOCKED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `kind`, `player`, `target` | `bot`, `player`, `target` | - | - |
 | `RAID_SIEGE_FIRING` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `hits`, `kind`, `player`, `shots`, `target`, `targetHp` | `bot`, `player`, `target` | - | - |
 | `RAID_SIEGE_PLACED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `at`, `bot`, `kind`, `player`, `range`, `source`, `target` | `bot`, `player`, `target` | - | - |
 | `RAID_SIEGE_SPAWN_FAILED` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `kind`, `player`, `reason`, `target` | `bot`, `player`, `target` | - | - |
 | `RAID_SQUAD_STATUS` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `keep`, `player` | `player` | - | - |
+| `RAID_THREAT` | server.log | **ships** | `bots/autonomous/LivingRows.RaidMechanics.cs` | `attempt`, `boss`, `from`, `heldMs`, `t`, `to`, `toKind`, `why` | - | - | RAID_THREAT attempt= boss="" t= from= to= toKind= why= heldMs=. |
 | `RAID_UNREACHABLE_TARGET` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `heightAbove`, `player`, `position`, `target` | `bot`, `player`, `target` | - | - |
 | `REALM_EVENT_LEDGER` | server.log | no: free text, no key=value fields | `bots/autonomous/RealmEventRecords.cs` | - | - | - | - |
 | `REALM_EXPEDITION_ATTEMPT_ENDED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `region`, `target`, `wipe` | `target` | - | Not a wipe: said so, with the counts (2026-11-15: |

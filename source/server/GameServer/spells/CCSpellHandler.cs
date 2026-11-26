@@ -26,6 +26,8 @@ namespace DOL.GS.Spells
                 return;
             }
 
+            // #644 RAID_ROLE_TOTALS (diagnostics switch, logging only): a raider's mez or stun on a monster.
+            RaidAttemptRows.NoteCc(Caster, target);
             base.ApplyEffectOnTarget(target);
         }
 

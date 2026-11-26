@@ -190,6 +190,8 @@ namespace DOL.GS.Spells
                 target = necromancerPet;
 
             int effectiveAmount = target.ChangeHealth(Caster, eHealthChangeType.Spell, (int) amount);
+            // #644 RAID_ROLE_TOTALS (diagnostics switch, logging only): healed and overheal of a raider in a live attempt.
+            RaidAttemptRows.NoteHeal(Caster, (int) amount, effectiveAmount);
 
             if (effectiveAmount <= 0)
             {
