@@ -153,13 +153,14 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void RvrRequiresCompletedPveAtEveryEligibleLevel()
+        public void OldPveAfterRvrMarkerIsIgnoredAtEveryEligibleLevel()
         {
+            // #669 (owner, 2026-11-26): the file-less "one PvE task after an RvR tour" rule is gone.
             var record = new OfflineWorldBotRecord { Level = 49,
                 ObjectiveRvrEligibleUtc = AutonomousObjectiveAssignments.PveCompletionRequired };
-            Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow.AddDays(10)), Is.False);
+            Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow.AddDays(10)), Is.True);
             record.Level = 50;
-            Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow), Is.False);
+            Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow), Is.True);
             Assert.That(AutonomousObjectiveAssignments.MinimumRvrTenure, Is.EqualTo(TimeSpan.FromMinutes(45)));
             Assert.That(AutonomousObjectiveAssignments.MaximumRvrTenure, Is.EqualTo(TimeSpan.FromMinutes(120)));
             Assert.That(AutonomousObjectiveAssignments.MaximumBetweenTaskDuration, Is.EqualTo(TimeSpan.FromMinutes(30)));
