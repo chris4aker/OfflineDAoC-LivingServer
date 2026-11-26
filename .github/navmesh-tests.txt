@@ -33,4 +33,3 @@ UT_AnimistInstalledCatalog  # the Animist spell and template catalog in the worl
 UT_InstalledClassicMeleeAudit  # the Classic styles and poisons in the world (#687)
 UT_SiegeMerchantCatalog  # the siege merchants' lists in the world (#687)
 UT_SeptemberNineInstalledRoutes  # the installed portal approaches; an off-edge capture plans from its floor step (#704)
-UT_SeptemberThirteenInstalledRoutes  # the installed camp approaches; an off-edge capture plans from its floor step (#704)
