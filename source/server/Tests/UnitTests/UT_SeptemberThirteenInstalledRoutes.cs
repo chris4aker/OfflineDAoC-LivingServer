@@ -81,8 +81,10 @@ namespace DOL.UnitTests
                         var sf=nav.GetClosestPoint(zone,sample.Item2,96,96,512,nav.DefaultFilters);
                         var tf=nav.GetClosestPoint(zone,target,96,96,512,nav.DefaultFilters);
                         // blodfelag's capture is now 3 units off the 1.2 mesh edge (#704): plan from where the floor step puts the bot.
-                        bool approach=AutonomousZonePointApproach.TryResolve(nav,zone,PlanningStart(nav,zone,sample.Item2),target,112,out var ap);
-                        bool recovery=AutonomousCorridorRecovery.TryNextCorner(nav,zone,sample.Item2,target,out var corner);
+                        // Both the approach finder and the corner recovery need floor under the start (TryPlanningFloor, TryFloor).
+                        Vector3 planningStart=PlanningStart(nav,zone,sample.Item2);
+                        bool approach=AutonomousZonePointApproach.TryResolve(nav,zone,planningStart,target,112,out var ap);
+                        bool recovery=AutonomousCorridorRecovery.TryNextCorner(nav,zone,planningStart,target,out var corner);
                         if(sample.Item4 != "frontier" || sample.Item1 == 1)
                         {
                             if(sample.Item3 != Vector3.Zero)
