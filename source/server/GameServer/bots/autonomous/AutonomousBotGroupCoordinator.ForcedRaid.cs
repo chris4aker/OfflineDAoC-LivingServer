@@ -20,7 +20,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (size == 4) return candidates.Length >= 4 ? candidates.Take(4).ToArray() : null;
         if (size != 8) return null;
         foreach (GameBot leader in candidates.Take(8))
-            if (TryBuildPveRoster(leader, candidates.Where(b => b != leader).ToArray(), out var others, out _))
+            if (TryBuildPveRoster(leader, candidates.Where(b => b != leader).ToArray(), out var others, out _, allowBardHealer: false))
                 return new[] { leader }.Concat(others).ToArray();
         return null;
     }
@@ -57,7 +57,7 @@ public static partial class AutonomousBotGroupCoordinator
             foreach (GameBot[] pool in new[] { candidates.Take(ForcedRecruitWindow).ToArray(), candidates.ToArray() })
             {
                 foreach (GameBot leader in pool.Take(8))
-                    if (TryBuildPveRoster(leader, pool.Where(b => b != leader).ToArray(), out var others, out _))
+                    if (TryBuildPveRoster(leader, pool.Where(b => b != leader).ToArray(), out var others, out _, allowBardHealer: false))
                     { chosen = new[] { leader }.Concat(others).ToArray(); break; }
                 if (chosen != null) break;
             }
@@ -82,7 +82,7 @@ public static partial class AutonomousBotGroupCoordinator
             GameBot[] window = free.Take(ForcedRecruitWindow).ToArray();
             foreach (GameBot[] pool in new[] { window, free })
                 foreach (GameBot leader in pool.Take(8))
-                    if (TryBuildPveRoster(leader, pool.Where(b => b != leader).ToArray(), out var others, out _))
+                    if (TryBuildPveRoster(leader, pool.Where(b => b != leader).ToArray(), out var others, out _, allowBardHealer: false))
                         return new[] { leader }.Concat(others).ToArray();
         }
         return ForcedPartyCanUseFinalFour(free.Length, reservedRemaining) ? free.Take(4).ToArray() : null;
@@ -92,7 +92,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     private static bool TryAssignExpeditionRoles(GameBot[] members, GameBot leader, out Dictionary<long, BotPveGroupRole> roles)
     {
-        if (TryAssignExactPveRoles(members, leader, out roles)) return true;
+        if (TryAssignExactPveRoles(members, leader, out roles, allowBardHealer: false)) return true; // #567 B7: no Bard healer in raids
         roles = new();
         // Only the final four reinforcement slots use a smaller party, with
         // cross-party support. Ordinary PvE still requires all eight roles.

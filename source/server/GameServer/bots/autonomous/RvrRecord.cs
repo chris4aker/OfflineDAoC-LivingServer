@@ -110,6 +110,12 @@ public static class RvrRecordBudget
         return parts.Count == 0 ? "0" : string.Join(",", parts);
     }
 
+    /// <summary>Forgets a tag's minute window (a per-attempt tag whose attempt ended, #644). Its counted drops stay for RVR_HOUR.</summary>
+    public static void Forget(string tag)
+    {
+        if (tag != null) Windows.TryRemove(tag, out _);
+    }
+
     /// <summary>Tests.</summary>
     public static void Reset()
     {

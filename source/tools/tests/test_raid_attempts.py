@@ -19,6 +19,7 @@ from living_report_sections._util import fields  # noqa: E402
 
 REPO = HERE.parents[1]
 PINS = REPO / "source/server/Tests/UnitTests/UT_RaidAttemptRows644.cs"
+SAMPLE_PINS = REPO / "source/server/Tests/UnitTests/UT_RaidFightSampleRows644.cs"
 
 
 def at(clock):
@@ -114,7 +115,7 @@ class SectionTests(unittest.TestCase):
         self.text = raid_attempts.summarize(NIGHT)
 
     def test_has_the_section_interface(self):
-        self.assertEqual(raid_attempts.ROWS, ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH"])
+        self.assertEqual(raid_attempts.ROWS, ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH", "RAID_FIGHT_SAMPLE", "RAID_FUNNEL"])
         self.assertTrue(raid_attempts.TITLE)
 
     def test_attempts_per_boss_outcomes_and_time_to_kill(self):
@@ -233,6 +234,143 @@ class PostmortemTests(unittest.TestCase):
         target = self.logs / "pm.md"
         self.assertEqual(quiet(pm.main, [f"{K}.1", str(self.logs), "--out", str(target)])[0], 0)
         self.assertIn("## Deaths (3)", target.read_text(encoding="utf-8"))
+
+
+# ---- #644 parts 2-3: RAID_FIGHT_SAMPLE and RAID_FUNNEL --------------------------------------------------------------------
+
+def sample(clock, aid, t, boss=100, alive="4:12:2:30", engaged="4:12:2:30", pow_=95, low=0, on="1", kind="tank", dist=640,
+           mez=0, stun=0):
+    return at(clock) + (f"RAID_FIGHT_SAMPLE attempt={aid} t={t} bossPct={boss} phase=- adds=- alive={alive} engaged={engaged} "
+                        f"healerPow={pow_} healersLow={low} onTank={on} tgtKind={kind} medDist={dist} mezzed={mez} stunned={stun}")
+
+
+def funnel(clock, event, stage, asked=96, recruited=112, parties=14, hub=90, staged=88, boss="-", lost_="route:3,travel:1,"
+           "died:2,logout:4,released:1,other:6", hub_s=612, stage_s=1430, boss_s="-"):
+    return at(clock) + (f"RAID_FUNNEL event={event} stage={stage} asked={asked} recruited={recruited} parties={parties} "
+                        f"atHub={hub} staged={staged} atBoss={boss} lost={lost_} hubS={hub_s} stageS={stage_s} bossS={boss_s}")
+
+
+FIGHT = [
+    funnel("21:59:00", K, "start", lost_="route:3,travel:1,died:2,logout:0,released:1,other:0"),
+    NIGHT[0],
+    sample("22:00:00", f"{K}.1", 0),
+    sample("22:00:15", f"{K}.1", 15, boss=91, engaged="3:10:2:25"),
+    sample("22:00:30", f"{K}.1", 30, boss=80, pow_=60, on="0", kind="healer"),
+    sample("22:00:45", f"{K}.1", 45, boss=72, alive="3:11:2:30", engaged="3:9:1:20", pow_=41, low=2, mez=3),
+    sample("22:01:15", f"{K}.1", 75, boss=64, alive="2:9:2:28", engaged="1:6:1:12", pow_=12, low=5, on="-", kind="none",
+           stun=4),
+] + NIGHT[1:4] + [
+    sample("22:01:30", f"{K}.1", 90, boss=63, alive="1:5:1:20", engaged="0:2:0:5", pow_=4, low=4, on="0", kind="other",
+           dist=1900),
+] + NIGHT[4:9] + [
+    funnel("22:20:30", K, "end", boss=96, boss_s=95),
+    funnel("23:40:00", "dragon-midgard", "end", recruited=40, parties=5, hub=30, staged=22, lost_="route:0,travel:0,died:0,"
+           "logout:0,released:0,other:0", hub_s=600, stage_s=1800),
+]
+
+
+class SampleParserTests(unittest.TestCase):
+    def test_samples_join_their_attempt(self):
+        found = _raid.attempts(FIGHT)
+        self.assertEqual([len(a.samples) for a in found], [6, 0])
+        self.assertEqual(found[0].samples[3][1]["healersLow"], "2")
+        self.assertEqual(_raid.split("1:2:3:4"), {"tank": 1, "healer": 2, "buffer": 3, "attacker": 4})
+        self.assertIsNone(_raid.split("1:2:3"))
+        self.assertIsNone(_raid.total("1:-:3:4"), "a dash is unknown, not 0")
+        self.assertEqual(_raid.total("4:12:2:30"), 48)
+
+    def test_funnels_pair_start_and_end_per_raid(self):
+        raids = _raid.funnels(FIGHT)
+        self.assertEqual([(e, bool(s), bool(x)) for e, s, x in raids], [(K, True, True), ("dragon-midgard", False, True)])
+        self.assertEqual(_raid.lost(raids[0][2]["lost"]), {"route": 3, "travel": 1, "died": 2, "logout": 4, "released": 1,
+                                                           "other": 6})
+        again = FIGHT + [funnel("23:50:00", K, "start")]
+        self.assertEqual(len(_raid.funnels(again)), 3, "a new start after an end is the next raid there")
+        self.assertEqual(_raid.lost("route:x,died:2,junk"), {"died": 2})
+
+    def test_the_rows_pinned_in_the_csharp_tests_parse(self):
+        """The literal rows UT_RaidFightSampleRows644 pins for FormatSample and FormatFunnel parse into the fields these
+        reports read: a change to the C# rows fails here."""
+        text = SAMPLE_PINS.read_text(encoding="utf-8")
+        pinned = {}
+        for m in re.finditer(r'Is\.EqualTo\(("RAID_[A-Z_]+ [^;]+?)\)\);', text):
+            row = "".join(re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))).replace('\\"', '"')
+            pinned[row.split(" ", 1)[0]] = row
+        self.assertEqual(set(pinned), {"RAID_FIGHT_SAMPLE", "RAID_FUNNEL"})
+        a = _raid.attempts([at("22:00:00") + pinned["RAID_FIGHT_SAMPLE"]])[0]
+        f = a.samples[0][1]
+        self.assertEqual((a.id, f["t"], f["bossPct"], _raid.total(f["alive"]), _raid.split(f["engaged"])["healer"],
+                          f["healerPow"], f["onTank"], f["tgtKind"], f["medDist"]),
+                         ("dungeon-albion-krondon.3", "45", "72", 48, 10, "61", "1", "tank", "640"))
+        raids = _raid.funnels([at("22:00:00") + pinned["RAID_FUNNEL"]])
+        self.assertEqual(raids[0][0], "dungeon-albion-krondon")
+        e = raids[0][2]
+        self.assertEqual((e["stage"], e["asked"], e["atBoss"], _raid.lost(e["lost"])["released"], e["bossS"]),
+                         ("end", "96", "84", 1, "95"))
+
+
+class SampleSectionTests(unittest.TestCase):
+    def setUp(self):
+        self.text = raid_attempts.summarize(FIGHT)
+
+    def test_a_fight_curve_per_attempt(self):
+        self.assertIn("Fight curves (1 attempt with RAID_FIGHT_SAMPLE rows)", self.text)
+        # 6 samples: picks at 0, 1, 3, 4 and the last: 100, 91, 72, 64, 63.
+        self.assertIn(f"| {K}.1 | Orylle | wipe | 6 | 100 > 91 > 72 > 64 > 63 | 48 > 27 | 48 > 7 | 50% (4%) | 5 | 60% | 640 | 3 / 4 |",
+                      self.text)
+
+    def test_a_funnel_table_per_raid(self):
+        self.assertIn("Raid funnel (RAID_FUNNEL, 2 raids)", self.text)
+        self.assertIn(f"| {K} | 11/25 22:20:30 | end | 96 | 112 | 14 | 90 | 88 | 96 | route 3, travel 1, died 2, logout 4, "
+                      "released 1, other 6 | 10:12 | 23:50 | 1:35 |", self.text)
+        self.assertIn("| dragon-midgard | 11/25 23:40:00 | end | 96 | 40 | 5 | 30 | 22 | - | none | 10:00 | 30:00 | - |",
+                      self.text)
+
+    def test_a_funnel_alone_and_a_start_only(self):
+        text = raid_attempts.summarize([funnel("21:00:00", "e", "start")])
+        self.assertIn("_No RAID_ATTEMPT", text)
+        self.assertIn("| e | 11/25 21:00:00 | start only |", text)
+
+    def test_attempts_without_samples_have_no_curves(self):
+        self.assertNotIn("Fight curves", raid_attempts.summarize(NIGHT))
+        self.assertNotIn("Raid funnel", raid_attempts.summarize(NIGHT))
+
+
+class SamplePostmortemTests(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.log = Path(self._tmp.name) / "server.log"
+        self.log.write_text("\n".join(FIGHT) + "\n", encoding="utf-8")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_the_samples_are_interleaved_with_the_deaths(self):
+        code, out, err = quiet(pm.main, [f"{K}.1", str(self.log)])
+        self.assertEqual(code, 0, err)
+        self.assertIn("## Timeline (6 samples, 3 deaths)", out)
+        lines = [line for line in out.splitlines() if line.startswith("- ") and ("sample:" in line or "death:" in line)]
+        self.assertEqual([line.split(" ", 2)[1] for line in lines], ["0:00", "0:15", "0:30", "0:45", "1:13", "1:15", "1:20",
+                                                                     "1:22", "1:30"], "by second into the pull")
+        self.assertIn("- 0:45 sample: boss 72%, alive T3 H11 B2 A30, engaged T3 H9 B1 A20, healer power 41% (2 under 10%), "
+                      "on a tank, median distance 640, mezzed 3, stunned 0", out)
+        self.assertIn("- 0:30 sample: boss 80%, alive T4 H12 B2 A30, engaged T4 H12 B2 A30, healer power 60%, on a healer", out)
+        self.assertIn("- 1:15 sample: boss 64%", out)
+        self.assertIn("no target", out)
+        self.assertIn("on someone outside the attempt", out)
+        self.assertIn("- 1:20 death: #3 tank Armsman (gamebot), boss: Orylle, melee, during breath+adds", out)
+        self.assertIn("- 1:22 death: #15 healer Cleric (player (you)), add: Krondon Guard, aoe", out)
+        self.assertIn("_Gaps between samples: up to 30 s", out)
+        self.assertNotIn("`RAID_FIGHT_SAMPLE", out, "samples are in the timeline, not repeated under other rows")
+        self.assertNotRegex(out, r"\bname=|\bbot=")
+
+    def test_no_samples_says_so(self):
+        _, out, _ = quiet(pm.main, [f"{K}.2", str(self.log)])
+        self.assertIn("No RAID_FIGHT_SAMPLE rows for this attempt", out)
+
+    def test_the_list_counts_samples(self):
+        _, out, _ = quiet(pm.main, ["--list", str(self.log)])
+        self.assertIn(f"| {K}.1 | 11/25 22:00:00 | Orylle | 96 | wipe | 6:52 | 3 | 6 |", out)
 
 
 if __name__ == "__main__":

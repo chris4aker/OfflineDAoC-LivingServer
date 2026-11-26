@@ -1502,7 +1502,10 @@ public static partial class AutonomousBotGroupCoordinator
                     return true;
                 }
                 if (session.HeldUnreachableMembers.Add(memberKey))
+                {
                     Log.Warn($"REALM_RAID_HUB_ROUTE_FAILED event={session.RaidMusterEvent} group={session.Id} bot={bot.Name} region={bot.CurrentRegionID} position={bot.X},{bot.Y},{bot.Z} reason={reason}");
+                    AutonomousRealmRaid.NoteFunnelLoss(group, bot, "route"); // #644 RAID_FUNNEL (logging only)
+                }
                 int failures = session.ExpeditionRouteFailures[memberKey] = session.ExpeditionRouteFailures.GetValueOrDefault(memberKey) + 1;
                 // A member stranded on a disconnected patch of navmesh retried the same
                 // route every minute forever (Yrdis, Tuscaran rally, 2026-10-04: 59 times
@@ -2028,6 +2031,8 @@ public static partial class AutonomousBotGroupCoordinator
             if (pveRoles != null)
                 foreach ((long key, BotPveGroupRole role) in pveRoles)
                     session.PveRoles[key] = role;
+            if (pveRoles != null)
+                BardHealerSlot.Mark(session.Id, group, BotMembers(group), session.PveRoles, MemberKey, Log);
             if (objectiveKind == eAutonomousObjectiveKind.GroupPve)
                 session.Puller = ChooseLockedPvePuller(session, BotMembers(group));
             Sessions[group] = session;
@@ -2085,6 +2090,10 @@ public static partial class AutonomousBotGroupCoordinator
                 return null;
             foreach ((long key, BotPveGroupRole role) in roles)
                 session.PveRoles[key] = role;
+            // #567 B7: a recovered or newly started ordinary party gives its Bard healer the healer duty (raid parties never
+            // hold one: TryAssignExpeditionRoles keeps the fallback out).
+            if (raidStaging == null)
+                BardHealerSlot.Mark(session.Id, group, exact, session.PveRoles, MemberKey, Log);
             session.Puller = ChooseLockedPvePuller(session, exact);
         }
         session.Recovery.Observe(RecoveryMembers(session, BotMembers(group), false), false);
@@ -3213,8 +3222,10 @@ public static partial class AutonomousBotGroupCoordinator
         !riding && !returning && (midFightAllowed || !inCombat && !attacking && !hasAggro) &&
         travelMinutesToLeader >= 0 && travelMinutesToLeader <= maximumTravelMinutes;
 
+    /// <param name="allowBardHealer">#567 B7: the Bard fallback for a Healer slot (BardHealerSlot). False for realm-raid
+    /// parties (owner 2026-11-26: ordinary groups only; raid healer mixes stay under the RAID-SIZES evidence).</param>
     private static bool TryBuildPveRoster(GameBot leader, GameBot[] candidates, out GameBot[] selected,
-        out Dictionary<long, BotPveGroupRole> roles, int minimumSize = 8, int maximumSize = 8)
+        out Dictionary<long, BotPveGroupRole> roles, int minimumSize = 8, int maximumSize = 8, bool allowBardHealer = true)
     {
         selected = [];
         roles = null;
@@ -3229,9 +3240,9 @@ public static partial class AutonomousBotGroupCoordinator
         eCharacterClass[] poolClasses = pool.Select(candidate => (eCharacterClass)candidate.CharacterClass.ID).ToArray();
         eCharacterClass leaderClass = (eCharacterClass)leader.CharacterClass.ID;
         if (!TryMatchPveRoster(leaderClass, poolClasses, minimumSize, maximumSize,
-                out BotPveGroupRole[] template, out int[] owners) &&
+                out BotPveGroupRole[] template, out int[] owners, allowBardHealer: allowBardHealer) &&
             !(UseOffTanks(leaderClass, poolClasses) && TryMatchPveRoster(leaderClass, poolClasses, minimumSize, maximumSize,
-                out template, out owners, offTanks: true)))
+                out template, out owners, offTanks: true, allowBardHealer: allowBardHealer)))
             return false;
         GameBot[] slotted = owners.Select(owner => owner < 0 ? leader : pool[owner]).ToArray();
         // The best healers hold the Healer slots (a Mentalism Mentalist only as the second healer). True165 d2fc3fe3d.
@@ -3258,26 +3269,29 @@ public static partial class AutonomousBotGroupCoordinator
     public static bool UseOffTanks(eCharacterClass leader, eCharacterClass[] pool) =>
         !BotPartyRoles.CanFill(leader, BotPveGroupRole.Tank) && !pool.Any(c => BotPartyRoles.CanFill(c, BotPveGroupRole.Tank));
 
-    private static bool Fills(eCharacterClass characterClass, BotPveGroupRole role, bool offTanks) =>
+    private static bool Fills(eCharacterClass characterClass, BotPveGroupRole role, bool offTanks, bool bardHealers) =>
         BotPartyRoles.CanFill(characterClass, role) ||
-        offTanks && role == BotPveGroupRole.Tank && BotPartyRoles.CanOffTank(characterClass);
+        offTanks && role == BotPveGroupRole.Tank && BotPartyRoles.CanOffTank(characterClass) ||
+        BardHealerSlot.FillsSlot(characterClass, role, bardHealers);
 
     private static bool TryMatchPveRoster(eCharacterClass leader, eCharacterClass[] pool, int minimumSize,
-        int maximumSize, out BotPveGroupRole[] template, out int[] owners, bool offTanks = false)
+        int maximumSize, out BotPveGroupRole[] template, out int[] owners, bool offTanks = false, bool allowBardHealer = true)
     {
+        // #567 B7: a Bard may take a Healer slot only when no healing class is among these classes, and never in a raid party.
+        bool bardHealers = allowBardHealer && BardHealerSlot.Allowed(leader, pool);
         foreach (BotPveGroupRole[] candidateTemplate in PveRosterTemplates)
         {
             if (candidateTemplate.Length < minimumSize || candidateTemplate.Length > maximumSize)
                 continue;
             template = candidateTemplate;
             foreach (int leaderSlot in Enumerable.Range(0, template.Length)
-                         .Where(index => Fills(leader, candidateTemplate[index], offTanks))
+                         .Where(index => Fills(leader, candidateTemplate[index], offTanks, bardHealers))
                          .OrderBy(_ => Random.Shared.Next()))
             {
                 owners = Enumerable.Repeat(int.MinValue, template.Length).ToArray();
                 owners[leaderSlot] = -1;
                 for (int candidate = 0; candidate < pool.Length; candidate++)
-                    TryMatchPveSlot(candidate, pool, template, owners, new bool[template.Length], leaderSlot, offTanks);
+                    TryMatchPveSlot(candidate, pool, template, owners, new bool[template.Length], leaderSlot, offTanks, bardHealers);
                 if (owners.All(owner => owner != int.MinValue))
                     return true;
             }
@@ -3288,26 +3302,26 @@ public static partial class AutonomousBotGroupCoordinator
     }
 
     private static bool TryAssignExactPveRoles(GameBot[] members, GameBot leader,
-        out Dictionary<long, BotPveGroupRole> roles)
+        out Dictionary<long, BotPveGroupRole> roles, bool allowBardHealer = true)
     {
         roles = null;
         if (members.Length < SmallestPveFormationSize || members.Length > 8 || leader == null)
             return false;
         return TryBuildPveRoster(leader, members.Where(member => member != leader).ToArray(), out GameBot[] selected,
-                   out roles, members.Length, members.Length) &&
+                   out roles, members.Length, members.Length, allowBardHealer) &&
                selected.Length == members.Length - 1 && selected.All(members.Contains);
     }
 
     private static bool TryMatchPveSlot(int candidate, eCharacterClass[] pool, BotPveGroupRole[] template,
-        int[] owners, bool[] visited, int reservedLeaderSlot, bool offTanks = false)
+        int[] owners, bool[] visited, int reservedLeaderSlot, bool offTanks = false, bool bardHealers = false)
     {
         for (int slot = 0; slot < template.Length; slot++)
         {
-            if (slot == reservedLeaderSlot || visited[slot] || !Fills(pool[candidate], template[slot], offTanks))
+            if (slot == reservedLeaderSlot || visited[slot] || !Fills(pool[candidate], template[slot], offTanks, bardHealers))
                 continue;
             visited[slot] = true;
             if (owners[slot] == int.MinValue ||
-                TryMatchPveSlot(owners[slot], pool, template, owners, visited, reservedLeaderSlot, offTanks))
+                TryMatchPveSlot(owners[slot], pool, template, owners, visited, reservedLeaderSlot, offTanks, bardHealers))
             {
                 owners[slot] = candidate;
                 return true;
@@ -3322,6 +3336,21 @@ public static partial class AutonomousBotGroupCoordinator
         UseOffTanks(leader, candidates) &&
         TryMatchPveRoster(leader, candidates, minimumSize, 8, out template, out _, offTanks: true)
             ? template.Length : 0;
+
+    /// <summary>
+    /// The classes formation would put in the Healer slots for this leader and pool (empty when no party fits), in slot order;
+    /// for tests of who holds the slot (#567 B7). <paramref name="raidParty"/> matches as raid staging does.
+    /// </summary>
+    public static eCharacterClass[] PveHealerSlotClasses(eCharacterClass leader, eCharacterClass[] candidates, bool raidParty = false)
+    {
+        if (!TryMatchPveRoster(leader, candidates, MinimumPveFormationSize, 8, out BotPveGroupRole[] template, out int[] owners,
+                allowBardHealer: !raidParty) &&
+            !(UseOffTanks(leader, candidates) && TryMatchPveRoster(leader, candidates, MinimumPveFormationSize, 8, out template,
+                out owners, offTanks: true, allowBardHealer: !raidParty)))
+            return [];
+        return Enumerable.Range(0, template.Length).Where(slot => template[slot] == BotPveGroupRole.Healer)
+            .Select(slot => owners[slot] < 0 ? leader : candidates[owners[slot]]).ToArray();
+    }
 
     /// <summary>Party size PvE formation would build from these classes (0 when none fits).</summary>
     public static int PveFormationSize(eCharacterClass leader, params eCharacterClass[] candidates) =>
