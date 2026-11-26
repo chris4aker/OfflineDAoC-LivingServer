@@ -25,7 +25,7 @@ namespace DOL.UnitTests
             public override int Y { get; set; }
             public override int Z { get; set; }
             public override Region CurrentRegion { get; set; }
-            // An uninitialised bot has no brain; GameNPC.Realm reads it (#704). None: no realm's doors block the approach.
+            // An uninitialised bot has no brain; GameNPC.Realm reads it (#704). None: no door counts as friendly.
             public override eRealm Realm { get; set; }
         }
         private sealed class Target : GameNPC
