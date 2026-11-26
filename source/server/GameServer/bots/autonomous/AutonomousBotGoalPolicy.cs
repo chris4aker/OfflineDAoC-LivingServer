@@ -8,7 +8,16 @@ public static class AutonomousBotGoalPolicy
 {
     public static BotGoalSettings Settings { get; private set; } = BotGoalSettings.Defaults;
     public const string OverrideVariable = "OFFLINE_DAOC_BOT_GOALS";
+    /// <summary>
+    /// True when a goals file was loaded (the server's bot-goals.json, or the test override). Since 1.2.3 (#669; owner,
+    /// 2026-11-26) a world without one still follows <see cref="Settings"/> (then <see cref="BotGoalSettings.Defaults"/>,
+    /// as the launcher shows them) at every task break; this flag only keeps the file-less world's one sequencing rule,
+    /// one solo PvE task after an RvR tour (<see cref="AutonomousObjectiveAssignments.PveCompletionRequired"/>), and
+    /// the level-50 draw it always had (<see cref="AutonomousObjectiveAssignments.TaskBreakGoal"/>).
+    /// </summary>
     public static bool IsConfigured { get; private set; }
+    /// <summary>Where <see cref="Settings"/> came from at the last Initialize: "file", "override" or "defaults".</summary>
+    public static string Source { get; private set; } = "defaults";
     /// <summary>The server's own goals file (bot-goals.json), as the last Initialize found it; null before.</summary>
     public static string ServerFilePath { get; private set; }
     private static string _loadedPath;
@@ -21,14 +30,19 @@ public static class AutonomousBotGoalPolicy
         // Test runs may point at their own goals file so the owner's saved launcher setting
         // (bot-goals.json) is never edited for a test.
         string overridePath = Environment.GetEnvironmentVariable(OverrideVariable);
+        bool overridden = false;
         if (!string.IsNullOrWhiteSpace(overridePath) && File.Exists(overridePath))
         {
             path = overridePath;
-            DOL.Logging.LoggerManager.Create(typeof(AutonomousBotGoalPolicy)).Warn($"BOT_GOALS_OVERRIDE using {overridePath} instead of {BotGoalSettings.FileName}");
+            overridden = true;
+            try { DOL.Logging.LoggerManager.Create(typeof(AutonomousBotGoalPolicy)).Warn($"BOT_GOALS_OVERRIDE using {overridePath} instead of {BotGoalSettings.FileName}"); }
+            catch (NullReferenceException) { /* no logger yet (unit tests): logging only */ }
         }
         _loadedPath = path;
         Settings = BotGoalSettings.Load(path); // Reject corruption rather than silently ignoring 0% exclusions.
         IsConfigured = File.Exists(path);
+        Source = !IsConfigured ? "defaults" : overridden ? "override" : "file";
+        LivingRows.Emit(BotGoalRows.Startup(Source, Settings, "start"));
     }
 
     /// <summary>
@@ -43,6 +57,8 @@ public static class AutonomousBotGoalPolicy
             return false;
         Settings = BotGoalSettings.Load(ServerFilePath);
         IsConfigured = true;
+        Source = "file";
+        LivingRows.Emit(BotGoalRows.Startup(Source, Settings, "upgrade"));
         return true;
     }
 
@@ -61,6 +77,9 @@ public static class AutonomousBotGoalPolicy
 
     // Called before an autonomous actor can enter the world. Keep inventory,
     // position, XP and valid saved task clocks; discard only a now-disabled task.
+    // #669: still file-only. Without a file the defaults disable no goal a saved record can hold (an out-of-bracket
+    // battleground is ended by EndBattlegroundTour), and the RvR marker it clears is the file-less world's
+    // one-PvE-task-after-RvR rule, which stays.
     public static bool ReconcileSavedAssignment(OfflineWorldBotRecord record)
     {
         if (!IsConfigured || record == null) return false;

@@ -140,6 +140,151 @@ public class UT_BotGoalSettings
         Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.True);
     }
 
+    // #669: the task-break draw of a world without bot-goals.json follows the default shares (personalities off: the draw
+    // is the policy's own, as AutonomousBotPersonality.ChooseGoal returns it untouched). CompleteBetweenTaskServices,
+    // BeginSoloAfterGroupTask and EndBattlegroundTour all go through TaskBreakGoal.
+    private static double[] Shares(Func<Random, eAutonomousObjectiveKind> goal, int draws = 10_000)
+    {
+        var counts = new double[4];
+        var random = new Random(669); // one seeded stream: consecutive seeds' first draws are too evenly spread to test a share
+        for (int draw = 0; draw < draws; draw++)
+            counts[(int)goal(random)]++;
+        return counts.Select(n => n * 100 / draws).ToArray();
+    }
+
+    [TestCase(20)] [TestCase(22)] [TestCase(35)]
+    public void NoFile_TaskBreakFollowsTheDefaultShares(int level)
+    {
+        AutonomousBotGoalPolicy.Initialize(_directory);
+        Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.False);
+        Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("defaults"));
+        double[] shares = Shares(random =>
+            AutonomousObjectiveAssignments.TaskBreakGoal(level, false, () => AutonomousBotGoalPolicy.Choose(level, random), random));
+        TestContext.Out.WriteLine($"level {level}: solo {shares[0]:F1} group {shares[1]:F1} rvr {shares[2]:F1} bg {shares[3]:F1}");
+        Assert.That(shares[0], Is.EqualTo(30).Within(2), "solo");
+        Assert.That(shares[1], Is.EqualTo(30).Within(2), "group");
+        Assert.That(shares[2], Is.EqualTo(15).Within(2), "RvR");
+        Assert.That(shares[3], Is.EqualTo(25).Within(2), "battleground");
+    }
+
+    [Test]
+    public void NoFile_TaskBreakAt15To19AndAbove35FollowsTheDefaults()
+    {
+        AutonomousBotGoalPolicy.Initialize(_directory);
+        double[] low = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(17, false, () => AutonomousBotGoalPolicy.Choose(17, random), random));
+        Assert.That(low[0], Is.EqualTo(55).Within(2)); Assert.That(low[1], Is.EqualTo(35).Within(2));
+        Assert.That(low[2], Is.Zero); Assert.That(low[3], Is.EqualTo(10).Within(2));
+        // 36-49: no bracket, the battleground share goes to the others in their ratio (30/30/15 of 75).
+        double[] high = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(40, false, () => AutonomousBotGoalPolicy.Choose(40, random), random));
+        Assert.That(high[0], Is.EqualTo(40).Within(2)); Assert.That(high[1], Is.EqualTo(40).Within(2));
+        Assert.That(high[2], Is.EqualTo(20).Within(2)); Assert.That(high[3], Is.Zero);
+    }
+
+    [Test]
+    public void NoFile_EndingABattlegroundTourNeverGivesABattleground()
+    {
+        AutonomousBotGoalPolicy.Initialize(_directory);
+        double[] shares = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(22, false,
+            () => AutonomousBotGoalPolicy.Choose(22, random, excludeBattlegrounds: true), random));
+        Assert.That(shares[3], Is.Zero);
+        Assert.That(shares[2], Is.EqualTo(20).Within(2), "RvR 15 of 75");
+    }
+
+    [Test]
+    public void NoFile_KeepsOneSoloTaskAfterRvR_AndLevelFiftyIsUnchanged()
+    {
+        AutonomousBotGoalPolicy.Initialize(_directory);
+        int drawn = 0;
+        eAutonomousObjectiveKind Draw() { drawn++; return eAutonomousObjectiveKind.RvR; }
+        foreach (int level in new[] { 5, 22, 49, 50 })
+            Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(level, true, Draw), Is.EqualTo(eAutonomousObjectiveKind.SoloPve),
+                $"level {level}: one solo PvE task after an RvR tour (the file-less rule, unchanged)");
+        // Level 50 without a file keeps its untilted draw from the shares (RollLevelFiftyObjective), never the tilted draw.
+        double[] fifty = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(50, false, Draw, random));
+        Assert.That(drawn, Is.Zero);
+        Assert.That(fifty[0], Is.EqualTo(20).Within(2)); Assert.That(fifty[1], Is.EqualTo(40).Within(2));
+        Assert.That(fifty[2], Is.EqualTo(40).Within(2)); Assert.That(fifty[3], Is.Zero);
+        for (int seed = 0; seed < 200; seed++)
+            Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(50, false, Draw, new Random(seed)),
+                Is.EqualTo(AutonomousObjectiveAssignments.RollLevelFiftyObjective(new Random(seed))));
+    }
+
+    [Test]
+    public void WithAFile_TaskBreakIsTheDrawAtEveryLevel()
+    {
+        Apply(new(0, 0, 100));
+        Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("file"));
+        foreach (int level in new[] { 22, 50 })
+            foreach (bool pveRequired in new[] { false, true })
+                Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(level, pveRequired, () => AutonomousBotGoalPolicy.Choose(level, new Random(1))),
+                    Is.EqualTo(eAutonomousObjectiveKind.RvR));
+    }
+
+    [Test]
+    public void TheTestOverrideStillWins()
+    {
+        string other = Path.Combine(Path.GetTempPath(), "bot-goal-override-" + Guid.NewGuid().ToString("N") + ".json");
+        string previous = Environment.GetEnvironmentVariable(AutonomousBotGoalPolicy.OverrideVariable);
+        try
+        {
+            (BotGoalSettings.Defaults with { Levels20To49 = new(100, 0, 0, 0) }).Save(other, () => true);
+            Environment.SetEnvironmentVariable(AutonomousBotGoalPolicy.OverrideVariable, other);
+            AutonomousBotGoalPolicy.Initialize(_directory); // no bot-goals.json here: the override is the one loaded
+            Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.True);
+            Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("override"));
+            for (int seed = 0; seed < 300; seed++)
+                Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(22, false, () => AutonomousBotGoalPolicy.Choose(22, new Random(seed))),
+                    Is.EqualTo(eAutonomousObjectiveKind.SoloPve));
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable(AutonomousBotGoalPolicy.OverrideVariable, previous);
+            File.Delete(other);
+        }
+    }
+
+    [Test]
+    public void StartupRowSaysWhichSettingsRan()
+    {
+        var rows = new System.Collections.Generic.List<string>();
+        LivingRows.TestSink = rows.Add;
+        try
+        {
+            AutonomousBotGoalPolicy.Initialize(_directory);
+            Apply(new(0, 0, 100));
+        }
+        finally { LivingRows.TestSink = null; }
+        Assert.That(rows.Count(r => r.StartsWith("BOT_GOALS ")), Is.EqualTo(2), "one row per start");
+        Assert.That(rows[0], Is.EqualTo("BOT_GOALS source=defaults reason=start l1_19=55/35/0/10 l20_49=30/30/15/25 l50=20/40/40/0"));
+        Assert.That(rows[1], Is.EqualTo("BOT_GOALS source=file reason=start l1_19=55/35/0/10 l20_49=0/0/100/0 l50=0/0/100/0"));
+        Assert.That(rows.All(r => !r.Contains(_directory)), Is.True, "no path in the row");
+    }
+
+    [Test]
+    public void GoalPassRow_CarriesThePoolAndSlots_NoNames()
+    {
+        var A = (int s, int g, int r, int b) => new AutonomousObjectiveAssignments.Allocation(s, g, r, b);
+        string row = BotGoalRows.Pass(120_000, eRealm.Midgard, 20, 196, 2, 2, A(59, 59, 29, 49), A(59, 19, 17, 1), A(0, 1, 0, 1), true);
+        Assert.That(row, Is.EqualTo("GOAL_PASS t=120000 realm=Midgard band=20 members=196 pool=2 bgEligible=2 target=59/59/29/49 " +
+                                    "held=59/19/17/1 open=0/40/12/48 planned=0/1/0/1 personalities=on"));
+        Assert.That(BotGoalRows.Pass(0, eRealm.Albion, 0, 1, 1, 0, A(1, 0, 0, 0), A(3, 0, 0, 0), A(0, 0, 0, 0), false),
+            Does.Contain(" open=0/0/0/0 ").And.EndsWith("personalities=off"));
+    }
+
+    [Test]
+    public void GoalPassRows_OnOnePassInFiveMinutes()
+    {
+        LivingRows.TestSink = _ => { };
+        try
+        {
+            BotGoalRows.ResetForTest();
+            Assert.That(BotGoalRows.PassDue(1_000), Is.True);
+            Assert.That(BotGoalRows.PassDue(61_000), Is.False);
+            Assert.That(BotGoalRows.PassDue(1_000 + BotGoalRows.PassIntervalMilliseconds), Is.True);
+        }
+        finally { LivingRows.TestSink = null; BotGoalRows.ResetForTest(); }
+    }
+
     [TestCase("{}")] [TestCase("null")] [TestCase("not json")]
     [TestCase("{\"Version\":1,\"Levels1To19\":null,\"Levels20To49\":null,\"Level50\":null}")]
     public void BrokenFilesAreRejectedInsteadOfSilentlyRestoringDisabledGoals(string json)
