@@ -1,8 +1,9 @@
-# The navmesh tests (issue #684): the [Explicit] server tests of .github/navmesh-tests.txt, run against the published
-# navmesh set (tools/navmesh/manifest.json names it; the files are the assets of its navmesh-vN pre-release, never in
-# Git). Separate from build-and-test and not a required check, so a cold cache or a slow download never holds up a merge.
-# Until a set is published the manifest is a placeholder and the test job skips with a notice. docs/CI.md, "The navmesh
-# job", has the steps and how a set is made and replaced.
+# The navmesh tests (issues #684, #687): the [Explicit] server tests of .github/navmesh-tests.txt, run against the
+# published navmesh set (tools/navmesh/manifest.json names it; the files are the assets of its navmesh-vN pre-release,
+# never in Git): the meshes, the Detour library and a clean world database (made by navmesh-publish.yml from a fresh
+# install, checked clean again here on every run before a test reads it). Separate from build-and-test and not a
+# required check, so a cold cache or a slow download never holds up a merge. Until a set is published the manifest is a
+# placeholder and the test job skips with a notice. docs/CI.md, "The navmesh job", has the steps and how a set is made.
 name: navmesh
 
 on:
@@ -20,7 +21,12 @@ on:
       - 'source/server/Tests/UnitTests/UT_DragonLairProbe.cs'
       - 'source/server/Tests/UnitTests/UT_SneezerCampNavigation.cs'
       - 'source/server/Tests/UnitTests/UT_ExchangePlacementNavigation.cs'
+      - 'source/server/Tests/UnitTests/InstalledDetour.cs'
       - 'tools/fork-build/content-patches.json'
+      # The clean-world rules the set's world is checked against (#687)
+      - 'source/tools/build_release_037.py'
+      - 'source/tools/release-world-defaults.json'
+      - 'source/tools/DAoCLivingServer.ProgressImport/progress-policy.json'
   workflow_dispatch:
 
 permissions:
@@ -51,7 +57,7 @@ jobs:
 
   navmesh:
     runs-on: windows-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -66,7 +72,7 @@ jobs:
         id: cache
         uses: actions/cache/restore@v4
         with:
-          path: navmesh-set
+          path: navmesh-ci/set
           key: navmesh-set-${{ steps.status.outputs.key }}
 
       # A miss: the release's parts (public assets, no token), each checked by size and SHA-256, unpacked, and every file
@@ -74,47 +80,63 @@ jobs:
       - name: Download and check the navmesh set
         if: steps.status.outputs.published == 'true' && steps.cache.outputs.cache-hit != 'true'
         shell: bash
-        run: python tools/navmesh/navmesh_set.py fetch tools/navmesh/manifest.json --dest navmesh-set
+        run: python tools/navmesh/navmesh_set.py fetch tools/navmesh/manifest.json --dest navmesh-ci/set
 
       - name: Save the navmesh set to the cache
         if: steps.status.outputs.published == 'true' && steps.cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
-          path: navmesh-set
+          path: navmesh-ci/set
           key: navmesh-set-${{ steps.status.outputs.key }}
 
       # Every run, a cache hit too: every file's size and SHA-256 against the manifest, and nothing extra. A mismatch fails.
       - name: Check every file against the manifest
         if: steps.status.outputs.published == 'true'
         shell: bash
-        run: python tools/navmesh/navmesh_set.py verify tools/navmesh/manifest.json --root navmesh-set
+        run: python tools/navmesh/navmesh_set.py verify tools/navmesh/manifest.json --root navmesh-ci/set
+
+      # Fail closed (#687): the set's world must pass the release builder's verify step (every saved-progress table empty,
+      # no account, character or gamebot) before any test reads it. The tests get a copy at ../data beside the meshes.
+      - name: Check the world is clean
+        if: steps.status.outputs.published == 'true' && steps.status.outputs.world == 'true'
+        shell: bash
+        run: |
+          python tools/navmesh/clean_world.py verify navmesh-ci/set/world/opendaoc.sqlite3.db
+          mkdir -p navmesh-ci/data
+          cp navmesh-ci/set/world/opendaoc.sqlite3.db navmesh-ci/data/opendaoc.sqlite3.db
 
       - uses: actions/setup-dotnet@v4
         if: steps.status.outputs.published == 'true'
         with:
           dotnet-version: 10.0.x
 
+      # PowerShell, as build-and-test's server job builds: from Git Bash the restore fails with no error logged (#694).
       - name: Build the server tests
         if: steps.status.outputs.published == 'true'
-        shell: bash
+        shell: pwsh
         run: |
-          cp source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
+          Copy-Item source/server/CoreServer/config/serverconfig.example.xml source/server/CoreServer/config/serverconfig.xml
           dotnet build source/server/Tests/Tests.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+          if ($LASTEXITCODE -ne 0) { exit 1 }
 
-      # The tests load lib/Detour beside the test assembly (as the server does beside GameServer.dll) and the meshes from
-      # OFFLINE_DAOC_NAV_ROOT/navmesh. They are [Explicit]: only a filter that names them runs them.
+      # The tests load lib/Detour beside the test assembly (as the server does beside GameServer.dll), the meshes from
+      # OFFLINE_DAOC_NAV_ROOT/navmesh and the world from OFFLINE_DAOC_DB_PATH or ../data beside it (the checked copy).
+      # They are [Explicit]: only a filter that names them runs them.
       - name: Run the navmesh tests
         if: steps.status.outputs.published == 'true'
-        shell: bash
+        shell: pwsh
         run: |
-          tests=$(python source/tools/ci_test_results.py find Tests.dll --root source/server/build/Tests/Release)
-          test -n "$tests" || { echo "::error title=Navmesh tests::Tests.dll was not built"; exit 1; }
-          mkdir -p "$(dirname "$tests")/lib"
-          cp navmesh-set/lib/Detour.dll "$(dirname "$tests")/lib/Detour.dll"
-          export OFFLINE_DAOC_NAV_ROOT="$PWD/navmesh-set"
-          export OFFLINE_DAOC_PROOF_OUT="$RUNNER_TEMP/navmesh-proof.txt"
-          filter=$(python tools/navmesh/navmesh_set.py filter .github/navmesh-tests.txt)
-          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=navmesh.trx" || true
+          $tests = python source/tools/ci_test_results.py find Tests.dll --root source/server/build/Tests/Release
+          if (!$tests) { Write-Host "::error title=Navmesh tests::Tests.dll was not built"; exit 1 }
+          $lib = Join-Path (Split-Path -Parent $tests) 'lib'
+          New-Item -ItemType Directory -Force $lib | Out-Null
+          Copy-Item navmesh-ci/set/lib/Detour.dll (Join-Path $lib 'Detour.dll')
+          $env:OFFLINE_DAOC_NAV_ROOT = (Resolve-Path navmesh-ci/set).Path
+          if (Test-Path navmesh-ci/data/opendaoc.sqlite3.db) { $env:OFFLINE_DAOC_DB_PATH = (Resolve-Path navmesh-ci/data/opendaoc.sqlite3.db).Path }
+          $env:OFFLINE_DAOC_PROOF_OUT = Join-Path $env:RUNNER_TEMP 'navmesh-proof.txt'
+          $filter = python tools/navmesh/navmesh_set.py filter .github/navmesh-tests.txt
+          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=navmesh.trx"
+          exit 0
 
       # Every result on the run page; fails when an entry has no result or any test did not pass.
       - name: Navmesh test results

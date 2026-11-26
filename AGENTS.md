@@ -176,6 +176,18 @@ In a playable folder:
     clearly and confidently, with known issues stated plainly. No testing-status framing ("tests only", "seen in
     game", simulation or win-rate numbers) and no references to the owner's PC. That tracking stays in the internal
     docs: OPEN-WORK, issue comments and review docs.
+- **The update path is frozen; pre-releases and dev builds never reach players** (owner, 2026-11-26, #685: players
+  must not keep having to download a new Setup or launcher). [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md), first
+  section, has the three tiers (dev builds, pre-releases, full releases), the rc and release checklists, and the frozen
+  update contract with the code behind each item (repository path, API URLs, download prefix, asset names, digest
+  format, how each channel picks a release, the test-build marker, apply-update.ps1's and INSTALL.cmd's interfaces,
+  Setup's base-files URLs).
+  - **Two-step rule** for changing any contract item: step 1 ships a full release that accepts the old and the new;
+    step 2 switches only after that release has been out long enough (the owner decides when).
+  - Dev builds and pre-releases install into a test folder, never over the main game, and a pre-release is never
+    Latest. Only a game release may be Latest (anything else hides every update).
+  - CI's `update-contract` job runs the newest released launcher's own update code against each build; a red one means
+    players on that release would not get the build.
 - **Keep the old releases.** v0.3–v0.36c stay available as legacy releases, and their branches
   and tags are not rewritten.
 

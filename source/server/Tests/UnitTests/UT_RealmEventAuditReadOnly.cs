@@ -18,7 +18,7 @@ public class UT_RealmEventAuditReadOnly
         var region=new Region(new RegionData{Id=200,Name="Read-only probe",Description="Read-only probe",Mobs=[]});
         try
         {
-            NativeLibrary.SetDllImportResolver(typeof(LocalPathfindingMgr).Assembly,(name,asm,search)=>name=="lib/Detour"?NativeLibrary.Load(Path.Combine(root,"lib","Detour.dll")):IntPtr.Zero);
+            DOL.UnitTests.InstalledDetour.Use(root);
             Environment.CurrentDirectory=root;
             using var db=new SQLiteConnection($"Data Source={Path.GetFullPath("../data/opendaoc.sqlite3.db")};Read Only=True;Pooling=False;");db.Open();
             using var command=db.CreateCommand();command.CommandText="SELECT ZoneID,Name,OffsetX,OffsetY,Width,Height FROM Zones WHERE RegionID=200";

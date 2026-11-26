@@ -948,6 +948,10 @@ public static class AutonomousPetSupport
         // casts, but never select it as their autonomous pet upkeep.
         if (IsDisabledBotDamageShield(owner, spell))
             return false;
+        // #567 A2 (port of OfflineDAoC-True165 BotPetBuffBenefit, 03dce76ee): the caster's own pet gets no buff that does
+        // nothing for a pet (power and endurance regen, acuity, fatigue), the rule party pets already had (#491).
+        if (!BotBuffTargetPolicy.Benefits(spell.SpellType, BotBuffTargetPolicy.TargetKind.Pet))
+            return false;
 
         // Spell.Duration is normalized to milliseconds by Spell's constructor.
         bool shortTacticalEffect = spell.Concentration <= 0 && spell.Duration > 0 && spell.Duration <= 30_000;
