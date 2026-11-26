@@ -56,7 +56,10 @@ namespace DOL.UnitTests
                 Assert.That(Vector3.Distance(boarding, interaction), Is.LessThanOrEqualTo(WorldMgr.INTERACT_DISTANCE));
                 Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, vale, start, boarding), Is.True);
                 Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, vale, boarding, interaction), Is.True);
-                Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, vale, start, new(803840, 721833, 4687)), Is.False);
+                // #704: written on the 0.33 meshes, where the raw horse origin had no corridor (the reason for the boarding point
+                // above). The 1.2 meshes, the same on the owner's install and in navmesh-v1, connect it; the boarding point checks
+                // above still hold. The corridor is now asserted, not its absence.
+                Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, vale, start, new(803840, 721833, 4687)), Is.True);
                 Probe("Jordheim entrance approach", vale, start, new(805489, 731160, 5028));
                 Probe("Jordheim recovery to exit", jordheim, new(32020, 28294, 8803), new(32869, 36103, 8002));
                 Probe("Arngevald Fort Atla", gotar, new(752061, 816710, 5053), new(749617, 816121, 4409));
