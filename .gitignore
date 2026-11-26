@@ -47,3 +47,6 @@ playtest-reports/
 /tools/wayback-fetch/out/
 # Thread jobs generated on the PC from fetched listings (third-party thread titles).
 /tools/wayback-fetch/jobs/a*-threads.json
+
+# Grafana Cloud kit: the player's credentials (issue #649)
+**/monitoring.env
