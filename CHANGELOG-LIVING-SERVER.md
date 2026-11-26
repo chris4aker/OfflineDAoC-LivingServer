@@ -13,6 +13,13 @@ Older entries below keep the names they were written with.
 Uthgard's drop tables and the fixes from the owner's next PC check (owner, 2026-11-22). **Tests only** unless an entry says
 otherwise.
 
+**Kill XP report: level-50 kills leave the XP median** (#671; Python report only). The living report's group line
+read "median XP per member 0" in every realm because level-50 parties, paid nothing by design, were in the median.
+`kill_xp_report.py` now leaves capped kills (the party's lowest level at 50, or a solo bot at 50) out of the XP median and
+mean, counts them in a `capped` column (rows/member values), and splits a realm's group line into `group <50` and
+`group 50` when it has capped group kills. The footer says what `off` means: kills on the way that were not the camp's
+target, not XP lost. A log without level-50 kills prints as before.
+
 **Fuller battlegrounds** (#598, owner 2026-11-24: options A and C, no floor; `UT_BattlegroundFill598`). **Tests only.**
 - **New default goal shares:** Levels 1-19 go from 60/40/0/0 to 55/35/0/10 (solo/group/RvR/battlegrounds), so 10% of the
   15-19 bots go to Abermenai, and Levels 20-49 from 35/35/15/15 to 30/30/15/25, so 25% of the 20-35 bots go to their
