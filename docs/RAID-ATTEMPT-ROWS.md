@@ -190,14 +190,25 @@ call `RaidBossMechanics` beside what they already do:
 | Spindler Broodmother | `mezz` (the mez on a random raider), `adds` (each spawn) |
 | Queen Kula | `cold` (the cold DD), `frostMezz`, `frostRoot` (the centre rule) |
 | King Tuscar | `hammers`, `thunder`, `bleed` (the after-style spells) |
+| Apocalypse (Caer Sidi) | `plague` (Morbus's swarm's black plague), `gtaoe` (Apocalypse's ground-target blast), `rainOfFire` (the rain of fire) |
+| Orylle (Krondon) | `fire` (Orshom's Fire's area burn) |
+| Dura'ek the Empowered | `heatProc` (the heat proc on his hits) |
+| Aidon the Archwizard | `fireShield`, `dd` (Aidon's own), `copyFire`, `copyIce`, `copyAir`, `copyEarth` (each copy's bolt) |
+| Iarnvidiur | `bolt` (before the teleport), `dot`, `dd`, `disease` |
+| Aros (Dodens Gruva, both scripts) | `bomb`, `bigBomb`, `debuff`, `summon` (Game Epic Aros); `bomb`, `debuff`, `dd`, `stun` (the Spiritmaster and its champion) |
+| Black Lady | `dd` |
+| Myrddraxis | `disease`, `hasteDebuff` (on his hits), `dot`, `dd`, `stun`, `pbaoe`, `dd2`, `head2`-`head5` (each head's bolt) |
+| Evern (open world) | `fairyHeal` (a fairy healing her at a pillar) |
+| Maldahar the Glimmer Prince (open world) | `lifeTap`, `pbaoe` |
 
 Each `RaidBossMechanics.Cast` takes the script's own `CastSpell(...)` call as its first argument, so the cast, its spell,
 its timing and its target are exactly as before; the signal is written only when the cast started. Each signal goes through
 `EncounterSignals.Measure`, **not** `Raise`: it is not live for the tactics, the /group calls or the lore engine, so the
 raid AI does not react to it and the fight is unchanged. `UT_RaidMechanicRows644` checks each boss's script and the
 signal. Making any of them a full `Raise` (so the bots react) would be a tactic change, with its own research and issue.
-Other raid bosses with no signal yet: Apocalypse, Orylle, Duraek, Aidon, Iarnvidiur, Aros, the Black Lady, Myrddraxis and
-the open-world bosses other than the Green Knight.
+The other open-world bosses (Archilus, Elro the Ancient, the Glacier Giant, Moran the Mighty and Yar) have no scripted
+casts: their spells come from their templates' spell lists and the base brain, so their scripts have no cast to measure.
+Measuring those would need a hook in the generic cast path, not in a boss script.
 
 ### `RAID_THREAT`: each change of the boss's target (diagnostics switch)
 
