@@ -167,8 +167,17 @@ No played database, log, save or anything from a PC is in a set.
 **Why CI and not the owner's PC** (#687): the owner's test install has played (its database is a played world, and the
 server runs there), and the PC may have no Python to run the release builder's cleaning. A runner's fresh install has a
 world that never ran, and its meshes are the ones every player gets (the base files plus `content-patches.json`). The
-dry run of #694 found 103 zone meshes (2.07 GB), the same 103 zones as the 1.2 download (`navmesh-drops.json`); the
-owner's test install has 104, one more than players get.
+dry runs of #694 found 103 zone meshes (2.07 GB), the same 103 zones as the 1.2 download (`navmesh-drops.json`); the
+owner's test install has 104, one more than players get. The whole set (with the 92 MB world) is 2.33 GB in 108 files,
+one zip part of 653 MB; the run takes about 10 minutes (build 2, Setup 3, packing 2, tests 1).
+
+**Which classes run.** Of the 29 candidates (the 3 navmesh-only classes of #684 and the 26 database classes with an
+assertion and no input file), 19 pass on the fresh set and are on `.github/navmesh-tests.txt`. The other 10 fail on it
+and stay PC tests until #704 settles each one (a real fix, or a PC-only reason; never a loosened assertion). Run
+together, 11 classes first failed with "A resolver is already set for the assembly": each set its own Detour resolver.
+`Tests/UnitTests/InstalledDetour.cs` now sets it once per test process. Still PC-only: the input-driven probes, the
+report tools with no assertion, `UT_DungeonProofGenerator` and `UT_NavGapProbe` (proof generators, no assertion), and
+`UT_KeepDoorNavmeshProbe` and `UT_RealmEventNavigation` (a captured door list, a captured ladder list).
 
 **The PC fallback** (#684): `tools/navmesh/RUN-ME.cmd` still packs an install's meshes on a PC with nothing to install,
 and opens GitHub's release form for a browser upload. It makes a navmesh-only set (no Python there for the clean

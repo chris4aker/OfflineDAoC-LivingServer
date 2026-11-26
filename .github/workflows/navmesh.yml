@@ -57,7 +57,7 @@ jobs:
 
   navmesh:
     runs-on: windows-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
