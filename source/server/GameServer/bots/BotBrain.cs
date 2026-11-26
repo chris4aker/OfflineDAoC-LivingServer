@@ -1539,6 +1539,13 @@ namespace DOL.AI.Brain
                     FSM.Think();
                     return;
                 }
+                // #662: a bot that sized a fight up and backed off walks out of range and waits; its route waits too. It
+                // still heals while it waits (a duo's healer keeps its partner up), as AutonomousDefensivePull.Hold does.
+                if (_autonomousWorldController.HoldsForSightSizeUp(this))
+                {
+                    if (!Body.IsCasting) CheckHeals();
+                    return;
+                }
             }
 
             if (TryResurrectNearbyPlayer())

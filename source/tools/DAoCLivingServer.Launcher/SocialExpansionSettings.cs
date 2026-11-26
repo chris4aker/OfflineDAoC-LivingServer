@@ -42,6 +42,9 @@ public sealed record SocialExpansionSettings
     public string ScheduleMode { get; init; } = "off";
     public bool LivingBreaks { get; init; } = true;
     public bool LivingBodyLanguage { get; init; } = true;
+    /// <summary>A solo or duo gamebot sizes up a fight on sight and opens or backs off (bot_rvr_sight_size_up, #662). No checkbox:
+    /// kept as read. On by default (1.2.3).</summary>
+    public bool SightSizeUp { get; init; } = true;
     /// <summary>About 4% of Crafter bots are beggars in their capital (AutonomousBeggars). On by default.</summary>
     public bool LivingBeggars { get; init; } = true;
     /// <summary>Some No Lifer bots run a level-50 buffbot that keeps them buffed (NoLiferBuffBots, Living Server 1.2). On by default.</summary>
@@ -226,6 +229,7 @@ public sealed record SocialExpansionSettings
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
         RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, DeathFall = true, HealerPeriodRules = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
+        SightSizeUp = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -253,6 +257,7 @@ public sealed record SocialExpansionSettings
         ("bot_schedule_mode", "bots", "Server life: when autonomous gamebots are online. off (the default) = the whole roster at once; session = each bot plays sessions of 1-4 hours with 20 minutes to 2 hours away, timed from server start; clock = your PC's time of day (busiest 7-11pm and weekends, quiet overnight)."),
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
         ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots do not jump; sitting comes with Moving like people (bot_movement_habits)."),
+        ("bot_rvr_sight_size_up", "bots", "A solo or duo gamebot sizes up a fight when enemies come into its perception range, in the frontier and the battlegrounds (keep assaults included), and opens or backs off (#662). Boldness moves the line; no solo bot ever opens on three or more enemies. Backing off, it pulls back out of range, waits nearby, calls its close friends, then goes back to what it was doing. Not companions, not PvE."),
         ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),
         ("bot_nolifer_buffbots", "bots", "Server life: some No Lifer bots (bot_nolifer_buffbot_percent of them, 30 by default) run a second character, a level-50 buffbot (Albion Cleric, Midgard Shaman, Hibernia Druid, all in buffs). It follows its main where it is safe, parks at the nearest bind when the main goes into a dungeon, the frontier or a raid, and keeps the main buffed. It never joins a group, fights or loots, is not counted in the population, and logs in and out with its main. A bot is a No Lifer by its roster id, whether bot personalities are on or off."),
         ("bot_living_deeds", "bots", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname."),
@@ -342,6 +347,7 @@ public sealed record SocialExpansionSettings
         ["bot_schedule_mode"] = ScheduleMode,
         ["bot_living_breaks"] = Bool(LivingBreaks),
         ["bot_living_body_language"] = Bool(LivingBodyLanguage),
+        ["bot_rvr_sight_size_up"] = Bool(SightSizeUp),
         ["bot_living_beggars"] = Bool(LivingBeggars),
         ["bot_nolifer_buffbots"] = Bool(LivingBuffBots),
         ["bot_living_deeds"] = Bool(LivingDeeds),
@@ -682,6 +688,7 @@ public sealed record SocialExpansionSettings
             ScheduleMode = schedule,
             LivingBreaks = ReadBool("bot_living_breaks", d.LivingBreaks),
             LivingBodyLanguage = ReadBool("bot_living_body_language", d.LivingBodyLanguage),
+            SightSizeUp = ReadBool("bot_rvr_sight_size_up", d.SightSizeUp),
             LivingBeggars = ReadBool("bot_living_beggars", d.LivingBeggars),
             LivingBuffBots = ReadBool("bot_nolifer_buffbots", d.LivingBuffBots),
             LivingDeeds = ReadBool("bot_living_deeds", d.LivingDeeds),
