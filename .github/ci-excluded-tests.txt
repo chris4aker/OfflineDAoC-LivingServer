@@ -50,3 +50,4 @@ UT_StarterDungeonInstalledMesh  # read-only installed starter-dungeon mesh proof
 UT_XagaFloorProbe  # navmesh-only report tool with no assertion (a pass would prove nothing): read by hand, [Explicit] (#619, #684)
 UT_ZoneBoundaryLeakProbe  # navmesh probe tool: needs its input (OFFLINE_DAOC_BOUNDS) and asserts nothing, [Explicit] (#619, #684)
 UT_ZoneStepProbe  # navmesh probe tool: needs its input (OFFLINE_DAOC_ZONES, OFFLINE_DAOC_STEPS) and asserts nothing, [Explicit] (#619, #684)
+UT_Diag704StarterSpawns  # DIAGNOSTIC (#704), not for merge: read-only installed starter-dungeon report, [Explicit] (#704)
