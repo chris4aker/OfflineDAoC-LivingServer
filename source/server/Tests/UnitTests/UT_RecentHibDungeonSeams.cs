@@ -21,9 +21,7 @@ public class UT_RecentHibDungeonSeams
         var loaded = new List<Zone>();
         try
         {
-            NativeLibrary.SetDllImportResolver(typeof(LocalPathfindingMgr).Assembly,
-                (name, _, _) => name == "lib/Detour"
-                    ? NativeLibrary.Load(Path.Combine(root, "lib", "Detour.dll")) : IntPtr.Zero);
+            DOL.UnitTests.InstalledDetour.Use(root);
             Environment.CurrentDirectory = root;
             using var db = new SQLiteConnection($"Data Source={Path.GetFullPath("../data/opendaoc.sqlite3.db")};Read Only=True;Pooling=False;");
             db.Open();

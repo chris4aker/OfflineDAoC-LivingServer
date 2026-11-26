@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """The published navmesh set (issue #684): a versioned copy of an install's runtime/server navmeshes and the Detour
-library, kept outside Git as the assets of a `navmesh-vN` pre-release, and described by tools/navmesh/manifest.json.
+library, plus (issue #687) a clean world database, kept outside Git as the assets of a `navmesh-vN` pre-release, and
+described by tools/navmesh/manifest.json.
 
-The owner makes a set once with tools/navmesh/Publish-NavmeshSet.ps1 on his PC and uploads it in the browser. CI's
-navmesh workflow (.github/workflows/navmesh.yml) downloads it once, checks every hash against the manifest, caches it
-and runs the navmesh-only tests (.github/navmesh-tests.txt) against it.
+CI makes a set (.github/workflows/navmesh-publish.yml, issue #687): a fresh Setup install on a Windows runner, its world
+cleaned and checked by the release builder's code (tools/navmesh/clean_world.py), packed by
+tools/navmesh/Publish-NavmeshSet.ps1 and published as the pre-release with the workflow's token. The same script on the
+owner's PC (RUN-ME.cmd, #684) is the fallback for a navmesh-only set. CI's navmesh workflow
+(.github/workflows/navmesh.yml) downloads the set once, checks every hash against the manifest, caches it and runs the
+tests of .github/navmesh-tests.txt against it.
 
     python tools/navmesh/navmesh_set.py check
         The manifest in Git, the navmesh test list and (once a set is published) the navmesh files the installer patches
         (tools/fork-build/content-patches.json) agree. Needs nothing but the repository; tools/check.py runs it.
     python tools/navmesh/navmesh_set.py status tools/navmesh/manifest.json
-        published=true|false (also into $GITHUB_OUTPUT). The placeholder manifest means "no set yet": a notice, exit 0.
+        published=true|false and world=true|false (also into $GITHUB_OUTPUT). The placeholder manifest means "no set yet": a notice, exit 0.
     python tools/navmesh/navmesh_set.py fetch tools/navmesh/manifest.json --dest DIR [--from FOLDER]
         Downloads the set's zip parts from its release (public assets, no token), checks each part's size and SHA-256,
         unpacks them into DIR and checks every file. --from reads the parts from a folder instead (tests).
@@ -18,9 +22,19 @@ and runs the navmesh-only tests (.github/navmesh-tests.txt) against it.
         Every file of the manifest is in DIR with its size and SHA-256, and nothing else is (after a cache restore too).
     python tools/navmesh/navmesh_set.py filter .github/navmesh-tests.txt
         The dotnet test filter that selects the listed tests (they are [Explicit], so only a filter naming them runs them).
-    python tools/navmesh/navmesh_set.py results TRX .github/navmesh-tests.txt [--cache-hit true|false]
+    python tools/navmesh/navmesh_set.py results TRX .github/navmesh-tests.txt [--cache-hit true|false] [--report-only]
         Every result, one line each (and in $GITHUB_STEP_SUMMARY). Fails when an entry has no result, or a test did
-        anything but pass (a skipped or inconclusive test proves nothing).
+        anything but pass (a skipped or inconclusive test proves nothing). --report-only lists them and exits 0
+        (navmesh-publish.yml: a failing test is a test to fix, not a reason to withhold the set).
+    python tools/navmesh/navmesh_set.py check --manifest FILE
+        The check above against another manifest (navmesh-publish.yml: the set it just made, before it is published).
+    python tools/navmesh/navmesh_set.py tag-free vN
+        Exit 1 when navmesh-vN is already a tag or a release (draft included): a published set is never replaced.
+    python tools/navmesh/navmesh_set.py publish MANIFEST --from DIR --commit SHA --notes FILE [--dry-run]
+        navmesh-publish.yml only, with GITHUB_TOKEN: refuses an existing tag or release, checks every part in DIR against
+        the manifest, creates a draft pre-release on SHA, uploads the parts and the manifest, checks GitHub's digest of
+        each against the manifest, then publishes it as a pre-release that never becomes Latest (make_latest false).
+        Anything off leaves the draft unpublished for a person to look at. --dry-run says what it would do.
 
 A planted mismatch (a part or a file whose bytes differ from the manifest) fails fetch and verify:
 tools/navmesh/tests/test_navmesh_set.py. Python standard library only.
@@ -35,6 +49,8 @@ import re
 import shutil
 import sys
 import time
+import urllib.error
+import urllib.parse
 import urllib.request
 import zipfile
 from dataclasses import dataclass
@@ -57,7 +73,10 @@ SCHEMA = 1
 PART_LIMIT = 1_900_000_000
 REQUIRED = ("lib/Detour.dll", "navmesh/roads.json", "navmesh/seams.json", "navmesh/pockets.json")
 VERSION_RE = re.compile(r"^v[1-9]\d{0,3}$")
-PATH_RE = re.compile(r"^(navmesh|lib)/[A-Za-z0-9_][A-Za-z0-9_.-]*$")
+PATH_RE = re.compile(r"^(navmesh|lib)/[A-Za-z0-9_][A-Za-z0-9_.-]*$|^world/opendaoc\.sqlite3\.db$")
+# The clean world database (issue #687): where it sits in the set, and the manifest's "world" block that names it.
+WORLD = "world/opendaoc.sqlite3.db"
+FOLDERS = ("navmesh", "lib", "world")
 PART_RE = re.compile(r"^navmesh-(v[1-9]\d{0,3})\.part(\d{2})\.zip$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 MARKER = ".navmesh-set.json"   # the manifest the unpacked set was checked against, written last
@@ -90,6 +109,7 @@ class Manifest:
     parts: tuple[Part, ...]
     files: tuple[Entry, ...]
     source: dict
+    world: Entry | None = None   # the clean world database, when the set has one (#687)
 
     def url(self, part: Part) -> str:
         return f"https://github.com/{self.repository}/releases/download/{self.tag}/{part.name}"
@@ -155,7 +175,7 @@ def parse(data: dict) -> Manifest:
                 continue
             path, size, sha, part = f.get("path"), f.get("bytes"), f.get("sha256"), f.get("part")
             if not need(isinstance(path, str) and PATH_RE.match(path) is not None,
-                        f"file {i}: path {path!r} must be navmesh/<name> or lib/<name>"):
+                        f"file {i}: path {path!r} must be navmesh/<name>, lib/<name> or {WORLD}"):
                 continue
             need(path.lower() not in seen, f"{path} is listed twice")
             seen.add(path.lower())
@@ -170,9 +190,23 @@ def parse(data: dict) -> Manifest:
         need(any(f.part == p.name for f in files), f"part {p.name} holds no file")
     total = data.get("total_bytes")
     need(total == sum(f.size for f in files), f"total_bytes {total!r} is not the sum of the files' bytes")
+    # The world database (#687): listed as a file AND named by the "world" block (name, size, SHA-256), the two agreeing,
+    # and marked as checked by the release builder's verify step. A set without one is navmesh-only (the PC fallback).
+    world_entry = next((f for f in files if f.path == WORLD), None)
+    block = data.get("world")
+    if block is not None or world_entry is not None:
+        if need(isinstance(block, dict), f"{WORLD} is in the set, so the manifest needs its \"world\" block") and \
+                need(world_entry is not None, f"the \"world\" block names a database, but {WORLD} is not in files"):
+            need(block.get("name") == "opendaoc.sqlite3.db" and block.get("path") == WORLD,
+                 f"world: name must be opendaoc.sqlite3.db and path {WORLD}")
+            need(block.get("bytes") == world_entry.size and block.get("sha256") == world_entry.sha256,
+                 "world: bytes and sha256 must be the files entry's")
+            need(block.get("clean") is True and isinstance(block.get("checked_by"), str) and block.get("checked_by"),
+                 "world: clean must be true and checked_by must name the check (a world nobody checked is never in a set)")
     if problems:
         raise SetError("; ".join(problems))
-    return Manifest(version, data["tag"], data["repository"], tuple(parts), tuple(sorted(files, key=lambda f: f.path)), source)
+    return Manifest(version, data["tag"], data["repository"], tuple(parts), tuple(sorted(files, key=lambda f: f.path)), source,
+                    world_entry)
 
 
 def load(path: Path) -> Manifest | None:
@@ -273,7 +307,7 @@ def verify(manifest: Manifest, root: Path, out=print) -> int:
             out(annotate("error", f"{f.path} is {size} bytes, SHA-256 {got or '(not computed)'}; "
                                   f"the manifest says {f.size} bytes, {f.sha256}"))
             problems += 1
-    for folder in ("navmesh", "lib"):
+    for folder in FOLDERS:
         base = root / folder
         if base.is_dir():
             for p in sorted(base.rglob("*")):
@@ -419,6 +453,131 @@ def results(trx: Path, entries: list[tuple[str, str]], cache_hit: str = "", out=
     return 1 if problems else 0
 
 
+# ---- publishing (navmesh-publish.yml) ----------------------------------------------------------------------------
+
+API = "https://api.github.com"
+MANIFEST_ASSET = "navmesh-manifest.json"
+
+
+class GitHub:
+    """The few REST calls publishing needs (publish_release.py's pattern: draft, upload, check digests, publish)."""
+
+    def __init__(self, token: str = "", repository: str = REPOSITORY):
+        self.token, self.repository = token, repository
+
+    def request(self, method: str, url: str, data=None, content_type: str = "application/json", length: int | None = None,
+                missing_ok: bool = False):
+        headers = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "navmesh-set-ci"}
+        if self.token:
+            headers["Authorization"] = f"Bearer {self.token}"
+        if data is not None:
+            headers["Content-Type"] = content_type
+        if length is not None:
+            headers["Content-Length"] = str(length)
+        req = urllib.request.Request(url, data=data, method=method, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=3600) as r:
+                raw = r.read()
+        except urllib.error.HTTPError as e:
+            if missing_ok and e.code == 404:
+                return None
+            raise SetError(f"{method} {url}: HTTP {e.code} {e.read()[:300]!r}")
+        return json.loads(raw) if raw else None
+
+    def tag_exists(self, tag: str) -> bool:
+        return self.request("GET", f"{API}/repos/{self.repository}/git/ref/tags/{urllib.parse.quote(tag)}", missing_ok=True) is not None
+
+    def release_for(self, tag: str):
+        found = self.request("GET", f"{API}/repos/{self.repository}/releases/tags/{urllib.parse.quote(tag)}", missing_ok=True)
+        if found:
+            return found
+        for rel in self.request("GET", f"{API}/repos/{self.repository}/releases?per_page=100") or []:   # drafts too
+            if rel.get("tag_name") == tag:
+                return rel
+        return None
+
+    def latest_tag(self) -> str:
+        latest = self.request("GET", f"{API}/repos/{self.repository}/releases/latest", missing_ok=True)
+        return (latest or {}).get("tag_name", "")
+
+    def create_draft(self, tag: str, commit: str, title: str, body: str):
+        data = {"tag_name": tag, "target_commitish": commit, "name": title, "body": body, "draft": True, "prerelease": True}
+        return self.request("POST", f"{API}/repos/{self.repository}/releases", json.dumps(data).encode("utf-8"))
+
+    def upload(self, release: dict, path: Path, name: str):
+        url = release["upload_url"].split("{", 1)[0] + "?" + urllib.parse.urlencode({"name": name})
+        size = path.stat().st_size
+        kind = "application/json" if name.endswith(".json") else "application/zip"
+        with path.open("rb") as handle:   # streamed: a part is up to 1.9 GB
+            return self.request("POST", url, handle, kind, length=size)
+
+    def get(self, release: dict):
+        return self.request("GET", release["url"])
+
+    def publish(self, release: dict):
+        data = {"draft": False, "prerelease": True, "make_latest": "false"}
+        return self.request("PATCH", release["url"], json.dumps(data).encode("utf-8"))
+
+
+def tag_free(gh: GitHub, tag: str) -> list[str]:
+    problems = []
+    if gh.tag_exists(tag):
+        problems.append(f"the tag {tag} exists already: a published navmesh set is never replaced (make navmesh-vN+1)")
+    existing = gh.release_for(tag)
+    if existing:
+        problems.append(f"a release for {tag} exists already ({'draft' if existing.get('draft') else 'published'}, "
+                        f"{existing.get('html_url')}): a stray draft is deleted by hand first")
+    return problems
+
+
+def publish(gh: GitHub, manifest: Manifest, manifest_path: Path, folder: Path, commit: str, body: str, dry_run: bool,
+            out=print) -> int:
+    if not re.match(r"^[0-9a-f]{40}$", commit):
+        raise SetError(f"--commit must be a full commit SHA, not {commit!r}")
+    if manifest.world is None:
+        raise SetError("this set has no clean world: navmesh-publish.yml publishes a set with its world (issue #687)")
+    for part in manifest.parts:
+        path = folder / part.name
+        if not path.is_file():
+            raise SetError(f"{part.name} is not in {folder}")
+        check_part(path, part)
+    problems = tag_free(gh, manifest.tag)
+    if problems:
+        raise SetError("; ".join(problems))
+    names = [p.name for p in manifest.parts] + [MANIFEST_ASSET]
+    title = f"Navmesh set {manifest.version} (CI only, not a game release)"
+    steps = [f"create tag {manifest.tag} on {commit} and a draft pre-release \"{title}\""] + \
+            [f"attach {n}" for n in names] + ["check GitHub's SHA-256 of every file against the manifest",
+                                              "publish it as a pre-release, never Latest (make_latest false)"]
+    if dry_run:
+        for step in steps:
+            out(f"would {step}")
+        out(annotate("notice", f"dry run: {manifest.tag} is free and its {len(manifest.parts)} part(s) match the manifest; nothing published"))
+        return 0
+    if not gh.token:
+        raise SetError("no GITHUB_TOKEN: can't publish")
+    draft = gh.create_draft(manifest.tag, commit, title, body)
+    out(f"created draft {draft.get('html_url')}")
+    for name in names:
+        gh.upload(draft, folder / name if name != MANIFEST_ASSET else manifest_path, name)
+        out(f"attached {name}")
+    draft = gh.get(draft)
+    want = {p.name: p.sha256 for p in manifest.parts} | {MANIFEST_ASSET: sha256_of(manifest_path)}
+    shown = {a.get("name"): a.get("digest") or "" for a in draft.get("assets") or []}
+    wrong = [n for n, sha in want.items() if shown.get(n) != f"sha256:{sha}"]
+    if wrong or set(shown) != set(want):
+        raise SetError(f"GitHub's digests don't match for {wrong or sorted(set(shown) ^ set(want))}: the draft "
+                       f"{draft.get('html_url')} is left unpublished for a person to look at")
+    published = gh.publish(draft)
+    if published.get("draft") or not published.get("prerelease"):
+        raise SetError("the release didn't publish as a pre-release")
+    if gh.latest_tag() == manifest.tag:
+        raise SetError(f"{manifest.tag} became the Latest release: make the game release Latest again by hand")
+    out(annotate("notice", f"published {published.get('html_url')} as a pre-release (not Latest): {len(names)} files, "
+                           "every SHA-256 matches the manifest"))
+    return 0
+
+
 # ---- the local check --------------------------------------------------------------------------------------------
 
 def check(manifest_path: Path = MANIFEST, list_path: Path = TEST_LIST, excluded_path: Path = EXCLUDED_LIST,
@@ -446,7 +605,8 @@ def check(manifest_path: Path = MANIFEST, list_path: Path = TEST_LIST, excluded_
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("check", help="the manifest in Git, the test list and the installer's navmesh patches agree")
+    k = sub.add_parser("check", help="the manifest in Git, the test list and the installer's navmesh patches agree")
+    k.add_argument("--manifest", type=Path, default=MANIFEST, help="another manifest (a set just made)")
     s = sub.add_parser("status", help="published=true|false")
     s.add_argument("manifest", type=Path)
     f = sub.add_parser("fetch", help="download, check and unpack the set")
@@ -462,18 +622,43 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("trx", type=Path)
     r.add_argument("list", type=Path)
     r.add_argument("--cache-hit", default="")
+    r.add_argument("--report-only", action="store_true", help="list every result but exit 0")
+    g = sub.add_parser("tag-free", help="exit 1 when navmesh-vN is already a tag or a release")
+    g.add_argument("version")
+    u = sub.add_parser("publish", help="publish a set as a pre-release, never Latest (navmesh-publish.yml)")
+    u.add_argument("manifest", type=Path)
+    u.add_argument("--from", dest="source", type=Path, required=True)
+    u.add_argument("--commit", required=True)
+    u.add_argument("--notes", type=Path, required=True)
+    u.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(newline="\n")
     try:
         if args.cmd == "check":
-            return check()
+            return check(args.manifest)
+        if args.cmd == "tag-free":
+            if not VERSION_RE.match(args.version):
+                raise SetError(f"the version must be v1, v2, ..., not {args.version!r}")
+            problems = tag_free(GitHub(os.environ.get("GITHUB_TOKEN", "")), f"navmesh-{args.version}")
+            for p in problems:
+                print(annotate("error", p))
+            if not problems:
+                print(annotate("notice", f"navmesh-{args.version} is neither a tag nor a release yet"))
+            return 1 if problems else 0
+        if args.cmd == "publish":
+            manifest = load(args.manifest)
+            if manifest is None:
+                raise SetError(f"{args.manifest} is the placeholder: nothing to publish")
+            return publish(GitHub(os.environ.get("GITHUB_TOKEN", "")), manifest, args.manifest, args.source, args.commit,
+                           args.notes.read_text(encoding="utf-8"), args.dry_run)
         if args.cmd == "status":
             manifest = load(args.manifest)
             published = manifest is not None
             if published:
                 print(annotate("notice", f"navmesh set {manifest.tag}: {len(manifest.files)} files in {len(manifest.parts)} "
-                                         f"part(s), from build {manifest.source.get('build', '?')}"))
+                                         f"part(s), from build {manifest.source.get('build', '?')}; "
+                                         + (f"clean world {manifest.world.size:,} bytes" if manifest.world else "no world database")))
             else:
                 print(annotate("notice", "No navmesh set is published yet (tools/navmesh/manifest.json is the placeholder): "
                                          "the navmesh tests are skipped. See docs/CI.md, \"The navmesh job\"."))
@@ -482,6 +667,7 @@ def main(argv: list[str] | None = None) -> int:
                 with open(output, "a", encoding="utf-8") as handle:
                     handle.write(f"published={'true' if published else 'false'}\n")
                     handle.write(f"key={manifest_hash(args.manifest)}\n")
+                    handle.write(f"world={'true' if published and manifest.world else 'false'}\n")
             print(f"published={'true' if published else 'false'}")
             return 0
         if args.cmd in ("fetch", "verify"):
@@ -496,7 +682,8 @@ def main(argv: list[str] | None = None) -> int:
             print(test_filter(read_list(args.list)))
             return 0
         summary = os.environ.get("GITHUB_STEP_SUMMARY")
-        return results(args.trx, read_list(args.list), args.cache_hit, summary=Path(summary) if summary else None)
+        code = results(args.trx, read_list(args.list), args.cache_hit, summary=Path(summary) if summary else None)
+        return 0 if args.report_only else code
     except SetError as e:
         print(annotate("error", str(e)))
         return 1

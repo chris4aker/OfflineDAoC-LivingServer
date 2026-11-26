@@ -58,7 +58,8 @@ The "main: green checks" ruleset requires these five jobs of `build-and-test.yml
 | `candidate-install` | called by build-and-test after `server` on pushes to main, `integration/1.2`, `release/*`, `ci/*`; by hand | Setup built from this commit's package; a fresh install, smoke and the class-off edition; updates from 1.1.4, 1.2 and 1.2.1 with saves kept. | Not a required check (30-45 runner minutes). Every test step exits with the script's code. The playtester report step only copies a file to the run page. |
 | `update-contract` | called by build-and-test after `server` on every push and pull request; by hand with a run's package | The newest full release older than this build (v1.2.2 today) takes it as its update: that release's own launcher code (`LauncherUpdater.Check`, `PrepareFromRelease`, `StartHandoff`, loaded from its installed dll by `source/tools/DAoCLivingServer.UpdateContract`) against a fake GitHub serving the candidate release `tools/release/update_contract.py` builds as publish-release would; the game is then the candidate (server, libraries, launcher, world untouched); the released Setup's `--info` picks it; this commit's own launcher takes it under either repository path (`ReleaseFeed.AcceptedRepositories`, any case) and refuses lookalikes (`update_contract.py paths`, #689); the repository is exactly `ReleaseFeed.Repository` (`tools/release/test-update-contract.ps1`). | #685, [RELEASE-TRAIN.md](RELEASE-TRAIN.md) "The frozen update contract". Its own workflow, so the release workflows (`installer`, `release`, `publish-release`) are not edited; publish-release's `check-jobs` requires its job to have succeeded (#689). Not yet a required check of main's ruleset on 2026-11-26 (the owner chose to make it one on #689; his setting). Runs on D: (#680). Planted breaks (repo path, asset name, digest format) fail it: run URLs in PR #688. |
 | `playtester` | nightly, by hand, pull requests touching the playtester | `source/tools/tests`, the playtester's tests, the scenarios on the minimal worlds (each step `set -o pipefail`; the class-off and death steps also grep for their log lines). | The companion step's `grep ... \|\| true` only prints lines; its scenarios still gate. |
-| `navmesh` | pushes to main; pull requests touching `tools/navmesh`, the navmesh test lists, pathfinding, `AutonomousZone*` or the listed test classes; by hand | `publish-script`: the navmesh set tool's tests and check, and the owner's packing script in Windows PowerShell 5.1 on a fake install. `navmesh`: once a set is published, the set's hashes and the navmesh tests (below). | #684. Not a required check: a cold cache or a slow download never holds up a merge. Skips with a notice while `tools/navmesh/manifest.json` is the placeholder. |
+| `navmesh` | pushes to main; pull requests touching `tools/navmesh`, the navmesh test lists, pathfinding, `AutonomousZone*`, the listed test classes or the clean-world rules; by hand | `publish-script`: the navmesh set tool's tests and check, and the packing script in Windows PowerShell 5.1 on a fake install. `navmesh`: once a set is published, the set's hashes, its world checked clean, and the navmesh tests (below). | #684, #687. Not a required check: a cold cache or a slow download never holds up a merge. Skips with a notice while `tools/navmesh/manifest.json` is the placeholder. |
+| `navmesh-publish` | by hand (`version`, `dry_run` on by default, `run_id`); pull requests touching it, `clean_world.py` or the packer, as a dry run | Makes the navmesh set from a fresh Setup install on a runner, checks its world clean (fail closed, twice), reads it back as the navmesh job does, runs the navmesh tests on it, and publishes `navmesh-vN` (main only, dry run off): a pre-release, never Latest, never replaced. | #687. The test step is a report: a failing test is a test to fix, not a reason to withhold the set. Below, "Making a set". |
 | `wayback-fetch` | pushes and pull requests touching `tools/wayback-fetch` | Its tests in Windows PowerShell 5.1 and PowerShell 7, `-RequireE2E` (a missing Python fails). | Sound. |
 | `upstream-watch` | weekly, by hand | Lists upstream commits and updates one issue per repo. | A report by design. `gh label create ... \|\| true` only tolerates an existing label. |
 | `branch-cleanup` | by hand (mode `show` by default, or `APPLY`); also callable from another workflow | Its rules' tests (`tools/release/tests/test_branch_cleanup.py`), then `tools/release/branch_cleanup.py`. It classifies each branch as protected, open PR, recent (14 days), merged, replaced or never merged, and writes the list to the run page and the `branch-cleanup-<mode>` artifact. | #645; it replaced the 2026-10-18 one-off `cleanup-branches`. A dry run changes nothing. APPLY first tags each unmerged branch `archive/<branch>`, reads the tag back, then deletes the branch with a lease on its tip. It never deletes a tag. The owner approves the dry run's list before APPLY. A branch it could not archive or delete fails the run. |
@@ -87,7 +88,9 @@ UT_InstalledKeepRoutes  # read-only installed keep navigation: needs the install
   (a copy of the world made with SQLite's backup API, never the world itself) and `OFFLINE_DAOC_PROOF_OUT`; other
   variables a class reads pass through from the environment. It refuses to run while a server answers on port 10300,
   never starts one, and sums up `installed.trx`. The ones that need only the navmeshes also run in the navmesh job (#684,
-  "The navmesh job" below); the rest have no schedule (#687 asks how the database ones could run in CI).
+  "The navmesh job" below), and since #687 so do the ones that need the navmeshes and the world database: the set
+  carries a clean world. Only the input-driven probes, the report tools with no assertion and the ones that need
+  captured lists stay on the PC.
 - **A synthetic test never goes on the list whole-class.** Fix it. If it can't be fixed now, quarantine just it as
   `UT_Class.Method  # why (#issue)` with its own issue, and name it in the pull request. Never delete a test.
 - #618 took six classes off the list. Each had installed-file tests marked `[Explicit]` beside synthetic ones that had
@@ -96,63 +99,106 @@ UT_InstalledKeepRoutes  # read-only installed keep navigation: needs the install
 
 ## The navmesh job
 
-Issue #684 (owner, 2026-11-26: the navmeshes are published as a versioned set outside Git; CI downloads it once and
-caches it). `.github/workflows/navmesh.yml`, job `navmesh`, on Windows:
+Issues #684 and #687 (owner, 2026-11-26: the navmeshes are published as a versioned set outside Git, CI downloads it
+once and caches it; option 1 of #687: a clean world database is published with it, a played database never).
+`.github/workflows/navmesh.yml`, job `navmesh`, on Windows:
 
 1. **Is a set published?** `navmesh_set.py status tools/navmesh/manifest.json`. The placeholder (`"placeholder": true`)
-   means no set yet: a notice, every later step is skipped and the job is green. A damaged manifest fails.
-2. **Cache:** `actions/cache/restore`, keyed by the manifest's SHA-256. On a miss, `navmesh_set.py fetch` downloads each
-   zip part from the `navmesh-vN` release (public assets, no token), checks its size and SHA-256, unpacks it, checks
-   every file and saves the set to the cache at once (so a failing test doesn't cost the next run a download).
+   means no set yet: a notice, every later step is skipped and the job is green. A damaged manifest fails. It also says
+   whether the set has a world (`world=true`).
+2. **Cache:** `actions/cache/restore` of `navmesh-ci/set`, keyed by the manifest's SHA-256. On a miss,
+   `navmesh_set.py fetch` downloads each zip part from the `navmesh-vN` release (public assets, no token), checks its
+   size and SHA-256, unpacks it, checks every file and saves the set to the cache at once (so a failing test doesn't cost
+   the next run a download).
 3. **Verify, every run** (a cache hit too): every file's size and SHA-256 against the manifest, and no file the manifest
-   doesn't list. A mismatch fails the job (`tools/navmesh/tests/test_navmesh_set.py` plants one in a part, in a file
-   inside a good part, and in a restored set).
-4. **Build** the server tests, copy `lib/Detour.dll` beside the test assembly (where the server has it, beside
+   doesn't list (`navmesh/`, `lib/`, `world/`). A mismatch fails the job (`tools/navmesh/tests/test_navmesh_set.py`
+   plants one in a part, in a file inside a good part, and in a restored set).
+4. **The world is clean, every run** (#687): `clean_world.py verify navmesh-ci/set/world/opendaoc.sqlite3.db` must pass
+   the release builder's own verify step before any test reads it (fail closed; below). The tests get a copy at
+   `navmesh-ci/data/opendaoc.sqlite3.db`, which is `../data` beside the meshes, and in `OFFLINE_DAOC_DB_PATH`.
+5. **Build** the server tests, copy `lib/Detour.dll` beside the test assembly (where the server has it, beside
    `GameServer.dll`), and **run** `.github/navmesh-tests.txt` by name (`navmesh_set.py filter`; the classes are
    `[Explicit]`, so only a filter naming them runs them). `OFFLINE_DAOC_NAV_ROOT` is the unpacked set (`navmesh/`,
-   `lib/`); `OFFLINE_DAOC_PROOF_OUT` a file under the runner's temp folder.
-5. **Results:** `navmesh_set.py results` lists every test with its outcome, and whether the cache hit, on the run page.
+   `lib/`) as a Windows path; `OFFLINE_DAOC_PROOF_OUT` a file under the runner's temp folder.
+6. **Results:** `navmesh_set.py results` lists every test with its outcome, and whether the cache hit, on the run page.
    It fails when an entry has no result, or any test did anything but pass (a skipped test proves nothing).
 
-The server job is unchanged: every class stays on `.github/ci-excluded-tests.txt`, whose reasons now say which need only
-the navmeshes, which need the world database (#687) and which are input-driven probe tools or report tools with no
-assertion.
+The server job is unchanged: every class stays on `.github/ci-excluded-tests.txt`. `.github/navmesh-tests.txt` lists the
+ones the navmesh job runs, in three groups: navmeshes only, navmeshes and the world, the world only.
 
-**What the set is.** The install's `runtime/server/navmesh` (`zoneNNN.nav`, `roads.json`, `seams.json`, `pockets.json`)
-and `runtime/server/lib/Detour.dll`, as zip parts of under 1.9 GB each (GitHub takes files under 2 GB), plus
-`navmesh-manifest.json`: every file's path, size, SHA-256 and part, each part's size and SHA-256, the install's build and
-commit and the date. `tools/navmesh/manifest.json` in Git is a copy of that manifest. No world database, log or save is
-in a set.
+**What the set is.** A fresh install's `runtime/server/navmesh` (`zoneNNN.nav`, `roads.json`, `seams.json`,
+`pockets.json`), its `runtime/server/lib/Detour.dll` and (#687) its world database cleaned, as
+`world/opendaoc.sqlite3.db`: zip parts of under 1.9 GB each (GitHub takes files under 2 GB), plus
+`navmesh-manifest.json`: every file's path, size, SHA-256 and part, each part's size and SHA-256, the install's build
+and commit, the date, and a `world` block naming the database (name, path, size, SHA-256, `clean: true` and the check
+that passed it), which must agree with its file entry. `tools/navmesh/manifest.json` in Git is a copy of that manifest.
+No played database, log, save or anything from a PC is in a set.
 
-**Making a set** (the owner, once per version, on the PC with the install; no git, gh or token):
-1. Double-click `tools/navmesh/RUN-ME.cmd` (`-NavmeshFolder <game>\runtime\server\navmesh` for another install). It
-   only reads the install and writes only to `C:\Games\OfflineDAoC\navmesh-upload\<version>`: the parts and the manifest,
-   each part checked again file by file. The same files give the same zips.
-2. It opens `https://github.com/chris4aker/OfflineDAoC-LivingServer/releases/new?tag=navmesh-v1&target=main&prerelease=1`
-   with the title and description filled in (GitHub's documented release-form query parameters). Drag the parts and the
-   manifest in, keep "Set as a pre-release" ticked and "Set as the latest release" unticked, and publish.
-3. A pull request then copies the release's `navmesh-manifest.json` over `tools/navmesh/manifest.json`. From that commit
+**The clean world** (`tools/navmesh/clean_world.py`; it reuses `source/tools/build_release_037.py` and
+`progress-policy.json`, so there is one copy of the rules):
+- `clean SOURCE --out NEW --require-fresh` copies the installed world with SQLite's online backup (the source opened
+  read-only), refuses a source holding any account, character or gamebot (a world whose server never started holds
+  none), runs `clean_world()` (every saved-progress and clear table emptied, the default keeps, doors and relics, the
+  starting guilds only), keeps the install's edition switch, and runs the check below. A half-made file is deleted.
+- `verify DB` fails closed (exit 1, an `::error`) unless `verify_clean()` passes (every table the release builder
+  empties holds no row, no account, character or gamebot, only the starting guilds, the default keeps, doors and relics)
+  and `verify_tables_empty()` passes for every saved-progress table the server declares (Crafting 2.0, hired companions,
+  bots as people), each of which must also be in the policy. A missing, damaged or incomplete world fails it too.
+  `tools/navmesh/tests/test_clean_world.py` plants a row in each of the policy's tables, a player guild, a guild rank and
+  a captured keep: each one fails it.
+
+**Making a set** (`.github/workflows/navmesh-publish.yml`, #687). Nothing to upload: the set is made on a runner.
+1. A dry run first (the default; also every pull request that changes the workflow, `clean_world.py` or the packer):
+   Actions, navmesh-publish, Run workflow, version `v1`.
+2. The run installs the game with the real Setup on D: (`--silent --no-update --new`), from the public base files and
+   the `Candidate-Setup` of the newest green build-and-test push run on main (or `run_id`), as a new player gets it, with
+   `content-patches.json` applied. It counts and checks the meshes, cleans and checks the world, packs it all with
+   `Publish-NavmeshSet.ps1 -WorldDatabase` (which takes the world only with clean_world.py's report naming its hash, and
+   never one inside a game install), then reads the parts back as the navmesh job does: `fetch`, `verify`, `check
+   --manifest` (the installer's navmesh patches are the set's meshes) and `clean_world.py verify` on the packed copy.
+   It builds the server tests and runs `.github/navmesh-tests.txt` on that copy (a report).
+3. To publish: the same from main with "Dry run" unticked. `navmesh_set.py publish` refuses an existing tag or release,
+   checks every part, creates a draft pre-release on the run's commit, uploads the parts and the manifest, checks
+   GitHub's SHA-256 of each against the manifest (a mismatch leaves the draft unpublished), and publishes it as a
+   pre-release with `make_latest: false` (then checks it isn't Latest). It uses the workflow's own token, so the
+   release doesn't start `release.yml`.
+4. A pull request then copies the release's `navmesh-manifest.json` over `tools/navmesh/manifest.json`. From that commit
    on, the navmesh job runs the tests.
 
-Why the browser and not a script that uploads with a token: dragging three files is fewer steps than creating a
-fine-grained token, there is no secret to type, keep or revoke, and nothing on the PC can create a release, so nothing
-can publish a release as "latest" by mistake. Windows PowerShell 5.1 can also buffer a whole request body in memory, which
-makes a 1.9 GB upload from a script fragile.
+**Why CI and not the owner's PC** (#687): the owner's test install has played (its database is a played world, and the
+server runs there), and the PC may have no Python to run the release builder's cleaning. A runner's fresh install has a
+world that never ran, and its meshes are the ones every player gets (the base files plus `content-patches.json`). The
+dry runs of #694 found 103 zone meshes (2.07 GB), the same 103 zones as the 1.2 download (`navmesh-drops.json`); the
+owner's test install has 104, one more than players get. The whole set (with the 92 MB world) is 2.33 GB in 108 files,
+one zip part of 653 MB; the run takes about 10 minutes (build 2, Setup 3, packing 2, tests 1).
 
-**A new set** (a navmesh rebuild, #582): run it with `-Version v2`, publish `navmesh-v2` and commit its manifest. A
-published version is never replaced (the script refuses a version folder that holds files), so a manifest in Git always
-names files that exist.
+**Which classes run.** Of the 29 candidates (the 3 navmesh-only classes of #684 and the 26 database classes with an
+assertion and no input file), 19 pass on the fresh set and are on `.github/navmesh-tests.txt`. The other 10 fail on it
+and stay PC tests until #704 settles each one (a real fix, or a PC-only reason; never a loosened assertion). Run
+together, 11 classes first failed with "A resolver is already set for the assembly": each set its own Detour resolver.
+`Tests/UnitTests/InstalledDetour.cs` now sets it once per test process. Still PC-only: the input-driven probes, the
+report tools with no assertion, `UT_DungeonProofGenerator` and `UT_NavGapProbe` (proof generators, no assertion), and
+`UT_KeepDoorNavmeshProbe` and `UT_RealmEventNavigation` (a captured door list, a captured ladder list).
+
+**The PC fallback** (#684): `tools/navmesh/RUN-ME.cmd` still packs an install's meshes on a PC with nothing to install,
+and opens GitHub's release form for a browser upload. It makes a navmesh-only set (no Python there for the clean
+world), so it is the fallback only: with a navmesh-only set the database classes of `.github/navmesh-tests.txt` fail and
+go back to the PC list.
+
+**A new set** (a navmesh rebuild, #582): run navmesh-publish with `v2` and commit its manifest. A published version is
+never replaced (the workflow refuses an existing tag or release, the script a version folder that holds files), so a
+manifest in Git always names files that exist.
 
 **Never a game update.** A `navmesh-vN` tag is not a build (`BuildVersion` reads only `v<major>.<minor>...`) and its
-release carries no `DAoC-LivingServer-*.zip`, so the launcher's update check, its test-build channel and Setup never
-offer it, even with "Offer test builds" on or if it were published as the latest release by mistake:
-`DAoCLivingServer.Launcher.Tests/NavmeshReleaseTests.cs` and `tools/installer/test-installer.ps1`
+release carries no `DAoC-LivingServer-*.zip` (the world is inside a zip part), so the launcher's update check, its
+test-build channel and Setup never offer it, even with "Offer test builds" on or if it were published as the latest
+release by mistake: `DAoCLivingServer.Launcher.Tests/NavmeshReleaseTests.cs` and `tools/installer/test-installer.ps1`
 ("newest-navmesh-release").
 
 **Releases.** Release packages carry no navmeshes. Players get them from the base files plus the byte patches of
 `tools/fork-build/content-patches.json`. Once a set is published, `navmesh_set.py check` (in `tools/check.py`) fails when
 a navmesh the installer patches is not, in the set, the patch's fixed SHA-256. So the set and what ships agree. Making
-those patches from the set instead of a PC folder is #687.
+those patches from the set instead of a PC folder is part 2 of #687.
 
 ## Every checker fails on a planted defect
 

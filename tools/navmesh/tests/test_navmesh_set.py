@@ -141,6 +141,165 @@ class ManifestTests(SetFixture):
         self.assertIn("::error", printed.getvalue())
 
 
+WORLD_BYTES = b"SQLite format 3\x00" + bytes(64)
+
+
+class WorldTests(SetFixture):
+    """Issue #687: the clean world database in the set, named by the manifest's "world" block."""
+
+    def with_world(self) -> dict:
+        files = dict(FILES, **{ns.WORLD: WORLD_BYTES})
+        part = make_part(self.parts, "navmesh-v1.part01.zip", files)
+        data = make_manifest({"navmesh-v1.part01.zip": part}, {k: "navmesh-v1.part01.zip" for k in files}, files)
+        data["world"] = {"name": "opendaoc.sqlite3.db", "path": ns.WORLD, "bytes": len(WORLD_BYTES), "sha256": sha(WORLD_BYTES),
+                         "clean": True, "checked_by": "tools/navmesh/clean_world.py verify (build_release_037.verify_clean)"}
+        return data
+
+    def test_a_set_with_a_clean_world_parses_fetches_and_verifies(self):
+        data = self.with_world()
+        m = ns.parse(data)
+        self.assertEqual(m.world.path, ns.WORLD)
+        self.assertEqual(m.world.size, len(WORLD_BYTES))
+        code, log = self.fetch(data)
+        self.assertEqual(code, 0, log)
+        self.assertEqual((self.dest / ns.WORLD).read_bytes(), WORLD_BYTES)
+        (self.dest / "world" / "extra.db").write_bytes(b"x")
+        lines: list[str] = []
+        self.assertEqual(ns.verify(m, self.dest, lines.append), 1, "an extra file beside the world is found")
+        self.assertIn("world/extra.db", "\n".join(lines))
+
+    def test_a_navmesh_only_set_has_no_world(self):
+        self.assertIsNone(ns.parse(self.data).world)
+
+    def test_the_world_block_must_name_the_listed_checked_database(self):
+        cases = {
+            "no block": lambda d: d.pop("world"),
+            "no file": lambda d: d.update(files=[f for f in d["files"] if f["path"] != ns.WORLD],
+                                          total_bytes=sum(len(b) for b in FILES.values())),
+            "other size": lambda d: d["world"].update(bytes=1),
+            "other hash": lambda d: d["world"].update(sha256="0" * 64),
+            "not clean": lambda d: d["world"].update(clean=False),
+            "unchecked": lambda d: d["world"].pop("checked_by"),
+            "other name": lambda d: d["world"].update(name="played.db"),
+            "other path": lambda d: d["files"].append({"path": "world/played.db", "bytes": 1, "sha256": "0" * 64,
+                                                       "part": "navmesh-v1.part01.zip"}),
+        }
+        for name, change in cases.items():
+            with self.subTest(name):
+                data = self.with_world()
+                change(data)
+                with self.assertRaises(ns.SetError):
+                    ns.parse(data)
+
+    def test_status_says_whether_the_set_has_a_world(self):
+        out = self.root / "gh_output"
+        for data, expected in ((self.with_world(), "true"), (self.data, "false")):
+            out.write_text("")
+            path = self.write_manifest(data, "w.json")
+            with unittest.mock.patch.dict(os.environ, {"GITHUB_OUTPUT": str(out)}), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(ns.main(["status", str(path)]), 0)
+            self.assertIn(f"world={expected}", out.read_text())
+
+
+class FakeGitHub(ns.GitHub):
+    """Records the calls; GitHub's digest of an upload is the uploaded bytes' SHA-256 unless told otherwise."""
+
+    def __init__(self, tags=(), releases=(), bad_digest=None, latest=""):
+        super().__init__("token")
+        self.tags, self.releases, self.bad_digest, self.latest = set(tags), list(releases), bad_digest, latest
+        self.assets, self.calls = [], []
+
+    def tag_exists(self, tag):
+        return tag in self.tags
+
+    def release_for(self, tag):
+        return next((r for r in self.releases if r["tag_name"] == tag), None)
+
+    def latest_tag(self):
+        return self.latest
+
+    def create_draft(self, tag, commit, title, body):
+        self.calls.append(("draft", tag, commit))
+        return {"url": "u", "upload_url": "up{?name}", "html_url": "h", "draft": True}
+
+    def upload(self, release, path, name):
+        digest = "0" * 64 if name == self.bad_digest else ns.sha256_of(path)
+        self.assets.append({"name": name, "digest": f"sha256:{digest}"})
+
+    def get(self, release):
+        return dict(release, assets=self.assets)
+
+    def publish(self, release):
+        self.calls.append(("publish",))
+        return {"draft": False, "prerelease": True, "html_url": "h"}
+
+
+class PublishTests(SetFixture):
+    with_world = WorldTests.with_world
+    COMMIT = "a" * 40
+
+    def setUp(self):
+        super().setUp()
+        self.data = self.with_world()
+        self.manifest_path = self.write_manifest(self.data, "navmesh-manifest.json")
+        self.manifest = ns.parse(self.data)
+
+    def run_publish(self, gh, dry_run=False):
+        lines: list[str] = []
+        code = ns.publish(gh, self.manifest, self.manifest_path, self.parts, self.COMMIT, "notes", dry_run, lines.append)
+        return code, "\n".join(lines)
+
+    def test_a_dry_run_publishes_nothing(self):
+        gh = FakeGitHub()
+        code, log = self.run_publish(gh, dry_run=True)
+        self.assertEqual(code, 0)
+        self.assertEqual(gh.calls, [])
+        self.assertIn("never Latest (make_latest false)", log)
+
+    def test_it_publishes_a_pre_release_with_every_file(self):
+        gh = FakeGitHub()
+        code, log = self.run_publish(gh)
+        self.assertEqual(code, 0, log)
+        self.assertEqual(gh.calls, [("draft", "navmesh-v1", self.COMMIT), ("publish",)])
+        self.assertEqual({a["name"] for a in gh.assets}, {"navmesh-v1.part01.zip", "navmesh-manifest.json"})
+
+    def test_an_existing_tag_or_release_is_never_replaced(self):
+        for gh in (FakeGitHub(tags={"navmesh-v1"}), FakeGitHub(releases=[{"tag_name": "navmesh-v1", "draft": True, "html_url": "d"}])):
+            with self.subTest(gh=gh.tags or "draft"), self.assertRaisesRegex(ns.SetError, "never replaced|exists already"):
+                self.run_publish(gh, dry_run=True)
+            self.assertEqual(gh.calls, [])
+
+    def test_a_wrong_digest_leaves_the_draft_unpublished(self):
+        gh = FakeGitHub(bad_digest="navmesh-v1.part01.zip")
+        with self.assertRaisesRegex(ns.SetError, "left unpublished"):
+            self.run_publish(gh)
+        self.assertNotIn(("publish",), gh.calls)
+
+    def test_a_changed_part_or_a_set_without_a_world_is_refused(self):
+        (self.parts / "navmesh-v1.part01.zip").write_bytes(b"changed")
+        with self.assertRaises(ns.SetError):
+            self.run_publish(FakeGitHub(), dry_run=True)
+        self.manifest = ns.parse(self.navmesh_only())
+        with self.assertRaisesRegex(ns.SetError, "no clean world"):
+            self.run_publish(FakeGitHub(), dry_run=True)
+
+    def navmesh_only(self):
+        data = copy.deepcopy(self.data)
+        data.pop("world")
+        data["files"] = [f for f in data["files"] if f["path"] != ns.WORLD]
+        data["total_bytes"] = sum(f["bytes"] for f in data["files"])
+        return data
+
+    def test_becoming_latest_is_an_error(self):
+        with self.assertRaisesRegex(ns.SetError, "Latest"):
+            self.run_publish(FakeGitHub(latest="navmesh-v1"))
+
+    def test_the_commit_must_be_a_full_sha(self):
+        self.COMMIT = "main"
+        with self.assertRaisesRegex(ns.SetError, "full commit"):
+            self.run_publish(FakeGitHub(), dry_run=True)
+
+
 class FetchVerifyTests(SetFixture):
     def test_a_clean_set_is_fetched_and_verified(self):
         code, log = self.fetch()
