@@ -322,12 +322,38 @@ namespace DOL.GS
             // A first border that failed in the seam pass for the same zone chain fails the same way
             // in the full pass (same start, goal, crossings and chain): it is skipped there.
             var failed = new HashSet<string>();
-            if (topology.SeamEdges != null && TryRoutes(topology, from, to, start, goal, nav, allowed, true, failed, out step)) return true;
-            return TryRoutes(topology, from, to, start, goal, nav, allowed, false, failed, out step);
+            // #555: a goal on other ground of its zone is first reached only by chains that end on that ground. That ground
+            // is an estimate (the nearest road anchor), so the rule only prefers: when no step is found with it and it applied,
+            // the same passes run once more without it, and every trip that planned before still plans.
+            var rule = new GoalGroundRule { On = true };
+            if (topology.SeamEdges != null && TryRoutes(topology, from, to, start, goal, nav, allowed, true, failed, rule, out step)) return true;
+            if (TryRoutes(topology, from, to, start, goal, nav, allowed, false, failed, rule, out step)) return true;
+            if (!rule.Applied) return false;
+            _probeTrace?.Add("again without the goal-ground rule");
+            var off = new GoalGroundRule { On = false };
+            failed = new HashSet<string>();
+            if (topology.SeamEdges != null && TryRoutes(topology, from, to, start, goal, nav, allowed, true, failed, off, out step)) return true;
+            return TryRoutes(topology, from, to, start, goal, nav, allowed, false, failed, off, out step);
         }
 
+        /// <summary>#555: whether a planning try applies the goal-ground rule (<see cref="GoalAreaOffMain"/>), and whether it did.</summary>
+        private sealed class GoalGroundRule
+        {
+            public bool On;
+            public bool Applied;
+        }
+
+        private static Func<Zone, Vector3, int?> _goalGroundForTests;
+
+        /// <summary>Tests only: the goal-ground estimate in place of the nearest road anchor (null: the road anchors again).</summary>
+        public static void SetGoalGroundForTests(Func<Zone, Vector3, int?> estimate) => _goalGroundForTests = estimate;
+
+        /// <summary>The goal's ground in its zone by the nearest road anchor: an estimate (callers still prove every leg).</summary>
+        private static int? GoalGround(Zone zone, Vector3 goal) =>
+            _goalGroundForTests != null ? _goalGroundForTests(zone, goal) : AutonomousZoneRoads.AreaAt(zone, goal);
+
         private static bool TryRoutes(Topology topology, Zone from, Zone to, Vector3 start, Vector3 goal, IPathfindingMgr nav,
-            Func<Zone, bool> allowed, bool seamsOnly, HashSet<string> failed, out AutonomousZoneBoundaryRouting.Step step)
+            Func<Zone, bool> allowed, bool seamsOnly, HashSet<string> failed, GoalGroundRule rule, out AutonomousZoneBoundaryRouting.Step step)
         {
             step = default;
             // First the zone chain over connected ground (seam file area ids; the bot's and the goal's
@@ -349,7 +375,7 @@ namespace DOL.GS
                 else if (grounded.Length >= 2 && grounded.Length <= 32 && TryGetSharedEdge(from, grounded[1], out Edge first))
                 {
                     string chain = string.Join(">", grounded.Select(z => z.ID));
-                    if (nav.HasNavmesh(first.To) && TryEdgeStep(topology, first, grounded, start, goal, nav, out step)) return true;
+                    if (nav.HasNavmesh(first.To) && TryEdgeStep(topology, first, grounded, start, goal, nav, rule, out step)) return true;
                     failed.Add(chain);
                 }
             }
@@ -363,7 +389,7 @@ namespace DOL.GS
                 if (route.Length < 2 || route.Length > 32) break;
                 TryGetSharedEdge(from, route[1], out Edge edge);
                 string chain = string.Join(">", route.Select(z => z.ID));
-                if (!failed.Contains(chain) && nav.HasNavmesh(edge.To) && TryEdgeStep(topology, edge, route, start, goal, nav, out step)) return true;
+                if (!failed.Contains(chain) && nav.HasNavmesh(edge.To) && TryEdgeStep(topology, edge, route, start, goal, nav, rule, out step)) return true;
                 excluded.Add(edge);
                 failed.Add(chain);
             }
@@ -371,14 +397,14 @@ namespace DOL.GS
             {
                 _probeTrace?.Add($"deferred loop [{string.Join(">", deferredLoop.Select(z => z.ID))}]");
                 string chain = string.Join(">", deferredLoop.Select(z => z.ID));
-                if (nav.HasNavmesh(loopEdge.To) && TryEdgeStep(topology, loopEdge, deferredLoop, start, goal, nav, out step)) return true;
+                if (nav.HasNavmesh(loopEdge.To) && TryEdgeStep(topology, loopEdge, deferredLoop, start, goal, nav, rule, out step)) return true;
                 failed.Add(chain);
             }
             return false;
         }
 
         private static bool TryEdgeStep(Topology topology, Edge edge, Zone[] route, Vector3 start, Vector3 goal,
-            IPathfindingMgr nav, out AutonomousZoneBoundaryRouting.Step step)
+            IPathfindingMgr nav, GoalGroundRule rule, out AutonomousZoneBoundaryRouting.Step step)
         {
             step = default;
             // Prefer the direct intersection when it is legal. Unlike the old
@@ -406,7 +432,9 @@ namespace DOL.GS
             // the Valley of Bri Leith) is reached only by chains that end on that ground. A chain onto the zone's other ground
             // was taken from Cruachan Gorge into Connacht, where it failed, and Connacht's next chain led back into the Gorge:
             // AUTONOMOUS_ZONE_SEAM_CYCLE at 200:334880,417728 on the way to the orchard nipper camp (11/23).
-            int? goalAreaOffMain = GoalAreaOffMain(topology, edge, route, goal);
+            int? goalGround = Contains(edge.To, goal) ? null : GoalGround(route[^1], goal);
+            int? goalAreaOffMain = rule?.On == true ? GoalAreaOffMain(topology, route, goalGround) : null;
+            if (goalAreaOffMain != null) rule.Applied = true;
             bool Continues(int outsideArea) => reaches.TryGetValue(outsideArea, out bool cached) ? cached
                 : reaches[outsideArea] = ChainContinues(topology, route, outsideArea) &&
                     (goalAreaOffMain == null || ChainReachesArea(topology, route, outsideArea, goalAreaOffMain.Value) != false);
@@ -417,7 +445,6 @@ namespace DOL.GS
             // last border (the walk on to the goal itself is proved there), and not for a goal whose nearest road anchor
             // stands on other ground of its zone (a camp on a ledge): its way may be one of those crossings.
             bool mainListed = false;
-            int? goalGround = Contains(edge.To, goal) ? null : AutonomousZoneRoads.AreaAt(route[^1], goal);
             if (areas != null && !Contains(edge.To, goal) &&
                 (goalGround == null || goalGround == AutonomousZoneSeams.MainArea(topology.RegionId, route[^1].ID)))
                 foreach (SeamStep[] group in areas)
@@ -627,10 +654,9 @@ namespace DOL.GS
         /// #555: the goal's own ground in the route's last zone when it is known and is not that zone's main ground; null on
         /// the last border (the walk to the goal is proved there), without seam data, or when the goal is on the main ground.
         /// </summary>
-        private static int? GoalAreaOffMain(Topology topology, Edge edge, Zone[] route, Vector3 goal)
+        private static int? GoalAreaOffMain(Topology topology, Zone[] route, int? ground)
         {
-            if (!topology.Seams || route.Length < 3 || Contains(edge.To, goal)) return null;
-            int? ground = AutonomousZoneRoads.AreaAt(route[^1], goal);
+            if (!topology.Seams || route.Length < 3 || ground == null) return null;
             int? main = AutonomousZoneSeams.MainArea(topology.RegionId, route[^1].ID);
             return ground != null && main != null && ground != main ? ground : null;
         }
