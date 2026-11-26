@@ -106,13 +106,22 @@ The hit hook (`GameLiving.TakeDamage`) checks one empty dictionary outside raids
 per hit and one write per hit on a raider. The death hook (`GamePlayer` and `GameBot.ProcessDeath`) does one lookup per
 death and, for a raider, one pass over the attempt's raiders (healers in range).
 
-## For `living_report.py` (a later part)
+## Reports (#644 part 6)
 
-A `raid_attempts` section would read `ROWS = ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH"]`, join them on
-`attempt=`, and report per raid and boss: attempts, outcome codes, time to kill, deaths by role and source, top killers
-and mechanics, and `died` against `left`. The rows' fields are fixed by their `Format*` functions above, so a sim that
-writes through the same functions into `LivingRows.TestSink` compares with a PC log field by field.
+- **`living_report.py`'s `raid_attempts` section** (`source/tools/living_report_sections/raid_attempts.py`) joins the three rows
+  on `attempt=` and reports, per raid and boss: pulls, outcomes, the kill share, the median size and size against the period
+  size, time to kill and to fail, the boss's lowest health on a failed pull, and deaths a pull. Then all deaths by role, kind
+  and last hit, the top killers and mechanics, deaths with no healer in range, `died` against `left`, the wait from a failed
+  attempt to the next pull (`wipeToPullS`) and the muster before a pull (`gatherS`).
+- **`source/tools/raid_postmortem.py <attempt> <logs>`** prints one attempt: the pull, the end, every death in order with its
+  second into the pull, the deaths per 15 s, when the first raider and a quarter and half of the pull had died, and every
+  other row carrying the same `attempt=`. `--list` lists the attempts; `--run` picks one pull of an id that a server restart
+  reused.
+- Both read the rows through one parser (`living_report_sections/_raid.py`). A restart starts the attempt count at 1 again,
+  so an id pulled a second time in a log set is a new attempt (`<id> (run 2)`). Tests: `source/tools/tests/test_raid_attempts.py`,
+  on synthetic rows; it also parses the rows `UT_RaidAttemptRows644` pins for the `Format*` functions, so a change to the rows
+  fails there.
 
 Not in part 1 (later parts of #644): `RAID_FIGHT_SAMPLE`, `RAID_FUNNEL`, `RAID_MECHANIC_FIRE`, `RAID_THREAT` and
 `RAID_ROLE_TOTALS` (the last two behind the diagnostics switch, decision c), damage and heal totals on the end row,
-`rezzed=`, and the reports.
+`rezzed=`, the sims writing these rows, and the Grafana panels.
