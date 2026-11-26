@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **749**; pending (#625, not on main yet): **0**; shipped by the pipeline: **717**.
+- Rows in code: **750**; pending (#625, not on main yet): **0**; shipped by the pipeline: **718**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -24,6 +24,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AI_PROFILE` | server.log | **ships** | `Managers/GameLoop/AiProfile.cs`<br>`Managers/GameLoop/AiProfileReport.cs` | `locks_ms`, `max`, `other_ms`, `p95`, `p99`, `parallel_max`, `parallel_ms`, `parallel_p99`, `serial_max`, `serial_ms`, `serial_p99`, `tick_avg`, `tick_p50`, `ticks`, `top`, `window_s` | - | - | A thread-pool work item that throws ends the process, so nothing may leave here (review of PR #67): |
 | `AI_PROFILE_BUDGET` | server.log | **ships** | `Managers/GameLoop/AiProfile.cs` | `over` | - | - | - |
 | `ANIMIST_SHROOMS` | server.log | **ships** | `bots/autonomous/BotAnimistPolicy.cs` | `ablative`, `bot`, `crowded`, `damage`, `group`, `kind`, `level`, `main`, `mana`, `next`, `preferred`, `spores`, `vents` | `bot` | - | - |
+| `AUTONOMOUS_BARD_HEALER_SLOT` | server.log | **ships** | `bots/BardHealerSlot.cs` | `bot`, `group`, `id`, `level`, `size` | `bot` | - | - |
 | `AUTONOMOUS_BATTLEGROUND_EXIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `battleground`, `bot`, `destination`, `id`, `level`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_BETWEEN_TASK_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousObjectiveAssignments.cs` | `activity`, `assignment`, `bot`, `goal`, `id`, `level`, `region`, `x`, `y`, `z` | `bot` | - | - |
 | `AUTONOMOUS_BLOCKED_BACKPACK_CLEARED` | server.log | **ships** | `bots/autonomous/AutonomousBotEconomy.cs` | `bot`, `capacity`, `id`, `removed` | `bot` | - | - |
