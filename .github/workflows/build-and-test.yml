@@ -45,6 +45,12 @@ jobs:
       # must parse (front matter: version, section) and name a version still in development (changelog.d/README.md).
       - name: Check the changelog fragments
         run: python3 source/tools/assemble_changelog.py --check
+      # Issue #628: docs/LOG-ROWS.md, the Alloy allowlist and the Grafana dashboards are what the server code makes them
+      # (tools/grafana/kit.py), and the privacy filter drops what it must on synthetic lines.
+      - name: Check the Grafana kit
+        run: |
+          python3 tools/grafana/kit.py --check
+          python3 -m unittest discover -s tools/grafana/tests -v
       # Issue #649: the Grafana Cloud kit's detect, env check, install dry runs and config checks. ubuntu-latest has pwsh,
       # so the Windows scripts are parsed and dry-run too; ALLOY_BIN (not set here) would also run a real Alloy.
       - name: Grafana Cloud kit tests

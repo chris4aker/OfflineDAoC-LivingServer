@@ -36,6 +36,8 @@ CHECKS: list[tuple[str, str]] = [
     ("versions", "-m unittest discover -s tools/installer/tests"),
     ("encounter-catalog", "source/tools/epic_encounter_catalog.py --check"),
     ("encounter-catalog", "source/tools/assemble_changelog.py --check"),
+    ("encounter-catalog", "tools/grafana/kit.py --check"),
+    ("encounter-catalog", "-m unittest discover -s tools/grafana/tests"),
     ("encounter-catalog", "-m unittest discover -s source/tools/tests"),
     ("encounter-catalog", "tools/grafana/cloud/dashboards.py --check"),
     ("encounter-catalog", "-m unittest discover -s tools/grafana/cloud/tests"),
