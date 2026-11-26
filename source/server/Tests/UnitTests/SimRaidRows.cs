@@ -46,6 +46,7 @@ namespace DOL.UnitTests
             public bool Dead;
             public int Deaths;
             public long LastCombatMs = long.MinValue;
+            public long DeathMs = -1;
             public RaidAttemptRows.LastHit? LastHit;
             public double DealtBoss, DealtAdds, Took, Healed, Overheal;
         }
@@ -208,6 +209,7 @@ namespace DOL.UnitTests
             if (!_pulled || _ended || i < 0 || i >= _raiders.Count) return;
             Raider r = _raiders[i];
             r.Dead = true;
+            r.DeathMs = ms;
             r.Deaths++;
             _deaths++;
             RaidAttemptRows.LastHit? hit = r.LastHit;

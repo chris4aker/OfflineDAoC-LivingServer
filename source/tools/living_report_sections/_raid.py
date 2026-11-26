@@ -218,7 +218,8 @@ def check(lines) -> list[str]:
     """Problems with the raid rows of a log (raid_postmortem.py --check; the server job reads the sims' rows with it): every
     row has its row's fields in order, every attempt has a pull and an end, its RAID_DEATH rows are the end's deaths= and
     died + left is fallen. An attempt still open when the log stops is no problem in a server log, so only the sims' attempts
-    (build=sim) must have their end."""
+    (build=sim) must have their end. died + left = fallen is exact only for a sim: on the server (SplitFallen) a raider who
+    died and was rezzed between two looks is in died but not in fallen, so there died + left >= fallen."""
     problems = []
     for line in lines:
         kind = tag(line)
@@ -240,6 +241,9 @@ def check(lines) -> list[str]:
         if deaths is not None and deaths != len(a.deaths):
             problems.append(f"{a.key}: deaths={deaths} but {len(a.deaths)} RAID_DEATH rows")
         died, left, fallen = (count(a.end.get(k)) for k in ("died", "left", "fallen"))
-        if None not in (died, left, fallen) and died + left != fallen:
-            problems.append(f"{a.key}: died {died} + left {left} is not fallen {fallen}")
+        if None not in (died, left, fallen):
+            if sim and died + left != fallen:
+                problems.append(f"{a.key}: died {died} + left {left} is not fallen {fallen}")
+            elif not sim and died + left < fallen:
+                problems.append(f"{a.key}: died {died} + left {left} is under fallen {fallen}")
     return problems

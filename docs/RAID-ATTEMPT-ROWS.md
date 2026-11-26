@@ -284,13 +284,16 @@ death and, for a raider, one pass over the attempt's raiders (healers in range).
 
 ## Rows from the sims (#644 part 6)
 
-The raid simulations with a whole fight and the game's loss write each simulated pull as these rows, so a simulated attempt
+Two raid simulations with a whole fight write each simulated pull as these rows, and their row attempts end the game's way
+(`RealmRaidDungeonRoute.IsWipe`: half of the engaged fallen), so a simulated attempt
 reads with the same parser as a logged one and compares with it line by line (docs/RAID-SIZES.md, rule 4: the evidence must
 reproduce a PC kill and a PC loss). Tests only: a sim is a model, not a game result.
 
-- **Which sims:** Summoner Roesia (`UT_RaidSim121SummonersGreenKnight.RoesiaFight.Run`, the game's wipe: half the raid
-  fallen) and the Green Knight (`UT_RaidSim122GreenKnight.GreenKnightFight`, lost when no raider is left fighting). Each
-  takes an optional `SimRaidRows rows`; without it nothing is written.
+- **Which sims:** Summoner Roesia (`UT_RaidSim121SummonersGreenKnight.RoesiaFight.Run`), whose model loses the game's way
+  (half the raid fallen, deaths at 0 health, no rez), and the Green Knight (`UT_RaidSim122GreenKnight.GreenKnightFight`),
+  whose model loses only when no raider is left fighting. For the Green Knight the **row attempt** ends as `wipe` at the
+  first step half the raid has fallen, and nothing more is written for it; the model fights on unchanged (its pinned grids
+  count its own loss). Each takes an optional `SimRaidRows rows`; without it nothing is written.
 - **The same rows:** `SimRaidRows` (`source/server/Tests/UnitTests/SimRaidRows.cs`) writes every row through the server's
   `Format*` functions, and the server's own helpers decide each value they cover: `Role`, `RoleCounts`, `ClassCounts`,
   `Source` (from the last hit in the 5 s before a death), `SplitFallen`, `RaidFightSampleRows.Count` and `TargetKind`,
@@ -305,18 +308,22 @@ reproduce a PC kill and a PC loss). Tests only: a sim is a model, not a game res
   `medDist=` are `-`, every living healer counts in `healersIn=`, and every living raider is engaged. Neither model has
   power (`healerPow=-`), crowd control, interrupts or reactions before a landing (`reactMedianMs=-`). `phase` and `adds` are
   `-`, as on the server.
-- **Mechanics:** only where the server has a signal. The Green Knight's three measure-only mechanics (`heat`, his area
-  around him with no cast time; `heal`, which names himself; `trees`, no area) are written with `called=0`. Roesia has none
-  on the server, so her sim writes none.
-- **Outcomes:** `killed`, `wipe` (the model's loss), or `stopped` when the model's clock ran out (15 minutes for Roesia, 45
-  for the Green Knight).
+- **Mechanics:** only where the server has a signal. The Green Knight's three measure-only mechanics (`heat`, no cast time;
+  `heal`, which names himself; `trees`, no area) are written with `called=0`. The `heat` row's area is the model's own: around
+  his target, radius 500, the raiders inside his trees' reach, so its `within` is the set the model hits. The script's spell
+  has no range and lands around him; the model's centre differs, which is the model's to fix (#730, reruns owed), not the
+  rows'. Roesia has none on the server, so her sim writes none.
+- **Outcomes:** `killed`; `wipe` (half the raid fallen, the game's wipe); `stopped` otherwise: the model's clock ran out (15
+  minutes for Roesia, 45 for the Green Knight), or the Green Knight model's own loss (no raider left fighting) came before
+  half had fallen. The model's own loss is never written as `wipe`.
 - **Logging only:** a sim calls the recorder beside what it already does and never draws a random number for it, so its
   results are the same with and without it. `UT_SimRaidRows644` pins that, and that a simulated attempt's rows carry the
   server's fields in the server's order (read with `_util.py`'s key=value rule), join on one id and agree with each other
   and the fight. It also writes `raid-sim/raid-sims.raid.log` (`RAID_SIM_DIR` to move it), which the server job reads with
   **`raid_postmortem.py --check`** (every row's fields in order, a pull and an end per simulated attempt, the death rows
-  equal to `deaths=`, `died + left = fallen`) and uploads as the `raid-sim` artifact. `--check` works on a server log too
-  (an attempt still open when the log stops is no problem there). The field lists are `_raid.py`'s `KEYS`, held to the rows
+  equal to `deaths=`, `died + left = fallen`) and uploads as the `raid-sim` artifact. `--check` works on a server log too: an
+  attempt still open when the log stops is no problem there, and `died + left >= fallen` is enough (a raider who died and was
+  rezzed between two looks is in `died` but not in `fallen`). The field lists are `_raid.py`'s `KEYS`, held to the rows
   the C# tests pin.
 
 Not yet (#644): damage and heal totals on the end row (they are in `RAID_ROLE_TOTALS`, with the diagnostics switch),

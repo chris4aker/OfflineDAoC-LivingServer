@@ -520,7 +520,15 @@ class CheckTests(unittest.TestCase):
         self.assertEqual(_raid.check(SIM[:4]), [f"{S}: no RAID_ATTEMPT_END"], "a sim's attempt must end")
         swapped = SIM[:4] + [SIM[4].replace("deaths=1", "deaths=2")]
         self.assertEqual(_raid.check(swapped), [f"{S}: deaths=2 but 1 RAID_DEATH rows"])
-        self.assertEqual(_raid.check([SIM[4].replace("left=0", "left=1")])[-1], f"{S}: died 1 + left 1 is not fallen 1")
+        self.assertEqual(_raid.check([SIM[0], SIM[3], SIM[4].replace("left=0", "left=1")]), [f"{S}: died 1 + left 1 is not fallen 1"])
+
+    def test_a_server_attempt_may_count_a_rezzed_death_outside_fallen(self):
+        server = [SIM[0].replace("build=sim", "build=abc1234"), SIM[3], SIM[4].replace("fallen=1", "fallen=0")]
+        self.assertEqual(_raid.check(server), [], "died and rezzed between two looks: in died, not in fallen")
+        under = [server[0], server[1], SIM[4].replace("fallen=1", "fallen=3")]
+        self.assertEqual(_raid.check(under), [f"{S}: died 1 + left 0 is under fallen 3"])
+        sim = [SIM[0], SIM[3], SIM[4].replace("fallen=1", "fallen=0")]
+        self.assertEqual(_raid.check(sim), [f"{S}: died 1 + left 0 is not fallen 0"], "exact for a sim")
         extra = _raid.check([SIM[0] + " junk=1"])
         self.assertTrue(extra and extra[0].startswith("RAID_ATTEMPT 11/25 00:00:00: extra fields junk"), extra)
         order = _raid.check([SIM[2].replace("phase=- adds=-", "adds=- phase=-")])

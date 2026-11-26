@@ -160,9 +160,20 @@ namespace DOL.UnitTests
             {
                 SimRaidRows sim = GreenKnightRows(seed, n, seed + 1, out var fight);
                 TestContext.WriteLine($"Green Knight {n} seed {seed}: won {fight.Won}, fallen {fight.Fallen}, {sim.Rows.Count} rows");
-                // killed; wipe when no raider is left fighting (the model's loss, before its 45 minutes); else "stopped".
-                string outcome = fight.Won ? "killed" : fight.Minutes < 45 ? "wipe" : "stopped";
-                CheckAttempt(sim, n, outcome, fight.Fallen, $"Green Knight {n} seed {seed}");
+                // The row attempt ends the game's way: wipe at the first step half had fallen (RealmRaidDungeonRoute.IsWipe),
+                // else killed, else stopped (his clock, or the model's own loss before half had fallen).
+                int rowFallen = sim.Raiders.Count(r => r.Dead);
+                bool wiped = rowFallen * 2 >= n;
+                string outcome = wiped ? "wipe" : fight.Won ? "killed" : "stopped";
+                CheckAttempt(sim, n, outcome, rowFallen, $"Green Knight {n} seed {seed}");
+                Assert.That(rowFallen, Is.LessThanOrEqualTo(fight.Fallen), "the rows stop at the wipe; the model may fight on");
+                if (wiped)
+                {
+                    int before = sim.Raiders.Count(r => r.Dead && r.DeathMs < sim.EndMs);
+                    Assert.That(before * 2, Is.LessThan(n), "the row attempt ends at the first step half had fallen, not later");
+                    Assert.That(sim.Raiders.Where(r => r.Dead).Select(r => r.DeathMs), Is.All.LessThanOrEqualTo(sim.EndMs),
+                        "no death is written after the wipe");
+                }
                 string[] fires = sim.Rows.Where(r => Tag(r) == RaidAttemptRows.MechanicMarker).ToArray();
                 Assert.That(fires.Select(r => V(r, "mechanic")).Distinct(), Is.SubsetOf(new[] { "heat", "heal", "trees" }),
                     "his three measure-only mechanics (OFGreenKnight's RaidBossMechanics calls)");
@@ -173,6 +184,10 @@ namespace DOL.UnitTests
                     Assert.That((N(heat, "radius"), N(heat, "leadMs"), V(heat, "reactMedianMs")), Is.EqualTo((500, 0, "-")));
                     Assert.That(N(heat, "damage"), Is.EqualTo(N(heat, "hit") * 200), "200 a raider hit (the model's heat after resists)");
                     Assert.That(N(heat, "within"), Is.EqualTo(N(heat, "exposedAtCall")), "it lands at once");
+                    // The row's area is the model's own (its centre, radius and inside filter): every raider within is one the
+                    // model hits, so within and hit agree and nobody in it "avoided" it.
+                    Assert.That(N(heat, "hit"), Is.EqualTo(N(heat, "within")), "within is the set the model hits: " + heat);
+                    Assert.That(N(heat, "avoided"), Is.Zero, heat);
                 }
                 foreach (string trees in fires.Where(r => V(r, "mechanic") == "trees"))
                     Assert.That((V(trees, "exposedAtCall"), V(trees, "within"), V(trees, "avoided")), Is.EqualTo(("-", "-", "-")), "no area");

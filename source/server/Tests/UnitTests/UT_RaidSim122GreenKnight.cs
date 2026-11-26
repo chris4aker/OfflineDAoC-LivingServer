@@ -504,10 +504,13 @@ namespace DOL.UnitTests
                         if (rng.Next() < 0.3)
                         {
                             double cx = px[target], cy = py[target];
-                            // The row's area is his (the spell has no range: around him); its hits are the model's.
-                            rows?.Mechanic(Ms(), GreenKnightName, "heat", HeatSpellRadius, true,
-                                Enumerable.Range(0, n).Where(q => !dead[q] && Dist(px[q], py[q], gkx, gky) <= HeatSpellRadius).ToArray(),
-                                Enumerable.Range(0, n).Where(q => !dead[q] && Dist(px[q], py[q], gkx, gky) <= HeatSpellRadius).ToArray(), 0);
+                            // The row's area is the model's own: around his target, HeatRadius, raiders inside (the script's
+                            // spell lands around him; that difference is the model's, #730, not the row's).
+                            if (rows != null)
+                            {
+                                int[] area = Enumerable.Range(0, n).Where(q => !dead[q] && inside[q] && Dist(px[q], py[q], cx, cy) <= HeatRadius).ToArray();
+                                rows.Mechanic(Ms(), GreenKnightName, "heat", (int)HeatRadius, true, area, area, 0);
+                            }
                             for (int i = 0; i < N; i++)
                                 if (!dead[i] && inside[i] && Dist(px[i], py[i], cx, cy) <= HeatRadius)
                                 {
@@ -538,18 +541,24 @@ namespace DOL.UnitTests
                                 rows.HealersIn(i, j => Dist(px[i], py[i], px[j], py[j])), attackers);
                         }
                     }
-                if (rows != null) lowest = Math.Min(lowest, Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)));
+                if (rows != null)
+                {
+                    lowest = Math.Min(lowest, Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)));
+                    // The game's wipe (RealmRaidDragonFight.IsWipe = RealmRaidDungeonRoute.IsWipe): half of the engaged fallen. The
+                    // row attempt ends here and nothing more is written for it; the model fights on unchanged.
+                    if (!rows.Ended && gk > 0 && fallen * 2 >= n)
+                        rows.End(Ms(), RaidAttemptRows.DragonOutcome(true), Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)), lowest);
+                }
                 if (gk <= 0) { result = (true, now / 60, maxTrees, fallen, 0.0); break; }
                 if (!Enumerable.Range(0, n).Any(i => !dead[i] && inside[i])) { result = (false, now / 60, maxTrees, fallen, gk / 1000); break; }
                 now += Step;
             }
             result ??= (false, now / 60, maxTrees, fallen, gk / 1000);
-            if (rows != null)
+            if (rows != null && !rows.Ended)
             {
-                // killed; wipe when no raider is left fighting (the model's loss); else his clock ran out ("stopped").
-                bool lost = !Enumerable.Range(0, n).Any(i => !dead[i] && inside[i]);
-                string outcome = result.Value.Item1 ? RaidAttemptRows.RaidEndOutcome(null, true) : lost ? RaidAttemptRows.DragonOutcome(true)
-                    : RaidAttemptRows.RaidEndOutcome(null, false);
+                // Not wiped the game's way: killed, else "stopped" (his clock ran out, or the model's own loss, no raider left
+                // fighting, came before half had fallen: the pet owners stand outside his trees' reach). Never "wipe".
+                string outcome = result.Value.Item1 ? RaidAttemptRows.RaidEndOutcome(null, true) : RaidAttemptRows.RaidEndOutcome(null, false);
                 rows.End(Ms(), outcome, Math.Max(0, (int)Math.Floor(gk * 100 / 100_000)), lowest);
             }
             stats.Contributed = contrib.Count(c => c > 0);
