@@ -20,7 +20,11 @@ namespace DOL.GS.Tests;
 public class UT_LoughDergRidgeSeam421
 {
     [TearDown]
-    public void TearDown() => AutonomousZoneSeams.SetForTests(null);
+    public void TearDown()
+    {
+        AutonomousZoneSeams.SetForTests(null);
+        AutonomousZoneItinerary.SetGoalGroundForTests(null);
+    }
 
     private static Zone Z(ushort id, int x, int y) => new(null, id, $"zone{id}", x, y, 65536, 65536, id, false, 0, false, 0, 0, 0, 0, 0);
 
@@ -153,5 +157,32 @@ public class UT_LoughDergRidgeSeam421
             Assert.That(At(step.Outside), Is.EqualTo(LoughDerg));
             Assert.That(Ground(LoughDerg, step.Outside), Is.EqualTo("ridge"), $"stepped to {step.Outside}");
         });
+    }
+    [Test]
+    public void AGoalGroundNoChainReachesStillGetsTodaysStep()
+    {
+        // #555 review: the goal's ground is an estimate (the nearest road anchor). When it names ground no chain reaches, the
+        // goal-ground rule leaves nothing, and the planner tries once more without it, so a trip that planned before (here the
+        // Gorge's main ground into Connacht's) still plans.
+        AutonomousZoneSeams.SetForTests(SeamFile);
+        AutonomousZoneItinerary.SetGoalGroundForTests((zone, goal) => 99_999);
+        var trace = new List<string>();
+        var gorgeMain = new Vector3(334880, 417728, 6527);
+        var camp = new Vector3(340500, 490000, 5203); // Lough Derg's main ground
+        bool ok = AutonomousZoneItinerary.ProbeNextStep(Hibernia, 200, Cruachan, LoughDerg, gorgeMain, camp, new GroundNav(),
+            out var step, trace);
+        Assert.Multiple(() =>
+        {
+            Assert.That(ok, Is.True, string.Join("\n", trace));
+            Assert.That(At(step.Outside), Is.EqualTo(Connacht), $"stepped to {step.Outside}");
+            Assert.That(trace, Does.Contain("again without the goal-ground rule"), "found only on the second try");
+        });
+
+        // Without an estimate (no road data), nothing changes and no second try runs.
+        AutonomousZoneItinerary.SetGoalGroundForTests((zone, goal) => null);
+        trace.Clear();
+        ok = AutonomousZoneItinerary.ProbeNextStep(Hibernia, 200, Cruachan, LoughDerg, gorgeMain, camp, new GroundNav(), out step, trace);
+        Assert.That((ok, At(step.Outside)), Is.EqualTo((true, Connacht)));
+        Assert.That(trace, Does.Not.Contain("again without the goal-ground rule"));
     }
 }
