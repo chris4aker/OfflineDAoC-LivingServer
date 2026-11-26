@@ -32,6 +32,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import publish_release as pr  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+# How GitHub's releases API gives an asset's digest (2025 on). The contract's item 5.
+GITHUB_DIGEST = "sha256:{}"
 RELEASE_FEED = REPO_ROOT / "source/tools/DAoCLivingServer.Launcher/Updates/ReleaseFeed.cs"
 
 
@@ -148,7 +150,8 @@ def released(repository, below, out):
         with _get(asset["browser_download_url"], "application/octet-stream") as resp, open(path, "wb") as f:
             shutil.copyfileobj(resp, f, 1 << 20)
         sha = pr.sha256_file(path)
-        if asset.get("digest") != pr.github_digest(sha):
+        # GitHub's own form, not publish_release.github_digest: this reads what GitHub really publishes.
+        if asset.get("digest") != GITHUB_DIGEST.format(sha):
             raise Stop(f"{asset['name']}: GitHub's digest {asset.get('digest')} isn't sha256:{sha}")
         got[kind] = str(path)
         got[kind + "_sha256"] = sha

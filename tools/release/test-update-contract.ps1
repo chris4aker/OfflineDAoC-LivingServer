@@ -104,8 +104,8 @@ Check ($code -eq 0) "$($rel.tag)'s launcher takes $($feed.tag) and installs it (
 Copy-Item -LiteralPath (Join-Path $game 'runtime\logs\launcher-updates.log') -Destination $logs -ErrorAction SilentlyContinue
 
 # 3. The result is the candidate.
-$candInfo = Read-Info (Join-Path $game "LivingServer-$($feed.build)\BUILD-INFO.txt")
 if ($code -eq 0) {
+    $candInfo = Read-Info (Join-Path $game "LivingServer-$($feed.build)\BUILD-INFO.txt")
     foreach ($folder in @('runtime\server', 'runtime\server\lib', 'runtime\server\win-x64')) {
         Check ((Sha (Join-Path $game "$folder\GameServer.dll")) -eq $candInfo['GameServer.dll']) "$folder\GameServer.dll is the candidate's"
     }
