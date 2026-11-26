@@ -81,4 +81,5 @@ such as `v1.2.3-rc.1` (issue #637). It is never marked Latest, so players on nor
 - Run **publish-release** with `tag` `v1.2.3-rc.<N>`, the green build-and-test push run on `main` as `run_id`, and
   `prerelease` on. Keep `dry_run` on first: it checks everything, prints the notes and publishes nothing. Then run it
   again with `dry_run` off.
-- The release carries `OfflineDAoC-LivingServer-1.2.3-rc.<N>.zip` with GitHub's digest, under short generated notes.
+- The release carries `DAoC-LivingServer-1.2.3-rc.<N>.zip`, and the same file as `OfflineDAoC-LivingServer-1.2.3-rc.<N>.zip`
+  for 1.2.x launchers (#641), each with GitHub's digest, under short generated notes.
