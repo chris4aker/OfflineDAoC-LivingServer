@@ -268,6 +268,20 @@ public class SocialExpansionSettingsTests
         Assert.That(SocialExpansionSettings.Defaults.AllOff().BotRaidInvites, Is.False);
     }
 
+    [Test] public void SightSizeUpIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #662 (owner 2026-11-26): bot_rvr_sight_size_up, a bot combat rule rather than a Living Server life feature, on by
+        // default and in Setup; no checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.SightSizeUp && SocialExpansionSettings.Recommended.SightSizeUp, Is.True);
+        Assert.That(d.AllOff().SightSizeUp, Is.True);
+        (d with { SightSizeUp = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_rvr_sight_size_up"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).SightSizeUp, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void BotsAsPeopleSwitchesAreOnSavedReadAndTurnedOffWithAllOff()
     {
         // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md, "Settings"): the card's four master switches, on by default and in Setup.

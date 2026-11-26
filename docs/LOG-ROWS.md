@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **751**; pending (#625, not on main yet): **0**; shipped by the pipeline: **719**.
+- Rows in code: **754**; pending (#625, not on main yet): **0**; shipped by the pipeline: **722**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -721,6 +721,9 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_SIEGE_PRESENCE` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `minute`, `target` | - | - | - |
 | `RVR_SIEGE_STALL` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `minute`, `stalledMinutes`, `why` | - | - | - |
 | `RVR_SIEGE_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `present`, `reason`, `target` | - | - | - |
+| `RVR_SIGHT_BACK_OFF` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.SightSizeUp.cs` | `bot`, `called`, `enemies`, `id`, `nearest`, `realm`, `region`, `to`, `waitSeconds` | `bot` | - | - |
+| `RVR_SIGHT_RESUME` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.SightSizeUp.cs` | `bot`, `id`, `realm`, `region`, `why` | `bot` | - | - |
+| `RVR_SIGHT_SIZE_UP` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.SightSizeUp.cs` | `allies`, `allyLevel`, `boldness`, `bot`, `call`, `enemies`, `enemyLevel`, `enemyTop`, `fighters`, `healers`, `id`, `level`, `line`, `mistake`, `nearest`, `odds`, `realm`, `reason`, `region`, `tier` | `bot`, `line` | - | - |
 | `RVR_SIZE_UP` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `bigger`, `contact`, `decision`, `enemy`, `enemyPower`, `friendly`, `friendlyPower`, `group`, `kiteMelee`, `odds`, `read`, `realm`, `reason`, `region`, `skill`, `thirdParty`, `wipes` | - | - | - |
 | `RVR_SPOT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrPerception.cs` | `bot`, `call`, `channel`, `held`, `id`, `kind`, `noticed`, `region`, `relayed`, `target`, `told` | `bot`, `target` | - | - |
 | `RVR_STANCE` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `contact`, `enemies`, `fight`, `from`, `group`, `members`, `realm`, `reason`, `region`, `skill`, `to`, `unlogged`, `wipes` | - | - | - |
