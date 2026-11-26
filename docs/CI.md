@@ -76,6 +76,16 @@ UT_InstalledKeepRoutes  # read-only installed keep navigation: needs the install
 - A whole class goes on the list only when all of it needs the installed game files (navmeshes, a played or release
   database, captured logs), and its fixture is `[Explicit]`. `source/tools/tests/test_ci_test_results.py` fails
   otherwise. Issue #619 tracks the list and how to run them on the owner's PC.
+- **Running them** (on a PC with a playable folder and the .NET SDK; #619):
+  ```
+  python source/tools/run_installed_tests.py --list                     # each class, its reason, the variables it reads
+  python source/tools/run_installed_tests.py --game D:\Games\LivingServer [--only UT_A UT_B] [--dry-run]
+  ```
+  It sets `OFFLINE_DAOC_NAV_ROOT` (`<game>/runtime/server`, read in place), `OFFLINE_DAOC_DB_PATH` and `OFFLINE_DAOC_DB`
+  (a copy of the world made with SQLite's backup API, never the world itself) and `OFFLINE_DAOC_PROOF_OUT`; other
+  variables a class reads pass through from the environment. It refuses to run while a server answers on port 10300,
+  never starts one, and sums up `installed.trx`. No schedule runs them yet: that needs a self-hosted runner on the
+  owner's PC or fixture meshes in Git, both the owner's call (#619).
 - **A synthetic test never goes on the list whole-class.** Fix it. If it can't be fixed now, quarantine just it as
   `UT_Class.Method  # why (#issue)` with its own issue, and name it in the pull request. Never delete a test.
 - #618 took six classes off the list. Each had installed-file tests marked `[Explicit]` beside synthetic ones that had
@@ -90,6 +100,7 @@ Each checker CI runs has a test that plants a defect and sees it fail, and sees 
 |---|---|
 | `tools/check.py` (local mirror) | `source/tools/tests/test_check.py` (stale catalog; issue #615) |
 | `source/tools/ci_test_results.py` | `source/tools/tests/test_ci_test_results.py` (missing, unreadable, failed, empty, vanished class, bad excluded list) |
+| `source/tools/run_installed_tests.py` | `source/tools/tests/test_run_installed_tests.py` (server running, not a game folder, unlisted class, no results; the world is copied, never used) |
 | `source/tools/make_command_reference.py --check` | `source/tools/tests/test_checkers_fail.py` |
 | `source/tools/epic_encounter_catalog.py --check` | `source/tools/tests/test_epic_encounter_catalog.py`, `test_check.py` |
 | `source/tools/chat_audit.py` | `source/tools/tests/test_chat_audit*.py` |
