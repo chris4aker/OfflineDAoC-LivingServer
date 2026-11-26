@@ -299,7 +299,7 @@ public class UT_AutonomousBotDecisionEngine
     }
 
     [Test]
-    public void RvrTenure_StaysBoundedAndRequiresPersistedPveIntermission()
+    public void RvrTenure_StaysBoundedAndEligibilityFollowsTheShareNotAnOldTime()
     {
         Assert.That(Enumerable.Range(0, 200)
             .Select(seed => AutonomousObjectiveAssignments.RollRvrTenure(new Random(seed))),
@@ -308,6 +308,7 @@ public class UT_AutonomousBotDecisionEngine
         DateTime now = DateTime.UtcNow;
         var record = new OfflineWorldBotRecord
         {
+            Level = 30,
             ObjectiveKind = "RvR",
             ObjectiveExpiresUtc = now.AddMinutes(1).ToString("O"),
             ObjectiveRvrEligibleUtc = now.AddMinutes(30).ToString("O"),
@@ -316,7 +317,8 @@ public class UT_AutonomousBotDecisionEngine
         {
             Assert.That(AutonomousObjectiveAssignments.HasActiveRvrTenure(record, now), Is.True);
             Assert.That(AutonomousObjectiveAssignments.HasActiveRvrTenure(record, now.AddMinutes(2)), Is.False);
-            Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, now), Is.False);
+            // #669 (owner, 2026-11-26): no file-less PvE-after-RvR wait; a saved time is ignored, the RvR share decides.
+            Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, now), Is.True);
             Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, now.AddMinutes(31)), Is.True);
         });
     }

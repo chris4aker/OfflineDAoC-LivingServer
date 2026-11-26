@@ -35,6 +35,12 @@ public static class AutonomousObjectiveAssignments
     public static readonly TimeSpan MaximumPveTenure = TimeSpan.FromMinutes(120);
     public static readonly TimeSpan GroupMatchmakingTimeout = TimeSpan.FromMinutes(20);
     private const string BetweenTasksPrefix = "between-pve-services-";
+    /// <summary>
+    /// The marker of the removed file-less rule "one solo PvE task after an RvR tour" (owner, 2026-11-26, #669: a world
+    /// without bot-goals.json behaves exactly like one with saved defaults). Nothing sets or reads it any more; saved
+    /// records from an earlier build may still hold it in <c>ObjectiveRvrEligibleUtc</c>, and
+    /// <see cref="AutonomousBotGoalPolicy.ReconcileSavedAssignment"/> clears it when the bot loads.
+    /// </summary>
     public const string PveCompletionRequired = "awaiting-completed-pve-task";
     public static readonly TimeSpan MaximumBetweenTaskDuration = TimeSpan.FromMinutes(30);
     private static readonly object Sync = new();
@@ -142,17 +148,11 @@ public static class AutonomousObjectiveAssignments
         return changed;
     }
 
-    public static bool IsRvrEligible(OfflineWorldBotRecord record, DateTime utcNow)
-    {
-        // #669: still file-only. Without a file this is the kept rule "one PvE task after an RvR tour"
-        // (PveCompletionRequired); the pass's targets come from the defaults either way.
-        if (AutonomousBotGoalPolicy.IsConfigured)
-            return record == null || AutonomousBotGoalPolicy.Settings.ForLevel(record.Level).RvR > 0;
-        if (record?.ObjectiveRvrEligibleUtc == PveCompletionRequired) return false;
-        return record == null || string.IsNullOrWhiteSpace(record.ObjectiveRvrEligibleUtc) ||
-               !DateTime.TryParse(record.ObjectiveRvrEligibleUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime eligibleUtc) ||
-               eligibleUtc.ToUniversalTime() <= utcNow.ToUniversalTime();
-    }
+    // #669 (owner, 2026-11-26): the RvR share decides, with or without a file (then the defaults). The file-less
+    // "one PvE task after an RvR tour" rule is gone, so a stale PveCompletionRequired or time in
+    // ObjectiveRvrEligibleUtc is ignored here. utcNow is kept for the callers.
+    public static bool IsRvrEligible(OfflineWorldBotRecord record, DateTime utcNow) =>
+        record == null || AutonomousBotGoalPolicy.Settings.ForLevel(record.Level).RvR > 0;
 
     /// <summary>Selects only PvE work, retaining the current bucket's solo/group balance.</summary>
     public static eAutonomousObjectiveKind ChoosePveObjective(Allocation target, int assignedSolo, int assignedGroup, Random random = null)
@@ -520,7 +520,7 @@ public static class AutonomousObjectiveAssignments
         record.ObjectivePveMode = string.Empty;
         record.ObjectivePveKillTarget = 0;
         record.ObjectivePveKills = 0;
-        record.ObjectiveRvrEligibleUtc = AutonomousBotGoalPolicy.IsConfigured ? string.Empty : PveCompletionRequired;
+        record.ObjectiveRvrEligibleUtc = string.Empty; // #669: no PvE-after-RvR marker, with or without a file
         record.ObjectiveAssignmentId = string.Empty;
         record.ObjectivePhase = "Returning to PvE after frontier tour";
         record.CurrentCampId = string.Empty;
@@ -538,14 +538,13 @@ public static class AutonomousObjectiveAssignments
             return;
         // Do not acquire the allocation lock from the group coordinator: the
         // allocation pass itself can remove group members. A fresh independent
-        // task resets only work, never progress/items. Every level must finish
-        // one PvE assignment after an RvR tour before becoming eligible again.
-        bool leavingRvr = Is(bot, eAutonomousObjectiveKind.RvR);
-        if (leavingRvr)
-            bot.PersistentRecord.ObjectiveRvrEligibleUtc = AutonomousBotGoalPolicy.IsConfigured ? string.Empty : PveCompletionRequired;
+        // task resets only work, never progress/items. #669: leaving RvR sets no
+        // PvE-after-RvR marker any more; the next goal follows the shares.
+        if (Is(bot, eAutonomousObjectiveKind.RvR))
+            bot.PersistentRecord.ObjectiveRvrEligibleUtc = string.Empty;
         if (TryBeginBetweenTaskServices(bot))
             return;
-        Assign(bot, TaskBreakGoal(bot, leavingRvr), (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
+        Assign(bot, TaskBreakGoal(bot), (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
         bot.PersistentRecord.CurrentCampId = string.Empty;
         bot.PersistentRecord.TargetName = string.Empty;
         bot.PersistentRecord.TravelDestination = string.Empty;
@@ -558,10 +557,8 @@ public static class AutonomousObjectiveAssignments
     public static void EndBattlegroundTour(GameBot bot, string reason)
     {
         if (bot?.PersistentRecord == null || !Is(bot, eAutonomousObjectiveKind.Battleground)) return;
-        // #669: the shares without a battleground (untilted, as before), also without a file; a file-less world keeps
-        // its one solo PvE task after an RvR tour.
+        // #669: the shares without a battleground (untilted, as before), with or without a file.
         eAutonomousObjectiveKind next = TaskBreakGoal(bot.Level,
-            bot.PersistentRecord.ObjectiveRvrEligibleUtc == PveCompletionRequired,
             () => AutonomousBotGoalPolicy.Choose(bot.Level, excludeBattlegrounds: true));
         Assign(bot, next, (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
         bot.PersistentRecord.CurrentCampId = bot.PersistentRecord.TargetName = bot.PersistentRecord.TravelDestination = string.Empty;
@@ -834,30 +831,25 @@ public static class AutonomousObjectiveAssignments
                 $"region={bot.CurrentRegionID} x={bot.X} y={bot.Y} z={bot.Z} " +
                 $"goal=\"{bot.PersistentRecord.CurrentGoal}\" activity=\"{bot.PersistentRecord.Activity}\" " +
                 $"assignment=\"{bot.PersistentRecord.ObjectiveAssignmentId}\"");
-        bool pveRequired = bot.PersistentRecord.ObjectiveRvrEligibleUtc == PveCompletionRequired;
-        Assign(bot, TaskBreakGoal(bot, pveRequired), (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
+        Assign(bot, TaskBreakGoal(bot), (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
     }
 
-    /// <summary>The goal a bot draws when its task break ends: <see cref="TaskBreakGoal(int, bool, Func{eAutonomousObjectiveKind}, Random)"/>
+    /// <summary>The goal a bot draws when its task break ends: <see cref="TaskBreakGoal(int, Func{eAutonomousObjectiveKind}, Random)"/>
     /// with the configured mix, tilted by personality.</summary>
-    private static eAutonomousObjectiveKind TaskBreakGoal(GameBot bot, bool pveRequired) =>
-        TaskBreakGoal(bot.Level, pveRequired, () => AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)));
+    private static eAutonomousObjectiveKind TaskBreakGoal(GameBot bot) =>
+        TaskBreakGoal(bot.Level, () => AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)));
 
     /// <summary>
     /// #669 (owner, 2026-11-26): the goal at a task break follows the Bot Goals shares (<see cref="AutonomousBotGoalPolicy.Settings"/>,
     /// the defaults when there is no bot-goals.json, as the launcher shows them) through <paramref name="draw"/>. Until 1.2.3 a
     /// world without the file gave every bot below 50 SoloPve here, so the battleground, RvR and group shares came only
-    /// from the one-minute pass. A world without a file keeps the two rules it already had: one solo PvE task after an RvR
-    /// tour (<paramref name="pveRequired"/>, <see cref="PveCompletionRequired"/>) and level 50's untilted draw. A world with
-    /// a file (or the test override) is unchanged: always <paramref name="draw"/>.
+    /// from the one-minute pass. The file-less "one solo PvE task after an RvR tour" rule (<see cref="PveCompletionRequired"/>)
+    /// is gone too (owner, 2026-11-26): a bot just off RvR draws like any other. A world without a file keeps only level
+    /// 50's untilted draw. A world with a file (or the test override) is unchanged: always <paramref name="draw"/>.
     /// </summary>
-    public static eAutonomousObjectiveKind TaskBreakGoal(int level, bool pveRequired, Func<eAutonomousObjectiveKind> draw, Random random = null)
+    public static eAutonomousObjectiveKind TaskBreakGoal(int level, Func<eAutonomousObjectiveKind> draw, Random random = null)
     {
-        if (!AutonomousBotGoalPolicy.IsConfigured)
-        {
-            if (pveRequired) return eAutonomousObjectiveKind.SoloPve;
-            if (level >= 50) return RollLevelFiftyObjective(random);
-        }
+        if (!AutonomousBotGoalPolicy.IsConfigured && level >= 50) return RollLevelFiftyObjective(random);
         return draw();
     }
 }

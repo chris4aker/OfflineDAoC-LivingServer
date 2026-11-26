@@ -11,9 +11,10 @@ public static class AutonomousBotGoalPolicy
     /// <summary>
     /// True when a goals file was loaded (the server's bot-goals.json, or the test override). Since 1.2.3 (#669; owner,
     /// 2026-11-26) a world without one still follows <see cref="Settings"/> (then <see cref="BotGoalSettings.Defaults"/>,
-    /// as the launcher shows them) at every task break; this flag only keeps the file-less world's one sequencing rule,
-    /// one solo PvE task after an RvR tour (<see cref="AutonomousObjectiveAssignments.PveCompletionRequired"/>), and
-    /// the level-50 draw it always had (<see cref="AutonomousObjectiveAssignments.TaskBreakGoal"/>).
+    /// as the launcher shows them) at every task break, and its RvR eligibility follows the RvR share (the file-less
+    /// "one solo PvE task after an RvR tour" rule was removed; owner, 2026-11-26, #669). This flag only keeps the
+    /// level-50 task-break draw a file-less world always had (<see cref="AutonomousObjectiveAssignments.TaskBreakGoal"/>)
+    /// and the pass's over-quota draw.
     /// </summary>
     public static bool IsConfigured { get; private set; }
     /// <summary>Where <see cref="Settings"/> came from at the last Initialize: "file", "override" or "defaults".</summary>
@@ -77,12 +78,12 @@ public static class AutonomousBotGoalPolicy
 
     // Called before an autonomous actor can enter the world. Keep inventory,
     // position, XP and valid saved task clocks; discard only a now-disabled task.
-    // #669: still file-only. Without a file the defaults disable no goal a saved record can hold (an out-of-bracket
-    // battleground is ended by EndBattlegroundTour), and the RvR marker it clears is the file-less world's
-    // one-PvE-task-after-RvR rule, which stays.
+    // #669 (owner, 2026-11-26): with or without a file, the same path. Without one the defaults decide what is
+    // disabled, and the RvR marker cleared here includes PveCompletionRequired, which a world that ran an earlier build
+    // may still hold for a bot just off an RvR tour (nothing reads it any more; clearing it keeps the record clean).
     public static bool ReconcileSavedAssignment(OfflineWorldBotRecord record)
     {
-        if (!IsConfigured || record == null) return false;
+        if (record == null) return false;
         bool changed = false;
         if (!string.IsNullOrEmpty(record.ObjectiveRvrEligibleUtc))
         {

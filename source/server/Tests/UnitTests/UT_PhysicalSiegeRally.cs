@@ -171,7 +171,8 @@ public class UT_PhysicalSiegeRally
         Assert.That(rolls.Count(k => k == eAutonomousObjectiveKind.RvR), Is.EqualTo(40));
         Assert.That(rolls.Count(k => k == eAutonomousObjectiveKind.GroupPve), Is.EqualTo(40));
         Assert.That(rolls.Count(k => k == eAutonomousObjectiveKind.SoloPve), Is.EqualTo(20));
+        // #669 (owner, 2026-11-26): the file-less PvE-after-RvR marker is gone; an old saved one is ignored.
         var record = new OfflineWorldBotRecord { Level = 50, ObjectiveRvrEligibleUtc = AutonomousObjectiveAssignments.PveCompletionRequired };
-        Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow), Is.False);
+        Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow), Is.True);
     }
 }
