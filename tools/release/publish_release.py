@@ -115,7 +115,7 @@ def zip_name(build):
 
 def legacy_zip_name(build):
     """The package's pre-1.2.3 name: the copy a renamed release carries for older launchers, or None if it needs none."""
-    return f"OfflineDAoC-LivingServer-{build}.zip" if renamed(build) else None
+    return None
 
 
 def setup_name(build):
