@@ -2310,6 +2310,8 @@ namespace DOL.AI.Brain
 
             bool autonomousPetUpkeep = bot.CharacterClass != null &&
                 AutonomousPetSupport.OwnsPetUpkeep((eCharacterClass)bot.CharacterClass.ID);
+            // #567 A1: an autonomous party walking (or just stopped) holds the buffs the formation follow would refuse.
+            bool partyTravelHold = HoldsUpkeepForGroupTravel();
             List<Spell> known = (bot.MiscSpells ?? [])
                 .Concat(bot.InstantMiscSpells ?? [])
                 .Where(spell => spell != null && !spell.IsHarmful && spell.Level <= bot.Level &&
@@ -2319,11 +2321,15 @@ namespace DOL.AI.Brain
                                 (spell.Target is not (eSpellTarget.PET or eSpellTarget.CONTROLLED) ||
                                  AutonomousPetSupport.ShouldMaintainRoutinePetBuff(spell, false)) &&
                                 (!waitingForLeader || CompanionFollowPolicy.CanStopForNativeTravelSpeed(bot, spell)) &&
+                                (!partyTravelHold || !CompanionFollowPolicy.IsOrdinaryBuff(bot, spell)) &&
                                 !BotSongTwistPolicy.IsReservedPulse(bot, spell))
                 .DistinctBy(spell => spell.ID)
                 .ToList();
             if (known.Count == 0)
             {
+                // #567 A1: a held pass with nothing left looks again in a second, not on every think.
+                if (partyTravelHold)
+                    _nextMaintenanceBuffTick = GameLoop.GameLoopTime + BotTravelCastHold.HeldRecheckMilliseconds;
                 CompleteCompanionPerformerBuffBatch(bot);
                 return false;
             }
@@ -2419,15 +2425,15 @@ namespace DOL.AI.Brain
 
             // Nothing castable from here, but a group member out of range still needs
             // a buff: walk toward them (not while following a moving leader).
-            if (outOfRangeBuffTarget != null && !waitingForLeader && ApproachSupportTarget(outOfRangeBuffTarget))
+            if (outOfRangeBuffTarget != null && !waitingForLeader && !partyTravelHold && ApproachSupportTarget(outOfRangeBuffTarget))
             {
                 _nextMaintenanceBuffTick = GameLoop.GameLoopTime + 1_000;
                 return true;
             }
 
             // A complete scan found nothing missing. Avoid rescanning the whole
-            // spellbook on every lightweight AI tick.
-            _nextMaintenanceBuffTick = GameLoop.GameLoopTime + 8_000;
+            // spellbook on every lightweight AI tick (held: again within a second, #567 A1).
+            _nextMaintenanceBuffTick = GameLoop.GameLoopTime + BotTravelCastHold.NextScanAfter(partyTravelHold, 8_000);
             CompleteCompanionPerformerBuffBatch(bot);
             return false;
         }
@@ -5312,6 +5318,9 @@ namespace DOL.AI.Brain
         /// </summary>
         public static bool HotBlockedBy(Spell hot, Spell existing) => existing == null || DotsConflict(hot, existing);
 
+        /// <summary>#567 B5: when this healer first saw its party in the current fight (0: not in one).</summary>
+        private long _healFightStart;
+
         /// <summary>
         /// #567 A3: a groupmate bot is casting (or has queued) a heal over time at this target that the server would make
         /// conflict with this one, so a second would only overwrite it.
@@ -5409,6 +5418,18 @@ namespace DOL.AI.Brain
         #region Healing
 
         private long nextCureTime = 0;
+
+        /// <summary>The spell a BotHealTriage165 pick names (null for None).</summary>
+        private Spell HealSpellFor(BotHealTriage165.HealPick pick) => pick switch
+        {
+            BotHealTriage165.HealPick.Instant => BotBody.HealInstant,
+            BotHealTriage165.HealPick.InstantGroup => BotBody.HealInstantGroup,
+            BotHealTriage165.HealPick.OverTime => BotBody.HealOverTime,
+            BotHealTriage165.HealPick.Efficient => BotBody.HealEfficient,
+            BotHealTriage165.HealPick.Big => BotBody.HealBig,
+            BotHealTriage165.HealPick.Group => BotBody.HealGroup,
+            _ => null,
+        };
 
         bool CheckHealSpell(Spell spell)
         {
@@ -5754,6 +5775,21 @@ namespace DOL.AI.Brain
             Spell spellToCast = null;
             GameLiving spellTarget = null;
             bool startedCasting = false;
+            // #567 B1-B5 (bot_healer_period_rules, on by default): the 1.65 healer (BotHealTriage165). Off: the rules before.
+            // Never in a raid or a warband (shared support) or against a boss with a tactic: those keep their own rules.
+            bool raidSupport = AutonomousRealmRaid.HasSharedSupport(BotBody);
+            // A boss fight holds steady from think to think: the healer's, the assisted player's or the party leader's target.
+            bool bossFight = BotHealTriage165.IsBossTarget(Body.TargetObject) ||
+                BotHealTriage165.IsBossTarget(AssistedPlayer?.TargetObject) ||
+                BotHealTriage165.IsBossTarget(Body.Group?.LivingLeader?.TargetObject);
+            bool periodRules = BotHealTriage165.Applies(BotHealTriage165.On, raidSupport, bossFight);
+            // B4's tank: the most hurt living tank in reach, found in the group walk below (no second walk, no allocation).
+            GameLiving preHotTank = null;
+            int healerNeedAt = BotHealTriage165.HealerNeedAt(periodRules);
+            bool partyInFight = false;
+            // B2: a tank is triaged 10 points lower (never into the emergency band); without the rules, plain health.
+            int TriageHealth(GameLiving living) =>
+                periodRules ? BotHealTriage165.TriageHealth(living.HealthPercent, BotHealTriage165.IsTank(living)) : living.HealthPercent;
 
             // Check group health
             if (Body.Group != null)
@@ -5762,6 +5798,10 @@ namespace DOL.AI.Brain
                 {
                     if (!member.IsAlive || !InSupportReach(member))
                         continue;
+                    partyInFight |= member.InCombat || member.IsAttacking;
+                    if (periodRules && BotHealTriage165.IsTank(member) &&
+                        (preHotTank == null || member.HealthPercent < preHotTank.HealthPercent))
+                        preHotTank = member;
 
                     int deficit = member.MaxHealth - member.Health;
 
@@ -5769,8 +5809,9 @@ namespace DOL.AI.Brain
                     {
                         amountToHeal += deficit;
                         if (RaidCurePoison.InDanger(member.HealthPercent, member.IsPoisoned, painRules)) partyInDanger++;
+                        int triage = TriageHealth(member);
 
-                        if (member.HealthPercent < 65)
+                        if (triage < 65)
                         {
                             numNeedHealing++;
 
@@ -5778,16 +5819,16 @@ namespace DOL.AI.Brain
                                 numEmergency++;
 
                             if (!BotBody.IsTemporaryGroupHelper
-                                    ? spellTarget == null || member.HealthPercent < spellTarget.HealthPercent
+                                    ? spellTarget == null || triage < TriageHealth(spellTarget)
                                     : TemporaryCompanionPetHealing.PreferHealingTarget(BotBody, member, spellTarget))
                                 spellTarget = member;
                         }
-                        else if (IsHealer && member.HealthPercent < 80)
+                        else if (IsHealer && triage < healerNeedAt)
                         {
                             numNeedHealing++;
 
                             if (!BotBody.IsTemporaryGroupHelper
-                                    ? spellTarget == null || member.HealthPercent < spellTarget.HealthPercent
+                                    ? spellTarget == null || triage < TriageHealth(spellTarget)
                                     : TemporaryCompanionPetHealing.PreferHealingTarget(BotBody, member, spellTarget))
                                 spellTarget = member;
                         }
@@ -5841,7 +5882,7 @@ namespace DOL.AI.Brain
                 if (BotBody.IsPlayerLedGroup && assistedPlayer?.IsAlive == true && Body.Group.IsInTheGroup(assistedPlayer) &&
                     InSupportReach(assistedPlayer))
                 {
-                    bool playerNeedsHealing = assistedPlayer.HealthPercent < 65 || (IsHealer && assistedPlayer.HealthPercent < 80);
+                    bool playerNeedsHealing = TriageHealth(assistedPlayer) < 65 || (IsHealer && TriageHealth(assistedPlayer) < healerNeedAt);
                     if (playerNeedsHealing)
                         spellTarget = assistedPlayer;
                 }
@@ -5931,7 +5972,7 @@ namespace DOL.AI.Brain
                 }
             }
 
-            if (AutonomousRealmRaid.HasSharedSupport(BotBody))
+            if (raidSupport)
             {
                 // Lowest-health raid member or pet in range, without sorting the whole roster.
                 GameLiving raidPatient = null;
@@ -6008,21 +6049,23 @@ namespace DOL.AI.Brain
             }
 
             // Emergency heal
+            // B5: a group heal only with three or more hurt, and not in a fight's first four seconds (the pull).
+            long healNow = GameLoop.GameLoopTime;
+            if (!partyInFight)
+                _healFightStart = 0;
+            else if (_healFightStart == 0)
+                _healFightStart = healNow;
+            // A patient a boss mechanic chose (displaced or marked) is healed by the rules before B3-B5.
+            bool periodPicks = BotHealTriage165.PicksApply(periodRules, displacedPatient != null || markedPatient != null);
+            bool groupHealOk = !periodPicks ||
+                BotHealTriage165.GroupHealWorthwhile(numNeedHealing, partyInFight, partyInFight ? healNow - _healFightStart : 0);
+
             if (spellToCast == null && numEmergency > 0)
             {
-                if (canCastInstantHeal)
-                    spellToCast = BotBody.HealInstant;
-                else if (canCastInstantGroupHeal)
-                    spellToCast = BotBody.HealInstantGroup;
-                else if (!isCastingHeal)
-                {
-                    if (CheckHealSpell(BotBody.HealBig))
-                        spellToCast = BotBody.HealBig;
-                    else if (CheckHealSpell(BotBody.HealEfficient))
-                        spellToCast = BotBody.HealEfficient;
-                    else if (CheckHealSpell(BotBody.HealGroup))
-                        spellToCast = BotBody.HealGroup;
-                }
+                bool castReady = !canCastInstantHeal && !isCastingHeal;
+                spellToCast = HealSpellFor(BotHealTriage165.EmergencyPick(canCastInstantHeal, canCastInstantGroupHeal, isCastingHeal,
+                    castReady && CheckHealSpell(BotBody.HealBig), castReady && CheckHealSpell(BotBody.HealEfficient),
+                    castReady && CheckHealSpell(BotBody.HealGroup), groupHealOk));
             }
 
             // Cure Mezz/Disease/Poison
@@ -6115,16 +6158,33 @@ namespace DOL.AI.Brain
             {
                 if (!BotBody.IsCasting || (numEmergency > 0 && !isCastingHeal))
                 {
-                    if (CheckHealSpell(BotBody.HealOverTime) && !LivingHasEffect(spellTarget, BotBody.HealOverTime) &&
-                        !GroupmateCastsHotAt(spellTarget, BotBody.HealOverTime))
-                        spellToCast = BotBody.HealOverTime;
-                    else if (BotBody.ManaPercent >= ManaThreshold && CheckHealSpell(BotBody.HealBig)
-                        && (spellTarget.MaxHealth - spellTarget.Health) >= GameBot.HealAmount(BotBody.HealBig, spellTarget))
-                        spellToCast = BotBody.HealBig;
-                    else if (CheckHealSpell(BotBody.HealEfficient))
-                        spellToCast = BotBody.HealEfficient;
-                    else if (CheckHealSpell(BotBody.HealGroup))
-                        spellToCast = BotBody.HealGroup;
+                    bool hotReady = CheckHealSpell(BotBody.HealOverTime) && !LivingHasEffect(spellTarget, BotBody.HealOverTime) &&
+                        !GroupmateCastsHotAt(spellTarget, BotBody.HealOverTime);
+                    bool efficientReady = !hotReady && CheckHealSpell(BotBody.HealEfficient);
+                    bool bigReady = !hotReady && BotBody.ManaPercent >= ManaThreshold && CheckHealSpell(BotBody.HealBig);
+                    bool bigWorthIt = bigReady && spellTarget != null &&
+                        (spellTarget.MaxHealth - spellTarget.Health) >= GameBot.HealAmount(BotBody.HealBig, spellTarget);
+                    // B3: outside an emergency the small (efficient) heal before the big one (BotHealTriage165.NonEmergencyPick).
+                    spellToCast = HealSpellFor(BotHealTriage165.NonEmergencyPick(periodPicks, numEmergency, hotReady, efficientReady,
+                        bigWorthIt, !hotReady && !efficientReady && !bigWorthIt && CheckHealSpell(BotBody.HealGroup), groupHealOk));
+                }
+            }
+
+            // B4: a heal over time on the tank as a fight wears it down (below 90%, before it needs a heal), never moving
+            // or stopping the healer: the tank already in range, a cast-time one only on a healer standing free.
+            if (spellToCast == null && periodPicks && numEmergency == 0 && partyInFight && !BotBody.IsCasting &&
+                BotBody.HealOverTime is Spell preHot && CheckHealSpell(preHot) &&
+                BotHealTriage165.PreHotHealerFree(preHot.IsInstantCast, Body.IsAttacking, Body.IsMoving))
+            {
+                GameLiving tank = preHotTank != null &&
+                    Body.IsWithinRadius(preHotTank, BotBody.castingComponent.CalculateSpellRange(preHot)) ? preHotTank : null;
+                // The Green Knight's hold (#412) comes first: no heal over time on a tank one of his trees is hitting.
+                if (tank != null && !EpicEncounterTactics.GreenKnightHoldsHeal(BotBody, tank) &&
+                    BotHealTriage165.PreHotTank(true, tank.InCombat || tank.IsAttacking, tank.HealthPercent,
+                        LivingHasEffect(tank, preHot) || GroupmateCastsHotAt(tank, preHot), BotBody.ManaPercent))
+                {
+                    spellToCast = preHot;
+                    spellTarget = tank;
                 }
             }
 
