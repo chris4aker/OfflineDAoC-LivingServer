@@ -1,4 +1,4 @@
-# Offline DAoC — instructions for AI assistants and developers
+# DAoC - Living Server — instructions for AI assistants and developers
 
 Read this first, then [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). Working from another account: also
 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md). Open work, with an issue for each item, is in [docs/OPEN-WORK.md](docs/OPEN-WORK.md). This file is also loaded by
@@ -6,10 +6,14 @@ Claude Code as `CLAUDE.md`.
 
 ## What this is
 
-Offline DAoC Living Server is a single-player DAoC server (built on OpenDAoC, .NET 10, SQLite) with autonomous
+DAoC - Living Server is a single-player DAoC server (built on OpenDAoC, .NET 10, SQLite) with autonomous
 gamebots, companion bots and a Windows launcher. It is its own repository, owned by the project owner, not a fork.
 Releases are numbered **1.x** (1.2 is out, 1.2.1 is next) and ship one edition: the classic classes on the
-**original game client** (`LivingServer-Setup-<version>.exe` and `OfflineDAoC-LivingServer-<version>.zip`).
+**original game client**. The product is **DAoC - Living Server** (owner, 2026-11-25, #641): from 1.2.3 the files are
+`DAoC-LivingServer-Setup-<version>.exe`, `DAoC-LivingServer-<version>.zip` (plus a copy as
+`OfflineDAoC-LivingServer-<version>.zip` for 1.2.x launchers) and the launcher `DAoCLivingServer.exe` (with
+`OfflineDAoC.exe` kept as a copy that opens it). Credits live in `CREDITS.md`; `tools/release/check_brand.py` fails on new
+player-visible old names, and `--internal` on new internal ones; [docs/NAMING.md](docs/NAMING.md) has the naming standard and every kept old name.
 
 **One edition from now on** (owner, 2026-11-22: "I will support players who already installed the B and C with basic
 fixes but I don't want to manage the custom class or incomplete Godot transfer. Everything new moves on as its own
@@ -28,11 +32,11 @@ original client version, and I'm about to leave the .37 in the past"):
 | `source/server` | Game server, all bot AI, tests (`Tests/`). The solution is `Dawn of Light.sln`. |
 | `source/server/GameServer/bots` | Companion bots, class AI, bot brains |
 | `source/server/GameServer/bots/autonomous` | Autonomous gamebots: goals, camps, groups, travel, watchdog |
-| `source/tools/OfflineDaoc.Launcher` | Launcher (the in-game version label is `MainForm.DisplayVersion`) |
-| `source/tools/OfflineDaoc.ProgressImport` | Progress transfer tool (`progress-policy.json` lists the saved-progress tables) |
+| `source/tools/DAoCLivingServer.Launcher` | Launcher (the in-game version label is `MainForm.DisplayVersion`) |
+| `source/tools/DAoCLivingServer.ProgressImport` | Progress transfer tool (`progress-policy.json` lists the saved-progress tables) |
 | `source/tools/build_release_037.py` | Builds the clean 0.37 reference package from a local install (then `assemble_release_037.py`); `*_036.py` built the 0.36 full downloads |
 | `source/tools/make_patch.py` | Builds the update patches (game + new client, world updates per edition) and their download manifests |
-| `source/tools/OfflineDaoc.Patcher` | The patcher shipped in every patch: checks, backs up, applies files and world updates, rolls back |
+| `source/tools/DAoCLivingServer.Patcher` | The patcher shipped in every patch: checks, backs up, applies files and world updates, rolls back |
 | `source/tools/find_changes_since_release.py` | Lists what changed since a released base (input for the next patch) |
 | `source/tools/build_newclient_037.py` | Builds the 0.37c new-client reference package (`build_newclient_036.py` + `seal_newclient_036.py` made the 0.36c full download) |
 | `source/tools/make_downloaders_037.py` | Makes the downloader zips (`Download-OfflineDAoC-v0.37*.zip`) |
@@ -183,7 +187,7 @@ In a playable folder:
   - **Bots never play the custom class, in any edition** (owner, 2026-11-17: "the custom class, that should never be
     played by bots"). No path makes a bot of class 63: launcher batches, the server's bot generator, `/spawn` and
     `/raid` helpers, hired companions, `/bot` companions, Epic Special Forces, No Lifer buffbots
-    (`OfflineDaoc.Shared.BotCustomClassRule`), and the era class shares leave it out. A gamebot that already is one is
+    (`DAoCLivingServer.Shared.BotCustomClassRule`), and the era class shares leave it out. A gamebot that already is one is
     kept with its items but never logged in (`BOT_CUSTOM_CLASS_RETIRED` at start-up; the launcher shows it as "Not
     played"). Players keep the class in the 0.37b edition. See [docs/ERA-BUILDS-1.2.md](docs/ERA-BUILDS-1.2.md).
   - The Sluaghbinder uses the client's Hibernian Mauler slot (class 62), and the novice is stored

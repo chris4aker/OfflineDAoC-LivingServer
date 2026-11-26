@@ -22,7 +22,11 @@ $coreLayout = @{
     'runtime/server/lib' = @('CoreBase.dll', 'CoreBase.pdb', 'CoreDatabase.dll', 'CoreDatabase.pdb')
     'runtime/server/win-x64' = @('CoreBase.dll', 'CoreDatabase.dll', 'CoreServer.dll')
 }
+# The released launcher (OfflineDAoC.*), and what a build installs from 1.2.3 (#641): DAoCLivingServer.* and an
+# OfflineDAoC.exe that is a copy of its apphost.
 $launcherFiles = @('OfflineDAoC.dll', 'OfflineDAoC.exe', 'OfflineDAoC.pdb', 'OfflineDAoC.deps.json', 'OfflineDAoC.runtimeconfig.json')
+$newLauncherFiles = @('DAoCLivingServer.dll', 'DAoCLivingServer.exe', 'DAoCLivingServer.pdb', 'DAoCLivingServer.deps.json',
+    'DAoCLivingServer.runtimeconfig.json', 'OfflineDAoC.exe')
 function New-FakeLauncher([string]$dir, [string]$prefix) {
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
     $lines = @()
@@ -97,9 +101,11 @@ foreach ($folder in @('runtime\server', 'runtime\server\lib', 'runtime\server\wi
     Check ((Sha (Join-Path $game "$folder\GameServer.pdb")) -eq $info['GameServer.pdb']) "new pdb in $folder"
 }
 foreach ($folder in @('runtime', 'new-client\runtime')) {
-    foreach ($name in $launcherFiles) {
+    foreach ($name in $newLauncherFiles) {
         Check ((Sha (Join-Path $game "$folder\$name")) -eq $info["launcher/$name"]) "new launcher $name in $folder"
     }
+    Check ((Sha (Join-Path $game "$folder\OfflineDAoC.exe")) -eq (Sha (Join-Path $game "$folder\DAoCLivingServer.exe"))) "OfflineDAoC.exe in $folder is the new launcher's apphost"
+    Check ([IO.File]::ReadAllText((Join-Path $game "$folder\OfflineDAoC.dll")) -eq 'original launcher OfflineDAoC.dll') "the older launcher's dll stays in $folder (a rollback pairs with it)"
 }
 # The server's own libraries (1.1.2 on): each one the folder has is replaced, with its .pdb where the folder has one,
 # and none is added where the folder has none.
@@ -134,6 +140,8 @@ foreach ($folder in $coreLayout.Keys) {
 }
 Check $coreBack 'rollback restores the original server libraries and their .pdb files'
 Check ((Sha (Join-Path $game 'runtime\OfflineDAoC.dll')) -eq $originalLauncher) 'rollback restores the original launcher'
+Check ([IO.File]::ReadAllText((Join-Path $game 'runtime\OfflineDAoC.exe')) -eq 'original launcher OfflineDAoC.exe') 'rollback restores the original launcher exe'
+Check (!(Test-Path (Join-Path $game 'runtime\DAoCLivingServer.dll')) -and !(Test-Path (Join-Path $game 'runtime\DAoCLivingServer.exe'))) 'rollback removes the renamed launcher it added'
 Check ([IO.File]::ReadAllText((Join-Path $game 'new-client\runtime\OfflineDAoC.dll')) -eq 'original launcher OfflineDAoC.dll') 'rollback restores the new client launcher'
 Check (!(Test-Path (Join-Path $game 'tools\claude-version\set_bot_guilds.py'))) 'rollback removes helpers it added'
 Check (!(Test-Path (Join-Path $game 'tools\claude-version\set_bot_social.py'))) 'rollback removes the social switch'
@@ -245,7 +253,7 @@ Check ($unknownLauncher.Code -ne 0 -and (Sha (Join-Path $changedLauncher 'runtim
 $plain = Join-Path $work 'plain'
 New-FakeGame $plain $base
 $plainInstall = Run 'install-server-build.ps1' @('-GameFolder', $plain)
-Check ($plainInstall.Code -eq 0 -and (Sha (Join-Path $plain 'runtime\OfflineDAoC.dll')) -eq $info['launcher/OfflineDAoC.dll'] -and
+Check ($plainInstall.Code -eq 0 -and (Sha (Join-Path $plain 'runtime\DAoCLivingServer.dll')) -eq $info['launcher/DAoCLivingServer.dll'] -and
        !(Test-Path (Join-Path $plain 'new-client'))) "install without the new client`n$($plainInstall.Output)"
 
 # Back to the release before an Offline DAoC update, whatever was installed over it: an install, a copy by hand on
@@ -269,7 +277,9 @@ foreach ($folder in @('runtime\server', 'runtime\server\lib', 'runtime\server\wi
     if ((Sha (Join-Path $chain "$folder\GameServer.dll")) -ne $releasedDll) { $allBack = $false }
 }
 Check ($toRelease.Code -eq 0 -and $allBack -and (Sha (Join-Path $chain 'runtime\OfflineDAoC.dll')) -eq $releasedLauncher -and
-       (Sha (Join-Path $chain 'new-client\runtime\OfflineDAoC.dll')) -eq $releasedClient) "-ToRelease puts the released server and launchers back`n$($toRelease.Output)"
+       (Sha (Join-Path $chain 'new-client\runtime\OfflineDAoC.dll')) -eq $releasedClient -and
+       [IO.File]::ReadAllText((Join-Path $chain 'runtime\OfflineDAoC.exe')) -eq 'original launcher OfflineDAoC.exe' -and
+       !(Test-Path (Join-Path $chain 'runtime\DAoCLivingServer.dll')) -and !(Test-Path (Join-Path $chain 'new-client\runtime\DAoCLivingServer.exe'))) "-ToRelease puts the released server and launchers back`n$($toRelease.Output)"
 $coreReleased = $true
 foreach ($folder in $coreLayout.Keys) {
     foreach ($name in $coreLayout[$folder]) {

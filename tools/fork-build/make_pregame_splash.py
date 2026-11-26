@@ -2,14 +2,14 @@
 through content-patches.json), from a 1024x768 picture. Living Server 1.2: the splash painting with its "LIVING SERVER"
 title, tools/installer/art/living-server-title-1024x768.jpg (made by tools/installer/art/make_art.py splash-title).
 
-    python tools/fork-build/make_pregame_splash.py [--image <jpg/png>] [--out <mpk>] [--mpk-tool <OfflineDaoc.Mpk.dll>]
+    python tools/fork-build/make_pregame_splash.py [--image <jpg/png>] [--out <mpk>] [--mpk-tool <DAoCLivingServer.Mpk.dll>]
                                                    [--update-patches]
 
-The same archive source/tools/OfflineDaoc.Mpk/Build-ClientSplash.ps1 makes on Windows, without System.Drawing: eight
+The same archive source/tools/DAoCLivingServer.Mpk/Build-ClientSplash.ps1 makes on Windows, without System.Drawing: eight
 identical uncompressed 32-bit TGAs (type 2, BGRA, bottom-left origin, descriptor 8, TRUEVISION-XFILE footer; the client
-draws RLE TGAs black), splash1.tga to splash8.tga, packed by OfflineDaoc.Mpk under the internal name splash.mpk. Without
+draws RLE TGAs black), splash1.tga to splash8.tga, packed by DAoCLivingServer.Mpk under the internal name splash.mpk. Without
 --mpk-tool the tool is built with dotnet into a temporary folder, used and removed. The TGAs get a fixed file time and
-OfflineDaoc.Mpk stores each entry's file time, so the same picture always gives the same archive.
+DAoCLivingServer.Mpk stores each entry's file time, so the same picture always gives the same archive.
 
 Then the archive is checked: unpacked again by the tool, it must hold exactly splash1..8.tga, each the TGA written, and
 the TGA must decode to the picture pixel for pixel.
@@ -37,7 +37,7 @@ IMAGE = ROOT / "tools/installer/art/living-server-title-1024x768.jpg"
 OUT = ROOT / "tools/fork-build/content/pregame-splash.mpk"
 PATCHES = ROOT / "tools/fork-build/content-patches.json"
 SPLASH_PATH = "runtime/client-opendaoc/app/pregame/splash.mpk"
-TOOL_PROJECT = ROOT / "source/tools/OfflineDaoc.Mpk/OfflineDaoc.Mpk.csproj"
+TOOL_PROJECT = ROOT / "source/tools/DAoCLivingServer.Mpk/DAoCLivingServer.Mpk.csproj"
 WIDTH, HEIGHT = 1024, 768
 # 2026-11-07 00:00 UTC: the entries' file time inside the archive.
 ENTRY_TIME = 1794009600
@@ -83,7 +83,7 @@ def run_tool(tool, *args):
 def build_tool(into):
     subprocess.run(["dotnet", "build", str(TOOL_PROJECT), "-c", "Release", "-nologo", "-v", "q", "-o", str(into)],
                    check=True)
-    return into / "OfflineDaoc.Mpk.dll"
+    return into / "DAoCLivingServer.Mpk.dll"
 
 
 def update_patches(new_hash, size):
@@ -104,7 +104,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--image", type=Path, default=IMAGE)
     ap.add_argument("--out", type=Path, default=OUT)
-    ap.add_argument("--mpk-tool", type=Path, help="a built OfflineDaoc.Mpk(.dll); default: build one for this run")
+    ap.add_argument("--mpk-tool", type=Path, help="a built DAoCLivingServer.Mpk(.dll); default: build one for this run")
     ap.add_argument("--update-patches", action="store_true")
     a = ap.parse_args()
 

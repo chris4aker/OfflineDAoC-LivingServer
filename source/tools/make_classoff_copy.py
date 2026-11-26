@@ -36,6 +36,9 @@ import build_release_037 as release  # noqa: E402  (the release builder's editio
 
 CLASSIC_GAME_DLL = release.EDITION_GAME_DLL_SHA256      # 0.37: without the Sluaghbinder patches
 SLUAGH_GAME_DLL = release.SLUAGH_GAME_DLL_SHA256        # 0.37b
+import patch_era_creation_text as era_text  # noqa: E402
+# The 0.37 client with the installer's "Not available in this era" description patch (#634) is still the classic client.
+CLASSIC_PATCHED_GAME_DLL = era_text.known_fixed()
 MAIN_INSTALL = "playable-v0.37b"
 GAME_DLL = Path("runtime/client-opendaoc/app/game.dll")
 WORLD = Path("runtime/data/opendaoc.sqlite3.db")
@@ -53,7 +56,10 @@ def sha(path: Path) -> str:
 def client_kind(path: Path) -> str:
     if not path.is_file():
         return "missing"
-    return {CLASSIC_GAME_DLL: "classic", SLUAGH_GAME_DLL: "sluaghbinder"}.get(sha(path), "unknown")
+    digest = sha(path)
+    if digest in CLASSIC_PATCHED_GAME_DLL:
+        return "classic"
+    return {CLASSIC_GAME_DLL: "classic", SLUAGH_GAME_DLL: "sluaghbinder"}.get(digest, "unknown")
 
 
 def switch_value(db: Path) -> str:

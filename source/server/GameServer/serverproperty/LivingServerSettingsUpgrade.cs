@@ -96,6 +96,10 @@ namespace DOL.GS.ServerProperties
 			// default"): the whole roster online, no time-of-day or session schedule. bot_living_breaks is a separate feature
 			// and stays on.
 			new("1.2.1", "bot_schedule_mode", "clock", "off"),
+			// 1.2.3 (owner 2026-11-25, #641: the product is "DAoC - Living Server"): the welcome messages name it. A world
+			// whose messages were edited keeps its own text.
+			new("1.2.3", "motd", "Welcome back to Offline DAoC. Adventure alone or alongside autonomous player bots across the three realms.", "Welcome back to DAoC - Living Server. Adventure alone or alongside autonomous player bots across the three realms."),
+			new("1.2.3", "starting_msg", "Welcome to Offline DAoC, a private Classic and Shrouded Isles world built to play alone or with player bot companions.", "Welcome to DAoC - Living Server, a private Classic and Shrouded Isles world built to play alone or with player bot companions."),
 		];
 
 		/// <summary>A changed default kept in a settings file rather than a database row: since which build, and the file.</summary>
@@ -105,7 +109,7 @@ namespace DOL.GS.ServerProperties
 		public static readonly FileChange[] FileChanges =
 		[
 			// 1.2.3 (#598 option A): 1-19 60/40/0/0 -> 55/35/0/10, 20-49 35/35/15/15 -> 30/30/15/25 (BotGoalSettings).
-			new("1.2.3", OfflineDaoc.Configuration.BotGoalSettings.FileName, "Bot Goals default shares (battlegrounds 10% at 15-19, 25% at 20-35)"),
+			new("1.2.3", DAoCLivingServer.Configuration.BotGoalSettings.FileName, "Bot Goals default shares (battlegrounds 10% at 15-19, 25% at 20-35)"),
 		];
 
 		/// <summary>The file changes still to run on a world that recorded <paramref name="doneVersion"/>. Pure.</summary>
@@ -193,7 +197,7 @@ namespace DOL.GS.ServerProperties
 				}
 				foreach (FileChange change in PlanFileChanges(version.Item3.Value))
 				{
-					if (change.File == OfflineDaoc.Configuration.BotGoalSettings.FileName && AutonomousBotGoalPolicy.UpgradeUntouchedDefaults())
+					if (change.File == DAoCLivingServer.Configuration.BotGoalSettings.FileName && AutonomousBotGoalPolicy.UpgradeUntouchedDefaults())
 						log.Info($"Living Server {change.Since}: {change.File} set to the new defaults ({change.Description}; the file held " +
 						         "the untouched old defaults; change it in the launcher's Bot Goals Setting tab)");
 				}

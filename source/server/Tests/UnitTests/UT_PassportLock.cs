@@ -43,7 +43,7 @@ namespace DOL.UnitTests
         {
             Assert.That(PassportLock.AwayKey, Is.EqualTo("passport.away"));
             Assert.That(PassportLock.HostKey, Is.EqualTo("passport.host"));
-            Assert.That(PassportLock.VisitorKey, Is.EqualTo(OfflineDaoc.Passport.PassportEngine.VisitorKey));
+            Assert.That(PassportLock.VisitorKey, Is.EqualTo(DAoCLivingServer.Passport.PassportEngine.VisitorKey));
         }
 
         [TestCase("Basic Zm9vOmJhcg==", "foo", "bar")]
@@ -58,8 +58,8 @@ namespace DOL.UnitTests
         [Test]
         public void TheServerAndTheEngineUseTheSameKeys()
         {
-            Assert.That(PassportLock.AwayKey, Is.EqualTo(OfflineDaoc.Passport.PassportEngine.AwayKey));
-            Assert.That(PassportLock.HostKey, Is.EqualTo(OfflineDaoc.Passport.PassportEngine.HostKey));
+            Assert.That(PassportLock.AwayKey, Is.EqualTo(DAoCLivingServer.Passport.PassportEngine.AwayKey));
+            Assert.That(PassportLock.HostKey, Is.EqualTo(DAoCLivingServer.Passport.PassportEngine.HostKey));
             // The launcher's PassportDeskClient.PortOffset (PassportTravel.cs, not compiled into the server) is 10 too.
             Assert.That(PassportDesk.PortOffset, Is.EqualTo(10));
         }

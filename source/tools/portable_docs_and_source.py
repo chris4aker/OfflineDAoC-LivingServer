@@ -80,7 +80,7 @@ for part in ['CoreBase','CoreDatabase','CoreServer','GameServer','Pathing','Test
 for p in server.iterdir():
  if p.is_file() and (p.suffix in {'.sln','.props','.targets','.config'} or p.name in {'LICENSE','README.md','.editorconfig'}):
   dest=target/'server'/p.name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,dest)
-launcher=b/'development source/tools/OfflineDaoc.Launcher'
+launcher=b/'development source/tools/DAoCLivingServer.Launcher'
 for p in launcher.rglob('*'):
  if p.is_file() and not any(x in {'bin','obj'} for x in p.relative_to(launcher).parts):
   dest=target/'launcher'/p.relative_to(launcher);dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,dest)

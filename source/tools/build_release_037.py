@@ -482,7 +482,7 @@ def main():
     live_runtime = snapshot / "runtime"
     if sha(live_runtime / "client-opendaoc/app/game.dll") != SLUAGH_GAME_DLL_SHA256:
         raise SystemExit("The snapshot client is not the Sluaghbinder client this release expects")
-    policy = json.loads((repo / "source/tools/OfflineDaoc.ProgressImport/progress-policy.json").read_text())
+    policy = json.loads((repo / "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json").read_text())
     defaults = json.loads((repo / "source/tools/release-world-defaults.json").read_text(encoding="utf-8"))
     # Crafting 2.0 (1.2): the economy's saved-progress tables must all be emptied (AGENTS.md, protect player data).
     economy = economy_tables(repo)
@@ -529,7 +529,7 @@ def main():
             if target.exists():
                 shutil.copy2(server_build / name, target)
                 replaced[f"{folder}/{name}"] = sha(target)
-    launcher_build = repo / "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
+    launcher_build = repo / "source/tools/DAoCLivingServer.Launcher/bin/Release/net10.0-windows"
     for name in ("OfflineDAoC.dll", "OfflineDAoC.exe", "OfflineDAoC.pdb", "OfflineDAoC.deps.json",
                  "OfflineDAoC.runtimeconfig.json"):
         shutil.copy2(launcher_build / name, runtime / name)

@@ -88,6 +88,7 @@ public static partial class AutonomousBotGroupCoordinator
                  $"members=\"{string.Join(",", members.Select(member => member.Name))}\" reason=\"{reason}; the group goes to {bracket.Name} together\"");
         AutonomousBotBonds.OnPartyFinished(members, session.TaskClock.HasStarted, true, session.Wipes,
             session.Camp?.ZoneName ?? session.RendezvousName);
+        LogGroupEnded(session, members, reason, "finished/battleground");
         Sessions.Remove(group);
 
         long durationMs = Random.Shared.NextInt64((long)AutonomousObjectiveAssignments.MinimumPveTenure.TotalMilliseconds,

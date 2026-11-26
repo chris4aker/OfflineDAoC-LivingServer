@@ -1,9 +1,9 @@
-# Move your progress to 0.37
+# Move your progress from an older game
 
-**Playing 0.36, 0.36b or 0.36c?** You don't need this tool: update your game instead (the release's
-`GET-OFFLINE-DAOC` file, choice 1). Your progress stays where it is. See [PLAY.md](PLAY.md).
+**Playing 0.36, 0.36b or 0.36c?** You don't need this tool: run Setup, which brings your game up to date in place.
+Your progress stays where it is. See [PLAY.md](PLAY.md).
 
-From anything older, you can bring everything into a new 0.37 folder:
+From anything older, you can bring everything into a new game folder:
 - your **account**, so you log in with the same name
 - your **characters**, with their levels, skills, quests and money
 - their **items**, including inventory, equipment, bank and vault
@@ -28,10 +28,10 @@ The tool is **IMPORT PROGRESS FROM OLD OFFLINE DAOC.cmd**, and it's in every gam
 
 ## Step by step
 
-1. **Install 0.37 first** into a new folder (see [PLAY.md](PLAY.md), choice 2). You don't need to start it.
+1. **Install a new game first** with Setup (see [PLAY.md](PLAY.md)). You don't need to start it.
 2. **Close everything:** every launcher and game (both clients, if you have 0.37c). Stop both servers.
 3. In the **new** folder, double-click **IMPORT PROGRESS FROM OLD OFFLINE DAOC.cmd**.
-4. Click **Choose OLD folder…** and select your old Offline DAoC folder, the one containing
+4. Click **Choose OLD folder…** and select your old game folder, the one containing
    `runtime`.
 5. The tool shows what it found: the old version, and how many accounts, characters, bots and items
    there are.

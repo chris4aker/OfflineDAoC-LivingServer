@@ -16,7 +16,7 @@ namespace DOL.GS.Commands
             // /spawn (and /raid, which fills through it) never offers the Sluaghbinder, in either edition, in the popup or
             // the text form: bots never play the custom class (owner 2026-11-17, BotCustomClassRule).
             IEnumerable<eCharacterClass> classes = AutonomousBotIdentityGenerator.GetEraClasses(realm)
-                .Where(c => OfflineDaoc.Shared.BotCustomClassRule.BotsMayPlay((int)c));
+                .Where(c => DAoCLivingServer.Shared.BotCustomClassRule.BotsMayPlay((int)c));
 
             return classes.Select(characterClass => (characterClass, BotPartyRoles.Label(characterClass)));
         }
@@ -49,7 +49,7 @@ namespace DOL.GS.Commands
     /// </summary>
     public sealed class TemporaryGroupSpawnMenu : GameNPC
     {
-        private const string ActiveMenuProperty = "OfflineDAoC.ActiveSpawnClassMenu";
+        private const string ActiveMenuProperty = "DAoCLivingServer.ActiveSpawnClassMenu";
         private const int MenuLifetimeMilliseconds = 600_000;
         private const ushort InvisibleModel = 150;
 

@@ -182,8 +182,12 @@ public sealed partial class AutonomousWorldBotController
                 victim.Realm == bot.Realm;
             float victimToRally = fighting && target.TargetObject is GameLiving hit
                 ? Vector3.Distance(new(hit.X, hit.Y, hit.Z), rally) : float.MaxValue;
-            if (AutonomousBattlegroundRallyContact.IsContact(true, toRally, approaching, fighting, victimToRally) &&
-                AutonomousBattlegroundRallyContact.Post(bot.CurrentRegionID, bot.Realm, rally, target, now) && Log.IsInfoEnabled)
+            if (!AutonomousBattlegroundRallyContact.IsContact(true, toRally, approaching, fighting, victimToRally) ||
+                !AutonomousBattlegroundRallyContact.Post(bot.CurrentRegionID, bot.Realm, rally, target, now))
+                continue;
+            // #625: BG_RALLY_RESPONSE times each rally-mate's first engage from here (logs only).
+            BgRallyResponseRows.Post(bot.CurrentRegionID, bot.Realm, target, now);
+            if (Log.IsInfoEnabled)
                 Log.Info($"BG_RALLY_CONTACT bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
                          $"target=\"{target.Name}\" toRally={(int)toRally} approaching={approaching} fight={fighting} region={bot.CurrentRegionID}");
         }
@@ -360,6 +364,7 @@ public sealed partial class AutonomousWorldBotController
         if (battleground && visibleTargets.Any(BotPvpCrowdControl.PlayerLike))
             _battlegroundEnemySeenUntil = scanNow + AutonomousBattlegroundTargets.EnemyInSightMilliseconds;
         visibleTargets = RvrTacticsGateThreats(brain, bot, RvrStanceGateThreats(brain, bot, visibleTargets));
+        GameLiving[] beforeArrange = visibleTargets; // #625: BG_TARGET_PICK counts what the arrangement passed over.
         // #617 / #600 (FarmVibes): in a battleground, people before engines, then mezzed or breakably rooted enemies passed
         // over while a free one is in the fight. Outside a battleground the array is the same one.
         visibleTargets = AutonomousBattlegroundTargets.Arrange(battleground, visibleTargets, target => target is GameSiegeWeapon,
@@ -420,6 +425,14 @@ public sealed partial class AutonomousWorldBotController
         RvrRecordRows.Engage(bot, enemy, list, visibleTargets.Length, fight);
         RvrDecide.Event(bot, "scan", "engage", RvrRecordText.Who(enemy), "scan." + list, $"visible={visibleTargets.Length}",
             enemy is GamePlayer engagedPlayer ? engagedPlayer.Name : null);
+        // #625: BG_TARGET_PICK (sampled) and BG_RALLY_RESPONSE (a rallied bot's first engage of a posted contact); logs only.
+        if (battleground)
+        {
+            bool fromRally = Array.IndexOf(rallyContacts, enemy) >= 0;
+            BgTargetPickRows.Scan(bot, enemy, beforeArrange, visibleTargets, fromRally, list);
+            if (fromRally)
+                BgRallyResponseRows.Engaged(bot.CurrentRegionID, bot.Realm, bot.DatabaseID, enemy, scanNow);
+        }
         return true;
     }
 }

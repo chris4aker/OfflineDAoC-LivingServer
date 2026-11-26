@@ -312,7 +312,7 @@ namespace DOL.UnitTests
         private static string RepoRoot()
         {
             string dir = TestContext.CurrentContext.TestDirectory;
-            while (dir != null && !File.Exists(Path.Combine(dir, "source", "tools", "OfflineDaoc.ProgressImport", "progress-policy.json")))
+            while (dir != null && !File.Exists(Path.Combine(dir, "source", "tools", "DAoCLivingServer.ProgressImport", "progress-policy.json")))
                 dir = Path.GetDirectoryName(dir);
             Assert.That(dir, Is.Not.Null, "the repository root above the test directory");
             return dir;
@@ -322,9 +322,9 @@ namespace DOL.UnitTests
         public void EconomyTables_AreRegisteredInTheProgressPolicyAndThePassport()
         {
             string root = RepoRoot();
-            using JsonDocument policy = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "source", "tools", "OfflineDaoc.ProgressImport", "progress-policy.json")));
+            using JsonDocument policy = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "source", "tools", "DAoCLivingServer.ProgressImport", "progress-policy.json")));
             string[] optional = policy.RootElement.GetProperty("OptionalProgressTables").EnumerateArray().Select(entry => entry.GetString()).ToArray();
-            string passport = File.ReadAllText(Path.Combine(root, "source", "tools", "OfflineDaoc.Passport", "PassportEngine.cs"));
+            string passport = File.ReadAllText(Path.Combine(root, "source", "tools", "DAoCLivingServer.Passport", "PassportEngine.cs"));
 
             Assert.That(EconomyTables.All, Has.Length.EqualTo(EconomyTables.RecordTypes.Length));
             for (int i = 0; i < EconomyTables.All.Length; i++)

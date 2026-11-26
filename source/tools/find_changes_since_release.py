@@ -207,7 +207,7 @@ def main():
 
     baseline_db = args.baseline_db or repo.parent / "release-baselines" / args.baseline / f"world-{args.baseline}b.sqlite3.db"
     world_db = args.world_db or args.dev / "runtime/data/opendaoc.sqlite3.db"
-    policy = json.loads((repo / "source/tools/OfflineDaoc.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
+    policy = json.loads((repo / "source/tools/DAoCLivingServer.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
     report["world_data"] = compare_world(baseline_db, world_db, policy)
 
     text = json.dumps(report, indent=2)

@@ -39,9 +39,10 @@ namespace LivingServerSetup
 
         public static string DefaultFolder()
         {
-            string parent = Directory.Exists("C:\\") ? Path.Combine("C:\\", "Games", "OfflineDAoC")
-                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Games", "OfflineDAoC");
-            return FreeFolder(Path.Combine(parent, "playable-v" + Payload.BaseRelease + "b"));
+            // C:\Games\LivingServer for new installs (owner, 2026-11-25, #641); existing installs stay where they are.
+            string parent = Directory.Exists("C:\\") ? Path.Combine("C:\\", "Games")
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Games");
+            return FreeFolder(Path.Combine(parent, "LivingServer"));
         }
 
         /// <summary>The folder itself when it's free, else name-2, name-3...: a new install never proposes a game you
@@ -79,10 +80,10 @@ namespace LivingServerSetup
                 g.FillRectangle(lb, shade);
             Theme.DrawShadowText(g, "Your single-player Camelot, alive like a 2003 server.", Theme.Serif(14f, FontStyle.Italic), R(48, 462, 600, 30), Theme.Parchment, TextFormatFlags.Left | TextFormatFlags.Top);
             Theme.DrawShadowText(g,
-                "Setup installs everything you need: Offline DAoC, and the Living Server add-on on top. " +
-                "Already playing Offline DAoC? It finds your game and adds Living Server, and your characters stay.",
+                "Setup installs everything you need: the base game files, and Living Server on top. " +
+                "Already have the game? It finds your game folder and adds Living Server, and your characters stay.",
                 Theme.Serif(9.75f), R(49, 496, 600, 48), Theme.Text);
-            Theme.DrawText(g, "Living Server " + Payload.DisplayName + " for Offline DAoC " + Payload.FitsLabel +
+            Theme.DrawText(g, "Living Server " + Payload.DisplayName + " for Dark Age of Camelot" +
                 "  ·  a free fan project, not affiliated with Electronic Arts or Broadsword", Theme.Serif(7.75f), R(49, 572, 760, 18), Theme.Faint,
                 TextFormatFlags.Left | TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis);
         }
@@ -94,7 +95,7 @@ namespace LivingServerSetup
     {
         readonly Panel list = new DoubleBufferedPanel { AutoScroll = true, BackColor = Color.Transparent };
         readonly LinkText browse = new LinkText("Choose another game folder...");
-        string scanning = "Looking for Offline DAoC on this PC...";
+        string scanning = "Looking for the game on this PC...";
         ChoiceCard selected;
 
         public ChoosePage(SetupForm form) : base(form, "Choose your path", "Install the game with Living Server, or add Living Server to a game you already have.", 0)
@@ -178,7 +179,7 @@ namespace LivingServerSetup
             var fresh = new ChoiceCard
             {
                 Title = "New install",
-                Body = "Download Offline DAoC " + Payload.BaseRelease + " into a new folder, and add Living Server. " +
+                Body = "Download the base game into a new folder, and add Living Server. " +
                        "About " + Theme.Gb(Manifests.BaseGame + Manifests.GamePatch) + " to download" +
                        (Offers.NewClient ? " (" + Theme.Gb(Manifests.BaseGame + Manifests.GamePatch + Manifests.NewClient + Manifests.ClientPatch) + " with the new client)." : "."),
                 Stripe = Theme.Hibernia,
@@ -244,7 +245,7 @@ namespace LivingServerSetup
             }
             else if (g.IsUpdatable)
             {
-                c.Lines.Add(("Setup first updates it to " + Payload.BaseRelease + " with the Offline DAoC update (characters, bots and settings stay), then adds Living Server.", Theme.GoldLight));
+                c.Lines.Add(("Setup first brings it up to date with the base game's own update (characters, bots and settings stay), then adds Living Server.", Theme.GoldLight));
                 if (g.Ls == LsState.OtherBuild) c.Lines.Add(("Its " + Wizard.BuildLabel(g.LsBuild) + " build comes off for the update; Living Server replaces it.", Theme.Muted));
                 if (g.Ls == LsState.Modified || g.Ls == LsState.Unknown) c.Lines.Add(("Its server or launcher files were changed by hand: Setup asks before it replaces them.", Theme.Warning));
                 c.Badge = "UPDATE"; c.BadgeColor = Theme.Warning;
@@ -276,13 +277,13 @@ namespace LivingServerSetup
 
         void BrowseForGame()
         {
-            using (var d = new FolderBrowserDialog { Description = "Choose your Offline DAoC game folder (the one with START OFFLINE DAOC.cmd in it).", ShowNewFolderButton = false })
+            using (var d = new FolderBrowserDialog { Description = "Choose your game folder (the one with START OFFLINE DAOC.cmd in it).", ShowNewFolderButton = false })
             {
                 if (d.ShowDialog(Form) != DialogResult.OK) return;
                 var path = d.SelectedPath;
                 if (!GameScanner.IsGame(path))
                 {
-                    Dialog.Show(Form, "That isn't an Offline DAoC game folder", "There's no runtime\\server\\GameServer.dll in " + path + ".\n\nChoose the folder that has START OFFLINE DAOC.cmd in it.", "OK");
+                    Dialog.Show(Form, "That isn't a game folder", "There's no runtime\\server\\GameServer.dll in " + path + ".\n\nChoose the folder that has START OFFLINE DAOC.cmd in it.", "OK");
                     return;
                 }
                 var wz = Form.Wizard;
@@ -326,7 +327,7 @@ namespace LivingServerSetup
             if (game == null)
             {
                 Title = "Prepare your new game";
-                Subtitle = "Offline DAoC " + Payload.BaseRelease + ", original classes and client. Every file is checked as it downloads.";
+                Subtitle = "The base game, original classes and client. Every file is checked as it downloads.";
                 folder.Text = prev?.NewInstall == true ? prev.Destination : Wizard.DefaultFolder();
                 Put(folder, 40, y + 18, 386, 34);
                 var browse = Put(new GoldButton("BROWSE"), 434, y + 18, 92, 34);
@@ -377,8 +378,8 @@ namespace LivingServerSetup
                 }
                 else if (!game.Ready)
                 {
-                    var note = (game.IsBase ? "The new client gets its " + Payload.BaseRelease + " update" : "Offline DAoC " + game.Edition + " is updated to " + Payload.BaseRelease) +
-                               " with the Offline DAoC updater first. It backs up everything it replaces, and your account, characters, bots and settings stay.";
+                    var note = (game.IsBase ? "The new client gets its update" : "The game is brought up to date") +
+                               " with the base game's own updater first. It backs up everything it replaces, and your account, characters, bots and settings stay.";
                     var lbl = Put(new NoteLabel(note), 40, y, 486, 52);
                     y += 62;
                 }
@@ -427,7 +428,7 @@ namespace LivingServerSetup
                 if (d.ShowDialog(Form) != DialogResult.OK) return;
                 var p = d.SelectedPath;
                 if (GameScanner.IsGame(p) || Directory.Exists(p) && Directory.EnumerateFileSystemEntries(p).Any())
-                    p = Wizard.FreeFolder(Path.Combine(p, "playable-v" + Payload.BaseRelease + (editionClassic == null || editionClassic.Checked ? "" : "b")));
+                    p = Wizard.FreeFolder(Path.Combine(p, "LivingServer"));
                 folder.Text = p;
             }
         }
@@ -465,7 +466,7 @@ namespace LivingServerSetup
                 o = Build();
                 if (o.NewInstall)
                 {
-                    if (string.IsNullOrWhiteSpace(o.Destination) || !Path.IsPathRooted(o.Destination)) throw new ArgumentException("Choose a full folder path, like C:\\Games\\OfflineDAoC.");
+                    if (string.IsNullOrWhiteSpace(o.Destination) || !Path.IsPathRooted(o.Destination)) throw new ArgumentException("Choose a full folder path, like C:\\Games\\LivingServer.");
                     Path.GetFullPath(o.Destination);
                 }
                 var eng = new Engine(o);
@@ -554,7 +555,7 @@ namespace LivingServerSetup
             {
                 // the engine refuses a folder with someone else's files; an unfinished install of ours continues
             }
-            if (o.Remove && Dialog.Show(Form, "Remove Living Server?", "Setup puts the released Offline DAoC server and launcher back. Your characters and bots stay.\n\nYou can install Living Server again any time with this Setup.", "Cancel", "Remove") != 1)
+            if (o.Remove && Dialog.Show(Form, "Remove Living Server?", "Setup puts the base game's own server and launcher back. Your characters and bots stay.\n\nYou can install Living Server again any time with this Setup.", "Cancel", "Remove") != 1)
                 return;
             Form.Wizard.Install(o);
         }
@@ -731,8 +732,8 @@ namespace LivingServerSetup
             if (r.Outcome == Outcome.Success)
             {
                 Title = o.Remove ? "Living Server is off" : "The realm awaits.";
-                Subtitle = o.Remove ? "The released Offline DAoC server and launcher are back in " + r.GamePath + "."
-                    : "Offline DAoC " + edition + " with Living Server " + Payload.DisplayName + " is ready in " + r.GamePath + ".";
+                Subtitle = o.Remove ? "The base game's own server and launcher are back in " + r.GamePath + "."
+                    : Program.ProductName + " " + Payload.DisplayName + " is ready in " + r.GamePath + ".";
                 Next.Text = "CLOSE";
                 Next.Primary = false;
                 Next.Width = Theme.S(132); Next.Left = Theme.S(SetupForm.W - 40 - 132);
@@ -823,7 +824,7 @@ namespace LivingServerSetup
             {
                 var dir = r.CacheDir;
                 // only the downloader's own cache, never anything else
-                if (Path.GetFileName(dir) == ".downloads" && Path.GetFileName(Path.GetDirectoryName(dir)) == "Offline DAoC setup files")
+                if (Path.GetFileName(dir) == ".downloads" && InstallOptions.IsSetupFilesFolderName(Path.GetFileName(Path.GetDirectoryName(dir))))
                 {
                     Directory.Delete(dir, true);
                     Log.Write("Deleted the downloaded setup files in " + dir);
@@ -900,7 +901,7 @@ namespace LivingServerSetup
                     var notes = new List<string>
                     {
                         "Undo any time: ROLLBACK.cmd in the " + Payload.RootFolder + " folder puts the files Living Server replaced back.",
-                        "Offline DAoC " + Payload.BaseRelease + " is the last release of the base game. Living Server updates come through the launcher, or a newer Setup.",
+                        "The base game has no newer release. Living Server updates come through the launcher, or a newer Setup.",
                     };
                     if (r.Note != null) notes.Add(r.Note);
                     if (warn != null) notes.Insert(0, warn);

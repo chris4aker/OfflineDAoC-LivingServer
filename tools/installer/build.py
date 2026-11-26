@@ -1,10 +1,10 @@
-"""Builds the Living Server Setup exe: one file that installs Offline DAoC and Living Server.
+"""Builds the DAoC - Living Server Setup exe: one file that installs the base game files and Living Server.
 
     python tools/installer/build.py                                  # embeds the published Beta 1.0 package
     python tools/installer/build.py --package path/to/OfflineDAoC-LivingServer-<build>.zip
     python tools/installer/build.py --release v1.0-beta              # downloads that release's package
 
-Writes tools/installer/dist/LivingServer-Setup-<build>.exe (needs the .NET SDK; builds on Windows or Linux).
+Writes tools/installer/dist/DAoC-LivingServer-Setup-<build>.exe (LivingServer-Setup-<build>.exe up to 1.2.2) (needs the .NET SDK; builds on Windows or Linux).
 
 The exe carries two payloads:
 - the Living Server release package (its BUILD-INFO.txt names the build and the Offline DAoC release it fits);
@@ -19,6 +19,9 @@ import sys
 import urllib.request
 import zipfile
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "release"))
+import publish_release  # noqa: E402  (the release file names, #641)
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -45,7 +48,7 @@ def sha256(path):
 
 
 def fetch_release(tag):
-    name = f"OfflineDAoC-LivingServer-{tag.lstrip('v')}.zip"
+    name = publish_release.zip_name(tag.lstrip('v'))
     url = f"https://github.com/{REPO}/releases/download/{tag}/{name}"
     dest = PAYLOAD / "download" / name
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -109,7 +112,7 @@ def main():
     subprocess.run(["dotnet", "build", str(proj), "-c", "Release", "-nologo", "-v", "minimal",
                     f"-p:PayloadDir={PAYLOAD}{'/' if not str(PAYLOAD).endswith('/') else ''}"], check=True)
     DIST.mkdir(exist_ok=True)
-    exe = DIST / f"LivingServer-Setup-{info['BuildName']}.exe"
+    exe = DIST / publish_release.setup_name(info['BuildName'])
     shutil.copyfile(out / "LivingServerSetup.exe", exe)
     print(f"Built {exe.relative_to(ROOT)}  {exe.stat().st_size / 1048576:.1f} MB  sha256 {sha256(exe)}")
 

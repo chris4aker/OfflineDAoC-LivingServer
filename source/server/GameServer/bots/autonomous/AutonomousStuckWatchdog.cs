@@ -484,6 +484,8 @@ public static class AutonomousStuckWatchdog
         bool moveLiveObject,
         string logMarker = "AUTONOMOUS_POSITION_RECOVERY")
     {
+        // Issue #625 row 9 (STUCK_HOTSPOT): where the bot was stuck, before any recovery moves it. Counting only.
+        StuckHotspots.NoteShared(StuckHotspots.KindOfMarker(logMarker), bot);
         if (moveLiveObject && TryRecoverToPlayerLeader(bot, now, reason, logMarker))
             return true;
         if (moveLiveObject && logMarker == "AUTONOMOUS_STUCK_15M_RECOVERY" && TryRecoverInsideRaid(bot, now, reason))

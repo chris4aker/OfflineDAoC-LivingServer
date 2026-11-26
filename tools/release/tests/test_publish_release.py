@@ -1,4 +1,5 @@
 import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -48,22 +49,60 @@ class FakeGitHub:
     def release_for(self, tag):
         return self.rel
 
-    def create_draft(self, tag, commit, title, body):
-        self.calls.append(("create", tag, commit, title))
+    def create_draft(self, tag, commit, title, body, prerelease=False):
+        self.calls.append(("create", tag, commit, title, prerelease) if prerelease else ("create", tag, commit, title))
         self.draft = {"url": "u", "upload_url": "x{?name}", "html_url": "h", "draft": True, "assets": []}
         return self.draft
 
     def upload(self, release, path, name):
         self.calls.append(("upload", name))
         digest = sha(Path(path).read_bytes()) if self.digest_ok else "0" * 64
-        self.draft["assets"] = [{"name": name, "digest": f"sha256:{digest}"}]
+        self.draft["assets"] = self.draft["assets"] + [{"name": name, "digest": f"sha256:{digest}"}]
 
     def get(self, release):
         return self.draft
 
-    def publish(self, release):
-        self.calls.append(("publish",))
-        return {"draft": False, "prerelease": False, "html_url": "h"}
+    def publish(self, release, prerelease=False):
+        self.calls.append(("publish", "prerelease", "not latest") if prerelease else ("publish",))
+        return {"draft": False, "prerelease": prerelease, "html_url": "h"}
+
+
+class RenameTests(unittest.TestCase):
+    """Issue #641: from 1.2.3 the files are DAoC-LivingServer-<build>.zip and DAoC-LivingServer-Setup-<build>.exe, and a
+    release also carries the zip under its old name for 1.2.0-1.2.2 launchers. Earlier builds keep their names."""
+
+    def test_names_by_build(self):
+        self.assertEqual(pr.zip_name("1.2.2"), "OfflineDAoC-LivingServer-1.2.2.zip")
+        self.assertEqual(pr.setup_name("1.2.2"), "LivingServer-Setup-1.2.2.exe")
+        self.assertIsNone(pr.legacy_zip_name("1.2.2"))
+        self.assertEqual(pr.zip_name("1.1.4-beta"), "OfflineDAoC-LivingServer-1.1.4-beta.zip")
+        for build in ("1.2.3", "1.2.3-rc.1", "1.2.10", "1.3", "2.0"):
+            with self.subTest(build=build):
+                self.assertEqual(pr.zip_name(build), f"DAoC-LivingServer-{build}.zip")
+                self.assertEqual(pr.setup_name(build), f"DAoC-LivingServer-Setup-{build}.exe")
+                self.assertEqual(pr.legacy_zip_name(build), f"OfflineDAoC-LivingServer-{build}.zip")
+
+    def test_a_renamed_release_carries_the_zip_under_both_names_and_checks_both(self):
+        body = ("| `DAoC-LivingServer-Setup-1.2.3.exe` | (filled in when the exe is built) |\n"
+                "| `DAoC-LivingServer-1.2.3.zip` | `" + sha(b"zip") + "` |\n")
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "DAoC-LivingServer-1.2.3.zip"
+            path.write_bytes(b"zip")
+            gh = FakeGitHub()
+            pr.publish(gh, "v1.2.3", COMMIT, "T", body, path, False)
+            self.assertEqual(gh.calls, [("create", "v1.2.3", COMMIT, "T"), ("upload", "DAoC-LivingServer-1.2.3.zip"),
+                                        ("upload", "OfflineDAoC-LivingServer-1.2.3.zip"), ("publish",)])
+            bad = FakeGitHub(digest_ok=False)
+            with self.assertRaises(pr.Stop):
+                pr.publish(bad, "v1.2.3", COMMIT, "T", body, path, False)
+            self.assertNotIn(("publish",), bad.calls)
+
+    def test_the_old_name_is_refused_for_a_renamed_build(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "OfflineDAoC-LivingServer-1.2.3.zip"
+            path.write_bytes(b"zip")
+            with self.assertRaisesRegex(pr.Stop, "needs DAoC-LivingServer-1.2.3.zip"):
+                pr.publish(FakeGitHub(), "v1.2.3", COMMIT, "T", "`" + sha(b"zip") + "`", path, True)
 
 
 class PackageTests(unittest.TestCase):
@@ -244,3 +283,87 @@ class FinalReleaseTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PrereleaseTests(unittest.TestCase):
+    """Test builds (issue #637): v1.2.3-rc.1 carries the push run's 1.2.3 package and is never Latest."""
+    TAG = "v1.2.3-rc.1"
+
+    def test_candidate_tags_name_the_final_build_of_their_package(self):
+        self.assertEqual(pr.builds_of("v1.2.3-rc.1", True), ("1.2.3", "1.2.3-rc.1"))
+        self.assertEqual(pr.builds_of("v1.2.3-rc.12", True), ("1.2.3", "1.2.3-rc.12"))
+        self.assertEqual(pr.builds_of("v1.2.3", False), ("1.2.3", "1.2.3"))
+
+    def test_a_candidate_must_be_a_prerelease_and_a_prerelease_a_candidate(self):
+        for tag, prerelease in (("v1.2.3-rc.1", False), ("v1.2.3", True), ("v1.2.3-rc.0", True), ("v1.2.3-beta", True),
+                                ("v0.37-rc.1", True), ("v1.2.3-rc1", True)):
+            with self.subTest(tag=tag, prerelease=prerelease), self.assertRaises(pr.Stop):
+                pr.builds_of(tag, prerelease)
+
+    def test_zips_the_final_builds_package_under_the_candidates_name(self):
+        with tempfile.TemporaryDirectory() as d:
+            make_artifact(Path(d) / "a", build="1.2.3")
+            target, digest = pr.package(Path(d) / "a", self.TAG, COMMIT, Path(d) / "out", prerelease=True)
+            self.assertEqual(target.name, "DAoC-LivingServer-1.2.3-rc.1.zip")
+            with zipfile.ZipFile(target) as z:
+                self.assertTrue(all(n.startswith("LivingServer-1.2.3/") for n in z.namelist()))
+            self.assertEqual(digest, sha(target.read_bytes()))
+
+    def test_refuses_a_package_of_another_build(self):
+        with tempfile.TemporaryDirectory() as d:
+            make_artifact(Path(d) / "a", build="1.2.2")
+            with self.assertRaises(pr.Stop):
+                pr.package(Path(d) / "a", self.TAG, COMMIT, Path(d) / "out", prerelease=True)
+
+    def test_notes_are_short_and_show_the_zip(self):
+        body = pr.prerelease_body("1.2.3-rc.1", "a" * 64)
+        self.assertIn("test build 1", body)
+        self.assertIn("| `DAoC-LivingServer-1.2.3-rc.1.zip` | `" + "a" * 64 + "` |", body)
+        self.assertNotIn("tests only", body.lower())
+        self.assertNotIn("owner", body.lower())
+
+    def _zip(self, d):
+        path = Path(d) / "DAoC-LivingServer-1.2.3-rc.1.zip"
+        path.write_bytes(b"zip")
+        return path
+
+    def test_publishes_as_a_prerelease_never_latest(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = self._zip(d)
+            gh = FakeGitHub()
+            pr.publish(gh, self.TAG, COMMIT, "T", pr.prerelease_body("1.2.3-rc.1", sha(b"zip")), path, False, prerelease=True)
+            # The same file under the pre-1.2.3 name too, for 1.2.x launchers with test builds on (#641).
+            self.assertEqual(gh.calls, [("create", self.TAG, COMMIT, "T", True), ("upload", path.name),
+                                        ("upload", "OfflineDAoC-LivingServer-1.2.3-rc.1.zip"),
+                                        ("publish", "prerelease", "not latest")])
+
+    def test_dry_run_publishes_nothing(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = self._zip(d)
+            gh = FakeGitHub()
+            pr.publish(gh, self.TAG, COMMIT, "T", pr.prerelease_body("1.2.3-rc.1", sha(b"zip")), path, True, prerelease=True)
+            self.assertEqual(gh.calls, [])
+
+    def test_the_real_publish_call_asks_for_a_prerelease_that_is_not_latest(self):
+        sent = []
+
+        class Recording(pr.GitHub):
+            def request(self, method, url, data=None, content_type="application/json", missing_ok=False):
+                sent.append((method, json.loads(data) if data else None))
+                return {"draft": False, "prerelease": True}
+
+        gh = Recording(token="t")
+        gh.create_draft(self.TAG, COMMIT, "T", "b", True)
+        gh.publish({"url": "u"}, True)
+        self.assertEqual(sent[0][1]["prerelease"], True)
+        self.assertEqual(sent[1][1], {"draft": False, "prerelease": True, "make_latest": "false"})
+        sent.clear()
+        gh.publish({"url": "u"})
+        self.assertEqual(sent[0][1], {"draft": False, "prerelease": False, "make_latest": "true"}, "finals unchanged")
+
+    def test_the_command_line_notes_for_a_prerelease_need_no_notes_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = self._zip(d)
+            out = Path(d) / "notes.md"
+            self.assertEqual(pr.run(["notes", "--prerelease", "--tag", self.TAG, "--zip", str(path), "--out", str(out)]), 0)
+            self.assertIn(sha(b"zip"), out.read_text(encoding="utf-8"))

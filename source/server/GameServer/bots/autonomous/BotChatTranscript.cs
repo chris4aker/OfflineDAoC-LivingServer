@@ -62,6 +62,8 @@ public static class BotChatTranscript
     public static void Emote(GameBot bot, eEmote emote)
     {
         if (bot == null) return;
+        // #625: an emote can be a bot's answer to the player's line (PLAYER_LINE_OUTCOME; logs only).
+        PlayerLineOutcomes.Emoted(bot, GameLoop.GameLoopTime);
         Log.Info($"CHAT_EMOTE from=\"{bot.Name}\" kind={KindOf(bot)} realm={GlobalConstants.RealmToName(bot.Realm)} emote={emote}");
     }
 

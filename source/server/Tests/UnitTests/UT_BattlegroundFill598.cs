@@ -4,7 +4,7 @@ using System.Linq;
 using DOL.GS;
 using DOL.GS.ServerProperties;
 using NUnit.Framework;
-using OfflineDaoc.Configuration;
+using DAoCLivingServer.Configuration;
 
 namespace DOL.UnitTests
 {
@@ -110,8 +110,9 @@ namespace DOL.UnitTests
             Assert.That(LivingServerSettingsUpgrade.PlanFileChanges(""), Has.Length.EqualTo(1), "a world that never recorded a build");
             Assert.That(LivingServerSettingsUpgrade.PlanFileChanges("1.2.3"), Is.Empty, "once only");
             Assert.That(LivingServerSettingsUpgrade.PlanFileChanges("1.3"), Is.Empty);
-            // No database row changes in 1.2.3.
-            Assert.That(LivingServerSettingsUpgrade.Changes.Where(change => change.Since == "1.2.3"), Is.Empty);
+            // 1.2.3's only database row changes are the welcome messages naming the product (#641, UT_Rebrand641).
+            Assert.That(LivingServerSettingsUpgrade.Changes.Where(change => change.Since == "1.2.3").Select(change => change.Key),
+                Is.EqualTo(new[] { "motd", "starting_msg" }));
         }
 
         [Test]

@@ -244,12 +244,14 @@ namespace DOL.GS
             catch { }
         }
 
-        public static void End(GameBot bot, GoalAttemptEnd reason, string detail,
+        /// <summary>Ends the bot's open camp attempt; true when one was open (and so is closed now).</summary>
+        public static bool End(GameBot bot, GoalAttemptEnd reason, string detail,
             (int Region, int X, int Y, int Z)? failurePosition = null)
         {
-            if (bot == null) return;
+            if (bot == null) return false;
             AutonomousGoalAttempt attempt = Interlocked.Exchange(ref bot.GoalDiagnosticAttempt, null);
-            if (attempt == null || !AutonomousDiagnosticsProperties.GoalAttempts) return;
+            if (attempt == null) return false;
+            if (!AutonomousDiagnosticsProperties.GoalAttempts) return true;
             // A logging problem must never prevent movement, recovery or logout.
             try
             {
@@ -259,6 +261,17 @@ namespace DOL.GS
                 if (summary != null) Log.Info("AUTONOMOUS_GOAL_ATTEMPT " + JsonSerializer.Serialize(summary));
             }
             catch { }
+            return true;
+        }
+
+        /// <summary>
+        /// Issue #625 (GROUP_ENDED): an attempt that ends GroupChanged, with the controller's cause, counted against the
+        /// group that caused it (for Joined, the new group). The AUTONOMOUS_GOAL_ATTEMPT row is unchanged.
+        /// </summary>
+        public static void EndGroupChanged(GameBot bot, GroupChangeCause cause, string groupId, string detail)
+        {
+            if (End(bot, GoalAttemptEnd.GroupChanged, detail))
+                GroupEndedLog.CountGroupChanged(groupId, cause);
         }
     }
 }

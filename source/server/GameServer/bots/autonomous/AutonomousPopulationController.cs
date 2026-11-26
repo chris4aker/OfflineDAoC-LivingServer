@@ -68,6 +68,7 @@ public static class AutonomousPopulationController
                 GameServer.Database.SaveObject(previouslyOnline.Cast<DataObject>());
         }
         RetireBuffBotCopies();
+        AutonomousNewcomerStream.Reset();
         RefreshControlPlane(force: true);
         RetireCustomClassBots(_cachedRoster);
         LogEraBuildCensus(_cachedRoster);
@@ -110,6 +111,8 @@ public static class AutonomousPopulationController
                     _nextOrphanRepairUtc = nowUtc.AddMinutes(10);
                 QueueOwnerCommands(repairOrphans);
             }
+            // Issue #630: new level-1 gamebots for a realm whose low levels run empty, paired with level-50 retirements.
+            AutonomousNewcomerStream.Pulse(nowUtc, _cachedEnabled, StartupRampFinished, _loginRoster);
 
             OfflineWorldBotRecord[] roster = _loginRoster;
             int desired = AutonomousPopulationRamp.DesiredActiveCount(_cachedEnabled, roster.Length, _cachedRampMinutes, nowUtc - _startedUtc);
@@ -226,6 +229,14 @@ public static class AutonomousPopulationController
             {
                 if (!TryPlaceFreshBotAtAuthoritativeStart(bot, record))
                     PlaceAtCapitalFallback(bot, record);
+                // A row made with no position (a newcomer, #630) is bound where it starts, as the launcher binds a "+ Lv.1" bot.
+                if (record.BindRegionId == 0)
+                {
+                    record.BindRegionId = bot.CurrentRegionID;
+                    record.BindX = bot.X;
+                    record.BindY = bot.Y;
+                    record.BindZ = bot.Z;
+                }
             }
             else if (record.RegionId == 0)
             {
@@ -515,7 +526,7 @@ public static class AutonomousPopulationController
         {
             foreach (string line in EraBuildCensus.Lines(roster.Select(record =>
                          new EraBuildCensus.Entry(record.Realm, record.ClassId, record.SerializedBuildPlan)),
-                         OfflineDaoc.Shared.EraBuildCatalog.Default))
+                         DAoCLivingServer.Shared.EraBuildCatalog.Default))
                 Log.Info(line);
         }
         catch (Exception exception)
@@ -534,6 +545,9 @@ public static class AutonomousPopulationController
     /// <summary>Minutes until the ramp counts as finished at the latest (0 once it has).</summary>
     public static int StartupRampMinutesLeft => StartupRampFinished ? 0
         : AutonomousPopulationRamp.MinutesLeft(_cachedRampMinutes, DateTime.UtcNow - _startedUtc);
+
+    /// <summary>The next poll rereads the roster (a newcomer was added or a bot retired, #630).</summary>
+    internal static void RequestRosterRefresh() => _nextRosterRefreshUtc = DateTime.MinValue;
 
     /// <summary>The non-retired roster as last read by the control plane (read-only; empty before the first read).</summary>
     internal static OfflineWorldBotRecord[] CachedRoster => _cachedRoster;

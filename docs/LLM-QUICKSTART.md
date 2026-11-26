@@ -1,6 +1,6 @@
-# Customize Offline DAoC with your own AI assistant
+# Customize DAoC - Living Server with your own AI assistant
 
-You can make Offline DAoC your own with an AI coding assistant such as Claude Code or Codex. You
+You can make Living Server your own with an AI coding assistant such as Claude Code or Codex. You
 don't need the author's permission to fork it.
 
 ## 1. Get your own copy
@@ -14,7 +14,7 @@ don't need the author's permission to fork it.
 
 ## 2. Start your assistant with this prompt
 
-> This is my fork of Offline DAoC, a single-player DAoC server with autonomous gamebots and
+> This is my fork of DAoC - Living Server, a single-player DAoC server with autonomous gamebots and
 > companion bots. Read AGENTS.md and docs/DEVELOPMENT.md first. My source checkout is this folder;
 > my playable game is at [path to playable folder]. Look at the current code before changing it.
 > Don't start the server or replace files in the playable folder without asking me, and back up
@@ -29,9 +29,9 @@ don't need the author's permission to fork it.
 | Autonomous gamebot goals, camps, groups, travel | `source/server/GameServer/bots/autonomous` |
 | Companion bots and class combat AI | `source/server/GameServer/bots` |
 | Commands, combat, spells, pets | `source/server/GameServer` |
-| The launcher | `source/tools/OfflineDaoc.Launcher` |
+| The launcher | `source/tools/DAoCLivingServer.Launcher` |
 | The new client (0.36c): interface, world, controls | `source/new-client/godot/game` (see its [README](../source/new-client/README.md)) |
-| Progress transfer | `source/tools/OfflineDaoc.ProgressImport` |
+| Progress transfer | `source/tools/DAoCLivingServer.ProgressImport` |
 | Pet art, weapons, spell effects | `tools/pet-art` (see its README) |
 | World data (spawns, spells, items) | the playable folder's `runtime/data/opendaoc.sqlite3.db`. Write changes as a script with a backup, and never commit a played database |
 

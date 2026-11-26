@@ -413,6 +413,14 @@ seed_sluaghbinder.py           fresh-world Sluaghbinder data (keeps stock visual
 helmet_face_check.py           helmet mesh family + extension counts
 move_realm_exchange_npcs.py    move NPC rows by Mob_ID (Realm Exchange example, section 12.3)
 add_moher_spectre_sentinel_spawns.py   spawn copies of existing monsters (section 12.5)
+source/tools (GitHub):
+patch_era_creation_text.py     "Not available in this era" over the creation
+                               descriptions of the Catacombs and Labyrinth
+                               classes (and races, where game.dll holds them) in
+                               the 1.x game.dll only (hash f55ed6b0..., #634):
+                               find / patch / verify / restore / content-patch.
+                               Same-length, NUL-padded, found by byte search with
+                               expected counts; refuses 0.37b's game.dll.
 
 
 ------------------------------------------------------------------------------
@@ -440,7 +448,7 @@ files; it is all server database rows (and, for scripted NPCs, server code).
   setup tool gives each install's exchange brokers a random name from a list,
   so another player's Camelot broker may not be called Adalyn.
 - Some rows are REWRITTEN by the setup tool on a new install:
-  source/tools/OfflineDaoc.Setup/Program.cs EnsureRealmExchangeBrokers writes
+  source/tools/DAoCLivingServer.Setup/Program.cs EnsureRealmExchangeBrokers writes
   the Realm Exchange brokers and their guards (Mob_ID offline-realm-exchange-*).
   When you move those, change the coordinates there too, or a fresh install
   puts them back.

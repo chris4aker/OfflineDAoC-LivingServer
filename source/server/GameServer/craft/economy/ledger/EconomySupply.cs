@@ -25,6 +25,9 @@ namespace DOL.GS.CraftingEconomy
         public readonly int[] BandBots = new int[6];
         public readonly long[] BandCoin = new long[6];
         public readonly long[] BandMedian = new long[6];
+        /// <summary>Issue #625 (ECONOMY_PULSE): listings and their median asking price by slot band (EconomyPulse.SlotBands).</summary>
+        public readonly int[] ListingBandCount = new int[EconomyPulse.SlotBandCount];
+        public readonly long[] ListingBandMedian = new long[EconomyPulse.SlotBandCount];
 
         public long PlayerCoin => PlayerWallets + PlayerProceeds;
         /// <summary>The money supply: every coin a realm's bots, players and guilds hold.</summary>
@@ -53,6 +56,8 @@ namespace DOL.GS.CraftingEconomy
         private readonly int[] _listings = new int[EconomyFlowLedger.RealmSlots];
         private readonly int[] _botListings = new int[EconomyFlowLedger.RealmSlots];
         private readonly int[] _crafters = new int[EconomyFlowLedger.RealmSlots];
+        private readonly List<long>[] _listingPrices = Enumerable.Range(0, EconomyFlowLedger.RealmSlots * EconomyPulse.SlotBandCount)
+            .Select(_ => new List<long>()).ToArray();
 
         private static int Slot(int realm) => realm is >= 1 and <= 3 ? realm : 0;
 
@@ -72,9 +77,13 @@ namespace DOL.GS.CraftingEconomy
         public SupplyBuilder Guild(int realm, long bank) { _guilds[Slot(realm)] += Math.Max(0, bank); return this; }
         public SupplyBuilder Crafters(int realm, int count) { _crafters[Slot(realm)] = count; return this; }
 
-        public SupplyBuilder Listing(int realm, long price, bool byBot)
+        public SupplyBuilder Listing(int realm, long price, bool byBot) => Listing(realm, price, byBot, -1);
+
+        /// <summary>A listing with its item type (DbInventoryItem.Item_Type), for the slot bands of ECONOMY_PULSE.</summary>
+        public SupplyBuilder Listing(int realm, long price, bool byBot, int itemType)
         {
             int slot = Slot(realm);
+            _listingPrices[slot * EconomyPulse.SlotBandCount + EconomyPulse.SlotBand(itemType)].Add(Math.Max(0, price));
             _listed[slot] += Math.Max(0, price);
             _listings[slot]++;
             if (byBot)
@@ -116,6 +125,12 @@ namespace DOL.GS.CraftingEconomy
                 supply.Listings = _listings[realm];
                 supply.BotListings = _botListings[realm];
                 supply.Crafters = _crafters[realm];
+                for (int band = 0; band < EconomyPulse.SlotBandCount; band++)
+                {
+                    List<long> prices = _listingPrices[realm * EconomyPulse.SlotBandCount + band];
+                    supply.ListingBandCount[band] = prices.Count;
+                    supply.ListingBandMedian[band] = Median(prices);
+                }
                 supply.MedianBotCoin = Median(coins[realm]);
                 for (int band = 0; band < 6; band++)
                     supply.BandMedian[band] = Median(bandCoins[realm, band]);

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!--
-    Living Server Setup: one exe that installs Offline DAoC and the Living Server add-on, or adds Living Server to a
+    DAoC - Living Server Setup: one exe that installs the base game files and Living Server on top, or adds Living Server to a
     game the player already has. .NET Framework 4.7.2 (part of every supported Windows 10 and 11), so it runs before
     the game and its own .NET exist. Built by tools/installer/build.py, which supplies the two payloads:
       payload/LivingServer.zip     the Living Server release package (its BUILD-INFO.txt names the build)
@@ -18,9 +18,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <Product>Offline DAoC Living Server Setup</Product>
-    <Company>Offline DAoC Living Server (fan project)</Company>
-    <Description>Installs Offline DAoC and the Living Server add-on</Description>
+    <Product>DAoC - Living Server Setup</Product>
+    <Company>DAoC - Living Server (fan project)</Company>
+    <Description>Installs DAoC - Living Server, a single-player server for Dark Age of Camelot</Description>
     <Copyright>Free, non-commercial fan project. Not affiliated with Electronic Arts or Broadsword.</Copyright>
     <Version>1.0.0</Version>
     <Deterministic>true</Deterministic>
@@ -45,12 +45,12 @@
 
   <ItemGroup>
     <!-- Beta 1.1.2: the release check, digest check and package check the launcher's updates use (PackageUpdate.cs). -->
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\BuildVersion.cs" Link="Updates\BuildVersion.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\ReleaseInfo.cs" Link="Updates\ReleaseInfo.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\PackageDigest.cs" Link="Updates\PackageDigest.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\PackageCheck.cs" Link="Updates\PackageCheck.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\ReleaseFeed.cs" Link="Updates\ReleaseFeed.cs" />
-    <Compile Include="..\..\..\source\tools\OfflineDaoc.Launcher\Updates\HttpReleaseWeb.cs" Link="Updates\HttpReleaseWeb.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\BuildVersion.cs" Link="Updates\BuildVersion.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\ReleaseInfo.cs" Link="Updates\ReleaseInfo.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\PackageDigest.cs" Link="Updates\PackageDigest.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\PackageCheck.cs" Link="Updates\PackageCheck.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\ReleaseFeed.cs" Link="Updates\ReleaseFeed.cs" />
+    <Compile Include="..\..\..\source\tools\DAoCLivingServer.Launcher\Updates\HttpReleaseWeb.cs" Link="Updates\HttpReleaseWeb.cs" />
   </ItemGroup>
 
   <ItemGroup>

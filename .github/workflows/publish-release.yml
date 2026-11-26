@@ -1,8 +1,15 @@
 # Publishes a Living Server release from a build-and-test push run on main, for when it can't be done by hand
-# (tools/release/publish_release.py): takes that run's package artifact, zips it as OfflineDAoC-LivingServer-<build>.zip,
+# (tools/release/publish_release.py): takes that run's package artifact, zips it as DAoC-LivingServer-<build>.zip (#641;
+# OfflineDAoC-LivingServer-<build>.zip up to 1.2.2, and a copy under that name for 1.2.x launchers from 1.2.3),
 # fills the zip's SHA-256 into docs/RELEASE-NOTES-<version>.md's notes, then creates the tag and the release on the
 # run's commit, attaches the zip and publishes it as Latest. A dry run (the default) does every check, prints the notes
 # and keeps the zip as a workflow artifact, with a read-only token.
+#
+# Test builds (issue #637): with prerelease on, the tag is a release candidate (v1.2.3-rc.1) of the version in
+# development. Its package is the push run's build 1.2.3, zipped as DAoC-LivingServer-1.2.3-rc.1.zip with the
+# same checks and GitHub digest check, under short generated notes; it is published as a pre-release that never becomes
+# Latest (make_latest false), so the launcher's normal channel and /releases/latest keep the final release. Testers
+# get it with the launcher's "Offer test builds (pre-releases)" (docs/CONTRIBUTING.md, "Test builds").
 #
 # A release published with this workflow's token doesn't start the release workflow: run "release" by hand afterwards
 # (tag, dry run off) to build, test and attach Setup.
@@ -12,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release tag: v1.2 (final releases, from 1.2 on), v1.1.4-beta (the betas before it)"
+        description: "Release tag: v1.2 (final releases, from 1.2 on), v1.1.4-beta (the betas before it), v1.2.3-rc.1 (a test build: prerelease on)"
         required: true
       run_id:
         description: "The build-and-test push run on main whose package is published"
@@ -20,6 +27,10 @@ on:
       title:
         description: "Release title"
         required: true
+      prerelease:
+        description: "Test build: publish a v<X>-rc.<N> tag as a GitHub pre-release, never Latest"
+        type: boolean
+        default: false
       dry_run:
         description: "Dry run: check and show, publish nothing"
         type: boolean
@@ -41,7 +52,26 @@ jobs:
       actions: read
     outputs:
       commit: ${{ steps.run.outputs.commit }}
+      prerelease_flag: ${{ steps.tag.outputs.flag }}
     steps:
+      - name: The tag's builds
+        id: tag
+        env:
+          TAG: ${{ inputs.tag }}
+          PRERELEASE: ${{ inputs.prerelease }}
+        run: |
+          set -euo pipefail
+          # build: the package's (BUILD-INFO.txt BuildName, the artifact's name); the zip and the release take the tag's.
+          if [ "$PRERELEASE" = true ]; then
+            [[ "$TAG" =~ ^v([0-9]+(\.[0-9]+)+)-rc\.[1-9][0-9]*$ ]] || { echo "::error::a pre-release needs a v<version>-rc.<N> tag, not $TAG"; exit 1; }
+            build="${BASH_REMATCH[1]}"; flag=--prerelease
+          else
+            [[ "$TAG" == *-rc.* ]] && { echo "::error::$TAG is a test-build tag: turn prerelease on"; exit 1; }
+            build="${TAG#v}"; flag=
+          fi
+          echo "build=$build" >> "$GITHUB_OUTPUT"
+          echo "flag=$flag" >> "$GITHUB_OUTPUT"
+          echo "tag $TAG: package build $build, release ${TAG#v}${flag:+ (pre-release)}"
       - name: The run to publish from
         id: run
         env:
@@ -71,11 +101,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ inputs.run_id }}
-          TAG: ${{ inputs.tag }}
+          BUILD: ${{ steps.tag.outputs.build }}
           COMMIT: ${{ steps.run.outputs.commit }}
         run: |
           set -euo pipefail
-          build="${TAG#v}"
+          build="$BUILD"
           want="OfflineDAoC-LivingServer-$build-${COMMIT:0:7}"
           id=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts" --jq ".artifacts[] | select(.name == \"$want\" and .expired == false) | .id")
           [ -n "$id" ] || { echo "::error::run $RUN_ID has no artifact $want"; exit 1; }
@@ -86,12 +116,18 @@ jobs:
         env:
           TAG: ${{ inputs.tag }}
           COMMIT: ${{ steps.run.outputs.commit }}
+          FLAG: ${{ steps.tag.outputs.flag }}
         run: |
           set -euo pipefail
-          # docs/RELEASE-NOTES-<version>.md: v1.2 reads RELEASE-NOTES-1.2.md, and so did v1.1.2-beta RELEASE-NOTES-1.1.2.md.
-          version="${TAG#v}"; version="${version%-beta}"
-          python3 tools/release/publish_release.py package --artifact "$RUNNER_TEMP/artifact" --tag "$TAG" --commit "$COMMIT" --out out
-          python3 tools/release/publish_release.py notes --notes "docs/RELEASE-NOTES-$version.md" --tag "$TAG" --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --out out/release-notes.md
+          python3 tools/release/publish_release.py package --artifact "$RUNNER_TEMP/artifact" --tag "$TAG" --commit "$COMMIT" --out out $FLAG
+          if [ -n "$FLAG" ]; then
+            # A test build's notes are short and generated (publish_release.py prerelease_body).
+            python3 tools/release/publish_release.py notes --prerelease --tag "$TAG" --zip "$(ls out/*.zip)" --out out/release-notes.md
+          else
+            # docs/RELEASE-NOTES-<version>.md: v1.2 reads RELEASE-NOTES-1.2.md, and so did v1.1.2-beta RELEASE-NOTES-1.1.2.md.
+            version="${TAG#v}"; version="${version%-beta}"
+            python3 tools/release/publish_release.py notes --notes "docs/RELEASE-NOTES-$version.md" --tag "$TAG" --zip "$(ls out/*.zip)" --out out/release-notes.md
+          fi
           sha256sum out/*.zip
           echo "--- release notes ---"; cat out/release-notes.md; echo "--- end ---"
       - uses: actions/upload-artifact@v4
@@ -120,7 +156,8 @@ jobs:
           TAG: ${{ inputs.tag }}
           TITLE: ${{ inputs.title }}
           COMMIT: ${{ needs.prepare.outputs.commit }}
-        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip" --dry-run
+          FLAG: ${{ needs.prepare.outputs.prerelease_flag }}
+        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "$(ls out/*.zip)" --dry-run $FLAG
 
   publish:
     needs: prepare
@@ -137,10 +174,11 @@ jobs:
         with:
           name: release-${{ inputs.tag }}
           path: out
-      - name: Create the tag and the release, attach the zip, publish as Latest
+      - name: Create the tag and the release, attach the zip, publish (as Latest, or as a pre-release never Latest)
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag }}
           TITLE: ${{ inputs.title }}
           COMMIT: ${{ needs.prepare.outputs.commit }}
-        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "out/OfflineDAoC-LivingServer-${TAG#v}.zip"
+          FLAG: ${{ needs.prepare.outputs.prerelease_flag }}
+        run: python3 tools/release/publish_release.py publish --tag "$TAG" --commit "$COMMIT" --title "$TITLE" --body out/release-notes.md --zip "$(ls out/*.zip)" $FLAG

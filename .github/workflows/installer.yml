@@ -8,8 +8,8 @@ on:
   push:
     paths:
       - 'tools/installer/**'
-      - 'source/tools/OfflineDaoc.Launcher/Updates/**'
-      - 'source/tools/OfflineDaoc.Launcher/MainForm.Updates.cs'
+      - 'source/tools/DAoCLivingServer.Launcher/Updates/**'
+      - 'source/tools/DAoCLivingServer.Launcher/MainForm.Updates.cs'
       - '.github/workflows/installer.yml'
   workflow_dispatch:
     inputs:
@@ -143,13 +143,13 @@ jobs:
         with:
           dotnet-version: 10.0.x
       - name: Build the launcher
-        run: dotnet build source/tools/OfflineDaoc.Launcher/OfflineDaoc.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
+        run: dotnet build source/tools/DAoCLivingServer.Launcher/DAoCLivingServer.Launcher.csproj -c Release -p:SourceRevisionId=${{ github.sha }}
       - name: Update v1.1-beta to v1.1.1-beta through the launcher, then roll back
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-launcher-update.ps1 -Launcher source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows/OfflineDAoC.exe -Work C:\lsupdate -From v1.1-beta -To v1.1.1-beta
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-launcher-update.ps1 -Launcher source/tools/DAoCLivingServer.Launcher/bin/Release/net10.0-windows/DAoCLivingServer.exe -Work C:\lsupdate -From v1.1-beta -To v1.1.1-beta
           exit $LASTEXITCODE
       - uses: actions/upload-artifact@v4
         if: always()

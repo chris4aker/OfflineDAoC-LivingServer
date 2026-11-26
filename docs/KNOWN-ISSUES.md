@@ -89,8 +89,8 @@ Bot raids fight the bosses by the bosses' own rules, and the bots don't win ever
 
 ## Launcher, install and updates
 
-- **The version label** reads "LIVING SERVER 1.2.2". It used to read "VERSION 0.37"; the game underneath is still
-  Offline DAoC 0.37.
+- **The version label** reads "LIVING SERVER 1.2.2". The launcher is **DAoC - Living Server** (`DAoCLivingServer.exe`
+  from 1.2.3). An existing game keeps its `OfflineDAoC.exe`, which opens the same launcher.
 - **The bot schedule is off by default:** the whole roster is online. A schedule you chose yourself is kept.
 - **A maximized launcher can ignore START SERVER, STOP SERVER or ENTER REALM** when another window sits over those
   buttons. Use the launcher at its normal size, or move the other window.
@@ -125,8 +125,8 @@ Bot raids fight the bosses by the bosses' own rules, and the bots don't win ever
   `python tools\claude-version\set_bot_guilds.py --purge --apply` in your game folder. It backs up your database first.
 - **`ROLLBACK.cmd` doesn't remove saved data.** It puts back the files the install replaced. New tables and settings
   stay, and the original server ignores them. Run it once for each build you installed.
-- **Versions:** Living Server is for Offline DAoC 0.37, 0.37b and 0.37c only. 0.37 stays the base game, and later fixes
-  come in Living Server releases.
+- **Versions:** Living Server runs on the base game it installs, and on games of the older 0.37b and 0.37c editions
+  that already have it. Fixes come in Living Server releases.
 - **The server only listens on your own computer** unless you host for friends. If your settings let other computers
   in, the log warns at every start (`NETWORK_EXPOSURE`).
 

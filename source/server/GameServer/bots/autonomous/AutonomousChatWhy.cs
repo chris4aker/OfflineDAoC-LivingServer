@@ -135,6 +135,8 @@ public static class AutonomousChatWhy
         }
         // Issue #475: a decision that ended without a line is a CHAT_HELD row in the session chat log (logs only).
         BotSayGate.Held(decision);
+        // #625: the reply's kind for PLAYER_LINE_OUTCOME (logs only).
+        PlayerLineOutcomes.Decided(decision);
     }
 
     /// <summary>Remembers a decision about a bot's line (or its silence).</summary>

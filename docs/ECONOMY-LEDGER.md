@@ -100,4 +100,4 @@ The Living Server tab's ECONOMY PAGE button (and the Camelot Herald, which links
 recorded hour and its parts, the last 24 hours (supply, faucets, sinks, the Exchange tax as its own column, the
 residual; every realm together), the top sinks, the flows by kind per realm and the price index's ten bands with the
 most stock per realm. It reads the table, not the log, as the launcher reads every other saved state
-(`source/tools/OfflineDaoc.Launcher/EconomyPage.cs`). Release builds ship the table empty.
+(`source/tools/DAoCLivingServer.Launcher/EconomyPage.cs`). Release builds ship the table empty.

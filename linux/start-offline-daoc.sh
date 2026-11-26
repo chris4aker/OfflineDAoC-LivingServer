@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start Offline DAoC (with Living Server) on Linux under Wine: the Linux counterpart of START OFFLINE DAOC.cmd.
+# Start DAoC - Living Server on Linux under Wine: the Linux counterpart of START OFFLINE DAOC.cmd.
 #
 #   linux/start-offline-daoc.sh [game folder]
 #
@@ -13,6 +13,8 @@
 #   - Fullscreen: under GNOME the client's borderless window sits below the top bar and its bottom edge (Continue /
 #     Accept buttons) falls off the screen. daoc_fullscreen.py makes the client window truly fullscreen.
 set -euo pipefail
+# A set CDPATH makes cd go somewhere else for a relative folder and print it, which would end up in GAME.
+unset CDPATH
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GAME="${1:-${ODAOC_GAME:-$HOME/OfflineDAoC/game}}"

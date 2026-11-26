@@ -100,9 +100,9 @@ def main():
     if not (godot / "content/.gdignore").is_file():
         raise SystemExit("godot\\content\\.gdignore is missing: Godot would try to import the whole content folder")
     check_network_client(godot)
-    launcher = repo / "source/tools/OfflineDaoc.Launcher/bin/Release/net10.0-windows"
+    launcher = repo / "source/tools/DAoCLivingServer.Launcher/bin/Release/net10.0-windows"
     if not (launcher / "OfflineDAoC.exe").is_file():
-        raise SystemExit("Build the launcher first (source/tools/OfflineDaoc.Launcher, Release)")
+        raise SystemExit("Build the launcher first (source/tools/DAoCLivingServer.Launcher, Release)")
 
     new = out / "new-client"
     counts = {}

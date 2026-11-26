@@ -51,7 +51,7 @@ python tools/installer/build.py --package <zip>       # a package built by CI
 Needs the .NET SDK (8 or later; it targets .NET Framework 4.7.2 through reference assemblies, so it builds on Windows
 or Linux). Output: `tools/installer/dist/LivingServer-Setup-<build>.exe` (about 12 MB, the package included).
 
-The art comes from the launcher's own pictures (`source/tools/OfflineDaoc.Launcher/Assets`) with "LIVING SERVER" set
+The art comes from the launcher's own pictures (`source/tools/DAoCLivingServer.Launcher/Assets`) with "LIVING SERVER" set
 in Cinzel (SIL Open Font License): `python tools/installer/art/make_art.py` rebuilds it.
 
 ## Command line (tests and support)
@@ -112,7 +112,7 @@ puts its SHA-256 in the release notes ("Releasing Living Server" in [docs/DEVELO
   Run anyway.
 - **The newest package (Beta 1.1.2).** Before it reads your games, Setup asks GitHub's releases API for Living
   Server's newest release (`PackageUpdate.cs`, with the launcher's shared update code in
-  `source/tools/OfflineDaoc.Launcher/Updates`). When that release's package is newer than the embedded one and made
+  `source/tools/DAoCLivingServer.Launcher/Updates`). When that release's package is newer than the embedded one and made
   for the same Offline DAoC release, Setup downloads it, checks it against the SHA-256 digest GitHub publishes and
   the package rules (one `LivingServer-<build>` folder, `BUILD-INFO.txt` naming the tag's build, the scripts, the
   server's hash), and installs it. Anything else (offline, a rate limit, a bad or missing digest, a package for

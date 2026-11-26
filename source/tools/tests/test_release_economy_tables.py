@@ -18,7 +18,7 @@ import build_release_037 as release  # noqa: E402
 import find_changes_since_release as changes  # noqa: E402
 import make_patch  # noqa: E402
 
-POLICY = json.loads((HERE / "OfflineDaoc.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
+POLICY = json.loads((HERE / "DAoCLivingServer.ProgressImport/progress-policy.json").read_text(encoding="utf-8"))
 ECONOMY = ["offline_bot_types", "offline_bot_crafters", "offline_bot_craft_orders", "offline_exchange_index",
            "offline_economy_ledger", "offline_crafter_customers"]
 

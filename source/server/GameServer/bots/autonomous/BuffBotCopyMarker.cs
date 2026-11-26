@@ -1,6 +1,6 @@
 using System;
 
-namespace OfflineDaoc.Shared
+namespace DAoCLivingServer.Shared
 {
     /// <summary>
     /// The Activity text the server writes on a retired buffbot copy (BuffBotCopyRetirement, owner decision 2026-11-18:

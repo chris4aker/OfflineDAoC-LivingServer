@@ -5,9 +5,9 @@
     <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
     <ItemGroup>
         <!-- Character passport (from rambodolphin13/DividedRealms): the Passport Desk moves characters by the same rules as the launcher. -->
-        <Compile Include="..\..\tools\OfflineDaoc.Passport\PassportDatabase.cs" Link="gameutils\Passport\PassportDatabase.cs" />
-        <Compile Include="..\..\tools\OfflineDaoc.Passport\PassportEngine.cs" Link="gameutils\Passport\PassportEngine.cs" />
-        <Compile Include="..\..\tools\OfflineDaoc.Passport\PassportFile.cs" Link="gameutils\Passport\PassportFile.cs" />
+        <Compile Include="..\..\tools\DAoCLivingServer.Passport\PassportDatabase.cs" Link="gameutils\Passport\PassportDatabase.cs" />
+        <Compile Include="..\..\tools\DAoCLivingServer.Passport\PassportEngine.cs" Link="gameutils\Passport\PassportEngine.cs" />
+        <Compile Include="..\..\tools\DAoCLivingServer.Passport\PassportFile.cs" Link="gameutils\Passport\PassportFile.cs" />
     </ItemGroup>
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -81,7 +81,7 @@
         <!-- RvR 1.2 lane catalog (docs/research/rvr-field-1.2/LANES-CATALOG.md), built by source/tools/build_rvr_lanes.py. -->
         <EmbeddedResource Include=".\bots\autonomous\data\rvr-lanes.json" />
         <!-- Living Server 1.2 era builds (docs/ERA-BUILDS-1.2.md), made by source/tools/make_era_builds.py; the launcher embeds the same file. -->
-        <EmbeddedResource Include=".\bots\autonomous\data\era-builds-165.json" LogicalName="OfflineDaoc.era-builds-165.json" />
+        <EmbeddedResource Include=".\bots\autonomous\data\era-builds-165.json" LogicalName="DAoCLivingServer.era-builds-165.json" />
         <!-- The epic chains (EpicChainLinks): the data file tools/claude-version/epic_chains.py reads, built in. -->
         <EmbeddedResource Include="..\..\..\tools\claude-version\epic_chains_data.json" LogicalName="epic_chains_data.json" />
         <TranslationFiles Include=".\language\**\*.txt" />

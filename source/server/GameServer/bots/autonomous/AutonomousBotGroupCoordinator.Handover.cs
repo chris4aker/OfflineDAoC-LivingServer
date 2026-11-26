@@ -35,6 +35,7 @@ public static partial class AutonomousBotGroupCoordinator
         session.Follow = null;
         BotLedGroups.ClearHosted(session.Group);
         Sessions.Remove(session.Group);
+        LogGroupEnded(session, members, reason, "handover/player_leads");
         if (Log.IsInfoEnabled)
             Log.Info($"AUTONOMOUS_GROUP_TASK_ENDED group={session.Id} objective={session.ObjectiveKind} size={members.Length} " +
                      $"members=\"{string.Join(",", members.Select(member => member.Name))}\" reason=\"{reason}\" disbanded=false");
@@ -125,6 +126,7 @@ public static partial class AutonomousBotGroupCoordinator
                 Group = group,
                 Leader = leader,
                 Id = SessionId(leader.Realm, ++_nextGroupNumber),
+                StartSize = bots.Length,
                 Rendezvous = new Vector3(leader.X, leader.Y, leader.Z),
                 RendezvousName = PlaceOf(leader),
                 RendezvousRegion = leader.CurrentRegionID,
