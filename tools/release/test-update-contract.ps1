@@ -1,6 +1,7 @@
 # The frozen update contract, end to end on Windows (issue #685, docs/RELEASE-TRAIN.md; CI: update-contract.yml).
 #
 #   powershell -File tools\release\test-update-contract.ps1 -Released <dir> -Candidate <dir> -Harness <dll> [-Work D:\uc]
+#       [-Paths <dir> -Package <dir>]
 #
 # -Released: what `update_contract.py released` wrote (the newest full release older than the candidate: its package
 # and Setup, checked against GitHub's digests). -Candidate: what `update_contract.py candidate` wrote (this commit's
@@ -17,11 +18,19 @@
 # 4. The released Setup, asked which package it would install (--info) with the candidate as GitHub's newest release
 #    (--release-json), chooses the candidate: its own feed parse, asset name, digest, address and package checks.
 #    The candidate's zip is put where that Setup keeps its download, so it reuses it after checking the digest.
+# 5. With -Paths (what `update_contract.py paths` wrote) and -Package (this commit's package folder): #689, step 1 of the
+#    two-step rule. THIS commit's launcher (the package's launcher\ files, loaded by the harness, checking as the released
+#    build) takes the candidate under every repository path it must accept (the current and the new name, as written,
+#    lower and upper case) and refuses it under each lookalike (another owner, a longer name) before downloading. The
+#    released launcher is also asked about the new name: launchers before 1.2.3 refuse it, which is why the repository
+#    keeps its name until step 2 (reported, not failed: once 1.2.3 is the released launcher, it accepts it).
 param(
     [Parameter(Mandatory = $true)][string]$Released,
     [Parameter(Mandatory = $true)][string]$Candidate,
     [Parameter(Mandatory = $true)][string]$Harness,
-    [string]$Work = 'D:\uc'
+    [string]$Work = 'D:\uc',
+    [string]$Paths = '',
+    [string]$Package = ''
 )
 $ErrorActionPreference = 'Stop'
 $failures = New-Object System.Collections.Generic.List[string]
@@ -129,6 +138,44 @@ $text = if (Test-Path $setupLog) { Get-Content -LiteralPath $setupLog -Raw } els
 ($text -split "`r?`n" | Where-Object { $_ -match 'PACKAGE |WOULD INSTALL|newer|digest|refused' }) | ForEach-Object { Write-Host "   $_" }
 Check ($p.ExitCode -eq 0 -and $text -match "WOULD INSTALL $([regex]::Escape($feed.build)) ") "$($rel.tag)'s Setup installs $($feed.tag) when it is GitHub's newest release"
 Remove-Item -LiteralPath $download -Recurse -Force -ErrorAction SilentlyContinue
+
+# 5. This commit's launcher and the repository paths (#689).
+if ($Paths) {
+    Write-Host ''
+    Write-Host "== this commit's launcher ($($feed.build)): either repository path, in any case, and nothing else" -ForegroundColor Cyan
+    $pkgFolder = @(Get-ChildItem -LiteralPath $Package -Directory -Filter 'LivingServer-*')[0]
+    $candInfo = Read-Info (Join-Path $pkgFolder.FullName 'BUILD-INFO.txt')
+    $newDll = @('DAoCLivingServer.dll', 'OfflineDAoC.dll' | Where-Object { $candInfo["launcher/$_"] })[0]
+    $newCopy = Join-Path $Work 'this-launcher'
+    New-Item -ItemType Directory -Force -Path $newCopy | Out-Null
+    Copy-Item (Join-Path $pkgFolder.FullName 'launcher\*') $newCopy -Include '*.dll', '*.json'
+    Check ($newDll -and (Sha (Join-Path $newCopy $newDll)) -eq $candInfo["launcher/$newDll"]) "the harness loads this commit's launcher ($newDll), byte for byte"
+    $cases = Get-Content -LiteralPath (Join-Path $Paths 'paths.json') -Raw | ConvertFrom-Json
+    $i = 0
+    foreach ($case in $cases) {
+        $i++
+        $caseGame = Join-Path $Work ("paths\{0:D2}" -f $i)
+        New-Item -ItemType Directory -Force -Path $caseGame | Out-Null
+        $out = & dotnet $Harness --launcher (Join-Path $newCopy $newDll) --game $caseGame --feed $case.feed --as-build $rel.build 2>&1 | Out-String
+        $code = $LASTEXITCODE
+        [IO.File]::WriteAllText((Join-Path $logs ("paths-{0:D2}.log" -f $i)), $out)
+        if ($case.accept) {
+            Check ($code -eq 0 -and $out -match 'PASS  prepare') "this commit's launcher takes $($feed.tag) from $($case.repository) (harness exit $code)`n$out"
+        } else {
+            Check ($code -eq 1 -and $out -match "isn't one of this project's release files" -and $out -notmatch 'PASS  prepare') "this commit's launcher refuses $($feed.tag) from $($case.repository) before downloading (harness exit $code)`n$out"
+        }
+    }
+    # What is still true of the released launcher: the new name only, as written.
+    $renamed = @($cases | Where-Object { $_.accept -and $_.repository -ine $feed.repository })[0]
+    if ($renamed) {
+        $oldGame = Join-Path $Work 'paths\released'
+        New-Item -ItemType Directory -Force -Path $oldGame | Out-Null
+        $out = & dotnet $Harness --launcher (Join-Path $copy $relDll) --game $oldGame --feed $renamed.feed --as-build $rel.build 2>&1 | Out-String
+        [IO.File]::WriteAllText((Join-Path $logs 'paths-released.log'), $out)
+        if ($LASTEXITCODE -eq 0) { Write-Host "   INFO  $($rel.tag)'s launcher takes $($renamed.repository) too" }
+        else { Write-Host "   INFO  $($rel.tag)'s launcher refuses $($renamed.repository) (harness exit $LASTEXITCODE): the repository keeps its name until step 2 of #689" }
+    }
+}
 
 Write-Host ''
 if ($failures.Count -gt 0) {

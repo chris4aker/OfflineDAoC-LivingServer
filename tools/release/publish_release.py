@@ -18,7 +18,9 @@ For sessions that can't create releases or upload files themselves: the workflow
     python tools/release/publish_release.py check-jobs --jobs FILE
         FILE is the run's jobs (`gh api repos/<repo>/actions/runs/<id>/jobs?filter=latest&per_page=100`). Fails unless
         each job main requires (REQUIRED_JOBS: server, launcher, encounter-catalog, new-client, versions) is there and
-        concluded success (issue #623): the run's own conclusion alone is not trusted.
+        concluded success (issue #623): the run's own conclusion alone is not trusted. The jobs of each called workflow
+        in REQUIRED_CALLED (update-contract, #689: the newest released launcher takes this build) must be there too,
+        listed as "<caller job> / <job>", and every one of them must have concluded success.
 
 Test builds (issue #637): with --prerelease, the tag is a release candidate v<X>-rc.<N> (v1.2.3-rc.1). The push
 run's package is still build X (its LivingServer-<X> folder and BUILD-INFO.txt BuildName=X, checked the same way), zipped
@@ -57,6 +59,10 @@ SHA1 = re.compile(r"^[0-9a-f]{40}$")
 # published only when each of them concluded success (issue #623); test_publish_release.py keeps this in step with
 # build-and-test.yml.
 REQUIRED_JOBS = ("server", "launcher", "encounter-catalog", "new-client", "versions")
+# build-and-test jobs that call a reusable workflow: the jobs API lists each called job as "<caller> / <called job's
+# name>" (update-contract / released launcher takes this build). At least one must be there, and all must succeed (#689,
+# owner 2026-11-26: publish-release refuses a run whose update-contract didn't pass).
+REQUIRED_CALLED = ("update-contract",)
 LEFTOVER = re.compile(r"\((?:owner|zip SHA-256)[^)]*\)|@@[A-Z_]+@@")
 
 
@@ -344,8 +350,8 @@ def publish(gh, tag, commit, title, body, zip_path, dry_run, prerelease=False):
 
 
 def check_jobs(jobs_json):
-    """Raises Stop unless every REQUIRED_JOBS job is in the run's latest attempt and concluded success. Returns the
-    (name, conclusion) pairs checked."""
+    """Raises Stop unless every REQUIRED_JOBS job, and every job of each REQUIRED_CALLED workflow (at least one), is in
+    the run's latest attempt and concluded success. Returns the (name, conclusion) pairs checked."""
     jobs = jobs_json.get("jobs") if isinstance(jobs_json, dict) else None
     if not isinstance(jobs, list):
         raise Stop("the run's jobs could not be read (no 'jobs' list)")
@@ -362,6 +368,16 @@ def check_jobs(jobs_json):
             checked.append((name, conclusion))
             if conclusion != "success":
                 problems.append(f"{name}: {conclusion}")
+    for caller in REQUIRED_CALLED:
+        found = [j for j in jobs if str(j.get("name") or "").startswith(caller + " / ")]
+        if not found:
+            problems.append(f"{caller}: not in the run")
+            continue
+        for j in found:
+            conclusion = j.get("conclusion") or j.get("status") or "unknown"
+            checked.append((j["name"], conclusion))
+            if conclusion != "success":
+                problems.append(f"{j['name']}: {conclusion}")
     if problems:
         raise Stop("required jobs did not all succeed: " + "; ".join(problems))
     return checked

@@ -57,7 +57,8 @@ or the wizard with another folder), or with the launcher's **Install into a new 
 ### The release checklist (tier 3)
 
 1. An rc of exactly this commit ran clean overnight (rc checklist, step 7), and nothing was merged since.
-2. `update-contract` passed on the push run being published (it is part of build-and-test).
+2. `update-contract` passed on the push run being published (it is part of build-and-test; publish-release's
+   `check-jobs` refuses the run otherwise, #689).
 3. Versions agree (`tools/release/check_versions.py --tag v1.2.3`); the changelog fragments are folded in
    (`source/tools/assemble_changelog.py`); the player notes `docs/RELEASE-NOTES-1.2.3.md` are written for players.
 4. publish-release with `prerelease` off, dry run first. It attaches `DAoC-LivingServer-<v>.zip` and the same file as
@@ -85,9 +86,9 @@ earlier), unless noted. Paths below are under `source/tools/DAoCLivingServer.Lau
 
 | # | Item | Frozen value | Code |
 |---|---|---|---|
-| 1 | Repository path, exact case (the download check is ordinal) | `chris4aker/OfflineDAoC-LivingServer` | `ReleaseFeed.cs:27`; Setup `tools/installer/src/Program.cs:17`; `tools/release/publish_release.py:46` |
+| 1 | Repository path. **Step 1 of a change is in (#689, owner 2026-11-26)**: from 1.2.3 the launcher and Setup accept a package from either path, compared without regard to case; the current one stays what is used. Launchers and Setups up to 1.2.2 (and v1.2.3-rc.1) accept only the current path, exact case (their check is ordinal), so the repository keeps its name until step 2 | used: `chris4aker/OfflineDAoC-LivingServer`; also accepted from 1.2.3: `chris4aker/DAoC-LivingServer` | `ReleaseFeed.cs` (`Repository`, `RenamedRepository`, `AcceptedRepositories`); Setup compiles the same file and has `ProjectUrl` (`tools/installer/src/Program.cs:17`, a help link only); `tools/release/publish_release.py:46` |
 | 2 | API URLs | `https://api.github.com/repos/<repo>/releases/latest`; with test builds on also `.../releases?per_page=30` | `ReleaseFeed.cs:29`, `ReleaseFeed.cs:31` (1.2.3 on) |
-| 3 | Download prefix: packages only from this repository's release files | `https://github.com/<repo>/releases/download/` | `ReleaseFeed.cs:33`, checked at `ReleaseFeed.cs:92` (1.2.2: line 63) |
+| 3 | Download address: packages only from this project's release files | `https://github.com/<repo>/releases/download/<file>`; from 1.2.3 `<repo>` is either item 1 path in any case, and nothing else is taken (another owner or host, a lookalike name, a dot segment, an escape, non-ASCII) | `ReleaseFeed.IsReleaseFileUrl`, called from `DownloadPackage` (1.2.2: an ordinal `StartsWith(DownloadPrefix)`, its line 63). The API URLs (item 2) stay on the current name: GitHub answers an old name with a 301 to `api.github.com/repositories/<id>/...`, and the launcher's and Setup's `HttpClient` follow redirects (they already follow every release file's 302 to GitHub's storage; `RepositoryPathTests.HttpReleaseWebFollowsGitHubsRedirects`) |
 | 4 | Package asset name | `OfflineDAoC-LivingServer-<tag build>.zip` on every release (1.2.0-1.2.2 look only for it, `ReleaseInfo.cs:34` at v1.2.2); `DAoC-LivingServer-<tag build>.zip` from 1.2.3 | `ReleaseInfo.cs:43-71`; `publish_release.py:112-118` (`zip_name`, `legacy_zip_name`) |
 | 5 | Digest format, GitHub's asset `digest` field | `sha256:<64 hex>`; missing or another form is refused before downloading | `PackageDigest.cs:23`, `ReleaseFeed.cs:89`; `publish_release.py:133` (`github_digest`) |
 | 6 | Package contents | one top folder `LivingServer-<package build>`; `BUILD-INFO.txt` with `BuildName` (= the package build), `BaseRelease`, `GameServer.dll` and `.pdb` hashes; `INSTALL.cmd`, `ROLLBACK.cmd`, `install-server-build.ps1`, `rollback-server-build.ps1`, `fork-build-common.ps1`. `BaseRelease` stays `0.37`: a 1.2.x Setup takes a newer package only for its own base release | `PackageCheck.cs:43-51`, `PackageCheck.cs:68-106`; Setup `tools/installer/src/PackageUpdate.cs:80` |
@@ -118,7 +119,11 @@ commit's package exactly as publish-release would (`tools/release/update_contrac
 update check (1.2.2's only headless switch, `--apply-update`, starts from a file and skips items 2-5), so the harness
 calls its `LauncherUpdater.Check`, `PrepareFromRelease` and `StartHandoff` by reflection; only the network transport is
 faked. Then it checks the game is the candidate, and that the released Setup's `--info --release-json` picks the
-candidate. Last, the repository GitHub runs in must be item 1 exactly. Details: [CI.md](CI.md). Not covered: the
+candidate. Then **this commit's own launcher** (the package's `launcher\` files, the same harness, checking as the
+released build) must take the candidate under every item 1 path (each as written, in lower and in upper case) and refuse
+it under lookalikes (`<path>-evil`, another owner) before downloading (`update_contract.py paths`, #689); the released
+launcher is asked about the new path too and is reported refusing it, which is why the repository keeps its name until
+step 2. Last, the repository GitHub runs in must be item 1's current path exactly. Details: [CI.md](CI.md). Not covered: the
 launcher's window, and items 9 and 12 (1.2.2 has no test channel; base files are only read by a new install).
 
 ## The split (owner, 2026-11-06)
