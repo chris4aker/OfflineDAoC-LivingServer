@@ -2028,6 +2028,8 @@ public static partial class AutonomousBotGroupCoordinator
             if (pveRoles != null)
                 foreach ((long key, BotPveGroupRole role) in pveRoles)
                     session.PveRoles[key] = role;
+            if (pveRoles != null)
+                BardHealerSlot.Mark(session.Id, group, BotMembers(group), session.PveRoles, MemberKey, Log);
             if (objectiveKind == eAutonomousObjectiveKind.GroupPve)
                 session.Puller = ChooseLockedPvePuller(session, BotMembers(group));
             Sessions[group] = session;
@@ -3258,26 +3260,29 @@ public static partial class AutonomousBotGroupCoordinator
     public static bool UseOffTanks(eCharacterClass leader, eCharacterClass[] pool) =>
         !BotPartyRoles.CanFill(leader, BotPveGroupRole.Tank) && !pool.Any(c => BotPartyRoles.CanFill(c, BotPveGroupRole.Tank));
 
-    private static bool Fills(eCharacterClass characterClass, BotPveGroupRole role, bool offTanks) =>
+    private static bool Fills(eCharacterClass characterClass, BotPveGroupRole role, bool offTanks, bool bardHealers) =>
         BotPartyRoles.CanFill(characterClass, role) ||
-        offTanks && role == BotPveGroupRole.Tank && BotPartyRoles.CanOffTank(characterClass);
+        offTanks && role == BotPveGroupRole.Tank && BotPartyRoles.CanOffTank(characterClass) ||
+        BardHealerSlot.FillsSlot(characterClass, role, bardHealers);
 
     private static bool TryMatchPveRoster(eCharacterClass leader, eCharacterClass[] pool, int minimumSize,
         int maximumSize, out BotPveGroupRole[] template, out int[] owners, bool offTanks = false)
     {
+        // #567 B7: a Bard may take a Healer slot only when no healing class is among these classes.
+        bool bardHealers = BardHealerSlot.Allowed(leader, pool);
         foreach (BotPveGroupRole[] candidateTemplate in PveRosterTemplates)
         {
             if (candidateTemplate.Length < minimumSize || candidateTemplate.Length > maximumSize)
                 continue;
             template = candidateTemplate;
             foreach (int leaderSlot in Enumerable.Range(0, template.Length)
-                         .Where(index => Fills(leader, candidateTemplate[index], offTanks))
+                         .Where(index => Fills(leader, candidateTemplate[index], offTanks, bardHealers))
                          .OrderBy(_ => Random.Shared.Next()))
             {
                 owners = Enumerable.Repeat(int.MinValue, template.Length).ToArray();
                 owners[leaderSlot] = -1;
                 for (int candidate = 0; candidate < pool.Length; candidate++)
-                    TryMatchPveSlot(candidate, pool, template, owners, new bool[template.Length], leaderSlot, offTanks);
+                    TryMatchPveSlot(candidate, pool, template, owners, new bool[template.Length], leaderSlot, offTanks, bardHealers);
                 if (owners.All(owner => owner != int.MinValue))
                     return true;
             }
@@ -3299,15 +3304,15 @@ public static partial class AutonomousBotGroupCoordinator
     }
 
     private static bool TryMatchPveSlot(int candidate, eCharacterClass[] pool, BotPveGroupRole[] template,
-        int[] owners, bool[] visited, int reservedLeaderSlot, bool offTanks = false)
+        int[] owners, bool[] visited, int reservedLeaderSlot, bool offTanks = false, bool bardHealers = false)
     {
         for (int slot = 0; slot < template.Length; slot++)
         {
-            if (slot == reservedLeaderSlot || visited[slot] || !Fills(pool[candidate], template[slot], offTanks))
+            if (slot == reservedLeaderSlot || visited[slot] || !Fills(pool[candidate], template[slot], offTanks, bardHealers))
                 continue;
             visited[slot] = true;
             if (owners[slot] == int.MinValue ||
-                TryMatchPveSlot(owners[slot], pool, template, owners, visited, reservedLeaderSlot, offTanks))
+                TryMatchPveSlot(owners[slot], pool, template, owners, visited, reservedLeaderSlot, offTanks, bardHealers))
             {
                 owners[slot] = candidate;
                 return true;

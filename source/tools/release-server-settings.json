@@ -35,6 +35,7 @@
   "bot_living_alarms": "True",
   "bot_living_beggars": "True",
   "bot_living_body_language": "True",
+  "bot_bard_fills_healer_slot": "True",
   "bot_living_breaks": "True",
   "bot_living_characters": "True",
   "bot_living_death": "True",

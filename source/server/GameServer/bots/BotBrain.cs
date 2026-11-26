@@ -661,7 +661,18 @@ namespace DOL.AI.Brain
 
         #region Brain Core
 
-        public bool IsHealer;
+        private bool _healerClass;
+
+        /// <summary>The bot heals as its party's healer: a healing class (GameBot.IsHealerClass), or a Bard holding a bot
+        /// party's Healer slot (#567 B7, BardHealerSlot).</summary>
+        public bool IsHealer
+        {
+            get => _healerClass || HealerSlotGroup != null && BardHealerSlot.Holds(HealerSlotGroup, Body?.Group);
+            set => _healerClass = value;
+        }
+
+        /// <summary>The bot party whose Healer slot this Bard holds (#567 B7); null for everyone else.</summary>
+        public Group HealerSlotGroup { get; set; }
         public bool AlreadyCheckedHeals;
         private long _nextPriorityTauntTick;
         private long _nextDeployablePetTick;
