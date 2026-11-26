@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Issue #685: runs a RELEASED launcher's own update code (loaded from its installed dll by reflection) against a fake
+       GitHub that serves the candidate release, to show the old launcher would accept it. A CI and developer tool; never
+       shipped. See docs/RELEASE-TRAIN.md ("The CI check") and tools/release/test-update-contract.ps1. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>DAoCLivingServer.UpdateContract</AssemblyName>
+    <RootNamespace>DAoCLivingServer.UpdateContract</RootNamespace>
+    <!-- The released launcher is loaded by path; nothing of this repository's launcher is compiled in. -->
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+</Project>
