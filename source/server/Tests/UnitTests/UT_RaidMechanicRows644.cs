@@ -31,6 +31,7 @@ namespace DOL.UnitTests
             LivingRowsTestKit.SetTime(5_000_000);
             RvrRecordBudget.Reset();
             RaidAttemptRows.ResetForTests();
+            RaidBossMechanics.ResetForTests();
             EncounterSignals.ClearAll();
             RaidDiagnosticRows.ForTests = null;
             _rows.Clear();
@@ -49,6 +50,7 @@ namespace DOL.UnitTests
             LivingRows.TestSink = null;
             RaidDiagnosticRows.ForTests = null;
             RaidAttemptRows.ResetForTests();
+            RaidBossMechanics.ResetForTests();
             EncounterSignals.ClearAll();
             RvrRecordBudget.Reset();
             LivingRowsTestKit.SetTime(_oldTime);
@@ -241,8 +243,11 @@ namespace DOL.UnitTests
             foreach (string mechanic in casts)
             {
                 RaidBossMechanics.Cast(false, boss, mechanic, spell);
-                Assert.That(_measured.Any(s => s.Mechanic == mechanic), Is.False, "no cast started: no signal");
+                RaidBossMechanics.CastBegan(boss, spell, target, spell.CastTime);
+                Assert.That(_measured.Any(s => s.Mechanic == mechanic), Is.False, "not asked: no signal");
                 RaidBossMechanics.Cast(true, boss, mechanic, spell);
+                Assert.That(_measured.Any(s => s.Mechanic == mechanic), Is.False, "asked, not begun: no signal yet");
+                RaidBossMechanics.CastBegan(boss, spell, target, spell.CastTime);
                 EncounterSignal s = _measured.Last();
                 Assert.That((s.Mechanic, s.Radius, s.AroundTarget, s.Target, s.Lands - s.At), Is.EqualTo((mechanic, 500, true, (GameLiving)target, 2_500L)));
             }

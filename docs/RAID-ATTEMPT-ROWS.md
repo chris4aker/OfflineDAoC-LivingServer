@@ -192,7 +192,12 @@ call `RaidBossMechanics` beside what they already do:
 | King Tuscar | `hammers`, `thunder`, `bleed` (the after-style spells) |
 
 Each `RaidBossMechanics.Cast` takes the script's own `CastSpell(...)` call as its first argument, so the cast, its spell,
-its timing and its target are exactly as before; the signal is written only when the cast started. Each signal goes through
+its timing and its target are exactly as before. The script's request only marks the mechanic as asked for: a monster's
+`CastSpell` returns true once the request is queued, before its recast delay, a cast already going, range and line of sight
+are judged. The signal is written when the spell really begins (`RaidBossMechanics.CastBegan`, called from `SpellHandler`
+past `CheckBeginCast`, with the cast time the handler timed; an instant spell as it goes off), so a cast asked for on every
+think writes one signal per real cast, and none while the spell is on its recast delay. A request that never begins is
+forgotten after 10 s. Each signal goes through
 `EncounterSignals.Measure`, **not** `Raise`: it is not live for the tactics, the /group calls or the lore engine, so the
 raid AI does not react to it and the fight is unchanged. `UT_RaidMechanicRows644` checks each boss's script and the
 signal. Making any of them a full `Raise` (so the bots react) would be a tactic change, with its own research and issue.
