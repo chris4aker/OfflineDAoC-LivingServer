@@ -10,11 +10,10 @@ public static class AutonomousBotGoalPolicy
     public const string OverrideVariable = "OFFLINE_DAOC_BOT_GOALS";
     /// <summary>
     /// True when a goals file was loaded (the server's bot-goals.json, or the test override). Since 1.2.3 (#669; owner,
-    /// 2026-11-26) a world without one still follows <see cref="Settings"/> (then <see cref="BotGoalSettings.Defaults"/>,
-    /// as the launcher shows them) at every task break, and its RvR eligibility follows the RvR share (the file-less
-    /// "one solo PvE task after an RvR tour" rule was removed; owner, 2026-11-26, #669). This flag only keeps the
-    /// level-50 task-break draw a file-less world always had (<see cref="AutonomousObjectiveAssignments.TaskBreakGoal"/>)
-    /// and the pass's over-quota draw.
+    /// 2026-11-26: no file means saved defaults) it changes no goal behaviour: a world without a file follows
+    /// <see cref="Settings"/> (then <see cref="BotGoalSettings.Defaults"/>, as the launcher shows them) everywhere a
+    /// world with a saved defaults file does, task breaks and the one-minute pass included. It only decides
+    /// <see cref="Source"/> (the BOT_GOALS row's <c>source=</c>) and the logging. Don't branch goal logic on it.
     /// </summary>
     public static bool IsConfigured { get; private set; }
     /// <summary>Where <see cref="Settings"/> came from at the last Initialize: "file", "override" or "defaults".</summary>

@@ -169,6 +169,30 @@ public static class AutonomousObjectiveAssignments
         return random.Next(soloNeeded + groupNeeded) < soloNeeded ? eAutonomousObjectiveKind.SoloPve : eAutonomousObjectiveKind.GroupPve;
     }
 
+    /// <summary>
+    /// The pass's goal for an RvR-pool bot the planner left open: RvR with the odds of the open RvR need, else a
+    /// battleground slot (<paramref name="takesBattleground"/>, given the open solo/group need), else, when the bot is
+    /// over every target of the pass, <paramref name="overQuotaDraw"/> (the Bot Goals shares, personality-tilted), else
+    /// solo/group by the open need. #669 (owner, 2026-11-26): the over-quota draw is the same with or without
+    /// bot-goals.json (without one the shares are the defaults); until 1.2.3 a world without the file used
+    /// <see cref="ChoosePveObjective"/> there.
+    /// </summary>
+    public static eAutonomousObjectiveKind RvrPoolGoal(Allocation target, Allocation assigned, Func<int, bool> takesBattleground,
+        Func<eAutonomousObjectiveKind> overQuotaDraw, Random random = null)
+    {
+        random ??= Random.Shared;
+        int rvrNeeded = Math.Max(0, target.RvR - assigned.RvR);
+        int soloNeeded = Math.Max(0, target.SoloPve - assigned.SoloPve);
+        int groupNeeded = Math.Max(0, target.GroupPve - assigned.GroupPve);
+        if (rvrNeeded > 0 && random.Next(rvrNeeded + soloNeeded + groupNeeded) < rvrNeeded)
+            return eAutonomousObjectiveKind.RvR;
+        if (takesBattleground(soloNeeded + groupNeeded))
+            return eAutonomousObjectiveKind.Battleground;
+        if (rvrNeeded + soloNeeded + groupNeeded == 0)
+            return overQuotaDraw();
+        return ChoosePveObjective(target, assigned.SoloPve, assigned.GroupPve, random);
+    }
+
     /// <summary>Returns exact integer targets from the startup goal policy.</summary>
     public static Allocation TargetForPopulation(int count, bool levelFifty)
     {
@@ -394,22 +418,10 @@ public static class AutonomousObjectiveAssignments
                 foreach (int i in AutonomousBotPersonality.PlannedFirst(rvrPlan))
                 {
                     GameBot bot = rvrPool[i];
-                    eAutonomousObjectiveKind kind;
-                    int rvrNeeded = Math.Max(0, target.RvR - assignedRvr);
-                    int soloNeeded = Math.Max(0, target.SoloPve - assignedSolo);
-                    int groupNeeded = Math.Max(0, target.GroupPve - assignedGroup);
-                    if (rvrPlan[i] is { } planned)
-                        kind = planned;
-                    else if (rvrNeeded > 0 && Random.Shared.Next(rvrNeeded + soloNeeded + groupNeeded) < rvrNeeded)
-                        kind = eAutonomousObjectiveKind.RvR;
-                    else if (TakesBattleground(bot, soloNeeded + groupNeeded))
-                        kind = eAutonomousObjectiveKind.Battleground;
-                    // #669: still file-only. A bot over every target of the pass (whose targets already come from the
-                    // defaults without a file) keeps solo/group in the targets' ratio there, as before.
-                    else if (AutonomousBotGoalPolicy.IsConfigured && rvrNeeded + soloNeeded + groupNeeded == 0)
-                        kind = AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level));
-                    else
-                        kind = ChoosePveObjective(target, assignedSolo, assignedGroup);
+                    eAutonomousObjectiveKind kind = rvrPlan[i] ?? RvrPoolGoal(target,
+                        new Allocation(assignedSolo, assignedGroup, assignedRvr, assignedBattleground),
+                        otherNeeded => TakesBattleground(bot, otherNeeded),
+                        () => AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)));
 
                     switch (kind)
                     {
@@ -558,7 +570,7 @@ public static class AutonomousObjectiveAssignments
     {
         if (bot?.PersistentRecord == null || !Is(bot, eAutonomousObjectiveKind.Battleground)) return;
         // #669: the shares without a battleground (untilted, as before), with or without a file.
-        eAutonomousObjectiveKind next = TaskBreakGoal(bot.Level,
+        eAutonomousObjectiveKind next = TaskBreakGoal(
             () => AutonomousBotGoalPolicy.Choose(bot.Level, excludeBattlegrounds: true));
         Assign(bot, next, (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
         bot.PersistentRecord.CurrentCampId = bot.PersistentRecord.TargetName = bot.PersistentRecord.TravelDestination = string.Empty;
@@ -759,6 +771,8 @@ public static class AutonomousObjectiveAssignments
             now < end.ToUniversalTime();
     }
 
+    /// <summary>The untilted level-50 draw from the shares. Since #669 (owner, 2026-11-26) no task break uses it: level 50
+    /// draws through <see cref="TaskBreakGoal(Func{eAutonomousObjectiveKind})"/> like every other level. Kept for tests.</summary>
     public static eAutonomousObjectiveKind RollLevelFiftyObjective(Random random = null)
     {
         return AutonomousBotGoalPolicy.Choose(50, random);
@@ -834,22 +848,17 @@ public static class AutonomousObjectiveAssignments
         Assign(bot, TaskBreakGoal(bot), (bot.Realm, bot.Level >= 50 ? 50 : bot.Level >= 20 ? 20 : 0), GameLoop.GameLoopTime);
     }
 
-    /// <summary>The goal a bot draws when its task break ends: <see cref="TaskBreakGoal(int, Func{eAutonomousObjectiveKind}, Random)"/>
+    /// <summary>The goal a bot draws when its task break ends: <see cref="TaskBreakGoal(Func{eAutonomousObjectiveKind})"/>
     /// with the configured mix, tilted by personality.</summary>
     private static eAutonomousObjectiveKind TaskBreakGoal(GameBot bot) =>
-        TaskBreakGoal(bot.Level, () => AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)));
+        TaskBreakGoal(() => AutonomousBotPersonality.ChooseGoal(bot, () => AutonomousBotGoalPolicy.Choose(bot.Level)));
 
     /// <summary>
     /// #669 (owner, 2026-11-26): the goal at a task break follows the Bot Goals shares (<see cref="AutonomousBotGoalPolicy.Settings"/>,
-    /// the defaults when there is no bot-goals.json, as the launcher shows them) through <paramref name="draw"/>. Until 1.2.3 a
-    /// world without the file gave every bot below 50 SoloPve here, so the battleground, RvR and group shares came only
-    /// from the one-minute pass. The file-less "one solo PvE task after an RvR tour" rule (<see cref="PveCompletionRequired"/>)
-    /// is gone too (owner, 2026-11-26): a bot just off RvR draws like any other. A world without a file keeps only level
-    /// 50's untilted draw. A world with a file (or the test override) is unchanged: always <paramref name="draw"/>.
+    /// the defaults when there is no bot-goals.json, as the launcher shows them) through <paramref name="draw"/>, at every
+    /// level and with or without a file. Until 1.2.3 a world without the file gave every bot below 50 SoloPve here, then
+    /// (#674) kept level 50's untilted draw (<see cref="RollLevelFiftyObjective"/>); now a world without the file draws
+    /// exactly as one with a saved defaults file does.
     /// </summary>
-    public static eAutonomousObjectiveKind TaskBreakGoal(int level, Func<eAutonomousObjectiveKind> draw, Random random = null)
-    {
-        if (!AutonomousBotGoalPolicy.IsConfigured && level >= 50) return RollLevelFiftyObjective(random);
-        return draw();
-    }
+    public static eAutonomousObjectiveKind TaskBreakGoal(Func<eAutonomousObjectiveKind> draw) => draw();
 }

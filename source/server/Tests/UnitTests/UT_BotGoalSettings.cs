@@ -159,7 +159,7 @@ public class UT_BotGoalSettings
         Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.False);
         Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("defaults"));
         double[] shares = Shares(random =>
-            AutonomousObjectiveAssignments.TaskBreakGoal(level, () => AutonomousBotGoalPolicy.Choose(level, random), random));
+            AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(level, random)));
         TestContext.Out.WriteLine($"level {level}: solo {shares[0]:F1} group {shares[1]:F1} rvr {shares[2]:F1} bg {shares[3]:F1}");
         Assert.That(shares[0], Is.EqualTo(30).Within(2), "solo");
         Assert.That(shares[1], Is.EqualTo(30).Within(2), "group");
@@ -171,11 +171,11 @@ public class UT_BotGoalSettings
     public void NoFile_TaskBreakAt15To19AndAbove35FollowsTheDefaults()
     {
         AutonomousBotGoalPolicy.Initialize(_directory);
-        double[] low = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(17, () => AutonomousBotGoalPolicy.Choose(17, random), random));
+        double[] low = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(17, random)));
         Assert.That(low[0], Is.EqualTo(55).Within(2)); Assert.That(low[1], Is.EqualTo(35).Within(2));
         Assert.That(low[2], Is.Zero); Assert.That(low[3], Is.EqualTo(10).Within(2));
         // 36-49: no bracket, the battleground share goes to the others in their ratio (30/30/15 of 75).
-        double[] high = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(40, () => AutonomousBotGoalPolicy.Choose(40, random), random));
+        double[] high = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(40, random)));
         Assert.That(high[0], Is.EqualTo(40).Within(2)); Assert.That(high[1], Is.EqualTo(40).Within(2));
         Assert.That(high[2], Is.EqualTo(20).Within(2)); Assert.That(high[3], Is.Zero);
     }
@@ -184,26 +184,55 @@ public class UT_BotGoalSettings
     public void NoFile_EndingABattlegroundTourNeverGivesABattleground()
     {
         AutonomousBotGoalPolicy.Initialize(_directory);
-        double[] shares = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(22,
-            () => AutonomousBotGoalPolicy.Choose(22, random, excludeBattlegrounds: true), random));
+        double[] shares = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(22, random, excludeBattlegrounds: true)));
         Assert.That(shares[3], Is.Zero);
         Assert.That(shares[2], Is.EqualTo(20).Within(2), "RvR 15 of 75");
     }
 
     [Test]
-    public void NoFile_LevelFiftyIsUnchanged()
+    public void NoFile_LevelFiftyUsesTheDrawLikeAConfiguredWorld()
     {
+        // #669 (owner, 2026-11-26): level 50 without a file draws through the (personality-tilted) draw a configured
+        // world uses; before, it took the untilted RollLevelFiftyObjective and never called the draw.
         AutonomousBotGoalPolicy.Initialize(_directory);
+        Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.False);
         int drawn = 0;
         eAutonomousObjectiveKind Draw() { drawn++; return eAutonomousObjectiveKind.RvR; }
-        // Level 50 without a file keeps its untilted draw from the shares (RollLevelFiftyObjective), never the tilted draw.
-        double[] fifty = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(50, Draw, random));
-        Assert.That(drawn, Is.Zero);
+        for (int i = 0; i < 100; i++)
+            Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(Draw), Is.EqualTo(eAutonomousObjectiveKind.RvR));
+        Assert.That(drawn, Is.EqualTo(100));
+        double[] fifty = Shares(random => AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(50, random)));
         Assert.That(fifty[0], Is.EqualTo(20).Within(2)); Assert.That(fifty[1], Is.EqualTo(40).Within(2));
         Assert.That(fifty[2], Is.EqualTo(40).Within(2)); Assert.That(fifty[3], Is.Zero);
+    }
+
+    // #669 (owner, 2026-11-26): a bot over every target of the pass gets the over-quota draw (the shares,
+    // personality-tilted) with or without a file; before, a file-less world used ChoosePveObjective there.
+    [TestCase(17)] [TestCase(22)] [TestCase(40)] [TestCase(50)]
+    public void NoFile_PassOverQuotaUsesTheDrawNotChoosePveObjective(int level)
+    {
+        AutonomousBotGoalPolicy.Initialize(_directory);
+        Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.False);
+        var target = new AutonomousObjectiveAssignments.Allocation(10, 10, 5, 3);
+        var full = new AutonomousObjectiveAssignments.Allocation(12, 10, 6, 3); // over every target
+        int drawn = 0;
+        double[] shares = Shares(random => AutonomousObjectiveAssignments.RvrPoolGoal(target, full, _ => false,
+            () => { drawn++; return AutonomousBotGoalPolicy.Choose(level, random); }, random));
+        Assert.That(drawn, Is.EqualTo(10_000), "every over-quota bot takes the draw");
+        var expected = BotGoalSettings.Defaults.ForLevel(level);
+        bool bracket = BattlegroundBrackets.LevelHasBracket(level);
+        double scale = bracket ? 1 : 100d / (100 - expected.Battlegrounds);
+        TestContext.Out.WriteLine($"level {level}: solo {shares[0]:F1} group {shares[1]:F1} rvr {shares[2]:F1} bg {shares[3]:F1}");
+        Assert.That(shares[0], Is.EqualTo(expected.SoloPve * scale).Within(2), "solo");
+        Assert.That(shares[1], Is.EqualTo(expected.GroupPve * scale).Within(2), "group");
+        Assert.That(shares[2], Is.EqualTo(expected.RvR * scale).Within(2), "RvR");
+        Assert.That(shares[3], Is.EqualTo(bracket ? expected.Battlegrounds : 0).Within(2), "battleground");
+        // Below the targets the draw is not used: open needs decide, as before.
+        var open = new AutonomousObjectiveAssignments.Allocation(0, 0, 0, 0);
+        drawn = 0;
         for (int seed = 0; seed < 200; seed++)
-            Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(50, Draw, new Random(seed)),
-                Is.EqualTo(AutonomousObjectiveAssignments.RollLevelFiftyObjective(new Random(seed))));
+            AutonomousObjectiveAssignments.RvrPoolGoal(target, open, _ => false, () => { drawn++; return eAutonomousObjectiveKind.RvR; }, new Random(seed));
+        Assert.That(drawn, Is.Zero);
     }
 
     // #669 follow-up (owner, 2026-11-26: remove the rule). A world without bot-goals.json behaves like one with saved
@@ -218,7 +247,7 @@ public class UT_BotGoalSettings
         Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow), Is.True, "in the pass's RvR pool");
         // Its next task break: the shares, not SoloPve (the draw is the only input; there is no just-off-RvR input any more).
         double[] shares = Shares(random =>
-            AutonomousObjectiveAssignments.TaskBreakGoal(level, () => AutonomousBotGoalPolicy.Choose(level, random), random));
+            AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(level, random)));
         TestContext.Out.WriteLine($"level {level}: solo {shares[0]:F1} group {shares[1]:F1} rvr {shares[2]:F1} bg {shares[3]:F1}");
         var expected = BotGoalSettings.Defaults.ForLevel(level);
         bool bracket = BattlegroundBrackets.LevelHasBracket(level);
@@ -256,34 +285,110 @@ public class UT_BotGoalSettings
         Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(timed, DateTime.UtcNow), Is.True);
     }
 
-    [Test]
-    public void NoFile_MatchesASavedDefaultsFileBelowFifty()
+    // #669 (owner, 2026-11-26): a world without bot-goals.json behaves exactly like one with a saved defaults file, at
+    // every level 1-50: RvR eligibility, the task-break draw (plain and with a seeded stand-in for the personality
+    // redraw) and the pass's draw for an RvR-pool bot (over every target, and with open needs), all seeded.
+    private const int Seeds = 40;
+    private static readonly (AutonomousObjectiveAssignments.Allocation Target, AutonomousObjectiveAssignments.Allocation Assigned)[] PassCases =
     {
-        var withoutFile = new bool[51];
-        var noFileDraws = new eAutonomousObjectiveKind[51];
-        AutonomousBotGoalPolicy.Initialize(_directory);
-        Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.False);
+        (new(10, 10, 5, 3), new(12, 10, 6, 3)), // over every target: the over-quota draw
+        (new(10, 10, 5, 3), new(10, 10, 5, 0)), // only battleground slots open
+        (new(10, 10, 5, 3), new(4, 7, 2, 1)),   // open everywhere
+        (new(10, 10, 0, 0), new(3, 9, 0, 0)),   // no RvR target
+    };
+
+    private static eAutonomousObjectiveKind TiltedDraw(int level, Random random)
+    {
+        // What AutonomousBotPersonality.ChooseGoal does with a seeded stream: draw, and sometimes draw again.
+        eAutonomousObjectiveKind first = AutonomousBotGoalPolicy.Choose(level, random);
+        return random.NextDouble() < 0.35 ? AutonomousBotGoalPolicy.Choose(level, random) : first;
+    }
+
+    private static string[] Fingerprint()
+    {
+        var rows = new System.Collections.Generic.List<string>();
         for (int level = 1; level <= 50; level++)
         {
             int l = level;
-            withoutFile[level] = AutonomousObjectiveAssignments.IsRvrEligible(
-                new OfflineWorldBotRecord { Level = level, ObjectiveRvrEligibleUtc = AutonomousObjectiveAssignments.PveCompletionRequired }, DateTime.UtcNow);
-            if (level < 50)
-                noFileDraws[level] = AutonomousObjectiveAssignments.TaskBreakGoal(l, () => AutonomousBotGoalPolicy.Choose(l, new Random(l)));
+            var row = new System.Text.StringBuilder($"{level}:");
+            row.Append(AutonomousObjectiveAssignments.IsRvrEligible(
+                new OfflineWorldBotRecord { Level = level, ObjectiveRvrEligibleUtc = AutonomousObjectiveAssignments.PveCompletionRequired },
+                DateTime.UtcNow) ? 'E' : 'e');
+            for (int seed = 0; seed < Seeds; seed++)
+            {
+                var plain = new Random(seed);
+                row.Append((int)AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(l, plain)));
+                var tilted = new Random(seed);
+                row.Append((int)AutonomousObjectiveAssignments.TaskBreakGoal(() => TiltedDraw(l, tilted)));
+                var noBg = new Random(seed);
+                row.Append((int)AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(l, noBg, excludeBattlegrounds: true)));
+                foreach (var (target, assigned) in PassCases)
+                {
+                    var random = new Random(seed);
+                    bool canBg = AutonomousBotGoalPolicy.Allows(l, eAutonomousObjectiveKind.Battleground);
+                    row.Append((int)AutonomousObjectiveAssignments.RvrPoolGoal(target, assigned,
+                        other => { int needed = Math.Max(0, target.Battlegrounds - assigned.Battlegrounds);
+                                   return needed > 0 && canBg && random.Next(needed + Math.Max(0, other)) < needed; },
+                        () => TiltedDraw(l, random), random));
+                }
+            }
+            rows.Add(row.ToString());
         }
+        return rows.ToArray();
+    }
+
+    [Test]
+    public void NoFile_MatchesASavedDefaultsFile()
+    {
+        AutonomousBotGoalPolicy.Initialize(_directory);
+        Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.False);
+        Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("defaults"));
+        string[] withoutFile = Fingerprint();
         BotGoalSettings.Defaults.Save(PathName, () => true);
         AutonomousBotGoalPolicy.Initialize(_directory);
         Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.True);
+        Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("file"));
+        string[] withFile = Fingerprint();
+        Assert.That(withFile, Has.Length.EqualTo(50));
         for (int level = 1; level <= 50; level++)
         {
-            int l = level;
-            var record = new OfflineWorldBotRecord { Level = level, ObjectiveRvrEligibleUtc = AutonomousObjectiveAssignments.PveCompletionRequired };
-            Assert.That(AutonomousObjectiveAssignments.IsRvrEligible(record, DateTime.UtcNow), Is.EqualTo(withoutFile[level]), $"level {level}");
-            Assert.That(withoutFile[level], Is.EqualTo(BotGoalSettings.Defaults.ForLevel(level).RvR > 0), $"level {level}");
-            if (level < 50)
-                Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(l, () => AutonomousBotGoalPolicy.Choose(l, new Random(l))),
-                    Is.EqualTo(noFileDraws[level]), $"level {level}");
+            Assert.That(withFile[level - 1], Is.EqualTo(withoutFile[level - 1]), $"level {level}");
+            Assert.That(withFile[level - 1].Split(':')[1][0] == 'E', Is.EqualTo(BotGoalSettings.Defaults.ForLevel(level).RvR > 0), $"level {level}");
         }
+        // The fingerprint is not trivially constant: the draws vary, and the over-quota pass case reaches RvR and
+        // battleground goals, which ChoosePveObjective never gave there.
+        string all = string.Concat(withFile.Select(row => row.Split(':')[1].Substring(1)));
+        foreach (char kind in "0123")
+            Assert.That(all, Does.Contain(kind.ToString()), $"goal {kind} drawn somewhere");
+    }
+
+    [Test]
+    public void BotGoalsRowStillSaysDefaultsFileOrOverride()
+    {
+        var rows = new System.Collections.Generic.List<string>();
+        string other = Path.Combine(Path.GetTempPath(), "bot-goal-override-" + Guid.NewGuid().ToString("N") + ".json");
+        string previous = Environment.GetEnvironmentVariable(AutonomousBotGoalPolicy.OverrideVariable);
+        LivingRows.TestSink = rows.Add;
+        try
+        {
+            Environment.SetEnvironmentVariable(AutonomousBotGoalPolicy.OverrideVariable, null);
+            AutonomousBotGoalPolicy.Initialize(_directory);
+            BotGoalSettings.Defaults.Save(PathName, () => true);
+            AutonomousBotGoalPolicy.Initialize(_directory);
+            BotGoalSettings.Defaults.Save(other, () => true);
+            Environment.SetEnvironmentVariable(AutonomousBotGoalPolicy.OverrideVariable, other);
+            AutonomousBotGoalPolicy.Initialize(_directory);
+        }
+        finally
+        {
+            LivingRows.TestSink = null;
+            Environment.SetEnvironmentVariable(AutonomousBotGoalPolicy.OverrideVariable, previous);
+            File.Delete(other);
+        }
+        string[] goals = rows.Where(r => r.StartsWith("BOT_GOALS ")).ToArray();
+        const string shares = " reason=start l1_19=55/35/0/10 l20_49=30/30/15/25 l50=20/40/40/0";
+        Assert.That(goals, Is.EqualTo(new[] { "BOT_GOALS source=defaults" + shares, "BOT_GOALS source=file" + shares,
+            "BOT_GOALS source=override" + shares }));
     }
 
     [Test]
@@ -292,7 +397,7 @@ public class UT_BotGoalSettings
         Apply(new(0, 0, 100));
         Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("file"));
         foreach (int level in new[] { 22, 50 })
-            Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(level, () => AutonomousBotGoalPolicy.Choose(level, new Random(1))),
+            Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(level, new Random(1))),
                 Is.EqualTo(eAutonomousObjectiveKind.RvR));
     }
 
@@ -323,7 +428,7 @@ public class UT_BotGoalSettings
             Assert.That(AutonomousBotGoalPolicy.IsConfigured, Is.True);
             Assert.That(AutonomousBotGoalPolicy.Source, Is.EqualTo("override"));
             for (int seed = 0; seed < 300; seed++)
-                Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(22, () => AutonomousBotGoalPolicy.Choose(22, new Random(seed))),
+                Assert.That(AutonomousObjectiveAssignments.TaskBreakGoal(() => AutonomousBotGoalPolicy.Choose(22, new Random(seed))),
                     Is.EqualTo(eAutonomousObjectiveKind.SoloPve));
         }
         finally
