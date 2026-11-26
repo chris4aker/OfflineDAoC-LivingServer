@@ -62,7 +62,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python tools/release/update_contract.py candidate --package-dir D:/uc-in/package --out D:/uc-in/candidate
+          python tools/release/update_contract.py candidate --package-dir D:/uc-in/package --out D:/uc-in/candidate --repository chris4aker/DAoC-LivingServer
           echo "build=$(python -c "import json; print(json.load(open('D:/uc-in/candidate/feed.json'))['build'])")" >> "$GITHUB_OUTPUT"
       - name: The newest full release older than the candidate
         shell: bash
