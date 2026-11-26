@@ -1,4 +1,4 @@
-# Raid attempt rows (#644, parts 1-5)
+# Raid attempt rows (#644, parts 1-6)
 
 Server-log rows that say, for one pull of a raid boss, who was there, who died, to what, and how it ended. Logging only:
 they change no boss, no tactic and no raid rule ("raise a size, never weaken a boss" stands). On by default. No player,
@@ -192,7 +192,12 @@ call `RaidBossMechanics` beside what they already do:
 | King Tuscar | `hammers`, `thunder`, `bleed` (the after-style spells) |
 
 Each `RaidBossMechanics.Cast` takes the script's own `CastSpell(...)` call as its first argument, so the cast, its spell,
-its timing and its target are exactly as before; the signal is written only when the cast started. Each signal goes through
+its timing and its target are exactly as before. The script's request only marks the mechanic as asked for: a monster's
+`CastSpell` returns true once the request is queued, before its recast delay, a cast already going, range and line of sight
+are judged. The signal is written when the spell really begins (`RaidBossMechanics.CastBegan`, called from `SpellHandler`
+past `CheckBeginCast`, with the cast time the handler timed; an instant spell as it goes off), so a cast asked for on every
+think writes one signal per real cast, and none while the spell is on its recast delay. A request that never begins is
+forgotten after 10 s. Each signal goes through
 `EncounterSignals.Measure`, **not** `Raise`: it is not live for the tactics, the /group calls or the lore engine, so the
 raid AI does not react to it and the fight is unchanged. `UT_RaidMechanicRows644` checks each boss's script and the
 signal. Making any of them a full `Raise` (so the bots react) would be a tactic change, with its own research and issue.
@@ -282,5 +287,50 @@ death and, for a raider, one pass over the attempt's raiders (healers in range).
   (changes, the share of time on a tank, why, to whom) and a **roles** table summed over the attempts. The post-mortem puts
   the mechanic fires and target changes in its timeline and the role totals at the end.
 
+## Rows from the sims (#644 part 6)
+
+Two raid simulations with a whole fight write each simulated pull as these rows, and their row attempts end the game's way
+(`RealmRaidDungeonRoute.IsWipe`: half of the engaged fallen), so a simulated attempt
+reads with the same parser as a logged one and compares with it line by line (docs/RAID-SIZES.md, rule 4: the evidence must
+reproduce a PC kill and a PC loss). Tests only: a sim is a model, not a game result.
+
+- **Which sims:** Summoner Roesia (`UT_RaidSim121SummonersGreenKnight.RoesiaFight.Run`), whose model loses the game's way
+  (half the raid fallen, deaths at 0 health, no rez), and the Green Knight (`UT_RaidSim122GreenKnight.GreenKnightFight`),
+  whose model loses only when no raider is left fighting. For the Green Knight the **row attempt** ends as `wipe` at the
+  first step half the raid has fallen, and nothing more is written for it; the model fights on unchanged (its pinned grids
+  count its own loss). Each takes an optional `SimRaidRows rows`; without it nothing is written.
+- **The same rows:** `SimRaidRows` (`source/server/Tests/UnitTests/SimRaidRows.cs`) writes every row through the server's
+  `Format*` functions, and the server's own helpers decide each value they cover: `Role`, `RoleCounts`, `ClassCounts`,
+  `Source` (from the last hit in the 5 s before a death), `SplitFallen`, `RaidFightSampleRows.Count` and `TargetKind`,
+  `ThreatWhy`, `MechanicOutcome` and `RoleTotals`. The minute budgets are the server's, on the sim's clock. The rows are
+  those of a server with the diagnostics switch on (`RAID_THREAT`, `RAID_ROLE_TOTALS`).
+- **How a sim's rows differ:** `build=sim` on `RAID_ATTEMPT`. The attempt id is `<event>.<seed + 1>` with the raid's real
+  event id (`summoners-albion`, `openworld-albion-greenknight`), so a sim sits under the same event and boss as a logged
+  pull. Every raider is a level 50 gamebot; the model's roles stand for one class each (Roesia: the realm's tank, melee,
+  caster and healer classes; the Green Knight: Armsman, Mercenary, Sorcerer, Cleric, Wizard, Scout, Cabalist, Theurgist),
+  and the row's role is the server's for that class. A pet is never a raider.
+- **What a model cannot know is written as unknown, never guessed:** Roesia's model has no positions, so `dist=` and
+  `medDist=` are `-`, every living healer counts in `healersIn=`, and every living raider is engaged. Neither model has
+  power (`healerPow=-`), crowd control, interrupts or reactions before a landing (`reactMedianMs=-`). `phase` and `adds` are
+  `-`, as on the server.
+- **Mechanics:** only where the server has a signal. The Green Knight's three measure-only mechanics (`heat`, no cast time;
+  `heal`, which names himself; `trees`, no area) are written with `called=0`. The `heat` row's area is the model's own: around
+  his target, radius 500, the raiders inside his trees' reach, so its `within` is the set the model hits. The script's spell
+  has no range and lands around him; the model's centre differs, which is the model's to fix (#730, reruns owed), not the
+  rows'. Roesia has none on the server, so her sim writes none.
+- **Outcomes:** `killed`; `wipe` (half the raid fallen, the game's wipe); `stopped` otherwise: the model's clock ran out (15
+  minutes for Roesia, 45 for the Green Knight), or the Green Knight model's own loss (no raider left fighting) came before
+  half had fallen. The model's own loss is never written as `wipe`.
+- **Logging only:** a sim calls the recorder beside what it already does and never draws a random number for it, so its
+  results are the same with and without it. `UT_SimRaidRows644` pins that, and that a simulated attempt's rows carry the
+  server's fields in the server's order (read with `_util.py`'s key=value rule), join on one id and agree with each other
+  and the fight. It also writes `raid-sim/raid-sims.raid.log` (`RAID_SIM_DIR` to move it), which the server job reads with
+  **`raid_postmortem.py --check`** (every row's fields in order, a pull and an end per simulated attempt, the death rows
+  equal to `deaths=`, `died + left = fallen`) and uploads as the `raid-sim` artifact. `--check` works on a server log too: an
+  attempt still open when the log stops is no problem there, and `died + left >= fallen` is enough (a raider who died and was
+  rezzed between two looks is in `died` but not in `fallen`). The field lists are `_raid.py`'s `KEYS`, held to the rows
+  the C# tests pin.
+
 Not yet (#644): damage and heal totals on the end row (they are in `RAID_ROLE_TOTALS`, with the diagnostics switch),
-`rezzed=`, signals for the other raid bosses (above), the sims writing these rows, and the Grafana panels.
+`rezzed=`, signals for the other raid bosses (above), the other sims (the dragon, Legion, Spindler and Tuscaran models
+are no whole fight with the game's loss) and the Grafana panels.

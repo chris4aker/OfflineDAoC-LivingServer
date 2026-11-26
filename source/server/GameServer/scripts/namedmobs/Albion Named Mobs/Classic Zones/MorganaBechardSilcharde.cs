@@ -78,6 +78,8 @@ namespace DOL.AI.Brain
 		public int SilchardeDemonicMinionsKilled = 0;
 		public bool BechardKilled = false;
 		public bool SilchardeKilled = false;
+		/// <summary>The player whose quest step started this event (#611: the bots in their group help with the demons).</summary>
+		public GamePlayer QuestPlayer;
 		public override void Think()
 		{
 			if (!PlayerAreaCheck)
@@ -90,6 +92,7 @@ namespace DOL.AI.Brain
 						if (quest != null && quest.Step == 1)
 						{
 							SpawnDemons = true;
+							QuestPlayer = player;
 							player.Out.SendMessage("Ha, is this all the forces of Albion have to offer? I expected a whole army leaded by my brother Arthur, but what do they send a little group of adventurers lead by a poor " + player.CharacterClass.Name + "?",eChatType.CT_Say,eChatLoc.CL_ChatWindow);
 							PlayerAreaCheck = true;
 						}
@@ -142,8 +145,9 @@ namespace DOL.AI.Brain
 				{
 					Body.Flags = (GameNPC.eFlags)npcTemplate.Flags;
 					Body.Model = Convert.ToUInt16(npcTemplate.Model);
-					SpawnBechard();
-					SpawnSilcharde();
+					GameNPC bechard = SpawnBechard();
+					GameNPC silcharde = SpawnSilcharde();
+					MorganaQuestHelp.OnEventStarted(QuestPlayer, new[] { bechard, silcharde }); // #611: the quest player's group bots fight the demons
 					changed = false;
 				}
 			}
@@ -172,14 +176,15 @@ namespace DOL.AI.Brain
 			SilchardeKilled = false;
 			BechardDemonicMinionsKilled = 0;
 			SilchardeDemonicMinionsKilled = 0;
+			QuestPlayer = null;
 			return 0;
 		}
-		private void SpawnBechard()
+		private GameNPC SpawnBechard()
 		{
 			foreach (GameNPC mob in Body.GetNPCsInRadius(5000))
 			{
 				if (mob.Brain is BechardBrain)
-					return;
+					return mob;
 			}
 			Bechard npc = new Bechard();
 			npc.X = 306044;
@@ -189,13 +194,14 @@ namespace DOL.AI.Brain
 			npc.CurrentRegion = Body.CurrentRegion;
 			npc.OwnerBrain = this;
 			npc.AddToWorld();
+			return npc;
 		}
-		private void SpawnSilcharde()
+		private GameNPC SpawnSilcharde()
 		{
 			foreach (GameNPC mob in Body.GetNPCsInRadius(5000))
 			{
 				if (mob.Brain is SilchardeBrain)
-					return;
+					return mob;
 			}
 			Silcharde npc = new Silcharde();
 			npc.X = 306132;
@@ -205,6 +211,7 @@ namespace DOL.AI.Brain
 			npc.CurrentRegion = Body.CurrentRegion;
 			npc.OwnerBrain = this;
 			npc.AddToWorld();
+			return npc;
 		}
 	}
 }

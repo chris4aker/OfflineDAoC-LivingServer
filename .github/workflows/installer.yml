@@ -175,21 +175,34 @@ jobs:
         with:
           name: LivingServer-Setup
           path: setup
+      # On D:, as e2e-more and navmesh-publish (#680): C: had about 4 GB to spare at the end of this job. Free space on
+      # every drive is logged at the start and the end of the step (the end too when the tests fail), and the end's
+      # figures go to the run page as a notice.
       - name: Real install, re-run, remove, reinstall, forced replace, 0.36 update
         shell: pwsh
         run: |
+          function Free([string]$when) {
+            $drives = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Free -ne $null }
+            Write-Host "Free space, $($when):"
+            $drives | Format-Table Name, @{n='FreeGB';e={[math]::Round($_.Free/1GB,1)}}, @{n='UsedGB';e={[math]::Round($_.Used/1GB,1)}} | Out-String | Write-Host
+            return (($drives | ForEach-Object { "$($_.Name): {0:N1} GB" -f ($_.Free/1GB) }) -join ', ')
+          }
+          $startFree = Free 'start'
           $exe = Get-ChildItem setup -Recurse -Filter *.exe | Select-Object -First 1
           $pkg = Get-ChildItem setup -Recurse -Filter LivingServer.zip | Select-Object -First 1
-          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-installer.ps1 -Exe $exe.FullName -Package $pkg.FullName -Work C:\lstest
-          exit $LASTEXITCODE
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/installer/test-installer.ps1 -Exe $exe.FullName -Package $pkg.FullName -Work D:\lstest
+          $code = $LASTEXITCODE
+          $endFree = Free 'end'
+          Write-Host "::notice title=e2e free space (work folder D:\lstest)::start $startFree; end $endFree"
+          exit $code
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: e2e-logs
-          path: C:\lstest\logs\
+          path: D:\lstest\logs\
           if-no-files-found: warn
 
-  # The rest run on the runners' larger second drive (D:, about 145 GB free), each on its own machine.
+  # The rest also run on the runners' larger second drive (D:, about 145 GB free), each on its own machine.
   e2e-more:
     needs: build
     if: ${{ github.event_name == 'push' || inputs.e2e }}

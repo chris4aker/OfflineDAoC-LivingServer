@@ -44,30 +44,71 @@ public static class RaidDiagnosticRows
 /// <summary>
 /// The measure-only mechanic signals of the raid bosses that had none (#644 decision d): Legion, Grand Summoner Govannon, the
 /// Green Knight, Spindler Broodmother, Queen Kula and King Tuscar. The scripts call these beside what they already do; nothing
-/// here changes the spell, its timer, its target or the boss (EncounterSignals.Measure: no tactic, call or lore hears it).
+/// here changes the spell, its timer, its target or the boss (EncounterSignals.Measure: no tactic, call or lore hears it). A
+/// cast's signal is written when the spell really begins (<see cref="CastBegan"/>), never at the script's request.
 /// </summary>
 public static class RaidBossMechanics
 {
+    /// <summary>A script's request stays waiting for its cast to begin this long (a cast queued behind the boss's current one).</summary>
+    public const long PendingMilliseconds = 10_000;
+
     /// <summary>
-    /// The boss tried a mechanic's spell: when the cast started (<paramref name="cast"/>, the script's own CastSpell result), a
-    /// measure-only signal. Its area: the spell's radius, around the boss's target for a ranged spell, else around the boss; a
-    /// single-target spell (radius 0) names the target. It lands after the spell's cast time.
+    /// The mechanics the scripts asked for and whose spell has not begun yet, by boss and spell id. Empty outside boss fights:
+    /// <see cref="CastBegan"/> checks it on every spell's start.
     /// </summary>
-    public static void Cast(bool cast, GameNPC boss, string mechanic, Spell spell)
+    private static readonly ConcurrentDictionary<(GameNPC Boss, int Spell), (string Mechanic, long Expires)> Pending = new();
+
+    /// <summary>
+    /// The boss asked for a mechanic's spell: <paramref name="requested"/> is the script's own CastSpell result, which only says
+    /// the request was queued (CastingComponent.RequestCastSpell: the recast delay, a cast already going, range and line of
+    /// sight are judged when it starts). Nothing is written here; the signal comes from <see cref="CastBegan"/> when the
+    /// spell really begins (SpellHandler, past CheckBeginCast), so a request on the spell's recast delay, or one the boss
+    /// drops, writes none (#644 fix: a cast asked for on every think wrote a signal on every think).
+    /// </summary>
+    public static void Cast(bool requested, GameNPC boss, string mechanic, Spell spell)
     {
-        if (!cast || boss == null || spell == null) return;
+        if (!requested || boss == null || spell == null || string.IsNullOrEmpty(mechanic)) return;
         try
         {
-            GameLiving target = boss.TargetObject as GameLiving;
-            bool aroundTarget = spell.Range > 0 && target != null;
-            EncounterSignals.Measure(boss, mechanic, aroundTarget || spell.Radius <= 0 ? target : null, spell.Radius, aroundTarget,
-                Math.Max(0, spell.CastTime), 0, LivingRows.Now());
+            long now = LivingRows.Now();
+            if (Pending.Count > 256)
+                foreach (var stale in Pending.Where(p => p.Value.Expires < now).Select(p => p.Key).ToArray())
+                    Pending.TryRemove(stale, out _);
+            Pending[(boss, spell.ID)] = (mechanic, now + PendingMilliseconds);
         }
         catch
         {
             // A measurement never breaks the script.
         }
     }
+
+    /// <summary>
+    /// A spell began (SpellHandler: its cast started, or an instant spell went off, past CheckBeginCast and its cooldown).
+    /// When a boss's script asked for it as a mechanic, the measure-only signal: the spell's radius, around its target for a
+    /// ranged spell, else around the boss; a single-target spell (radius 0) names its target. It lands after
+    /// <paramref name="castMilliseconds"/>, the cast as the handler timed it (0 for an instant spell). One empty check for
+    /// every other spell.
+    /// </summary>
+    public static void CastBegan(GameLiving caster, Spell spell, GameLiving target, long castMilliseconds)
+    {
+        if (Pending.IsEmpty || caster is not GameNPC boss || spell == null) return;
+        try
+        {
+            if (!Pending.TryRemove((boss, spell.ID), out var asked)) return;
+            long now = LivingRows.Now();
+            if (asked.Expires < now) return;
+            bool aroundTarget = spell.Range > 0 && target != null;
+            EncounterSignals.Measure(boss, asked.Mechanic, aroundTarget || spell.Radius <= 0 ? target : null, spell.Radius, aroundTarget,
+                (int)Math.Clamp(castMilliseconds, 0, int.MaxValue), 0, now);
+        }
+        catch
+        {
+            // A measurement never breaks the cast.
+        }
+    }
+
+    /// <summary>Tests: no request waiting.</summary>
+    public static void ResetForTests() => Pending.Clear();
 
     /// <summary>The boss calls a wave of adds or a summon now (no area: the row counts its hits and deaths only).</summary>
     public static void Spawn(GameNPC boss, string mechanic)
