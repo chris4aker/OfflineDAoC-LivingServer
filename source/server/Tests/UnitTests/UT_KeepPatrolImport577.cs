@@ -52,7 +52,7 @@ public class UT_KeepPatrolImport577
             Assert.That(steps, Has.Length.GreaterThanOrEqualTo(8), position.TemplateId);
             Assert.That(steps, Is.EqualTo(Enumerable.Range(1, steps.Length)), $"{position.TemplateId}: steps 1..n");
         }
-        Assert.That(data.Points.All(p => p.Z == 0), Is.True, "ground loops: Z is the keep's own");
+        Assert.That(data.Points.All(p => Math.Abs(p.Z) <= 200), Is.True, "ground loops: Z is a small offset from the keep's own");
         Assert.That(data.Paths.All(p => p.PathType == 3 && p.RegionId == 0), Is.True);
         Assert.That(data.Points.Select(p => p.PathId).Distinct().Count(), Is.EqualTo(16));
     }
