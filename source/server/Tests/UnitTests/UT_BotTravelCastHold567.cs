@@ -41,7 +41,7 @@ public class UT_BotTravelCastHold567
             dir = Path.GetDirectoryName(dir);
         if (dir == null)
             Assert.Ignore("Repository not found beside the tests.");
-        string brain = File.ReadAllText(Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs"));
+        string brain = File.ReadAllText(Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs")).Replace("\r\n", "\n");
         int upkeep = brain.IndexOf("private bool TryMaintainTravelAndClassBuffs()", StringComparison.Ordinal);
         string body = brain.Substring(upkeep, brain.IndexOf("CompleteCompanionPerformerBuffBatch(bot);\n            return false;\n        }",
             upkeep, StringComparison.Ordinal) - upkeep);
