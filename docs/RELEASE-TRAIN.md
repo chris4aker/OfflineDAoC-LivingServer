@@ -14,6 +14,113 @@ A few documents named here are still on their own branches until those merge: `B
 (`plan/rvr-builds`), `NORTH-STAR-AUDIT.md` and `audits/2026-11-03/` (`audit/north-star-2026-11-03`, PR #58). PR #58
 was closed without being merged; its branch still holds the files.
 
+## How a build reaches players: tiers, checklists and the frozen update contract (#685)
+
+Owner, 2026-11-26: players must not keep having to download a new Setup or launcher. Since 1.2.2 the launcher updates
+itself (`apply-update.ps1` runs the package's `INSTALL.cmd`, which replaces the launcher's own files), so as long as the
+update path below keeps working, a player who installed once never needs a new download. Two breaks reached that path
+in one week: the repository rename made 1.2.2 and rc.1 launchers refuse every download (#645), and Setup's downloader
+left 4.8 GB behind after one timeout (#677). Hence three rules:
+
+- **Pre-releases and dev builds never reach players.** Players see full releases only.
+- **The update contract below is frozen.** A change to any item follows the two-step rule.
+- **CI checks every build against the newest released launcher** (`update-contract`, below).
+
+This section is for the owner, Ryan (FarmVibes, who watches his test runs in Grafana: [GRAFANA.md](GRAFANA.md)) and
+Account #2 (a second Claude session with no PC access). The stops further down are the roadmap.
+
+### The three tiers
+
+Every tier installs into its **own test folder, never over the main game** (`C:\Games\LivingServer`). Make a test
+folder once with Setup's new install (`DAoC-LivingServer-Setup-<v>.exe --silent --new --dest D:\Games\LivingServer-test`,
+or the wizard with another folder), or with the launcher's **Install into a new test folder** (a test build only).
+
+| Tier | What | Who sees it | How it is installed |
+|---|---|---|---|
+| 1. Dev build | The package artifact `OfflineDAoC-LivingServer-<build>-<sha7>` of a green build-and-test run (any branch). No release, no tag. | Whoever installs it by hand | `gh api repos/chris4aker/OfflineDAoC-LivingServer/actions/runs/<run>/artifacts` (its `archive_download_url`), unzip, then `LivingServer-<build>\INSTALL.cmd -GameFolder D:\Games\LivingServer-dev` (`install-server-build.ps1`; `ROLLBACK.cmd` undoes it) |
+| 2. Pre-release | `v1.2.x-rc.N`, a GitHub pre-release published by publish-release with `prerelease` on. Never Latest. | Testers only: the launcher's **Offer test builds (pre-releases)**, off by default | In a test folder: turn on **Offer test builds**, **Check for updates**, then **Install into a new test folder** or **Install here** ([CONTRIBUTING.md](CONTRIBUTING.md), "Test builds") |
+| 3. Full release | `v1.2.x`, Latest. Batched: cut only after an rc ran clean overnight. | Every player: launcher **Check for updates** and Setup | Players: automatic. Testers: the same in the test folder first |
+
+### The rc checklist (tier 2)
+
+1. `main` is green, and the last push run's `update-contract` job passed (released launcher takes this build).
+2. `ForkBuildInfo.BuildName` is the version in development (`1.2.3`), with `## 1.2.3 (in development)`.
+3. publish-release: `tag v1.2.3-rc.N`, `run_id` = that push run, `prerelease` on, **dry run first**, then for real.
+4. Install it in a test folder (tier 2 above); never in the main game.
+5. The installed-file tests on that folder, with no server running:
+   `python source/tools/run_installed_tests.py --game D:\Games\LivingServer-test` (#619; `--list` shows the classes).
+6. Run it overnight (the test folder's server, the overnight sweep rules above). Clean means: no crash, no stall over
+   the threshold, the update log (`runtime\logs\launcher-updates.log`) shows the install, saves load after a restart.
+7. Note the result on the release's issue: build, commit, what ran, what was seen. A failure gets an issue and the next
+   rc; an rc is never edited or moved.
+
+### The release checklist (tier 3)
+
+1. An rc of exactly this commit ran clean overnight (rc checklist, step 7), and nothing was merged since.
+2. `update-contract` passed on the push run being published (it is part of build-and-test).
+3. Versions agree (`tools/release/check_versions.py --tag v1.2.3`); the changelog fragments are folded in
+   (`source/tools/assemble_changelog.py`); the player notes `docs/RELEASE-NOTES-1.2.3.md` are written for players.
+4. publish-release with `prerelease` off, dry run first. It attaches `DAoC-LivingServer-<v>.zip` and the same file as
+   `OfflineDAoC-LivingServer-<v>.zip`, and checks GitHub's digest of each.
+5. Run "release" by hand (tag, dry run off) to build, test and attach Setup.
+6. In a test folder on the previous release: **Check for updates** offers it and installs it.
+
+### Who does what
+
+| | Owner | Ryan | Account #2 (no PC) |
+|---|---|---|---|
+| Dev builds | installs the ones he wants to see | installs them in his test folder when asked | builds them: branches, PRs, CI |
+| Pre-releases | decides when; publishes (or asks Account #2 to run publish-release) | runs the rc in a test folder overnight, reports from Grafana | runs publish-release dry runs and real runs when asked, writes the notes |
+| Full releases | decides and publishes; approves player notes | runs the update from the last release in a test folder | prepares the release PR (versions, changelog, notes), checks `update-contract` |
+| Contract changes | decides step 2 timing | | builds step 1, files the issue |
+
+A PC result counts only from the owner's or Ryan's logs; Account #2 reports CI as tests (AGENTS.md, "Be honest in
+reports").
+
+### The frozen update contract
+
+What a released launcher (and Setup) relies on to take the next release. Lines are on `main` (2026-11-26); 1.2.2 has
+the same items in its own copy of these files (under the project folder of before the #645 rename, a line or two
+earlier), unless noted. Paths below are under `source/tools/DAoCLivingServer.Launcher/Updates/` unless given in full.
+
+| # | Item | Frozen value | Code |
+|---|---|---|---|
+| 1 | Repository path, exact case (the download check is ordinal) | `chris4aker/OfflineDAoC-LivingServer` | `ReleaseFeed.cs:27`; Setup `tools/installer/src/Program.cs:17`; `tools/release/publish_release.py:41` |
+| 2 | API URLs | `https://api.github.com/repos/<repo>/releases/latest`; with test builds on also `.../releases?per_page=30` | `ReleaseFeed.cs:29`, `ReleaseFeed.cs:31` (1.2.3 on) |
+| 3 | Download prefix: packages only from this repository's release files | `https://github.com/<repo>/releases/download/` | `ReleaseFeed.cs:33`, checked at `ReleaseFeed.cs:92` (1.2.2: line 63) |
+| 4 | Package asset name | `OfflineDAoC-LivingServer-<tag build>.zip` on every release (1.2.0-1.2.2 look only for it, `ReleaseInfo.cs:34` at v1.2.2); `DAoC-LivingServer-<tag build>.zip` from 1.2.3 | `ReleaseInfo.cs:43-71`; `publish_release.py:103-109` (`zip_name`, `legacy_zip_name`) |
+| 5 | Digest format, GitHub's asset `digest` field | `sha256:<64 hex>`; missing or another form is refused before downloading | `PackageDigest.cs:23`, `ReleaseFeed.cs:89`; `publish_release.py:124` (`github_digest`) |
+| 6 | Package contents | one top folder `LivingServer-<package build>`; `BUILD-INFO.txt` with `BuildName` (= the package build), `BaseRelease`, `GameServer.dll` and `.pdb` hashes; `INSTALL.cmd`, `ROLLBACK.cmd`, `install-server-build.ps1`, `rollback-server-build.ps1`, `fork-build-common.ps1` | `PackageCheck.cs:43-51`, `PackageCheck.cs:68-106` |
+| 7 | How the normal channel picks a release | `/releases/latest` only; published, not a pre-release, tag `v<numbers>[-beta]`, newer than the installed build, with item 4's asset. So **Latest must always be a game release**: any other release (a navmesh set, #684) is published with `make_latest` false, or it hides every update | `ReleaseInfo.cs:31`, `UpdateSettings.cs:79-87`, `BuildVersion.cs:21` (tag shape); `publish_release.py:287` |
+| 8 | How the test channel picks a release (1.2.3 on) | with "Offer test builds" on: pre-releases tagged `v<numbers>-rc.N` (N from 1) with item 4's asset; a candidate tag must be a pre-release and the reverse (`ReleaseFeed.cs:84`); a final outranks its candidates | `ReleaseInfo.cs:37`, `UpdateSettings.cs:93-121`, `BuildVersion.cs:21` |
+| 9 | The test-build marker | `runtime\updates\installed-test-build.txt`: `Tag=v<x>-rc.N` and `GameServer.dll=<sha256>`; it counts only while `runtime\server\GameServer.dll` has that hash | `LauncherUpdater.cs:71`, `LauncherUpdater.cs:145-178` |
+| 10 | apply-update.ps1's interface | `-LauncherPid -PackageFolder -GameFolder -Build -Log -Result [-Restart] [-Release] [-NoPause]`; writes `runtime\updates\last-update.txt` (`Build=`, `Release=`, `Result=installed` or `not installed`, `Detail=`); exits 0 only when installed | `apply-update.ps1:12-48`, `apply-update.ps1:92`; started at `LauncherUpdater.cs:340-356`; `ResultFile` `LauncherUpdater.cs:64` |
+| 11 | INSTALL.cmd's interface | `INSTALL.cmd -GameFolder "<game>"` with empty input (it ends with `pause`); runs `install-server-build.ps1` with the same arguments; must install the launcher files `BUILD-INFO.txt` lists under `launcher/`, keep `runtime\OfflineDAoC.exe` (the game's start file, old shortcuts and 1.2.x restarts open it), and never touch `runtime\data` | `apply-update.ps1:74`; `tools/fork-build/INSTALL.cmd:4`; `tools/fork-build/install-server-build.ps1:28` |
+| 12 | Setup's base-files URLs | `https://github.com/chris4aker/OfflineDAoC-base-files/releases/download/v<release>/...` (`download-manifest.json` and the parts) | `tools/installer/src/Model.cs:385`; `Get-OfflineDAoC.ps1:67`, `:77` (pinned by SHA-256) |
+
+### The two-step rule for changing a contract item
+
+1. **Step 1: accept both.** Ship a full release whose launcher and Setup accept the old and the new value (for
+   example: both repository paths in the download check; both asset names attached). The old value stays what is
+   actually used. `update-contract` keeps passing.
+2. **Step 2: switch**, only after the step 1 release has been out long enough. The owner decides when. Released
+   launchers older than step 1 lose updates at that point, so the owner weighs who is still on them.
+
+File an issue for each change (the plan, both steps, the acceptance test); label `needs-owner` for step 2.
+
+### The CI check: `update-contract`
+
+`.github/workflows/update-contract.yml`, called by build-and-test after `server` on every push and pull request. It
+takes the newest full release older than the commit's build (today v1.2.2), installs its package on a fake 0.37 game
+with its own install script, and runs that release's **own launcher code** (the installed dll, loaded by
+`source/tools/DAoCLivingServer.UpdateContract`) against a fake GitHub serving the candidate release, built from the
+commit's package exactly as publish-release would (`tools/release/update_contract.py`). The launcher has no command-line
+update check (1.2.2's only headless switch, `--apply-update`, starts from a file and skips items 2-5), so the harness
+calls its `LauncherUpdater.Check`, `PrepareFromRelease` and `StartHandoff` by reflection; only the network transport is
+faked. Then it checks the game is the candidate, and that the released Setup's `--info --release-json` picks the
+candidate. Last, the repository GitHub runs in must be item 1 exactly. Details: [CI.md](CI.md). Not covered: the
+launcher's window, and items 9 and 12 (1.2.2 has no test channel; base files are only read by a new install).
+
 ## The split (owner, 2026-11-06)
 
 The owner split the plan into three releases, so that what is already built and checked reaches players now and
