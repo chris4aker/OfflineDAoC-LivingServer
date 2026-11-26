@@ -9,7 +9,10 @@ using DOL.GS.Spells;
 
 namespace DOL.GS.Commands
 {
-    [CmdAttribute("&buff", ePrivLevel.Player, "Buff the target", "/buff <(buffList) | all | help> [playerName | npcName]")]
+    [CmdAttribute("&buff", ePrivLevel.Player, "Buff the target, or refuse a buff from bots",
+        "/buff <(buffList) | all | help> [playerName | npcName]",
+        "/buff refuse [short[,short...]] - bots stop casting these buffs on you and your pet (no argument lists your refusals)",
+        "/buff allow <short[,short...] | all> - bots may cast them on you again")]
     public class BuffCommandHandler : AbstractCommandHandler, ICommandHandler
     {
         private const int RANGE = 1500;
@@ -18,43 +21,11 @@ namespace DOL.GS.Commands
 
         static BuffCommandHandler()
         {
-            // Doesn't handle Necromancer buffs.
-            _buffLookupTable = new()
-            {
-                {"str", eSpellType.StrengthBuff},
-                {"con", eSpellType.ConstitutionBuff},
-                {"dex", eSpellType.DexterityBuff},
-                {"sc", eSpellType.StrengthConstitutionBuff},
-                {"dq", eSpellType.DexterityQuicknessBuff},
-                {"acu", eSpellType.AcuityBuff},
-                {"af", eSpellType.BaseArmorFactorBuff},
-                {"saf", eSpellType.SpecArmorFactorBuff},
-                {"paf", eSpellType.PaladinArmorFactorBuff},
-                {"abs", eSpellType.ArmorAbsorptionBuff},
-                {"cel", eSpellType.CelerityBuff},
-                {"has", eSpellType.CombatSpeedBuff},
-                {"da", eSpellType.DamageAdd},
-                {"ds", eSpellType.DamageShield},
-                {"dam", eSpellType.MeleeDamageBuff},
-                {"hreg", eSpellType.HealthRegenBuff},
-                {"hot", eSpellType.HealOverTime},
-                {"preg", eSpellType.PowerRegenBuff},
-                {"pot", eSpellType.PowerOverTime},
-                {"ereg", eSpellType.EnduranceRegenBuff},
-                {"fat", eSpellType.FatigueConsumptionBuff},
-                {"mez", eSpellType.MesmerizeDurationBuff},
-                {"bt", eSpellType.Bladeturn},
-                {"dproc", eSpellType.DefensiveProc}, // Won't work well if the player has more than one.
-                {"oproc", eSpellType.OffensiveProc}, // Won't work well if the player has more than one.
-                {"hcm", eSpellType.HeatColdMatterBuff},
-                {"cold", eSpellType.ColdResistBuff},
-                {"matt", eSpellType.MatterResistBuff},
-                {"heat", eSpellType.HeatResistBuff},
-                {"bse", eSpellType.BodySpiritEnergyBuff},
-                {"body", eSpellType.BodyResistBuff},
-                {"spir", eSpellType.SpiritResistBuff},
-                {"ener", eSpellType.EnergyResistBuff}
-            };
+            // Doesn't handle Necromancer buffs. "dproc" and "oproc" won't work well if the player has more than one.
+            // The short names live in PlayerBuffRefusals (#661), which /buff refuse and /buff allow read too.
+            _buffLookupTable = new();
+            foreach ((string shortName, eSpellType type) in PlayerBuffRefusals.ShortNames)
+                _buffLookupTable[shortName] = type;
         }
 
         public void OnCommand(GameClient client, string[] args)
@@ -65,6 +36,14 @@ namespace DOL.GS.Commands
             if (args.Length < 2)
             {
                 DisplaySyntax(client);
+                return;
+            }
+
+            // #661: /buff refuse and /buff allow work anywhere and need no target.
+            PlayerBuffRefusals.Command refusal = PlayerBuffRefusals.ParseCommand(args);
+            if (refusal.Kind != PlayerBuffRefusals.CommandKind.None)
+            {
+                HandleRefusal(client.Player, refusal);
                 return;
             }
 
@@ -284,6 +263,34 @@ namespace DOL.GS.Commands
 
                 return new BuffCommandSpell(dbSpell, 0, buffsToCast);
             }
+        }
+
+        /// <summary>/buff refuse [short...] and /buff allow &lt;short...|all&gt; (#661). Saved on the character.</summary>
+        private static void HandleRefusal(GamePlayer player, PlayerBuffRefusals.Command command)
+        {
+            if (player == null)
+                return;
+            if (command.Kind == PlayerBuffRefusals.CommandKind.List)
+            {
+                foreach (string name in command.Unknown)
+                    ChatUtil.SendSystemMessage(player, $"\"{name}\" is not a buff short name. /buff help lists them.");
+                ChatUtil.SendSystemMessage(player, PlayerBuffRefusals.ListLine(PlayerBuffRefusals.Of(player)));
+                return;
+            }
+            IReadOnlyList<eSpellType> changed;
+            if (command.Kind == PlayerBuffRefusals.CommandKind.Refuse)
+            {
+                changed = PlayerBuffRefusals.Refuse(player, command.Types, "/buff refuse");
+                // What a bot already cast comes off now: a damage shield on the player would break the next root.
+                PlayerBuffRefusals.EndBotBuffs(player, command.Types.ToList());
+            }
+            else
+            {
+                IEnumerable<eSpellType> types = command.All ? PlayerBuffRefusals.Of(player).ToList() : command.Types;
+                changed = PlayerBuffRefusals.Allow(player, types, "/buff allow");
+            }
+            foreach (string line in PlayerBuffRefusals.ResultLines(command, changed.ToList(), PlayerBuffRefusals.Of(player)))
+                ChatUtil.SendSystemMessage(player, line);
         }
     }
 

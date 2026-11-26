@@ -6165,8 +6165,10 @@ namespace DOL.AI.Brain
             {
                 if (!BotBody.IsCasting || (numEmergency > 0 && !isCastingHeal))
                 {
+                    // #661: no heal over time on a player who refused it (/buff refuse hot): another heal instead.
                     bool hotReady = CheckHealSpell(BotBody.HealOverTime) && !LivingHasEffect(spellTarget, BotBody.HealOverTime) &&
-                        !GroupmateCastsHotAt(spellTarget, BotBody.HealOverTime);
+                        !GroupmateCastsHotAt(spellTarget, BotBody.HealOverTime) &&
+                        !PlayerBuffRefusals.Refuses(spellTarget, BotBody.HealOverTime.SpellType);
                     bool efficientReady = !hotReady && CheckHealSpell(BotBody.HealEfficient);
                     bool bigReady = !hotReady && BotBody.ManaPercent >= ManaThreshold && CheckHealSpell(BotBody.HealBig);
                     bool bigWorthIt = bigReady && spellTarget != null &&
@@ -6188,7 +6190,8 @@ namespace DOL.AI.Brain
                 // The Green Knight's hold (#412) comes first: no heal over time on a tank one of his trees is hitting.
                 if (tank != null && !EpicEncounterTactics.GreenKnightHoldsHeal(BotBody, tank) &&
                     BotHealTriage165.PreHotTank(true, tank.InCombat || tank.IsAttacking, tank.HealthPercent,
-                        LivingHasEffect(tank, preHot) || GroupmateCastsHotAt(tank, preHot), BotBody.ManaPercent))
+                        LivingHasEffect(tank, preHot) || GroupmateCastsHotAt(tank, preHot) ||
+                        PlayerBuffRefusals.Refuses(tank, preHot.SpellType), BotBody.ManaPercent))
                 {
                     spellToCast = preHot;
                     spellTarget = tank;

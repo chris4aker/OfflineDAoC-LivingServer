@@ -167,15 +167,18 @@ public static class NoLiferBuffBots
     /// <summary>
     /// The buffs a buffbot keeps on its main, in casting order: single-target (realm) buffs only, the best known rank of each
     /// type, the types its main has a use for, concentration buffs while its pool lasts (in priority order) and every timed
-    /// one. Group, self and pet spells are left out: they need a group, and a buffbot never joins one. Pure.
+    /// one. Group, self and pet spells are left out: they need a group, and a buffbot never joins one. A type the target
+    /// refuses (<paramref name="refused"/>: a real player's <c>/buff refuse</c>, #661) is left out too, and its
+    /// concentration stays in the pool for the next buff. Pure.
     /// </summary>
     public static IReadOnlyList<BuffCandidate> PlanBuffs(IEnumerable<BuffCandidate> known, bool mainUsesPower, bool mainUsesWeapons,
-        int concentrationPool)
+        int concentrationPool, IReadOnlyCollection<eSpellType> refused = null)
     {
         var best = new Dictionary<eSpellType, BuffCandidate>();
         foreach (BuffCandidate spell in known ?? [])
         {
             if (spell.Target != eSpellTarget.REALM || Array.IndexOf(Priority, spell.Type) < 0 ||
+                refused != null && refused.Contains(spell.Type) ||
                 !Suits(spell.Type, mainUsesPower, mainUsesWeapons) || (!spell.Timed && spell.Concentration <= 0))
                 continue;
             if (!best.TryGetValue(spell.Type, out BuffCandidate held) || spell.Level > held.Level ||
@@ -628,11 +631,15 @@ public static class NoLiferBuffBots
         }
         // Its own pool: what it has spent on its main is still its to spend again.
         int pool = bot.MaxConcentration;
-        IReadOnlyList<BuffCandidate> plan = PlanBuffs(known, power, weapons, pool);
+        // #661: what the target refuses stays out of the plan and the refresh. A main is a gamebot today, which refuses
+        // nothing; the check keeps any later target a real player could be honest.
+        IReadOnlyCollection<eSpellType> refused = PlayerBuffRefusals.RefuserOf(main) is GamePlayer refuser
+            ? PlayerBuffRefusals.Of(refuser) : null;
+        IReadOnlyList<BuffCandidate> plan = PlanBuffs(known, power, weapons, pool, refused);
         foreach (BuffCandidate wanted in plan)
         {
             Spell spell = byId[wanted.SpellId];
-            if (brain.LivingHasEffect(main, spell))
+            if (PlayerBuffRefusals.Refuses(main, spell.SpellType) || brain.LivingHasEffect(main, spell))
                 continue;
             if (spell.IsConcentration && bot.Concentration < spell.Concentration)
                 continue; // still held by an older rank or a dropped target; the effect service frees it

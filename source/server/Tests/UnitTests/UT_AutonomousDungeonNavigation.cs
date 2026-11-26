@@ -123,7 +123,8 @@ namespace DOL.UnitTests
             {
                 Assert.That(AutonomousDungeonGoalCatalog.VerifiedSpawnCountForRegion(21), Is.GreaterThanOrEqualTo(168));
                 Assert.That(AutonomousDungeonGoalCatalog.VerifiedSpawnCountForRegion(129), Is.EqualTo(355));
-                Assert.That(AutonomousDungeonGoalCatalog.VerifiedSpawnCountForRegion(221), Is.EqualTo(71));
+                Assert.That(AutonomousDungeonGoalCatalog.VerifiedSpawnCountForRegion(221), Is.EqualTo(92),
+                    "71 audited rows plus the 21 period-restored Muire spawns proven on navmesh-v1 (#704)");
             });
         }
 
