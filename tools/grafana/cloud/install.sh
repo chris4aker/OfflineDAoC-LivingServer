@@ -84,7 +84,7 @@ After=network-online.target
 Type=simple
 WorkingDirectory=$ADDON_HOME
 EnvironmentFile=$ENV_FILE
-ExecStart=$ADDON_HOME/run-alloy.sh
+ExecStart=/bin/bash "$ADDON_HOME/run-alloy.sh"
 Restart=on-failure
 RestartSec=30
 

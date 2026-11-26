@@ -25,7 +25,8 @@ FIXTURE_LOG = KIT / "tests" / "fixtures" / "server.log"
 REQUIRED = ["GC_PROM_URL", "GC_PROM_USER", "GC_LOKI_URL", "GC_LOKI_USER", "GC_TOKEN", "LS_LOG_DIR", "LS_INSTANCE"]
 SECRET = "glc_THIS_MUST_NEVER_BE_PRINTED"
 # Values in the fixture that must never reach Loki: a player's and a bot's name, chat text, a Windows user folder, an IP.
-PRIVATE = ["Testplayer", "Aelwynbot", "secret words", "player1", "192.168.1.20", "C:\\Users"]
+PRIVATE = ["Testplayer", "Testaccount", "Aelwynbot", "Knights", "secret words", "player1", "192.168.1.20", "10.0.0.5",
+           "C:\\Users", "boom", "Bot.cs"]
 
 
 def _stub(folder: Path, name: str, body: str) -> None:
@@ -279,7 +280,7 @@ class RealAlloy(unittest.TestCase):
             for _ in range(40):
                 time.sleep(0.5)
                 metrics = urllib.request.urlopen(f"http://{addr}/metrics", timeout=2).read().decode()
-                if "loki_process_custom_server_memory_heap_mb" in metrics and "AUTONOMOUS_GROUP_ENDED" in (tmp / "alloy.out").read_text():
+                if "loki_process_custom_server_memory_heap_mb" in metrics and "AUTONOMOUS_TICK_FAILED" in (tmp / "alloy.out").read_text():
                     break
             echoed = (tmp / "alloy.out").read_text()
             self.assertRegex(metrics, r'loki_process_custom_bots_online\{[^}]*\} 147')
@@ -288,6 +289,12 @@ class RealAlloy(unittest.TestCase):
             entries = re.findall(r'entry="(.*?)" entry_timestamp', echoed)
             self.assertTrue(any("AUTONOMOUS_BOT_DEATH" in e and "realm=Albion" in e and "zone=Salisbury" in e for e in entries), entries)
             self.assertTrue(any("WRN | DOL.GS.Db | ~" in e for e in entries), entries)
+            # Reviewed structural keys keep their value; source= does not (EPIC_FUNUS_HEALED writes a name there).
+            self.assertTrue(any('zone=\\"Salisbury Plains\\"' in e for e in entries), entries)
+            self.assertTrue(any("EPIC_FUNUS_HEALED source=~ kind=player" in e for e in entries), entries)
+            self.assertTrue(any('\\"members\\":[\\"~\\",\\"~\\"]' in e for e in entries), entries)
+            self.assertTrue(any("AUTONOMOUS_TICK_FAILED bot=~ error=~" in e and e.endswith("error=~") for e in entries), entries)
+            self.assertFalse(any("ACCOUNT_LOGIN" in e or "CLIENT_HANDSHAKE" in e for e in entries), entries)
             joined = "\n".join(entries)
             for word in PRIVATE:
                 self.assertNotIn(word, joined)

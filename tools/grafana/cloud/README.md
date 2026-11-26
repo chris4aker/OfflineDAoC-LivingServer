@@ -1,7 +1,9 @@
 # Grafana Cloud kit
 
 Issue #647 (tracker); #649 (setup) and #652 (dashboards). Sends a Living Server's health, bots and world to **your own Grafana Cloud stack**:
-- `server.log` goes to Loki, sanitized: no chat, names, accounts, paths or IPs leave the PC;
+- `server.log` goes to Loki, sanitized: no chat, names, accounts, paths or IPs leave the PC. Account and network rows
+  are dropped, the line is rebuilt from its parsed parts (no stack traces), and every value with a letter becomes `~`
+  unless its key is a reviewed structural key (realm, zone, class, ...), each checked against the code that writes it;
 - log-derived metrics (AI tick percentiles, game-loop stages, memory, bots online by realm) and the server process's
   CPU and memory go to Prometheus.
 

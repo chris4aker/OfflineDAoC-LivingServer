@@ -5,9 +5,10 @@
 // Privacy (AGENTS.md "Protect player data"):
 // - CHAT_LINE and DBG lines are dropped first; INF free text (no EVENT_KEY) is dropped; WRN/ERR free text keeps only
 //   time, level and logger.
-// - JSON string values become "~".
-// - Every key=value whose value holds a letter becomes key~ unless the key is a reviewed structural key (realm, stage,
-//   zone, ...). So bot, player, guild and account names, paths and free text never leave the PC. Numbers are kept.
+// - The shipped line is rebuilt from the parsed parts; continuation lines (stack traces) never ship.
+// - JSON string values become "~". Every key=value whose value holds a letter becomes key~ unless the key is a reviewed
+//   structural key (realm, stage, zone, ...). IPv4 addresses become "~" and stray words are removed. So bot, player,
+//   guild and account names, paths, addresses and free text never leave the PC. Numbers are kept.
 // - Labels: level, event (a fixed list of kept keys, else "other"), instance, job. The file path label is dropped.
 // #651 replaces this sanitizer with #628's generated, fail-closed row filter.
 
@@ -52,6 +53,12 @@ loki.process "game" {
   stage.template {
     source   = "event_kept"
     template = "{{ if eq .rawevent \"SERVER_WORK\" \"SERVER_STALL\" \"SERVER_MEMORY\" \"SERVER_GC_PAUSE\" \"AI_PROFILE\" \"AI_PROFILE_BUDGET\" \"AUTONOMOUS_BOT_DEATH\" \"AUTONOMOUS_DEATH_ROUTE_REPLAN\" \"BOT_SOLO_BAIL\" \"BOT_RETREAT_ENDED\" \"BOT_SKILL_MISTAKE\" \"AUTONOMOUS_XP_PROGRESS\" \"AUTONOMOUS_EQUIPMENT_UPGRADE\" \"AUTONOMOUS_EXCHANGE_SOLD\" \"RVR_BOT_KILLED\" \"RVR_SIEGE\" \"RVR_FIGHT_BOARD\" \"BG_WAVE_STATUS\" \"CRAFT_RECIPE_BROKEN\" \"BOT_SKILL_BUDGET\" }}{{ .rawevent }}{{ else }}other{{ end }}"
+  }
+  // Account and network rows never ship, not even sanitized (the same list as #628's row-policy.json exclude_rows).
+  stage.drop {
+    source              = "rawevent"
+    expression          = "^(ACCOUNT_LOGIN|HOST_PASSWORD|CLIENT_HANDSHAKE|CUSTOM_CLASS_REFUSED|EPIC_SWEEP_GUEST_RESTORED|LOG_CONFIG|NETWORK_EXPOSURE|PLAYER_NICKNAME|UPNP_MAPPING|WORLD_ENTER_REPEAT_IGNORED)$"
+    drop_counter_reason = "account_or_network"
   }
   stage.labels {
     values = { level = "", event = "event_kept" }
@@ -229,32 +236,69 @@ loki.process "game" {
       drop_counter_reason = "free_text_info"
     }
   }
-  // WRN/ERR free text: keep time, level and logger only.
-  stage.template {
-    source   = "out"
-    template = "{{ if eq .rawevent \"NONE\" }}{{ .ts }} | {{ .level }} | {{ .logger }} | ~{{ else }}{{ .Entry }}{{ end }}"
-  }
-  stage.output {
-    source = "out"
-  }
-  // JSON payloads (e.g. AUTONOMOUS_GROUP_*): every JSON string value becomes "~" (names, activities).
+  // Everything below works on the row's fields (kv, the first line only), and the line is rebuilt from its parts, so
+  // continuation lines (stack traces with file paths) never ship.
+  // 1. JSON payloads (e.g. AUTONOMOUS_GROUP_*): every JSON string value, in objects and in arrays, becomes "~".
   stage.replace {
-    expression = "\"[A-Za-z_]+\":(\"(?:[^\"\\\\]|\\\\.)*\")"
-    replace    = "~"
+    source     = "kv"
+    expression = "(\"(?:[^\"\\\\]|\\\\.)*\")\\s*[,\\]}]"
+    replace    = "\"~\""
   }
-  // Reviewed structural keys: hide their '=' as ':' so the next pass skips them.
+  // 2. Reviewed structural keys keep their value: hide their '=' as ':' so step 3 skips them. Each key here was checked
+  //    against the code that writes it (#649 review): world data, kinds, enums and numbers only. "source" is not one:
+  //    EPIC_FUNUS_HEALED, EPIC_KVASIR_HEALED and EPIC_DISPLACEMENT write a player's or bot's name there.
   stage.replace {
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|source|action)(=)"
+    source     = "kv"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)(=)"
     replace    = ":"
   }
-  // Every other value containing a letter (names, free strings, lists, paths) becomes "~".
+  // 3. Every other value containing a letter (names, free strings, lists, paths) becomes "~".
   stage.replace {
+    source     = "kv"
     expression = "=(\"[^\"]*\"|[^\\s\"]*[A-Za-z][^\\s]*)"
     replace    = "~"
   }
+  // 4. IPv4 addresses (with or without a port) become "~", whatever the key.
   stage.replace {
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|source|action)(:)"
+    source     = "kv"
+    expression = "(\\d{1,3}(?:\\.\\d{1,3}){3}(?::\\d+)?)"
+    replace    = "~"
+  }
+  // 5. Stray words (the tail of an unquoted value with spaces, such as a guild name) are removed. Three passes, since
+  //    each match takes the space after its word.
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)([^\\s=~:\"{}\\[\\],]+)(?:\\s|$)"
+    replace    = ""
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)([^\\s=~:\"{}\\[\\],]+)(?:\\s|$)"
+    replace    = ""
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)([^\\s=~:\"{}\\[\\],]+)(?:\\s|$)"
+    replace    = ""
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)(:)"
     replace    = "="
+  }
+  // 6. Rebuild the line: time, level, logger, then the event key and its cleaned fields. WRN/ERR free text keeps only
+  //    time, level and logger. A line that doesn't parse ships nothing.
+  stage.template {
+    source   = "out"
+    template = "{{ if eq .rawevent \"NONE\" }}{{ .ts }} | {{ .level }} | {{ .logger }} | ~{{ else }}{{ .ts }} | {{ .level }} | {{ .logger }} | {{ .rawevent }}{{ if .kv }} {{ .kv }}{{ end }}{{ end }}"
+  }
+  stage.drop {
+    source              = "out"
+    expression          = "^ \\|.*"
+    drop_counter_reason = "unparsed"
+  }
+  stage.output {
+    source = "out"
   }
 
   forward_to = [loki.write.cloud.receiver]
