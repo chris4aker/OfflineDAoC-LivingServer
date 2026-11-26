@@ -509,9 +509,10 @@ namespace DOL.UnitTests
                 });
                 Probe("Domnann bard trainer Iian approach", regions[181], nav,
                     new(422093, 448048, 5955), new(422351, 446567, 5976));
-                // #704: on the 0.32 meshes Iian's interior approach was blocked and had to be rejected. The 1.2 meshes (the same
-                // on the owner's install and in navmesh-v1) connect it: the probe above finds a complete corridor (107 nodes).
-                // A connected approach is now asserted.
+                // #704: when this was written (September, 0.32) Iian's interior approach was blocked and had to be rejected. Today
+                // it is connected: the probe above finds a complete corridor (107 nodes) on the owner's install and in navmesh-v1
+                // (byte-identical), whose zone181.nav the release baselines show unchanged since 0.36. So the cause is untraced,
+                // probably a routing-code change since then, not the mesh. A connected approach is now asserted.
                 Assert.That(TryFindConnectedApproach(regions[181], nav,
                     new(422093, 448048, 5955), new(422351, 446567, 5976), 280, out _), Is.True,
                     "Iian's interior approach is connected on the 1.2 meshes");
