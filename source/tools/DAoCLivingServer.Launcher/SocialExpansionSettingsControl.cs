@@ -417,6 +417,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         ScheduleMode = SocialExpansionSettings.ScheduleModes[Math.Max(0, _schedule.SelectedIndex)],
         LivingBreaks = _breaks.Checked,
         LivingBodyLanguage = _body.Checked,
+        SightSizeUp = _population.SightSizeUp, // no checkbox: kept as read (#662)
         LivingBeggars = _beggars.Checked,
         LivingBuffBots = _buffBots.Checked,
         LivingDeeds = _deeds.Checked,

@@ -1,0 +1,106 @@
+using System;
+
+namespace DOL.GS;
+
+/// <summary>What a solo or duo gamebot knows when enemies come into its perception range (#662).</summary>
+public readonly record struct RvrSightFacts
+{
+    public int OwnLevel { get; init; }
+    /// <summary>The bot and the realm-mates alive within <see cref="RvrSightSizeUp.AllyRadius"/>.</summary>
+    public int Allies { get; init; }
+    /// <summary>The average level of those allies (the bot's own level when it is alone).</summary>
+    public int AllyAverageLevel { get; init; }
+    /// <summary>Enemy people (players and gamebots) the bot has noticed: perceived, never off-screen.</summary>
+    public int Enemies { get; init; }
+    /// <summary>Of those, the main healers (Cleric, Druid, Healer).</summary>
+    public int EnemyHealers { get; init; }
+    public int EnemyAverageLevel { get; init; }
+    public int EnemyTopLevel { get; init; }
+    /// <summary>An enemy is attacking the bot or a friend near it: fighting back is always allowed.</summary>
+    public bool Attacked { get; init; }
+}
+
+public enum RvrSightCall { Engage, BackOff }
+
+/// <summary>The call and why, for the log row.</summary>
+public readonly record struct RvrSightDecision(RvrSightCall Call, double Odds, double Line, bool Mistake, string Reason);
+
+/// <summary>
+/// #662 (owner decision 2026-11-26): a solo or duo autonomous gamebot sizes up a fight when the enemies come into its
+/// perception range, in the frontier and the battlegrounds (keep assaults included), and either opens or backs off. The
+/// odds weigh both sides by head count (a main healer counts twice) and level. Boldness (personality) moves the line: a
+/// Daredevil takes worse odds, a careful bot wants better. A casual bot sometimes makes a mild bad call: a misread can flip
+/// only a close call. No solo bot ever opens on <see cref="SoloNeverOpensOn"/> or more enemies, whatever the roll. A bot
+/// that is attacked always fights back. Period reading: docs/RVR-FIELD-1.2.md, "Soloers and stealthers". Pure.
+/// </summary>
+public static class RvrSightSizeUp
+{
+    public const string PropertyKey = "bot_rvr_sight_size_up";
+
+    /// <summary>Realm-mates this close count as the bot's side (as <see cref="RvrSoloEngage.GroupRadius"/>).</summary>
+    public const int AllyRadius = 1_500;
+    /// <summary>Owner 2026-11-26: "no solo bot ever opens on 3 or more enemies".</summary>
+    public const int SoloNeverOpensOn = 3;
+    /// <summary>Each level of difference is worth this much strength (about one level in twelve: 8%).</summary>
+    public const double LevelStep = 1.08;
+    /// <summary>The line at <see cref="BoldnessAnchor"/>: even odds.</summary>
+    public const double EvenLine = 1.0;
+    /// <summary>The boldness that takes even odds: a middling Risk trait (AutonomousRvrPerception.Boldness gives an ordinary
+    /// bot Risk/9 x 0.8, so Risk 4-5 is about 0.4; a bot with no personality is 0.5).</summary>
+    public const double BoldnessAnchor = 0.4;
+    /// <summary>How far the line moves per unit of boldness: the most careful (0) needs 1.24, a Daredevil (1.0) takes 0.64.</summary>
+    public const double BoldnessSlope = 0.6;
+    /// <summary>A misread flips only a call this close to the line ("a mild bad call").</summary>
+    public const double MistakeBand = 0.2;
+
+    /// <summary>How far the bot backs off from the nearest enemy, past its notice range.</summary>
+    public const int BackOffDistance = 2_000;
+    /// <summary>How long a bot waits nearby before it goes back to what it was doing.</summary>
+    public const long WaitMilliseconds = 30_000;
+    /// <summary>A bot logs the same call again at most this often.</summary>
+    public const long RelogMilliseconds = 30_000;
+
+    /// <summary>Whether the bot counts as solo or a duo: this rule's bots. A group of three or more keeps RvrEngagement.</summary>
+    public static bool ForPartySize(int members) => members <= 2;
+
+    /// <summary>The line the odds must reach, by boldness (0 to 1; 0.5 when the bot has no personality). Bolder: lower.</summary>
+    public static double LineFor(double boldness) =>
+        EvenLine - (Math.Clamp(boldness, 0, 1) - BoldnessAnchor) * BoldnessSlope;
+
+    /// <summary>Strength of one side: heads (a main healer twice) weighted by level against the other side's level.</summary>
+    public static double Strength(int heads, int healers, int level, int otherLevel) =>
+        Math.Max(0, heads + Math.Max(0, healers)) * Math.Pow(LevelStep, Math.Clamp(level - otherLevel, -20, 20));
+
+    /// <summary>Our strength over theirs, both sides weighed against each other's average level.</summary>
+    public static double Odds(in RvrSightFacts facts)
+    {
+        int ours = Math.Max(1, facts.Allies);
+        int ourLevel = facts.AllyAverageLevel > 0 ? facts.AllyAverageLevel : facts.OwnLevel;
+        // The strongest enemy counts for the whole group's level when he towers over it (a grey can't be outnumbered away).
+        int theirLevel = Math.Max(facts.EnemyAverageLevel, facts.EnemyTopLevel - 3);
+        double theirs = Strength(Math.Max(1, facts.Enemies), facts.EnemyHealers, theirLevel, ourLevel);
+        return ours / Math.Max(0.01, theirs);
+    }
+
+    /// <summary>
+    /// The decision. <paramref name="roll"/> is 0 to 1, held per bot and contact; below the tier's
+    /// <see cref="RvrSoloEngage.MistakeChance"/> it flips a close call. Pure.
+    /// </summary>
+    public static RvrSightDecision Decide(in RvrSightFacts facts, double boldness, RvrSkillTier tier, double roll)
+    {
+        double line = LineFor(boldness);
+        double odds = Odds(facts);
+        if (facts.Attacked)
+            return new(RvrSightCall.Engage, odds, line, false, "attacked");
+        if (facts.Enemies <= 0)
+            return new(RvrSightCall.Engage, odds, line, false, "no_enemy");
+        if (facts.Allies <= 1 && facts.Enemies >= SoloNeverOpensOn)
+            return new(RvrSightCall.BackOff, odds, line, false, "solo_outnumbered");
+        bool read = odds >= line;
+        bool close = Math.Abs(odds - line) <= MistakeBand;
+        bool mistake = close && roll < RvrSoloEngage.MistakeChance(tier);
+        bool engage = mistake ? !read : read;
+        return new(engage ? RvrSightCall.Engage : RvrSightCall.BackOff, odds, line, mistake,
+            mistake ? "misread" : read ? "odds" : "outmatched");
+    }
+}

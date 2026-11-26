@@ -2674,6 +2674,8 @@ namespace DOL.GS.ServerProperties
 		/// </summary>
 		[ServerProperty("bots", "rvr_bot_size_up", "Open-field RvR (1.2): size-up. A bot-only group in the open field that notices an enemy group, or a fight between the other two realms, stops and watches first (about 6 s casual, 9 s average, 12 s veteran, shorter for an impatient leader) and counts heads, healers, levels, health and power; then it engages at fair odds, kites or retreats. A bot that is hit always fights back. Raids, battleground assaults, keep fights and groups with a player keep today's rules. Needs rvr_bot_field_tactics. Log: RVR_SIZE_UP, RVR_WATCH, RVR_STANCE.", true)]
 		public static bool RVR_BOT_SIZE_UP;
+		[ServerProperty("bots", "bot_rvr_sight_size_up", "A solo or duo gamebot sizes up a fight when enemies come into its perception range, in the frontier and the battlegrounds (keep assaults included), and opens or backs off (#662). Boldness moves the line; no solo bot ever opens on three or more enemies. Backing off, it pulls back out of range, waits nearby, calls its close friends, then goes back to what it was doing. Not companions, not PvE.", true)]
+		public static bool BOT_RVR_SIGHT_SIZE_UP;
 
 		/// <summary>
 		/// 1.2 work package 4 (stances, RvrEngagement): kite and retreat from bad odds (needs bot_veteran_retreat for the retreat).

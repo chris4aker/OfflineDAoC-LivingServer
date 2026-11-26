@@ -1528,6 +1528,9 @@ namespace DOL.AI.Brain
                     FSM.Think();
                     return;
                 }
+                // #662: a bot that sized a fight up and backed off walks out of range and waits; its route waits too.
+                if (_autonomousWorldController.HoldsForSightSizeUp(this))
+                    return;
             }
 
             if (TryResurrectNearbyPlayer())

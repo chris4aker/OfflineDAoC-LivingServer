@@ -35,6 +35,7 @@
   "bot_living_alarms": "True",
   "bot_living_beggars": "True",
   "bot_living_body_language": "True",
+  "bot_rvr_sight_size_up": "True",
   "bot_healer_period_rules": "True",
   "bot_living_breaks": "True",
   "bot_living_characters": "True",
