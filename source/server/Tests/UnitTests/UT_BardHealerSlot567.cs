@@ -69,6 +69,42 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void ADruidInThePoolHoldsTheHealerSlotNotTheBard()
+        {
+            bool saved = ServerProperties.Properties.BOT_BARD_FILLS_HEALER_SLOT;
+            try
+            {
+                ServerProperties.Properties.BOT_BARD_FILLS_HEALER_SLOT = true;
+                eCharacterClass[] withDruid =
+                    [eCharacterClass.Bard, eCharacterClass.Druid, eCharacterClass.Blademaster, eCharacterClass.Eldritch];
+                Assert.That(AutonomousBotGroupCoordinator.PveHealerSlotClasses(eCharacterClass.Hero, withDruid),
+                    Is.EqualTo(new[] { eCharacterClass.Druid }));
+                Assert.That(AutonomousBotGroupCoordinator.PveHealerSlotClasses(eCharacterClass.Hero, NoHealer),
+                    Is.EqualTo(new[] { eCharacterClass.Bard }), "no Druid or Warden: the Bard holds it");
+            }
+            finally
+            {
+                ServerProperties.Properties.BOT_BARD_FILLS_HEALER_SLOT = saved;
+            }
+        }
+
+        [Test]
+        public void ARaidPartyWithNoHealingClassStillFails()
+        {
+            bool saved = ServerProperties.Properties.BOT_BARD_FILLS_HEALER_SLOT;
+            try
+            {
+                ServerProperties.Properties.BOT_BARD_FILLS_HEALER_SLOT = true;
+                Assert.That(AutonomousBotGroupCoordinator.PveHealerSlotClasses(eCharacterClass.Hero, NoHealer, raidParty: true),
+                    Is.Empty, "owner 2026-11-26: no Bard healer in realm raids");
+            }
+            finally
+            {
+                ServerProperties.Properties.BOT_BARD_FILLS_HEALER_SLOT = saved;
+            }
+        }
+
+        [Test]
         public void TheDutyLastsWhileTheBardIsInThatPartyAndTheSwitchIsOn()
         {
             var party = (Group)RuntimeHelpers.GetUninitializedObject(typeof(Group));
@@ -99,7 +135,7 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void FormationAndHandBackMarkTheBardsSlot()
+        public void EveryOrdinaryRolePathMarksTheBardAndNoRaidPathAdmitsIt()
         {
             string dir = TestContext.CurrentContext.TestDirectory;
             while (dir != null && !File.Exists(Path.Combine(dir, "Dawn of Light.sln")))
@@ -108,12 +144,19 @@ namespace DOL.GS.Tests
             string autonomous = Path.Combine(dir, "GameServer", "bots", "autonomous");
             string coordinator = File.ReadAllText(Path.Combine(autonomous, "AutonomousBotGroupCoordinator.cs"));
             string handover = File.ReadAllText(Path.Combine(autonomous, "AutonomousBotGroupCoordinator.Handover.cs"));
+            string forcedRaid = File.ReadAllText(Path.Combine(autonomous, "AutonomousBotGroupCoordinator.ForcedRaid.cs"));
             Assert.Multiple(() =>
             {
                 Assert.That(coordinator, Does.Contain("BardHealerSlot.Mark(session.Id, group, BotMembers(group), session.PveRoles, MemberKey, Log)"));
                 Assert.That(coordinator, Does.Contain("bool bardHealers = BardHealerSlot.Allowed(leader, pool);"));
                 Assert.That(handover, Does.Contain("if (session.PlayerRole != BotPveGroupRole.Healer)"));
                 Assert.That(handover, Does.Contain("BardHealerSlot.Mark(session.Id, group, bots, session.PveRoles, MemberKey, Log)"));
+                Assert.That(coordinator, Does.Contain("BardHealerSlot.Mark(session.Id, group, exact, session.PveRoles, MemberKey, Log)"),
+                    "NewSession: session recovery and new ordinary parties");
+                Assert.That(forcedRaid.Split("TryBuildPveRoster(").Length - 1, Is.EqualTo(3), "raid roster calls");
+                Assert.That(forcedRaid.Split("out var others, out _, allowBardHealer: false)").Length - 1, Is.EqualTo(3),
+                    "every raid roster call keeps the Bard fallback out");
+                Assert.That(forcedRaid, Does.Contain("TryAssignExactPveRoles(members, leader, out roles, allowBardHealer: false)"));
             });
         }
     }

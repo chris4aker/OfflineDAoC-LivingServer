@@ -2766,6 +2766,8 @@ namespace DOL.GS.ServerProperties
 		/// </summary>
 		[ServerProperty("bots", "raid_learns_from_raiders", "Bots as people (1.2, owner decision 1, 2026-11-17): a realm raid's familiarity with a boss mechanic follows how many of the raiders present have seen it (full from 60% of the raid, a quarter with nobody), and each raider's own reactions follow its own count; Epic Special Forces have seen everything; companions and buffbots are not counted, and a raid with a real player in it (or a player's own group) keeps the record's familiarity. Wired for Xanxicar's stomp. A played world is seeded once at its first start with the switch (each level 50 of a realm with a counted attempt, with a chance of the record's familiarity but at least 80%), so its familiarity stays the same on average. False: the record's familiarity alone, as before. Log: RAID_LEARN, RAID_MECHANIC_SEEN.", true)]
 		public static bool RAID_LEARNS_FROM_RAIDERS = true;
+		[ServerProperty("bots", "bot_bard_fills_healer_slot", "Can a Hibernian Bard fill a bot party's Healer slot when no Druid or Warden is in reach, and heal as that party's healer while it holds the slot (#567 B7)? Ordinary groups only, never realm raids. Off: only the healing classes fill it.", true)]
+		public static bool BOT_BARD_FILLS_HEALER_SLOT;
 
 		/// <summary>
 		/// Bots as people, item 4's master switch (work packages 3 and 4).
@@ -2892,8 +2894,6 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_living_body_language", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots do not jump; sitting comes with Moving like people (bot_movement_habits).", true)]
 		public static bool BOT_LIVING_BODY_LANGUAGE;
 
-		[ServerProperty("bots", "bot_bard_fills_healer_slot", "Can a Hibernian Bard fill a bot party's Healer slot when no Druid or Warden is in reach, and heal as that party's healer while it holds the slot (#567 B7)? Off: only the healing classes fill it.", true)]
-		public static bool BOT_BARD_FILLS_HEALER_SLOT;
 
 		/// <summary>About 4% of Crafter bots are beggars who live in their capital (AutonomousBeggars).</summary>
 		[ServerProperty("bots", "bot_living_beggars", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight.", true)]

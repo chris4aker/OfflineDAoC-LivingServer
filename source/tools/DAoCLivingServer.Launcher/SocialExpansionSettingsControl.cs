@@ -462,6 +462,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BuffBotEraConcRange = _buffBotConcRange.Checked,
         BotSkillProfiles = _skillProfiles.Checked,
         RaidLearnsFromRaiders = _raidLearns,
+        BardFillsHealerSlot = _population.BardFillsHealerSlot, // no checkbox: kept as read
         PopulationNewcomers = _population.PopulationNewcomers,
         NewcomerFloor = _population.NewcomerFloor,
         NewcomerPerHour = _population.NewcomerPerHour,
