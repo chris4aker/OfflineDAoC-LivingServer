@@ -402,8 +402,14 @@ namespace DOL.GS
             List<AutonomousZoneBoundaryRouting.Step> fallbackSeams = null;
             var reaches = new Dictionary<int, bool>();
             var reachesMain = new Dictionary<int, bool?>();
+            // #555: a goal on other ground of its zone than the main ground (a camp on the Lough Derg ridge, which joins only
+            // the Valley of Bri Leith) is reached only by chains that end on that ground. A chain onto the zone's other ground
+            // was taken from Cruachan Gorge into Connacht, where it failed, and Connacht's next chain led back into the Gorge:
+            // AUTONOMOUS_ZONE_SEAM_CYCLE at 200:334880,417728 on the way to the orchard nipper camp (11/23).
+            int? goalAreaOffMain = GoalAreaOffMain(topology, edge, route, goal);
             bool Continues(int outsideArea) => reaches.TryGetValue(outsideArea, out bool cached) ? cached
-                : reaches[outsideArea] = ChainContinues(topology, route, outsideArea);
+                : reaches[outsideArea] = ChainContinues(topology, route, outsideArea) &&
+                    (goalAreaOffMain == null || ChainReachesArea(topology, route, outsideArea, goalAreaOffMain.Value) != false);
             bool? ReachesMain(int outsideArea) => reachesMain.TryGetValue(outsideArea, out bool? cached) ? cached
                 : reachesMain[outsideArea] = ChainReachesMain(topology, route, outsideArea);
             // True when a listed crossing of this border leads, area by area along the chain, to the destination zone's
@@ -612,9 +618,30 @@ namespace DOL.GS
         /// </summary>
         private static bool? ChainReachesMain(Topology topology, Zone[] route, int outsideArea)
         {
-            if (outsideArea < 0 || route.Length < 2) return null;
+            if (route.Length < 2) return null;
             int? main = AutonomousZoneSeams.MainArea(topology.RegionId, route[^1].ID);
-            if (main == null) return null;
+            return main == null ? null : ChainReachesArea(topology, route, outsideArea, main.Value);
+        }
+
+        /// <summary>
+        /// #555: the goal's own ground in the route's last zone when it is known and is not that zone's main ground; null on
+        /// the last border (the walk to the goal is proved there), without seam data, or when the goal is on the main ground.
+        /// </summary>
+        private static int? GoalAreaOffMain(Topology topology, Edge edge, Zone[] route, Vector3 goal)
+        {
+            if (!topology.Seams || route.Length < 3 || Contains(edge.To, goal)) return null;
+            int? ground = AutonomousZoneRoads.AreaAt(route[^1], goal);
+            int? main = AutonomousZoneSeams.MainArea(topology.RegionId, route[^1].ID);
+            return ground != null && main != null && ground != main ? ground : null;
+        }
+
+        /// <summary>
+        /// Whether the ground past a crossing (its area in route[1]) reaches <paramref name="target"/> in the route's last
+        /// zone through the seam file's area ids; null when the file has no area data for a border on the way.
+        /// </summary>
+        private static bool? ChainReachesArea(Topology topology, Zone[] route, int outsideArea, int target)
+        {
+            if (outsideArea < 0 || route.Length < 2) return null;
             var areas = new HashSet<int> { outsideArea };
             for (int i = 1; i + 1 < route.Length; i++)
             {
@@ -624,7 +651,7 @@ namespace DOL.GS
                 if (reached.Count == 0) return false;
                 areas = reached;
             }
-            return areas.Contains(main.Value);
+            return areas.Contains(target);
         }
 
         private const int NoSeamArea = int.MinValue;
