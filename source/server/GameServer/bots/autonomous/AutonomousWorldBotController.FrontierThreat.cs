@@ -366,7 +366,7 @@ public sealed partial class AutonomousWorldBotController
         // #662: a solo or duo bot sizes the fight up on sight and opens or backs off (a committed defender or a siege crew
         // keeps its job; RvrSightSizeUp).
         if (!defending && !siegeFighter && !crew)
-            visibleTargets = SightSizeUpGate(bot, visibleTargets, scanNow);
+            visibleTargets = SightSizeUpGate(brain, bot, visibleTargets, scanNow);
         visibleTargets = RvrTacticsGateThreats(brain, bot, RvrStanceGateThreats(brain, bot, visibleTargets));
         GameLiving[] beforeArrange = visibleTargets; // #625: BG_TARGET_PICK counts what the arrangement passed over.
         // #617 / #600 (FarmVibes): in a battleground, people before engines, then mezzed or breakably rooted enemies passed

@@ -6,8 +6,12 @@ namespace DOL.GS;
 public readonly record struct RvrSightFacts
 {
     public int OwnLevel { get; init; }
-    /// <summary>The bot and the realm-mates alive within <see cref="RvrSightSizeUp.AllyRadius"/>.</summary>
+    /// <summary>The bot and the realm-mates alive within <see cref="RvrSightSizeUp.AllyRadius"/>: everyone near, for the odds.</summary>
     public int Allies { get; init; }
+    /// <summary>Of those, the bot and the ones who would really fight with it: its group, its warband, its bond friends and
+    /// real players. The hard rule counts only these (a stranger in range improves the odds, never makes a bot "not alone").
+    /// 0: the same as <see cref="Allies"/>.</summary>
+    public int Fighters { get; init; }
     /// <summary>The average level of those allies (the bot's own level when it is alone).</summary>
     public int AllyAverageLevel { get; init; }
     /// <summary>Enemy people (players and gamebots) the bot has noticed: perceived, never off-screen.</summary>
@@ -60,8 +64,25 @@ public static class RvrSightSizeUp
     /// <summary>A bot logs the same call again at most this often.</summary>
     public const long RelogMilliseconds = 30_000;
 
-    /// <summary>Whether the bot counts as solo or a duo: this rule's bots. A group of three or more keeps RvrEngagement.</summary>
-    public static bool ForPartySize(int members) => members <= 2;
+    /// <summary>
+    /// Whether the rule covers a party of this size: a lone bot always; a duo only where RvrEngagement's stance machine has no
+    /// opinion (field tactics off, or a battleground keep assault, where RvrTacticsScope turns them off), so a duo is never
+    /// sized up twice or held by two movers. A group of three or more keeps its own stance logic (owner 2026-11-26). Pure.
+    /// </summary>
+    public static bool CoversParty(int members, bool stanceHasOpinion) => members <= 1 || members == 2 && !stanceHasOpinion;
+
+    /// <summary>
+    /// One step of a back-off hold: null to keep holding, or why it ends (the bot then goes back to what it was doing):
+    /// "none" when no hold runs, then "dead", "attacked" (the bot or a group member is in a fight: fight back), "waited"
+    /// and "out_of_scope". Pure.
+    /// </summary>
+    public static string HoldStep(long now, long holdUntil, bool alive, bool attacked, bool inScope) =>
+        holdUntil == 0 ? "none" : !alive ? "dead" : attacked ? "attacked" : now >= holdUntil ? "waited" :
+        !inScope ? "out_of_scope" : null;
+
+    /// <summary>A back-off decision while holding or not: the new end of the hold, and whether it is a fresh back-off (only a
+    /// fresh one walks away and calls friends; a repeat while waiting just extends the wait). Pure.</summary>
+    public static (long Until, bool Fresh) Rearm(long now, long holdUntil) => (now + WaitMilliseconds, holdUntil <= now);
 
     /// <summary>The line the odds must reach, by boldness (0 to 1; 0.5 when the bot has no personality). Bolder: lower.</summary>
     public static double LineFor(double boldness) =>
@@ -94,7 +115,8 @@ public static class RvrSightSizeUp
             return new(RvrSightCall.Engage, odds, line, false, "attacked");
         if (facts.Enemies <= 0)
             return new(RvrSightCall.Engage, odds, line, false, "no_enemy");
-        if (facts.Allies <= 1 && facts.Enemies >= SoloNeverOpensOn)
+        int fighters = facts.Fighters > 0 ? facts.Fighters : facts.Allies;
+        if (fighters <= 1 && facts.Enemies >= SoloNeverOpensOn)
             return new(RvrSightCall.BackOff, odds, line, false, "solo_outnumbered");
         bool read = odds >= line;
         bool close = Math.Abs(odds - line) <= MistakeBand;

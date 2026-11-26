@@ -15,9 +15,10 @@ namespace DOL.GS.Tests;
 [TestFixture]
 public class UT_RvrSightSizeUp662
 {
-    private static RvrSightFacts Fight(int ownLevel, int allies, int enemies, int enemyLevel, int healers = 0, bool attacked = false) => new()
+    private static RvrSightFacts Fight(int ownLevel, int allies, int enemies, int enemyLevel, int healers = 0, bool attacked = false,
+        int fighters = 0) => new()
     {
-        OwnLevel = ownLevel, Allies = allies, AllyAverageLevel = ownLevel, Enemies = enemies, EnemyHealers = healers,
+        OwnLevel = ownLevel, Allies = allies, Fighters = fighters > 0 ? fighters : allies, AllyAverageLevel = ownLevel, Enemies = enemies, EnemyHealers = healers,
         EnemyAverageLevel = enemyLevel, EnemyTopLevel = enemyLevel, Attacked = attacked,
     };
 
@@ -122,13 +123,57 @@ public class UT_RvrSightSizeUp662
     }
 
     [Test]
-    public void OnlySoloAndDuoBots()
+    public void ALoneBotAlwaysADuoOnlyWhereTheStanceMachineIsSilent()
     {
         Assert.Multiple(() =>
         {
-            Assert.That(S.ForPartySize(1), Is.True);
-            Assert.That(S.ForPartySize(2), Is.True);
-            Assert.That(S.ForPartySize(3), Is.False, "a group of three or more keeps RvrEngagement");
+            Assert.That(S.CoversParty(1, false), Is.True);
+            Assert.That(S.CoversParty(1, true), Is.True, "a lone bot has no stance machine");
+            Assert.That(S.CoversParty(2, false), Is.True, "a duo outside field tactics, or in a battleground keep assault");
+            Assert.That(S.CoversParty(2, true), Is.False, "a field duo: RvrEngagement sizes it up, never twice");
+            Assert.That(S.CoversParty(3, false), Is.False, "owner 2026-11-26: a group of three or more keeps its own stance logic");
+            Assert.That(S.CoversParty(8, false), Is.False);
+        });
+    }
+
+    [Test]
+    public void AStrangerNearbyNeverMakesASoloBotNotAlone()
+    {
+        // A lone gamebot with one unrelated realm-mate in range: the stranger lifts the odds (0.67 against three), but the
+        // hard rule counts only those who would fight beside it, so even a Daredevil (line 0.64) backs off.
+        RvrSightFacts strangerNear = Fight(30, 2, 3, 30, fighters: 1);
+        Assert.That(S.Odds(strangerNear), Is.GreaterThan(S.LineFor(1.0)), "the odds alone would let a Daredevil open");
+        foreach (RvrSkillTier tier in Tiers)
+            foreach (double roll in Rolls)
+                Assert.That(S.Decide(strangerNear, 1.0, tier, roll).Reason, Is.EqualTo("solo_outnumbered"), $"{tier} {roll}");
+        Assert.That(S.Decide(Fight(30, 2, 3, 30, fighters: 2), 1.0, RvrSkillTier.Veteran, 0.99).Reason, Is.Not.EqualTo("solo_outnumbered"),
+            "with a friend beside it the odds decide");
+    }
+
+    [Test]
+    public void TheHoldEndsWhenAttackedWaitedDeadOrOutOfScope()
+    {
+        const long now = 100_000, until = 120_000;
+        Assert.Multiple(() =>
+        {
+            Assert.That(S.HoldStep(now, until, true, false, true), Is.Null, "waiting nearby");
+            Assert.That(S.HoldStep(now, 0, true, false, true), Is.EqualTo("none"));
+            Assert.That(S.HoldStep(now, until, false, false, true), Is.EqualTo("dead"));
+            Assert.That(S.HoldStep(now, until, true, true, true), Is.EqualTo("attacked"), "the bot or its partner is hit: fight back");
+            Assert.That(S.HoldStep(until, until, true, false, true), Is.EqualTo("waited"), "then back to what it was doing");
+            Assert.That(S.HoldStep(now, until, true, false, false), Is.EqualTo("out_of_scope"));
+        });
+    }
+
+    [Test]
+    public void OnlyAFreshBackOffWalksAndCallsARepeatJustWaitsLonger()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(S.Rearm(100_000, 0), Is.EqualTo((100_000 + S.WaitMilliseconds, true)), "no hold: a fresh back-off");
+            Assert.That(S.Rearm(100_000, 99_000), Is.EqualTo((100_000 + S.WaitMilliseconds, true)), "a hold that ran out");
+            Assert.That(S.Rearm(100_000, 110_000), Is.EqualTo((100_000 + S.WaitMilliseconds, false)),
+                "still waiting: the wait extends, no new walk, no second call");
         });
     }
 
@@ -146,12 +191,16 @@ public class UT_RvrSightSizeUp662
         Assert.Multiple(() =>
         {
             int perceived = threat.IndexOf("visibleTargets = PerceiveRvrTargets(bot, visibleTargets, rvr);", StringComparison.Ordinal);
-            int gate = threat.IndexOf("visibleTargets = SightSizeUpGate(bot, visibleTargets, scanNow);", StringComparison.Ordinal);
+            int gate = threat.IndexOf("visibleTargets = SightSizeUpGate(brain, bot, visibleTargets, scanNow);", StringComparison.Ordinal);
             Assert.That(perceived, Is.GreaterThanOrEqualTo(0));
             Assert.That(gate, Is.GreaterThan(perceived), "only noticed enemies: after perception");
             Assert.That(threat, Does.Contain("if (!defending && !siegeFighter && !crew)"), "committed defenders and siege crews keep their jobs");
-            Assert.That(brain, Does.Contain("if (_autonomousWorldController.HoldsForSightSizeUp(this))"));
-            Assert.That(sight, Does.Contain("!bot.IsHiredCompanion && !bot.IsPlayerLedGroup"), "never a companion");
+            Assert.That(brain, Does.Contain("if (_autonomousWorldController.HoldsForSightSizeUp(this))\n                {\n                    if (!Body.IsCasting) CheckHeals();"),
+                "the hold heals");
+            Assert.That(sight, Does.Contain("members >= 2 && RvrStanceSwitchesOn && brain?.RvrTacticsActive() == true"), "the duo rule");
+            Assert.That(sight, Does.Contain("bot.InCombat || brain.HasAggro || GroupMateInCombat(bot)"), "a partner hit ends the hold");
+            Assert.That(sight, Does.Contain("!FightsBeside(bot, mate, warband)"), "the call reaches the same friends the rule counts");
+            Assert.That(sight, Does.Contain("bot.IsHiredCompanion || bot.IsPlayerLedGroup"), "never a companion");
             Assert.That(sight, Does.Contain("bot.CurrentRegionID is 1 or 100 or 200 || BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID)"),
                 "the frontier and the battlegrounds only");
             Assert.That(sight, Does.Contain("RVR_SIGHT_SIZE_UP"), "a log row for each decision");

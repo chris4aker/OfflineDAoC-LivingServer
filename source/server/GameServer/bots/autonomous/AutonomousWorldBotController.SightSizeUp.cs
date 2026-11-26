@@ -17,30 +17,48 @@ public sealed partial class AutonomousWorldBotController
     private RvrSightCall? _sightLastCall;
     private long _sightLastLogTick = long.MinValue / 2;
     private int _sightRepaths;
+    private string _sightRollKey;
 
-    /// <summary>Whether this bot sizes up a fight on sight: an autonomous gamebot (never a companion), solo or a duo, in the
-    /// frontier or a battleground (keep assaults included), with bot_rvr_sight_size_up on.</summary>
-    internal static bool SightSizeUpApplies(GameBot bot) =>
-        Properties.BOT_RVR_SIGHT_SIZE_UP && bot?.IsAutonomousWorldBot == true && !bot.IsTemporaryGroupHelper &&
-        !bot.IsHiredCompanion && !bot.IsPlayerLedGroup &&
-        (bot.CurrentRegionID is 1 or 100 or 200 || BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID)) &&
-        RvrSightSizeUp.ForPartySize(bot.Group?.MemberCount ?? 1);
+    /// <summary>Whether this bot sizes up a fight on sight: an autonomous gamebot (never a companion) in the frontier or a
+    /// battleground (keep assaults included), with bot_rvr_sight_size_up on; alone, or a duo the stance machine doesn't
+    /// cover (RvrSightSizeUp.CoversParty).</summary>
+    internal static bool SightSizeUpApplies(GameBot bot, BotBrain brain)
+    {
+        if (!Properties.BOT_RVR_SIGHT_SIZE_UP || bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper ||
+            bot.IsHiredCompanion || bot.IsPlayerLedGroup ||
+            !(bot.CurrentRegionID is 1 or 100 or 200 || BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID)))
+            return false;
+        int members = bot.Group?.MemberCount ?? 1;
+        return RvrSightSizeUp.CoversParty(members, members >= 2 && RvrStanceSwitchesOn && brain?.RvrTacticsActive() == true);
+    }
 
     /// <summary>The same roll for a bot and its contact for a minute, so the call does not flicker scan to scan.</summary>
-    private static double SightRoll(GameBot bot, GameLiving nearest) =>
-        RvrRoamCircuits.Roll($"sight|{bot.DatabaseID}", nearest.ObjectID * 1_000L + GameLoop.GameLoopTime / 60_000);
+    private double SightRoll(GameBot bot, GameLiving nearest) =>
+        RvrRoamCircuits.Roll(_sightRollKey ??= $"sight|{bot.DatabaseID}", nearest.ObjectID * 1_000L + GameLoop.GameLoopTime / 60_000);
 
-    private static RvrSightFacts SightFacts(GameBot bot, GameLiving[] enemies)
+    /// <summary>A realm-mate who would really fight beside the bot: its group, its warband or a bond friend.</summary>
+    private static bool FightsBeside(GameBot bot, GameBot mate, GameLiving[] warband) =>
+        mate.Group != null && mate.Group == bot.Group || warband != null && Array.IndexOf(warband, mate) >= 0 ||
+        AutonomousBotBonds.On && AutonomousBotBonds.ScoreBetween(mate, bot) is int score && AutonomousBotBonds.IsFriend(score);
+
+    private static RvrSightFacts SightFacts(GameBot bot, GameLiving[] enemies, int count)
     {
-        int allies = 1, allyLevels = bot.Level;
+        int allies = 1, allyLevels = bot.Level, fighters = 1;
+        GameLiving[] warband = RealmWarbandSupport.Get(bot)?.Members;
         foreach (GamePlayer player in bot.GetPlayersInRadius(RvrSightSizeUp.AllyRadius))
-            if (player.IsAlive && player.Realm == bot.Realm) { allies++; allyLevels += player.Level; }
+            if (player.IsAlive && player.Realm == bot.Realm) { allies++; fighters++; allyLevels += player.Level; }
         foreach (GameNPC npc in bot.GetNPCsInRadius(RvrSightSizeUp.AllyRadius))
-            if (npc is GameBot mate && mate != bot && mate.IsAlive && mate.Realm == bot.Realm) { allies++; allyLevels += mate.Level; }
+            if (npc is GameBot mate && mate != bot && mate.IsAlive && mate.Realm == bot.Realm)
+            {
+                allies++;
+                allyLevels += mate.Level;
+                if (FightsBeside(bot, mate, warband)) fighters++;
+            }
         int levels = 0, top = 0, healers = 0;
         bool attacked = false;
-        foreach (GameLiving enemy in enemies)
+        for (int i = 0; i < count; i++)
         {
+            GameLiving enemy = enemies[i];
             levels += enemy.Level;
             top = Math.Max(top, enemy.Level);
             if (MainHealer(enemy)) healers++;
@@ -50,10 +68,11 @@ public sealed partial class AutonomousWorldBotController
         {
             OwnLevel = bot.Level,
             Allies = allies,
+            Fighters = fighters,
             AllyAverageLevel = allyLevels / allies,
-            Enemies = enemies.Length,
+            Enemies = count,
             EnemyHealers = healers,
-            EnemyAverageLevel = enemies.Length == 0 ? 0 : levels / enemies.Length,
+            EnemyAverageLevel = count == 0 ? 0 : levels / count,
             EnemyTopLevel = top,
             Attacked = attacked,
         };
@@ -63,16 +82,27 @@ public sealed partial class AutonomousWorldBotController
     /// Hook: TryEngageFrontierThreat, right after perception. The noticed targets this bot may open on: all of them, or
     /// none when it sizes the fight up and backs off. Bots this rule doesn't cover get the same array.
     /// </summary>
-    private GameLiving[] SightSizeUpGate(GameBot bot, GameLiving[] perceived, long now)
+    private GameLiving[] SightSizeUpGate(BotBrain brain, GameBot bot, GameLiving[] perceived, long now)
     {
-        if (perceived.Length == 0 || !SightSizeUpApplies(bot))
+        if (perceived.Length == 0 || !SightSizeUpApplies(bot, brain))
             return perceived;
-        GameLiving[] people = perceived.Where(target => target is GamePlayer or GameBot).ToArray();
-        if (people.Length == 0)
+        // The enemy people (players and gamebots) and the nearest, in one pass with no allocation unless one is found.
+        GameLiving nearest = null;
+        int nearestDistance = int.MaxValue, count = 0;
+        GameLiving[] people = null;
+        foreach (GameLiving target in perceived)
+        {
+            if (target is not (GamePlayer or GameBot))
+                continue;
+            people ??= new GameLiving[perceived.Length];
+            people[count++] = target;
+            int distance = bot.GetDistanceTo(target);
+            if (distance < nearestDistance) { nearestDistance = distance; nearest = target; }
+        }
+        if (count == 0)
             return perceived;
         using var profile = AiProfile.Scope(AiSystem.RvrTactics);
-        GameLiving nearest = people.OrderBy(bot.GetDistanceTo).First();
-        RvrSightFacts facts = SightFacts(bot, people);
+        RvrSightFacts facts = SightFacts(bot, people, count);
         double boldness = AutonomousRvrPerception.Boldness(
             AutonomousBotPersonality.Applies(bot) ? AutonomousBotPersonality.For(bot) : null);
         RvrSkillTier tier = RvrFightBoards.DefaultSkillTier(bot);
@@ -83,7 +113,7 @@ public sealed partial class AutonomousWorldBotController
             _sightLastLogTick = now;
             if (Log.IsInfoEnabled)
                 Log.Info($"RVR_SIGHT_SIZE_UP bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
-                         $"region={bot.CurrentRegionID} level={bot.Level} allies={facts.Allies} allyLevel={facts.AllyAverageLevel} " +
+                         $"region={bot.CurrentRegionID} level={bot.Level} allies={facts.Allies} fighters={facts.Fighters} allyLevel={facts.AllyAverageLevel} " +
                          $"enemies={facts.Enemies} healers={facts.EnemyHealers} enemyLevel={facts.EnemyAverageLevel} " +
                          $"enemyTop={facts.EnemyTopLevel} nearest={(int)bot.GetDistanceTo(nearest)} odds={decision.Odds:0.00} " +
                          $"line={decision.Line:0.00} boldness={boldness:0.00} tier={tier} mistake={decision.Mistake} " +
@@ -94,14 +124,14 @@ public sealed partial class AutonomousWorldBotController
             EndSightHold(bot, "engage", now);
             return perceived;
         }
-        StartSightBackOff(bot, people, nearest, now);
+        StartSightBackOff(bot, people.AsSpan(0, count).ToArray(), nearest, now);
         return [];
     }
 
     private void StartSightBackOff(GameBot bot, GameLiving[] enemies, GameLiving nearest, long now)
     {
-        bool fresh = _sightHoldUntil <= now;
-        _sightHoldUntil = now + RvrSightSizeUp.WaitMilliseconds;
+        (long until, bool fresh) = RvrSightSizeUp.Rearm(now, _sightHoldUntil);
+        _sightHoldUntil = until;
         if (!fresh)
             return;
         _sightRepaths = 0;
@@ -151,15 +181,12 @@ public sealed partial class AutonomousWorldBotController
     private static int CallSightFriends(GameBot bot, GameLiving[] enemies, long now)
     {
         RvrAwarenessProfile profile = RvrProfile();
-        var warband = new HashSet<GameLiving>(RealmWarbandSupport.Get(bot)?.Members ?? []);
+        GameLiving[] warband = RealmWarbandSupport.Get(bot)?.Members;
         int told = 0;
         foreach (GameNPC npc in bot.GetNPCsInRadius((ushort)profile.SpotterRadius))
         {
-            if (npc is not GameBot mate || mate == bot || !mate.IsAlive || !CanHearRvrCall(mate, bot) || !MayAnswerRvrCall(mate))
-                continue;
-            bool close = mate.Group != null && mate.Group == bot.Group || warband.Contains(mate) ||
-                AutonomousBotBonds.On && AutonomousBotBonds.ScoreBetween(mate, bot) is int score && AutonomousBotBonds.IsFriend(score);
-            if (!close)
+            if (npc is not GameBot mate || mate == bot || !mate.IsAlive || !CanHearRvrCall(mate, bot) || !MayAnswerRvrCall(mate) ||
+                !FightsBeside(bot, mate, warband))
                 continue;
             int delay = RvrReactionDelay(mate, profile);
             bool news = false;
@@ -181,10 +208,11 @@ public sealed partial class AutonomousWorldBotController
         long now = GameLoop.GameLoopTime;
         if (_sightHoldUntil == 0 || bot == null)
             return false;
-        if (!bot.IsAlive || bot.InCombat || brain.HasAggro || now >= _sightHoldUntil || !SightSizeUpApplies(bot))
+        string resume = RvrSightSizeUp.HoldStep(now, _sightHoldUntil, bot.IsAlive,
+            bot.InCombat || brain.HasAggro || GroupMateInCombat(bot), SightSizeUpApplies(bot, brain));
+        if (resume != null)
         {
-            EndSightHold(bot, !bot.IsAlive ? "dead" : bot.InCombat || brain.HasAggro ? "attacked" :
-                now >= _sightHoldUntil ? "waited" : "out_of_scope", now);
+            EndSightHold(bot, resume, now);
             return false;
         }
         if (_sightBackOffPoint is Vector3 point && !bot.IsMoving &&
@@ -194,6 +222,18 @@ public sealed partial class AutonomousWorldBotController
             bot.PathTo(point, bot.MaxSpeed);
         }
         return true;
+    }
+
+    /// <summary>A member of the bot's group (a duo's partner) is in a fight: the hold ends, and the bot fights back.</summary>
+    private static bool GroupMateInCombat(GameBot bot)
+    {
+        Group group = bot.Group;
+        if (group == null)
+            return false;
+        foreach (GameLiving member in group.GetMembersInTheGroup())
+            if (member != bot && member.IsAlive && (member.InCombat || member.IsAttacking))
+                return true;
+        return false;
     }
 
     private void EndSightHold(GameBot bot, string why, long now)
