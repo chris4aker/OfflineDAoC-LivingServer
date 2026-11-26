@@ -34,6 +34,7 @@ import hashlib
 import json
 import sqlite3
 import sys
+import traceback
 from contextlib import closing
 from pathlib import Path
 
@@ -136,7 +137,10 @@ def clean(source: Path, out: Path, repo: Path = REPO, require_fresh: bool = Fals
                 con.commit()
         report = verify(out, repo)
     except BaseException as e:
-        gc.collect()   # clean_world() leaves its connection open when one of its asserts fails (Windows locks the file)
+        # clean_world() leaves its connection open when one of its asserts fails, and the traceback keeps it alive:
+        # Windows would refuse to delete the half-made file. Clearing the finished frames closes it.
+        traceback.clear_frames(e.__traceback__)
+        gc.collect()
         for suffix in ("", "-wal", "-shm", "-journal"):
             Path(str(out) + suffix).unlink(missing_ok=True)
         if isinstance(e, NotClean):

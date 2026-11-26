@@ -99,8 +99,10 @@ jobs:
           echo "- Setup from build-and-test run [$RUN_ID](https://github.com/$repo/actions/runs/$RUN_ID) (main, commit \`${sha:0:9}\`)" >> "$GITHUB_STEP_SUMMARY"
 
       # The real Setup, as a player runs it, on D: (C: is tight on the runners, #680). --no-update: the package it embeds.
+      # From Windows PowerShell 5.1, as installer.yml's e2e runs it: started from pwsh, the downloader Setup runs in 5.1
+      # inherits pwsh's module path and can't find Get-FileHash.
       - name: Fresh install with Setup
-        shell: pwsh
+        shell: powershell
         run: |
           Get-PSDrive -PSProvider FileSystem | Format-Table Name, @{n='FreeGB';e={[math]::Round($_.Free/1GB,1)}} | Out-String | Write-Host
           $exe = Get-ChildItem D:\nmset\setup -Recurse -Filter *.exe | Select-Object -First 1
@@ -140,14 +142,14 @@ jobs:
           { echo "- Clean world (before packing):"; grep -v '^{\|^ \|^}' "$RUNNER_TEMP/clean.txt" | sed 's/^/  - /'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Pack the set
-        shell: pwsh
+        shell: powershell
         run: |
           $start = Get-Date
           powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/navmesh/Publish-NavmeshSet.ps1 -NavmeshFolder 'D:\nmset\games\fresh\runtime\server\navmesh' -Version $env:VERSION -OutputRoot 'D:\nmset\upload' -NoBrowser -WorldDatabase 'D:\nmset\world\opendaoc.sqlite3.db'
           if ($LASTEXITCODE -ne 0) { exit 1 }
           $secs = [int]((Get-Date) - $start).TotalSeconds
           Get-ChildItem "D:\nmset\upload\$env:VERSION" | ForEach-Object { "  - $($_.Name): {0:N0} bytes" -f $_.Length } | Tee-Object -Variable parts | Write-Host
-          @("- Packed in $secs s:") + $parts | Add-Content $env:GITHUB_STEP_SUMMARY
+          @("- Packed in $secs s:") + @($parts) | Add-Content $env:GITHUB_STEP_SUMMARY
 
       # As the navmesh job reads it: every part and file by its hash, the world clean again (the packed copy), and the
       # installer's navmesh patches (content-patches.json) the same as the set's meshes.
@@ -188,9 +190,9 @@ jobs:
           export OFFLINE_DAOC_PROOF_OUT="$RUNNER_TEMP/navmesh-proof.txt"
           filter=$(python tools/navmesh/navmesh_set.py filter .github/navmesh-tests.txt)
           start=$(date -u +%s)
-          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --results-directory TestResults --logger "trx;LogFileName=navmesh.trx" || true
+          dotnet test source/server/Tests/Tests.csproj -c Release --no-build --filter "$filter" --results-directory 'D:\nmset\TestResults' --logger "trx;LogFileName=navmesh.trx" || true
           echo "- Navmesh tests ran in $(( $(date -u +%s) - start )) s" >> "$GITHUB_STEP_SUMMARY"
-          python tools/navmesh/navmesh_set.py results TestResults/navmesh.trx .github/navmesh-tests.txt --report-only
+          python tools/navmesh/navmesh_set.py results 'D:\nmset\TestResults\navmesh.trx' .github/navmesh-tests.txt --report-only
 
       - name: Release notes
         shell: bash
@@ -233,6 +235,6 @@ jobs:
             D:\nmset\upload\*\navmesh-manifest.json
             D:\nmset\world\opendaoc.sqlite3.db.clean.json
             D:\nmset\logs\
-            TestResults/
+            D:\nmset\TestResults\
           if-no-files-found: warn
           retention-days: 30
