@@ -41,3 +41,4 @@ UT_RealmRepairNavigation  # (#704)
 UT_SeptemberThirteenInstalledRoutes  # (#704)
 UT_SiegeFiringPositions  # (#704)
 UT_Diag704StarterSpawns  # (#704) diagnostic
+UT_SeamCycle555  # the 11/23 seam cycle at 200:334880,417728 replayed on the set: no zone revisited (#555)
