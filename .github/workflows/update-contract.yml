@@ -85,8 +85,5 @@ jobs:
         if: always()
         with:
           name: update-contract-logs
-          path: |
-            D:\uc\logs\
-            D:\uc-in\candidate\*.json
-            D:\uc-in\released\released.json
+          path: D:\uc\logs\
           if-no-files-found: warn

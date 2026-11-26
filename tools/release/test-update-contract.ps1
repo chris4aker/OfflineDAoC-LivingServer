@@ -45,6 +45,9 @@ if (Test-Path $Work) { Remove-Item -LiteralPath $Work -Recurse -Force }
 $game = Join-Path $Work 'game'
 $logs = Join-Path $Work 'logs'
 New-Item -ItemType Directory -Force -Path $game, $logs | Out-Null
+foreach ($f in @((Join-Path $Candidate 'feed.json'), (Join-Path $Candidate 'latest.json'), (Join-Path $Released 'released.json'))) {
+    Copy-Item -LiteralPath $f -Destination $logs -ErrorAction SilentlyContinue
+}
 
 # 1. A fake 0.37 game (tools\fork-build\test-install-scripts.ps1's layout: server and its libraries, launcher, release
 #    notes in the manifest, a world), then the released package installed with its own script.
