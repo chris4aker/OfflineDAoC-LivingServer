@@ -10,6 +10,53 @@ namespace DOL.UnitTests;
 [NonParallelizable]
 public class UT_SeptemberFourteenWorkerRecovery
 {
+    // #640: the worker loop relies on ConsumeStaleInterrupt (Thread.Sleep(0))
+    // clearing an interrupt that is pending while the thread is not blocked.
+    // Pin that on the runtime CI uses, so the fix can't silently rest on a
+    // platform detail (Java's sleep(0), for one, does not throw).
+    [Test]
+    public void ConsumeStaleInterruptClearsAPendingInterrupt()
+    {
+        MethodInfo consume = typeof(GameLoopThreadPoolMultiThreaded)
+            .GetMethod("ConsumeStaleInterrupt", BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.That(consume, Is.Not.Null);
+        Exception error = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                Thread.CurrentThread.Interrupt();
+                consume.Invoke(null, null);
+                // A pending interrupt would throw at this first blocking wait.
+                Thread.Sleep(20);
+            }
+            catch (Exception e) { error = e; }
+        }) { IsBackground = true };
+        thread.Start();
+        Assert.That(thread.Join(5000), Is.True);
+        Assert.That(error, Is.Null, "Thread.Sleep(0) left the interrupt pending");
+    }
+
+    // Control for the test above: without ConsumeStaleInterrupt the same
+    // pending interrupt does throw at the first blocking wait.
+    [Test]
+    public void APendingInterruptThrowsAtTheNextWaitWithoutConsuming()
+    {
+        bool interrupted = false;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                Thread.CurrentThread.Interrupt();
+                Thread.Sleep(20);
+            }
+            catch (ThreadInterruptedException) { interrupted = true; }
+        }) { IsBackground = true };
+        thread.Start();
+        Assert.That(thread.Join(5000), Is.True);
+        Assert.That(interrupted, Is.True);
+    }
+
     [Test]
     public void IdleWorkerInterruptionCannotConsumeTheNextBatchSignal()
     {
