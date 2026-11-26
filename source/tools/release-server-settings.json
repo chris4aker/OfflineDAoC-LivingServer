@@ -30,12 +30,12 @@
   "bot_guild_share": "0.7",
   "bot_guild_social": "True",
   "bot_guilds_enabled": "True",
+  "bot_healer_period_rules": "True",
   "bot_incoming_fire_reaction": "True",
   "bot_led_group_join_mode": "follow",
   "bot_living_alarms": "True",
   "bot_living_beggars": "True",
   "bot_living_body_language": "True",
-  "bot_healer_period_rules": "True",
   "bot_living_breaks": "True",
   "bot_living_characters": "True",
   "bot_living_death": "True",
@@ -125,6 +125,7 @@
   "population_newcomer_per_hour": "10",
   "population_newcomers": "True",
   "population_retire": "True",
+  "raid_diagnostic_rows": "False",
   "raid_learns_from_raiders": "True",
   "realm_commissions": "doubled",
   "realm_raid_frontier_raid_post": "True",
@@ -170,6 +171,7 @@
   "epic_funus_weapon_puzzle": "epic encounter option, owner 2026-11-08: off until the bots clear it with no heals",
   "epic_govannon_full_heal": "epic encounter option, owner 2026-11-11 after bot raids lost to the demon",
   "epic_govannon_full_health": "epic encounter option, the 1.2 default until a played check",
-  "mana_regen_amount_halved_below_50_percent": "a classic rule option (power halving below 50%), kept off by AGENTS.md"
+  "mana_regen_amount_halved_below_50_percent": "a classic rule option (power halving below 50%), kept off by AGENTS.md",
+  "raid_diagnostic_rows": "diagnostics: RAID_THREAT and RAID_ROLE_TOTALS rows (#644 decision c: off in player installs, on in test and sweep runs)"
  }
 }

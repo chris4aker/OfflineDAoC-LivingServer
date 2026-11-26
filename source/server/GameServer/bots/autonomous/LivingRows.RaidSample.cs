@@ -249,7 +249,13 @@ public static class RaidFightSampleRows
         }
         Raider[] buffer = attempt.SampleBuffer(out GameLiving[] members, out int[] dists);
         int n = members.Length;
-        for (int i = 0; i < n; i++) buffer[i] = ReadRaider(members[i], boss, attempt.Region);
+        bool diagnostics = RaidDiagnosticRows.On;
+        for (int i = 0; i < n; i++)
+        {
+            buffer[i] = ReadRaider(members[i], boss, attempt.Region);
+            // #644 part 5 (diagnostics switch): a raider seen at 0% power counts once as a power-out.
+            if (diagnostics && buffer[i].Mana == 0) attempt.NotePowerOut(members[i]);
+        }
         Counts counts = Count(buffer, n, dists);
         string tgtKind = "none";
         if (target != null)
