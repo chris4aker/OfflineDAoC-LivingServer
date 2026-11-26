@@ -188,20 +188,20 @@ namespace DOL.AI.Brain
 							if (Util.Chance(100))
 							{
 								if (!Body.IsCasting && Body.GetSkillDisabledDuration(Aros_Bomb) == 0)									
-									Body.CastSpell(Aros_Bomb, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+									RaidBossMechanics.Cast(Body.CastSpell(Aros_Bomb, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "bomb", Aros_Bomb); // #644 measurement only
 								else if (Body.GetSkillDisabledDuration(Aros_Debuff) == 0)
 								{
 									new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(PickDebuffTarget), 200);
 									if (DebuffTarget != null && CanCastDebuff)
 									{
 										Body.TargetObject = DebuffTarget;
-										Body.CastSpell(Aros_Debuff, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+										RaidBossMechanics.Cast(Body.CastSpell(Aros_Debuff, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "debuff", Aros_Debuff); // #644 measurement only
 									}
 								}
 								else if (!Body.IsCasting && Body.GetSkillDisabledDuration(Aros_Bomb) > 0 && Body.GetSkillDisabledDuration(Aros_Debuff) > 0)
 								{
 									Body.TurnTo(target);
-									Body.CastSpell(Aros_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+									RaidBossMechanics.Cast(Body.CastSpell(Aros_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "dd", Aros_DD); // #644 measurement only
 								}
 							}
 						}
@@ -383,7 +383,7 @@ namespace DOL.GS
 			if (ad != null && (ad.AttackResult == eAttackResult.HitUnstyled || ad.AttackResult == eAttackResult.HitStyle))
 			{
 				if (Util.Chance(25) && (!ad.Target.effectListComponent.ContainsEffectForEffectType(eEffect.StunImmunity) || !ad.Target.effectListComponent.ContainsEffectForEffectType(eEffect.Stun)) && ad.Target.IsAlive)
-					CastSpell(SpiritChampion_stun, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+					RaidBossMechanics.Cast(CastSpell(SpiritChampion_stun, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "stun", SpiritChampion_stun); // #644 measurement only
 			}
 			base.OnAttackEnemy(ad);
 		}

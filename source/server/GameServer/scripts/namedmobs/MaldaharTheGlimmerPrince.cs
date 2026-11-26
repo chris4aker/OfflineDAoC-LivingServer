@@ -100,7 +100,7 @@ namespace DOL.AI.Brain
                         if (Util.Chance(4))
                         {
                             Body.TurnTo(Body.TargetObject);
-                            Body.CastSpell(LifeTap, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                            RaidBossMechanics.Cast(Body.CastSpell(LifeTap, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "lifeTap", LifeTap); // #644 measurement only
                         }
 
                         break;
@@ -108,7 +108,7 @@ namespace DOL.AI.Brain
                         if (Util.Chance(4))
                         {
                             Body.TurnTo(Body.TargetObject);
-                            Body.CastSpell(PBAoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                            RaidBossMechanics.Cast(Body.CastSpell(PBAoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "pbaoe", PBAoe); // #644 measurement only
                         }
 
                         break;
@@ -143,7 +143,7 @@ namespace DOL.AI.Brain
                     if (Util.Chance(4))
                     {
                         Body.TurnTo(Body.TargetObject);
-                        Body.CastSpell(LifeTap, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                        RaidBossMechanics.Cast(Body.CastSpell(LifeTap, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "lifeTap", LifeTap); // #644 measurement only
                     }
 
                     break;
@@ -151,7 +151,7 @@ namespace DOL.AI.Brain
                     if (Util.Chance(4))
                     {
                         Body.TurnTo(Body.TargetObject);
-                        Body.CastSpell(PBAoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                        RaidBossMechanics.Cast(Body.CastSpell(PBAoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "pbaoe", PBAoe); // #644 measurement only
                     }
 
                     break;
