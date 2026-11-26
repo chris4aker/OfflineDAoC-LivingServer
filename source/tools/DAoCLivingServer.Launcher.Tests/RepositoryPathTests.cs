@@ -22,7 +22,7 @@ public class RepositoryPathTests
     [TestCase("chris4aker/daoc-livingserver")]
     [TestCase("CHRIS4AKER/OFFLINEDAOC-LIVINGSERVER")]
     [TestCase("CHRIS4AKER/DAOC-LIVINGSERVER")]
-    [TestCase("Chris4Aker/OfflineDaoc-LivingSERVER")]
+    [TestCase("Chris4Aker/OFFLINEdaoc-livingSERVER")]
     [TestCase("chris4aker/Daoc-Livingserver")]
     public void EitherRepositoryPathInAnyCaseIsAReleaseFile(string repository)
     {
