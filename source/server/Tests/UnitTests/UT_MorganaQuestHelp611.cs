@@ -94,8 +94,8 @@ namespace DOL.UnitTests
         private sealed class TestBechard : Bechard
         {
             public int TestX;
-            public bool Alive;
-            public override bool IsAlive => Alive;
+            public bool Dead;
+            public override bool IsAlive => !Dead;
             public override bool IsCasting => false;
             public override bool IsAttacking => false;
             public override int X => TestX;
@@ -195,7 +195,7 @@ namespace DOL.UnitTests
             Assert.That(MorganaQuestHelp.FirstDemon(player, new GameNPC[] { bechard, silcharde }), Is.SameAs(silcharde));
             silcharde.TestX = 900;
             Assert.That(MorganaQuestHelp.FirstDemon(player, new GameNPC[] { bechard, silcharde }), Is.SameAs(bechard));
-            bechard.Alive = false;
+            bechard.Dead = true;
             Assert.That(MorganaQuestHelp.FirstDemon(player, new GameNPC[] { bechard, silcharde }), Is.SameAs(silcharde));
             Assert.That(MorganaQuestHelp.FirstDemon(player, new GameNPC[] { Actor<TestMorgana>(), null }), Is.Null,
                 "Morgana is never one of the demons");
@@ -267,7 +267,7 @@ namespace DOL.UnitTests
             Field(typeof(GameNPC), bot, "m_ownBrain", brain);
             return bot;
         }
-        private TestBechard MakeBechard() { TestBechard d = Actor<TestBechard>(); d.TestX = 400; d.Alive = true; return d; }
+        private TestBechard MakeBechard() { TestBechard d = Actor<TestBechard>(); d.TestX = 400; return d; }
         private TestSilcharde MakeSilcharde() { TestSilcharde d = Actor<TestSilcharde>(); d.TestX = 900; return d; }
         private T Actor<T>() where T : GameLiving
         {
