@@ -1,0 +1,49 @@
+name: branch-cleanup
+# Issue #645 (owner, 2026-11-25: "clean up as much as you can on the GitHub repos"). Replaces the 2026-10-18 one-off.
+# Lists every branch with its class (protected, open PR, recent, merged, replaced, never merged). The default is a dry
+# run, which changes nothing. Only mode APPLY (exactly) tags each unmerged branch archive/<branch>, reads the tag back,
+# and then deletes the branch; merged branches are deleted. It never touches main, integration/*, release/0.* (the
+# legacy release lines), the release lines release/<version>, protected branches, branches with an open pull request,
+# branches with a commit in the last 14 days, or any tag. The owner approves the dry run's list before APPLY.
+# tools/release/branch_cleanup.py has the rules; tools/release/tests/test_branch_cleanup.py tests them.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "show (dry run, the default) or APPLY (tag, then delete)"
+        default: "show"
+  workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: "show"
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  branches:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test the cleanup rules
+        run: python3 -m unittest discover -s tools/release/tests -p test_branch_cleanup.py -v
+      - name: Classify (and on APPLY, archive and delete)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python3 tools/release/branch_cleanup.py --mode "$MODE" --repo "$GITHUB_REPOSITORY" \
+            --summary "$GITHUB_STEP_SUMMARY" --out branch-cleanup.json > branch-cleanup.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: branch-cleanup-${{ inputs.mode }}
+          path: |
+            branch-cleanup.md
+            branch-cleanup.json
+          retention-days: 90
