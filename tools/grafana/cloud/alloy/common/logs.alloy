@@ -244,13 +244,13 @@ loki.process "game" {
     expression = "(\"(?:[^\"\\\\]|\\\\.)*\")\\s*[,\\]}]"
     replace    = "\"~\""
   }
-  // 2. Reviewed structural keys keep their value: hide their '=' as ':' so step 3 skips them. Each key here was checked
+  // 2. Reviewed structural keys keep their value: hide their '=' as '§' so steps 3 and 5 skip them. Each key here was checked
   //    against the code that writes it (#649 review): world data, kinds, enums and numbers only. "source" is not one:
   //    EPIC_FUNUS_HEALED, EPIC_KVASIR_HEALED and EPIC_DISPLACEMENT write a player's or bot's name there.
   stage.replace {
     source     = "kv"
     expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)(=)"
-    replace    = ":"
+    replace    = "§"
   }
   // 3. Every other value containing a letter (names, free strings, lists, paths) becomes "~".
   stage.replace {
@@ -275,37 +275,55 @@ loki.process "game" {
   //    joined with "_" first (up to six words), so it isn't cut.
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)§\"[^\" ]*( )"
     replace    = "_"
   }
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)§\"[^\" ]*( )"
     replace    = "_"
   }
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)§\"[^\" ]*( )"
     replace    = "_"
   }
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)§\"[^\" ]*( )"
     replace    = "_"
   }
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action):\"[^\" ]*( )"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)§\"[^\" ]*( )"
     replace    = "_"
   }
+  //    Fail closed: a word survives only as key~, key=<value without letters>, a reviewed key's value (key§...) or a
+  //    JSON payload (starts with { or [ and holds a quote). So the second name of an unquoted list (members=[A, B])
+  //    or a quoted value's tail (c" d") goes too.
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)((?:[^\\s=~:{}\\[\\],]+(?:\\s+|$))+)"
+    expression = "(?:^|\\s)([{\\[][^\\s=~§\"]*)(?:\\s|$)"
     replace    = ""
   }
   stage.replace {
     source     = "kv"
-    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)(:)"
+    expression = "(?:^|\\s)([{\\[][^\\s=~§\"]*)(?:\\s|$)"
+    replace    = ""
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)((?:[^\\s=~§{\\[][^\\s=~§]*(?:\\s+|$))+)"
+    replace    = ""
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(\\s{2,})"
+    replace    = " "
+  }
+  stage.replace {
+    source     = "kv"
+    expression = "(?:^|\\s)(?:realm|stage|class|kind|state|level|outcome|role|phase|type|tier|stance|region|zone|keep|battleground|killerKind|killerType|killerRealm|top|skill|spell|engine|action)(§)"
     replace    = "="
   }
   // 6. Rebuild the line: time, level, logger, then the event key and its cleaned fields. WRN/ERR free text keeps only

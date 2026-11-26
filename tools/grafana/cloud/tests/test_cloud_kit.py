@@ -49,12 +49,21 @@ class DetectLinux(unittest.TestCase):
         _stub(self.stub, "pgrep", 'exit 1')
         _stub(self.stub, "ss", 'exit 0')
         _stub(self.stub, "timedatectl", 'echo America/New_York')
+        # The system tools, minus any collector this PC has installed, so a dev or CI box with Alloy
+        # still looks like a quiet PC.
+        self.sysbin = self.tmp / "sysbin"
+        self.sysbin.mkdir()
+        for folder in ("/usr/local/bin", "/usr/bin", "/bin"):
+            for tool in Path(folder).iterdir() if Path(folder).is_dir() else []:
+                if tool.name in ("alloy", "grafana-agent", "grafana-agent-flow") or (self.sysbin / tool.name).exists():
+                    continue
+                (self.sysbin / tool.name).symlink_to(tool)
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def detect(self, *args: str) -> dict:
-        env = {"HOME": str(self.home), "PATH": f"{self.stub}:/usr/bin:/bin"}
+        env = {"HOME": str(self.home), "PATH": f"{self.stub}:{self.sysbin}"}
         out = subprocess.run(["bash", str(KIT / "detect.sh"), *args], env=env, capture_output=True, text=True, check=True)
         return json.loads(out.stdout)
 
@@ -308,7 +317,7 @@ class RealAlloy(unittest.TestCase):
             for _ in range(40):
                 time.sleep(0.5)
                 metrics = urllib.request.urlopen(f"http://{addr}/metrics", timeout=2).read().decode()
-                if "loki_process_custom_server_memory_heap_mb" in metrics and "BOT_MILESTONE_TALK" in (tmp / "alloy.out").read_text():
+                if "loki_process_custom_server_memory_heap_mb" in metrics and "LOOT_ITEMS_MISSING" in (tmp / "alloy.out").read_text():
                     break
             echoed = (tmp / "alloy.out").read_text()
             self.assertRegex(metrics, r'loki_process_custom_bots_online\{[^}]*\} 147')
@@ -324,6 +333,9 @@ class RealAlloy(unittest.TestCase):
             self.assertTrue(any("AUTONOMOUS_TICK_FAILED bot=~ error=~" in e and e.endswith("error=~") for e in entries), entries)
             # A quoted chat line with quotes inside: the whole tail goes, the next field stays.
             self.assertTrue(any(e.endswith("BOT_MILESTONE_TALK bot=~ line=~ realm=Hibernia") for e in entries), entries)
+            # An unquoted list: every name goes, not just the first (fail-closed stray-word rule).
+            self.assertTrue(any(e.endswith("LOOT_ITEMS_MISSING bot=~ items=~ count=3 realm=Midgard") for e in entries), entries)
+            self.assertFalse(any("  " in e for e in entries), entries)
             self.assertFalse(any("ACCOUNT_LOGIN" in e or "CLIENT_HANDSHAKE" in e for e in entries), entries)
             joined = "\n".join(entries)
             for word in PRIVATE:
