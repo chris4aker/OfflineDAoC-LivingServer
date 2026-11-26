@@ -703,7 +703,7 @@
    "finals": [
     "AlbGolestandt"
    ],
-   "line": 603
+   "line": 605
   },
   {
    "id": "dragon-midgard",
@@ -715,7 +715,7 @@
    "finals": [
     "MidGjalpinulva"
    ],
-   "line": 604
+   "line": 606
   },
   {
    "id": "dragon-hibernia",
@@ -727,7 +727,7 @@
    "finals": [
     "HibCuuldurach"
    ],
-   "line": 605
+   "line": 607
   },
   {
    "id": "epic-albion",
@@ -739,7 +739,7 @@
    "finals": [
     "Apocalypse"
    ],
-   "line": 606
+   "line": 608
   },
   {
    "id": "epic-midgard",
@@ -752,7 +752,7 @@
     "KingTuscar",
     "QueenKula"
    ],
-   "line": 607
+   "line": 609
   },
   {
    "id": "epic-hibernia",
@@ -764,7 +764,7 @@
    "finals": [
     "Olcasgean"
    ],
-   "line": 608
+   "line": 610
   },
   {
    "id": "summoners-albion",
@@ -776,7 +776,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 609
+   "line": 611
   },
   {
    "id": "summoners-midgard",
@@ -788,7 +788,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 610
+   "line": 612
   },
   {
    "id": "summoners-hibernia",
@@ -800,7 +800,7 @@
    "finals": [
     "GrandSummonerGovannon"
    ],
-   "line": 611
+   "line": 613
   },
   {
    "id": "darkness-albion",
@@ -812,7 +812,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 612
+   "line": 614
   },
   {
    "id": "darkness-midgard",
@@ -824,7 +824,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 613
+   "line": 615
   },
   {
    "id": "darkness-hibernia",
@@ -836,7 +836,7 @@
    "finals": [
     "Legion"
    ],
-   "line": 614
+   "line": 616
   },
   {
    "id": "openworld-albion-greenknight",
@@ -848,7 +848,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 3076
+   "line": 3167
   },
   {
    "id": "openworld-albion-coliath",
@@ -860,7 +860,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 3078
+   "line": 3169
   },
   {
    "id": "openworld-albion-emthoro",
@@ -872,7 +872,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 3080
+   "line": 3171
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -884,7 +884,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 3083
+   "line": 3174
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -896,7 +896,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 3085
+   "line": 3176
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -908,7 +908,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 3087
+   "line": 3178
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -920,7 +920,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 3089
+   "line": 3180
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -932,7 +932,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 3091
+   "line": 3182
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -944,7 +944,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 3093
+   "line": 3184
   },
   {
    "id": "openworld-midgard-revenant",
@@ -956,7 +956,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 3095
+   "line": 3186
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -968,7 +968,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 3097
+   "line": 3188
   },
   {
    "id": "openworld-hibernia-evern",
@@ -980,7 +980,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 3100
+   "line": 3191
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -992,7 +992,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 3102
+   "line": 3193
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -1004,7 +1004,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 3104
+   "line": 3195
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1016,7 +1016,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 3106
+   "line": 3197
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1028,7 +1028,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 3108
+   "line": 3199
   }
  ],
  "neutralObjectives": {

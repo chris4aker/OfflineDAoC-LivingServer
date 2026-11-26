@@ -4,6 +4,10 @@ raid_postmortem.py. Not a section itself (the loader skips "_" modules).
     RAID_ATTEMPT       the pull: attempt= event= kind= region= boss="" n= size= period= sizePct= sf= roles= classes= ...
     RAID_ATTEMPT_END   the end:  attempt= outcome= secs= engaged= fallen= died= left= deaths= health= lowest=
     RAID_DEATH         a death:  attempt= t= idx= kind= player= class= role= level= killerKind= killer="" source= ...
+    RAID_FIGHT_SAMPLE  every 15 s of a pull (parts 2-3): attempt= t= bossPct= phase= adds= alive=T:H:B:A engaged=T:H:B:A
+                       healerPow= healersLow= onTank= tgtKind= medDist= mezzed= stunned=
+    RAID_FUNNEL        per raid, not per attempt (parts 2-3): event= stage=start|end asked= recruited= parties= atHub= staged=
+                       atBoss= lost=route:n,travel:n,died:n,logout:n,released:n,other:n hubS= stageS= bossS=
 
 Rows are joined on attempt=. The id's count starts again at 1 when the server restarts, so the same id can stand for two
 pulls in a log set: a RAID_ATTEMPT row for an id already pulled opens a new attempt (shown as "<id> (run 2)"), and later
@@ -15,7 +19,9 @@ from dataclasses import dataclass, field
 
 from living_report_sections._util import fields, stamp, tag
 
-ROWS = ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH"]
+ROWS = ["RAID_ATTEMPT", "RAID_ATTEMPT_END", "RAID_DEATH", "RAID_FIGHT_SAMPLE"]
+FUNNEL = "RAID_FUNNEL"
+ROLES = ("tank", "healer", "buffer", "attacker")
 FAILED = ("wipe", "reset", "skirmish")
 
 
@@ -38,6 +44,7 @@ class Attempt:
     end: dict | None = None       # the RAID_ATTEMPT_END fields
     ended_at: str = ""
     deaths: list = field(default_factory=list)  # (stamp, fields) of each RAID_DEATH, in log order
+    samples: list = field(default_factory=list)  # (stamp, fields) of each RAID_FIGHT_SAMPLE, in log order
 
     @property
     def event(self):
@@ -90,8 +97,60 @@ def attempts(lines) -> list[Attempt]:
         elif kind == "RAID_ATTEMPT_END":
             a = for_id(aid)
             a.end, a.ended_at = f, stamp(line)
+        elif kind == "RAID_FIGHT_SAMPLE":
+            for_id(aid).samples.append((stamp(line), f))
         else:
             for_id(aid).deaths.append((stamp(line), f))
+    return out
+
+
+def split(value):
+    """A T:H:B:A field as {"tank": n, "healer": n, "buffer": n, "attacker": n}, or None when it is not four counts."""
+    parts = (value or "").split(":")
+    if len(parts) != 4:
+        return None
+    counts = [count(p) for p in parts]
+    return None if None in counts else dict(zip(ROLES, counts))
+
+
+def total(value):
+    """The sum of a T:H:B:A field, or None."""
+    s = split(value)
+    return None if s is None else sum(s.values())
+
+
+def lost(value) -> dict:
+    """RAID_FUNNEL's lost=route:n,travel:n,... as {"route": n, ...}; unreadable parts are left out."""
+    out = {}
+    for part in (value or "").split(","):
+        name, _, n = part.partition(":")
+        if name and count(n) is not None:
+            out[name] = count(n)
+    return out
+
+
+def funnels(lines) -> list[tuple[str, dict, dict]]:
+    """(event, start fields or {}, end fields or {}) for each raid, in order of its first RAID_FUNNEL row. A start row after an
+    end row of the same event is a new raid (the next expedition there)."""
+    out: list[tuple[str, dict, dict]] = []
+    open_: dict[str, int] = {}
+    for line in lines:
+        if tag(line) != FUNNEL:
+            continue
+        f = fields(line)
+        event, stage = f.get("event"), f.get("stage")
+        if not event or event == "-":
+            continue
+        f = dict(f, at=stamp(line))
+        if stage == "start":
+            open_[event] = len(out)
+            out.append((event, f, {}))
+        elif stage == "end":
+            i = open_.pop(event, None)
+            if i is None:   # the log starts after the raid began
+                out.append((event, {}, f))
+            else:
+                out[i] = (event, out[i][1], f)
     return out
 
 

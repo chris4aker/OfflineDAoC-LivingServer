@@ -5017,6 +5017,7 @@ namespace DOL.GS
                     _nextStableCheckTick = GameLoop.GameLoopTime + 120_000;
                     ResetRouteOrderState();
                     Log.Warn($"REALM_RAID_TRAVEL_CANCEL bot=\"{bot.Name}\" reason=\"{failure}\"");
+                    AutonomousRealmRaid.NoteFunnelLoss(bot.Group, bot, "travel"); // #644 RAID_FUNNEL (logging only)
                 }
                 return false;
             }
@@ -5027,6 +5028,7 @@ namespace DOL.GS
                     RealmRaidStableTravel.Cancel(bot.Group);
                     _nextStableCheckTick = GameLoop.GameLoopTime + 120_000;
                     Log.Warn($"REALM_RAID_TRAVEL_CANCEL bot=\"{bot.Name}\" reason=\"No connected ticket formation approach\"");
+                    AutonomousRealmRaid.NoteFunnelLoss(bot.Group, bot, "travel"); // #644 RAID_FUNNEL (logging only)
                     return false;
                 }
             }
@@ -5059,6 +5061,7 @@ namespace DOL.GS
                 {
                     _nextStableCheckTick = GameLoop.GameLoopTime + 120_000;
                     Log.Warn($"REALM_RAID_TRAVEL_CANCEL bot=\"{bot.Name}\" reason=\"Ticket could not be purchased or boarded\"");
+                    AutonomousRealmRaid.NoteFunnelLoss(bot.Group, bot, "travel"); // #644 RAID_FUNNEL (logging only)
                     return false;
                 }
             }
