@@ -290,6 +290,20 @@ public class SocialExpansionSettingsTests
         Assert.That((off with { BotMovementHabits = true }).IsAllOff, Is.False);
     }
 
+    [Test] public void BardHealerSlotIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #567 B7 (owner 2026-11-26): bot_bard_fills_healer_slot, a bot combat rule rather than a Living Server life feature,
+        // on by default and in Setup; no checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.BardFillsHealerSlot && SocialExpansionSettings.Recommended.BardFillsHealerSlot, Is.True);
+        Assert.That(d.AllOff().BardFillsHealerSlot, Is.True);
+        (d with { BardFillsHealerSlot = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_bard_fills_healer_slot"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).BardFillsHealerSlot, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void HealerPeriodRulesAreOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #567 B1-B5 (owner 2026-11-26): bot_healer_period_rules, a bot combat rule rather than a Living Server life feature,
