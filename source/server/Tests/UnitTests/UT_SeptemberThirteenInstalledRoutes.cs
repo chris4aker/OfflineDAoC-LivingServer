@@ -80,7 +80,8 @@ namespace DOL.UnitTests
                         var path=nav.GetPathStraight(zone,sample.Item2,target,nav.DefaultFilters,nodes);
                         var sf=nav.GetClosestPoint(zone,sample.Item2,96,96,512,nav.DefaultFilters);
                         var tf=nav.GetClosestPoint(zone,target,96,96,512,nav.DefaultFilters);
-                        bool approach=AutonomousZonePointApproach.TryResolve(nav,zone,sample.Item2,target,112,out var ap);
+                        // blodfelag's capture is now 3 units off the 1.2 mesh edge (#704): plan from where the floor step puts the bot.
+                        bool approach=AutonomousZonePointApproach.TryResolve(nav,zone,PlanningStart(nav,zone,sample.Item2),target,112,out var ap);
                         bool recovery=AutonomousCorridorRecovery.TryNextCorner(nav,zone,sample.Item2,target,out var corner);
                         if(sample.Item4 != "frontier" || sample.Item1 == 1)
                         {
@@ -98,6 +99,23 @@ namespace DOL.UnitTests
                 }
             }
             finally { foreach(var zone in loaded) LocalPathfindingMgr.UnloadNavMesh(zone);Environment.CurrentDirectory=previous; }
+        }
+
+        /// <summary>
+        /// Where a bot at <paramref name="capture"/> plans from: the capture itself when it stands on floor, otherwise the floor
+        /// the bot's floor step moves it to (TryNearestWalkableFloor, 300 units, as AutonomousWorldBotController.TryFloorStep).
+        /// Asserts that floor exists and is close: a capture far from any floor is a real failure, not an off-edge capture.
+        /// </summary>
+        internal static Vector3 PlanningStart(IPathfindingMgr nav, Zone zone, Vector3 capture)
+        {
+            if (AutonomousNavigationSurface.TryPlanningFloor(nav, zone, capture, out _))
+                return capture;
+            Assert.That(AutonomousNavigationSurface.TryNearestWalkableFloor(nav, zone, capture, 300, out Vector3 floor), Is.True,
+                $"no walkable floor near the capture {capture}");
+            Assert.That(Vector2.Distance(new(floor.X, floor.Y), new(capture.X, capture.Y)), Is.LessThan(32),
+                $"the floor step from {capture} lands at {floor}: too far to call the capture just off the edge");
+            TestContext.WriteLine($"OFF_MESH_CAPTURE {capture} floor={floor}");
+            return floor;
         }
     }
 }
