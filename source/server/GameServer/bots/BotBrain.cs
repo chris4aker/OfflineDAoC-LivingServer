@@ -4484,8 +4484,10 @@ namespace DOL.AI.Brain
                 }
 
                 // #568 C6: up to two opening debuffs on a fresh target that lasts; C5: damage waits for the tank or pet
-                bool debuffOpening = DebuffOpeningWorthwhile();
-                bool holdDamage = HoldDamageForTank();
+                // Owner 2026-11-26 (#568): neither in a realm raid or warband nor against a tactic boss.
+                bool veteranRulesHere = CasterVeteranRulesApply();
+                bool debuffOpening = veteranRulesHere && DebuffOpeningWorthwhile();
+                bool holdDamage = veteranRulesHere && HoldDamageForTank();
 
                 // Check instant spells
                 if (Body.CanCastInstantHarmfulSpells)
@@ -4630,11 +4632,11 @@ namespace DOL.AI.Brain
                     if (holdDamage)
                     {
                         bool playerLikeTarget = BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving);
-                        spellsToCast.RemoveAll(spell => BotControlSpells.HoldDamageStrips(spell, playerLikeTarget));
+                        spellsToCast.RemoveAll(HoldStrips(playerLikeTarget));
                         if (spellsToCast.Count == 0) return true;
                     }
                     // #568 C6: a resist debuff for a damage type the bot does not deal is no cast at all (Void Eldritch)
-                    spellsToCast.RemoveAll(spell => !PlaybookDebuffFits(spell));
+                    spellsToCast.RemoveAll(PlaybookDebuffMisfits);
                     if (spellsToCast.Count == 0) return Body.IsCasting;
                     // #568 C3: the plain nuke over a snare-nuke on a held monster
                     PreferPlainNukeOverSnareNuke(spellsToCast, Body.TargetObject as GameLiving);

@@ -21,6 +21,10 @@ namespace DOL.AI.Brain
         // made once per brain, not on every cast decision
         private System.Func<Spell, int> _playbookPowerCost;
         private System.Func<Spell, bool> _playbookPassOver;
+        private System.Predicate<Spell> _playbookDebuffMisfits;
+
+        /// <summary>The C6 "debuff that does not fit" predicate, made once.</summary>
+        private System.Predicate<Spell> PlaybookDebuffMisfits => _playbookDebuffMisfits ??= spell => !PlaybookDebuffFits(spell);
 
         /// <summary>Damage spells this bot has started on <paramref name="target"/> (a new target starts at 0).</summary>
         private int PlaybookDamageCastsOn(GameLiving target)

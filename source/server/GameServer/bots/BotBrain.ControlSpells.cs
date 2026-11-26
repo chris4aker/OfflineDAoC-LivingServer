@@ -59,8 +59,23 @@ namespace DOL.AI.Brain
             return Body.Group?.IsInTheGroup(victim) == true;
         }
 
-        /// <summary>A living tank (a tank-class bot or player, not this bot) in the bot's group and region.</summary>
+        private long _groupTankTick = -1;
+        private bool _groupTankCached;
+
+        /// <summary>A living tank (a tank-class bot or player, not this bot) in the bot's group and region; walked at most
+        /// once per game tick (#727 review).</summary>
         private bool GroupHasLivingTank()
+        {
+            long now = GameLoop.GameLoopTime;
+            if (now != _groupTankTick)
+            {
+                _groupTankTick = now;
+                _groupTankCached = FindLivingTank();
+            }
+            return _groupTankCached;
+        }
+
+        private bool FindLivingTank()
         {
             Group group = Body.Group;
             if (group == null || group.MemberCount < 2)

@@ -20,6 +20,14 @@ namespace DOL.GS
 
         public enum Holder { Nobody, OwnPet, GroupTank, Other }
 
+        /// <summary>
+        /// Pure (owner decision 2026-11-26 on #568, from the #727 review): the hold (C5) and the debuff opening (C6) stay out
+        /// of realm raids and warbands (shared support: AutonomousRealmRaid.HasSharedSupport, which covers both) and out of
+        /// fights against a boss with a tactic (BotHealTriage165.IsBossTarget), the same gate as the 1.65 healer rules
+        /// (#567, #703). To be revisited with the raid telemetry (#644) and raid sims writing real rows (#723).
+        /// </summary>
+        public static bool AppliesHere(bool sharedSupport, bool bossFight) => !sharedSupport && !bossFight;
+
         /// <summary>The caster waits while its own pet holds the monster above this health.</summary>
         public static int PetHoldsDamageAbovePercent(eCharacterClass characterClass) =>
             characterClass == eCharacterClass.Spiritmaster ? SpiritmasterPetHoldsAbovePercent : PetHoldsAbovePercent;

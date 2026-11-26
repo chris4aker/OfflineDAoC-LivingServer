@@ -8,6 +8,28 @@ namespace DOL.AI.Brain
         private GameLiving _holdDamageTarget;
         private long _holdDamageSince;
 
+        // made once per brain, not on every cast decision (#727 review)
+        private System.Predicate<Spell> _holdStripsOnMonster;
+        private System.Predicate<Spell> _holdStripsOnPlayerLike;
+
+        /// <summary>The C5 strip predicate for this target kind, made once.</summary>
+        private System.Predicate<Spell> HoldStrips(bool playerLikeTarget) => playerLikeTarget
+            ? _holdStripsOnPlayerLike ??= spell => BotControlSpells.HoldDamageStrips(spell, true)
+            : _holdStripsOnMonster ??= spell => BotControlSpells.HoldDamageStrips(spell, false);
+
+        /// <summary>
+        /// The C5 hold and the C6 debuff opening apply here: not in a realm raid or warband (shared support) and not in a
+        /// fight against a tactic boss - the bot's, the assisted player's or the party leader's target (as #703's gate).
+        /// </summary>
+        private bool CasterVeteranRulesApply()
+        {
+            bool sharedSupport = AutonomousRealmRaid.HasSharedSupport(BotBody);
+            bool bossFight = BotHealTriage165.IsBossTarget(Body.TargetObject) ||
+                BotHealTriage165.IsBossTarget(AssistedPlayer?.TargetObject) ||
+                BotHealTriage165.IsBossTarget(Body.Group?.LivingLeader?.TargetObject);
+            return BotHoldDamage.AppliesHere(sharedSupport, bossFight);
+        }
+
         private bool HoldDamageForTank()
         {
             if (BotBody?.CharacterClass == null || Body.TargetObject is not GameNPC target || target is GameBot || !target.IsAlive)

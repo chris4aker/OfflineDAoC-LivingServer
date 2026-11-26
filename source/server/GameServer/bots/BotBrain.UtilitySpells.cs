@@ -57,9 +57,21 @@ namespace DOL.AI.Brain
                 .OrderByDescending(spell => spell.Level)
                 .FirstOrDefault();
 
+        /// <summary>
+        /// Pure (#568 review, owner 2026-11-26: "never weaken a boss"): a utility cast obeys the epic-encounter guards - nothing
+        /// on a monster this bot must not hit, no spell a dungeon rule forbids there - and Amnesia or Confusion never go on
+        /// a tactic boss (Amnesia clears its aggro list and interrupts its cast, which would break taunt and aggro tactics).
+        /// </summary>
+        public static bool UtilityCastAllowed(eSpellType type, bool mustNotHit, bool forbidsSpell, bool tacticBoss) =>
+            !mustNotHit && !forbidsSpell && !(tacticBoss && type is eSpellType.Amnesia or eSpellType.Confusion);
+
         private bool CastOn(Spell spell, GameLiving target)
         {
             if (spell == null || target == null || !Body.IsWithinRadius(target, System.Math.Max(spell.Range, spell.Radius)))
+                return false;
+            if (!UtilityCastAllowed(spell.SpellType, EpicEncounterTactics.MustNotHit(BotBody, target),
+                    EpicEncounterTactics.ForbidsSpell(BotBody, target, spell),
+                    target is GameNPC npc && EpicEncounterTactics.For(npc) != null))
                 return false;
             GameObject previous = Body.TargetObject;
             Body.TargetObject = target;
@@ -97,8 +109,8 @@ namespace DOL.AI.Brain
                 return false;
             GameLiving onMe = null;
             foreach (GameLiving attacker in Body.attackComponent.AttackerTracker.Attackers)
-                if (attacker != null && attacker.IsAlive && attacker.TargetObject == Body && attacker is GameNPC &&
-                    !BotPvpCrowdControl.PlayerLike(attacker))
+                if (attacker != null && attacker.IsAlive && attacker.TargetObject == Body && attacker is GameNPC attackerNpc &&
+                    EpicEncounterTactics.For(attackerNpc) == null && !BotPvpCrowdControl.PlayerLike(attacker))
                 {
                     onMe = attacker;
                     break;
@@ -132,7 +144,8 @@ namespace DOL.AI.Brain
             // a monster on the caster that the pet is near enough to take back
             GameNPC onMe = Body.GetNPCsInRadius(1_000)
                 .FirstOrDefault(npc => npc.IsAlive && npc is not GameBot && npc.Realm == eRealm.None && npc.TargetObject == Body &&
-                                       npc.InCombat && AmnesiaForPet(true, true, pet.GetDistanceTo(npc)));
+                                       npc.InCombat && EpicEncounterTactics.For(npc) == null &&
+                                       AmnesiaForPet(true, true, pet.GetDistanceTo(npc)));
             return onMe != null && CastOn(amnesia, onMe);
         }
 

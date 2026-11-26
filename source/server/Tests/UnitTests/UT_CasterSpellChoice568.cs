@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using DOL.AI.Brain;
 using DOL.Database;
 using DOL.GS;
@@ -196,6 +198,56 @@ namespace DOL.UnitTests
             Assert.That(CompanionOptions165.Caption(CompanionOptions165.KindLifeTransfer), Is.EqualTo("Life transfer"));
             Assert.That(CompanionOptions165.Option(CompanionOptions165.KindAmnesia).Value.Choices[1], Is.EqualTo("Off"));
         });
+
+        [Test]
+        public void C4_UtilitySpellsNeverWeakenABoss() => Assert.Multiple(() =>
+        {
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Amnesia, false, false, false), Is.True, "an ordinary monster");
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Amnesia, false, false, true), Is.False,
+                "no Amnesia on a tactic boss: it would clear its aggro list and interrupt its cast");
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Confusion, false, false, true), Is.False, "nor Confusion");
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Nearsight, true, false, false), Is.False,
+                "EpicEncounterTactics.MustNotHit");
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Amnesia, false, true, false), Is.False,
+                "EpicEncounterTactics.ForbidsSpell");
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.LifeTransfer, false, false, false), Is.True);
+        });
+
+        // ---- C5 / C6 scope (owner 2026-11-26): not in raids, warbands or tactic-boss fights -------------------------
+
+        [Test]
+        public void C5C6_StayOutOfRaidsWarbandsAndTacticBossFights() => Assert.Multiple(() =>
+        {
+            Assert.That(BotHoldDamage.AppliesHere(false, false), Is.True, "an ordinary group fight");
+            Assert.That(BotHoldDamage.AppliesHere(true, false), Is.False, "a realm raid or warband (shared support)");
+            Assert.That(BotHoldDamage.AppliesHere(false, true), Is.False, "a boss with a tactic");
+            Assert.That(BotHoldDamage.AppliesHere(true, true), Is.False);
+            Assert.That(BotHealTriage165.IsBossTarget(null), Is.False);
+        });
+
+        [Test]
+        public void C5C6_CheckSpellsAndTheGateAreWiredAsTheOwnerDecided()
+        {
+            string dir = TestContext.CurrentContext.TestDirectory;
+            while (dir != null && !File.Exists(Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs")))
+                dir = Path.GetDirectoryName(dir);
+            Assert.That(dir, Is.Not.Null, "repository root");
+            string bots = Path.Combine(dir, "source", "server", "GameServer", "bots");
+            string brain = File.ReadAllText(Path.Combine(bots, "BotBrain.cs")).Replace("\r\n", "\n");
+            string hold = File.ReadAllText(Path.Combine(bots, "BotBrain.HoldDamage.cs")).Replace("\r\n", "\n");
+            string utility = File.ReadAllText(Path.Combine(bots, "BotBrain.UtilitySpells.cs")).Replace("\r\n", "\n");
+            Assert.Multiple(() =>
+            {
+                Assert.That(brain, Does.Contain("bool debuffOpening = veteranRulesHere && DebuffOpeningWorthwhile();"));
+                Assert.That(brain, Does.Contain("bool holdDamage = veteranRulesHere && HoldDamageForTank();"));
+                Assert.That(hold, Does.Contain("bool sharedSupport = AutonomousRealmRaid.HasSharedSupport(BotBody);"),
+                    "realm raids and warbands (RealmWarbandSupport) alike");
+                Assert.That(hold, Does.Contain("BotHealTriage165.IsBossTarget(AssistedPlayer?.TargetObject)"));
+                Assert.That(hold, Does.Contain("BotHealTriage165.IsBossTarget(Body.Group?.LivingLeader?.TargetObject)"));
+                Assert.That(utility, Does.Contain("EpicEncounterTactics.MustNotHit(BotBody, target)"), "CastOn's guard");
+                Assert.That(utility, Does.Contain("EpicEncounterTactics.ForbidsSpell(BotBody, target, spell)"));
+            });
+        }
 
         // ---- C5: casters wait for the tank or pet (True165 b3498be, 5a96d4b) ----------------------------------------
 
