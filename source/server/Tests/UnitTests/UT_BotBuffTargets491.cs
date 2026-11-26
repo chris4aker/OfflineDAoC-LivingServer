@@ -94,6 +94,21 @@ namespace DOL.UnitTests
             Assert.That(Benefits(eSpellType.PowerRegenBuff, TargetKind.Pet), Is.False);
         }
 
+        // #567 A2 (port of True165 BotPetBuffBenefit): no fatigue buff on a pet (StyleProcessor charges style endurance only to
+        // players and bots), and the caster's own pet follows the same rule as party pets.
+        [Test]
+        public void PetsGetNoFatigueBuffAndTheOwnPetFollowsTheSameRule()
+        {
+            GameNPC pet = Pet();
+            Assert.That(Benefits(pet, SpellOf(eSpellType.FatigueConsumptionBuff)), Is.False);
+            Assert.That(Benefits(BotOf(new ClassArmsman()), SpellOf(eSpellType.FatigueConsumptionBuff)), Is.True, "a character uses it");
+            foreach (eSpellType useless in new[] { eSpellType.EnduranceRegenBuff, eSpellType.PowerRegenBuff, eSpellType.AcuityBuff,
+                         eSpellType.FatigueConsumptionBuff })
+                Assert.That(AutonomousPetSupport.ShouldMaintainRoutinePetBuff(SpellOf(useless), false), Is.False, useless.ToString());
+            foreach (eSpellType useful in new[] { eSpellType.StrengthBuff, eSpellType.BaseArmorFactorBuff, eSpellType.CombatSpeedBuff })
+                Assert.That(AutonomousPetSupport.ShouldMaintainRoutinePetBuff(SpellOf(useful), false), Is.True, useful.ToString());
+        }
+
         [Test]
         public void SpecBufferLeavesBaseBuffsToAHealer()
         {

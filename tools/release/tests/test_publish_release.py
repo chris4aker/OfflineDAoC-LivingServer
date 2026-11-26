@@ -370,18 +370,76 @@ class PrereleaseTests(unittest.TestCase):
             self.assertIn(sha(b"zip"), out.read_text(encoding="utf-8"))
 
 
+# How the jobs API names update-contract.yml's job when build-and-test calls it (run 45829830420, 2026-11-26).
+CONTRACT_JOB = "update-contract / released launcher takes this build"
+
+
 class CheckJobsTests(unittest.TestCase):
     """Issue #623: publish-release refuses a run where any required job did not succeed."""
 
     @staticmethod
     def jobs(**overrides):
-        names = list(pr.REQUIRED_JOBS) + ["candidate-install", "report: chat audit"]
+        names = list(pr.REQUIRED_JOBS) + [CONTRACT_JOB, "candidate-install", "report: chat audit"]
         rows = [{"name": n, "status": "completed", "conclusion": overrides.get(n, "success")} for n in names]
         return {"total_count": len(rows), "jobs": [r for r in rows if r["conclusion"] != "absent"]}
 
     def test_all_required_jobs_green_passes(self):
         checked = pr.check_jobs(self.jobs(**{"report: chat audit": "failure"}))
-        self.assertEqual([n for n, _ in checked], list(pr.REQUIRED_JOBS))
+        self.assertEqual([n for n, _ in checked], list(pr.REQUIRED_JOBS) + [CONTRACT_JOB])
+
+    def test_a_failed_update_contract_is_refused(self):
+        # #689: the released launcher would not take this build, so players on that release would not get it.
+        with self.assertRaisesRegex(pr.Stop, r"update-contract / released launcher takes this build: failure"):
+            pr.check_jobs(self.jobs(**{CONTRACT_JOB: "failure"}))
+
+    def test_a_skipped_update_contract_is_refused(self):
+        with self.assertRaisesRegex(pr.Stop, r"update-contract / released launcher takes this build: skipped"):
+            pr.check_jobs(self.jobs(**{CONTRACT_JOB: "skipped"}))
+
+    def test_a_missing_update_contract_is_refused(self):
+        data = self.jobs(**{CONTRACT_JOB: "absent"})
+        data["total_count"] = len(data["jobs"])
+        with self.assertRaisesRegex(pr.Stop, r"update-contract: not in the run"):
+            pr.check_jobs(data)
+
+    def test_a_job_merely_named_update_contract_does_not_count(self):
+        # Only the called workflow's jobs ("update-contract / ...") count, not a lookalike name.
+        data = self.jobs(**{CONTRACT_JOB: "absent"})
+        data["jobs"] += [{"name": "update-contract", "status": "completed", "conclusion": "success"},
+                         {"name": "update-contract-extra / x", "status": "completed", "conclusion": "success"}]
+        data["total_count"] = len(data["jobs"])
+        with self.assertRaisesRegex(pr.Stop, r"update-contract: not in the run"):
+            pr.check_jobs(data)
+
+    def test_every_called_update_contract_job_must_succeed(self):
+        data = self.jobs()
+        data["jobs"].append({"name": "update-contract / another check", "status": "completed", "conclusion": "failure"})
+        data["total_count"] = len(data["jobs"])
+        with self.assertRaisesRegex(pr.Stop, r"update-contract / another check: failure"):
+            pr.check_jobs(data)
+
+    def test_the_command_line_refuses_a_planted_failed_update_contract(self):
+        import contextlib
+        import io
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "jobs.json"
+            path.write_text(json.dumps(self.jobs(**{CONTRACT_JOB: "failure"})))
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                code = pr.run(["check-jobs", "--jobs", str(path)])
+        self.assertEqual(code, 1)
+        self.assertIn("update-contract / released launcher takes this build: failure", out.getvalue())
+
+    def test_update_contract_is_the_called_workflow_with_its_own_job_name(self):
+        root = Path(__file__).resolve().parents[3]
+        text = (root / ".github/workflows/build-and-test.yml").read_text(encoding="utf-8")
+        for caller in pr.REQUIRED_CALLED:
+            m = re.search(rf"(?m)^  {re.escape(caller)}:\n((?:    .*\n|\n)*)", text)
+            self.assertIsNotNone(m, f"{caller} is not a build-and-test job")
+            self.assertRegex(m.group(1), rf"(?m)^    uses: \./\.github/workflows/{re.escape(caller)}\.yml$")
+            # A `name:` on the caller would change the "<caller> / " prefix the jobs API reports.
+            self.assertNotRegex(m.group(1), r"(?m)^    name:", f"{caller} has its own display name")
+        called = (root / ".github/workflows/update-contract.yml").read_text(encoding="utf-8")
+        self.assertIn("    name: " + CONTRACT_JOB.split(" / ", 1)[1] + "\n", called)
 
     def test_a_failed_required_job_is_refused(self):
         with self.assertRaisesRegex(pr.Stop, r"launcher: failure"):
@@ -406,7 +464,7 @@ class CheckJobsTests(unittest.TestCase):
     def test_a_truncated_job_list_is_refused(self):
         data = self.jobs()
         data["total_count"] = 150
-        with self.assertRaisesRegex(pr.Stop, r"only 7 were listed"):
+        with self.assertRaisesRegex(pr.Stop, r"only 8 were listed"):
             pr.check_jobs(data)
 
     def test_the_command_line_exits_1_and_says_nothing_was_published(self):

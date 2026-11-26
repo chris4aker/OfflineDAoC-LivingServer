@@ -78,6 +78,7 @@ NOT_LOCAL: dict[str, str] = {
     "tools/navmesh/navmesh_set.py verify": "reads the downloaded navmesh set (navmesh job)",
     "tools/navmesh/navmesh_set.py filter": "feeds dotnet test the navmesh filter (navmesh job; its tests run here)",
     "tools/navmesh/navmesh_set.py results": "reads the .trx the navmesh tests write (navmesh job; its tests run here)",
+    "tools/navmesh/clean_world.py verify": "checks the downloaded set's world database clean (navmesh job; its tests run here)",
 }
 
 

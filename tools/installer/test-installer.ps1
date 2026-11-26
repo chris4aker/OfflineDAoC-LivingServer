@@ -220,7 +220,31 @@ if ($Scenario -contains 'newest') {
             $r = Setup "newest-digest-$($case.Name)" @('--info', '--release-json', $file) -CheckNewest
             Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($embedded)) " -and $r.Log -match [regex]::Escape($case.Expect)) "newest: a $($case.Name) digest is refused and the embedded package is installed"
         }
-    } else { Write-Host '   INFO  newest: the embedded package is not older than GitHub''s newest, so the digest cases were not run' }
+        # Issue #689 (step 1 of the two-step rule): Setup takes the package from either repository path, in any case,
+        # and from nowhere else. GitHub's real redirects serve the accepted ones (the renamed path 301s to the current
+        # one), so Setup's download cache is emptied first and each accepted case is a real download through them.
+        $cache = Join-Path ([IO.Path]::GetTempPath()) 'LivingServer-Setup-download'
+        $current = $asset.browser_download_url
+        $tail = $current.Substring($current.IndexOf('/releases/download/'))
+        foreach ($case in @(@{ Name = 'renamed'; Repo = 'chris4aker/DAoC-LivingServer'; Accept = $true },
+                            @{ Name = 'lowercase'; Repo = 'chris4aker/offlinedaoc-livingserver'; Accept = $true },
+                            @{ Name = 'renamed-upper'; Repo = 'CHRIS4AKER/DAOC-LIVINGSERVER'; Accept = $true },
+                            @{ Name = 'lookalike'; Repo = 'chris4aker/OfflineDAoC-LivingServer-evil'; Accept = $false },
+                            @{ Name = 'renamed-lookalike'; Repo = 'chris4aker/DAoC-LivingServer-evil'; Accept = $false },
+                            @{ Name = 'other-owner'; Repo = 'someone-else/DAoC-LivingServer'; Accept = $false },
+                            @{ Name = 'other-host'; Url = 'https://objects.githubusercontent.com/chris4aker/DAoC-LivingServer' + $tail; Accept = $false })) {
+            $url = if ($case.Url) { $case.Url } else { 'https://github.com/' + $case.Repo + $tail }
+            $file = Join-Path $Work "release-repo-$($case.Name).json"
+            [IO.File]::WriteAllText($file, $json.Replace('"' + $current + '"', '"' + $url + '"'))
+            if ($case.Accept) { Remove-Item -LiteralPath $cache -Recurse -Force -ErrorAction SilentlyContinue }
+            $r = Setup "newest-repo-$($case.Name)" @('--info', '--release-json', $file) -CheckNewest
+            if ($case.Accept) {
+                Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($newestBuild)) " -and $r.Log -match 'checked against its SHA-256 digest') "newest: a package under $url is downloaded and used (#689)"
+            } else {
+                Check ($r.Code -eq 0 -and $r.Log -match "WOULD INSTALL $([regex]::Escape($embedded)) " -and $r.Log -match "isn't one of this project's release files") "newest: a package under $url is refused before downloading; the embedded one is installed (#689)"
+            }
+        }
+    } else { Write-Host '   INFO  newest: the embedded package is not older than GitHub''s newest, so the digest and repository path cases were not run' }
 
     # Issue #684: the navmesh-vN release (CI's navmesh set, zip parts and a manifest, no game package) is never a game
     # update, even published by mistake as a full release and GitHub's newest. Setup keeps the embedded package.

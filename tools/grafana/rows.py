@@ -10,6 +10,11 @@ It is a reader of C#, not a parser: it knows the shapes rows are written in here
 - a const marker (`const string Marker = "MARKER";`, the EconomyLog tags) used as `$"{Marker} ..."`, as
   `new StringBuilder(Marker)` followed by `.Append(" key=")`, or as `EconomyLog.Line(Tag, ("key", value))`
 - a doc comment that spells the row, `<c>MARKER key= key=</c>`, which adds its fields
+
+A const marker resolves to the declaration in the innermost class, struct or record that encloses its use (#690): the
+LivingRows files declare `const string Marker` once per row class, several to a file, and taking the file's last one gave
+one row the sites and fields of another (CC_BREAK read CAST_INTERRUPT's). `new StringBuilder(Marker, 200)` (a capacity
+after the marker) is read like `new StringBuilder(Marker)`, and its `.Append(" key=")` chain ends at its `ToString()`.
 """
 from __future__ import annotations
 
@@ -88,6 +93,126 @@ def _statement(text: str, start: int) -> str:
     return text[start:i]
 
 
+_CHAR = re.compile(r"'(?:\\.[^'\n]{0,4}|[^'\\\n])'")
+
+
+def _literal_end(text: str, i: int) -> int:
+    """The end of the string literal starting at i (its prefix of $ and @ included). An interpolated string's holes
+    ({...}) are read as code, so a literal inside a hole, braces and all, is skipped whole."""
+    n = len(text)
+    j = i
+    interpolated = verbatim = False
+    while j < n and text[j] in "@$":
+        interpolated |= text[j] == "$"
+        verbatim |= text[j] == "@"
+        j += 1
+    if text.startswith('"""', j):   # a raw string literal
+        k = text.find('"""', j + 3)
+        return n if k < 0 else k + 3
+    k = j + 1
+    while k < n:
+        c = text[k]
+        if not verbatim and c == "\\":
+            k += 2
+        elif c == '"':
+            if verbatim and text.startswith('""', k):
+                k += 2
+            else:
+                return k + 1
+        elif not verbatim and c == "\n":
+            return k
+        elif interpolated and c == "{":
+            if text.startswith("{{", k):
+                k += 2
+                continue
+            depth, k = 1, k + 1
+            while k < n and depth:
+                d = text[k]
+                if d == '"' or (d in "@$" and text[k + 1:k + 2] in ('"', "@", "$")):
+                    k = _literal_end(text, k)
+                    continue
+                if d == "'" and (ch := _CHAR.match(text, k)):
+                    k = ch.end()
+                    continue
+                depth += {"{": 1, "}": -1}.get(d, 0)
+                k += 1
+        else:
+            k += 1
+    return n
+
+
+def mask(text: str) -> str:
+    """The text with comments and string and char literals blanked (same length, newlines kept), for brace matching."""
+    out = list(text)
+    i, n = 0, len(text)
+
+    def blank(a: int, b: int) -> None:
+        for k in range(a, min(b, n)):
+            if out[k] != "\n":
+                out[k] = " "
+
+    while i < n:
+        c = text[i]
+        if text.startswith("//", i):
+            j = text.find("\n", i)
+            j = n if j < 0 else j
+        elif text.startswith("/*", i):
+            j = text.find("*/", i + 2)
+            j = n if j < 0 else j + 2
+        elif c == '"' or (c in "@$" and text[i + 1:i + 2] in ('"', "@", "$") and '"' in text[i + 1:i + 3]):
+            j = _literal_end(text, i)
+        elif c == "'" and (ch := _CHAR.match(text, i)):
+            j = ch.end()
+        else:
+            i += 1
+            continue
+        blank(i, j)
+        i = j
+    return "".join(out)
+
+
+_TYPE_DECL = re.compile(r"\b(?:class|struct|record|interface)\s+\w+[^;{]*\{")
+
+
+def type_spans(text: str) -> list[tuple[int, int]]:
+    """(start, end) of every class, struct, record and interface body in the text (positions of its braces)."""
+    masked = mask(text)
+    spans = []
+    for m in _TYPE_DECL.finditer(masked):
+        start = m.end() - 1
+        depth = 0
+        for i in range(start, len(masked)):
+            if masked[i] == "{":
+                depth += 1
+            elif masked[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    spans.append((start, i))
+                    break
+    return spans
+
+
+def resolve_const(decls: list[tuple[str, int]], spans: list[tuple[int, int]], pos: int) -> str | None:
+    """The marker of the const declaration (marker, position) in effect at pos: the one whose innermost enclosing type
+    also encloses pos, innermost first; else the only one; else the nearest one before pos."""
+    if not decls:
+        return None
+    if len(decls) == 1:
+        return decls[0][0]
+
+    def innermost(at: int):
+        inside = [sp for sp in spans if sp[0] < at < sp[1]]
+        return min(inside, key=lambda sp: sp[1] - sp[0]) if inside else None
+
+    enclosing = sorted((sp for sp in spans if sp[0] < pos < sp[1]), key=lambda sp: sp[1] - sp[0])
+    for sp in enclosing:
+        for marker, at in decls:
+            if innermost(at) == sp:
+                return marker
+    before = [d for d in decls if d[1] < pos]
+    return (before[-1] if before else decls[0])[0]
+
+
 def _balanced(text: str, start: int, open_c: str, close_c: str) -> str:
     """The text inside the bracket at start (text[start] == open_c)."""
     depth = 0
@@ -123,10 +248,12 @@ def _fields_from_statement(row: Row, stmt: str) -> None:
 
 
 def _append_fields(row: Row, text: str, start: int) -> None:
-    """The .Append(" key=") fragments after a StringBuilder(marker), up to the next StringBuilder or 6000 characters."""
+    """The .Append(" key=") fragments after a StringBuilder(marker), up to its ToString(), the next StringBuilder or 6000
+    characters, whichever comes first."""
     stop = min(len(text), start + 6000)
-    nxt = re.search(r"StringBuilder\(", text[start:stop])
-    block = text[start:start + nxt.start()] if nxt else text[start:stop]
+    ends = [m.start() for m in (re.search(r"StringBuilder\(", text[start:stop]), re.search(r"\.ToString\(\s*\)", text[start:stop]))
+            if m]
+    block = text[start:start + min(ends)] if ends else text[start:stop]
     for a in _APPEND_KEY.finditer(block):
         expr_start = block.find(".Append(", a.end())
         expr = _balanced(block, expr_start + 7, "(", ")") if expr_start == a.end() else ""
@@ -165,20 +292,20 @@ def scan(repo: Path) -> dict[str, Row]:
     files = sorted(p for p in server.rglob("*.cs") if "Tests" not in p.relative_to(server).parts
                    and not any(part in ("bin", "obj") for part in p.parts))
     # Pass 1: const markers everywhere (EconomyLog's tags are used from other files).
-    consts_by_file: dict[Path, dict[str, str]] = {}
+    consts_by_file: dict[Path, dict[str, list[tuple[str, int]]]] = {}
     economy_tags: dict[str, str] = {}
     texts: dict[Path, str] = {}
     for p in files:
         text = p.read_text(encoding="utf-8", errors="replace")
         texts[p] = text
-        found = {}
+        found: dict[str, list[tuple[str, int]]] = {}
         for m in _CONST.finditer(text):
             name = m.group("name")
             if re.search(r"(Marker|Tag|Row|Prefix)$", name) or p.name == "EconomyLog.cs":
-                found[name] = m.group("marker")
+                found.setdefault(name, []).append((m.group("marker"), m.start()))
         consts_by_file[p] = found
         if p.name == "EconomyLog.cs":
-            economy_tags = dict(found)
+            economy_tags = {name: decls[-1][0] for name, decls in found.items()}
 
     def row_for(marker: str) -> Row:
         return rows.setdefault(marker, Row(marker))
@@ -187,6 +314,7 @@ def scan(repo: Path) -> dict[str, Row]:
         text, rel = texts[p], p.relative_to(repo).as_posix()
         lines = text.split("\n")
         consts = consts_by_file[p]
+        spans = type_spans(text) if any(len(d) > 1 for d in consts.values()) else []
         session = SESSION_CHAT_LOGGER in text
 
         def lineno(pos: int) -> int:
@@ -220,23 +348,24 @@ def scan(repo: Path) -> dict[str, Row]:
             site(m.group("marker"), m.start(), _statement(text, m.start()))
             _append_fields(row_for(m.group("marker")), text, m.end())
 
-        for name, marker in consts.items():
-            # $"{Marker} ...", new StringBuilder(Marker), Line(Marker, ...), Emit(Marker + ...)
-            pattern = re.compile(rf'\$@?"\{{{name}\}}|StringBuilder\(\s*{name}\s*\)|\b{name}\s*\+\s*"\s')
+        for name, decls in consts.items():
+            # $"{Marker} ...", new StringBuilder(Marker[, capacity]), Line(Marker, ...), Emit(Marker + ...)
+            pattern = re.compile(rf'\$@?"\{{{name}\}}|StringBuilder\(\s*{name}\s*[,)]|\b{name}\s*\+\s*"\s')
             for m in pattern.finditer(text):
+                marker = resolve_const(decls, spans, m.start())
                 site(marker, m.start(), _statement(text, m.start()))
-            for m in re.finditer(rf"StringBuilder\(\s*{name}\s*\)", text):
-                _append_fields(row_for(marker), text, m.end())
+            for m in re.finditer(rf"StringBuilder\(\s*{name}\s*(?:,[^)]*)?\)", text):
+                _append_fields(row_for(resolve_const(decls, spans, m.start())), text, m.end())
 
         for m in _LINE_CALL.finditer(text):
             name = m.group("name")
-            marker = consts.get(name) or economy_tags.get(name)
+            marker = (resolve_const(consts[name], spans, m.start()) if name in consts else None) or economy_tags.get(name)
             if marker:
                 site(marker, m.start(), _statement(text, m.start()))
 
         for m in _DOC_ROW.finditer(text):
             r = rows.get(m.group("marker"))
-            if r is None and m.group("marker") not in consts.values():
+            if r is None and m.group("marker") not in {marker for decls in consts.values() for marker, _ in decls}:
                 continue
             r = row_for(m.group("marker"))
             for key in re.findall(r" ([A-Za-z][A-Za-z0-9_]*)=", m.group("body")):
