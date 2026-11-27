@@ -273,6 +273,7 @@ public static partial class AutonomousRvrEventLayer
     private static void LogBattlegroup(string what, BattlegroupRecord record, Dictionary<string, BattlegroupCandidate> byId,
         string force, string why, long now)
     {
+        if (!Log.IsInfoEnabled) return;
         int heads = record.Members.Sum(member => byId.TryGetValue(member.ForceId, out BattlegroupCandidate candidate) ? candidate.Heads : 0);
         Log.Info($"RVR_FORCE_BATTLEGROUP what={what} id={record.Id} realm={GlobalConstants.RealmToName(record.Realm)} " +
                  $"region={record.Region} lead={record.Lead ?? "-"} groups={record.Members.Count} heads={heads} " +
