@@ -206,8 +206,17 @@ namespace DOL.GS.PacketHandler
 			rewards.Add(reward);
 			long start = pak.Position;
 			WriteItemData(pak, GameInventoryItem.Create(reward));
-			StampQuestRewardPosition(pak, start, rewards.Count);
+
+			if (StampsQuestRewardPosition(m_gameClient.Version))
+				StampQuestRewardPosition(pak, start, rewards.Count);
 		}
+
+		/// <summary>
+		/// Whether the item block starts with the u16 the reward's position goes in. Only 1.115+ write a placeholder there
+		/// (PacketLib1115 on); before that the first two bytes are the item's level and value1, which the stamp would
+		/// overwrite. Upstream ec097f507 stamps for every client from 1.94 on (the same latent bug); ours targets 1.127.
+		/// </summary>
+		public static bool StampsQuestRewardPosition(GameClient.eClientVersion version) => version >= GameClient.eClientVersion.Version1115;
 
 		/// <summary>Overwrites the item block's first u16 (written as 0) at <paramref name="start"/> with the reward's position, then returns to the end.</summary>
 		public static void StampQuestRewardPosition(DOL.Network.PacketOut pak, long start, int position)

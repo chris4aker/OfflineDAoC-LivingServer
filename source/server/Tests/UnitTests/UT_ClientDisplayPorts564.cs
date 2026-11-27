@@ -233,6 +233,18 @@ namespace DOL.UnitTests
             Assert.That(bytes.Skip((int)start).ToArray(), Is.EqualTo(new byte[] { 0x00, 0x03, 0x2A, 0x2B }));
         }
 
+        [TestCase(GameClient.eClientVersion.Version1112, false)]
+        [TestCase(GameClient.eClientVersion.Version1114, false)]
+        [TestCase(GameClient.eClientVersion.Version1115, true)]
+        [TestCase(GameClient.eClientVersion.Version1127, true)]
+        public void QuestReward_PositionIsStampedOnlyWhereTheBlockHasAPlaceholder(GameClient.eClientVersion version, bool stamped)
+        {
+            // Before 1.115 the item block's first two bytes are the level and value1, not a u16 placeholder.
+            Assert.That(PacketLib194.StampsQuestRewardPosition(version), Is.EqualTo(stamped));
+            string item = Method(Source("packets", "Server", "PacketLib194.cs"), "private void WriteQuestRewardItem(");
+            Assert.That(item, Does.Contain("if (StampsQuestRewardPosition(m_gameClient.Version))"));
+        }
+
         [Test]
         public void QuestWindows_WriteRewardsThroughWriteQuestRewards()
         {
