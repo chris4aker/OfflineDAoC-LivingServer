@@ -171,14 +171,13 @@ namespace DOL.GS.Quests
             Step = -2; // -2 indicates quest finished, -1 indicates aborted quests etc, they won't show up in the list.
             m_questPlayer.Out.SendMessage(string.Format(LanguageMgr.GetTranslation(m_questPlayer.Client, "AbstractQuest.FinishQuest.Completed", Name)), eChatType.CT_ScreenCenter, eChatLoc.CL_SystemWindow);
 
-            // Move quest from active list to finished list.
-            if (m_questPlayer.QuestList.TryRemove(this, out byte value))
-                m_questPlayer.AvailableQuestIndexes.Enqueue(value);
+            // Move quest from active list to finished list (port of OpenDAoC-Core 22197f1f6: the slot is cleared only
+            // when the quest was in the list).
+            m_questPlayer.RemoveQuest(this, notifyPlayer: true);
 
             if (m_questPlayer.HasFinishedQuest(GetType()) == 0)
                 m_questPlayer.AddFinishedQuest(this);
 
-            m_questPlayer.Out.SendQuestRemove(value);
             m_questPlayer.SaveIntoDatabase();
         }
 
@@ -186,11 +185,9 @@ namespace DOL.GS.Quests
         {
             Step = -1;
 
-            if (m_questPlayer.QuestList.TryRemove(this, out byte value))
-                m_questPlayer.AvailableQuestIndexes.Enqueue(value);
+            m_questPlayer.RemoveQuest(this, notifyPlayer: true);
 
             DeleteFromDatabase();
-            m_questPlayer.Out.SendQuestRemove(value);
             m_questPlayer.Out.SendMessage(LanguageMgr.GetTranslation(m_questPlayer.Client, "AbstractQuest.AbortQuest"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
         }
 

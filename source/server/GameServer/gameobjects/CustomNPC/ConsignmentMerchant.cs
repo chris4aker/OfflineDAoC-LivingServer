@@ -169,13 +169,44 @@ namespace DOL.GS
             {
                 lock (_moneyLock)
                 {
+                    // Port of OpenDAoC-Core e540603f9 (adapted: we have no ConsignmentState): never throw here when
+                    // the merchant's money row is gone. Callers that move a player's money check HasMoneyRecord first.
+                    DbHouseConsignmentMerchant merchant = LoadMoneyRecord();
+
+                    if (merchant == null)
+                    {
+                        if (log.IsErrorEnabled)
+                            log.Error($"CM: Can't save money for the consignment merchant on lot {HouseNumber}: no {nameof(DbHouseConsignmentMerchant)} row. Money kept at {_money}, not {value}.");
+
+                        return;
+                    }
+
                     _money = value;
-                    DbHouseConsignmentMerchant merchant = DOLDB<DbHouseConsignmentMerchant>.SelectObject(DB.Column("HouseNumber").IsEqualTo(HouseNumber));
                     merchant.Money = _money;
                     GameServer.Database.SaveObject(merchant);
                 }
             }
         }
+
+        /// <summary>The merchant's money row (DbHouseConsignmentMerchant), or null when it can't be found.</summary>
+        protected virtual DbHouseConsignmentMerchant LoadMoneyRecord()
+        {
+            return DOLDB<DbHouseConsignmentMerchant>.SelectObject(DB.Column("HouseNumber").IsEqualTo(HouseNumber));
+        }
+
+        /// <summary>
+        /// True when the merchant's money can be saved. Buying and withdrawing check it before any money moves,
+        /// so a missing row can't take a buyer's money without paying the seller.
+        /// </summary>
+        public virtual bool HasMoneyRecord()
+        {
+            lock (_moneyLock)
+            {
+                return LoadMoneyRecord() != null;
+            }
+        }
+
+        public const string MONEY_RECORD_MISSING_MESSAGE = "Merchant data could not be loaded. Please try removing and re-adding the merchant.";
 
         /// <summary>
         /// Checks if the Player is allowed to move an item.
@@ -454,6 +485,13 @@ namespace DOL.GS
                     return;
                 }
 
+                // Port of OpenDAoC-Core e540603f9: check the money row before taking the buyer's money.
+                if (!HasMoneyRecord())
+                {
+                    ChatUtil.SendErrorMessage(player, MONEY_RECORD_MISSING_MESSAGE);
+                    return;
+                }
+
                 int sellPrice = item.SellPrice;
                 int purchasePrice = sellPrice;
 
@@ -700,18 +738,16 @@ namespace DOL.GS
             if (house == null)
                 return;
 
-            if (house.DatabaseItem.GuildHouse)
-            {
-                DbGuild guild = DOLDB<DbGuild>.SelectObject(DB.Column("GuildName").IsEqualTo(house.DatabaseItem.GuildName));
-                int emblem = guild.Emblem;
-                DbInventoryItem cloak = Inventory.GetItem(eInventorySlot.Cloak);
+            // Port of OpenDAoC-Core 409c19b3d: wear the house's emblem (a guild house's is the guild's; a member's
+            // personal house shows the owner's guild). Before, only guild houses were read, from the guild table,
+            // which threw when the guild was gone.
+            DbInventoryItem cloak = Inventory.GetItem(eInventorySlot.Cloak);
 
-                if (cloak != null)
-                {
-                    cloak.Emblem = emblem;
-                    BroadcastLivingEquipmentUpdate();
-                }
-            }
+            if (cloak == null)
+                return;
+
+            cloak.Emblem = house.Emblem;
+            BroadcastLivingEquipmentUpdate();
         }
     }
 }

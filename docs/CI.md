@@ -43,6 +43,9 @@ The "main: green checks" ruleset requires these six checks before a pull request
 8. **Living Server tab tests**: the launcher builds, the tab's test classes pass, and every class of the filter has tests
    in the results (a renamed class can't drop out unseen).
 9. **Character passport** and **progress transfer** tests: pass, and at least one test ran.
+   Then the **source-world Setup tool** (`DAoCLivingServer.Setup`) builds: nothing else compiled it, so #725 went unseen.
+   It has no tests of its own; `source/tools/tests/test_setup_period_manifest.py` pins its manifest rule. (Added under
+   #618's rule for #725.)
 10. **Package the server build** (fails on any missing file) and **test the installer scripts** on fake game folders
     (Windows PowerShell 5.1, `tools/fork-build/test-install-scripts.ps1`).
 
@@ -198,8 +201,13 @@ release by mistake: `DAoCLivingServer.Launcher.Tests/NavmeshReleaseTests.cs` and
 
 **Releases.** Release packages carry no navmeshes. Players get them from the base files plus the byte patches of
 `tools/fork-build/content-patches.json`. Once a set is published, `navmesh_set.py check` (in `tools/check.py`) fails when
-a navmesh the installer patches is not, in the set, the patch's fixed SHA-256. So the set and what ships agree. Making
-those patches from the set instead of a PC folder is part 2 of #687.
+a navmesh the installer patches is not, in the set, the patch's fixed SHA-256 and size. So the set and what ships agree.
+The patches are made from the set (#687): `tools/fork-build/make_content_patch.py --navmesh-set DIR` takes each fixed
+navmesh by its manifest path from a folder `navmesh_set.py fetch` unpacked (its `.navmesh-set.json` must be the manifest,
+and the file is hashed again), with `set` for the fixed file; a navmesh given as a file from a PC folder is refused.
+`source/tools/tests/test_make_content_patch.py` (encounter-catalog job, so on every push) pins the shipped navmesh
+patches to `tools/navmesh/manifest.json`. A navmesh rebuild (#582) publishes `navmesh-vN+1`; its patches are made from
+that set.
 
 ## Every checker fails on a planted defect
 
@@ -209,7 +217,7 @@ Each checker CI runs has a test that plants a defect and sees it fail, and sees 
 |---|---|
 | `tools/check.py` (local mirror) | `source/tools/tests/test_check.py` (stale catalog; issue #615) |
 | `source/tools/ci_test_results.py` | `source/tools/tests/test_ci_test_results.py` (missing, unreadable, failed, empty, vanished class, bad excluded list) |
-| `tools/navmesh/navmesh_set.py` (fetch, verify, results, check) | `tools/navmesh/tests/test_navmesh_set.py` (a planted part, file and restored-set mismatch; damaged manifests; a failed, inconclusive or missing result; a stale installer patch) |
+| `tools/navmesh/navmesh_set.py` (fetch, verify, results, check) | `tools/navmesh/tests/test_navmesh_set.py` (a planted part, file and restored-set mismatch; damaged manifests; a failed, inconclusive or missing result; a stale installer patch); `source/tools/tests/test_make_content_patch.py` (a navmesh from a PC folder, an unfetched or other-manifest set, a mesh changed after the fetch, a stale size) |
 | `tools/navmesh/Publish-NavmeshSet.ps1` | `tools/navmesh/tests/test-publish-script.ps1` (identical zips twice, read back by `navmesh_set.py`, a planted mismatch, the install untouched, each refusal) |
 | `source/tools/run_installed_tests.py` | `source/tools/tests/test_run_installed_tests.py` (server running, not a game folder, unlisted class, no results; the world is copied, never used) |
 | `source/tools/make_command_reference.py --check` | `source/tools/tests/test_checkers_fail.py` |

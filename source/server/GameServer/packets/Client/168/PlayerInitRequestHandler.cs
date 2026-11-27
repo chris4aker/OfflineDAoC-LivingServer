@@ -16,6 +16,9 @@ namespace DOL.GS.PacketHandler.Client.v168
     {
         private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>Whether login moves this account away from an unsafe keep or a battleground it outlevels: players only.</summary>
+        public static bool RelocatesAtLogin(ePrivLevel privLevel) => privLevel < ePrivLevel.GM;
+
         /// <summary>
         /// Whether entering a region next to an enemy keep, or a keep in combat, sends the player to their bind point
         /// ("This area isn't currently secure"). A GM or admin (PrivLevel above Player) is never moved: on the owner's PC
@@ -97,14 +100,19 @@ namespace DOL.GS.PacketHandler.Client.v168
 
             // Owner 2026-10-30: an older save with more than 25 active quests keeps every one of them; the journal shows
             // 25 and the rest are listed as slots free. Said once per login instead of hiding them without a word.
-            if (firstEntry && Quests.QuestJournal.WaitingText(player.QuestList.Count) is string waitingQuests)
+            if (firstEntry && Quests.QuestJournal.WaitingText(player.ActiveQuestCount) is string waitingQuests)
                 player.Out.SendMessage(waitingQuests, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 
-            if (player.PreviousLoginDate.AddMinutes(ServerProperties.Properties.NEAR_KEEP_RELOG_GRACE_PERIOD) < DateTime.Now)
-                CheckNearbyKeepAndMoveIfUnsafe(player);
+            // Port of OpenDAoC-Core c0f4c72bb: GM and admin accounts are not moved away from a keep or out of a
+            // battleground at login, so a GM can log out where they are working.
+            if (RelocatesAtLogin((ePrivLevel) player.Client.Account.PrivLevel))
+            {
+                if (player.PreviousLoginDate.AddMinutes(ServerProperties.Properties.NEAR_KEEP_RELOG_GRACE_PERIOD) < DateTime.Now)
+                    CheckNearbyKeepAndMoveIfUnsafe(player);
 
-            if (ServerProperties.Properties.TELEPORT_LOGIN_BG_LEVEL_EXCEEDED)
-                CheckBGLevelCapForPlayerAndMoveIfNecessary(player);
+                if (ServerProperties.Properties.TELEPORT_LOGIN_BG_LEVEL_EXCEEDED)
+                    CheckBGLevelCapForPlayerAndMoveIfNecessary(player);
+            }
 
             // Check realm timer and move player to bind if realm timer is not for this realm.
             RealmTimer.CheckRealmTimer(player);

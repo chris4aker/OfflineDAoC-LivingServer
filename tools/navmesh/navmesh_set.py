@@ -12,7 +12,9 @@ tests of .github/navmesh-tests.txt against it.
 
     python tools/navmesh/navmesh_set.py check
         The manifest in Git, the navmesh test list and (once a set is published) the navmesh files the installer patches
-        (tools/fork-build/content-patches.json) agree. Needs nothing but the repository; tools/check.py runs it.
+        (tools/fork-build/content-patches.json, fixed SHA-256 and size) agree. Needs nothing but the repository;
+        tools/check.py runs it. tools/fork-build/make_content_patch.py --navmesh-set makes those patches from a fetched
+        set (set_file), so what ships is the set's mesh (#687).
     python tools/navmesh/navmesh_set.py status tools/navmesh/manifest.json
         published=true|false and world=true|false (also into $GITHUB_OUTPUT). The placeholder manifest means "no set yet": a notice, exit 0.
     python tools/navmesh/navmesh_set.py fetch tools/navmesh/manifest.json --dest DIR [--from FOLDER]
@@ -397,6 +399,33 @@ def check_list(entries: list[tuple[str, str]], excluded_text: str, tests: Path =
 
 # ---- the installer's navmesh patches ----------------------------------------------------------------------------
 
+def set_file(manifest_path: Path, root: Path, rel: str) -> bytes:
+    """One file of a set that fetch unpacked into root and checked against manifest_path, its bytes re-checked against
+    the manifest (issue #687: make_content_patch.py takes a fixed navmesh from here, never from a PC folder). Raises
+    SetError when root was not fetched against this manifest, or the file is not the manifest's."""
+    manifest = load(manifest_path)
+    if manifest is None:
+        raise SetError(f"{manifest_path} is the placeholder: no navmesh set is published to take {rel} from")
+    marker = root / MARKER
+    if not marker.is_file():
+        raise SetError(f"{root} has no {MARKER}: it is not a set navmesh_set.py fetch unpacked and checked")
+    if sha256_of(marker) != sha256_of(manifest_path):
+        raise SetError(f"{root} was fetched against another manifest than {manifest_path} (its {MARKER} differs): "
+                       f"fetch {manifest.tag} again")
+    entry = next((f for f in manifest.files if f.path == rel), None)
+    if entry is None:
+        raise SetError(f"{rel} is not in {manifest.tag}")
+    path = root.joinpath(*PurePosixPath(rel).parts)
+    if not path.is_file():
+        raise SetError(f"{rel} is missing from {root}")
+    data = path.read_bytes()
+    got = hashlib.sha256(data).hexdigest()
+    if len(data) != entry.size or got != entry.sha256:
+        raise SetError(f"{rel} in {root} is {len(data)} bytes with SHA-256 {got}; {manifest.tag} says {entry.size} bytes, "
+                       f"{entry.sha256}")
+    return data
+
+
 def check_content_patches(manifest: Manifest, patches_text: str) -> list[str]:
     """Each navmesh the installer patches (content-patches.json) is in the set as the patch leaves it (Fixed), so the
     set is the navmesh a player of that build has."""
@@ -417,6 +446,8 @@ def check_content_patches(manifest: Manifest, patches_text: str) -> list[str]:
         elif entry.sha256 != str(patch.get("Fixed", "")).lower():
             problems.append(f"{rel}: the set's SHA-256 {entry.sha256} is not the installer's fixed {patch.get('Fixed')}"
                             f" (the set was captured before that fix, or from another build)")
+        elif "Size" in patch and patch.get("Size") != entry.size:
+            problems.append(f"{rel}: the installer's fixed size {patch.get('Size')} is not the set's {entry.size} bytes")
     return problems
 
 

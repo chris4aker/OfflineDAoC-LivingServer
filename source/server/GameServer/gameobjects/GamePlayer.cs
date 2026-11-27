@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -269,6 +270,12 @@ namespace DOL.GS
             get { return m_previousLoginDate; }
             set { m_previousLoginDate = value; }
         }
+
+        /// <summary>
+        /// When PeriodicQuestService last reset or checked this player's daily, weekly and monthly quests in this session
+        /// (MinValue before the first entry into the world). Keeps a region change from resetting them again.
+        /// </summary>
+        public DateTime PeriodicQuestsCheckedAt { get; set; } = DateTime.MinValue;
 
         /// <summary>
         /// Gets or sets the anonymous flag for this player
@@ -7915,6 +7922,7 @@ namespace DOL.GS
             RefreshItemBonuses();
             LastPositionUpdatePacketReceivedTime = GameLoop.GameLoopTime;
             LastPlayerActivityTime = GameLoop.GameLoopTime;
+            PeriodicQuestService.OnPlayerJoin(this); // port of OpenDAoC-Core e688e984e: rollovers passed while offline
             ClientService.Instance.OnPlayerJoin(this);
             return true;
         }
@@ -8151,10 +8159,17 @@ namespace DOL.GS
             get => m_guild;
             set
             {
+                bool leftGuild = value == null && m_guild != null;
+
                 if (value == null)
-                    m_guild.RemoveOnlineMember(this);
+                    m_guild?.RemoveOnlineMember(this);
 
                 m_guild = value;
+
+                // Leaving or losing the guild clears the guild emblem on the player's own house. Logging out keeps it:
+                // RemoveOnlineMember no longer clears it (port of OpenDAoC-Core 72245d297).
+                if (leftGuild)
+                    GuildMgr.RefreshPersonalHouseEmblem(this);
 
                 // Update guild name for all players if client is playing.
                 if (ObjectState == eObjectState.Active)
@@ -9599,6 +9614,17 @@ namespace DOL.GS
         /// </summary>
         /// <param name="slot_pos">SlotPosition to drop</param>
         /// <returns>true if dropped</returns>
+        /// <summary>
+        /// Whether an item can be dropped on the ground from this slot: the backpack and the four quiver slots (port of
+        /// OpenDAoC-Core b28922b5e and its fix 117370277; the quiver could not be emptied onto the ground before).
+        /// Worn and held items still can't be dropped straight from the paper doll.
+        /// </summary>
+        public static bool CanDropFromSlot(eInventorySlot slot)
+        {
+            return slot is (>= eInventorySlot.FirstBackpack and <= eInventorySlot.LastBackpack) or
+                (>= eInventorySlot.FirstQuiver and <= eInventorySlot.FourthQuiver);
+        }
+
         public virtual bool DropItem(eInventorySlot slot_pos)
         {
             WorldInventoryItem tempItem;
@@ -9616,7 +9642,7 @@ namespace DOL.GS
         {
             droppedItem = null;
 
-            if (slot_pos < eInventorySlot.FirstBackpack || slot_pos > eInventorySlot.LastBackpack)
+            if (!CanDropFromSlot(slot_pos))
                 return false;
 
             DbInventoryItem item;
@@ -10621,9 +10647,12 @@ namespace DOL.GS
 
             void HandleQuests(IList<DbQuest> scriptedQuests, DataQuest[] dataQuests)
             {
-                AvailableQuestIndexes.Clear();
-                QuestList.Clear();
-                _questListFinished.Clear();
+                ClearActiveQuests();
+                lock (_questListFinishedLock)
+                {
+                    _questListFinished.Clear();
+                }
+
                 int activeQuestCount = 0;
 
                 foreach (DbQuest dbQuest in scriptedQuests)
@@ -10636,7 +10665,7 @@ namespace DOL.GS
                     if (quest.Step < 0)
                         AddFinishedQuest(quest);
                     else
-                        QuestList.TryAdd(quest, (byte) activeQuestCount++);
+                        SetActiveQuest(quest, (byte) activeQuestCount++);
 
                     switch (quest)
                     {
@@ -10661,9 +10690,9 @@ namespace DOL.GS
                 foreach (DataQuest dataQuest in dataQuests)
                 {
                     if (dataQuest.Step > 0)
-                        QuestList.TryAdd(dataQuest, (byte) activeQuestCount++);
+                        SetActiveQuest(dataQuest, (byte) activeQuestCount++);
                     else if (dataQuest.Count > 0)
-                        _questListFinished.Add(dataQuest);
+                        AddFinishedQuest(dataQuest);
                 }
             }
 
@@ -10797,17 +10826,7 @@ namespace DOL.GS
                 if (cachedCharacter != null)
                     cachedCharacter = DBCharacter;
 
-                foreach (AbstractQuest quest in QuestList.Keys)
-                {
-                    if (quest is Quests.DailyQuest dq)
-                        dq.SaveQuestParameters();
-
-                    if (quest is Quests.WeeklyQuest wq)
-                        wq.SaveQuestParameters();
-
-                    if (quest is Quests.MonthlyQuest mq)
-                        mq.SaveQuestParameters();
-                }
+                SaveActiveQuestParameters();
 
                 if (m_mlSteps != null)
                     GameServer.Database.SaveObject(m_mlSteps.OfType<DbCharacterXMasterLevel>());
@@ -11267,11 +11286,397 @@ namespace DOL.GS
             get { return InternalID; }
         }
 
+        // Port of OpenDAoC-Core 22197f1f6 and cdb4384c0: the active quest list is a plain dictionary behind one lock, with
+        // indexes by data quest ID and by scripted quest class. Before, the duplicate check, the free journal slot and
+        // the add were three separate steps on a ConcurrentDictionary plus a queue of freed slots, so two quest starts at
+        // once (a kill credit and a hand-in on different threads) could both pass the check or share a slot, and the
+        // journal list update moved quests while another thread added one. Readers take a copy (GetActiveQuests) or a
+        // pooled snapshot; nothing calls quest code while holding the lock.
+        private readonly Dictionary<AbstractQuest, byte> _questList = new(); // Value is the index to send to clients.
+        private readonly Dictionary<int, DataQuest> _activeDataQuestsById = new();
+        private readonly Dictionary<Type, AbstractQuest> _activeQuestsByType = new();
+        private readonly Lock _questListLock = new();
         private List<AbstractQuest> _questListFinished = new();
         private readonly Lock _questListFinishedLock = new();
-        public virtual ConcurrentDictionary<AbstractQuest, byte> QuestList { get; } = new(); // Value is the index to send to clients.
-        public ConcurrentQueue<byte> AvailableQuestIndexes { get; } = new(); // If empty, 'QuestList.Count' will be used when adding a quest to 'QuestList'
         public ECSGameTimer QuestActionTimer;
+
+        /// <summary>How many quests are active (the journal shows the first QuestJournal.Capacity).</summary>
+        public int ActiveQuestCount
+        {
+            get
+            {
+                lock (_questListLock)
+                {
+                    return _questList.Count;
+                }
+            }
+        }
+
+        /// <summary>A copy of the active quests, safe to keep and to change the quest list while walking it.</summary>
+        public List<AbstractQuest> GetActiveQuests()
+        {
+            lock (_questListLock)
+            {
+                return _questList.Keys.ToList();
+            }
+        }
+
+        /// <summary>A copy of the active data quests.</summary>
+        public List<DataQuest> GetActiveDataQuests()
+        {
+            lock (_questListLock)
+            {
+                List<DataQuest> dataQuests = new(_questList.Count);
+
+                foreach (AbstractQuest quest in _questList.Keys)
+                {
+                    if (quest is DataQuest dataQuest)
+                        dataQuests.Add(dataQuest);
+                }
+
+                return dataQuests;
+            }
+        }
+
+        /// <summary>
+        /// True when an active quest matches. Walks a pooled snapshot, so the check runs outside the lock and costs no
+        /// allocation (aggro checks call it through QuestTalkTruce).
+        /// </summary>
+        public bool AnyActiveQuest(Predicate<AbstractQuest> match)
+        {
+            AbstractQuest[] snapshot = RentActiveQuestSnapshot(out int count);
+
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (match(snapshot[i]))
+                        return true;
+                }
+            }
+            finally
+            {
+                ReturnActiveQuestSnapshot(snapshot);
+            }
+
+            return false;
+        }
+
+        /// <summary>The active data quest with this ID, or null.</summary>
+        public DataQuest GetActiveDataQuest(int id)
+        {
+            lock (_questListLock)
+            {
+                return _activeDataQuestsById.TryGetValue(id, out DataQuest dataQuest) ? dataQuest : null;
+            }
+        }
+
+        public bool TryGetQuestIndex(AbstractQuest quest, out byte index)
+        {
+            lock (_questListLock)
+            {
+                return _questList.TryGetValue(quest, out index);
+            }
+        }
+
+        public AbstractQuest GetQuestByIndex(int index)
+        {
+            lock (_questListLock)
+            {
+                foreach (KeyValuePair<AbstractQuest, byte> entry in _questList)
+                {
+                    if (entry.Value == index)
+                        return entry.Key;
+                }
+            }
+
+            return null;
+        }
+
+        public bool IsDoingDataQuest(int id)
+        {
+            lock (_questListLock)
+            {
+                return _activeDataQuestsById.ContainsKey(id);
+            }
+        }
+
+        public bool IsDoingDataQuest(int id, int step)
+        {
+            lock (_questListLock)
+            {
+                return _activeDataQuestsById.TryGetValue(id, out DataQuest dataQuest) && dataQuest.Step == step;
+            }
+        }
+
+        /// <summary>GameNPC.CanFinishOneQuest: a data quest's finishing step or a done reward quest is at this NPC.</summary>
+        public bool HasQuestToFinishAt(GameNPC npc)
+        {
+            AbstractQuest[] snapshot = RentActiveQuestSnapshot(out int count);
+
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    AbstractQuest quest = snapshot[i];
+
+                    if (quest is DataQuest dataQuest && QuestNames.Same(dataQuest.TargetName, npc.Name) && (dataQuest.TargetRegion == 0 || dataQuest.TargetRegion == npc.CurrentRegionID))
+                    {
+                        switch (dataQuest.StepType)
+                        {
+                            case DataQuest.eStepType.DeliverFinish:
+                            case DataQuest.eStepType.InteractFinish:
+                            case DataQuest.eStepType.KillFinish:
+                            case DataQuest.eStepType.WhisperFinish:
+                            case DataQuest.eStepType.CollectFinish:
+                                return true;
+                        }
+                    }
+
+                    if (quest is RewardQuest rewardQuest && rewardQuest.QuestGiver == npc)
+                    {
+                        bool done = true;
+
+                        foreach (RewardQuest.QuestGoal goal in rewardQuest.Goals)
+                        {
+                            if (!goal.IsAchieved)
+                            {
+                                done = false;
+                                break;
+                            }
+                        }
+
+                        if (done)
+                            return true;
+                    }
+                }
+            }
+            finally
+            {
+                ReturnActiveQuestSnapshot(snapshot);
+            }
+
+            return false;
+        }
+
+        /// <summary>Sends a quest command (/search and the like) to every active quest; true when one handled it.</summary>
+        public bool CommandActiveQuests(AbstractQuest.eQuestCommand command, AbstractArea area = null)
+        {
+            bool handled = false;
+            AbstractQuest[] snapshot = RentActiveQuestSnapshot(out int count);
+
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (snapshot[i].Command(this, command, area))
+                        handled = true;
+                }
+            }
+            finally
+            {
+                ReturnActiveQuestSnapshot(snapshot);
+            }
+
+            return handled;
+        }
+
+        /// <summary>
+        /// PacketLib168.SendQuestListUpdate under the quest list lock: sends the quests in the first visibleQuestCount
+        /// slots, moves quests waiting past them (an older save with more than 25 active quests) into free slots, then
+        /// clears the slots left empty. sendQuestPacket only writes a packet; it must not touch the quest list.
+        /// </summary>
+        public void SendQuestListUpdate(byte indexOffset, int visibleQuestCount, Action<AbstractQuest, byte> sendQuestPacket)
+        {
+            lock (_questListLock)
+            {
+                int lastIndex = visibleQuestCount + indexOffset;
+                Span<bool> sentIndexes = stackalloc bool[visibleQuestCount];
+
+                foreach (KeyValuePair<AbstractQuest, byte> entry in _questList)
+                {
+                    int adjustedQuestIndex = entry.Value + indexOffset;
+
+                    if (adjustedQuestIndex < lastIndex)
+                    {
+                        sendQuestPacket(entry.Key, (byte) adjustedQuestIndex);
+                        sentIndexes[adjustedQuestIndex - indexOffset] = true;
+                    }
+                }
+
+                // If possible, move and send quests whose indexes are too high.
+                for (int questIndex = indexOffset; questIndex < lastIndex; questIndex++)
+                {
+                    int sentIndex = questIndex - indexOffset;
+
+                    if (sentIndexes[sentIndex])
+                        continue;
+
+                    AbstractQuest quest = GetFirstQuestAtOrAboveIndexUnsafe(visibleQuestCount);
+
+                    if (quest == null)
+                        break;
+
+                    _questList[quest] = (byte) sentIndex;
+                    sendQuestPacket(quest, (byte) questIndex);
+                    sentIndexes[sentIndex] = true;
+                }
+
+                // Send null for unused indexes.
+                for (int questIndex = indexOffset; questIndex < lastIndex; questIndex++)
+                {
+                    if (!sentIndexes[questIndex - indexOffset])
+                        sendQuestPacket(null, (byte) questIndex);
+                }
+            }
+        }
+
+        private void ClearActiveQuests()
+        {
+            lock (_questListLock)
+            {
+                _questList.Clear();
+                _activeDataQuestsById.Clear();
+                _activeQuestsByType.Clear();
+            }
+        }
+
+        private void SetActiveQuest(AbstractQuest quest, byte index)
+        {
+            lock (_questListLock)
+            {
+                _questList[quest] = index;
+                AddActiveQuestIndexesUnsafe(quest);
+            }
+        }
+
+        private AbstractQuest IsDoingQuestUnsafe(AbstractQuest quest)
+        {
+            // The same quest as QuestJournal.Same: data quests by ID, scripted quests by class.
+            if (quest is DataQuest dataQuest)
+            {
+                if (_activeDataQuestsById.TryGetValue(dataQuest.ID, out DataQuest activeDataQuest) && activeDataQuest.IsDoingQuest())
+                    return activeDataQuest;
+            }
+            else if (_activeQuestsByType.TryGetValue(quest.GetType(), out AbstractQuest activeQuest) && activeQuest.IsDoingQuest())
+                return activeQuest;
+
+            return null;
+        }
+
+        private AbstractQuest GetFirstQuestAtOrAboveIndexUnsafe(int index)
+        {
+            foreach (KeyValuePair<AbstractQuest, byte> entry in _questList)
+            {
+                if (entry.Value >= index)
+                    return entry.Key;
+            }
+
+            return null;
+        }
+
+        private void AddActiveQuestIndexesUnsafe(AbstractQuest quest)
+        {
+            // The first one loaded keeps the index when an older save holds the same quest twice.
+            if (quest is DataQuest dataQuest)
+                _activeDataQuestsById.TryAdd(dataQuest.ID, dataQuest);
+            else
+                _activeQuestsByType.TryAdd(quest.GetType(), quest);
+        }
+
+        private void RemoveActiveQuestIndexesUnsafe(AbstractQuest quest)
+        {
+            // Our adaptation: when an older save held the same quest twice and the indexed one goes, the other one
+            // takes the index, so it is still found (upstream drops the entry).
+            if (quest is DataQuest dataQuest)
+            {
+                if (!_activeDataQuestsById.TryGetValue(dataQuest.ID, out DataQuest activeQuest) || !ReferenceEquals(activeQuest, dataQuest))
+                    return;
+
+                _activeDataQuestsById.Remove(dataQuest.ID);
+
+                foreach (AbstractQuest other in _questList.Keys)
+                {
+                    if (other is DataQuest otherDataQuest && otherDataQuest.ID == dataQuest.ID)
+                    {
+                        _activeDataQuestsById[dataQuest.ID] = otherDataQuest;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Type questType = quest.GetType();
+
+                if (!_activeQuestsByType.TryGetValue(questType, out AbstractQuest activeQuest) || !ReferenceEquals(activeQuest, quest))
+                    return;
+
+                _activeQuestsByType.Remove(questType);
+
+                foreach (AbstractQuest other in _questList.Keys)
+                {
+                    if (other is not DataQuest && other.GetType() == questType)
+                    {
+                        _activeQuestsByType[questType] = other;
+                        break;
+                    }
+                }
+            }
+        }
+
+        private AbstractQuest[] RentActiveQuestSnapshot(out int count)
+        {
+            lock (_questListLock)
+            {
+                count = _questList.Count;
+
+                if (count == 0)
+                    return null;
+
+                AbstractQuest[] snapshot = ArrayPool<AbstractQuest>.Shared.Rent(count);
+                int index = 0;
+
+                foreach (AbstractQuest quest in _questList.Keys)
+                    snapshot[index++] = quest;
+
+                return snapshot;
+            }
+        }
+
+        private static void ReturnActiveQuestSnapshot(AbstractQuest[] snapshot)
+        {
+            if (snapshot == null)
+                return;
+
+            Array.Clear(snapshot, 0, snapshot.Length);
+            ArrayPool<AbstractQuest>.Shared.Return(snapshot);
+        }
+
+        private void SaveActiveQuestParameters()
+        {
+            AbstractQuest[] snapshot = RentActiveQuestSnapshot(out int count);
+
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    AbstractQuest quest = snapshot[i];
+
+                    if (quest is Quests.DailyQuest dq)
+                        dq.SaveQuestParameters();
+
+                    if (quest is Quests.WeeklyQuest wq)
+                        wq.SaveQuestParameters();
+
+                    if (quest is Quests.MonthlyQuest mq)
+                        mq.SaveQuestParameters();
+                }
+            }
+            finally
+            {
+                ReturnActiveQuestSnapshot(snapshot);
+            }
+        }
 
         public List<AbstractQuest> GetFinishedQuests()
         {
@@ -11351,6 +11756,24 @@ namespace DOL.GS
             }
         }
 
+        // Port of OpenDAoC-Core e688e984e: a static predicate with its state, so no closure is made per player.
+        public void RemoveFinishedQuests<T>(Func<AbstractQuest, T, bool> match, T state)
+        {
+            lock (_questListFinishedLock)
+            {
+                for (int i = _questListFinished.Count - 1; i >= 0; i--)
+                {
+                    AbstractQuest quest = _questListFinished[i];
+
+                    if (match(quest, state))
+                    {
+                        _questListFinished.SwapRemoveAt(i);
+                        quest.DeleteFromDatabase();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Remove credit for this type of encounter.
         /// Used for scripted quests
@@ -11388,29 +11811,31 @@ namespace DOL.GS
         /// <returns>true if added, false if player is already doing the quest!</returns>
         public bool AddQuest(AbstractQuest quest)
         {
-            // The journal holds 25 quests, and a quest the player is on isn't added again (HearthDAoC).
-            if (QuestJournal.IsFull(QuestList.Count))
-                return false;
+            bool added;
 
-            if (QuestList.Keys.Any(q => q.IsDoingQuest() && QuestJournal.Same(q, quest)))
-                return false;
-
-            // Owner 2026-10-30: a freed slot is given only while no quest holds it. SendQuestListUpdate moves a quest
-            // waiting past the 25th slot (an older save with more than 25 active quests) into a freed slot but leaves
-            // that slot queued here, so the next quest taken shared its index and the two showed as one.
-            byte index;
-
-            do
+            // Port of OpenDAoC-Core 22197f1f6: the journal limit, the duplicate check, the free slot and the add are one
+            // step under the quest list lock. The journal holds 25 quests, and a quest the player is on isn't added
+            // again (HearthDAoC). The slot is the lowest one no quest holds (owner 2026-10-30: two quests on one slot
+            // showed as one); with no queue of freed slots, a slot taken by a quest moved in from past the 25th can't be
+            // handed out twice.
+            lock (_questListLock)
             {
-                if (!AvailableQuestIndexes.TryDequeue(out index))
-                {
-                    index = QuestJournal.FreeIndex(QuestList.Values);
-                    break;
-                }
-            }
-            while (QuestList.Values.Contains(index));
+                if (QuestJournal.IsFull(_questList.Count))
+                    return false;
 
-            QuestList.TryAdd(quest, index);
+                if (IsDoingQuestUnsafe(quest) != null)
+                    return false;
+
+                byte index = QuestJournal.FreeIndex(_questList.Values);
+                added = _questList.TryAdd(quest, index);
+
+                if (added)
+                    AddActiveQuestIndexesUnsafe(quest);
+            }
+
+            if (!added)
+                return false;
+
             quest.OnQuestAssigned(this);
             Out.SendQuestUpdate(quest);
             QuestIndicators.Refresh(this); // markers change when a quest is taken
@@ -11424,13 +11849,42 @@ namespace DOL.GS
         /// <returns>the quest if player is doing the quest or null if not</returns>
         public AbstractQuest IsDoingQuest(AbstractQuest quest)
         {
-            foreach (AbstractQuest questInList in QuestList.Keys)
+            lock (_questListLock)
             {
-                if (questInList.GetType().Equals(quest.GetType()) && questInList.IsDoingQuest())
-                    return questInList;
+                return IsDoingQuestUnsafe(quest);
+            }
+        }
+
+        /// <summary>
+        /// Takes a quest out of the active list (finish or abort). With notifyPlayer the journal is told: a data quest
+        /// resends the list, another quest clears its slot. Returns false when the quest wasn't active, and then
+        /// nothing is sent (before, a finish or abort of a quest not in the list cleared slot 0).
+        /// </summary>
+        public bool RemoveQuest(AbstractQuest quest, bool notifyPlayer)
+        {
+            if (quest == null)
+                return false;
+
+            bool removed;
+            byte index;
+
+            lock (_questListLock)
+            {
+                removed = _questList.Remove(quest, out index);
+
+                if (removed)
+                    RemoveActiveQuestIndexesUnsafe(quest);
             }
 
-            return null;
+            if (removed && notifyPlayer)
+            {
+                if (quest is DataQuest)
+                    Out.SendQuestListUpdate();
+                else
+                    Out.SendQuestRemove(index);
+            }
+
+            return removed;
         }
 
         /// <summary>
@@ -11441,16 +11895,14 @@ namespace DOL.GS
         /// <returns>the quest if player is doing the quest or null if not</returns>
         public AbstractQuest IsDoingQuest(Type questType)
         {
-            foreach (AbstractQuest quest in QuestList.Keys)
-            {
-                if (quest is not DataQuest)
-                {
-                    if (quest.GetType().Equals(questType))
-                        return quest;
-                }
-            }
+            if (questType == null)
+                return null;
 
-            return null;
+            lock (_questListLock)
+            {
+                _activeQuestsByType.TryGetValue(questType, out AbstractQuest quest);
+                return quest;
+            }
         }
 
         #endregion
@@ -11461,10 +11913,19 @@ namespace DOL.GS
             CharacterClass.Notify(e, sender, args);
             base.Notify(e, sender, args);
 
-            foreach (AbstractQuest quest in QuestList.Keys)
+            AbstractQuest[] activeQuests = RentActiveQuestSnapshot(out int activeQuestCount);
+
+            try
             {
-                // player forwards every single notify message to all active quests
-                quest.Notify(e, sender, args);
+                for (int i = 0; i < activeQuestCount; i++)
+                {
+                    // player forwards every single notify message to all active quests
+                    activeQuests[i].Notify(e, sender, args);
+                }
+            }
+            finally
+            {
+                ReturnActiveQuestSnapshot(activeQuests);
             }
 
             if (GameTask != null)

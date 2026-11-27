@@ -1,4 +1,8 @@
-﻿using DOL.GS.Commands;
+﻿using System;
+using System.Collections;
+using DOL.GS.Commands;
+using DOL.GS.Keeps;
+using DOL.Network;
 
 namespace DOL.GS.PacketHandler
 {
@@ -50,6 +54,59 @@ namespace DOL.GS.PacketHandler
 
             pak.WriteString(msg);
             SendTCP(pak);
+        }
+
+        /// <summary>
+        /// The keep hookpoint store (guards, siege engines, oil). Port of OpenDAoC-Core 476059682 and d15534653: the 1.127
+        /// client reads a different header (count first, little-endian ids) and the 1.125+ merchant row, so the 1.70 layout
+        /// showed it a broken store.
+        /// </summary>
+        public override void SendHookPointStore(GameKeepHookPoint hookPoint)
+        {
+            using (var pak = PooledObjectFactory.GetForTick<GSTCPPacketOut>().Init(GetPacketCode(eServerPackets.KeepComponentHookpointStore)))
+            {
+                WriteHookPointStore(pak, hookPoint.Component.Keep.KeepID, hookPoint.Component.ID, hookPoint.ID,
+                    HookPointInventory.GetInventory(hookPoint.ID).GetAllItems());
+                SendTCP(pak);
+            }
+        }
+
+        /// <summary>The client shows at most 30 (0x1e) hookpoint items.</summary>
+        public const int MAX_HOOKPOINT_STORE_ITEMS = 30;
+
+        /// <summary>
+        /// The 1.127 hookpoint store body: count, a reference byte, three 1s, keep, component and hookpoint ids (little
+        /// endian), then one merchant-style row per item: slot, the item's flag (high byte, low byte), four zero bytes
+        /// (speed, hand, damage and object type, usable), weight 0, price in gold, icon and name.
+        /// </summary>
+        public static void WriteHookPointStore(PacketOut pak, int keepId, int componentId, int hookPointId, IList items)
+        {
+            int count = Math.Min(items.Count, MAX_HOOKPOINT_STORE_ITEMS);
+
+            pak.WriteByte((byte) count);
+            pak.WriteByte(0); // unknown / reference
+            pak.WriteByte(1);
+            pak.WriteByte(1);
+            pak.WriteByte(1);
+            pak.WriteShortLowEndian((ushort) keepId);
+            pak.WriteShortLowEndian((ushort) componentId);
+            pak.WriteShortLowEndian((ushort) hookPointId);
+
+            for (int i = 0; i < count; i++)
+            {
+                HookPointItem item = (HookPointItem) items[i];
+                pak.WriteByte((byte) i);
+                pak.WriteByte((byte) (item.Flag >> 8)); // the merchant row's level field
+                pak.WriteByte((byte) (item.Flag & 0xFF)); // the merchant row's value1 field
+                pak.WriteByte(0); // speed / absorption
+                pak.WriteByte(0); // hand
+                pak.WriteByte(0); // damage type and object type
+                pak.WriteByte(0); // 0 = can be bought
+                pak.WriteShortLowEndian(0); // weight
+                pak.WriteIntLowEndian((uint) item.Gold);
+                pak.WriteShortLowEndian(item.Icon);
+                pak.WritePascalStringIntLE(item.Name);
+            }
         }
     }
 }
