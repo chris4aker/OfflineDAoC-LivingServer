@@ -11,9 +11,9 @@ using L = DOL.GS.AutonomousRvrEventLayer;
 namespace DOL.GS.Tests
 {
     /// <summary>
-    /// #523 step 1 (c)-(e), owner's answers of 2026-11-27: (c) 46B the player's attack keeps the horn and the size line,
-    /// (d) 47A the retake after a player capture is a roll, (e) 48A the third realm joins a player's siege on its roll, after
-    /// a delay.
+    /// #523 step 1 (b)-(e), owner's answers of 2026-11-27: (b) 45A a lone guard pull raises no alarm, (c) 46B the player's
+    /// attack keeps the horn and the size line, (d) 47A the retake after a player capture is a roll, (e) 48A the third realm
+    /// joins a player's siege on its roll, after a delay.
     /// </summary>
     [TestFixture, NonParallelizable]
     public class UT_PlayerSiegeAlarm523
@@ -40,7 +40,147 @@ namespace DOL.GS.Tests
             _server.Dispose();
         }
 
+        private sealed class KeepPlayer : GamePlayer
+        {
+            private KeepPlayer() : base(null, null) { }
+            public override bool IsAlive => true;
+            public override eRealm Realm { get => eRealm.Albion; set { } }
+            public override int X => 100000;
+            public override int Y => 100000;
+            public override int Z => 100;
+            public override ushort CurrentRegionID { get => 100; set { } }
+            public override eObjectState ObjectState { get => eObjectState.Active; set { } }
+            public override DOL.GS.PacketHandler.IPacketLib Out => DispatchProxy.Create<DOL.GS.PacketHandler.IPacketLib, UT_PlayerKeepDefense.Silent>();
+        }
+
+        private sealed class Ally : GameNPC
+        {
+            public override bool IsAlive => true;
+            public override int X => 100500;
+            public override int Y => 100000;
+            public override int Z => 100;
+            public override ushort CurrentRegionID { get => 100; set { } }
+            public override eRealm Realm { get => eRealm.Albion; set { } }
+            public override eObjectState ObjectState { get => eObjectState.Active; set { } }
+        }
+
+        private static GameKeep Keep(ushort id = 9)
+        {
+            var keep = (GameKeep)RuntimeHelpers.GetUninitializedObject(typeof(GameKeep));
+            keep.DBKeep = new DOL.Database.DbKeep { KeepID = id, Name = "Test keep", Realm = (byte)eRealm.Midgard, Region = 100,
+                X = 100000, Y = 100000, Z = 100, BaseLevel = 50 };
+            return keep;
+        }
+
+        private static KeepPlayer Player() => (KeepPlayer)RuntimeHelpers.GetUninitializedObject(typeof(KeepPlayer));
+
+        private static IDictionary Alarms() => (IDictionary)Field("DefenseAlarms").GetValue(null);
         private static IDictionary Events() => (IDictionary)Field("Events").GetValue(null);
+
+        private static bool Sustained(string id)
+        {
+            object alarm = Alarms()[id];
+            return (bool)alarm.GetType().GetProperty("Sustained").GetValue(alarm);
+        }
+
+        private static object NewAlarm(AbstractGameKeep keep, GamePlayer player, long tick, bool sustained)
+        {
+            var type = typeof(L).GetNestedType("Alarm", BindingFlags.NonPublic);
+            return Activator.CreateInstance(type, keep, player, tick, sustained);
+        }
+
+        // ---- (b) a lone guard pull ------------------------------------------------------------------------------
+
+        [TestCase(L.DefenseScale.Small, false, false, TestName = "A lone guard hit raises nothing")]
+        [TestCase(L.DefenseScale.Small, true, true, TestName = "A lone attacker who hit a door or killed a guard raises it")]
+        [TestCase(L.DefenseScale.Standard, false, true, TestName = "Two or more attackers at the keep raise it on a guard hit")]
+        [TestCase(L.DefenseScale.Large, false, true, TestName = "A raid at the keep raises it on a guard hit")]
+        [TestCase(L.DefenseScale.Massive, true, true, TestName = "A massive army raises it")]
+        public void WhenAnAlarmRaisesADefense(L.DefenseScale scale, bool sustained, bool raises) =>
+            Assert.That(L.AlarmRaisesDefense(scale, sustained), Is.EqualTo(raises));
+
+        [Test]
+        public void ALoneGuardPullRaisesNoDefenseAndTheAlarmWaits()
+        {
+            var keep = Keep();
+            long now = GameLoop.GameLoopTime;
+            L.ObserveKeepAttack(keep, Player(), L.KeepAttackKind.GuardHit);
+            Assert.That(Sustained("rvr-keep-9"), Is.False);
+            L.PulseDefense(now);
+            Assert.That(L.Snapshot(), Is.Empty, "a guard hit by one attacker raises no defense");
+            Assert.That(Alarms().Contains("rvr-keep-9"), Is.True, "the alarm waits for a door hit or a guard death");
+            L.PulseDefense(now + L.DefenseQuietMilliseconds + 5_000);
+            Assert.That(Alarms().Contains("rvr-keep-9"), Is.False, "after the quiet minutes it is gone");
+            Assert.That(L.Snapshot(), Is.Empty);
+        }
+
+        [TestCase(L.KeepAttackKind.DoorHit)]
+        [TestCase(L.KeepAttackKind.GuardKilled)]
+        public void ADoorHitOrAGuardDeathRaisesItForALoneAttacker(L.KeepAttackKind kind)
+        {
+            var keep = Keep();
+            var player = Player();
+            long now = GameLoop.GameLoopTime;
+            L.ObserveKeepAttack(keep, player, L.KeepAttackKind.GuardHit);
+            L.PulseDefense(now);
+            Assert.That(L.Snapshot(), Is.Empty);
+            // In the same second as the guard hit: the one-a-second throttle must not drop it.
+            L.ObserveKeepAttack(keep, player, kind);
+            Assert.That(Sustained("rvr-keep-9"), Is.True);
+            L.PulseDefense(now + 5_000);
+            var defense = L.Snapshot().Single();
+            Assert.That(defense.TargetId, Is.EqualTo("rvr-keep-9"));
+            Assert.That(defense.Kind, Does.Contain("defense"));
+            Assert.That(ScaleOf("rvr-keep-9"), Is.EqualTo(L.DefenseScale.Small), "the lone attacker still draws the small answer");
+        }
+
+        [Test]
+        public void ADoorHitStaysWithTheAlarmThroughLaterGuardHits()
+        {
+            var keep = Keep();
+            var player = Player();
+            long now = GameLoop.GameLoopTime;
+            Alarms()["rvr-keep-9"] = NewAlarm(keep, player, now - 2 * 60_000, sustained: true);
+            L.ObserveKeepAttack(keep, player, L.KeepAttackKind.GuardHit);
+            Assert.That(Sustained("rvr-keep-9"), Is.True, "a door hit two minutes ago still counts");
+
+            Alarms()["rvr-keep-9"] = NewAlarm(keep, player, now - L.DefenseQuietMilliseconds - 1, sustained: true);
+            L.ObserveKeepAttack(keep, player, L.KeepAttackKind.GuardHit);
+            Assert.That(Sustained("rvr-keep-9"), Is.False, "a door hit from before the quiet minutes does not");
+        }
+
+        [Test]
+        public void TwoAttackersAtTheKeepRaiseItOnAGuardHit()
+        {
+            var keep = Keep();
+            var ally = (Ally)RuntimeHelpers.GetUninitializedObject(typeof(Ally));
+            Field("AttackerRealmBotSource").SetValue(null, (Func<IEnumerable<GameLiving>>)(() => new GameLiving[] { ally }));
+            L.ObserveKeepAttack(keep, Player(), L.KeepAttackKind.GuardHit);
+            L.PulseDefense(GameLoop.GameLoopTime);
+            Assert.That(L.Snapshot().Single().TargetId, Is.EqualTo("rvr-keep-9"));
+            Assert.That(ScaleOf("rvr-keep-9"), Is.EqualTo(L.DefenseScale.Standard));
+        }
+
+        [Test]
+        public void ALoneGuardHitAtAPlannedSiegeStillMarksItAttacked()
+        {
+            var keep = Keep();
+            var target = new L.LiveObjective("rvr-keep-9", "Test keep", L.Intent.AssaultKeep, eRealm.Midgard, 100, 100000, 100000, 100,
+                false, 0, 0, 0, 0);
+            Assert.That(L.ForceStart(target, eRealm.Albion, GameLoop.GameLoopTime, out string reason), Is.True, reason);
+            object planned = Events()["rvr-keep-9"];
+            planned.GetType().GetField("AttackObserved").SetValue(planned, false);
+            L.ObserveKeepAttack(keep, Player(), L.KeepAttackKind.GuardHit);
+            L.PulseDefense(GameLoop.GameLoopTime);
+            Assert.That((bool)planned.GetType().GetField("AttackObserved").GetValue(planned), Is.True);
+            Assert.That(L.IsPlayerDefenseResponse("rvr-keep-9", GameLoop.GameLoopTime), Is.False);
+        }
+
+        private static L.DefenseScale ScaleOf(string id)
+        {
+            object active = Events()[id];
+            return (L.DefenseScale)active.GetType().GetField("DefenseScale").GetValue(active);
+        }
 
         // ---- (c) the horn and the size line stay --------------------------------------------------------------
 
