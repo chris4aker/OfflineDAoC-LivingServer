@@ -16,5 +16,5 @@
     "offline_bot_types", "offline_bot_crafters", "offline_bot_craft_orders", "offline_exchange_index",
     "offline_economy_ledger", "offline_crafter_customers", "offline_hired_companions"],
   "ProgressFiles": ["realm-event-records.sqlite3"],
-  "ClearTables": ["Appeal", "AuditEntry", "Ban", "BugReport", "KeepCaptureLog", "News", "PlayerInfo", "ServerInfo", "SinglePermission", "Voting", "serverstats", "offline_bot_commands", "offline_runtime_status", "offline_local_options"]
+  "ClearTables": ["Appeal", "AuditEntry", "Ban", "BugReport", "KeepCaptureLog", "News", "PlayerInfo", "ServerInfo", "SinglePermission", "Voting", "serverstats", "offline_bot_commands", "offline_runtime_status", "offline_local_options", "ScheduledRollovers"]
 }
