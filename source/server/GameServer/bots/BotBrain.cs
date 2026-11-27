@@ -3763,13 +3763,20 @@ namespace DOL.AI.Brain
                         DbInventoryItem distanceItem = BotBody.Inventory.GetItem(eInventorySlot.DistanceWeapon);
                         bool hasRangedCombatWeapon = BotRangedCombat.CanUse(BotBody, distanceItem) &&
                                                      Body.Endurance >= Body.rangeAttackComponent.ShotEnduranceCost;
+                        // #569 step 7 (anti flip-flop): back to the bow from melee only with endurance for three shots, and
+                        // once in melee a monster has to step 150 past melee reach before the bow comes back.
+                        bool onBow = Body.ActiveWeaponSlot == eActiveWeaponSlot.Distance;
+                        bool bowWorthIt = !BotWeaponSetPolicy.On ? hasRangedCombatWeapon :
+                            hasRangedCombatWeapon && BotWeaponSetPolicy.EnduranceForBow(Body.Endurance,
+                                Body.rangeAttackComponent.ShotEnduranceCost, onBow);
+                        int meleeHold = BotWeaponSetPolicy.On ? BotWeaponSetPolicy.MeleeHold(onBow) : 0;
 
                         // Direct melee pressure was handled above by
                         // TryEngageUnderMeleePressure.  Until that happens, a
                         // persistent Scout/Hunter/Ranger holds bow range even
                         // when its target closes inside nominal melee distance.
                         // Proximity alone must not restart a valid draw.
-                        bool targetForcesMelee = distance <= Body.MeleeAttackRange &&
+                        bool targetForcesMelee = distance <= Body.MeleeAttackRange + meleeHold &&
                                                  !BotRangedCombat.UsesAutonomousBowPositioning(BotBody) ||
                                                  ArcherMeleeFallbackActive;
 
@@ -3777,7 +3784,7 @@ namespace DOL.AI.Brain
                             (eCharacterClass)BotBody.CharacterClass.ID,
                             stance,
                             targetForcesMelee,
-                            hasRangedCombatWeapon);
+                            bowWorthIt);
                         // An epic rule says this target is fought with the distance weapon only (Funus: a melee swing from
                         // a mercenary, armsman, infiltrator or scout heals him to full). Short of endurance for a shot the
                         // bot waits; it never falls back to its melee weapon on him.
@@ -4145,10 +4152,11 @@ namespace DOL.AI.Brain
                 if (oneHandHeals && !twoHandHeals) oneHandUsable = false;
                 else if (twoHandHeals && !oneHandHeals) twoHandUsable = false;
             }
-            bool preferTwoHand = PreferTwoHandedSlot(twoHandUsable, oneHandUsable,
-                BotBody.BotSpec?.Is2H == true ||
-                BotBody.CharacterClass.ClassType == eClassType.ListCaster ||
-                BotBody.CharacterClass.ID is (int)eCharacterClass.Friar or (int)eCharacterClass.Valewalker);
+            // #569 step 7 (bot_weapon_set_rules): one rule with the attack start (BotWeaponSetPolicy): the player's readied
+            // set for a hired companion, a party's only Guard tank on its trained shield, the set trained higher, the build.
+            bool preferTwoHand = BotWeaponSetPolicy.On
+                ? BotWeaponSetPolicy.PreferTwoHanded(BotBody, twoHandUsable, oneHandUsable, BotWeaponSetPolicy.TwoHandedBuild(BotBody))
+                : PreferTwoHandedSlot(twoHandUsable, oneHandUsable, BotWeaponSetPolicy.TwoHandedBuild(BotBody));
 
             if (preferTwoHand)
             {
@@ -6006,8 +6014,8 @@ namespace DOL.AI.Brain
                 // rules.  For an allied group member in a legal heal range,
                 // however, keeping that carrier alive takes precedence over
                 // ordinary group triage.
-                GameLiving relicCarrier = RelicMgr.GetRelics()
-                    .Select(relic => relic?.CurrentCarrier)
+                // #572: the relic carriers read through a 2 s server-wide cache (BotBrain.RvrSupport.cs).
+                GameLiving relicCarrier = RelicCarriers()
                     .FirstOrDefault(carrier => carrier?.IsAlive == true && carrier.Realm == BotBody.Realm &&
                                                (Body.Group.IsInTheGroup(carrier) || BotBody.IsAutonomousWorldBot &&
                                                 AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR)) && CanHealRelicCarrier(carrier));
@@ -6045,14 +6053,8 @@ namespace DOL.AI.Brain
             // This does not extend PvE/companion triage to unrelated NPCs.
             if (BotBody.IsAutonomousWorldBot && AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR))
             {
-                GameLiving support = RelicMgr.GetRelics().Select(relic => relic.CurrentCarrier)
-                    .Concat(Body.GetNPCsInRadius(2000).OfType<DOL.GS.Keeps.GameKeepGuard>().Cast<GameLiving>())
-                    .Where(living => living?.IsAlive == true && living.Realm == Body.Realm && living.HealthPercent < 85 &&
-                        living.CurrentRegion == Body.CurrentRegion && CanHealRelicCarrier(living) &&
-                        PathfindingProvider.Instance.HasLineOfSight(Body.CurrentZone, new(Body.X, Body.Y, Body.Z),
-                            new(living.X, living.Y, living.Z), PathfindingProvider.Instance.DefaultFilters))
-                    .OrderBy(living => GameRelic.IsPlayerCarryingRelic(living) ? 0 : living is DOL.GS.Keeps.GuardLord ? 1 : 2)
-                    .ThenBy(living => living.HealthPercent).FirstOrDefault();
+                // #572 (port of True165 16284ba): held 2 s, ranked before any line-of-sight raycast (BotBrain.RvrSupport.cs).
+                GameLiving support = RvrSupportTarget();
                 if (support != null && (spellTarget == null || spellTarget.HealthPercent >= 40 || support.HealthPercent < spellTarget.HealthPercent))
                 {
                     spellTarget = support;
