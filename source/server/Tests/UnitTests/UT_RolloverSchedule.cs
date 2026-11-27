@@ -124,7 +124,7 @@ namespace DOL.UnitTests
                 schedule.Subscribe(k, () => order.Add(k));
             }
 
-            // Thursday 15:30 to Tuesday 1 December 00:30, an hour at a time.
+            // Thursday 26 November 15:30 to Wednesday 2 December 00:30, an hour at a time.
             for (int hour = 0; hour < 5 * 24 + 9; hour++)
             {
                 _now = _now.AddHours(1);
@@ -134,7 +134,7 @@ namespace DOL.UnitTests
             Assert.Multiple(() =>
             {
                 Assert.That(order.Count(k => k == Key.Hourly), Is.EqualTo(5 * 24 + 9));
-                Assert.That(order.Count(k => k == Key.Daily), Is.EqualTo(5), "27, 28, 29, 30 November and 1 December");
+                Assert.That(order.Count(k => k == Key.Daily), Is.EqualTo(6), "27 November to 2 December");
                 Assert.That(order.Count(k => k == Key.Weekly), Is.EqualTo(1), "Monday 30 November");
                 Assert.That(order.Count(k => k == Key.Monthly), Is.EqualTo(1), "1 December");
             });
