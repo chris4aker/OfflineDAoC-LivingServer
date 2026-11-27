@@ -439,9 +439,9 @@ public static class RvrFightBoards
         // The shadow's pairs and the sampled rows use the same group key: the party key (RvrPartyKey.Of), which stays
         // with the group when its leader changes.
         long partyKey = RvrPartyKey.Of(asker);
-        RvrContactShadow tally = AutonomousWorldBotController.RvrContactShadowTally;
-        tally.BoardSource = fromContacts ? RvrContactShadow.FromContacts : RvrContactShadow.FromArea;
-        List<RvrShadowListing> samples = tally.Board((int)asker.Realm, partyKey, now, listed, out List<string> lines);
+        AutonomousWorldBotController.RvrContactShadowTally.BoardSource = fromContacts ? RvrContactShadow.FromContacts : RvrContactShadow.FromArea;
+        List<RvrShadowListing> samples = AutonomousWorldBotController.RvrContactShadowTally.Board((int)asker.Realm, partyKey, now,
+            listed, out List<string> lines);
         if (!Log.IsInfoEnabled)
             return;
         if (lines != null)
