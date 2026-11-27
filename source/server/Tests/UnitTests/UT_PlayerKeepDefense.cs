@@ -385,10 +385,10 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousRvrEventLayer.ScaleOf(Seen(solo, At(100500), At(101000), At(99000, y: 104000))),
                 Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Standard));
 
-            // A player away from the keep with eight bots attacking it: eight, Large.
+            // A player away from the keep with nine bots attacking it: nine, Large (9-40).
             Attacker away = At(200000);
-            var bots = Enumerable.Range(0, 8).Select(i => (GameLiving)At(100000 + i * 200)).ToArray();
-            Assert.That(Seen(away, bots), Is.EqualTo(8));
+            var bots = Enumerable.Range(0, 9).Select(i => (GameLiving)At(100000 + i * 200)).ToArray();
+            Assert.That(Seen(away, bots), Is.EqualTo(9));
             Assert.That(AutonomousRvrEventLayer.ScaleOf(Seen(away, bots)), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Large));
 
             // A bot that is also in the player's group, or listed twice, counts once.
