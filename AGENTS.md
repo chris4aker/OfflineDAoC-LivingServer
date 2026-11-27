@@ -146,6 +146,19 @@ In a playable folder:
   - `reruns-owed`: a simulation, sweep or bench must be run again on the current build before its numbers can be
     quoted (e.g. after a rule changed under it).
   - Labels change as the issue moves: drop `tests-only` once a PC log shows it working, drop `needs-owner` once answered.
+- **Credit other projects only in `CREDITS.md`** (owner, 2026-11-27: "I don't want credit going out to others
+  outside of our tight credits.md").
+  - No credit or attribution for another project, fork or person anywhere else: commit messages, pull request
+    bodies, issue comments, changelog fragments, release notes, code comments, docs and player-visible text. No
+    "Port of …", "ported from …" or "thanks …" lines, and no Co-Authored-By lines for others.
+  - When code comes from another GPL project, add or update its line in `CREDITS.md` in the same pull request, and
+    describe the change in your own words everywhere else.
+  - Research notes are not credit: "Research first" still lists the period sources and upstream code read, as
+    sources, without thanks or "ported from" wording.
+  - **Legal notices stay** (owner, 2026-11-27): the GPL `LICENSE`, `gpl.txt`, `gplheader.txt`, the license headers in
+    source files, and the notices in `THIRD_PARTY.md` that a dependency's license requires (for example MIT and BSD
+    notices). Never remove or edit them.
+  - Published history is not rewritten for this (owner, 2026-11-27); the rule applies from now on.
 - **Claim an issue before building it** (owner, 2026-11-25). Anyone outside the owner's own sessions claims the issue
   (assign yourself, or comment "taking this") before starting work. Before building, every agent checks for an
   existing claim, an open pull request or a branch for the issue ([docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)).
