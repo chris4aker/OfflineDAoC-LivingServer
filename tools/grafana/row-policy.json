@@ -84,6 +84,7 @@
     "text"
   ],
   "frequency": {
+    "COMPANION_RVR_ENGAGE": "change-only: one per player's group each time its own pick in the frontier, battlegrounds or Darkness Falls changes call (engage or hold) or target",
     "COMPANION_LEADER_FOCUS": "change-only: one per bot of a player's group each time it turns onto a new player's target over another choice, in the frontier, battlegrounds and Darkness Falls",
     "AUTONOMOUS_KILL_XP": "every 25th autonomous gamebot PvE kill, at most 120 a minute (bot_kill_xp_sample_every)",
     "AUTONOMOUS_GOAL_ATTEMPT": "one per finished gamebot goal attempt (detail.log)",

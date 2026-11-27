@@ -1,0 +1,212 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using DOL.AI.Brain;
+using DOL.GS.Tests.Rehearsal;
+using NUnit.Framework;
+
+namespace DOL.GS.Tests
+{
+    /// <summary>
+    /// #664 step 1 through the real CompanionPvpEngagement.Observe, in the fight harness (RvrFightWorld, #520 / #605): a
+    /// stand-in player and real gamebots befriended into his group (one of the bot types the group pick covers), in
+    /// Thidranki (region 252) and in a plain PvE region, against enemy Midgard gamebots that only stand there (their brains
+    /// are stopped, so nothing attacks the group and only the group pick can start the fight). The perception rolls are
+    /// made certain (CompanionRvrEngage.Roll = 0) so the notice curve's timing, not its luck, is under test. Tests only.
+    /// </summary>
+    [TestFixture, NonParallelizable]
+    public sealed class UT_CompanionRvrEngage664Harness
+    {
+        private const BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
+        private const ushort Thidranki = 252, PveRegion = 664;
+        private const int X = 30_000, Y = 30_000;
+        private static readonly eCharacterClass[] Classes =
+        [
+            eCharacterClass.Mercenary, eCharacterClass.Cleric, eCharacterClass.Wizard, eCharacterClass.Armsman,
+            eCharacterClass.Scout, eCharacterClass.Friar, eCharacterClass.Theurgist,
+        ];
+        private static readonly eCharacterClass[] EnemyClasses =
+        [
+            eCharacterClass.Warrior, eCharacterClass.Healer, eCharacterClass.Runemaster, eCharacterClass.Berserker,
+            eCharacterClass.Hunter, eCharacterClass.Shaman, eCharacterClass.Thane, eCharacterClass.Spiritmaster,
+        ];
+
+        private Func<double> _roll;
+
+        [OneTimeSetUp]
+        public void Logging() => DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null, DOL.Logging.LogLibrary.None);
+
+        [SetUp]
+        public void CertainRolls()
+        {
+            _roll = CompanionRvrEngage.Roll;
+            CompanionRvrEngage.Roll = () => 0.0;
+        }
+
+        [TearDown]
+        public void RestoreRolls() => CompanionRvrEngage.Roll = _roll;
+
+        private sealed class Scene : IDisposable
+        {
+            public RvrFightWorld World;
+            public StandInPlayer Player;
+            public readonly List<GameBot> Group = new();
+            public readonly List<GameBot> Enemies = new();
+            public void Dispose() => World.Dispose();
+        }
+
+        private static Scene Make(ushort regionId, int enemyDistance, int companions = 2, int enemies = 1, bool stealthed = false,
+            bool defensive = false, bool switchOn = true)
+        {
+            var settings = switchOn ? null : new Dictionary<string, object> { [CompanionRvrEngage.PropertyKey] = false };
+            var scene = new Scene { World = new RvrFightWorld(664, settings) };
+            RvrFightWorld world = scene.World;
+            Region region = world.AddRegion(regionId, regionId, "#664 flat field (rehearsal)");
+            scene.Player = StandInPlayer.Make(region, eRealm.Albion, eCharacterClass.Armsman, 22, "Leader");
+            Assert.That(scene.Player.Enter(region, X, Y), Is.True, "the player entered");
+            world.Track(scene.Player);
+            var group = new Group(scene.Player);
+            var members = (List<GameLiving>)typeof(Group).GetField("_groupMembers", Hidden).GetValue(group);
+            members.Add(scene.Player);
+            scene.Player.Group = group;
+            for (int i = 0; i < companions; i++)
+            {
+                GameBot bot = world.NewBot(eRealm.Albion, Classes[i % Classes.Length], 22, $"Companion{i}", "GroupPve");
+                Assert.That(world.Place(bot, region, X - 100 - 40 * i, Y + 40 * i), Is.True, "companion placed");
+                members.Add(bot);
+                bot.Group = group;
+                Assert.That(bot.EnterPlayerLedGroup(scene.Player), Is.True, "the gamebot joins the player's group");
+                scene.Group.Add(bot);
+            }
+            for (int j = 0; j < enemies; j++)
+            {
+                GameBot enemy = world.NewBot(eRealm.Midgard, EnemyClasses[j % EnemyClasses.Length], 22, $"Enemy{j}", "RvR");
+                Assert.That(world.Place(enemy, region, X + enemyDistance, Y + 30 * j), Is.True, "enemy placed");
+                if (stealthed)
+                    enemy.Flags |= GameNPC.eFlags.STEALTH;
+                scene.Enemies.Add(enemy);
+            }
+            world.Tick(); // the zones file what was placed
+            // The enemies only stand there: nothing attacks the group, so only the group's own pick can start a fight.
+            foreach (GameBot enemy in scene.Enemies)
+                enemy.Brain?.Stop();
+            if (defensive)
+                CompanionEngagementMode.Set(scene.Player, true);
+            return scene;
+        }
+
+        private static bool OnAnEnemy(Scene scene) => scene.Group.Any(bot =>
+            bot.Brain is BotBrain brain && brain.HasAggro && scene.Enemies.Contains(bot.TargetObject as GameBot) ||
+            scene.Enemies.Contains(bot.TargetObject as GameBot));
+
+        /// <summary>
+        /// The companions think through Observe only (their brains stopped too), every tick for <paramref name="seconds"/>:
+        /// what the group pick decides and orders, nothing else. True once a companion took an enemy.
+        /// </summary>
+        private static bool ObserveFor(Scene scene, double seconds)
+        {
+            foreach (GameBot bot in scene.Group)
+                bot.Brain?.Stop();
+            bool engaged = false;
+            int ticks = (int)(seconds * RvrFightWorld.TicksPerSecond);
+            for (int i = 0; i < ticks; i++)
+            {
+                scene.World.Tick();
+                foreach (GameBot bot in scene.Group)
+                    CompanionPvpEngagement.Observe(bot);
+                engaged |= scene.Group.Any(bot => bot.Brain is BotBrain brain && brain.HasAggro);
+            }
+            return engaged;
+        }
+
+        [Test]
+        public void OnAggressiveTheGroupEngagesAnEnemy1500FromThePlayerWithNoAttackFromHim()
+        {
+            using Scene scene = Make(Thidranki, 1_500);
+            bool engaged = ObserveFor(scene, 6);
+            Assert.Multiple(() =>
+            {
+                Assert.That(scene.Player.IsAttacking, Is.False, "the player never attacked");
+                Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.SameAs(scene.Enemies[0]), "the group's pick");
+                Assert.That(engaged, Is.True, "a companion took it");
+                Assert.That(scene.World.ServiceErrors, Is.Zero, string.Join("\n", scene.World.Errors));
+            });
+        }
+
+        [Test]
+        public void NotAtOnceTheNoticeCurveAndTheReactionDelayComeFirst()
+        {
+            using Scene scene = Make(Thidranki, 1_500);
+            ObserveFor(scene, 0.5);
+            Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.Null, "half a second in: noticed at most, still reacting");
+        }
+
+        [Test]
+        public void WithTheSwitchOffTheGroupStillWaitsForThePlayer()
+        {
+            // The report (FarmVibes, Thidranki): the same scene on the rules before #664.
+            using Scene scene = Make(Thidranki, 1_500, switchOn: false);
+            Assert.That(ObserveFor(scene, 6), Is.False);
+            Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.Null);
+        }
+
+        [TestCase(800, true)]
+        [TestCase(1_500, false)]
+        public void OnDefensiveTheBoundIsTighter(int distance, bool engages)
+        {
+            using Scene scene = Make(Thidranki, distance, defensive: true);
+            Assert.That(CompanionEngagementMode.PlayerDefensive(scene.Player), Is.True);
+            Assert.That(ObserveFor(scene, 6), Is.EqualTo(engages));
+        }
+
+        [Test]
+        public void InPveNothingChanges()
+        {
+            using Scene scene = Make(PveRegion, 1_500);
+            Assert.That(ObserveFor(scene, 6), Is.False);
+            Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.Null);
+        }
+
+        [Test]
+        public void AStealthedEnemyIsNeverPickedFromAfar()
+        {
+            using Scene scene = Make(Thidranki, 1_500, stealthed: true);
+            Assert.That(scene.Enemies[0].IsStealthed, Is.True);
+            Assert.That(ObserveFor(scene, 6), Is.False, "only the close-range stealth rule can find a stealther (within 350)");
+        }
+
+        [Test]
+        public void ADuoHoldsOffABotEightButAFullGroupTakesIt()
+        {
+            using (Scene duo = Make(Thidranki, 900, companions: 1, enemies: 8))
+            {
+                Assert.That(ObserveFor(duo, 6), Is.False, "the player and one companion against eight: clearly losing");
+                Assert.That(CompanionRvrEngage.Holding(duo.Player), Is.True);
+            }
+            using (Scene eight = Make(Thidranki, 900, companions: 7, enemies: 8))
+            {
+                Assert.That(ObserveFor(eight, 6), Is.True, "eight against eight: a fair fight");
+                Assert.That(CompanionRvrEngage.Holding(eight.Player), Is.False);
+                Assert.That(CompanionRvrEngage.CurrentPick(eight.Player)?.Name, Is.EqualTo("Enemy1").Or.EqualTo("Enemy5"),
+                    "the kill order: a healer first (the Midgard Healer or Shaman)");
+            }
+        }
+
+        [Test]
+        public void AFullGroupWithItsBrainsRunningGoesForTheEnemyEight()
+        {
+            // The fight harness's own loop (every service, the companions' real brains): the player's eight in Thidranki,
+            // an enemy eight 1,500 away that only stands there. The group sees, sizes up, picks and walks in.
+            using Scene scene = Make(Thidranki, 1_500, companions: 7, enemies: 8);
+            bool onAnEnemy = false;
+            scene.World.Run(10, _ => onAnEnemy |= OnAnEnemy(scene));
+            Assert.Multiple(() =>
+            {
+                Assert.That(scene.Player.IsAttacking, Is.False, "the player never attacked");
+                Assert.That(onAnEnemy, Is.True, "a companion took an enemy of the eight");
+                Assert.That(scene.World.ServiceErrors, Is.Zero, string.Join("\n", scene.World.Errors));
+            });
+        }
+    }
+}
