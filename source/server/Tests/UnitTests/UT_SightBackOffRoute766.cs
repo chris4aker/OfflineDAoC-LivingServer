@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using DOL.AI.Brain;
+using DOL.Database;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -26,6 +27,28 @@ public class UT_SightBackOffRoute766
     private static readonly Vector3 Goal = new(440000, 300000, 3000);
     private static readonly Vector3 BackOff = new(431500, 318200, 3400);
     private static readonly Vector3 Standing = new(430000, 320000, 3400);
+
+    // Self-contained (main session review on #770): GameObject's static constructor reads GameServer.Database, so the
+    // fixture loads an inert server with an empty database (as UT_AnimistRewardParity) and restores the previous one.
+    private static readonly IObjectDatabase EmptyDatabase =
+        DispatchProxy.Create<IObjectDatabase, UT_UnobservedConcentration.EmptyReads>();
+    private GameServer _previousServer;
+
+    private sealed class InertServer : GameServer
+    {
+        protected override IObjectDatabase DataBaseImpl => EmptyDatabase;
+    }
+
+    [OneTimeSetUp]
+    public void Setup()
+    {
+        DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null, DOL.Logging.LogLibrary.None);
+        _previousServer = GameServer.Instance;
+        GameServer.LoadTestDouble((InertServer)RuntimeHelpers.GetUninitializedObject(typeof(InertServer)));
+    }
+
+    [OneTimeTearDown]
+    public void Restore() => GameServer.LoadTestDouble(_previousServer);
 
     [Test]
     public void BeforeTheFixTheRouteTookTheBackOffsFailureAsItsOwn()
