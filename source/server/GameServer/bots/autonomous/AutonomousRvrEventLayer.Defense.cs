@@ -40,32 +40,41 @@ namespace DOL.GS
 
         /// <summary>
         /// The attackers seen at the keep: the attacking player and the members of their group or companion raid
-        /// (companions count as group members, as <see cref="ForceSize"/> counted them) of the attacker's realm who are
-        /// alive, in play, in the keep's region and inside the fighting ring (<c>AttackerAtKeep</c>,
-        /// the ring #784 counts the attackers in). Members elsewhere or dead are not counted; pets and siege engines were never
-        /// part of the force count and still are not.
+        /// (companions count as group members, as <see cref="ForceSize"/> counted them), plus the attacking realm's
+        /// autonomous gamebots at the keep (owner, 2026-11-27, #788 answer 49A: sized by the player's group or raid at the
+        /// keep "plus the attacking realm's gamebots at the keep", in line with #784's 1B: "bots should be performing their
+        /// own sieges and defense without the player"). Each is counted once, only of the attacker's realm, and only if alive,
+        /// in play, in the keep's region and inside the fighting ring (<c>AttackerAtKeep</c>, the ring #784 counts the
+        /// attackers in: 9,500, Z within 2,000). Members or bots elsewhere, dead or of another realm are not counted; pets
+        /// and siege engines were never part of the force count and still are not.
         /// </summary>
-        public static int SeenForceSize(GameLiving attacker, ushort keepRegion, int keepX, int keepY, int keepZ)
+        public static int SeenForceSize(GameLiving attacker, ushort keepRegion, int keepX, int keepY, int keepZ,
+            IEnumerable<GameLiving> realmBots = null)
         {
             if (attacker == null) return SeenForceSize(0);
             bool AtKeep(GameLiving living) => living != null && living.Realm == attacker.Realm &&
                 AttackerAtKeep(living.IsAlive, living.ObjectState == GameObject.eObjectState.Active, living.CurrentRegionID,
                     keepRegion, living.X - keepX, living.Y - keepY, living.Z - keepZ);
-            Group group = attacker.Group;
-            if (group == null) return SeenForceSize(AtKeep(attacker) ? 1 : 0);
-            int seen = 0;
-            bool attackerListed = false;
-            foreach (GameLiving member in group.GetMembersInTheGroup())
-            {
-                if (member == attacker) attackerListed = true;
-                if (AtKeep(member)) seen++;
-            }
-            if (!attackerListed && AtKeep(attacker)) seen++;
-            return SeenForceSize(seen);
+            var seen = new HashSet<GameLiving>(ReferenceEqualityComparer.Instance);
+            if (AtKeep(attacker)) seen.Add(attacker);
+            if (attacker.Group is { } group)
+                foreach (GameLiving member in group.GetMembersInTheGroup())
+                    if (AtKeep(member)) seen.Add(member);
+            if (realmBots != null)
+                foreach (GameLiving bot in realmBots)
+                    if (AtKeep(bot)) seen.Add(bot);
+            return SeenForceSize(seen.Count);
         }
 
-        private static int SeenForceSize(GamePlayer player, AbstractGameKeep keep) =>
-            keep == null ? SeenForceSize(0) : SeenForceSize(player, keep.Region, keep.X, keep.Y, keep.Z);
+        /// <summary>The gamebots that can count as the attacking realm's at a keep: online autonomous world bots (the
+        /// registry's roster, which leaves out companions, hired companions, Special Forces and buffbots), not a player's
+        /// temporary helpers. Realm and ring are checked by <see cref="SeenForceSize(GameLiving, ushort, int, int, int, IEnumerable{GameLiving})"/>.
+        /// A field so a test can supply its own roster.</summary>
+        private static Func<IEnumerable<GameLiving>> AttackerRealmBotSource = () =>
+            AutonomousBotRegistry.Snapshot().Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper);
+
+        private static int SeenForceSize(GamePlayer player, AbstractGameKeep keep, IEnumerable<GameLiving> realmBots) =>
+            keep == null ? SeenForceSize(0) : SeenForceSize(player, keep.Region, keep.X, keep.Y, keep.Z, realmBots);
 
         public static string RallyLine(DefenseScale scale) => scale switch
         {
@@ -293,6 +302,7 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             {
                 Expire(now);
+                GameLiving[] realmBots = null; // taken once per pulse, only when an alarm needs it
                 foreach (var pair in DefenseAlarms.ToArray())
                 {
                     if (now - pair.Value.Tick > DefenseQuietMilliseconds)
@@ -306,7 +316,7 @@ namespace DOL.GS
                     var target = new LiveObjective(pair.Key, keep.Name, keep.IsRelic ? Intent.AssaultRelicKeep : Intent.AssaultKeep,
                         keep.Realm, keep.Region, keep.X, keep.Y, keep.Z, keep.IsRelic, 0, 0, 0, 0, UnderAttack: true);
                     // Counted here, in the coordinator pulse, not in the damage callback (#523, owner 2026-11-24).
-                    int seen = SeenForceSize(alarm.Player, keep);
+                    int seen = SeenForceSize(alarm.Player, keep, realmBots ??= AttackerRealmBotSource().ToArray());
                     DefenseScale scale = ScaleOf(seen);
                     DefenseScale before = Events.TryGetValue(pair.Key, out var existing) && existing.DefenseReaction ? existing.DefenseScale : scale;
                     bool firstAlarm = BeginDefenseResponse(target, alarm.Player.Realm,
