@@ -85,6 +85,7 @@
   ],
   "frequency": {
     "AUTONOMOUS_GROUP_DANGER_RETREAT": "one per gamebot PvE party that leaves a place after losing members to monsters far above it (#569)",
+    "COMPANION_LEADER_FOCUS": "change-only: one per bot of a player's group each time it turns onto a new player's target over another choice, in the frontier, battlegrounds and Darkness Falls",
     "AUTONOMOUS_KILL_XP": "every 25th autonomous gamebot PvE kill, at most 120 a minute (bot_kill_xp_sample_every)",
     "AUTONOMOUS_GOAL_ATTEMPT": "one per finished gamebot goal attempt (detail.log)",
     "SERVER_STALL": "once a minute when a game-loop tick ran slow",
