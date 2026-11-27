@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **755**; pending (#625, not on main yet): **0**; shipped by the pipeline: **723**.
+- Rows in code: **756**; pending (#625, not on main yet): **0**; shipped by the pipeline: **724**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -294,6 +294,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANIONUI_CMD` | server.log | **ships** | `mode165/CompanionUiCommand.cs` | `args`, `player` | `player` | - | One line per button press, so a client developer can see which clicks reach the server. |
 | `COMPANION_DELVE_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `args`, `player` | `player` | - | - |
 | `COMPANION_EQUIP_REFUSED` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `bot`, `cls`, `item`, `lvl`, `realm`, `shield`, `size`, `type` | `bot` | - | - |
+| `COMPANION_LEADER_FOCUS` | server.log | **ships** | `bots/BotBrain.LeaderFocus.cs` | `bot`, `class`, `fromBot`, `kind`, `leader`, `over`, `region`, `target`, `why` | `bot`, `leader`, `over`, `target` | - | - |
 | `COMPANION_OPTION_165` | server.log | **ships** | `mode165/CompanionOptions165.cs` | `bot`, `id` | `bot` | - | - |
 | `COMPANION_REPAIR_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `companions`, `paid`, `pieces`, `player` | `player` | - | - |
 | `COMPANION_RIDE_BACK` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |

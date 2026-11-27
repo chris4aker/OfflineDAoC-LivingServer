@@ -332,6 +332,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void LeaderFocusIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #571 step 1: bot_leader_focus, a bot combat rule like bot_healer_period_rules, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.LeaderFocus && SocialExpansionSettings.Recommended.LeaderFocus, Is.True);
+        Assert.That(d.AllOff().LeaderFocus, Is.True);
+        (d with { LeaderFocus = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_leader_focus"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).LeaderFocus, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void MorganaQuestHelpIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #611 (owner decision 2026-11-25): bot_morgana_quest_help, bots in the player's group fight Morgana's demons when the

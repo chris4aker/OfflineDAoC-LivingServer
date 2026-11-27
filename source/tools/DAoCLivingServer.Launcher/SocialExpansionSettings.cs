@@ -69,6 +69,9 @@ public sealed record SocialExpansionSettings
     /// <summary>Bot and companion healers heal like a 1.65 healer outside raids and boss fights (bot_healer_period_rules,
     /// #567 B1-B5). No checkbox: kept as read. On by default (1.2.3).</summary>
     public bool HealerPeriodRules { get; init; } = true;
+    /// <summary>The damage dealers of the player's group fight the player's target first (bot_leader_focus, #571 step 1). No
+    /// checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool LeaderFocus { get; init; } = true;
     /// <summary>Gamebots show as bots: [Playerbot] in /who and "gamebot"/"buffbot" in refused invites (bot_show_as_bots, 1.2.3). Off by
     /// default (owner 2026-11-24, #485: bots look like players). A display choice, not a feature: ALL OFF leaves it as it is.</summary>
     public bool ShowBotsAsBots { get; init; }
@@ -230,7 +233,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, LeaderFocus = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true,
     };
@@ -273,6 +276,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
         ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
+        ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
         ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
         ("bot_show_as_bots", "bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
@@ -370,6 +374,7 @@ public sealed record SocialExpansionSettings
         ["endurance_regen_amount_modifier"] = EnduranceRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
         ["bot_death_animation"] = Bool(DeathFall),
         ["bot_healer_period_rules"] = Bool(HealerPeriodRules),
+        ["bot_leader_focus"] = Bool(LeaderFocus),
         ["bot_show_as_bots"] = Bool(ShowBotsAsBots),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
@@ -713,6 +718,7 @@ public sealed record SocialExpansionSettings
             EnduranceRegenModifier = enduranceRate,
             DeathFall = ReadBool("bot_death_animation", d.DeathFall),
             HealerPeriodRules = ReadBool("bot_healer_period_rules", d.HealerPeriodRules),
+            LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
             ShowBotsAsBots = ReadBool("bot_show_as_bots", d.ShowBotsAsBots),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,
