@@ -3757,13 +3757,20 @@ namespace DOL.AI.Brain
                         DbInventoryItem distanceItem = BotBody.Inventory.GetItem(eInventorySlot.DistanceWeapon);
                         bool hasRangedCombatWeapon = BotRangedCombat.CanUse(BotBody, distanceItem) &&
                                                      Body.Endurance >= Body.rangeAttackComponent.ShotEnduranceCost;
+                        // #569 step 7 (anti flip-flop): back to the bow from melee only with endurance for three shots, and
+                        // once in melee a monster has to step 150 past melee reach before the bow comes back.
+                        bool onBow = Body.ActiveWeaponSlot == eActiveWeaponSlot.Distance;
+                        bool bowWorthIt = !BotWeaponSetPolicy.On ? hasRangedCombatWeapon :
+                            hasRangedCombatWeapon && BotWeaponSetPolicy.EnduranceForBow(Body.Endurance,
+                                Body.rangeAttackComponent.ShotEnduranceCost, onBow);
+                        int meleeHold = BotWeaponSetPolicy.On ? BotWeaponSetPolicy.MeleeHold(onBow) : 0;
 
                         // Direct melee pressure was handled above by
                         // TryEngageUnderMeleePressure.  Until that happens, a
                         // persistent Scout/Hunter/Ranger holds bow range even
                         // when its target closes inside nominal melee distance.
                         // Proximity alone must not restart a valid draw.
-                        bool targetForcesMelee = distance <= Body.MeleeAttackRange &&
+                        bool targetForcesMelee = distance <= Body.MeleeAttackRange + meleeHold &&
                                                  !BotRangedCombat.UsesAutonomousBowPositioning(BotBody) ||
                                                  ArcherMeleeFallbackActive;
 
@@ -3771,7 +3778,7 @@ namespace DOL.AI.Brain
                             (eCharacterClass)BotBody.CharacterClass.ID,
                             stance,
                             targetForcesMelee,
-                            hasRangedCombatWeapon);
+                            bowWorthIt);
                         // An epic rule says this target is fought with the distance weapon only (Funus: a melee swing from
                         // a mercenary, armsman, infiltrator or scout heals him to full). Short of endurance for a shot the
                         // bot waits; it never falls back to its melee weapon on him.
@@ -4139,10 +4146,11 @@ namespace DOL.AI.Brain
                 if (oneHandHeals && !twoHandHeals) oneHandUsable = false;
                 else if (twoHandHeals && !oneHandHeals) twoHandUsable = false;
             }
-            bool preferTwoHand = PreferTwoHandedSlot(twoHandUsable, oneHandUsable,
-                BotBody.BotSpec?.Is2H == true ||
-                BotBody.CharacterClass.ClassType == eClassType.ListCaster ||
-                BotBody.CharacterClass.ID is (int)eCharacterClass.Friar or (int)eCharacterClass.Valewalker);
+            // #569 step 7 (bot_weapon_set_rules): one rule with the attack start (BotWeaponSetPolicy): the player's readied
+            // set for a hired companion, a party's only Guard tank on its trained shield, the set trained higher, the build.
+            bool preferTwoHand = BotWeaponSetPolicy.On
+                ? BotWeaponSetPolicy.PreferTwoHanded(BotBody, twoHandUsable, oneHandUsable, BotWeaponSetPolicy.TwoHandedBuild(BotBody))
+                : PreferTwoHandedSlot(twoHandUsable, oneHandUsable, BotWeaponSetPolicy.TwoHandedBuild(BotBody));
 
             if (preferTwoHand)
             {
