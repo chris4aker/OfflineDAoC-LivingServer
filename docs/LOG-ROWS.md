@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **761**; pending (#625, not on main yet): **0**; shipped by the pipeline: **729**.
+- Rows in code: **764**; pending (#625, not on main yet): **0**; shipped by the pipeline: **732**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -67,6 +67,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `from`, `group`, `leader`, `levels`, `minutes`, `realm`, `size` | `leader`, `levels` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_ENDED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `group`, `members`, `reason`, `size` | `members` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `group`, `leader`, `was` | `leader`, `was` | - | - |
+| `AUTONOMOUS_GROUP_CAMP_BUDGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TravelBudget.cs` | `budgetMin`, `candidates`, `farthestKeptMin`, `group`, `kept`, `nearestMin`, `phase`, `region`, `remainingMin`, `tier` | - | one per PvE party camp pick whose candidate list the travel budget cut (none when every camp fit; #569) | A PvE party camp pick whose candidates were cut to the leader's travel budget, with the tier that was kept. |
 | `AUTONOMOUS_GROUP_CAMP_DRY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.CampBonus.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_REJECTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_REPOSITIONED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
@@ -86,7 +87,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_MEETUP_CLEAR_OF_SERVICE` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.ServiceClearance.cs` | `distance`, `kind`, `leader`, `members`, `region`, `where` | - | - | Once per party formation (or regroup): |
 | `AUTONOMOUS_GROUP_MEETUP_DEATHS` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `at`, `bot`, `deaths`, `group`, `id`, `level`, `region`, `rendezvous`, `waitedSeconds` | `bot` | - | - |
 | `AUTONOMOUS_GROUP_MEETUP_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `invited`, `leader`, `reason`, `town` | `leader` | - | - |
-| `AUTONOMOUS_GROUP_MEETUP_PLANNED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `camp`, `campDistance`, `campRegion`, `group`, `region`, `town` | - | - | - |
+| `AUTONOMOUS_GROUP_MEETUP_PLANNED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `camp`, `campDistance`, `campRegion`, `farthestCurrentMin`, `farthestNewMin`, `group`, `moved`, `reachCheck`, `region`, `town`, `townsRefused`, `windowMin` | - | - | - |
 | `AUTONOMOUS_GROUP_MEMBER_LONG_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousGroupMemberStall.cs` | `activity`, `alive`, `class`, `distance`, `heldSeconds`, `id`, `leader`, `leaderAt`, `leaderRegion`, `leaderZone`, `member`, `position`, `progress`, `region`, `returning`, `riding`, `zone` | `leader`, `member` | - | - |
 | `AUTONOMOUS_GROUP_MEMBER_RECOVERED` | server.log | **ships** | `bots/autonomous/AutonomousGroupMemberStall.cs` | `class`, `distance`, `from`, `id`, `leader`, `leaderZone`, `member`, `stalledSeconds`, `to`, `trail` | `leader`, `member` | - | - |
 | `AUTONOMOUS_GROUP_MEMBER_RECOVERY_DEFERRED` | server.log | **ships** | `bots/autonomous/AutonomousGroupMemberStall.cs` | `distance`, `id`, `leader`, `leaderZone`, `member`, `zone` | `leader`, `member` | - | - |
@@ -94,6 +95,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_NO_SHOW` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_OUTCOME` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_PARTIAL_ROSTER` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `action`, `group`, `reason`, `remaining`, `removed` | `removed` | - | - |
+| `AUTONOMOUS_GROUP_PULL_STALL` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.PullStall.cs` | JSON | - | one per stall of a grinding gamebot party (6 minutes with no fight or experience; #569) | A grinding gamebot party had no group fight and no experience for 6 minutes, and gate names what holds its pull. |
+| `AUTONOMOUS_GROUP_PULL_STALL_END` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.PullStall.cs` | JSON | - | one at the end of a stall that reaches 11 minutes, when the party's task ends (#569) | The stalled party reached 11 minutes, so its task ends cleanly here before the 15-minute stuck watchdog teleport. |
 | `AUTONOMOUS_GROUP_REGROUP_LEADER_READY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `leader`, `region`, `rendezvous` | `leader` | - | - |
 | `AUTONOMOUS_GROUP_REGROUP_READY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `remainingSeconds`, `size` | - | - | - |
 | `AUTONOMOUS_GROUP_REGROUP_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `members`, `objective`, `remainingSeconds`, `rendezvous` | `members` | - | - |
@@ -161,7 +164,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_TRANSFER_REQUEUE` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `moved`, `target_region` | `bot` | - | - |
 | `AUTONOMOUS_UNREACHABLE_TARGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `heightAbove`, `id`, `position`, `realm`, `region`, `target`, `targetRealm` | `bot`, `target` | - | - |
 | `AUTONOMOUS_XP_PROGRESS` | server.log | **ships** | `bots/GameBot.cs` | `amount`, `bot`, `class`, `id`, `level`, `xp` | `bot` | - | - |
-| `AUTONOMOUS_ZONE_SEAM_CYCLE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `activity`, `bot`, `goal`, `goalZone`, `id`, `level`, `position`, `realm`, `region`, `step`, `zone` | `bot` | - | - |
+| `AUTONOMOUS_ZONE_SEAM_CYCLE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `activity`, `bot`, `goal`, `goalZone`, `group`, `holds`, `id`, `level`, `outcome`, `position`, `realm`, `region`, `reversals`, `step`, `zone` | `bot` | one per seam reversal caught (#570: a gamebot's zone steps turned back twice over one border for one goal); rare, 2 on the owner's 11/23 log | One row per seam reversal caught, when a gamebot's zone steps turned back over the same border for one goal. |
 | `BEGGARS_CHOSEN` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `count` | - | - | - |
 | `BEGGAR_CHASE_END` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `beggar`, `player`, `reason` | `beggar`, `player` | - | - |
 | `BEGGAR_CORNER` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `at`, `bot`, `near`, `region` | `bot` | - | - |
