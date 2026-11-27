@@ -149,7 +149,7 @@ namespace DOL.UnitTests
         [TestCase(null, eRealm.None)]
         public void TheLedgerNamesTheDefender(string details, eRealm expected)
         {
-            Assert.That(RealmEventRecordStore.DefenderOf(details), Is.EqualTo(expected));
+            Assert.That(SiegeDefenseBalance.DefenderOf(details), Is.EqualTo(expected));
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace DOL.UnitTests
                     Row("Defended", "Forced continuous siege; defender: Hibernia"),
                     Row("Captured", "Retake attempt after a player captured the keep; one try"),
                 ]);
-                Assert.That(RealmEventRecordStore.SiegeResultsWithDefenders(path, 24), Is.EqualTo(new SiegeDefenseBalance.SiegeResult[]
+                Assert.That(SiegeDefenseBalance.FromLedger(RealmEventRecordStore.SiegeResultsWithDetails(path, 24)), Is.EqualTo(new SiegeDefenseBalance.SiegeResult[]
                 {
                     new(true, eRealm.Midgard), new(false, eRealm.Hibernia), new(true, eRealm.None),
                 }));

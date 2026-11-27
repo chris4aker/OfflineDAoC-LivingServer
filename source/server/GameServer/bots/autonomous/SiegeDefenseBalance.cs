@@ -107,6 +107,23 @@ public static class SiegeDefenseBalance
     public static void Load(IReadOnlyList<bool> ledgerOldestFirst) =>
         LoadResults((ledgerOldestFirst ?? []).Select(captured => new SiegeResult(captured, eRealm.None)).ToList());
 
+    /// <summary>The ledger's sieges (from <see cref="RealmEventRecordStore.SiegeResultsWithDetails"/>) as results with
+    /// their defending realm. Pure.</summary>
+    public static List<SiegeResult> FromLedger(IEnumerable<(bool Captured, string Details)> rows) =>
+        (rows ?? []).Select(r => new SiegeResult(r.Captured, DefenderOf(r.Details))).ToList();
+
+    /// <summary>The realm named after "defender: " in a siege's ledger details (None when there is none). Pure.</summary>
+    public static eRealm DefenderOf(string details)
+    {
+        const string marker = "defender: ";
+        int at = details?.LastIndexOf(marker, StringComparison.Ordinal) ?? -1;
+        if (at < 0) return eRealm.None;
+        string rest = details[(at + marker.Length)..];
+        foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
+            if (rest.StartsWith(GlobalConstants.RealmToName(realm), StringComparison.Ordinal)) return realm;
+        return eRealm.None;
+    }
+
     /// <summary>As <see cref="Load"/>, with each siege's defending realm, so the per-realm windows are rebuilt too.</summary>
     public static void LoadResults(IReadOnlyList<SiegeResult> ledgerOldestFirst)
     {
