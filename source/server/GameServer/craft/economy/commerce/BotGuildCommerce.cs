@@ -164,7 +164,7 @@ namespace DOL.GS.CraftingEconomy
                 return 0;
             lock (guild)
             {
-                if (guild.GetGuildBank() < (double)copper * Math.Max(1, reserveMultiple) || !guild.AddToBank(-copper, false))
+                if (guild.GetGuildBank() < (double)copper * Math.Max(1, reserveMultiple) || !guild.RemoveFromBank(copper, false))
                     return 0;
             }
             if (!BotEarn(member.DatabaseID, copper, EconomyFlowKind.Guild))

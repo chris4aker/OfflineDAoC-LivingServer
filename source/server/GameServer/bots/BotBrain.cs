@@ -2359,7 +2359,7 @@ namespace DOL.AI.Brain
                 .Where(spell => spell.SpellType != eSpellType.SpeedEnhancement || traveling)
                 .OrderByDescending(spell => spell.SpellType == eSpellType.SpeedEnhancement && traveling)
                 // Critical buffs first when concentration or power runs short (#491).
-                .ThenByDescending(spell => BotBuffTargetPolicy.Priority(spell.SpellType))
+                .ThenByDescending(spell => BotBuffTargetPolicy.Priority(BotBody, spell.SpellType))
                 .ThenByDescending(spell => spell.Value)
                 .ThenByDescending(spell => spell.Level);
 
@@ -2542,7 +2542,7 @@ namespace DOL.AI.Brain
             return Body.Group.GetMembersInTheGroup()
                 .Where(member => member != Body && member.IsAlive && InSupportReach(member) &&
                     !Body.IsWithinRadius(member, range) && !LivingHasEffect(member, spell) &&
-                    BotBuffTargetPolicy.Benefits(member, spell))
+                    BotBuffTargetPolicy.Benefits(BotBody, member, spell))
                 .OrderBy(member => Body.GetDistanceTo(member))
                 .FirstOrDefault();
         }
@@ -2884,7 +2884,7 @@ namespace DOL.AI.Brain
                     return LivingHasEffect(Body, spell) ? null : Body;
                 IEnumerable<GameLiving> members = Body.Group?.GetMembersInTheGroup() ?? [Body];
                 return members.Any(member => member.IsAlive && Body.IsWithinRadius(member, Math.Max(350, spell.Range)) &&
-                                             !LivingHasEffect(member, spell) && BotBuffTargetPolicy.Benefits(member, spell)) ||
+                                             !LivingHasEffect(member, spell) && BotBuffTargetPolicy.Benefits(BotBody, member, spell)) ||
                        FindMissingPartyPetBuffTarget(spell) != null
                     ? Body
                     : null;
@@ -2894,13 +2894,13 @@ namespace DOL.AI.Brain
             {
                 if (!spell.IsPulsing)
                     return FindRandomMissingRealmBuffTarget(spell, 350);
-                if (!LivingHasEffect(Body, spell) && BotBuffTargetPolicy.Benefits(Body, spell))
+                if (!LivingHasEffect(Body, spell) && BotBuffTargetPolicy.Benefits(BotBody, Body, spell))
                     return Body;
                 return Body.Group?.GetMembersInTheGroup()
                     .FirstOrDefault(member => member != Body && member.IsAlive &&
                                               Body.IsWithinRadius(member, Math.Max(350, spell.Range)) &&
                                               !LivingHasEffect(member, spell) &&
-                                              BotBuffTargetPolicy.Benefits(member, spell)) ?? FindMissingPartyPetBuffTarget(spell);
+                                              BotBuffTargetPolicy.Benefits(BotBody, member, spell)) ?? FindMissingPartyPetBuffTarget(spell);
             }
 
             return null;
@@ -2941,8 +2941,16 @@ namespace DOL.AI.Brain
             List<GameLiving> pool = members.Concat(BotGroupPetBuffTargets.Enumerate(BotBody, spell))
                 .Where(target => target != null && target.IsAlive && Body.IsWithinRadius(target, range) &&
                     !LivingHasEffect(target, spell) && !(claims?.IsReserved(target, family, now) ?? false) &&
-                    BotBuffTargetPolicy.Benefits(target, spell))
+                    BotBuffTargetPolicy.Benefits(BotBody, target, spell))
                 .ToList();
+            // #571 step 4 (True165 1ed3b24): a companion or a bot in a player's group buffs by job (tanks, melee, healers,
+            // casters; pets last), or by the hired companion's "Buff priority" AI option.
+            if (BotBuffTargetPolicy.UsesPlayerGroupRules(BotBody))
+            {
+                int buffPriority = CompanionOptions165.Choice(BotBody, CompanionOptions165.BuffPriorityKey);
+                return BotBuffReservations<GameLiving>.ChooseBest(pool, _ => true,
+                    target => BotBuffTargetPolicy.TargetRank(target, spell.SpellType, buffPriority));
+            }
             // STR/CON and DEX/QUI reach the tanks and melee damage dealers before the casters.
             return BotBuffReservations<GameLiving>.Choose(pool, target =>
                        BotBuffTargetPolicy.PreferredSpecTarget(spell.SpellType,
@@ -2976,7 +2984,7 @@ namespace DOL.AI.Brain
         private GameLiving FindMissingPartyPetBuffTarget(Spell spell)
         {
             GameNPC pet = BotGroupPetBuffTargets.Enumerate(BotBody, spell)
-                .FirstOrDefault(candidate => !LivingHasEffect(candidate, spell) && BotBuffTargetPolicy.Benefits(candidate, spell));
+                .FirstOrDefault(candidate => !LivingHasEffect(candidate, spell) && BotBuffTargetPolicy.Benefits(BotBody, candidate, spell));
             // Native group spells fan out from the caster; realm buffs target one pet.
             return pet == null ? null : spell.Target == eSpellTarget.GROUP ? Body : pet;
         }
@@ -3749,13 +3757,20 @@ namespace DOL.AI.Brain
                         DbInventoryItem distanceItem = BotBody.Inventory.GetItem(eInventorySlot.DistanceWeapon);
                         bool hasRangedCombatWeapon = BotRangedCombat.CanUse(BotBody, distanceItem) &&
                                                      Body.Endurance >= Body.rangeAttackComponent.ShotEnduranceCost;
+                        // #569 step 7 (anti flip-flop): back to the bow from melee only with endurance for three shots, and
+                        // once in melee a monster has to step 150 past melee reach before the bow comes back.
+                        bool onBow = Body.ActiveWeaponSlot == eActiveWeaponSlot.Distance;
+                        bool bowWorthIt = !BotWeaponSetPolicy.On ? hasRangedCombatWeapon :
+                            hasRangedCombatWeapon && BotWeaponSetPolicy.EnduranceForBow(Body.Endurance,
+                                Body.rangeAttackComponent.ShotEnduranceCost, onBow);
+                        int meleeHold = BotWeaponSetPolicy.On ? BotWeaponSetPolicy.MeleeHold(onBow) : 0;
 
                         // Direct melee pressure was handled above by
                         // TryEngageUnderMeleePressure.  Until that happens, a
                         // persistent Scout/Hunter/Ranger holds bow range even
                         // when its target closes inside nominal melee distance.
                         // Proximity alone must not restart a valid draw.
-                        bool targetForcesMelee = distance <= Body.MeleeAttackRange &&
+                        bool targetForcesMelee = distance <= Body.MeleeAttackRange + meleeHold &&
                                                  !BotRangedCombat.UsesAutonomousBowPositioning(BotBody) ||
                                                  ArcherMeleeFallbackActive;
 
@@ -3763,7 +3778,7 @@ namespace DOL.AI.Brain
                             (eCharacterClass)BotBody.CharacterClass.ID,
                             stance,
                             targetForcesMelee,
-                            hasRangedCombatWeapon);
+                            bowWorthIt);
                         // An epic rule says this target is fought with the distance weapon only (Funus: a melee swing from
                         // a mercenary, armsman, infiltrator or scout heals him to full). Short of endurance for a shot the
                         // bot waits; it never falls back to its melee weapon on him.
@@ -4131,10 +4146,11 @@ namespace DOL.AI.Brain
                 if (oneHandHeals && !twoHandHeals) oneHandUsable = false;
                 else if (twoHandHeals && !oneHandHeals) twoHandUsable = false;
             }
-            bool preferTwoHand = PreferTwoHandedSlot(twoHandUsable, oneHandUsable,
-                BotBody.BotSpec?.Is2H == true ||
-                BotBody.CharacterClass.ClassType == eClassType.ListCaster ||
-                BotBody.CharacterClass.ID is (int)eCharacterClass.Friar or (int)eCharacterClass.Valewalker);
+            // #569 step 7 (bot_weapon_set_rules): one rule with the attack start (BotWeaponSetPolicy): the player's readied
+            // set for a hired companion, a party's only Guard tank on its trained shield, the set trained higher, the build.
+            bool preferTwoHand = BotWeaponSetPolicy.On
+                ? BotWeaponSetPolicy.PreferTwoHanded(BotBody, twoHandUsable, oneHandUsable, BotWeaponSetPolicy.TwoHandedBuild(BotBody))
+                : PreferTwoHandedSlot(twoHandUsable, oneHandUsable, BotWeaponSetPolicy.TwoHandedBuild(BotBody));
 
             if (preferTwoHand)
             {
@@ -5175,7 +5191,7 @@ namespace DOL.AI.Brain
                         break;
                     }
 
-                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(Body, spell)))
+                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(BotBody, Body, spell)))
                     {
                         Body.TargetObject = Body;
                         break;
@@ -5190,7 +5206,7 @@ namespace DOL.AI.Brain
                                 if (groupMember != Body)
                                 {
                                     if (!LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive &&
-                                        BotBuffTargetPolicy.Benefits(groupMember, spell))
+                                        BotBuffTargetPolicy.Benefits(BotBody, groupMember, spell))
                                     {
                                         Body.TargetObject = groupMember;
                                         break;
@@ -5306,8 +5322,8 @@ namespace DOL.AI.Brain
                 return false;
 
             // The most critical buffs go first (#491): endurance regen, spec buffs and haste before the rest.
-            int topPriority = spellsToCast.Max(entry => BotBuffTargetPolicy.Priority(entry.Item1.SpellType));
-            spellsToCast = spellsToCast.Where(entry => BotBuffTargetPolicy.Priority(entry.Item1.SpellType) == topPriority).ToList();
+            int topPriority = spellsToCast.Max(entry => BotBuffTargetPolicy.Priority(BotBody, entry.Item1.SpellType));
+            spellsToCast = spellsToCast.Where(entry => BotBuffTargetPolicy.Priority(BotBody, entry.Item1.SpellType) == topPriority).ToList();
             GameObject oldTarget = Body.TargetObject;
             (Spell spell, GameLiving target) spellToCast = BotBody.IsEndgameCompanion
                 ? spellsToCast.OrderByDescending(entry => entry.Item1.Level).ThenByDescending(entry => entry.Item1.ID).First()
@@ -5380,7 +5396,7 @@ namespace DOL.AI.Brain
                 case eSpellType.OffensiveProc:
                 case eSpellType.DefensiveProc:
                 case eSpellType.Bladeturn when !spell.IsPulsing:
-                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(Body, spell)))
+                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(BotBody, Body, spell)))
                     {
                         target = Body;
                         break;
@@ -5391,7 +5407,7 @@ namespace DOL.AI.Brain
                         foreach (GameLiving groupMember in Body.Group.GetMembersInTheGroup())
                         {
                             if (groupMember != Body && !LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive &&
-                                BotBuffTargetPolicy.Benefits(groupMember, spell))
+                                BotBuffTargetPolicy.Benefits(BotBody, groupMember, spell))
                             {
                                 target = groupMember;
                                 break;
@@ -5992,8 +6008,8 @@ namespace DOL.AI.Brain
                 // rules.  For an allied group member in a legal heal range,
                 // however, keeping that carrier alive takes precedence over
                 // ordinary group triage.
-                GameLiving relicCarrier = RelicMgr.GetRelics()
-                    .Select(relic => relic?.CurrentCarrier)
+                // #572: the relic carriers read through a 2 s server-wide cache (BotBrain.RvrSupport.cs).
+                GameLiving relicCarrier = RelicCarriers()
                     .FirstOrDefault(carrier => carrier?.IsAlive == true && carrier.Realm == BotBody.Realm &&
                                                (Body.Group.IsInTheGroup(carrier) || BotBody.IsAutonomousWorldBot &&
                                                 AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR)) && CanHealRelicCarrier(carrier));
@@ -6031,14 +6047,8 @@ namespace DOL.AI.Brain
             // This does not extend PvE/companion triage to unrelated NPCs.
             if (BotBody.IsAutonomousWorldBot && AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR))
             {
-                GameLiving support = RelicMgr.GetRelics().Select(relic => relic.CurrentCarrier)
-                    .Concat(Body.GetNPCsInRadius(2000).OfType<DOL.GS.Keeps.GameKeepGuard>().Cast<GameLiving>())
-                    .Where(living => living?.IsAlive == true && living.Realm == Body.Realm && living.HealthPercent < 85 &&
-                        living.CurrentRegion == Body.CurrentRegion && CanHealRelicCarrier(living) &&
-                        PathfindingProvider.Instance.HasLineOfSight(Body.CurrentZone, new(Body.X, Body.Y, Body.Z),
-                            new(living.X, living.Y, living.Z), PathfindingProvider.Instance.DefaultFilters))
-                    .OrderBy(living => GameRelic.IsPlayerCarryingRelic(living) ? 0 : living is DOL.GS.Keeps.GuardLord ? 1 : 2)
-                    .ThenBy(living => living.HealthPercent).FirstOrDefault();
+                // #572 (port of True165 16284ba): held 2 s, ranked before any line-of-sight raycast (BotBrain.RvrSupport.cs).
+                GameLiving support = RvrSupportTarget();
                 if (support != null && (spellTarget == null || spellTarget.HealthPercent >= 40 || support.HealthPercent < spellTarget.HealthPercent))
                 {
                     spellTarget = support;

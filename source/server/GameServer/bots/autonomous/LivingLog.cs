@@ -356,6 +356,7 @@ namespace DOL.GS
             bool Has(string part) => text.Contains(part, StringComparison.OrdinalIgnoreCase);
             if (string.Equals(text, AutonomousBotGroupCoordinator.SharedTaskExpiredReason, StringComparison.Ordinal)) return ("finished", "expired");
             if (text.StartsWith("Natural break", StringComparison.Ordinal)) return ("finished", "natural_break");
+            if (text.StartsWith("Lost members to ", StringComparison.Ordinal)) return ("danger", "far_above"); // #569 step 2
             if (Has("left the locked PvE party")) return ("member_left", "no_core");
             if (text.StartsWith("A member left and fewer than two", StringComparison.Ordinal)) return ("member_left", "too_few");
             if (text.StartsWith("No replacement ", StringComparison.Ordinal)) return ("member_left", "no_replacement");
@@ -372,6 +373,7 @@ namespace DOL.GS
             if (Has("expedition hub formation")) return ("meetup", "hub");
             if (Has("PvE meetup lost") || Has("replacement PvE rendezvous") || Has("no valid formation slots")) return ("meetup", "unreachable");
             if (Has("No reachable non-grey group camp")) return ("no_camp", "none_reachable");
+            if (text.StartsWith("Pull stalled", StringComparison.Ordinal)) return ("stalled", "pull"); // #569 AutonomousPartyPullStall
             if (text.StartsWith("Verified individual recovery", StringComparison.Ordinal)) return ("recovery", "member_stuck");
             if (Has("Reassigned by a forced realm expedition")) return ("released", "forced_expedition");
             return ("other", "unclassified");

@@ -213,11 +213,7 @@ namespace DOL.GS
                 // spot, zone pair, goal area and allowed zones fail the same way for a while.
                 step = default;
                 if (region == null || from == null || to == null) return false;
-                int allowedMask = 0;
-                if (allowed != null)
-                    foreach (Zone zone in region.Zones) allowedMask = allowedMask * 31 + (allowed(zone) ? zone.ID : 0);
-                var key = (region.ID, from.ID, to.ID, (int)start.X >> 9, (int)start.Y >> 9, (int)start.Z >> 8,
-                    (int)goal.X >> 11, (int)goal.Y >> 11, allowedMask);
+                var key = StepKey(region, from, to, start, goal, allowed);
                 long now = GameLoop.GameLoopTime;
                 if (FailedSteps.TryGetValue(key, out long until) && now < until) return false;
                 if (SolvedSteps.TryGetValue(key, out var solved) && now < solved.Until)
@@ -243,6 +239,48 @@ namespace DOL.GS
         }
 
         [ThreadStatic] private static int _stepDepth;
+
+        private static (ushort, ushort, ushort, int, int, int, int, int, int) StepKey(Region region, Zone from, Zone to,
+            Vector3 start, Vector3 goal, Func<Zone, bool> allowed)
+        {
+            int allowedMask = 0;
+            if (allowed != null)
+                foreach (Zone zone in region.Zones) allowedMask = allowedMask * 31 + (allowed(zone) ? zone.ID : 0);
+            return (region.ID, from.ID, to.ID, (int)start.X >> 9, (int)start.Y >> 9, (int)start.Z >> 8,
+                (int)goal.X >> 11, (int)goal.Y >> 11, allowedMask);
+        }
+
+        /// <summary>
+        /// #570 (port of True165 d1320e6): a step the seam reversal guard caught leaves the shared memory and is remembered as
+        /// failed, so the next bot from the same spot to the same goal isn't handed the crossing that turns back. A held group
+        /// member forgets without remembering it failed (rememberFailed false): it plans again from the same spot after its
+        /// hold, and a failed step there would end its trip and drop its group's camp (#570 review).
+        /// </summary>
+        public static void ForgetStep(Region region, Zone from, Zone to, Vector3 start, Vector3 goal, Func<Zone, bool> allowed = null,
+            bool rememberFailed = true)
+        {
+            if (region == null || from == null || to == null) return;
+            var key = StepKey(region, from, to, start, goal, allowed);
+            SolvedSteps.TryRemove(key, out _);
+            if (!rememberFailed) return;
+            if (FailedSteps.Count > 50_000) FailedSteps.Clear();
+            FailedSteps[key] = GameLoop.GameLoopTime + FailedStepMemoryMilliseconds;
+        }
+
+        /// <summary>Test hook: put a solved step in the shared memory, as a successful TryNextStep would.</summary>
+        public static void RememberSolvedForTests(Region region, Zone from, Zone to, Vector3 start, Vector3 goal,
+            AutonomousZoneBoundaryRouting.Step step, Func<Zone, bool> allowed = null) =>
+            SolvedSteps[StepKey(region, from, to, start, goal, allowed)] = (step, GameLoop.GameLoopTime + SolvedStepMemoryMilliseconds);
+
+        /// <summary>Test hook: "solved", "failed" or null for what the shared memory holds for this step.</summary>
+        public static string MemoryForTests(Region region, Zone from, Zone to, Vector3 start, Vector3 goal, Func<Zone, bool> allowed = null)
+        {
+            var key = StepKey(region, from, to, start, goal, allowed);
+            long now = GameLoop.GameLoopTime;
+            if (FailedSteps.TryGetValue(key, out long until) && now < until) return "failed";
+            if (SolvedSteps.TryGetValue(key, out var solved) && now < solved.Until) return "solved";
+            return null;
+        }
 
         public static long RememberedSteps => SolvedSteps.Count + FailedSteps.Count;
 
