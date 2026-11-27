@@ -21,7 +21,7 @@ A fix counts as working only once it is seen in a log from the owner's PC. Until
 - **1.2.2** is the latest full release (2026-11-23, [RELEASE-NOTES-1.2.2.md](RELEASE-NOTES-1.2.2.md)).
 - **1.2.3** is in release candidates: `v1.2.3-rc.2` was published as a pre-release on 2026-11-26 ([#709](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/709)); the merges
   for rc.3 are going into `main`. 1.2.3 is now the polish release, with no deadline (owner, 2026-11-26).
-- **1.2.4** carries on after it: epic encounters and raids, the alt roster, Grafana, the large ports and the risky
+- **1.2.4** carries on after it: epic encounters and raids, the alt roster, the held upstream ports and the risky
   navigation work, with no single headline. **1.2.5** holds only the keep patrols the owner is holding. Every open issue
   has a milestone; the plan and build order are on [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738).
 - **Done since 1.2** (closed; what shipped is in each issue's last comment and in the changelog): [#396](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/396), [#397](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/397),
@@ -34,7 +34,8 @@ A fix counts as working only once it is seen in a log from the owner's PC. Until
 ## 1.2.3: the polish release
 
 The [1.2.3 milestone](https://github.com/chris4aker/OfflineDAoC-LivingServer/milestone/1) (owner, 2026-11-26): every fixable bug and optimization, and the RvR and bot-chat
-enhancements we can package, so players notice how polished it has become. No deadline. Grouped and ordered as the
+enhancements we can package, so players notice how polished it has become, and (owner, 22:09) Grafana and the
+large ports that fit. No deadline. Grouped and ordered as the
 milestone plan, [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738), describes: anything another item builds on comes first (an arrow means "then").
 Build order inside 1.2.3: realism 2b (#479) first, RvR piece C (#530) before pieces B (#529) and D (#531), and #571
 before the companion work.
@@ -173,6 +174,30 @@ Each waits on the owner's answers on #663, and builds on #571.
 - [#667](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/667) Group controls: let the player order companions and their bot group in a fight (attack, assist on me, kite
   back, PBAoE, hold, regroup). `needs-owner`, `needs-PC`.
 
+### Grafana Cloud kit
+
+See [GRAFANA.md](GRAFANA.md) and [LOG-ROWS.md](LOG-ROWS.md). Kit 1 (#647), then existing agents (#650), then one
+pipeline (#651), then the dashboards and extras. #643 and #653 stay `needs-owner`.
+
+- [#647](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/647) Agent-run setup on Ubuntu and Windows, with or without a Cloud account and Alloy. Then #650, then #651.
+- [#650](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/650) Kit 2: existing agents (legacy Grafana Agent migration, Alloy module option), after #647.
+- [#651](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/651) Kit 3: one pipeline on #628's fail-closed filter, with the metrics side, after #650.
+- [#656](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/656) Dashboards must work on Windows (the server-running gate uses Linux-only metrics).
+- [#643](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/643) Developer Grafana Cloud stack: collaborators ship filtered rows to one shared Cloud stack (never in player
+  releases). `needs-owner`.
+- [#653](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/653) Kit 5: game-side meters (bots online by type and realm, metrics interval key, MetricsEnabled switch).
+  `needs-owner`.
+- [#655](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/655) Alerts and SLOs (split from #652).
+- [#657](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/657) Host panels for players without node_exporter.
+- [#658](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/658) Upgrade from a hand-run copy of the pipeline (job label, port, positions).
+
+### Upstream ports (fixes and polish, ported by hand from OpenDAoC)
+
+From [upstream/OPENDAOC-LEDGER-2026-11.md](upstream/OPENDAOC-LEDGER-2026-11.md).
+
+- [#562](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/562) OpenDAoC port: housing, guild and market. House-vault and guild-house crash safety, consignment fixes.
+- [#565](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/565) OpenDAoC port: quests, gravestones and timed services. The quest-list race fix and periodic quests.
+
 ### Checks on a PC
 
 - [#425](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/425) 1.2.1 PC check: the original client's handshake build, and the bot death fall. **Open.** CI's playtester
@@ -241,26 +266,10 @@ raise rule is in [RAID-SIZES.md](RAID-SIZES.md).
 - [#573](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/573) Harvest: bot memory, social acts, gear value and economy from True165 (builds on the alt roster's shared
   memory).
 
-### Grafana Cloud kit
+### Held upstream ports
 
-See [GRAFANA.md](GRAFANA.md) and [LOG-ROWS.md](LOG-ROWS.md).
+Held for playtest evidence or owner decisions; they can't fit until those logs exist.
 
-- [#643](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/643) Developer Grafana Cloud stack: collaborators ship filtered rows to one shared Cloud stack (never in player
-  releases). `needs-owner`.
-- [#647](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/647) Agent-run setup on Ubuntu and Windows, with or without a Cloud account and Alloy. Then #650, then #651.
-- [#650](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/650) Kit 2: existing agents (legacy Grafana Agent migration, Alloy module option), after #647.
-- [#651](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/651) Kit 3: one pipeline on #628's fail-closed filter, with the metrics side, after #650.
-- [#656](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/656) Dashboards must work on Windows (the server-running gate uses Linux-only metrics).
-- [#653](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/653) Kit 5: game-side meters (bots online by type and realm, metrics interval key, MetricsEnabled switch).
-  `needs-owner`.
-- [#655](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/655) Alerts and SLOs (split from #652).
-- [#657](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/657) Host panels for players without node_exporter.
-- [#658](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/658) Upgrade from a hand-run copy of the pipeline (job label, port, positions).
-
-### The large ports
-
-- [#562](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/562) OpenDAoC port: housing, guild and market.
-- [#565](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/565) OpenDAoC port: quests, gravestones and timed services.
 - [#613](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/613) Upstream ports held for evidence or an owner decision (from P2, P4 and P5). The packages themselves are
   merged into 1.2.3 (changelog 1.2.3, "From OpenDAoC upstream" P1-P4 and "From the Offline DAoC forks" P5), **tests
   only**; their PC checks are under 1.2.3, "1.2.3 work without an issue of its own". Ledger: [upstream/OPENDAOC-LEDGER-2026-11.md](upstream/OPENDAOC-LEDGER-2026-11.md);
