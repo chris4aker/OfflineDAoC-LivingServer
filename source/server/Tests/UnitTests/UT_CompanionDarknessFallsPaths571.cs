@@ -3,12 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using DOL.Database;
+using DOL.UnitTests;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests;
 
 /// <summary>
-/// #571 step 3 (port of True165 1630980, their GitHub #38): in Darkness Falls a bot a real player leads (a hired
+/// #571 step 3: in Darkness Falls a bot a real player leads (a hired
 /// companion, a gamebot in the player's group, a bot with a player owner) moves by the companion path rules that /spawn
 /// and /bot companions already use (#438); only gamebots no player leads keep the certified-corridor gate and the
 /// gamebot fall rules. Tests only: no PC log yet.
@@ -18,6 +20,28 @@ public class UT_CompanionDarknessFallsPaths571
 {
     private const long HiredBotId = 987_654_321_571;
     private const BindingFlags Declared = BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly;
+
+    private sealed class InertServer : GameServer
+    {
+        protected override IObjectDatabase DataBaseImpl => EmptyDatabase;
+    }
+
+    private static readonly IObjectDatabase EmptyDatabase =
+        DispatchProxy.Create<IObjectDatabase, UT_UnobservedConcentration.EmptyReads>();
+
+    private GameServer _previousServer;
+
+    // Run alone (dotnet test --filter) the GameObject static constructor needs GameServer.Database; a failed type
+    // initializer would stay failed for every later fixture in the run.
+    [OneTimeSetUp]
+    public void LoadServer()
+    {
+        _previousServer = GameServer.Instance;
+        GameServer.LoadTestDouble((InertServer) RuntimeHelpers.GetUninitializedObject(typeof(InertServer)));
+    }
+
+    [OneTimeTearDown]
+    public void RestoreServer() => GameServer.LoadTestDouble(_previousServer);
 
     [TearDown]
     public void TearDown() => HiredMap().TryRemove(HiredBotId, out _);
@@ -115,6 +139,30 @@ public class UT_CompanionDarknessFallsPaths571
             Assert.That(CompanionDarknessFallsPaths.TryClaimLogSlot(next, 2, 1_500, interval), Is.True, "per bot");
             Assert.That(CompanionDarknessFallsPaths.TryClaimLogSlot(next, 1, 1_000 + interval, interval), Is.True);
         });
+    }
+
+    [Test]
+    public void LogSlots_ArePrunedOnceExpired()
+    {
+        // #731: a per-bot static map must not grow with every bot that ever logged a row.
+        ConcurrentDictionary<long, long> next = new();
+        const long interval = CompanionDarknessFallsPaths.LogIntervalMilliseconds;
+        for (long bot = 1; bot <= 50; bot++)
+            CompanionDarknessFallsPaths.TryClaimLogSlot(next, bot, 1_000, interval);
+        Assert.That(next.Count, Is.EqualTo(50));
+        Assert.That(CompanionDarknessFallsPaths.TryClaimLogSlot(next, 99, 1_000 + interval, interval), Is.True);
+        Assert.Multiple(() =>
+        {
+            Assert.That(next.Count, Is.EqualTo(1), "every expired slot is dropped when a new one is claimed");
+            Assert.That(next.ContainsKey(99), Is.True);
+        });
+    }
+
+    [Test]
+    public void TheRowHasItsMeaningAboveTheWrite()
+    {
+        string paths = Source("bots", "autonomous", "CompanionDarknessFallsPaths.cs");
+        Assert.That(paths, Does.Contain("        // COMPANION_PATH_DF: a player-led bot's Darkness Falls path that the gamebot gate would have refused (it now takes the ordinary path).\n        Log.Info($\"COMPANION_PATH_DF "));
     }
 
     // ---- wiring: the four DF sites use the one rule -------------------------------------------------------------------

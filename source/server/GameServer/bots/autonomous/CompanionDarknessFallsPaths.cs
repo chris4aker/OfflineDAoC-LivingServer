@@ -5,7 +5,7 @@ using DOL.Logging;
 namespace DOL.GS;
 
 /// <summary>
-/// #571 step 3 (port of True165 1630980, their GitHub #38): which Darkness Falls path rules a bot moves by.
+/// #571 step 3: which Darkness Falls path rules a bot moves by.
 ///
 /// The gamebot rules (Pathfinder's certified-corridor gate, certified falls only with the full certificate and only on a
 /// complete path, a re-order during a fall ignored unless it keeps the same goal, the stair climb on the full certificate's
@@ -50,13 +50,23 @@ public static class CompanionDarknessFallsPaths
 
     /// <summary>Pure: claims the row slot for <paramref name="key"/> (true at most once per <paramref name="interval"/>).
     /// A bot's path work runs on its own tick, so one key is not claimed from two threads at once; a rare duplicate row is
-    /// harmless.</summary>
+    /// harmless. Each claim first drops every expired slot, so the map holds only bots with a row in the last interval
+    /// (no per-bot entry outlives its slot, #731).</summary>
     public static bool TryClaimLogSlot(ConcurrentDictionary<long, long> next, long key, long now, long interval)
     {
         if (!LogDue(next, key, now))
             return false;
+        PruneExpired(next, now);
         next[key] = now + interval;
         return true;
+    }
+
+    /// <summary>Pure: removes the slots that are due again (their bot may log at once, so the entry carries nothing).</summary>
+    public static void PruneExpired(ConcurrentDictionary<long, long> next, long now)
+    {
+        foreach (var slot in next)
+            if (now >= slot.Value)
+                next.TryRemove(slot);
     }
 
     private static long KeyOf(GameBot bot) => bot.DatabaseID > 0 ? bot.DatabaseID : -bot.ObjectID;
@@ -73,6 +83,7 @@ public static class CompanionDarknessFallsPaths
     {
         if (bot == null || !Log.IsInfoEnabled || !TryClaimLogSlot(NextLog, KeyOf(bot), GameLoop.GameLoopTime, LogIntervalMilliseconds))
             return;
+        // COMPANION_PATH_DF: a player-led bot's Darkness Falls path that the gamebot gate would have refused (it now takes the ordinary path).
         Log.Info($"COMPANION_PATH_DF bot=\"{bot.Name}\" id={bot.DatabaseID} kind={KindOf(bot)} region={bot.CurrentRegionID} " +
                  $"status={status} nodes={nodeCount} from={(int) from.X},{(int) from.Y},{(int) from.Z} " +
                  $"to={(int) to.X},{(int) to.Y},{(int) to.Z} old_gate=reject");

@@ -216,7 +216,7 @@ namespace DOL.GS
                 pathBuffer.Clear();
                 pathBuffer.Origin = position;
 
-                // #571 step 3 (True165 1630980): the certified-corridor gate is for gamebots no player leads. A hired
+                // #571 step 3: the certified-corridor gate is for gamebots no player leads. A hired
                 // companion or a gamebot in a player's group follows on the ordinary Detour path, as /spawn companions do.
                 if (Owner is GameBot ledBot && ledBot.IsAutonomousWorldBot &&
                     zone.ZoneRegion?.ID == AutonomousDarknessFallsPolicy.RegionId &&

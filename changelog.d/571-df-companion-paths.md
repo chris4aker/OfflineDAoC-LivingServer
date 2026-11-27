@@ -2,7 +2,7 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **Hired companions and bots in your group follow you through Darkness Falls** (#571 step 3, from True165 `1630980`).
+- **Hired companions and bots in your group follow you through Darkness Falls** (#571 step 3).
   Before this, in Darkness Falls they only took the routes the gamebots plan for themselves, so they often stood still
   until they were brought back beside you. They now follow you as `/spawn` and `/bot` companions already did:
   - on ordinary paths;
