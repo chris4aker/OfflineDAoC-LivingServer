@@ -48,6 +48,9 @@ public readonly record struct RvrContact(long Owner, int OwnerRealm, long Target
     public bool Firsthand => (Sources & RvrContacts.FirsthandSources) != 0;
 }
 
+/// <summary>The enemy behind a contact as it is now, for RvrContacts.AlarmHeard (read from the game by the caller).</summary>
+public readonly record struct RvrAlarmSubject(bool Alive, bool Active, bool Stealthed, ushort Region, int Realm);
+
 /// <summary>Heads and parties of one enemy realm a realm has seen near a point (RvrContacts.Near).</summary>
 public readonly record struct RvrContactCount(int Heads, int Players, int Parties, long LatestSeen);
 
@@ -88,12 +91,16 @@ public sealed class RvrContacts
         public long FirstSeen, LastSeen;
         public RvrContactSource Sources, LastSource;
         public GameLiving Subject;
+        /// <summary>Set under the entry's lock when the sweep took it out of the realm union: a writer retries.</summary>
+        public bool Removed;
     }
 
     private sealed class Owner
     {
         public int Realm;
         public readonly Dictionary<long, Entry> Entries = new();
+        /// <summary>Set under the table's lock when the sweep took it out: a writer that raced it retries on a new one.</summary>
+        public bool Removed;
     }
 
     private readonly ConcurrentDictionary<long, Owner> _owners = new();
@@ -107,6 +114,25 @@ public sealed class RvrContacts
 
     /// <summary>How many bots hold at least one contact.</summary>
     public int Owners => _owners.Count;
+
+    /// <summary>
+    /// How many rows the table holds: every bot's contacts plus the realm union's (SERVER_STATIC_CENSUS through
+    /// ServerMemoryDiagnostics.RegisterCache, #731). Takes each bot's lock in turn: for diagnostics, not the game loop.
+    /// </summary>
+    public long Count
+    {
+        get
+        {
+            long count = _realm.Count;
+            foreach (var pair in _owners)
+                lock (pair.Value)
+                    count += pair.Value.Entries.Count;
+            return count;
+        }
+    }
+
+    /// <summary>The realm union's rows (one per realm and enemy).</summary>
+    public int RealmRows => _realm.Count;
 
     /// <summary>The confidence after this age: 1 at 0, halving every HalfLife, 0 once forgotten. Pure.</summary>
     public static double Confidence(long ageMilliseconds) =>
@@ -123,24 +149,36 @@ public sealed class RvrContacts
             return;
         Sweep(now);
         Interlocked.Increment(ref _writes);
-        Owner table = _owners.GetOrAdd(owner, static _ => new Owner());
-        lock (table)
+        while (true)
         {
-            table.Realm = ownerRealm;
-            if (!table.Entries.TryGetValue(sighting.Target, out Entry entry) || now - entry.LastSeen > ForgetAfterMilliseconds)
-                table.Entries[sighting.Target] = entry = new Entry { FirstSeen = now, LastSeen = now };
-            Apply(entry, sighting, source, now);
-        }
-        Entry union = _realm.GetOrAdd((ownerRealm, sighting.Target), static _ => new Entry { FirstSeen = long.MaxValue });
-        lock (union)
-        {
-            if (now - union.LastSeen > ForgetAfterMilliseconds)
+            Owner table = _owners.GetOrAdd(owner, static _ => new Owner());
+            lock (table)
             {
-                union.FirstSeen = now;
-                union.Sources = RvrContactSource.None;
+                if (table.Removed)
+                    continue; // the sweep took this table out after we fetched it: write into the new one
+                table.Realm = ownerRealm;
+                if (!table.Entries.TryGetValue(sighting.Target, out Entry entry) || now - entry.LastSeen > ForgetAfterMilliseconds)
+                    table.Entries[sighting.Target] = entry = new Entry { FirstSeen = now, LastSeen = now };
+                Apply(entry, sighting, source, now);
+                break;
             }
-            union.FirstSeen = Math.Min(union.FirstSeen, now);
-            Apply(union, sighting, source, now);
+        }
+        while (true)
+        {
+            Entry union = _realm.GetOrAdd((ownerRealm, sighting.Target), static _ => new Entry { FirstSeen = long.MaxValue });
+            lock (union)
+            {
+                if (union.Removed)
+                    continue;
+                if (now - union.LastSeen > ForgetAfterMilliseconds)
+                {
+                    union.FirstSeen = now;
+                    union.Sources = RvrContactSource.None;
+                }
+                union.FirstSeen = Math.Min(union.FirstSeen, now);
+                Apply(union, sighting, source, now);
+                break;
+            }
         }
     }
 
@@ -290,17 +328,25 @@ public sealed class RvrContacts
         (long)(contact.X - x) * (contact.X - x) + (long)(contact.Y - y) * (contact.Y - y);
 
     /// <summary>Forgets one bot's contacts (it left the world, died out of RvR; tests).</summary>
-    public void Forget(long owner) => _owners.TryRemove(owner, out _);
+    public void Forget(long owner)
+    {
+        if (!_owners.TryGetValue(owner, out Owner table))
+            return;
+        lock (table)
+            if (_owners.TryRemove(new KeyValuePair<long, Owner>(owner, table)))
+                table.Removed = true;
+    }
 
     private void Sweep(long now)
     {
         if (now < Volatile.Read(ref _nextSweep))
             return;
         Volatile.Write(ref _nextSweep, now + SweepEveryMilliseconds);
+        // Each removal happens under the row's own lock and marks it Removed, so a writer that fetched it just before
+        // retries on a fresh row instead of writing into one that is no longer in the dictionary (review of #741).
         foreach (var pair in _owners)
         {
             Owner table = pair.Value;
-            bool empty;
             lock (table)
             {
                 List<long> stale = null;
@@ -310,14 +356,17 @@ public sealed class RvrContacts
                 if (stale != null)
                     foreach (long key in stale)
                         table.Entries.Remove(key);
-                empty = table.Entries.Count == 0;
+                if (table.Entries.Count == 0 && _owners.TryRemove(pair))
+                    table.Removed = true;
             }
-            if (empty)
-                _owners.TryRemove(pair.Key, out _);
         }
         foreach (var pair in _realm)
-            if (now - Volatile.Read(ref pair.Value.LastSeen) > ForgetAfterMilliseconds)
-                _realm.TryRemove(pair.Key, out _);
+        {
+            Entry entry = pair.Value;
+            lock (entry)
+                if (now - entry.LastSeen > ForgetAfterMilliseconds && _realm.TryRemove(pair))
+                    entry.Removed = true;
+        }
     }
 
     public void Clear()
@@ -326,6 +375,30 @@ public sealed class RvrContacts
         _realm.Clear();
         Interlocked.Exchange(ref _writes, 0);
         Volatile.Write(ref _nextSweep, 0);
+    }
+
+    /// <summary>How fresh a contact must be for the /faction alarm to count it (a few scans: the period's 1-5 s inc).</summary>
+    public const long AlarmHearsMilliseconds = 3_000;
+
+    /// <summary>
+    /// #529 step 2 ("Also, now"): which of a bot's contacts the /faction alarm and the realm's news board hear: last seen
+    /// at most AlarmHearsMilliseconds ago, and (by <paramref name="look"/>, which reads the game, or null when the enemy
+    /// is gone) alive, in the world, not stealthed, in the bot's region and of another realm. Pure.
+    /// </summary>
+    public static List<RvrContact> AlarmHeard(IReadOnlyList<RvrContact> contacts, long now, ushort botRegion, int botRealm,
+        Func<RvrContact, RvrAlarmSubject?> look)
+    {
+        var heard = new List<RvrContact>();
+        if (contacts == null || look == null)
+            return heard;
+        foreach (RvrContact contact in contacts)
+        {
+            if (contact.AgeMilliseconds(now) > AlarmHearsMilliseconds || look(contact) is not RvrAlarmSubject subject)
+                continue;
+            if (subject.Alive && subject.Active && !subject.Stealthed && subject.Region == botRegion && subject.Realm != botRealm)
+                heard.Add(contact);
+        }
+        return heard;
     }
 
     /// <summary>

@@ -206,7 +206,8 @@ public static class RvrFightBoards
         return RvrGroupSkill.For(id, personality, AutonomousRvrPerception.ParseAwareness(Properties.RVR_BOT_AWARENESS));
     }
 
-    private static long CombatantKey(GameLiving living) => ((long)living.CurrentRegionID << 32) | (uint)living.ObjectID;
+    // #529: the board keys an enemy as RvR perception and the contact table do, so the shadow can look it up.
+    private static long CombatantKey(GameLiving living) => RvrPartyKey.TargetKey(living);
 
     /// <summary>An enemy player, bot or pet of theirs that the board lists: alive, in the world, of another realm, not stealthed.</summary>
     public static bool ListsEnemy(eRealm realm, GameLiving living) =>
@@ -314,8 +315,16 @@ public static class RvrFightBoards
                     hostile.Add(Snapshot(npc, side, sideTargets));
         }
 
-        // #529 step 2: the shadow. Which of these did any member actually know of? Logs only; the board is unchanged.
-        ShadowContacts(asker, members, hostile, now);
+        // #529 step 2: the shadow. Which of these did any member actually know of? Logs only; the board is unchanged, and
+        // nothing the shadow does may stop the board being built (review of #741).
+        try
+        {
+            ShadowContacts(asker, members, hostile, now);
+        }
+        catch (Exception exception)
+        {
+            NoteShadowFailure(exception);
+        }
 
         // The tier is given once and kept (a later change of leader does not re-roll it).
         RvrGroupState state = Volatile.Read(ref entry.State);
@@ -335,6 +344,19 @@ public static class RvrFightBoards
     /// RVR_CONTACT_UNKNOWN for a few "listed but unknown" pairs. A group with a player in it is left out (its player has
     /// his own eyes; its bots are his companions or helpers, which keep no contacts). Nothing on the board changes.
     /// </summary>
+    private static long _shadowFailures;
+
+    /// <summary>How many shadow passes threw (and were dropped) since start.</summary>
+    public static long ShadowFailures => Interlocked.Read(ref _shadowFailures);
+
+    private static void NoteShadowFailure(Exception exception)
+    {
+        long failures = Interlocked.Increment(ref _shadowFailures);
+        // The shadow threw and was dropped, and the board was built without it. The first and every 1,000th failure are logged.
+        if (failures == 1 || failures % 1_000 == 0)
+            Log.Warn($"RVR_CONTACT_SHADOW_FAILED failures={failures}", exception);
+    }
+
     private static void ShadowContacts(GameLiving asker, List<GameLiving> members, List<RvrCombatant> hostile, long now)
     {
         if (asker == null || members.Count == 0)
@@ -358,7 +380,10 @@ public static class RvrFightBoards
             listed.Add(new RvrShadowListing(enemy.Key, known, known && freshest.AgeMilliseconds(now) > RvrContactShadow.StaleAfterMilliseconds,
                 enemy.IsPlayer, enemy.Living != null ? (int)asker.GetDistanceTo(enemy.Living) : -1));
         }
-        List<RvrShadowListing> samples = AutonomousWorldBotController.RvrContactShadowTally.Board((int)asker.Realm, RvrPartyKey.Of(asker), now,
+        // The shadow's pairs and the sampled rows use the same group key: the party key (RvrPartyKey.Of), which stays
+        // with the group when its leader changes.
+        long partyKey = RvrPartyKey.Of(asker);
+        List<RvrShadowListing> samples = AutonomousWorldBotController.RvrContactShadowTally.Board((int)asker.Realm, partyKey, now,
             listed, out List<string> lines);
         if (!Log.IsInfoEnabled)
             return;
@@ -367,8 +392,9 @@ public static class RvrFightBoards
                 Log.Info(line);
         if (samples == null)
             return;
+        // boardGroup= is RVR_FIGHT_BOARD's group= (the leader's id), to join the two rows.
         GameLiving leader = asker.Group?.LivingLeader ?? asker;
-        long groupId = leader is GameBot leaderBot ? leaderBot.DatabaseID : leader.ObjectID;
+        long boardGroup = leader is GameBot leaderBot ? leaderBot.DatabaseID : leader.ObjectID;
         foreach (RvrShadowListing sample in samples)
         {
             GameLiving enemy = null;
@@ -380,8 +406,8 @@ public static class RvrFightBoards
                 }
             if (enemy == null)
                 continue;
-            // "Listed but unknown": the board's area search has an enemy no member noticed, was told of or was hit by.
-            Log.Info($"RVR_CONTACT_UNKNOWN group={groupId} realm={GlobalConstants.RealmToName(asker.Realm)} target=\"{enemy.Name}\" " +
+            // One enemy the board's area search listed that no member of the group noticed, was told of or was hit by.
+            Log.Info($"RVR_CONTACT_UNKNOWN group={partyKey} boardGroup={boardGroup} realm={GlobalConstants.RealmToName(asker.Realm)} target=\"{enemy.Name}\" " +
                      $"kind={AutonomousWorldBotController.PerceivedKind(enemy)} party={RvrPartyKey.Label(RvrPartyKey.Of(enemy))} " +
                      $"distance={sample.Distance} members={owners.Count} region={asker.CurrentRegionID}");
         }

@@ -107,6 +107,8 @@ namespace DOL.GS
             RegisterCache("npcDetached", () => CountNpcs(npc => npc.ObjectState != GameObject.eObjectState.Active));
             RegisterCache("botDetached", () => CountNpcs(npc => npc is GameBot && npc.ObjectState != GameObject.eObjectState.Active));
             RegisterCache("petDetached", () => CountNpcs(npc => npc is GameSummonedPet && npc.ObjectState != GameObject.eObjectState.Active));
+            // #529: the RvR contact table (per-bot rows plus the realm union); it is not IEnumerable, so the census can't see it.
+            RegisterCache("rvrContacts", () => AutonomousWorldBotController.RvrContactTable.Count);
             try { _listener = new GcListener(); }
             catch (Exception exception) { Log.Warn("GC event listener could not start; SERVER_GC_PAUSE lines are off", exception); }
             Log.Info($"SERVER_MEMORY_DIAGNOSTICS started allocationSampling={_detailed} heapSnapshots={_detailed && GcdumpPath() != null && File.Exists(Path.Combine(AppContext.BaseDirectory, SnapshotEnableFileName))} " +

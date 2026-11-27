@@ -48,25 +48,26 @@ public sealed partial class AutonomousWorldBotController
 
     /// <summary>
     /// #529 step 2 ("Also, now"): what the /faction alarm and the realm's news board hear. Before, the scan's pre-ray,
-    /// pre-notice list of everyone nearby; now the bot's own contacts seen in the last AlarmHearsMilliseconds: what it
-    /// noticed, was told, or was hit by, still alive and in its region. Stealthers are never called out.
+    /// pre-notice list of everyone nearby; now the bot's own fresh contacts (RvrContacts.AlarmHeard: noticed, told or hit
+    /// in the last few seconds, still alive and in its region). Stealthers are never called out.
     /// </summary>
     private static GameLiving[] RvrAlarmHears(GameBot bot, long now)
     {
-        List<RvrContact> fresh = RvrContactTable.Of(bot.DatabaseID, now, AlarmHearsMilliseconds);
+        List<RvrContact> fresh = RvrContactTable.Of(bot.DatabaseID, now, RvrContacts.AlarmHearsMilliseconds);
         if (fresh.Count == 0)
             return [];
-        var heard = new List<GameLiving>(fresh.Count);
-        foreach (RvrContact contact in fresh)
-            if (contact.Subject is GameLiving enemy && enemy.IsAlive && !enemy.IsStealthed &&
-                enemy.ObjectState == GameObject.eObjectState.Active && enemy.CurrentRegionID == bot.CurrentRegionID &&
-                enemy.Realm != bot.Realm)
-                heard.Add(enemy);
-        return heard.ToArray();
+        List<RvrContact> heard = RvrContacts.AlarmHeard(fresh, now, bot.CurrentRegionID, (int)bot.Realm, AlarmSubject);
+        var enemies = new GameLiving[heard.Count];
+        for (int i = 0; i < heard.Count; i++)
+            enemies[i] = heard[i].Subject;
+        return enemies;
     }
 
-    /// <summary>How fresh a contact must be for the /faction alarm to count it (a few scans: the period's 1-5 s inc).</summary>
-    public const long AlarmHearsMilliseconds = 3_000;
+    /// <summary>The enemy behind a contact as it is now (null when the table holds no living for it).</summary>
+    private static RvrAlarmSubject? AlarmSubject(RvrContact contact) => contact.Subject is GameLiving enemy
+        ? new RvrAlarmSubject(enemy.IsAlive, enemy.ObjectState == GameObject.eObjectState.Active, enemy.IsStealthed,
+            enemy.CurrentRegionID, (int)enemy.Realm)
+        : null;
 
     /// <summary>What one frontier scan knows about the rules that apply to it (see RvrFieldRules).</summary>
     private readonly record struct RvrScanContext(bool AtObjective, RvrFieldRules Rules, RvrBotAwareness Awareness,

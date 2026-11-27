@@ -195,6 +195,77 @@ namespace DOL.GS.Tests
             Assert.That(table.Realm(Albion, Emain, 2_000, 60_000), Has.Count.EqualTo(25));
         }
 
+        [Test]
+        public void The_sweep_forgets_old_rows_and_drops_empty_tables()
+        {
+            var table = new RvrContacts();
+            table.Note(10, Albion, At(500, 0, 0), RvrContactSource.Noticed, 1_000);
+            table.Note(10, Albion, At(501, 0, 0), RvrContactSource.Noticed, 1_000);
+            table.Note(11, Albion, At(500, 0, 0), RvrContactSource.Called, 60_000);
+            Assert.That((table.Owners, table.Count, table.RealmRows), Is.EqualTo((2, 5L, 2)));
+            // the next write after the forget time sweeps: bot 10's rows are gone, its table too; bot 11's stays
+            long later = 1_000 + RvrContacts.ForgetAfterMilliseconds + 20_000;
+            table.Note(12, Albion, At(600, 0, 0), RvrContactSource.Noticed, later);
+            Assert.Multiple(() =>
+            {
+                Assert.That(table.Owners, Is.EqualTo(2), "bots 11 and 12");
+                Assert.That(table.Of(10, later), Is.Empty);
+                Assert.That(table.TryGet(11, 500, later, out _), Is.True);
+                Assert.That(table.RealmRows, Is.EqualTo(2), "500 (seen by 11 at 60 s) and 600");
+                Assert.That(table.Count, Is.EqualTo(4L));
+            });
+            table.Forget(11);
+            Assert.That(table.Owners, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void A_write_racing_the_sweep_is_never_lost()
+        {
+            // Bot 10's only row is old; bot 20's write triggers the sweep that drops bot 10's table, while bot 10 writes again.
+            long old = 1_000, now = 1_000 + RvrContacts.ForgetAfterMilliseconds + 20_000;
+            for (int round = 0; round < 500; round++)
+            {
+                var table = new RvrContacts();
+                table.Note(10, Albion, At(500, 0, 0), RvrContactSource.Noticed, old);
+                table.Note(30, Albion, At(700, 0, 0), RvrContactSource.Noticed, old);
+                System.Threading.Tasks.Parallel.Invoke(
+                    () => table.Note(10, Albion, At(501, 0, 0), RvrContactSource.Noticed, now),
+                    () => table.Note(20, Albion, At(502, 0, 0), RvrContactSource.Noticed, now),
+                    () => table.Note(30, Albion, At(700, 0, 0), RvrContactSource.Noticed, now));
+                Assert.That(table.TryGet(10, 501, now, out _), Is.True, $"round {round}: bot 10's new write");
+                Assert.That(table.TryGet(30, 700, now, out _), Is.True, $"round {round}: bot 30's refreshed row");
+                Assert.That(table.Realm(Albion, Emain, now, 1_000).Select(c => c.Target), Is.EquivalentTo(new long[] { 501, 502, 700 }),
+                    $"round {round}: the realm union");
+            }
+        }
+
+        [Test]
+        public void The_alarm_hears_fresh_contacts_of_living_visible_enemies_in_the_bots_region_only()
+        {
+            const long now = 10_000;
+            var contacts = new List<RvrContact>();
+            var subjects = new Dictionary<long, RvrAlarmSubject?>();
+            void Add(long target, long lastSeen, RvrAlarmSubject? subject)
+            {
+                contacts.Add(new RvrContact(10, Albion, target, target, Midgard, RvrPerceivedKind.Player, Emain, 0, 0, 0, lastSeen, lastSeen,
+                    RvrContactSource.Noticed, RvrContactSource.Noticed, null));
+                subjects[target] = subject;
+            }
+            RvrAlarmSubject Ok = new(true, true, false, Emain, Midgard);
+            Add(1, now, Ok);                                                  // heard
+            Add(2, now - RvrContacts.AlarmHearsMilliseconds, Ok);              // heard: exactly 3 s
+            Add(3, now - RvrContacts.AlarmHearsMilliseconds - 1, Ok);          // too old
+            Add(4, now, Ok with { Stealthed = true });                         // a stealther is never called
+            Add(5, now, Ok with { Alive = false });                            // dead
+            Add(6, now, Ok with { Active = false });                           // left the world
+            Add(7, now, Ok with { Region = 1 });                               // another region
+            Add(8, now, Ok with { Realm = Albion });                           // now of the bot's realm
+            Add(9, now, null);                                                 // gone
+            List<RvrContact> heard = RvrContacts.AlarmHeard(contacts, now, Emain, Albion, c => subjects[c.Target]);
+            Assert.That(heard.Select(c => c.Target), Is.EqualTo(new long[] { 1, 2 }));
+            Assert.That(RvrContacts.AlarmHeard(null, now, Emain, Albion, c => Ok), Is.Empty);
+        }
+
         // ---- step 2: the shadow ----------------------------------------------------------------------------------------
 
         private static RvrShadowListing L(long target, bool known, bool player = false, bool stale = false) =>
@@ -284,6 +355,35 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void Only_the_scan_the_board_and_the_census_read_the_table_in_the_game()
+        {
+            string root = GameServerRoot();
+            string[] readers = Directory.GetFiles(root, "*.cs", SearchOption.AllDirectories)
+                .Where(f => !f.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
+                .Where(f => Regex.IsMatch(File.ReadAllText(f), @"\bRvrContact(Table|ShadowTally)\b"))
+                .Select(Path.GetFileName).OrderBy(n => n, StringComparer.Ordinal).ToArray();
+            Assert.That(readers, Is.EqualTo(new[] { "AutonomousWorldBotController.RvrPerception.cs", "RvrFightBoards.cs", "ServerMemoryDiagnostics.cs" }),
+                "a new reader of the contact table is a new decision from it: add it here with its step (#529)");
+            string perception = Code("bots", "autonomous", "AutonomousWorldBotController.RvrPerception.cs");
+            Assert.That(Regex.Matches(perception, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows)\(").Cast<Match>().Select(m => m.Value),
+                Is.EqualTo(new[] { "RvrContactTable.Of(" }), "the alarm is the scan's only reader in steps 1-2");
+            string boards = Code("bots", "autonomous", "RvrFightBoards.cs");
+            Assert.That(Regex.Matches(boards, @"contacts\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows)\(").Cast<Match>().Select(m => m.Value),
+                Is.EqualTo(new[] { "contacts.KnownByAny(" }), "the board's shadow reads only the group question");
+            Assert.That(Code("Managers", "GameLoop", "ServerMemoryDiagnostics.cs"),
+                Does.Contain("RegisterCache(\"rvrContacts\", () => AutonomousWorldBotController.RvrContactTable.Count);"));
+        }
+
+        [Test]
+        public void The_board_keys_an_enemy_as_perception_and_the_table_do()
+        {
+            Assert.That(Code("bots", "autonomous", "RvrFightBoards.cs"),
+                Does.Contain("private static long CombatantKey(GameLiving living) => RvrPartyKey.TargetKey(living);"));
+            Assert.That(Code("bots", "autonomous", "AutonomousWorldBotController.RvrPerception.cs"),
+                Does.Contain("private static long RvrTargetKey(GameLiving target) => RvrPartyKey.TargetKey(target);"));
+        }
+
+        [Test]
         public void The_alarm_hears_contacts_not_the_area_search()
         {
             string scan = Code("bots", "autonomous", "AutonomousWorldBotController.FrontierThreat.cs");
@@ -300,6 +400,11 @@ namespace DOL.GS.Tests
         {
             string boards = Code("bots", "autonomous", "RvrFightBoards.cs");
             Assert.That(boards, Does.Contain("ShadowContacts(asker, members, hostile, now);"));
+            Assert.That(Regex.IsMatch(boards, @"try\s*\{\s*ShadowContacts\(asker, members, hostile, now\);\s*\}\s*catch \(Exception exception\)"),
+                Is.True, "the shadow cannot break the board build");
+            Assert.That(boards, Does.Contain("RVR_CONTACT_UNKNOWN group={partyKey} boardGroup={boardGroup}"),
+                "the sampled rows use the shadow's group key");
+            Assert.That(boards, Does.Contain("RvrContactShadowTally.Board((int)asker.Realm, partyKey, now,"));
             // the area search still decides what the board lists (step 3 switches it, not this step)
             Assert.That(boards, Does.Contain("foreach (GamePlayer player in asker.GetPlayersInRadius(RvrFightBoard.ScanRadius))"));
             Assert.That(boards.IndexOf("ShadowContacts(asker, members, hostile, now);", StringComparison.Ordinal),

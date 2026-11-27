@@ -178,12 +178,15 @@ public sealed class RvrContactShadow
     }
 
     /// <summary>The RVR_CONTACT_SHADOW line of one closed window. Pure.</summary>
-    public static string Describe(int realm, in RvrShadowTotals totals, long start, long end) =>
-        $"RVR_CONTACT_SHADOW realm={GlobalConstants.RealmToName((eRealm)realm)} windowS={(end - start) / 1000} " +
+    public static string Describe(int realm, in RvrShadowTotals totals, long start, long end)
+    {
+        // One minute of one realm's fight-board shadow, counting board-listed enemies and group-enemy pairs no member knew of.
+        return $"RVR_CONTACT_SHADOW realm={GlobalConstants.RealmToName((eRealm)realm)} windowS={(end - start) / 1000} " +
         $"listed={totals.Listed} known={totals.Known} stale={totals.Stale} unknown={totals.Unknown} " +
         $"unknownPlayers={totals.UnknownPlayers} unknownShare={totals.UnknownShare:0.###} pairs={totals.Pairs} " +
         $"pairsUnknown={totals.PairsUnknown} pairsUnknownPlayers={totals.PairsUnknownPlayers} " +
         $"pairsUnknownShare={totals.PairsUnknownShare:0.###}";
+    }
 
     public void Clear()
     {
