@@ -43,4 +43,4 @@ UT_SeptemberThirteenInstalledRoutes  # (#704)
 UT_Diag704StarterSpawns  # (#704) diagnostic
 UT_SeamCycle555  # the 11/23 seam cycle at 200:334880,417728 replayed on the set: no zone revisited (#555)
 UT_Diag704Captures  # (#704) diagnostic
-UT_Diag704Approach  # (#704) diagnostic: TryResolve step by step for portal 165 and blodfelag
+UT_Diag704Approach  # (#704) diagnostic: TryResolve for portal 165 and blodfelag; the region 1 frontier partial path
