@@ -1,4 +1,9 @@
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests
@@ -39,7 +44,7 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void QuietDefenseSurvivesThreeMinutesButEndsAtFourHours()
+        public void QuietDefenseSurvivesFiveMinutesButEndsAtFourHours()
         {
             long now = GameLoop.GameLoopTime + 100;
             AutonomousRvrEventLayer.BeginDefenseResponse(Target(), eRealm.Albion, "offline", now);
@@ -48,6 +53,79 @@ namespace DOL.GS.Tests
             AutonomousRvrEventLayer.PulseDefense(now + AutonomousRvrEventLayer.DefenseResponseMilliseconds);
             Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty);
         }
+
+        // #523 step 1 (a), owner 2026-11-24: a player-attack defense ends about ten minutes after the attackers leave.
+        [Test]
+        public void DefenseEndsTenMinutesAfterTheAttackersLeave()
+        {
+            Assert.That(AutonomousRvrEventLayer.RepelMilliseconds, Is.EqualTo(10 * 60_000));
+            long now = GameLoop.GameLoopTime + 100;
+            AutonomousRvrEventLayer.BeginDefenseResponse(Target(), eRealm.Albion, "offline", now);
+            AutonomousRvrEventLayer.PulseDefense(now + 9 * 60_000 + 55_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1), "Not yet ten minutes quiet");
+            AutonomousRvrEventLayer.PulseDefense(now + 10 * 60_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty, "Ten minutes with no attacker ends the defense");
+        }
+
+        [Test]
+        public void AHitOnTheKeepPutsTheEndBackTenMinutes()
+        {
+            long now = GameLoop.GameLoopTime + 100;
+            var target = Target();
+            AutonomousRvrEventLayer.BeginDefenseResponse(target, eRealm.Albion, "offline", now);
+            Pressure()[target.Id] = now + 8 * 60_000; // a guard or door hit by any enemy realm (ObserveKeepAttack)
+            AutonomousRvrEventLayer.PulseDefense(now + 12 * 60_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1));
+            AutonomousRvrEventLayer.PulseDefense(now + 17 * 60_000 + 55_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1));
+            AutonomousRvrEventLayer.PulseDefense(now + 18 * 60_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty);
+        }
+
+        [Test]
+        public void TheAttackingRealmsBotsAtTheKeepHoldTheDefenseOpen()
+        {
+            long now = GameLoop.GameLoopTime + 100;
+            var target = Target();
+            AutonomousRvrEventLayer.BeginDefenseResponse(target, eRealm.Albion, "offline", now);
+            object active = EventOf(target.Id);
+            ((Dictionary<string, int>)active.GetType().GetField("Attackers").GetValue(active)).Add("albion-helpers", 8);
+            var present = (IDictionary)active.GetType().GetField("Present").GetValue(active);
+            long seenAt = now + 9 * 60_000;
+            present[1L] = ("albion-helpers", eRealm.Albion, seenAt, (GameBot)null, new Vector3(target.X, target.Y, target.Z), target.RegionId);
+            AutonomousRvrEventLayer.PulseDefense(seenAt + 5_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 18 * 60_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1), "Attackers seen at minute 9 hold it to minute 19");
+            AutonomousRvrEventLayer.PulseDefense(seenAt + 5_000 + AutonomousRvrEventLayer.RepelMilliseconds);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty);
+        }
+
+        [TestCase(true, true, 100, 0f, 0f, 0f, true)]
+        [TestCase(true, true, 100, 9_000f, 3_000f, 0f, true)]
+        [TestCase(true, true, 100, 9_000f, 4_000f, 0f, false)]
+        [TestCase(true, true, 100, 0f, 0f, 2_500f, false)]
+        [TestCase(true, true, 101, 0f, 0f, 0f, false)]
+        [TestCase(false, true, 100, 0f, 0f, 0f, false)]
+        [TestCase(true, false, 100, 0f, 0f, 0f, false)]
+        public void AnAttackerCountsAtTheKeepOnlyAliveInItsRegionAndInsideTheRing(bool alive, bool inPlay, int region,
+            float dx, float dy, float dz, bool expected)
+        {
+            Assert.That(AutonomousRvrEventLayer.AttackerAtKeep(alive, inPlay, (ushort)region, 100, dx, dy, dz), Is.EqualTo(expected));
+        }
+
+        [TestCase(0L, 99_000_000L, false)]
+        [TestCase(1_000L, 1_000L + 10 * 60_000 - 1, false)]
+        [TestCase(1_000L, 1_000L + 10 * 60_000, true)]
+        public void RepelRuleNeedsTenQuietMinutes(long seen, long now, bool expected)
+        {
+            Assert.That(AutonomousRvrEventLayer.PlayerAttackRepelled(now, seen), Is.EqualTo(expected));
+        }
+
+        private static ConcurrentDictionary<string, long> Pressure() =>
+            (ConcurrentDictionary<string, long>)typeof(AutonomousRvrEventLayer).GetField("KeepCombatPressure", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+
+        private static object EventOf(string id) =>
+            ((IDictionary)typeof(AutonomousRvrEventLayer).GetField("Events", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null))[id];
 
         [Test]
         public void CrossRealmAttackPreservesBothIndependentDefenseWindows()
