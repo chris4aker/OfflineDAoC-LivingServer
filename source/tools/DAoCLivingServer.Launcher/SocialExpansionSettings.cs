@@ -72,6 +72,9 @@ public sealed record SocialExpansionSettings
     /// <summary>Bots fight with the weapon set a player would (bot_weapon_set_rules, #569 step 7). No checkbox: kept as
     /// read. On by default (1.2.3).</summary>
     public bool WeaponSetRules { get; init; } = true;
+    /// <summary>Solo gamebots keep a hunting ground (bot_hunting_grounds, #570 step 3). No checkbox: kept as read. On by
+    /// default (1.2.3).</summary>
+    public bool HuntingGrounds { get; init; } = true;
     /// <summary>The damage dealers of the player's group fight the player's target first (bot_leader_focus, #571 step 1). No
     /// checkbox: kept as read. On by default (1.2.3).</summary>
     public bool LeaderFocus { get; init; } = true;
@@ -236,7 +239,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, HuntingGrounds = true, LeaderFocus = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true,
     };
@@ -282,6 +285,7 @@ public sealed record SocialExpansionSettings
         ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
         ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
         ("bot_weapon_set_rules", "bots", "Bots fight with the weapon set a player would (#569): a party's only tank with Guard fights with its trained shield and guards a member within reach, a bot carrying a two-hander and a one-hander uses the line it trained higher, a hired companion keeps the melee set you readied in its window, and archers stop flipping between bow and melee weapon. Only weapons the bot already carries are used. Gamebots, hired companions and /bot companions alike."),
+        ("bot_hunting_grounds", "bots", "Solo gamebots keep a hunting ground (#570), as a player levelled through one zone and its neighbours: a solo gamebot's next camp is far more often in the zone it hunts or a neighbouring one, it hunts the area around a camp whose monster is gone instead of leaving, it pulls the monster standing apart first, healers, bards and archers prefer blue targets to yellow, and once most of its kills con green it moves up to a harder spot. Groups, raids, dungeons and Darkness Falls are unchanged; companions are not touched."),
         ("bot_show_as_bots", "bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
@@ -379,6 +383,7 @@ public sealed record SocialExpansionSettings
         ["bot_death_animation"] = Bool(DeathFall),
         ["bot_healer_period_rules"] = Bool(HealerPeriodRules),
         ["bot_weapon_set_rules"] = Bool(WeaponSetRules),
+        ["bot_hunting_grounds"] = Bool(HuntingGrounds),
         ["bot_leader_focus"] = Bool(LeaderFocus),
         ["bot_show_as_bots"] = Bool(ShowBotsAsBots),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
@@ -724,6 +729,7 @@ public sealed record SocialExpansionSettings
             DeathFall = ReadBool("bot_death_animation", d.DeathFall),
             HealerPeriodRules = ReadBool("bot_healer_period_rules", d.HealerPeriodRules),
             WeaponSetRules = ReadBool("bot_weapon_set_rules", d.WeaponSetRules),
+            HuntingGrounds = ReadBool("bot_hunting_grounds", d.HuntingGrounds),
             LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
             ShowBotsAsBots = ReadBool("bot_show_as_bots", d.ShowBotsAsBots),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
