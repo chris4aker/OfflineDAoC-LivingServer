@@ -88,13 +88,13 @@ namespace DOL.GS.Tests
 
         /// <summary>
         /// Past the 500 ms objects-in-radius cache (GameObject.GetObjectsInRadius: taking control arms the ram, which reads
-        /// its crew before anyone stands there), then one tick so the zones file what was placed. No bot gets a second
-        /// to walk off its spot.
+        /// its crew before anyone stands there), then the zone pass alone so the zones file what was placed. No brain
+        /// thinks: no bot walks off its spot, and no bot's turn fills a server-wide cache another test reads.
         /// </summary>
         private static void Settle(RvrFightWorld world)
         {
             typeof(GameLoop).GetProperty(nameof(GameLoop.GameLoopTime)).SetValue(null, GameLoop.GameLoopTime + 1_000);
-            world.Tick();
+            ZoneService.Instance.Tick();
         }
 
         private static GameSiegeRam Ram(RvrFightWorld world, Region region, int x, int y, GameLiving op)
@@ -179,14 +179,12 @@ namespace DOL.GS.Tests
             var crew = new List<GameBot>();
             for (int i = 0; i < 12; i++)
             {
+                // seats are handed out lowest first, so the i-th crew member gets seat i: it stands on that spot
                 GameBot bot = world.NewBot(eRealm.Albion, eCharacterClass.Mercenary, 50, $"Seat{i:00}");
-                Assert.That(world.Place(bot, region, X - 3_000, Y + i * 50), Is.True);
-                Assert.That(AutonomousRamCrews.TryTakeSeat(bot, keep, out GameSiegeRam taken, out int seat), Is.True);
-                Assert.That(taken, Is.SameAs(ram));
-                Assert.That(AutonomousRamCrews.AtSeat(bot), Is.False, "not yet at the ram");
-                Vector2 spot = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), door, seat);
-                bot.RemoveFromWorld();
+                Vector2 spot = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), door, i);
                 Assert.That(world.Place(bot, region, (int)spot.X, (int)spot.Y), Is.True);
+                Assert.That(AutonomousRamCrews.TryTakeSeat(bot, keep, out GameSiegeRam taken, out int seat), Is.True);
+                Assert.That((taken, seat), Is.EqualTo((ram, i)));
                 crew.Add(bot);
             }
             Settle(world);
