@@ -94,7 +94,7 @@ Each is a **class**, not an instance. "Seen" = in the owner's screenshots (brief
 
 ### 9. The bench measures a few percent of what the player reads, with questions taken from the code's own answers.
 - **Measured:** 467 questions: **428 /faction, 16 /group, 12 /say, 11 tell**. One turn each, a fresh channel, a stub world, one responder per realm. The holdout: **60 of 60 in /faction**, written by the same generator; its `source` field names the answering function (`AutonomousChatKnowledge.TryAnswerBuyGear`...).
-- **Scale:** /faction is paced at 5-7 bot lines a minute (docs/OPEN-WORK.md:229), so 300-420 lines an hour in one channel. A player asks perhaps 5-15 questions an hour. The bench scores the first answer to those.
+- **Scale:** /faction is paced at 5-7 bot lines a minute (docs/history/OPEN-WORK-1.2.1-1.2.2.md, "Evidence behind the player known-issues list", Chat), so 300-420 lines an hour in one channel. A player asks perhaps 5-15 questions an hour. The bench scores the first answer to those.
 - **Result:** of the owner's nine defects, **one** (3) was a kind of thing the bench could see, and it wasn't asked.
 - **Class:** measuring what is easy.
 - **Fix:** section 4. **Size M. Risk none** (reports first).
