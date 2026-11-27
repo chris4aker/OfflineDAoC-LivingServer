@@ -431,7 +431,6 @@ namespace DOL.UnitTests
         [Test,NonParallelizable]
         public void TheWatchdogRecoversARallyMemberStuckOffTheRingButNotOneAtTheHubOrAPost()
         {
-            DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null,DOL.Logging.LogLibrary.None); // the AUTONOMOUS_RALLY_STUCK row
             using var server=new EpicTestServerScope();
             using var world=new RallyWorld("openworld-midgard-glaciergiant",GgFrom,GgNear+new Vector3(100,0,0));
             GameBot traveller=world.Members[0], staged=world.Members[1];

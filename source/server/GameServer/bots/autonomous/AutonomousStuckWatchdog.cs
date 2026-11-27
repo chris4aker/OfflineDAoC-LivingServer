@@ -206,7 +206,7 @@ public static class AutonomousStuckWatchdog
                nowUtc - lastMovementUtc >= StuckThreshold;
     }
 
-    /// <summary>Tests only: replaces the capital teleport of a stuck rally member (it needs a live world) and returns its
+    /// <summary>Tests only: replaces the row and the capital teleport of a stuck rally member (they need a live server) and returns its
     /// answer from Observe. Null in the server.</summary>
     public static Func<GameBot, string, bool> StuckRallyRecoveryForTests;
 
@@ -440,11 +440,12 @@ public static class AutonomousStuckWatchdog
             goalObservation.LastProgressUtc = now;
             if (!ShouldCatchStuckRally(previous.LastMovementUtc, now, bot.IsAlive, withHuman))
                 return false;
+            // Tests: a logger made before the test's logging set-up cannot write, and the teleport needs a live world.
+            if (StuckRallyRecoveryForTests != null)
+                return StuckRallyRecoveryForTests(bot, rallyEvent);
             Log.Warn($"AUTONOMOUS_RALLY_STUCK bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} event={rallyEvent} " +
                      $"minutes={(int)(now - previous.LastMovementUtc).TotalMinutes} at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} " +
                      $"activity=\"{ForLog(bot.PersistentRecord.Activity)}\"");
-            if (StuckRallyRecoveryForTests != null)
-                return StuckRallyRecoveryForTests(bot, rallyEvent);
             return RelocateToSafeCapital(bot, now, $"rally: no movement for fifteen minutes away from the staging ring ({rallyEvent})", true,
                 "AUTONOMOUS_STUCK_15M_RECOVERY");
         }
