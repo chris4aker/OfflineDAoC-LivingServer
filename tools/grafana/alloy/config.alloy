@@ -625,6 +625,15 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:SERVER_HEAP_SNAPSHOT)(?: |$)\""
+
+		stage.replace {
+			expression = "( (?:command|file|stderr|stderrKeyLines|stdout|stdoutKeyLines|tool)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			replace    = ""
+		}
+	}
+
+	stage.match {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:AUTONOMOUS_SIEGE_RESURRECTION)(?: |$)\""
 
 		stage.replace {
@@ -733,7 +742,7 @@ loki.process "offlinedaoc" {
 	}
 
 	stage.match {
-		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_RELIC_STATE_LOADED|SERVER_HEAP_SNAPSHOT)(?: |$)\""
+		selector = "{job=\"offlinedaoc\"} |~ \"^(?:RVR_RELIC_STATE_LOADED)(?: |$)\""
 
 		stage.replace {
 			expression = "( (?:file)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
