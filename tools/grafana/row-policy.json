@@ -93,6 +93,7 @@
     "AUTONOMOUS_GOAL_ATTEMPT": "one per finished gamebot goal attempt (detail.log)",
     "SERVER_STALL": "once a minute when a game-loop tick ran slow",
     "AUTONOMOUS_ZONE_SEAM_CYCLE": "one per seam reversal caught (#570: a gamebot's zone steps turned back twice over one border for one goal); rare, 2 on the owner's 11/23 log",
+    "RVR_RANKS": "once an hour per realm, with RVR_HOUR (#528)",
     "RVR_DECIDE": "one per change of an RvR decision, within the RvR record's minute budget",
     "RVR_CONTACT_SHADOW": "once a minute per realm, when a fight board of that realm listed an enemy in the minute (#529)",
     "RVR_CONTACT_UNKNOWN": "at most 20 a minute per realm: the first listed-but-unknown listing of a group-enemy pair in the shadow's minute (#529)",

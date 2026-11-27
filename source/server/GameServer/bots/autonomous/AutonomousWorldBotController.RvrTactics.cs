@@ -67,7 +67,7 @@ public sealed partial class AutonomousWorldBotController
     // ---- work package 6: roaming eights, soloers, duos and stealthers ---------------------------------------------------
 
     /// <summary>Where one walker (a group, or a bot alone) is on its circuit or at its spot. Locked by its owner.</summary>
-    private sealed class RvrRoamBox
+    public sealed class RvrRoamBox
     {
         public RvrRoamWalk Walk;
         public RvrPartyKind Kind;
@@ -86,10 +86,21 @@ public sealed partial class AutonomousWorldBotController
         public int PlayerKillsHere;
     }
 
-    private readonly record struct RvrRoamKill(GameLiving Victim, long At, ushort Region, float X, float Y);
+    /// <summary>
+    /// #528: one enemy death a walker took part in, kept until its next look. It keeps no reference to the victim (a
+    /// player who logs out is not held; #731): the victim's gamebot id (0 for anyone else), its object key
+    /// (<see cref="RvrFieldFacts.KeyOf"/>, to tell one death from another), whether it was a real player, and where and
+    /// when it fell.
+    /// </summary>
+    public readonly record struct RvrRoamKill(long VictimBotId, long VictimKey, bool IsPlayer, long At, ushort Region, float X, float Y)
+    {
+        public static RvrRoamKill Of(GameLiving victim, long now) =>
+            new(victim is GameBot bot ? bot.DatabaseID : 0, RvrFieldFacts.KeyOf(victim), victim is GamePlayer, now,
+                victim.CurrentRegionID, victim.X, victim.Y);
+    }
 
     /// <summary>A walker keeps at most this many kill events between two looks (a big fight at a gate).</summary>
-    private const int RvrRoamKillsKept = 32;
+    public const int RvrRoamKillsKept = 32;
 
     /// <summary>
     /// #528, the kill event of the roam rules: an enemy death (a gamebot or a real player) that autonomous gamebots took
@@ -104,20 +115,66 @@ public sealed partial class AutonomousWorldBotController
         if (victim == null || contributors == null || !Properties.RVR_ROAM_CHECKS)
             return;
         HashSet<object> walkers = null;
+        RvrRoamKill? kill = null;
         foreach (GameLiving contributor in contributors)
         {
-            if (contributor is not GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false } bot ||
-                bot.Realm == victim.Realm || bot.Realm == eRealm.None)
+            if (!IsRoamWalker(contributor, victim.Realm))
                 continue;
-            object key = RvrFightBoards.KeyOf(bot);
+            object key = RvrFightBoards.KeyOf(contributor);
             if (!(walkers ??= new()).Add(key) || !RvrRoamBoxes.TryGetValue(key, out RvrRoamBox box))
                 continue;
-            lock (box)
-            {
-                if (box.Walk != null && box.Kills.Count < RvrRoamKillsKept && box.Kills.All(kill => !ReferenceEquals(kill.Victim, victim)))
-                    box.Kills.Add(new(victim, now, victim.CurrentRegionID, victim.X, victim.Y));
-            }
+            NoteKillOn(box, kill ??= RvrRoamKill.Of(victim, now));
         }
+    }
+
+    /// <summary>
+    /// #528: whether <paramref name="contributor"/> to a death of a <paramref name="victimRealm"/> enemy is a roam walker
+    /// that may move on from it: an autonomous gamebot of another realm, not a temporary group helper. Companions, helpers
+    /// and players never are.
+    /// </summary>
+    public static bool IsRoamWalker(GameLiving contributor, eRealm victimRealm) =>
+        contributor is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false } bot &&
+        bot.Realm != victimRealm && bot.Realm != eRealm.None;
+
+    /// <summary>#528: keeps <paramref name="kill"/> on a walker's box for its next look (once per death; only while it walks).</summary>
+    public static bool NoteKillOn(RvrRoamBox box, RvrRoamKill kill)
+    {
+        lock (box)
+        {
+            if (box.Walk == null || box.Kills.Count >= RvrRoamKillsKept || box.Kills.Any(kept => kept.VictimKey == kill.VictimKey))
+                return false;
+            box.Kills.Add(kill);
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// #528, the look's kill event (caller holds the box's lock): each kept death the walker took part in counts once
+    /// toward the move-on. Tracked gamebot prey counts as before (and leaves the tracked list, so the dead-prey pass below
+    /// does not count it again); any other death counts when it fell at <paramref name="spot"/> after the walker arrived
+    /// (<see cref="RvrRoamCircuits.CountsAsSpotKill"/>). Real players among them are counted for RVR_ROAM_MOVE_ON.
+    /// </summary>
+    public static RvrRoamWalk TakeRoamKills(RvrRoamBox box, RvrRoamWalk walk, RvrFrontierPoi spot, long now)
+    {
+        foreach (RvrRoamKill kill in box.Kills)
+        {
+            bool tracked = kill.VictimBotId != 0 && box.Tracked.RemoveWhere(trackedBot => trackedBot.DatabaseID == kill.VictimBotId) > 0;
+            float? distance = kill.Region == spot.Region ? Vector2.Distance(new(kill.X, kill.Y), new(spot.Position.X, spot.Position.Y)) : null;
+            if (!tracked && !RvrRoamCircuits.CountsAsSpotKill(kill.At, walk.ArrivedAt, distance, spot.Radius))
+                continue;
+            walk = RvrRoamCircuits.RecordKill(walk, now);
+            if (kill.IsPlayer)
+                box.PlayerKillsHere++;
+        }
+        box.Kills.Clear();
+        return walk;
+    }
+
+    /// <summary>#528: a walker that starts a new walk or leaves a spot forgets the kills of the old one.</summary>
+    public static void ForgetSpotKills(RvrRoamBox box)
+    {
+        box.Kills.Clear();
+        box.PlayerKillsHere = 0;
     }
 
     private static readonly ConditionalWeakTable<object, RvrRoamBox> RvrRoamBoxes = new();
@@ -196,6 +253,7 @@ public sealed partial class AutonomousWorldBotController
                 box.Walk = walk;
                 box.Kind = kind;
                 box.Tracked.Clear();
+                ForgetSpotKills(box);
                 box.Hunting = null;
                 box.PreySeen = 0;
                 box.RoamersSeen = 0;
@@ -356,6 +414,7 @@ public sealed partial class AutonomousWorldBotController
             if (walk == null || spot == null || !catalog.Usable(spot))
             {
                 box.Walk = walk == null ? null : RvrRoamCircuits.Advance(walk);
+                ForgetSpotKills(box);
                 _rvrRuleHint = "roam.advance";
                 _rvrDestination = box.Walk is { Done: false } next && catalog.Spot(next.CurrentSpot) is { } nextSpot ? RvrSpotDestination(nextSpot) : null;
                 return false;
@@ -373,19 +432,8 @@ public sealed partial class AutonomousWorldBotController
             {
                 box.NextLookAt = now + RvrLookMilliseconds;
                 prey = RvrPreyAt(bot, spot, box.Kind, box.Tier, out int roamers);
-                // #528: the kill event first. Tracked prey counts as before; any other enemy death the walker took part
-                // in (the player's too) counts when it fell at this spot after the walker arrived.
-                foreach (RvrRoamKill kill in box.Kills)
-                {
-                    bool tracked = kill.Victim is GameBot trackedBot && box.Tracked.Remove(trackedBot);
-                    float? distance = kill.Region == spot.Region ? Vector2.Distance(new(kill.X, kill.Y), new(spot.Position.X, spot.Position.Y)) : null;
-                    if (!tracked && !RvrRoamCircuits.CountsAsSpotKill(kill.At, walk.ArrivedAt, distance, spot.Radius))
-                        continue;
-                    walk = RvrRoamCircuits.RecordKill(walk, now);
-                    if (kill.Victim is GamePlayer)
-                        box.PlayerKillsHere++;
-                }
-                box.Kills.Clear();
+                // #528: the kill event first (the player's death too).
+                walk = TakeRoamKills(box, walk, spot, now);
                 foreach (GameBot dead in box.Tracked.Where(tracked => !tracked.IsAlive).ToArray())
                 {
                     box.Tracked.Remove(dead);
@@ -452,8 +500,7 @@ public sealed partial class AutonomousWorldBotController
                     if (!passing)
                         LogRoamCheck(bot, box, walk, spot, step.Action, now); // a soloer's via spot is passed, not checked
                     box.Tracked.Clear();
-                    box.Kills.Clear();
-                    box.PlayerKillsHere = 0;
+                    ForgetSpotKills(box);
                     box.Hunting = null;
                     box.PreySeen = 0;
                     box.RoamersSeen = 0;

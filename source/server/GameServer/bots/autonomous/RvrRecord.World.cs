@@ -522,6 +522,7 @@ public static class RvrRecordPulse
         foreach (int level in realmLevels)
             counts[RankOf(level)]++;
         int median = MedianLevel(realmLevels), median50 = MedianLevel(level50RealmLevels);
+        // One realm's online autonomous gamebots counted by realm rank, once an hour with RVR_HOUR, to see whether their rank spread is the period's.
         return $"RVR_RANKS t={now} realm={RvrRecordText.Realm(realm)} bots={realmLevels.Count} rr1={counts[1]} rr2={counts[2]} " +
                $"rr3={counts[3]} rr4={counts[4]} rr5={counts[5]} rr6={counts[6]} rr7={counts[7]} rr8={counts[8]} rr9={counts[9]} " +
                $"rr10={counts[10]} median={(median < 0 ? "-" : RankText(median))} level50={level50RealmLevels.Count} " +

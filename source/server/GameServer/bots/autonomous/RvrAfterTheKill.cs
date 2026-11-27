@@ -105,7 +105,7 @@ public static class RvrAfterTheKill
         }
     }
 
-    private static bool MayEmote(GameBot bot, GameLiving corpse) =>
+    public static bool MayEmote(GameBot bot, GameLiving corpse) =>
         bot is { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsAlive: true } && bot.DatabaseID > 0 &&
         bot.ObjectState == GameObject.eObjectState.Active && !bot.IsCasting && !bot.IsStealthed && !bot.IsCrowdControlled &&
         bot.CurrentRegionID == corpse.CurrentRegionID && bot.IsWithinRadius(corpse, EmoteRadius);
