@@ -32,3 +32,4 @@ UT_SeamCycle555  # the 11/23 seam cycle at 200:334880,417728 replayed on the set
 UT_AnimistInstalledCatalog  # the Animist spell and template catalog in the world (#687)
 UT_InstalledClassicMeleeAudit  # the Classic styles and poisons in the world (#687)
 UT_SiegeMerchantCatalog  # the siege merchants' lists in the world (#687)
+UT_SeptemberNineInstalledRoutes  # the installed portal approaches; an off-edge capture plans from its floor step (#704)

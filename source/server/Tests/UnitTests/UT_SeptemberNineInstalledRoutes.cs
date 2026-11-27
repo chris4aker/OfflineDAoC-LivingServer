@@ -68,7 +68,10 @@ namespace DOL.UnitTests
                     using var row=cmd.ExecuteReader(); Assert.That(row.Read(),Is.True);
                     Vector3 portal=new(row.GetInt32(0),row.GetInt32(1),row.GetInt32(2));
                     Zone zone=regions[route.Region].GetZone((int)route.Start.X,(int)route.Start.Y);
-                    bool ok=AutonomousZonePointApproach.TryResolve(nav,zone,route.Start,portal,174,out Vector3 approach);
+                    // A September capture can now sit just off the 1.2 mesh (portal 165: 6-9 units off the edge, 55 up; #704).
+                    // The approach finder rightly refuses an off-mesh start, and the bot's floor step moves it on first.
+                    Vector3 start=UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav,zone,route.Start);
+                    bool ok=AutonomousZonePointApproach.TryResolve(nav,zone,start,portal,174,out Vector3 approach);
                     TestContext.WriteLine($"CURRENT_PORTAL edge={route.Edge} start={route.Start} approach={approach} connected={ok}");
                     Assert.That(ok,Is.True,$"portal {route.Edge} must have a physical approach");
                     Assert.That(Vector2.Distance(new(approach.X,approach.Y),new(portal.X,portal.Y))+8,
