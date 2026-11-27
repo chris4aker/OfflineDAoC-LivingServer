@@ -298,6 +298,12 @@ jobs:
           python source/tools/ci_test_results.py trx TestResults/progress-transfer.trx --title "Progress transfer tests" || rc=1
           exit $rc
 
+      # The source-world tool (DAoCLivingServer.Setup: a world from the OpenDAoC SQL plus the Classic 1.65 restores). The
+      # installer and the release packages don't run it, so nothing else compiled it and #725 went unseen; build it here.
+      - name: Build the source-world Setup tool
+        shell: bash
+        run: dotnet build source/tools/DAoCLivingServer.Setup/DAoCLivingServer.Setup.csproj -c Release
+
       # Only after every server test passed: the installable server build (docs/RELEASE-PLAN.md).
       - name: Package the server build
         id: package

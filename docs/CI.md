@@ -43,6 +43,9 @@ The "main: green checks" ruleset requires these six checks before a pull request
 8. **Living Server tab tests**: the launcher builds, the tab's test classes pass, and every class of the filter has tests
    in the results (a renamed class can't drop out unseen).
 9. **Character passport** and **progress transfer** tests: pass, and at least one test ran.
+   Then the **source-world Setup tool** (`DAoCLivingServer.Setup`) builds: nothing else compiled it, so #725 went unseen.
+   It has no tests of its own; `source/tools/tests/test_setup_period_manifest.py` pins its manifest rule. (Added under
+   #618's rule for #725.)
 10. **Package the server build** (fails on any missing file) and **test the installer scripts** on fake game folders
     (Windows PowerShell 5.1, `tools/fork-build/test-install-scripts.ps1`).
 
