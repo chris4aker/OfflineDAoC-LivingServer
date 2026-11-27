@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **763**; pending (#625, not on main yet): **0**; shipped by the pipeline: **731**.
+- Rows in code: **765**; pending (#625, not on main yet): **0**; shipped by the pipeline: **733**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -85,6 +85,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_LEADER_REPLACED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `leader`, `members`, `old`, `town` | `leader`, `old` | - | - |
 | `AUTONOMOUS_GROUP_LEADER_STAGING_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_MATCHMAKING_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousObjectiveAssignments.cs` | `bot`, `fallback`, `id`, `level`, `realm`, `waitedMinutes` | `bot` | - | - |
+| `AUTONOMOUS_GROUP_MEETUP_CLEAR_OF_SERVICE` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.ServiceClearance.cs` | `distance`, `kind`, `leader`, `members`, `region`, `where` | - | - | Once per party formation (or regroup): |
 | `AUTONOMOUS_GROUP_MEETUP_DEATHS` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `at`, `bot`, `deaths`, `group`, `id`, `level`, `region`, `rendezvous`, `waitedSeconds` | `bot` | - | - |
 | `AUTONOMOUS_GROUP_MEETUP_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `invited`, `leader`, `reason`, `town` | `leader` | - | - |
 | `AUTONOMOUS_GROUP_MEETUP_PLANNED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `camp`, `campDistance`, `campRegion`, `farthestCurrentMin`, `farthestNewMin`, `group`, `moved`, `reachCheck`, `region`, `town`, `townsRefused`, `windowMin` | - | - | - |
@@ -141,6 +142,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_SPEC_REFUND` | server.log | **ships** | `bots/GameBot.cs` | `bots`, `classes`, `points`, `shown` | - | - | - |
 | `AUTONOMOUS_STABLE_APPROACH_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `group`, `id`, `level`, `master`, `position`, `realm`, `reason`, `region`, `retryAfterSeconds`, `ticket` | `bot` | - | - |
 | `AUTONOMOUS_STABLE_LANDING_CORRECTION` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
+| `AUTONOMOUS_STABLE_LANDING_STEP` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_STABLE_ROUTE_ARRIVE` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `level`, `position`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_STABLE_ROUTE_BOARD` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `endpoint`, `id`, `level`, `realm`, `ticket` | `bot` | - | - |
 | `AUTONOMOUS_STABLE_ROUTE_FAIL` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `level`, `realm`, `reason` | `bot` | - | - |
