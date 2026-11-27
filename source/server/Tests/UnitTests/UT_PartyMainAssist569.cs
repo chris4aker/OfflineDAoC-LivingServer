@@ -27,9 +27,8 @@ namespace DOL.GS.Tests
         [Test]
         public void OneSettingOnByDefaultAndShippedOn()
         {
-            ServerPropertyAttribute attribute = typeof(A).GetField(nameof(A.On)).GetCustomAttribute<ServerPropertyAttribute>();
+            ServerPropertyAttribute attribute = typeof(Properties).GetField(nameof(Properties.BOT_PARTY_MAIN_ASSIST)).GetCustomAttribute<ServerPropertyAttribute>();
             Assert.That((attribute.Category, attribute.Key, attribute.DefaultValue), Is.EqualTo(("bots", A.PropertyKey, (object)true)));
-            Assert.That(A.On, Is.True);
             string settings = Source("..", "..", "tools", "release-server-settings.json");
             Assert.That(settings, Does.Contain("\"bot_party_main_assist\": \"True\""));
         }

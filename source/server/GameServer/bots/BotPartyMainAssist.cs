@@ -27,9 +27,8 @@ namespace DOL.GS
     {
         public const string PropertyKey = "bot_party_main_assist";
 
-        [ServerProperty("bots", "bot_party_main_assist",
-            "Gamebot parties fight one kill target (#569): in a party of autonomous gamebots doing group PvE, the tank's target is the party's kill target and the other members hit it before whoever is hitting them or their own top threat, unless they are below half health and being hit. A monster a groupmate has mesmerized or rooted is never the kill target. Groups with a real player in them keep leader focus (bot_leader_focus), and RvR warbands and companions are unchanged. Log: AUTONOMOUS_PARTY_KILL_TARGET.", true)]
-        public static bool On = true;
+        /// <summary>The switch (ServerProperties: bot_party_main_assist, on).</summary>
+        public static bool On => Properties.BOT_PARTY_MAIN_ASSIST;
 
         /// <summary>Below this health a member being hit fights its own attacker instead of the kill target.</summary>
         public const int LowHealthPercent = 50;
