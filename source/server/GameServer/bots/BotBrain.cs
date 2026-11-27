@@ -3556,10 +3556,17 @@ namespace DOL.AI.Brain
             // its own attacker or its top threat (BotBrain.LeaderFocus, CompanionLeaderFocus).
             // The top threat is worked out only where the choice before needed it (CalculateNextAttackTarget cleans the list).
             GameLiving leaderFocus = protectionTarget == null ? LeaderFocusTarget() : null;
-            GameLiving threatTarget = protectionTarget == null && directAttacker == null && activePetTarget == null
+            // #569 step 6 (bot_party_main_assist): in a bot-only gamebot PvE party the members fight the tank's kill target
+            // in the same place in the order (BotBrain.MainAssist). Never with leader focus: that needs a real player.
+            GameLiving partyAssist = protectionTarget == null && leaderFocus == null ? PartyMainAssistTarget(directAttacker) : null;
+            GameLiving threatTarget = protectionTarget == null && partyAssist == null && directAttacker == null && activePetTarget == null
                 ? CalculateNextAttackTarget() : null;
-            Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus, directAttacker, activePetTarget, threatTarget);
+            Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker,
+                activePetTarget, threatTarget);
             NoteLeaderFocus(leaderFocus, directAttacker, activePetTarget, threatTarget);
+            // The tank publishes its target as the kill target; a peel on an add never moves a live one (True165 M2).
+            OfferPartyKillTarget(Body.TargetObject as GameLiving, protectionTarget != null &&
+                Body.TargetObject == protectionTarget && protectionTarget.TargetObject != Body);
             if (RvrTacticsTarget(Body.TargetObject as GameLiving, protectionTarget, directAttacker) is { } rvrCalled) Body.TargetObject = rvrCalled;
             // #505: the brain's target decision, change-only, in a war zone (logging only).
             if (BotBody is { IsAutonomousWorldBot: true } tracedBot && Body.TargetObject is GameLiving tracedTarget &&
