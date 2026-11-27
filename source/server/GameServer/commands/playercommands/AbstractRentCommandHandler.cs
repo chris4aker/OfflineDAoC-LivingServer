@@ -253,7 +253,7 @@ namespace DOL.GS.Commands
         }
 
         // The gold leaves the guild bank and goes into the lockbox; it never passes through the player's purse
-        // (WithdrawFromBank, used before, also paid it to the player).
+        // (the guild bank withdraw used before also paid it to the player).
         protected override bool TryChargeGuild(Guild guild, long amount, long copper)
         {
             return ChargeGuildBank(guild, copper);
