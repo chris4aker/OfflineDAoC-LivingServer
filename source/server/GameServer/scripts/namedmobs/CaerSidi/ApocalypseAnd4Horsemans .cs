@@ -1850,7 +1850,7 @@ namespace DOL.AI.Brain
                 if (target != null && target.IsAlive)
                 {
                     if (Util.Chance(15) && !target.effectListComponent.ContainsEffectForEffectType(eEffect.Disease))
-                        Body.CastSpell(BlackPlague, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                        RaidBossMechanics.Cast(Body.CastSpell(BlackPlague, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "plague", BlackPlague); // #644 measurement only
                 }
             }
             base.Think();
@@ -2417,7 +2417,7 @@ namespace DOL.AI.Brain
                     if (!Body.IsCasting)
                     {
                         //Body.TurnTo(Body.GroundTarget.X, Body.GroundTarget.Y);
-                        Body.CastSpell(Apoc_Gtaoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+                        RaidBossMechanics.Cast(Body.CastSpell(Apoc_Gtaoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "gtaoe", Apoc_Gtaoe); // #644 measurement only
                     }
                 }
             }
@@ -2802,7 +2802,7 @@ namespace DOL.AI.Brain
             Body.TurnTo(DD_Target);
             if (Body.TargetObject != null)
             {
-                Body.CastSpell(Apoc_Rain_of_Fire, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells),false);
+                RaidBossMechanics.Cast(Body.CastSpell(Apoc_Rain_of_Fire, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "rainOfFire", Apoc_Rain_of_Fire); // #644 measurement only
                 if (reset_cast == false)
                 {
                     new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetCast), 25000);//25s recast

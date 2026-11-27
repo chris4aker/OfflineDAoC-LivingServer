@@ -482,7 +482,7 @@
   "avalon-city/duraekempowered": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "d5b4768d7c0f7e8429458047c02dc3d1543dd62d82a9bea2590e70c818e33272"
+    "source/server/GameServer/scripts/namedmobs/AvalonCity/DuraekEmpowered.cs": "20a05c77889c3f68c3291080378720a3644946c4524b44b17233d066c9ae1a48"
    },
    "notes": "1.2 upstream port (tests only): its encounter state is per boss and per brain instead of static (OpenDAoC-Core fca5900d7, 403d084dc, 66dbe4220, \"shared variable safety\"), so a reset, a respawn or a second attempt starts clean; no mechanic changed."
   },
@@ -518,7 +518,7 @@
   "caer-sidi/apocalypse": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "4da188d8d1167a6392ee59cb4981f8b9242cb5238a00ffefa7597f55a7b7bc22"
    },
    "notes": "1.2 (wave 2): the first two Harbingers of Fate come once after his fourth raider kill (FirstHarbingersDue: kills >= 4; the original's '== 4' on a 2-second check missed it when two died at once, and repeated it while the count stayed at 4); a harbinger's death now lowers the live count, so the 50% pair (spawned only while none lives) can come after the first pair is dead. Up to four harbingers in a fight instead of two. 1.2 (wave 3): the room barrier (ApocInitializator.DontAllowLeaveRoom: anyone within 150 of the door 29,459,26,401 while a horseman or Apocalypse fights is moved to the middle 29,469,25,244) is on for players and bots (AllowDisplacement and AllowBotDisplacement for ApocInitializator). The raid's muster and every tactic stand-off for the room's encounters are kept within 800 of the middle, the route doesn't leave the room mid-fight, and a bot moved back stays inside (EpicEncounterTactics.HorsemenRoom); a repeated move is logged (EPIC_DISPLACEMENT_BOUNCED). The room's shape was never checked against the navmesh. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed. The horsemen's and Apocalypse's scripted walk to their spot uses PathTo (navmesh-routed, a straight walk without a navmesh) instead of WalkTo (OpenDAoC-Core 12872751a); same spot, same speed.",
    "aiTactics": {
@@ -540,7 +540,7 @@
   "caer-sidi/bellum": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "4da188d8d1167a6392ee59cb4981f8b9242cb5238a00ffefa7597f55a7b7bc22"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -564,7 +564,7 @@
   "caer-sidi/fames": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "4da188d8d1167a6392ee59cb4981f8b9242cb5238a00ffefa7597f55a7b7bc22"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -586,7 +586,7 @@
   "caer-sidi/funus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "4da188d8d1167a6392ee59cb4981f8b9242cb5238a00ffefa7597f55a7b7bc22"
    },
    "aiTactics": {
     "fightAtHomeRadius": 2700,
@@ -662,7 +662,7 @@
   "caer-sidi/morbus": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "43f761d1452443ec1e43f0938668e525900d9ba1184b966ce4124b880e8f2332"
+    "source/server/GameServer/scripts/namedmobs/CaerSidi/ApocalypseAnd4Horsemans .cs": "4da188d8d1167a6392ee59cb4981f8b9242cb5238a00ffefa7597f55a7b7bc22"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -1102,7 +1102,7 @@
    "verified": true,
    "scriptHashes": {
     "source/server/GameServer/scripts/namedmobs/Dodens/AI/ArosBrain/ArosBrain.cs": "321880a5267affac2a020ab02f741a95d7eb017665f616d701c3315fc3794f2f",
-    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "0e3a01939bcbdfe102b815f3ddccd653f675cc96adfbf65687346c058ec307ec"
+    "source/server/GameServer/scripts/namedmobs/Dodens/GameEpicAros.cs": "b7ed1bef97a76691b1c03ae489086af3ad573ebeda746c838e945bf459fab951"
    },
    "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
@@ -1170,7 +1170,7 @@
   "dodens-gruva/spiritmasteraros": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "7b5ba981cd8e53b7200de82429e397f05178dde0c8dea2bb672b2ff5243a294a"
+    "source/server/GameServer/scripts/namedmobs/Dodens/SpiritmasterAros.cs": "81a449b82fe34fd9e833c068515a948c10e57ff0b57a002e4695381a6d362078"
    },
    "notes": "1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed."
   },
@@ -1224,7 +1224,7 @@
   "fomor-city/myrddraxis": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "8bea60e8080d61f97845eccfd15eabf34a8279d8069d833da719751b6c40cf74"
+    "source/server/GameServer/scripts/namedmobs/Fomor/Myrddraxis.cs": "c6d18f2eccb1286ec8a207822e945a171708b67788b0cb770914eda8b56094c0"
    },
    "aiTactics": {
     "blastThresholds": [
@@ -1734,7 +1734,7 @@
   "hall-of-the-corrupt/aidonthearchwizard": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "3eee5a36a26ec129b014ab22dbe4912ff8856fbf063db35c7fd253e283cdc5bf"
+    "source/server/GameServer/scripts/namedmobs/HallOfTheCorrupt/AidonTheArchwizard.cs": "dc8aeed16fe3576b1347835f11aefebadab3ae90c4b26c2287f8d3727aa9b6fe"
    },
    "aiTactics": {
     "requiredAdds": [
@@ -2128,7 +2128,7 @@
   "iarnvidiur-s-lair/iarnvidiur": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "a44df58d5e6bb1e6074e126068ca591c46ff429d97300fb60f2996312b4fa3c6"
+    "source/server/GameServer/scripts/namedmobs/IarnvidiurLair/Iarnvidiur.cs": "5102aa10c84ce44a0ad0d740542e74eb4548b780913c76cc101dbbc3426eac64"
    },
    "rules": {
     "teleport@143": {
@@ -2281,7 +2281,7 @@
   "krondon/orshom": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "c9352b6b931ea97d56ccdad5d41fcf0a46dccec5a93f56f28d555135ba4352ae"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "04b0e790363b716bd5c820acf7477ff716d07662b9a0076108a0a2ab8f95c7c5"
    },
    "notes": "Level 80, 30,000 health, 20% melee and 30% magic resists, tether 3,800. When his fight starts he lights Orshom's Fire (OrshomFire) at 31406,69599,15605, about 900 from his spawn: a GameEpicNPC that never moves or melees (MaxSpeedBase 0, empty StartAttack), takes damage only of type Cold, has 10,000 health and RespawnInterval -1, aggro range 2,500, and casts Fire Burn on its own spot every 3 s (500 Heat, radius 300). His reset removes it. Orylle throws a random raider within 2,500 into it every 15-20 s while it burns: real players, and bots since 1.2 (AllowBotDisplacement ships on for Orylle; the pick asks the same switch as the move). At 50% Orshom pulls Orylle (level 83, 40,000 health) into the fight; Orylle pulls him too when she is attacked. 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "currentRaidAi": "2026-11-05/06 overnight (owner's notes): the Albion Krondon raid lost at Orshom twice, lowest 59% then 28%, Special Forces joined. PC test 2026-11-09 (build b72716e, forced Krondon): the fire is an IGameEpicNpc in combat with raiders, so the route turned on it (REALM_EXPEDITION_EARLY_PULL target=\"Orshom's Fire\" decision=Commit at 04:12:33) and the raid's melee walked into its 300: AUTONOMOUS_BOT_DEATH killer=\"Orshom's Fire\" 100 times between 04:12 and 04:18, 97 of them with activity \"Fighting Orshom's Fire\"; it was skipped for no damage for five minutes. Now the route never takes it as a target or encounter, and raiders follow the hazard tactic. That PC raid ran a 1.1.3 build without 1.2's hazard and cold-caster rules; the 1.2 line has both lines' rules (merged 2026-11-10), not yet seen in a PC log.",
@@ -2314,7 +2314,7 @@
   "krondon/orylle": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "c9352b6b931ea97d56ccdad5d41fcf0a46dccec5a93f56f28d555135ba4352ae"
+    "source/server/GameServer/scripts/namedmobs/Krondon/OrylleAndOrshom.cs": "04b0e790363b716bd5c820acf7477ff716d07662b9a0076108a0a2ab8f95c7c5"
    },
    "notes": "Krondon's final: level 83, 40,000 health, 30/40% resists, tether 3,800; joins Orshom Brong's fight (see him). 1.2 upstream port (tests only): its scripts' death overrides run in ProcessDeath instead of Die (OpenDAoC-Core 0b581e3fb), so a death's counters, flags and spawns happen once per death even when Die is called twice; no mechanic changed.",
    "aiTactics": {
@@ -2428,7 +2428,7 @@
    },
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "e7cb119127761d27a9c9c944ba12c502dd3f050c7e894bd1e4e90a169f613ce3"
+    "source/server/GameServer/scripts/namedmobs/MarfachCaverns/BlackLady.cs": "32ce622d3e5c06ea4d44858f3eaae3e1eb6a505508c7c749272600d32bd1de46"
    }
   },
   "marfach-caverns/bluelady": {
@@ -2690,7 +2690,7 @@
   "open-world/evern": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/Evern.cs": "ba4d8e6ed7b5359cff9bb3aa3edb56512f40930c25c1d0e1f102d74560f8407e"
+    "source/server/GameServer/scripts/namedmobs/Evern.cs": "9726c014ae993b1affd5f0b734198cf9841b6c8cd65ed04392a5b6d47638d4d5"
    },
    "aiTactics": {
     "rangedAdds": [
@@ -2702,16 +2702,16 @@
     "since": "1.2"
    },
    "rules": {
-    "adds@233": {
+    "immune_while@51": {
+     "tactic": "In the raid AI (catalog: fight at home within 1,400 of his spawn, inside his 1,700 tether): past it the raid stops hitting him and his target leads him back.",
+     "difficulty": "easy for the current raid AI"
+    },
+    "adds@232": {
      "tactic": "In the raid AI (catalog: ranged adds, focused): the raid's casters and archers kill the fairies one at a time before they reach a stone.",
      "difficulty": "easy for the current raid AI"
     },
-    "heal@382": {
+    "heal@381": {
      "tactic": "The fairies' heal (1,000 on him from a stone, 3 s, uninterruptible): stopped by killing each fairy first (catalog: ranged adds, focused). In the raid AI since 1.2.",
-     "difficulty": "easy for the current raid AI"
-    },
-    "immune_while@51": {
-     "tactic": "In the raid AI (catalog: fight at home within 1,400 of his spawn, inside his 1,700 tether): past it the raid stops hitting him and his target leads him back.",
      "difficulty": "easy for the current raid AI"
     }
    },
@@ -2743,7 +2743,7 @@
   "open-world/maldahartheglimmerprince": {
    "verified": true,
    "scriptHashes": {
-    "source/server/GameServer/scripts/namedmobs/MaldaharTheGlimmerPrince.cs": "cb79af21ccefe4c643d37e945ae01ff30ad5e5f3c999dfa682a6d05413028996"
+    "source/server/GameServer/scripts/namedmobs/MaldaharTheGlimmerPrince.cs": "26fb5070a387c83b9decefadddef02ed74af91d3a90c542e0fd3bae968cb83bb"
    }
   },
   "open-world/moranthemighty": {

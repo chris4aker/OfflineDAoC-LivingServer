@@ -146,8 +146,8 @@ namespace DOL.GS
                 {
 					switch(Util.Random(1,2))
                     {
-						case 1: CastSpell(HydraDisease, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)); break;
-						case 2: CastSpell(Hydra_Haste_Debuff, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)); break;
+						case 1: RaidBossMechanics.Cast(CastSpell(HydraDisease, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "disease", HydraDisease); break; // #644 measurement only
+						case 2: RaidBossMechanics.Cast(CastSpell(Hydra_Haste_Debuff, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "hasteDebuff", Hydra_Haste_Debuff); break; // #644 measurement only
 					}					
 				}
             }
@@ -369,7 +369,7 @@ namespace DOL.AI.Brain
 				{
 					Body.TargetObject = RandomTarget2;
 					Body.TurnTo(RandomTarget2);
-					Body.CastSpell(Hydra_Dot, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+					RaidBossMechanics.Cast(Body.CastSpell(Hydra_Dot, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dot", Hydra_Dot); // #644 measurement only
 				}
 				if (oldTarget != null) Body.TargetObject = oldTarget;//return to old target
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetDOT), 5000);
@@ -430,7 +430,7 @@ namespace DOL.AI.Brain
 				{
 					Body.TargetObject = RandomTarget;
 					Body.TurnTo(RandomTarget);
-					Body.CastSpell(Hydra_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+					RaidBossMechanics.Cast(Body.CastSpell(Hydra_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dd", Hydra_DD); // #644 measurement only
 				}
 				if (oldTarget != null) Body.TargetObject = oldTarget;//return to old target
 				new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetDD), 5000);
@@ -449,7 +449,7 @@ namespace DOL.AI.Brain
 		public int HydraStun(ECSGameTimer timer)
         {
 			if(HasAggro && Body.IsAlive)
-				Body.CastSpell(Hydra_Stun, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(Body.CastSpell(Hydra_Stun, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "stun", Hydra_Stun); // #644 measurement only
 			return 0;
         }
 		#endregion
@@ -457,7 +457,7 @@ namespace DOL.AI.Brain
 		public int HydraPBAOE(ECSGameTimer timer)
 		{
 			if (HasAggro && Body.IsAlive)
-				Body.CastSpell(Hydra_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(Body.CastSpell(Hydra_PBAOE, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "pbaoe", Hydra_PBAOE); // #644 measurement only
 			return 0;
 		}
 		#endregion
@@ -656,7 +656,7 @@ namespace DOL.AI.Brain
 				if(target != null && !target.IsWithinRadius(Body,Body.attackComponent.AttackRange))
                 {
 					Body.SetGroundTarget(target.X, target.Y, target.Z);
-					Body.CastSpell(Hydra_DD2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));//cast dmg if main target is not in attack range
+					RaidBossMechanics.Cast(Body.CastSpell(Hydra_DD2, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dd2", Hydra_DD2); // #644 measurement only //cast dmg if main target is not in attack range
 				}
 			}
 			base.Think();
@@ -926,7 +926,7 @@ namespace DOL.AI.Brain
 			}
 			if (Body.IsAlive && HasAggro && Body.TargetObject != null)
 			{
-				Body.CastSpell(Head2_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(Body.CastSpell(Head2_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "head2", Head2_DD); // #644 measurement only
 				if (IsPulled1==false)
 				{
 					GameLiving ptarget = Body.TargetObject as GameLiving;
@@ -1130,7 +1130,7 @@ namespace DOL.AI.Brain
 			}
 			if (Body.IsAlive && HasAggro && Body.TargetObject != null)
 			{
-				Body.CastSpell(Head3_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(Body.CastSpell(Head3_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "head3", Head3_DD); // #644 measurement only
 				if (IsPulled2==false)
 				{
 					GameLiving ptarget = Body.TargetObject as GameLiving;
@@ -1334,7 +1334,7 @@ namespace DOL.AI.Brain
 			}
 			if (Body.IsAlive && HasAggro && Body.TargetObject != null)
 			{
-				Body.CastSpell(Head4_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(Body.CastSpell(Head4_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "head4", Head4_DD); // #644 measurement only
 				if (IsPulled3==false)
 				{
 					GameLiving ptarget = Body.TargetObject as GameLiving;
@@ -1537,7 +1537,7 @@ namespace DOL.AI.Brain
 			}
 			if (Body.IsAlive && HasAggro && Body.TargetObject != null)
 			{
-				Body.CastSpell(Head5_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(Body.CastSpell(Head5_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "head5", Head5_DD); // #644 measurement only
 				if (IsPulled4==false)
 				{
 					GameLiving ptarget = Body.TargetObject as GameLiving;
