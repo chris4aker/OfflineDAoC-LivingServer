@@ -103,12 +103,37 @@ namespace DOL.GS.Tests
             Assert.Multiple(() =>
             {
                 Assert.That(trip, Does.Contain("newGoals: !trip.FromMuster"));
-                Assert.That(coordinator, Does.Contain("FormSiegeParties();\n                    // #530 step 5b"));
-                Assert.That(coordinator, Does.Contain("FormBattlegroundMusterParties();"));
+                // The call runs in the coordinator's pulse, beside the siege parties: a live statement on its own line,
+                // so commenting it out (// or /* */) fails this pin.
+                string live = Regex.Replace(coordinator, @"/\*.*?\*/", string.Empty, RegexOptions.Singleline);
+                Assert.That(Regex.IsMatch(live,
+                        @"(?m)^[ \t]*FormSiegeParties\(\);[ \t]*\n[ \t]*//[^\n]*\n[ \t]*FormBattlegroundMusterParties\(\);[ \t]*$"), Is.True,
+                    "the muster parties are formed in the pulse, after the siege parties");
                 Assert.That(controller, Does.Contain("forceId: \"bg:\" + (party ? _groupDirective.GroupId : RvrForceId(bot))"),
                     "a battleground party is one force");
                 Assert.That(Regex.IsMatch(controller, @"writer: party \? _groupDirective\.Leader == null \|\| _groupDirective\.Leader == bot"), Is.True,
                     "written by its leader");
+            });
+        }
+
+        [Test]
+        public void Companions_and_siege_crews_are_never_taken()
+        {
+            string muster = Regex.Replace(Code("bots", "autonomous", "AutonomousBotGroupCoordinator.MusterParties.cs"), @"\s+", " ");
+            int start = muster.IndexOf("private static bool FreeForMusterParty(", StringComparison.Ordinal);
+            Assert.That(start, Is.GreaterThan(0));
+            string free = muster.Substring(start, muster.IndexOf(';', start) - start);
+            Assert.Multiple(() =>
+            {
+                // As RvrTacticsScope: autonomous gamebots only, never a temporary helper or a hired companion.
+                Assert.That(free, Does.Contain("IsAutonomousWorldBot: true"));
+                Assert.That(free, Does.Contain("IsTemporaryGroupHelper: false"));
+                Assert.That(free, Does.Contain("IsHiredCompanion: false"));
+                Assert.That(free, Does.Contain("!BotDutyLeases.IsSpokenForByPlayer(bot)"));
+                // A siege crew keeps its engine job (left out on purpose; it records the muster as any gatherer, step 5a).
+                Assert.That(free, Does.Contain("!IsSiegeCrew(bot)"));
+                Assert.That(muster, Does.Contain(
+                    "public static bool IsSiegeCrew(GameBot bot) => BotSiegeRuntime.Assigned(bot) || AutonomousSiegeOwnership.All(bot).Length > 0;"));
             });
         }
     }
