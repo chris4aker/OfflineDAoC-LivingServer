@@ -607,7 +607,7 @@ internal static class Program
     {
         const string migrationId = "classic165-period-map-frontier-albion-spawns-v2";
         ApplyArchivedSpawnManifest(connection, migrationId,
-            LoadRestoredSpawnIds("classic165_period_restored_spawn_ids.txt"),
+            LoadRestoredSpawnIds("classic165_period_restored_spawn_ids.txt", archiveSectionOnly: true),
             ExpectedPeriodMapRestoredSpawnCount,
             "Restore only archived rows corroborated by 2002 Kirstena/Illia maps, CapnBry coordinates, or period Mount Collory/Cruachan reports; preserve original templates and require bidirectional installed-navmesh validation.",
             "period-map verified Old Frontier and Albion");
@@ -714,7 +714,13 @@ internal static class Program
         Console.WriteLine($"Restored {restored:N0} {label} monster rows.");
     }
 
-    private static string[] LoadRestoredSpawnIds(string suffix)
+    /// <summary>
+    /// The Mob_IDs of an embedded restore manifest. <paramref name="archiveSectionOnly"/> (#725): the period manifest's
+    /// first section, before its first <c>#</c> line, is the archived rows this migration restores (1,290). The later
+    /// sections (the goal 9 bestiary and Howth/Connla camps, the classic quest monster camps) are new camp IDs the game
+    /// server's catalog reads; they are not archived rows, so Setup stops at the first <c>#</c> line.
+    /// </summary>
+    private static string[] LoadRestoredSpawnIds(string suffix, bool archiveSectionOnly = false)
     {
         Assembly assembly = typeof(Program).Assembly;
         string resource = assembly.GetManifestResourceNames().SingleOrDefault(name =>
@@ -729,6 +735,12 @@ internal static class Program
             line = line.Trim();
             if (line.Length == 0)
                 continue;
+            if (line.StartsWith('#'))
+            {
+                if (archiveSectionOnly)
+                    break;
+                continue;
+            }
             if (!Guid.TryParse(line, out _) &&
                 (!long.TryParse(line, NumberStyles.None, CultureInfo.InvariantCulture, out long numericId) || numericId <= 0))
                 throw new InvalidOperationException($"Invalid Mob_ID in Classic 1.65 spawn manifest '{suffix}': '{line}'.");

@@ -752,9 +752,31 @@ namespace DOL.GS.PacketHandler.Client.v168
 							}
 						}
 
-						// create the new vault and attach it to the house
-						var houseVault = new GameHouseVault(orgitem.Template, vaultIndex);
-						houseVault.Attach(house, (uint) _position);
+						// Port of OpenDAoC-Core 2ff1aaec3: add the new vault to House.HousepointItems, as the other
+						// hookpoint items are, so removing the house (HouseMgr.RemoveHouseItems) also deletes a vault
+						// placed this session. Before, only vaults loaded at start-up were in that list.
+						// FillHookpoint attaches the vault (GameHouseVault.Attach adds its database row).
+						var point = new DbHouseHookPointItem
+						{
+							HouseNumber = house.HouseNumber,
+							ItemTemplateID = orgitem.Id_nb,
+							HookpointID = (uint) _position,
+							Index = (byte) vaultIndex
+						};
+
+						if (!house.HousepointItems.TryAdd(point.HookpointID, point))
+						{
+							ChatUtil.SendSystemMessage(client, "Scripts.Player.Housing.HookPointAlready", null);
+							client.Out.SendInventorySlotsUpdate([(eInventorySlot) slot]);
+							return;
+						}
+
+						if (!house.FillHookpoint(point.HookpointID, orgitem.Template.Id_nb, 0, vaultIndex))
+						{
+							house.HousepointItems.Remove(point.HookpointID);
+							client.Out.SendInventorySlotsUpdate([(eInventorySlot) slot]);
+							return;
+						}
 
 						// remove the original item from the player's inventory
 						client.Player.Inventory.RemoveItem(orgitem);

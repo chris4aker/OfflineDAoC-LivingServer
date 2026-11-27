@@ -2018,7 +2018,7 @@ ADMIN ONLY COMMANDS
 
 /fixnpcspawn
   Fix NPC positions and spawn points using navmesh.
-  /fixnpcspawn [target|zone|region|world] <SnapDown> <SnapUp> <DryRun(true(default)/false)>
+  /fixnpcspawn [target|visible|zone|region|world] <SnapDown> <SnapUp> <DryRun(true(default)/false)>
   /fixnpcspawn goto <index> - Teleport to a fixed NPC from the last run
   /fixnpcspawn result <page|clear> - Print results (2k per page) or clear memory
   Handler: DOL.GS.Commands.FixNpcSpawnCommandHandler

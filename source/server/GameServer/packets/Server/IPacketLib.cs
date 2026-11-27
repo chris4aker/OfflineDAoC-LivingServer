@@ -538,6 +538,7 @@ namespace DOL.GS.PacketHandler
         MasterLevelWindow = 0x19,
         KeepClaim = 0x1A,
         BuyRespec = 0x20,
+        WarmapWindow = 0x26, // 1.127+: data1 selects the map (1 Albion, 2 Midgard, 3 Hibernia); OpenDAoC-Core d74d4941f
         WarmapWindowHibernia = 0x30,
         WarmapWindowAlbion = 0x31,
         WarmapWindowMidgard = 0x32,

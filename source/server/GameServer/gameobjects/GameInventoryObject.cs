@@ -45,19 +45,23 @@ namespace DOL.GS
             return (fromClientSlot >= thisObject.FirstClientSlot && fromClientSlot <= thisObject.LastClientSlot) || (toClientSlot >= thisObject.FirstClientSlot && toClientSlot <= thisObject.LastClientSlot);
         }
 
-        public static IDictionary<int, DbInventoryItem> MoveItem(this IGameInventoryObject thisObject, GamePlayer player, eInventorySlot fromClientSlot, eInventorySlot toClientSlot, ushort count)
+        /// <summary>
+        /// Moves an item between a player's inventory and an inventory object. Never returns null (port of
+        /// OpenDAoC-Core 7098d8ebe, which fixed NREs in the consignment merchant): when the from-slot is empty it
+        /// returns both slots as empty, so the client redraws them; see <see cref="IsEmptyFromSlotResult"/>.
+        /// </summary>
+        public static Dictionary<int, DbInventoryItem> MoveItem(this IGameInventoryObject thisObject, GamePlayer player, eInventorySlot fromClientSlot, eInventorySlot toClientSlot, ushort count)
         {
             lock (thisObject.Lock)
             {
                 if (!GetItemInSlot(fromClientSlot, out DbInventoryItem fromItem))
                 {
                     SendUnsupportedActionMessage(player);
-                    return null;
+                    return EmptyFromSlotResult(fromClientSlot, toClientSlot);
                 }
 
                 GetItemInSlot(toClientSlot, out DbInventoryItem toItem);
-                IDictionary<int, DbInventoryItem> updatedItems = MoveItemInner(fromItem, toItem);
-                return updatedItems;
+                return MoveItemInner(fromItem, toItem);
             }
 
             bool GetItemInSlot(eInventorySlot slot, out DbInventoryItem item)
@@ -72,7 +76,7 @@ namespace DOL.GS
                 return item != null;
             }
 
-            IDictionary<int, DbInventoryItem> MoveItemInner(DbInventoryItem fromItem, DbInventoryItem toItem)
+            Dictionary<int, DbInventoryItem> MoveItemInner(DbInventoryItem fromItem, DbInventoryItem toItem)
             {
                 Dictionary<int, DbInventoryItem> updatedItems = new(2);
 
@@ -97,6 +101,36 @@ namespace DOL.GS
 
                 return updatedItems;
             }
+        }
+
+        /// <summary>What <see cref="MoveItem"/> returns when there is no item in the from-slot.</summary>
+        public static Dictionary<int, DbInventoryItem> EmptyFromSlotResult(eInventorySlot fromClientSlot, eInventorySlot toClientSlot)
+        {
+            Dictionary<int, DbInventoryItem> result = new(2);
+            result[(int) fromClientSlot] = null;
+            result[(int) toClientSlot] = null;
+            return result;
+        }
+
+        /// <summary>
+        /// True for the result of a move whose from-slot was empty: every slot it lists is empty. A real move always
+        /// lists at least one item (the moved one, in its new slot).
+        /// </summary>
+        public static bool IsEmptyFromSlotResult(IDictionary<int, DbInventoryItem> result)
+        {
+            if (result == null)
+                return true;
+
+            if (result.Count == 0)
+                return false;
+
+            foreach (DbInventoryItem item in result.Values)
+            {
+                if (item != null)
+                    return false;
+            }
+
+            return true;
         }
 
         public static void NotifyObservers(GameObject thisOwner, GamePlayer player, Dictionary<string, GamePlayer> observers, IDictionary<int, DbInventoryItem> updatedItems)

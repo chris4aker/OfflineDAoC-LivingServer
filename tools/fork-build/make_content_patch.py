@@ -1,7 +1,15 @@
 """Builds tools/fork-build/content-patches.json: game files the installer changes in place (a fixed navmesh, the new
 client's door data), as byte patches against the released file, so no game file is shipped whole.
 
-    python make_content_patch.py <out.json> <relative path> <released file> <fixed file> [<relative path> <released> <fixed> ...]
+    python make_content_patch.py [--navmesh-set DIR [--manifest FILE]] <out.json> <relative path> <released file> <fixed file>
+                                 [<relative path> <released> <fixed> ...]
+
+A navmesh (runtime/server/navmesh/...) is patched only to the mesh of the published navmesh set (issue #687), never to a
+file from a PC folder: pass --navmesh-set, the folder `navmesh_set.py fetch tools/navmesh/manifest.json --dest DIR`
+unpacked and checked, and write `set` for its fixed file. The mesh is taken by its manifest path (navmesh/zoneNNN.nav),
+after checking that DIR was fetched against that manifest (default tools/navmesh/manifest.json) and that the file still
+has the manifest's SHA-256. `navmesh_set.py check` then fails if the list and the set ever drift apart. A navmesh
+rebuild (#582) publishes navmesh-vN+1 and its patches are made from that set.
 
 Each entry names the file (relative to the game folder, forward slashes), its released and fixed SHA-256, and the ops
 that turn one into the other: {"copy": [offset, length]} takes bytes of the released file, {"data": base64} inserts new
@@ -23,6 +31,14 @@ import difflib
 import hashlib
 import json
 import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parents[1] / "tools" / "navmesh"))
+import navmesh_set  # noqa: E402
+
+NAVMESH_PREFIX = "runtime/server/navmesh/"
+FROM_SET = "set"
 
 
 def ops_between(old: bytes, new: bytes):
@@ -78,14 +94,57 @@ def apply(old: bytes, ops) -> bytes:
     return bytes(out)
 
 
+def fixed_bytes(rel: str, fixed: str, navmesh_set_dir, manifest) -> bytes:
+    """The fixed file's bytes: a navmesh from the verified set (issue #687), anything else from the file given."""
+    if not rel.startswith(NAVMESH_PREFIX):
+        if fixed == FROM_SET:
+            raise navmesh_set.SetError(f"{rel}: only a navmesh ({NAVMESH_PREFIX}...) comes from the navmesh set")
+        return open(fixed, 'rb').read()
+    if navmesh_set_dir is None or fixed != FROM_SET:
+        raise navmesh_set.SetError(
+            f"{rel}: a navmesh patch is made from the published navmesh set, not from {fixed!r}: fetch it "
+            f"(navmesh_set.py fetch tools/navmesh/manifest.json --dest DIR), pass --navmesh-set DIR and write "
+            f"'{FROM_SET}' for the fixed file (#687)")
+    return navmesh_set.set_file(manifest, navmesh_set_dir, rel[len('runtime/server/'):])
+
+
+def parse_args(argv):
+    """(navmesh set folder or None, manifest, positional args) from argv[1:]."""
+    rest, set_dir, manifest = [], None, navmesh_set.MANIFEST
+    args = iter(argv[1:])
+    for a in args:
+        if a in ('--navmesh-set', '--manifest'):
+            value = next(args, None)
+            if value is None:
+                raise navmesh_set.SetError(f"{a} needs a value")
+            if a == '--navmesh-set':
+                set_dir = Path(value)
+            else:
+                manifest = Path(value)
+        else:
+            rest.append(a)
+    return set_dir, manifest, rest
+
+
 def main(argv):
-    if len(argv) < 5 or (len(argv) - 2) % 3:
+    try:
+        set_dir, manifest, args = parse_args(argv)
+    except navmesh_set.SetError as e:
+        print(f"error: {e}")
+        return 2
+    if len(args) < 4 or (len(args) - 1) % 3:
         print(__doc__)
         return 2
+    argv = [argv[0]] + args
     entries = []
     for i in range(2, len(argv), 3):
-        rel, released, fixed = argv[i], argv[i + 1], argv[i + 2]
-        old, new = open(released, 'rb').read(), open(fixed, 'rb').read()
+        rel, released, fixed = argv[i].replace('\\', '/'), argv[i + 1], argv[i + 2]
+        try:
+            new = fixed_bytes(rel, fixed, set_dir, manifest)
+        except navmesh_set.SetError as e:
+            print(f"error: {e}")
+            return 1
+        old = open(released, 'rb').read()
         ops = ops_between(old, new)
         assert apply(old, ops) == new, rel
         entries.append({'Path': rel.replace('\\', '/'), 'Released': hashlib.sha256(old).hexdigest(),

@@ -85,15 +85,8 @@ namespace DOL.GS.Keeps
 
 				// open up the warmap window
 
-				eDialogCode code = eDialogCode.WarmapWindowAlbion;
-				switch (player.Realm)
-				{
-					case eRealm.Albion: code = eDialogCode.WarmapWindowAlbion; break;
-					case eRealm.Midgard: code = eDialogCode.WarmapWindowMidgard; break;
-					case eRealm.Hibernia: code = eDialogCode.WarmapWindowHibernia; break;
-				}
-
-				player.Out.SendDialogBox(code, 0, 0, 0, 0, eDialogType.Warmap, false, "");
+				(eDialogCode code, ushort map) = WarmapDialog(player.Client.Version, player.Realm);
+				player.Out.SendDialogBox(code, map, 0, 0, 0, eDialogType.Warmap, false, "");
 			}
 
 			//if no component assigned, teleport to the border keep
@@ -103,6 +96,35 @@ namespace DOL.GS.Keeps
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// The dialog that opens a realm's war map. Port of OpenDAoC-Core d74d4941f: 1.127 and later clients (ours) open a
+		/// war map only for dialog code 0x26, with the map in data1 (1 Albion, 2 Midgard, 3 Hibernia); the old codes
+		/// 0x30-0x32 showed them an empty Accept/Decline box whose buttons send nothing. Older clients keep those codes.
+		/// </summary>
+		public static (eDialogCode code, ushort map) WarmapDialog(GameClient.eClientVersion version, eRealm realm)
+		{
+			if (version >= GameClient.eClientVersion.Version1127)
+			{
+				ushort map = realm switch
+				{
+					eRealm.Midgard => 2,
+					eRealm.Hibernia => 3,
+					_ => 1
+				};
+
+				return (eDialogCode.WarmapWindow, map);
+			}
+
+			eDialogCode code = realm switch
+			{
+				eRealm.Midgard => eDialogCode.WarmapWindowMidgard,
+				eRealm.Hibernia => eDialogCode.WarmapWindowHibernia,
+				_ => eDialogCode.WarmapWindowAlbion
+			};
+
+			return (code, 0);
 		}
 
 		public void GetTeleportLocation(out int x, out int y)

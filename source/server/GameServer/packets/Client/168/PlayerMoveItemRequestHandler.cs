@@ -294,7 +294,9 @@ namespace DOL.GS.PacketHandler.Client.v168
                 return;
             }
 
-            if (fromClientSlot < eInventorySlot.FirstBackpack)
+            // Port of OpenDAoC-Core b28922b5e: the quiver slots sit below the backpack, so this used to refuse them.
+            // GamePlayer.DropItem decides which slots can drop and says when an item can't be dropped.
+            if (!GamePlayer.CanDropFromSlot(fromClientSlot))
             {
                 client.Out.SendInventorySlotsUpdate([fromClientSlot]);
                 return;
