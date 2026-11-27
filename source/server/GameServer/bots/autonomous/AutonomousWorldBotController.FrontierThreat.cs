@@ -341,18 +341,14 @@ public sealed partial class AutonomousWorldBotController
             visibleTargets = rallyContacts;
         if (!defending && !siegeFighter && visibleTargets.Length > 0)
         {
-            GameLiving[] allowed = null;
-            bool atRally;
-            if (BattlegroundGatherHold(bot, out Vector3 gatherStaging, out atRally))
-                allowed = visibleTargets.Where(target => GathererMayEngage(bot, target, gatherStaging))
+            // The one gather-hold rule (#530 step 5a, AutonomousRvrEventLayer.MusterAllowsFight), as in the combat drop and
+            // the keep's guard pick.
+            AutonomousRvrEventLayer.MusterHold hold = BattlegroundMusterHold(bot, out Vector3 gatherStaging);
+            bool atRally = hold != AutonomousRvrEventLayer.MusterHold.Gather;
+            if (hold != AutonomousRvrEventLayer.MusterHold.None)
+            {
+                GameLiving[] allowed = visibleTargets.Where(target => MusterAllowsFight(bot, hold, gatherStaging, target))
                     .Concat(rallyContacts).Distinct().ToArray();
-            else if (BattlegroundStormHold(bot))
-            {
-                atRally = true;
-                allowed = visibleTargets.Where(target => StormerMayEngage(bot, target)).ToArray();
-            }
-            if (allowed != null)
-            {
                 if (allowed.Length == 0)
                 {
                     NoteBattlegroundHeldBack(bot, atRally, dropped: false);

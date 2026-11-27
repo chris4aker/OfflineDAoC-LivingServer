@@ -2400,8 +2400,9 @@ namespace DOL.GS
                 .Where(guard => !closedDoor || guard is not GuardLord)
                 // Holding at a battleground rally: what comes at the rally (the gatherers' rule), never the lord (the rally goes
                 // up together). Was any guard within 1,500 of the rally point, which stood inside the keep on build 3b808b4.
+                // The one gather-hold rule (#530 step 5a), as in the threat scan and the combat drop.
                 .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
-                    guard is not GuardLord && GathererMayEngage(bot, guard, rally))
+                    MusterAllowsFight(bot, AutonomousRvrEventLayer.MusterHold.Rally, rally, guard))
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))
