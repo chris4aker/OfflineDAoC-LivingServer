@@ -11,5 +11,5 @@ section: The server
   reset, not on Monday. A player who was offline at the rollover gets the quests back at login, in
   place of the old unindexed delete over every character's quests; a zone change doesn't count as a login (upstream
   reset the finished dailies again at every zone change after a midnight, so they could be repeated on demand). A callback that fails is logged and the others
-  still run. Anything timed can subscribe (the house rent service of #562 is meant to). `ScheduledRollovers` and the old
-  `TaskRefreshIntervals` are run state: the release world ships them empty (`progress-policy.json` ClearTables). Players only. `UT_RolloverSchedule`.
+  still run. Anything timed can subscribe (the house rent service of #562 is meant to). `ScheduledRollovers` is run
+  state: the release world ships it empty (`progress-policy.json` ClearTables). Players only. `UT_RolloverSchedule`.
