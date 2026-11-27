@@ -124,7 +124,7 @@ namespace DOL.GS
 
                     TryInsertTopStat(topRp, otherPlayer.Name, stats.TotalRealmPointsEarned);
 
-                    uint rphs = (uint) Math.Round(RPsPerHour(stats.TotalRealmPointsEarned, now.Subtract(stats._loginTime)));
+                    uint rphs = RPsPerHour(stats.TotalRealmPointsEarned, now.Subtract(stats._loginTime));
                     TryInsertTopStat(topLrp, otherPlayer.Name, rphs);
 
                     uint irs = (uint) Math.Round(stats.TotalRealmPointsEarned / Math.Max(1.0, stats.Deaths));
@@ -272,9 +272,10 @@ namespace DOL.GS
             return divisor == 0 ? dividend : dividend == 0 ? 0 : dividend / divisor;
         }
 
-        public static double RPsPerHour(uint realmPoints, TimeSpan time)
+        /// <summary>Realm points per hour, rounded (port of OpenDAoC-Core e845e011f: /stats printed every decimal).</summary>
+        public static uint RPsPerHour(uint realmPoints, TimeSpan time)
         {
-            return realmPoints == 0 || time.TotalHours <= 0 ? 0.0 : realmPoints / time.TotalHours;
+            return realmPoints == 0 || time.TotalHours <= 0 ? 0 : (uint) Math.Round(realmPoints / time.TotalHours);
         }
 
         private readonly struct StatEntry
