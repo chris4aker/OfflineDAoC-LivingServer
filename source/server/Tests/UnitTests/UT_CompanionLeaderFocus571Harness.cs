@@ -18,11 +18,12 @@ namespace DOL.GS.Tests
         private const ushort Battleground = 252, PveRegion = 571;
         private const int X = 30_000, Y = 30_000;
 
-        /// <summary>Behemoth's own rule (EpicEncounterTactics.Legion: MustNotHit always); no template, so not put in the world.</summary>
-        private sealed class TestBehemoth : Behemoth
-        {
-            public override bool IsAlive => true;
-        }
+        /// <summary>
+        /// A plain monster under Behemoth's type name: the dungeon rules are keyed by type name (DungeonRulesFor), so it
+        /// carries Behemoth's rule (EpicEncounterTactics.Legion: MustNotHit always) and can be put in the world (the real
+        /// Behemoth loads a world template in AddToWorld, which CI has not got).
+        /// </summary>
+        private sealed class Behemoth : GameNPC { }
 
         [OneTimeSetUp]
         public void Logging() => DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null, DOL.Logging.LogLibrary.None);
@@ -37,9 +38,12 @@ namespace DOL.GS.Tests
             public GameNPC LeadersTarget;
         }
 
-        private static GameNPC Monster(RvrFightWorld world, Region region, string name, int x, int y)
+        private static GameNPC Monster(RvrFightWorld world, Region region, string name, int x, int y) =>
+            Monster<GameNPC>(world, region, name, x, y);
+
+        private static GameNPC Monster<TNpc>(RvrFightWorld world, Region region, string name, int x, int y) where TNpc : GameNPC, new()
         {
-            var npc = new GameNPC { Name = name, Level = 30, Realm = eRealm.None };
+            var npc = new TNpc { Name = name, Level = 30, Realm = eRealm.None };
             Assert.That(world.Place(npc, region, x, y), Is.True, name + " placed");
             return npc;
         }
@@ -48,7 +52,7 @@ namespace DOL.GS.Tests
         /// A damage dealer (Mercenary) hit by monster A a moment ago, while the player fights B. With
         /// <paramref name="playerLed"/> it is in the player's group; otherwise in a bot-only group with another gamebot.
         /// </summary>
-        private static Scene Make(ushort regionId, bool playerLed, GameNPC leadersTarget = null)
+        private static Scene Make(ushort regionId, bool playerLed, bool mustNotHitTarget = false)
         {
             var world = new RvrFightWorld(571, RvrFightRehearsal.Repeatable);
             Region region = world.AddRegion(regionId, regionId, "#571 flat field (rehearsal)");
@@ -56,19 +60,9 @@ namespace DOL.GS.Tests
             scene.Subject = world.NewBot(eRealm.Albion, eCharacterClass.Mercenary, 30, "Subject", "GroupPve");
             Assert.That(world.Place(scene.Subject, region, X, Y), Is.True, "subject placed");
             scene.Attacker = Monster(world, region, "its attacker", X + 150, Y);
-            if (leadersTarget != null)
-            {
-                leadersTarget.CurrentRegion = region;
-                leadersTarget.X = X + 400;
-                leadersTarget.Y = Y;
-                leadersTarget.Z = 0;
-                leadersTarget.Realm = eRealm.None;
-                leadersTarget.Level = 30;
-                leadersTarget.ObjectState = GameObject.eObjectState.Active;
-                scene.LeadersTarget = leadersTarget;
-            }
-            else
-                scene.LeadersTarget = Monster(world, region, "the leader's target", X + 400, Y);
+            scene.LeadersTarget = mustNotHitTarget
+                ? Monster<Behemoth>(world, region, "Behemoth", X + 400, Y)
+                : Monster(world, region, "the leader's target", X + 400, Y);
 
             if (playerLed)
             {
@@ -133,10 +127,25 @@ namespace DOL.GS.Tests
         [Test]
         public void WithAMustNotHitTargetTheCompanionStaysOnA()
         {
-            Scene scene = Make(Battleground, playerLed: true, new TestBehemoth { Name = "Behemoth" });
+            // Control: the same fight with an ordinary B, which leader focus takes (as the first test).
+            Scene control = Make(Battleground, playerLed: true);
+            using (control.World)
+            {
+                Assert.That(EpicEncounterTactics.MustNotHit(control.Subject, control.LeadersTarget), Is.False, "an ordinary B");
+                Assert.That(Choice(control), Is.SameAs(control.LeadersTarget), "control: leader focus takes B");
+            }
+
+            Scene scene = Make(Battleground, playerLed: true, mustNotHitTarget: true);
             using (scene.World)
             {
-                Assert.That(EpicEncounterTactics.MustNotHit(scene.Subject, scene.LeadersTarget), Is.True, "Behemoth's rule");
+                Assert.Multiple(() =>
+                {
+                    Assert.That(scene.LeadersTarget.ObjectState, Is.EqualTo(GameObject.eObjectState.Active), "B is in the world");
+                    Assert.That(PlayerLedPullCoordinator.FindLeaderTarget(scene.Player), Is.SameAs(scene.LeadersTarget),
+                        "the player fights B, so only the must-not-hit gate can refuse it");
+                    Assert.That(scene.Subject.IsWithinRadius(scene.LeadersTarget, BotBrain.MAX_AGGRO_LIST_DISTANCE), Is.True, "B in reach");
+                    Assert.That(EpicEncounterTactics.MustNotHit(scene.Subject, scene.LeadersTarget), Is.True, "Behemoth's rule");
+                });
                 Assert.That(Choice(scene), Is.SameAs(scene.Attacker), "it does not idle on Behemoth while A hits it");
             }
         }
