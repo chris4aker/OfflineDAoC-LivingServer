@@ -181,8 +181,8 @@ namespace DOL.UnitTests
             int note = deaths.IndexOf("AutonomousBotGroupCoordinator.NoteMemberDeath(bot, partyKiller);");
             Assert.That(monster, Is.GreaterThan(0));
             Assert.That(note, Is.GreaterThan(monster), "only a monster's kill counts, never a player's or an enemy bot's");
-            string retreat = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.DangerRetreat.cs");
-            Assert.That(retreat, Does.Contain("session.DungeonBoss != null))"), "the boss hunt is passed to the rule");
+            string retreatSource = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.DangerRetreat.cs");
+            Assert.That(retreatSource, Does.Contain("session.DungeonBoss != null))"), "the boss hunt is passed to the rule");
 
             string coordinator = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.cs");
             int start = coordinator.IndexOf("private static bool UpdateSession(Session session, GameBot[] members)");
