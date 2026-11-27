@@ -2359,7 +2359,7 @@ namespace DOL.AI.Brain
                 .Where(spell => spell.SpellType != eSpellType.SpeedEnhancement || traveling)
                 .OrderByDescending(spell => spell.SpellType == eSpellType.SpeedEnhancement && traveling)
                 // Critical buffs first when concentration or power runs short (#491).
-                .ThenByDescending(spell => BotBuffTargetPolicy.Priority(spell.SpellType))
+                .ThenByDescending(spell => BotBuffTargetPolicy.Priority(BotBody, spell.SpellType))
                 .ThenByDescending(spell => spell.Value)
                 .ThenByDescending(spell => spell.Level);
 
@@ -2542,7 +2542,7 @@ namespace DOL.AI.Brain
             return Body.Group.GetMembersInTheGroup()
                 .Where(member => member != Body && member.IsAlive && InSupportReach(member) &&
                     !Body.IsWithinRadius(member, range) && !LivingHasEffect(member, spell) &&
-                    BotBuffTargetPolicy.Benefits(member, spell))
+                    BotBuffTargetPolicy.Benefits(BotBody, member, spell))
                 .OrderBy(member => Body.GetDistanceTo(member))
                 .FirstOrDefault();
         }
@@ -2884,7 +2884,7 @@ namespace DOL.AI.Brain
                     return LivingHasEffect(Body, spell) ? null : Body;
                 IEnumerable<GameLiving> members = Body.Group?.GetMembersInTheGroup() ?? [Body];
                 return members.Any(member => member.IsAlive && Body.IsWithinRadius(member, Math.Max(350, spell.Range)) &&
-                                             !LivingHasEffect(member, spell) && BotBuffTargetPolicy.Benefits(member, spell)) ||
+                                             !LivingHasEffect(member, spell) && BotBuffTargetPolicy.Benefits(BotBody, member, spell)) ||
                        FindMissingPartyPetBuffTarget(spell) != null
                     ? Body
                     : null;
@@ -2894,13 +2894,13 @@ namespace DOL.AI.Brain
             {
                 if (!spell.IsPulsing)
                     return FindRandomMissingRealmBuffTarget(spell, 350);
-                if (!LivingHasEffect(Body, spell) && BotBuffTargetPolicy.Benefits(Body, spell))
+                if (!LivingHasEffect(Body, spell) && BotBuffTargetPolicy.Benefits(BotBody, Body, spell))
                     return Body;
                 return Body.Group?.GetMembersInTheGroup()
                     .FirstOrDefault(member => member != Body && member.IsAlive &&
                                               Body.IsWithinRadius(member, Math.Max(350, spell.Range)) &&
                                               !LivingHasEffect(member, spell) &&
-                                              BotBuffTargetPolicy.Benefits(member, spell)) ?? FindMissingPartyPetBuffTarget(spell);
+                                              BotBuffTargetPolicy.Benefits(BotBody, member, spell)) ?? FindMissingPartyPetBuffTarget(spell);
             }
 
             return null;
@@ -2941,8 +2941,16 @@ namespace DOL.AI.Brain
             List<GameLiving> pool = members.Concat(BotGroupPetBuffTargets.Enumerate(BotBody, spell))
                 .Where(target => target != null && target.IsAlive && Body.IsWithinRadius(target, range) &&
                     !LivingHasEffect(target, spell) && !(claims?.IsReserved(target, family, now) ?? false) &&
-                    BotBuffTargetPolicy.Benefits(target, spell))
+                    BotBuffTargetPolicy.Benefits(BotBody, target, spell))
                 .ToList();
+            // #571 step 4 (True165 1ed3b24): a companion or a bot in a player's group buffs by job (tanks, melee, healers,
+            // casters; pets last), or by the hired companion's "Buff priority" AI option.
+            if (BotBuffTargetPolicy.UsesPlayerGroupRules(BotBody))
+            {
+                int buffPriority = CompanionOptions165.Choice(BotBody, CompanionOptions165.BuffPriorityKey);
+                return BotBuffReservations<GameLiving>.ChooseBest(pool, _ => true,
+                    target => BotBuffTargetPolicy.TargetRank(target, spell.SpellType, buffPriority));
+            }
             // STR/CON and DEX/QUI reach the tanks and melee damage dealers before the casters.
             return BotBuffReservations<GameLiving>.Choose(pool, target =>
                        BotBuffTargetPolicy.PreferredSpecTarget(spell.SpellType,
@@ -2976,7 +2984,7 @@ namespace DOL.AI.Brain
         private GameLiving FindMissingPartyPetBuffTarget(Spell spell)
         {
             GameNPC pet = BotGroupPetBuffTargets.Enumerate(BotBody, spell)
-                .FirstOrDefault(candidate => !LivingHasEffect(candidate, spell) && BotBuffTargetPolicy.Benefits(candidate, spell));
+                .FirstOrDefault(candidate => !LivingHasEffect(candidate, spell) && BotBuffTargetPolicy.Benefits(BotBody, candidate, spell));
             // Native group spells fan out from the caster; realm buffs target one pet.
             return pet == null ? null : spell.Target == eSpellTarget.GROUP ? Body : pet;
         }
@@ -5168,7 +5176,7 @@ namespace DOL.AI.Brain
                         break;
                     }
 
-                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(Body, spell)))
+                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(BotBody, Body, spell)))
                     {
                         Body.TargetObject = Body;
                         break;
@@ -5183,7 +5191,7 @@ namespace DOL.AI.Brain
                                 if (groupMember != Body)
                                 {
                                     if (!LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive &&
-                                        BotBuffTargetPolicy.Benefits(groupMember, spell))
+                                        BotBuffTargetPolicy.Benefits(BotBody, groupMember, spell))
                                     {
                                         Body.TargetObject = groupMember;
                                         break;
@@ -5299,8 +5307,8 @@ namespace DOL.AI.Brain
                 return false;
 
             // The most critical buffs go first (#491): endurance regen, spec buffs and haste before the rest.
-            int topPriority = spellsToCast.Max(entry => BotBuffTargetPolicy.Priority(entry.Item1.SpellType));
-            spellsToCast = spellsToCast.Where(entry => BotBuffTargetPolicy.Priority(entry.Item1.SpellType) == topPriority).ToList();
+            int topPriority = spellsToCast.Max(entry => BotBuffTargetPolicy.Priority(BotBody, entry.Item1.SpellType));
+            spellsToCast = spellsToCast.Where(entry => BotBuffTargetPolicy.Priority(BotBody, entry.Item1.SpellType) == topPriority).ToList();
             GameObject oldTarget = Body.TargetObject;
             (Spell spell, GameLiving target) spellToCast = BotBody.IsEndgameCompanion
                 ? spellsToCast.OrderByDescending(entry => entry.Item1.Level).ThenByDescending(entry => entry.Item1.ID).First()
@@ -5373,7 +5381,7 @@ namespace DOL.AI.Brain
                 case eSpellType.OffensiveProc:
                 case eSpellType.DefensiveProc:
                 case eSpellType.Bladeturn when !spell.IsPulsing:
-                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(Body, spell)))
+                    if (!LivingHasEffect(Body, spell) && (spell.Target == eSpellTarget.SELF || BotBuffTargetPolicy.Benefits(BotBody, Body, spell)))
                     {
                         target = Body;
                         break;
@@ -5384,7 +5392,7 @@ namespace DOL.AI.Brain
                         foreach (GameLiving groupMember in Body.Group.GetMembersInTheGroup())
                         {
                             if (groupMember != Body && !LivingHasEffect(groupMember, spell) && Body.IsWithinRadius(groupMember, spell.Range) && groupMember.IsAlive &&
-                                BotBuffTargetPolicy.Benefits(groupMember, spell))
+                                BotBuffTargetPolicy.Benefits(BotBody, groupMember, spell))
                             {
                                 target = groupMember;
                                 break;
