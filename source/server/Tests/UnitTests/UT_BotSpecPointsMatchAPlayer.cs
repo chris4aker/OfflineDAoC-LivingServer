@@ -567,7 +567,7 @@ namespace DOL.UnitTests
             }
             foreach (byte from in new byte[] { 40, 47, 49 })
             {
-                // TryApplyEndgameCompanionUpgrade's training step: before 1.2 a helper promoted from 49 missed the 49.5 points.
+                // TryMatchOwnerLevel's training step (was TryApplyEndgameCompanionUpgrade): before 1.2 a helper promoted from 49 missed the 49.5 points.
                 GameBot helper = OwnerBot(cls, ownerLevel: from, botLevel: 0, temporary: true);
                 GivePlan(helper);
                 helper.SpendSpecPoints(from, 0);

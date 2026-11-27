@@ -93,6 +93,8 @@ namespace DOL.GS
         public GamePlayer CompanionPlayer => IsTemporaryGroupHelper ? Owner :
             IsHiredCompanion ? PlayerGroupLeader ?? HiredCompanions165.OwnerOf(this) : null;
         private bool _endgameCompanionEquipped;
+        /// <summary>The level of the kit EquipBot last generated; a level sync never rolls a lower one (#571).</summary>
+        private int _generatedGearLevel;
         public bool SuppressLootAndProgress => IsTemporaryGroupHelper;
         internal int EquipmentLevelFloor { get; private set; }
         internal int EquipmentLevelCap { get; private set; }
@@ -5290,6 +5292,7 @@ namespace DOL.GS
 
             EquipmentLevelFloor = IsEndgameCompanion ? 50 : Math.Max(1, characterLevel - 10);
             EquipmentLevelCap = characterLevel;
+            _generatedGearLevel = equipmentLevel;
             Inventory = new BotInventory();
 
             try
@@ -5334,19 +5337,31 @@ namespace DOL.GS
             }
         }
 
-        // One-time promotion for helpers already present when their owner
-        // reaches 50. Run on the bot's normal turn, never in a player event or
-        // during combat/casting/horse travel. Preserve the existing build/group.
-        internal bool TryApplyEndgameCompanionUpgrade()
+        // Level sync for /spawn helpers (#571 step 6, DetShaft 56972bb08): when the
+        // owner out-levels a helper in his group, the helper catches up to his
+        // level, with its stats, specs, spells, styles, generated kit and pet
+        // brought up to date. Upward only. It also keeps the one-time endgame kit
+        // for a helper already at 50 when its owner reaches 50. Run on the bot's
+        // normal turn, never in a player event or during combat/casting/horse
+        // travel. Preserve the existing build/group. Hired and /bot companions,
+        // autonomous gamebots and the Epic Special Forces never enter it.
+        internal bool TryMatchOwnerLevel()
         {
-            if (!IsTemporaryGroupHelper || _endgameCompanionEquipped || Owner?.Level != 50 ||
+            if (!CompanionLevelSync.Applies(IsTemporaryGroupHelper, IsAutonomousWorldBot, IsEpicSpecialForce) ||
+                Owner == null)
+                return false;
+            byte targetLevel = CompanionLevelSync.TargetLevel(Owner.Level, Level, MaxLevel);
+            bool levelBehind = targetLevel > Level && CompanionLevelSync.InOwnersGroup(Group, Owner.Group);
+            // As before #571: the one-time endgame promotion when the owner reaches 50, in his group or not.
+            bool endgamePending = !_endgameCompanionEquipped && Owner.Level == 50;
+            if ((!levelBehind && !endgamePending) ||
                 !IsAlive || IsCasting || InCombat || IsAttacking || IsOnStableMasterRoute ||
                 Brain is BotBrain { HasAggro: true } || ControlledBrain?.Body is { InCombat: true })
                 return false;
 
             byte previousLevel = Level;
             int healthPercent = HealthPercent, manaPercent = ManaPercent, endurancePercent = EndurancePercent;
-            Level = 50;
+            Level = Math.Max(Level, targetLevel);
             for (int level = Math.Max(6, previousLevel + 1); level <= Level; level++)
                 ApplyLevelStatGrowth(level);
             if (previousLevel < Level)
@@ -5357,9 +5372,10 @@ namespace DOL.GS
             SetBotSpells();
             SortStyles();
             SortSpells();
-            EquipBot(50);
-            // Replace a pre-50 summon through its normal release lifecycle.
-            // In particular this preserves Necromancer shade cleanup.
+            EquipBot((byte)CompanionLevelSync.GearLevel(Level, _generatedGearLevel, Random.Shared.NextDouble()));
+            // Replace a lower-level summon through its normal release lifecycle so
+            // the brain resummons it at the new level. In particular this
+            // preserves Necromancer shade cleanup.
             AutonomousPetSupport.CancelPendingCharm(this);
             AutonomousPetSupport.ReleaseFieldTurrets(this);
             CommandNpcRelease();
@@ -5367,6 +5383,16 @@ namespace DOL.GS
             Mana = MaxMana * manaPercent / 100;
             Endurance = MaxEndurance * endurancePercent / 100;
             UpdateNPCEquipmentAppearance();
+            Group?.UpdateMember(this, false, false);
+
+            if (previousLevel < Level)
+            {
+                Owner.Out?.SendMessage($"{Name} is now level {Level}, matching you.",
+                    eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                // A /spawn helper caught up to its owner's level (#571 step 6).
+                log.Info($"COMPANION_LEVEL_SYNC bot=\"{Name}\" class=\"{ClassName}\" owner=\"{Owner.Name}\" " +
+                         $"from={previousLevel} to={Level}");
+            }
             return true;
         }
 
