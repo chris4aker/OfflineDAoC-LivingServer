@@ -36,6 +36,7 @@ public class UT_MixedGroupShares571
     [OneTimeSetUp]
     public void LoadServer()
     {
+        DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null, DOL.Logging.LogLibrary.None);
         _previousServer = GameServer.Instance;
         GameServer.LoadTestDouble((InertServer)RuntimeHelpers.GetUninitializedObject(typeof(InertServer)));
     }
