@@ -3552,7 +3552,14 @@ namespace DOL.AI.Brain
             // protecting a group member. Generic aggro may still contain the
             // previous pull and used to make archers/casters repeatedly switch
             // away from the fight their pet had already started.
-            Body.TargetObject = protectionTarget ?? directAttacker ?? activePetTarget ?? CalculateNextAttackTarget();
+            // #571 step 1 (bot_leader_focus): a damage dealer in a real player's group fights the player's target before
+            // its own attacker or its top threat (BotBrain.LeaderFocus, CompanionLeaderFocus).
+            // The top threat is worked out only where the choice before needed it (CalculateNextAttackTarget cleans the list).
+            GameLiving leaderFocus = protectionTarget == null ? LeaderFocusTarget() : null;
+            GameLiving threatTarget = protectionTarget == null && directAttacker == null && activePetTarget == null
+                ? CalculateNextAttackTarget() : null;
+            Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus, directAttacker, activePetTarget, threatTarget);
+            NoteLeaderFocus(leaderFocus, directAttacker, activePetTarget, threatTarget);
             if (RvrTacticsTarget(Body.TargetObject as GameLiving, protectionTarget, directAttacker) is { } rvrCalled) Body.TargetObject = rvrCalled;
             // #505: the brain's target decision, change-only, in a war zone (logging only).
             if (BotBody is { IsAutonomousWorldBot: true } tracedBot && Body.TargetObject is GameLiving tracedTarget &&

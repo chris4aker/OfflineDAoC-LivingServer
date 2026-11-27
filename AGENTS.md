@@ -8,7 +8,7 @@ Claude Code as `CLAUDE.md`.
 
 DAoC - Living Server is a single-player DAoC server (built on OpenDAoC, .NET 10, SQLite) with autonomous
 gamebots, companion bots and a Windows launcher. It is its own repository, owned by the project owner, not a fork.
-Releases are numbered **1.x** (1.2 is out, 1.2.1 is next) and ship one edition: the classic classes on the
+Releases are numbered **1.x** (1.2.2 is out, 1.2.3 is in release candidates) and ship one edition: the classic classes on the
 **original game client**. The product is **DAoC - Living Server** (owner, 2026-11-25, #641): from 1.2.3 the files are
 `DAoC-LivingServer-Setup-<version>.exe`, `DAoC-LivingServer-<version>.zip` (plus a copy as
 `OfflineDAoC-LivingServer-<version>.zip` for 1.2.x launchers) and the launcher `DAoCLivingServer.exe` (with

@@ -272,6 +272,12 @@ namespace DOL.GS
         }
 
         /// <summary>
+        /// When PeriodicQuestService last reset or checked this player's daily, weekly and monthly quests in this session
+        /// (MinValue before the first entry into the world). Keeps a region change from resetting them again.
+        /// </summary>
+        public DateTime PeriodicQuestsCheckedAt { get; set; } = DateTime.MinValue;
+
+        /// <summary>
         /// Gets or sets the anonymous flag for this player
         /// (delegate to property in PlayerCharacter)
         /// </summary>
@@ -7916,6 +7922,7 @@ namespace DOL.GS
             RefreshItemBonuses();
             LastPositionUpdatePacketReceivedTime = GameLoop.GameLoopTime;
             LastPlayerActivityTime = GameLoop.GameLoopTime;
+            PeriodicQuestService.OnPlayerJoin(this); // port of OpenDAoC-Core e688e984e: rollovers passed while offline
             ClientService.Instance.OnPlayerJoin(this);
             return true;
         }
@@ -11741,6 +11748,24 @@ namespace DOL.GS
                     AbstractQuest quest = _questListFinished[i];
 
                     if (match(quest))
+                    {
+                        _questListFinished.SwapRemoveAt(i);
+                        quest.DeleteFromDatabase();
+                    }
+                }
+            }
+        }
+
+        // Port of OpenDAoC-Core e688e984e: a static predicate with its state, so no closure is made per player.
+        public void RemoveFinishedQuests<T>(Func<AbstractQuest, T, bool> match, T state)
+        {
+            lock (_questListFinishedLock)
+            {
+                for (int i = _questListFinished.Count - 1; i >= 0; i--)
+                {
+                    AbstractQuest quest = _questListFinished[i];
+
+                    if (match(quest, state))
                     {
                         _questListFinished.SwapRemoveAt(i);
                         quest.DeleteFromDatabase();
