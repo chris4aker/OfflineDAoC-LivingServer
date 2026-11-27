@@ -84,16 +84,19 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>
     /// The one gather-hold rule (was written in the threat scan, the combat drop and the keep's guard pick). A bot that
     /// is gathering for its wave or holding at its keep rally fights only what comes at it
-    /// (<see cref="AutonomousBattlegroundWave.GathererMayEngage"/>) or what its rally posted (#617), and never the keep's
-    /// lord, since the rally goes up together. A stormer fights by the storm's rule
-    /// (<see cref="AutonomousBattlegroundKeepRally.StormerMayEngage"/>). Anything else is not held. Pure.
+    /// (<see cref="AutonomousBattlegroundWave.GathererMayEngage"/>) or what its rally posted (#617). It never picks the
+    /// keep's lord as a new target (<paramref name="picking"/>: the keep's guard pick), since the rally goes up together,
+    /// but it answers a lord that comes at it like anything else (self-defence, as the threat scan and the combat drop
+    /// always allowed). A stormer fights by the storm's rule (<see cref="AutonomousBattlegroundKeepRally.StormerMayEngage"/>).
+    /// Anything else is not held. Pure.
     /// </summary>
-    public static bool MusterAllowsFight(MusterHold hold, bool isLord, bool comesAtMuster, bool postedContact, bool stormerMayEngage) =>
+    public static bool MusterAllowsFight(MusterHold hold, bool isLord, bool comesAtMuster, bool postedContact, bool stormerMayEngage,
+        bool picking) =>
         hold switch
         {
             MusterHold.None => true,
             MusterHold.Storm => stormerMayEngage,
-            _ => !isLord && (comesAtMuster || postedContact),
+            _ => (comesAtMuster || postedContact) && !(isLord && picking),
         };
 
     // ---- 5b: groups in the muster ---------------------------------------------------------------------------------
