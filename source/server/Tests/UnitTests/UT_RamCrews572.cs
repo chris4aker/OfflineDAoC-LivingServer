@@ -178,6 +178,7 @@ namespace DOL.GS.Tests
                 Assert.That(world.Place(bot, region, (int)spot.X, (int)spot.Y), Is.True);
                 crew.Add(bot);
             }
+            world.Tick(); // the zones file what was placed
             Assert.Multiple(() =>
             {
                 Assert.That(crew.All(AutonomousRamCrews.AtSeat), Is.True, "every crew member stands at its seat");
@@ -202,6 +203,7 @@ namespace DOL.GS.Tests
             // the player's ram is not registered: only an autonomous gamebot operator registers its ram (TryRunSiegeJob)
             GameBot bot = world.NewBot(eRealm.Albion, eCharacterClass.Mercenary, 50, "Beside");
             Assert.That(world.Place(bot, region, X + 150, Y), Is.True);
+            world.Tick(); // the zones file what was placed
             Assert.Multiple(() =>
             {
                 Assert.That(AutonomousRamCrews.TryTakeSeat(bot, keep, out _, out _), Is.False, "no seat at a player's ram");
