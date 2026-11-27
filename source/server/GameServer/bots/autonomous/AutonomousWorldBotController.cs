@@ -2234,7 +2234,7 @@ namespace DOL.GS
                 AutonomousRvrEventLayer.BattlegroupLeadOf(forceId) is { } battlegroupLead &&
                 AutonomousBotGroupCoordinator.BattlegroupLeader(battlegroupLead) is { IsAlive: true } battlegroupLeader &&
                 battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
-                return TrailBattlegroupLead(bot, battlegroupLead, battlegroupLeader);
+                return TrailBattlegroupLead(bot, forceId, battlegroupLead, battlegroupLeader);
 
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {

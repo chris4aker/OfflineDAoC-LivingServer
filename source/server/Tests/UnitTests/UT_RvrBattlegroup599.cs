@@ -181,6 +181,65 @@ namespace DOL.GS.Tests
             Assert.That(changes[0], Is.EqualTo(new L.BattlegroupChange("left", changes[0].Id, "b", "stay")));
         }
 
+        [Test]
+        public void A_group_whose_stay_ran_out_does_not_link_straight_back()
+        {
+            // Review of #789: b still stands 1,000 from a when its stay ends; before the cooldown the same pulse linked it
+            // back under a new id (left, ended, formed), so the group never went its own way.
+            L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000) }, 0);
+            long stay = L.BattlegroupStay("b", 0);
+            var changes = L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000) }, stay);
+            Assert.That(changes.Select(c => (c.What, c.Why)), Is.EqualTo(new[] { ("left", "stay"), ("ended", "toosmall") }),
+                "no formed row in the same pulse");
+            Assert.That(L.BattlegroupLeadOf("b"), Is.Null);
+            Assert.That(L.BattlegroupResting("b", stay), Is.True);
+            long end = stay + L.BattlegroupRelinkCooldownMilliseconds;
+            for (long now = stay + 10_000; now < end; now += 60_000)
+            {
+                Assert.That(L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000) }, now)
+                    .Where(c => c.What is "formed" or "joined"), Is.Empty, $"no link during the cooldown (t={now})");
+                Assert.That(L.BattlegroupLeadOf("b"), Is.Null);
+            }
+            // a may still link with another group meanwhile; b is not taken.
+            changes = L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000), C("c", 1_500) }, end - 1);
+            Assert.That(changes.Single(), Is.EqualTo(new L.BattlegroupChange("formed", changes[0].Id, "c", "near")));
+            Assert.That(L.BattlegroupOf("b"), Is.Null);
+            // After the cooldown b may link again.
+            changes = L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000), C("c", 1_500) }, end);
+            Assert.That(changes.Single().What, Is.EqualTo("joined"));
+            Assert.That(L.BattlegroupLeadOf("b"), Is.EqualTo("a"));
+            Assert.That(L.BattlegroupResting("b", end), Is.False);
+        }
+
+        [Test]
+        public void A_stuck_trail_leaves_and_rests_and_only_a_follower_can_report_it()
+        {
+            L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000), C("c", 2_000) }, 0);
+            L.ReportBattlegroupStuck("a");      // the lead: ignored
+            L.ReportBattlegroupStuck("zz");     // in no battlegroup: ignored
+            L.ReportBattlegroupStuck("b");
+            var changes = L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000), C("c", 2_000) }, 10_000);
+            Assert.That(changes.Single(), Is.EqualTo(new L.BattlegroupChange("left", changes[0].Id, "b", "stuck")));
+            Assert.That(L.BattlegroupOf("a").Members, Is.EqualTo(new[] { "a", "c" }));
+            Assert.That(L.BattlegroupResting("b", 10_000), Is.True);
+            Assert.That(L.PulseBattlegroups(new[] { C("a", 0), C("b", 1_000), C("c", 2_000) }, 20_000), Is.Empty,
+                "a report is used once, and b rests");
+        }
+
+        [Test]
+        public void Only_a_stay_or_a_stuck_trail_rests_and_a_resting_group_is_never_planned()
+        {
+            foreach (L.BattlegroupLeave reason in Enum.GetValues<L.BattlegroupLeave>())
+                Assert.That(L.BattlegroupLeaveRests(reason),
+                    Is.EqualTo(reason is L.BattlegroupLeave.Stay or L.BattlegroupLeave.Stuck), reason.ToString());
+            Assert.That(L.PlanBattlegroups(new[] { C("a", 0), C("b", 1_000) }, null, new[] { "b" }), Is.Empty);
+            Assert.That(L.PlanBattlegroups(new[] { C("a", 0), C("b", 1_000) }, null, new[] { "a" }), Is.Empty, "nor lead one");
+            L.BattlegroupCandidate a = C("a", 0), b = C("b", 1_000);
+            Assert.That(L.BattlegroupLeaveReason(b, a, false, 0, long.MaxValue, 0, stuck: true), Is.EqualTo(L.BattlegroupLeave.Stuck));
+            Assert.That(L.BattlegroupLeaveReason(a, a, true, 0, long.MaxValue, 0, stuck: true), Is.EqualTo(L.BattlegroupLeave.None),
+                "the lead never leaves its own battlegroup as stuck");
+        }
+
         // ---- the follower's proposal and trail ----------------------------------------------------------------------
 
         [Test]
@@ -211,16 +270,60 @@ namespace DOL.GS.Tests
         public void The_trail_walks_beyond_nine_hundred_and_stops_inside_five_hundred(float distance, bool moving, bool walks) =>
             Assert.That(AutonomousWorldBotController.BattlegroupTrailWalks(distance, moving), Is.EqualTo(walks));
 
+        [Test]
+        public void The_trail_holds_its_goal_until_the_lead_has_gone_fifteen_hundred_or_it_is_reached()
+        {
+            var held = new System.Numerics.Vector2(0, 0);
+            var trailer = new System.Numerics.Vector2(-3_000, 0);
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailRetarget(null, new(100, 0), trailer), Is.True, "no goal yet");
+            // A running lead moving a few hundred every turn does not move the goal (the route keeps one goal).
+            for (float x = 0; x <= 1_500; x += 250)
+                Assert.That(AutonomousWorldBotController.BattlegroupTrailRetarget(held, new(x, 0), trailer), Is.False, $"lead at {x}");
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailRetarget(held, new(1_501, 0), trailer), Is.True, "past 1,500");
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailRetarget(held, new(1_000, 0), new(-400, 0)), Is.True,
+                "the trailer reached the goal");
+        }
+
+        [Test]
+        public void A_trailer_with_no_progress_for_fifty_seconds_is_stuck()
+        {
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailStuck(0, 1_000_000), Is.False, "no clock yet");
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailStuck(10_000, 59_999), Is.False);
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailStuck(10_000, 60_000), Is.True);
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailStuckMilliseconds, Is.InRange(45_000L, 60_000L));
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailStuckMilliseconds,
+                Is.LessThan(L.BattlegroupLeashMilliseconds), "stuck is caught before the leash");
+        }
+
+        [Test]
+        public void The_trail_keeps_one_goal_for_the_route_and_reports_a_stuck_trail()
+        {
+            string trail = Regex.Replace(Code("bots", "autonomous", "AutonomousWorldBotController.Battlegroup.cs"), @"\s+", " ");
+            Assert.Multiple(() =>
+            {
+                Assert.That(trail, Does.Contain("if (BattlegroupTrailRetarget(_battlegroupTrailGoal is { } held ? new Vector2(held.X, held.Y) : null, new(lead.X, lead.Y), new(bot.X, bot.Y))) _battlegroupTrailGoal = new Vector3(lead.X, lead.Y, lead.Z);"));
+                Assert.That(trail, Does.Contain("if (!IssueVariedRvrPath(bot, _battlegroupTrailGoal.Value)) _battlegroupTrailGoal = null;"),
+                    "the held goal goes to the route, and a refused path is not ignored");
+                Assert.That(Regex.Matches(trail, @"IssueVariedRvrPath\(").Count, Is.EqualTo(1), "never the lead's live spot");
+                Assert.That(trail, Does.Contain("if (BattlegroupTrailStuck(_battlegroupTrailProgressTick, now)) { AutonomousRvrEventLayer.ReportBattlegroupStuck(forceId);"));
+            });
+        }
+
         // ---- wiring pins --------------------------------------------------------------------------------------------
 
         [Test]
         public void Only_a_follower_groups_leader_trails_and_only_outside_an_event()
         {
             string turn = Code("bots", "autonomous", "AutonomousWorldBotController.cs");
-            Match hook = Regex.Match(turn, @"if \(([^;]*?BattlegroupLeadOf\(forceId\)[^;]*?)\)\s*return TrailBattlegroupLead", RegexOptions.Singleline);
-            Assert.That(hook.Success, Is.True, "the trail hook");
-            foreach (string guard in new[] { "!battleActive", "committedPlan == null", "!carrying", "dynamicWarband", "_groupDirective.Leader == bot" })
-                Assert.That(hook.Groups[1].Value, Does.Contain(guard));
+            // The exact guard, as live code: an added "false &&", a dropped guard or a commented-out hook fails this.
+            string live = Regex.Replace(turn, @"/\*.*?\*/", string.Empty, RegexOptions.Singleline);
+            Match hook = Regex.Match(live,
+                @"(?m)^[ \t]*if \(!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective\.Leader == bot &&\s*" +
+                @"AutonomousRvrEventLayer\.BattlegroupLeadOf\(forceId\) is \{ \} battlegroupLead &&\s*" +
+                @"AutonomousBotGroupCoordinator\.BattlegroupLeader\(battlegroupLead\) is \{ IsAlive: true \} battlegroupLeader &&\s*" +
+                @"battlegroupLeader != bot && battlegroupLeader\.CurrentRegionID == bot\.CurrentRegionID\)\s*" +
+                @"return TrailBattlegroupLead\(bot, forceId, battlegroupLead, battlegroupLeader\);");
+            Assert.That(hook.Success, Is.True, "the trail hook, with every guard");
             Assert.That(turn.IndexOf("return TrailBattlegroupLead", StringComparison.Ordinal),
                 Is.GreaterThan(turn.IndexOf("return FollowDynamicGroupLeader(bot, _groupDirective);", StringComparison.Ordinal)),
                 "after the in-group follow and after the target pick");
@@ -229,10 +332,14 @@ namespace DOL.GS.Tests
         [Test]
         public void The_battlegroups_are_linked_before_the_rosters_and_an_event_roster_wins()
         {
-            string coordinator = Code("bots", "autonomous", "AutonomousBotGroupCoordinator.cs");
-            int link = coordinator.IndexOf("PulseBattlegroups(now);", StringComparison.Ordinal);
-            Assert.That(link, Is.GreaterThan(0));
-            Assert.That(coordinator.IndexOf("RealmWarbandSupport.Pulse(now);", StringComparison.Ordinal), Is.GreaterThan(link));
+            // The live call, as a statement in the coordinator's pulse just before the rosters: commenting it out (// or
+            // /* */) fails this (the rehearsal calls PulseBattlegroups(force: true) itself, so it cannot catch that).
+            string coordinator = Regex.Replace(Code("bots", "autonomous", "AutonomousBotGroupCoordinator.cs"), @"/\*.*?\*/", string.Empty,
+                RegexOptions.Singleline);
+            Assert.That(Regex.IsMatch(coordinator,
+                @"(?m)^[ \t]*using \(AiProfile\.Scope\(AiSystem\.PulseWarbandSupport\)\)[ \t]*\n[ \t]*\{[ \t]*\n(?:[ \t]*//[^\n]*\n)*" +
+                @"[ \t]*PulseBattlegroups\(now\);[ \t]*\n[ \t]*RealmWarbandSupport\.Pulse\(now\);"), Is.True,
+                "the battlegroups are linked in the pulse, then the rosters");
             string support = Code("bots", "autonomous", "RealmWarbandSupport.cs");
             Assert.That(support, Does.Contain("!groups.ContainsKey(group)"), "a group already in an event's roster keeps it");
             Assert.That(support.IndexOf("BattlegroupsNow()", StringComparison.Ordinal),

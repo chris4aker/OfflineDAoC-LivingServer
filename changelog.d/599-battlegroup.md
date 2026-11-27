@@ -9,6 +9,8 @@ section: RvR
   their own destinations, and the groups share calls the way the groups of a siege already do: incoming-enemy calls,
   retreat and regroup calls, the size-up before a fight, and single-target heals and buffs across groups. Some groups
   never link: a duo, a group in an event, and a group with a player in it. A group leaves when it joins an event, gets
-  a player, changes region, strays more than 6,000 from the lead for a minute, or reaches the end of its 15-40 minute
-  stay. A battlegroup ends when its lead group goes or only one group is left. New log row `RVR_FORCE_BATTLEGROUP`
+  a player, changes region, strays more than 6,000 from the lead for a minute, gets stuck on the way for about a minute, or
+  reaches the end of its 15-40 minute stay; after a stay or a stuck trail it goes its own way for 15 minutes before it
+  links again. A trailing group keeps one destination until the lead has moved well away, so it is not re-routed every
+  few seconds. A battlegroup ends when its lead group goes or only one group is left. New log row `RVR_FORCE_BATTLEGROUP`
   (formed, joined, left, ended). Autonomous gamebots only. Tests only.

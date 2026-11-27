@@ -31,6 +31,11 @@ public static partial class AutonomousRvrEventLayer
     public const int BattlegroupMinimumGroup = 3;
     /// <summary>How long a follower group stays linked, rolled when it joins [E: no source gives it].</summary>
     public const long BattlegroupStayMinimumMilliseconds = 15 * 60_000L, BattlegroupStayMaximumMilliseconds = 40 * 60_000L;
+    /// <summary>
+    /// A group that left by its stay (or stuck on the trail) links to no battlegroup for this long, so it goes its own way
+    /// instead of linking straight back to the lead it still stands near [E: no source; the shortest stay].
+    /// </summary>
+    public const long BattlegroupRelinkCooldownMilliseconds = BattlegroupStayMinimumMilliseconds;
 
     /// <summary>One warband as the coordinator sees it this pulse: its force id, realm, region, leader's spot and size.</summary>
     public readonly record struct BattlegroupCandidate(string ForceId, eRealm Realm, ushort Region, float X, float Y, int Heads,
@@ -43,7 +48,7 @@ public static partial class AutonomousRvrEventLayer
     public sealed record BattlegroupView(string Id, eRealm Realm, ushort Region, string LeadForceId, IReadOnlyList<string> Members);
 
     /// <summary>Why a group left (or a battlegroup ended).</summary>
-    public enum BattlegroupLeave { None, Gone, LeadGone, Event, Player, Region, Leash, Stay, TooSmall }
+    public enum BattlegroupLeave { None, Gone, LeadGone, Event, Player, Region, Leash, Stay, TooSmall, Stuck }
 
     /// <summary>One change of the record, as logged (RVR_FORCE_BATTLEGROUP): formed, joined, left or ended.</summary>
     public readonly record struct BattlegroupChange(string What, string Id, string ForceId, string Why);
@@ -61,10 +66,10 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>
     /// The links to make this pulse. Existing battlegroups are topped up first (to three groups, 24 heads), nearest first;
     /// then free groups near each other form new ones, led by the biggest (then the lowest force id). A group already in a
-    /// battlegroup never moves to another. Pure.
+    /// battlegroup never moves to another, and a <paramref name="resting"/> one (its re-link cooldown) links to none. Pure.
     /// </summary>
     public static List<BattlegroupLink> PlanBattlegroups(IReadOnlyList<BattlegroupCandidate> candidates,
-        IReadOnlyList<BattlegroupView> existing)
+        IReadOnlyList<BattlegroupView> existing, IReadOnlyCollection<string> resting = null)
     {
         var links = new List<BattlegroupLink>();
         candidates ??= Array.Empty<BattlegroupCandidate>();
@@ -74,6 +79,8 @@ public static partial class AutonomousRvrEventLayer
             if (!string.IsNullOrEmpty(candidate.ForceId))
                 byId.TryAdd(candidate.ForceId, candidate);
         var taken = new HashSet<string>(existing.SelectMany(view => view.Members), StringComparer.Ordinal);
+        if (resting != null)
+            taken.UnionWith(resting);
         List<BattlegroupCandidate> free = byId.Values.Where(candidate => CanLink(candidate) && !taken.Contains(candidate.ForceId))
             .OrderByDescending(candidate => candidate.Heads).ThenBy(candidate => candidate.ForceId, StringComparer.Ordinal).ToList();
 
@@ -120,10 +127,11 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>
     /// Why this group leaves its battlegroup now, or None. <paramref name="member"/> null: the group is gone (disbanded or no
     /// longer a warband). The lead's own reasons end the battlegroup; a follower also leaves for the lead's region, the
-    /// leash (beyond <see cref="BattlegroupLeashRadius"/> for a minute) and its own stay. Pure.
+    /// leash (beyond <see cref="BattlegroupLeashRadius"/> for a minute), a trail its leader reported stuck
+    /// (<paramref name="stuck"/>) and its own stay. Pure.
     /// </summary>
     public static BattlegroupLeave BattlegroupLeaveReason(BattlegroupCandidate? member, BattlegroupCandidate? lead, bool isLead,
-        long farSince, long stayUntil, long now)
+        long farSince, long stayUntil, long now, bool stuck = false)
     {
         if (member is not { } self)
             return isLead ? BattlegroupLeave.LeadGone : BattlegroupLeave.Gone;
@@ -141,6 +149,8 @@ public static partial class AutonomousRvrEventLayer
             return BattlegroupLeave.Region;
         if (farSince > 0 && now - farSince >= BattlegroupLeashMilliseconds)
             return BattlegroupLeave.Leash;
+        if (stuck)
+            return BattlegroupLeave.Stuck;
         if (now >= stayUntil)
             return BattlegroupLeave.Stay;
         return BattlegroupLeave.None;
@@ -179,7 +189,32 @@ public static partial class AutonomousRvrEventLayer
     private static readonly object BattlegroupSync = new();
     private static readonly Dictionary<string, BattlegroupRecord> Battlegroups = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, BattlegroupRecord> BattlegroupOfForce = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, long> BattlegroupRelinkAfter = new(StringComparer.Ordinal);
+    private static readonly HashSet<string> BattlegroupStuckReports = new(StringComparer.Ordinal);
     private static int _nextBattlegroupNumber;
+
+    /// <summary>Whether a group that left by <paramref name="reason"/> rests before it may link again. Pure.</summary>
+    public static bool BattlegroupLeaveRests(BattlegroupLeave reason) => reason is BattlegroupLeave.Stay or BattlegroupLeave.Stuck;
+
+    /// <summary>
+    /// A follower group's leader made no progress on the trail (the controller's <c>BattlegroupTrailStuck</c>): the group
+    /// leaves at the next pulse, by <see cref="BattlegroupLeave.Stuck"/>, and rests. Ignored for a group that follows none.
+    /// </summary>
+    public static void ReportBattlegroupStuck(string forceId)
+    {
+        if (forceId == null) return;
+        lock (BattlegroupSync)
+            if (BattlegroupOfForce.TryGetValue(forceId, out BattlegroupRecord record) && record.Lead != forceId)
+                BattlegroupStuckReports.Add(forceId);
+    }
+
+    /// <summary>Whether this group is in its re-link cooldown at <paramref name="now"/> (tests and the rehearsal).</summary>
+    public static bool BattlegroupResting(string forceId, long now)
+    {
+        if (forceId == null) return false;
+        lock (BattlegroupSync)
+            return BattlegroupRelinkAfter.TryGetValue(forceId, out long until) && now < until;
+    }
 
     /// <summary>
     /// One pulse of the battlegroup layer: groups leave by <see cref="BattlegroupLeaveReason"/> (a battlegroup whose lead
@@ -196,6 +231,8 @@ public static partial class AutonomousRvrEventLayer
         BattlegroupCandidate? Find(string id) => id != null && byId.TryGetValue(id, out BattlegroupCandidate found) ? found : null;
         lock (BattlegroupSync)
         {
+            foreach (string id in BattlegroupRelinkAfter.Where(pair => now >= pair.Value).Select(pair => pair.Key).ToList())
+                BattlegroupRelinkAfter.Remove(id);
             foreach (BattlegroupRecord record in Battlegroups.Values.OrderBy(r => r.Id, StringComparer.Ordinal).ToList())
             {
                 BattlegroupCandidate? lead = Find(record.Lead);
@@ -210,11 +247,16 @@ public static partial class AutonomousRvrEventLayer
                     BattlegroupCandidate? self = Find(member.ForceId);
                     if (self is { } here && lead is { } leader && here.Region == leader.Region)
                         member.FarSince = NextFarSince(member.FarSince, DistanceBetween(leader, here), now);
-                    BattlegroupLeave reason = BattlegroupLeaveReason(self, lead, false, member.FarSince, member.StayUntil, now);
+                    BattlegroupLeave reason = BattlegroupLeaveReason(self, lead, false, member.FarSince, member.StayUntil, now,
+                        BattlegroupStuckReports.Contains(member.ForceId));
                     if (reason == BattlegroupLeave.None)
                         continue;
                     record.Members.Remove(member);
                     BattlegroupOfForce.Remove(member.ForceId);
+                    BattlegroupStuckReports.Remove(member.ForceId);
+                    // #599 review: a group whose stay ran out still stands near the lead; it goes its own way for a while.
+                    if (BattlegroupLeaveRests(reason))
+                        BattlegroupRelinkAfter[member.ForceId] = now + BattlegroupRelinkCooldownMilliseconds;
                     changes.Add(new BattlegroupChange("left", record.Id, member.ForceId, Why(reason)));
                     LogBattlegroup("left", record, byId, member.ForceId, Why(reason), now);
                 }
@@ -222,7 +264,9 @@ public static partial class AutonomousRvrEventLayer
                     EndBattlegroup(record, BattlegroupLeave.TooSmall, byId, changes, now);
             }
 
-            foreach (BattlegroupLink link in PlanBattlegroups(byId.Values.ToList(), Battlegroups.Values.Select(r => r.View).ToList()))
+            BattlegroupStuckReports.Clear();
+            foreach (BattlegroupLink link in PlanBattlegroups(byId.Values.ToList(), Battlegroups.Values.Select(r => r.View).ToList(),
+                         BattlegroupRelinkAfter.Keys.ToList()))
             {
                 BattlegroupRecord record;
                 string what;
@@ -259,7 +303,10 @@ public static partial class AutonomousRvrEventLayer
     {
         Battlegroups.Remove(record.Id);
         foreach (BattlegroupMember member in record.Members)
+        {
             BattlegroupOfForce.Remove(member.ForceId);
+            BattlegroupStuckReports.Remove(member.ForceId);
+        }
         changes.Add(new BattlegroupChange("ended", record.Id, record.Lead, Why(reason)));
         LogBattlegroup("ended", record, byId, record.Lead, Why(reason), now);
     }
@@ -275,6 +322,7 @@ public static partial class AutonomousRvrEventLayer
     {
         if (!Log.IsInfoEnabled) return;
         int heads = record.Members.Sum(member => byId.TryGetValue(member.ForceId, out BattlegroupCandidate candidate) ? candidate.Heads : 0);
+        // One change of a frontier battlegroup (formed, joined, left or ended), with its groups and heads.
         Log.Info($"RVR_FORCE_BATTLEGROUP what={what} id={record.Id} realm={GlobalConstants.RealmToName(record.Realm)} " +
                  $"region={record.Region} lead={record.Lead ?? "-"} groups={record.Members.Count} heads={heads} " +
                  $"force={force ?? "-"} why={why} minutes={Math.Max(0, (now - record.FormedTick) / 60_000)}");
@@ -312,6 +360,8 @@ public static partial class AutonomousRvrEventLayer
         {
             Battlegroups.Clear();
             BattlegroupOfForce.Clear();
+            BattlegroupRelinkAfter.Clear();
+            BattlegroupStuckReports.Clear();
             _nextBattlegroupNumber = 0;
         }
     }
