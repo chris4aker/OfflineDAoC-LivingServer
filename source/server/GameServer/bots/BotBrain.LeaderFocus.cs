@@ -24,6 +24,9 @@ namespace DOL.AI.Brain
             if (bot == null || !CompanionLeaderFocus.AppliesTo(CompanionLeaderFocus.On, bot.IsPlayerLedGroup,
                     BotPartyRoles.IsTank(bot), BotPartyRoles.IsSupport(bot)))
                 return null;
+            // The #663 places only, until the owner decides on PvE (CompanionLeaderFocus.InPve).
+            if (!CompanionLeaderFocus.InPlace(AutonomousWorldBotController.IsBattleground(bot)))
+                return null;
             if (bot.PlayerGroupLeader is not GamePlayer leader || !PlayerLedPullCoordinator.Available(bot, leader))
                 return null;
 
@@ -31,7 +34,8 @@ namespace DOL.AI.Brain
             bool live = focus != null && focus != Body && focus.IsAlive &&
                 focus.ObjectState == GameObject.eObjectState.Active && focus.CurrentRegion == Body.CurrentRegion;
             if (!CompanionLeaderFocus.Takes(live, live && CanAggroTarget(focus), live && IsBreakablyControlled(focus),
-                    live && Body.IsWithinRadius(focus, MAX_AGGRO_LIST_DISTANCE)))
+                    live && Body.IsWithinRadius(focus, MAX_AGGRO_LIST_DISTANCE),
+                    live && EpicEncounterTactics.MustNotHit(bot, focus)))
                 return null;
 
             if (!AggroList.ContainsKey(focus))
@@ -40,23 +44,25 @@ namespace DOL.AI.Brain
         }
 
         /// <summary>
-        /// COMPANION_LEADER_FOCUS: one row when leader focus turned this bot onto the player's target over another choice
-        /// (<paramref name="without"/>: the target it would have fought), change-only per bot.
+        /// The leader-focus log row, change-only per bot. <paramref name="directAttacker"/> and <paramref name="petTarget"/>
+        /// are what the target choice saw; <paramref name="threat"/> its top threat when it worked one out.
         /// </summary>
-        private void NoteLeaderFocus(GameLiving focus, GameLiving without)
+        private void NoteLeaderFocus(GameLiving focus, GameLiving directAttacker, GameLiving petTarget, GameLiving threat)
         {
             if (focus == null)
             {
                 _lastLeaderFocusLogged = null;
                 return;
             }
+            GameLiving without = directAttacker ?? petTarget ?? threat;
             if (!CompanionLeaderFocus.Logs(focus, without, _lastLeaderFocusLogged))
                 return;
             _lastLeaderFocusLogged = focus;
             GameBot bot = BotBody;
+            // A bot in the player's group turned onto the player's target over its own attacker, its pet's fight or its threat (#571).
             log.Info($"COMPANION_LEADER_FOCUS bot=\"{bot?.Name}\" class=\"{bot?.ClassName}\" kind={LeaderFocusBotKind(bot)} " +
                      $"leader=\"{bot?.PlayerGroupLeader?.Name}\" target=\"{focus.Name}\" over=\"{without?.Name ?? "-"}\" " +
-                     $"why={(without == null ? "idle" : ReferenceEquals(without, RecentDirectAttacker()) ? "attacker" : "threat")} " +
+                     $"why={CompanionLeaderFocus.Why(without, directAttacker, petTarget)} " +
                      $"fromBot={(int)Body.GetDistanceTo(focus)} region={Body.CurrentRegionID}");
         }
 

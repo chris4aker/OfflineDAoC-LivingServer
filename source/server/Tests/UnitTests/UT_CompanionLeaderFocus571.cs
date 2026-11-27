@@ -78,11 +78,25 @@ public class UT_CompanionLeaderFocus571
     {
         Assert.Multiple(() =>
         {
-            Assert.That(F.Takes(true, true, false, true), Is.True);
-            Assert.That(F.Takes(false, true, false, true), Is.False, "dead, gone or in another region");
-            Assert.That(F.Takes(true, false, false, true), Is.False, "out of /defensive's range or not attackable");
-            Assert.That(F.Takes(true, true, true, true), Is.False, "a groupmate's mesmerize or root holds");
-            Assert.That(F.Takes(true, true, false, false), Is.False, "beyond the bot's aggro distance");
+            Assert.That(F.Takes(true, true, false, true, false), Is.True);
+            Assert.That(F.Takes(false, true, false, true, false), Is.False, "dead, gone or in another region");
+            Assert.That(F.Takes(true, false, false, true, false), Is.False, "out of /defensive's range or not attackable");
+            Assert.That(F.Takes(true, true, true, true, false), Is.False, "a groupmate's mesmerize or root holds");
+            Assert.That(F.Takes(true, true, false, false, false), Is.False, "beyond the bot's aggro distance");
+            Assert.That(F.Takes(true, true, false, true, true), Is.False, "an epic rule forbids hitting it (Behemoth, Funus)");
+        });
+    }
+
+    [Test]
+    public void OnlyWhereRealmsFightUntilTheOwnerDecidesOnPve()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(F.InPve, Is.False, "#663: PvE stays as it is; #571 asks the owner (needs-owner)");
+            Assert.That(F.InPlace(true), Is.True, "frontier, battlegrounds, Darkness Falls");
+            Assert.That(F.InPlace(false), Is.False, "PvE: unchanged");
+            Assert.That(F.InPlace(false, inPve: true), Is.True, "the one-line gate, if the owner says yes");
+            Assert.That(F.InPlace(true, inPve: true), Is.True);
         });
     }
 
@@ -95,6 +109,10 @@ public class UT_CompanionLeaderFocus571
             Assert.That(F.Logs(Leader, Leader, null), Is.False, "the bot would have fought it anyway");
             Assert.That(F.Logs(Leader, Attacker, Leader), Is.False, "already logged");
             Assert.That(F.Logs<T>(null, Attacker, null), Is.False);
+            Assert.That(F.Why(Attacker, Attacker, Pet), Is.EqualTo("attacker"));
+            Assert.That(F.Why(Pet, null, Pet), Is.EqualTo("pet"), "a pet's fight is not a threat");
+            Assert.That(F.Why(Threat, null, null), Is.EqualTo("threat"));
+            Assert.That(F.Why<T>(null, null, null), Is.EqualTo("idle"));
         });
     }
 
@@ -121,6 +139,9 @@ public class UT_CompanionLeaderFocus571
             Assert.That(focus, Does.Contain("PlayerLedPullCoordinator.FindLeaderTarget(leader)"), "the player's live fight, not a selection");
             Assert.That(focus, Does.Contain("CanAggroTarget(focus)"), "/defensive, attack and con rules");
             Assert.That(focus, Does.Contain("IsBreakablyControlled(focus)"), "a held target is left alone");
+            Assert.That(focus, Does.Contain("EpicEncounterTactics.MustNotHit(bot, focus)"), "an epic must-not-hit rule holds");
+            Assert.That(focus, Does.Contain("CompanionLeaderFocus.InPlace(AutonomousWorldBotController.IsBattleground(bot))"),
+                "the #663 places");
             Assert.That(focus, Does.Contain("COMPANION_LEADER_FOCUS"));
         });
     }

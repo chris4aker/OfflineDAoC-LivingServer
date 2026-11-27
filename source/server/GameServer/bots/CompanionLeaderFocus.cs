@@ -15,6 +15,9 @@ namespace DOL.GS
     ///
     /// The player's target is the fight the player is in (PlayerLedPullCoordinator.FindLeaderTarget: he attacks it or casts
     /// harmful magic at it, or his pet fights it), never one he has only selected (DetShaft owner decision #170).
+    ///
+    /// Where: the #663 places only (frontier, battlegrounds, Darkness Falls and the neutral battle dungeons); PvE waits on
+    /// the owner (<see cref="InPve"/>, #571 needs-owner, after "PvE stays as it is" on #663).
     /// </summary>
     public static class CompanionLeaderFocus
     {
@@ -31,12 +34,27 @@ namespace DOL.GS
             on && playerLedGroup && !tank && !support;
 
         /// <summary>
+        /// Leader focus in PvE too. Off until the owner decides (#571, `needs-owner`): on #663 he answered "PvE stays as it
+        /// is", so for now it runs only where realms fight (<see cref="InPlace"/>). The one line to change if he says yes.
+        /// </summary>
+        public const bool InPve = false;
+
+        /// <summary>
+        /// Where leader focus runs: the frontier, the battlegrounds and Darkness Falls and the other neutral battle dungeons
+        /// (the #663 places, AutonomousWorldBotController.IsBattleground), and in PvE only with <paramref name="inPve"/>.
+        /// </summary>
+        public static bool InPlace(bool warZone, bool inPve = InPve) => warZone || inPve;
+
+        /// <summary>
         /// The player's target is taken: it is a live target the bot may fight (CanAggroTarget: /defensive's range, the
         /// attack rules, the grey-con rule with its exemption for the player's own fight), it is not a target a groupmate
-        /// holds with a mesmerize or root (hitting it breaks the hold), and it is within the bot's aggro distance.
+        /// holds with a mesmerize or root (hitting it breaks the hold), it is within the bot's aggro distance, and no epic
+        /// rule forbids the bot to hit it (<paramref name="mustNotHit"/>: EpicEncounterTactics.MustNotHit, which covers
+        /// GameBot.RefusesAttackOn: Behemoth, Funus during his puzzle, an add the raid leaves alive). Otherwise the bot would
+        /// idle on a target it may not hit while its own attacker hits it.
         /// </summary>
-        public static bool Takes(bool live, bool mayFight, bool breakablyControlled, bool inReach) =>
-            live && mayFight && !breakablyControlled && inReach;
+        public static bool Takes(bool live, bool mayFight, bool breakablyControlled, bool inReach, bool mustNotHit) =>
+            live && mayFight && !breakablyControlled && inReach && !mustNotHit;
 
         /// <summary>
         /// The target the choice ends on: a tank's protection target first, then the player's target, then the bot's own
@@ -52,5 +70,14 @@ namespace DOL.GS
         /// </summary>
         public static bool Logs<T>(T chosen, T without, T lastLogged) where T : class =>
             chosen != null && !ReferenceEquals(chosen, without) && !ReferenceEquals(chosen, lastLogged);
+
+        /// <summary>
+        /// The log row's why=: what leader focus took the bot off. <paramref name="directAttacker"/> is the attacker the
+        /// target choice saw (after BotBrain.KillOrderAttacker), <paramref name="petTarget"/> its pet's fight.
+        /// </summary>
+        public static string Why<T>(T without, T directAttacker, T petTarget) where T : class =>
+            without == null ? "idle" :
+            ReferenceEquals(without, directAttacker) ? "attacker" :
+            ReferenceEquals(without, petTarget) ? "pet" : "threat";
     }
 }
