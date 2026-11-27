@@ -14,8 +14,24 @@ namespace DOL.GS.Tests
     [TestFixture, NonParallelizable]
     public class UT_PlayerKeepDefense
     {
-        [SetUp] public void SetUp() { RvrEventTestState.Clear(); }
-        [TearDown] public void TearDown() { RvrEventTestState.Clear(); }
+        // The Attacker (GameNPC) and Group fixtures need a server double: without it they throw TypeInitializationException
+        // for DOL.GS.GameObject when the fixture runs alone (#788 review).
+        private DOL.UnitTests.EpicTestServerScope _server;
+        private object _botSource;
+        private static FieldInfo BotSourceField => typeof(AutonomousRvrEventLayer).GetField("AttackerRealmBotSource", BindingFlags.NonPublic | BindingFlags.Static);
+        [SetUp] public void SetUp()
+        {
+            _server = new DOL.UnitTests.EpicTestServerScope();
+            _botSource = BotSourceField.GetValue(null);
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => Array.Empty<GameLiving>()));
+            RvrEventTestState.Clear();
+        }
+        [TearDown] public void TearDown()
+        {
+            RvrEventTestState.Clear();
+            BotSourceField.SetValue(null, _botSource);
+            _server.Dispose();
+        }
         private static AutonomousRvrEventLayer.LiveObjective Target(string id = "defense") =>
             new(id, "Test keep", AutonomousRvrEventLayer.Intent.AssaultKeep, eRealm.Midgard, 100, 100000, 100000, 100, false, 0, 0, 0, 0);
 
@@ -355,6 +371,98 @@ namespace DOL.GS.Tests
             Attacker far = At(200000);
             GroupOf(far, At(200000), At(200000));
             Assert.That(Seen(far), Is.EqualTo(1), "a whole group away from the keep is still one seen attack");
+        }
+
+        // #788 answer 49A (owner, 2026-11-27): the attacking realm's gamebots at the keep count with the player's group.
+        private static int Seen(GameLiving attacker, params GameLiving[] bots) =>
+            AutonomousRvrEventLayer.SeenForceSize(attacker, 100, 100000, 100000, 100, bots);
+
+        [Test]
+        public void TheAttackingRealmsBotsAtTheKeepAreCounted()
+        {
+            Attacker solo = At(100000);
+            Assert.That(Seen(solo, At(100500), At(101000), At(99000, y: 104000)), Is.EqualTo(4), "the player and three bots in the ring");
+            Assert.That(AutonomousRvrEventLayer.ScaleOf(Seen(solo, At(100500), At(101000), At(99000, y: 104000))),
+                Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Standard));
+
+            // A player away from the keep with eight bots attacking it: eight, Large.
+            Attacker away = At(200000);
+            var bots = Enumerable.Range(0, 8).Select(i => (GameLiving)At(100000 + i * 200)).ToArray();
+            Assert.That(Seen(away, bots), Is.EqualTo(8));
+            Assert.That(AutonomousRvrEventLayer.ScaleOf(Seen(away, bots)), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Large));
+
+            // A bot that is also in the player's group, or listed twice, counts once.
+            Attacker leader = At(100000), grouped = At(100100);
+            GroupOf(leader, grouped);
+            Assert.That(Seen(leader, grouped, grouped, At(100200)), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void BotsElsewhereOrOfOtherRealmsAreNotCounted()
+        {
+            Attacker far = At(110000), high = At(100000, z: 5000), otherRegion = At(100000), dead = At(100000),
+                midgard = At(100000), hibernia = At(100000), here = At(100000);
+            otherRegion.TestRegion = 101;
+            dead.Alive = false;
+            midgard.TestRealm = eRealm.Midgard;   // the keep's own realm: a defender, not an attacker
+            hibernia.TestRealm = eRealm.Hibernia; // the third realm
+            Assert.That(Seen(At(100000), far, high, otherRegion, dead, midgard, hibernia), Is.EqualTo(1), "only the player");
+            Assert.That(Seen(At(100000), far, high, otherRegion, dead, midgard, hibernia, here), Is.EqualTo(2));
+            Assert.That(Seen(At(200000), far, midgard, hibernia), Is.EqualTo(1), "nobody of the attack at the keep: still the floor of one");
+        }
+
+        [Test]
+        public void TheFloorAndCapsHoldWithTheBotsCounted()
+        {
+            Assert.That(Seen(null, At(100000)), Is.EqualTo(1), "no attacker: the floor");
+            Assert.That(Seen(At(200000)), Is.EqualTo(1), "no one at the keep: the floor");
+            var army = Enumerable.Range(0, 300).Select(i => (GameLiving)At(100000 + i % 50 * 100, y: 100000 + i / 50 * 100)).ToArray();
+            int seen = Seen(At(100000), army);
+            Assert.That(seen, Is.EqualTo(301));
+            var scale = AutonomousRvrEventLayer.ScaleOf(seen);
+            Assert.That(scale, Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Massive));
+            Assert.That(AutonomousRvrEventLayer.ResponseCap(true, scale), Is.EqualTo(240), "the defenders' cap is unchanged");
+            Assert.That(AutonomousRvrEventLayer.ResponseCap(false, scale), Is.EqualTo(96), "the helpers' cap is unchanged");
+        }
+
+        // #788 review ask 2: the live sizing line in PulseDefense. A group of twelve with three at the keep is Standard
+        // (sized from three; the roster of twelve would be Large); then four attacker-realm gamebots at the keep make it
+        // seven seen, and nine bots make it twelve: Large.
+        [Test]
+        public void TheAlarmSizesTheDefenseByTheGroupAndBotsAtTheKeep()
+        {
+            long now = GameLoop.GameLoopTime + 100;
+            var keep = (DOL.GS.Keeps.GameKeep)RuntimeHelpers.GetUninitializedObject(typeof(DOL.GS.Keeps.GameKeep));
+            keep.DBKeep = new DOL.Database.DbKeep { KeepID = 8, Name = "Test keep", Realm = (byte)eRealm.Midgard, Region = 100,
+                X = 100000, Y = 100000, Z = 100, BaseLevel = 50 };
+            var player = (KeepPlayer)RuntimeHelpers.GetUninitializedObject(typeof(KeepPlayer));
+            player.TestX = 100000; player.TestY = 100000; player.TestZ = 100;
+            var members = new List<GameLiving> { player, At(100500), At(101000) };
+            for (int i = 0; i < 9; i++) members.Add(At(150000));
+            GroupOf(members.ToArray());
+            Assert.That(player.Group.MemberCount, Is.EqualTo(12));
+
+            Alarms()["rvr-keep-8"] = NewAlarm(keep, player, now);
+            AutonomousRvrEventLayer.PulseDefense(now);
+            Assert.That(ScaleOfEvent("rvr-keep-8"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Standard), "three of twelve at the keep");
+
+            var bots = Enumerable.Range(0, 9).Select(i => (GameLiving)At(100000 + i * 300)).ToArray();
+            bots[8] = At(300000); // one bot far away
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => bots.Take(4)));
+            Alarms()["rvr-keep-8"] = NewAlarm(keep, player, now + 6_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 6_000);
+            Assert.That(ScaleOfEvent("rvr-keep-8"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Standard), "three and four bots: seven");
+
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => bots));
+            Alarms()["rvr-keep-8"] = NewAlarm(keep, player, now + 12_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 12_000);
+            Assert.That(ScaleOfEvent("rvr-keep-8"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Large), "three and eight bots at the keep: eleven");
+        }
+
+        private static AutonomousRvrEventLayer.DefenseScale ScaleOfEvent(string id)
+        {
+            object active = EventOf(id);
+            return (AutonomousRvrEventLayer.DefenseScale)active.GetType().GetField("DefenseScale").GetValue(active);
         }
 
         [Test]
