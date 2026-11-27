@@ -17,7 +17,8 @@ section: Bots and companions
   - **Utility spells come into play.** A Cabalist's Life Transfer saves a groupmate under 35%, Amnesia hands a monster
     back to the pet or the tank, and in RvR Confusion goes on enemy pets, Amnesia interrupts a casting enemy and
     Nearsight opens on casters and archers. A companion's "Life transfer: Off" and "Amnesia: Off" are honoured. Bosses
-    are never the target: no Amnesia or Confusion on a boss, and every boss's own rules come first.
+    are never the target: no Amnesia or Confusion on a boss, its guards or its adds, and every boss's own rules come
+    first.
   - **RvR crowd control wastes less.** No mez or root on an enemy your group is hitting, an area mez only with two or
     more free enemies in it (then held for a minute), immune enemies skipped, and a mez that was interrupted no longer
     keeps the others off its target.

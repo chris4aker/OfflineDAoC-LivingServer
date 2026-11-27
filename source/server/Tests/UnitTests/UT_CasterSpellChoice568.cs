@@ -211,6 +211,15 @@ namespace DOL.UnitTests
             Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Amnesia, false, true, false), Is.False,
                 "EpicEncounterTactics.ForbidsSpell");
             Assert.That(BotBrain.UtilityCastAllowed(eSpellType.LifeTransfer, false, false, false), Is.True);
+            // A boss's guard (an epic NPC with no tactic of its own, e.g. Deben se Gecynde's fighter) is an encounter NPC
+            // too (#727 review round 2): no Amnesia or Confusion on it.
+            var guard = (GameNPC)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(DebenFighter));
+            Assert.That(EpicEncounterTactics.For(guard), Is.Null, "the guard has no tactic of its own");
+            Assert.That(AutonomousRealmRaid.IsEncounterNpc(guard), Is.True, "but it is an encounter NPC");
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Amnesia, false, false, AutonomousRealmRaid.IsEncounterNpc(guard)),
+                Is.False, "no Amnesia on a boss's guard");
+            Assert.That(BotBrain.UtilityCastAllowed(eSpellType.Confusion, false, false, AutonomousRealmRaid.IsEncounterNpc(guard)),
+                Is.False, "nor Confusion");
         });
 
         // ---- C5 / C6 scope (owner 2026-11-26): not in raids, warbands or tactic-boss fights -------------------------
@@ -246,6 +255,10 @@ namespace DOL.UnitTests
                 Assert.That(hold, Does.Contain("BotHealTriage165.IsBossTarget(Body.Group?.LivingLeader?.TargetObject)"));
                 Assert.That(utility, Does.Contain("EpicEncounterTactics.MustNotHit(BotBody, target)"), "CastOn's guard");
                 Assert.That(utility, Does.Contain("EpicEncounterTactics.ForbidsSpell(BotBody, target, spell)"));
+                Assert.That(utility, Does.Contain("target is GameNPC npc && AutonomousRealmRaid.IsEncounterNpc(npc)"), "CastOn");
+                Assert.That(utility, Does.Contain("!AutonomousRealmRaid.IsEncounterNpc(attackerNpc)"), "TryShedAggro");
+                Assert.That(utility, Does.Contain("npc.InCombat && !AutonomousRealmRaid.IsEncounterNpc(npc)"), "TryAmnesiaForPet");
+                Assert.That(utility, Does.Not.Contain("EpicEncounterTactics.For("), "every utility guard uses IsEncounterNpc");
             });
         }
 
