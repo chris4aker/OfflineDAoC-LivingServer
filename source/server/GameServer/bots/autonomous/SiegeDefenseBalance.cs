@@ -236,6 +236,7 @@ public static class SiegeDefenseBalance
     /// and keep attackers' cap that shift gives, the window (C = captured, D = defended), and applied=true: this window
     /// sets the realm's share and the cap on armies attacking it (#523, owner answer 52A).</summary>
     public static string RealmLine(eRealm realm, string what, double before, double after, IEnumerable<bool> window) =>
+        // A defending realm's own six-siege record moved, and with it its defenders' share and the cap on armies attacking it.
         $"SIEGE_DEFENSE_BALANCE_REALM realm={GlobalConstants.RealmToName(realm)} event=\"{what}\" " +
         $"shift={before:+0.###;-0.###;0}->{after:+0.###;-0.###;0} " +
         $"share={RatioAt(RealmEventPolicy.DefenseRatio, after):0.###} " +

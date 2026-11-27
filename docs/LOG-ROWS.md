@@ -767,7 +767,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `SHROUDED_ISLES_PORTAL` | server.log | **ships** | `world/ShroudedIslesPortals.cs` | `id`, `pad`, `radius`, `region` | - | - | - |
 | `SHROUDED_ISLES_PORTAL_SKIPPED` | server.log | **ships** | `world/ShroudedIslesPortals.cs` | `id`, `region`, `target` | - | - | - |
 | `SIEGE_DEFENSE_BALANCE` | server.log | **ships** | `bots/autonomous/SiegeDefenseBalance.cs` | `attackerCap`, `event`, `share`, `shift`, `window` | - | - | - |
-| `SIEGE_DEFENSE_BALANCE_REALM` | server.log | **ships** | `bots/autonomous/SiegeDefenseBalance.cs` | `applied`, `attackerCap`, `event`, `realm`, `share`, `shift`, `window` | - | - | - |
+| `SIEGE_DEFENSE_BALANCE_REALM` | server.log | **ships** | `bots/autonomous/SiegeDefenseBalance.cs` | `applied`, `attackerCap`, `event`, `realm`, `share`, `shift`, `window` | - | once per bot siege that ends captured or defended, for its defending realm, and once per realm at start-up when the record is rebuilt (#523) | A defending realm's own six-siege record moved, and with it its defenders' share and the cap on armies attacking it. |
 | `STORYLINE_ABANDONED` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `reason`, `story` | - | - | - |
 | `STORYLINE_EPISODE` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `finished`, `scene`, `story` | - | - | - |
 | `STORYLINE_SIDE` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `player`, `side`, `story` | `player` | - | - |
