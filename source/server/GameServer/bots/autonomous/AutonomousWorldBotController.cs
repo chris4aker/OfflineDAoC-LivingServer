@@ -3878,6 +3878,10 @@ namespace DOL.GS
                                         (sharedGroup || !_recentFailedSoloCamps.ContainsKey(cell.Id)) &&
                                         !AutonomousCampRouteQuarantine.IsQuarantined(cell.Id) &&
                                         (sharedGroup || !AutonomousCampDangerBench.IsBenched(cell.Id, cell.RegionId, cell.MonsterName)) &&
+                                        // #569 step 2: a party skips camps benched for its level band, and camps beside a
+                                        // spot where parties of its band lost members to far stronger monsters
+                                        (!sharedGroup || AutonomousGroupDangerRetreat.AllowsPartyCamp(cell.Id, cell.RegionId,
+                                            cell.X, cell.Y, planningLevel, GameLoop.GameLoopTime)) &&
                                         IsZoneAccessible(bot.Realm, cell.Zone, bot.CurrentRegionID) &&
                                         AutonomousOrdinaryPveRealmPolicy.CanAssignCamp(bot.Realm, cell.RegionId,
                                             cell.Zone?.ID ?? 0, planningLevel) &&
@@ -4073,6 +4077,10 @@ namespace DOL.GS
             // Less competition first: crowded camps only when every camp is crowded (AutonomousCampCompetition).
             legalCells = AutonomousCampCompetition.PreferQuiet(legalCells, camp => camp.Id, camp => camp.LiveMobCount,
                 bot.PersistentRecord?.CurrentCampId, sharedGroup ? groupSize : 1);
+            // #569 step 3 (True165 14dcaa5): a PvE party picks camps it can reach within its task time (after the quiet filter)
+            if (sharedGroup && AutonomousGroupTravelBudget.Enabled &&
+                _groupDirective?.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
+                legalCells = BudgetGroupCamps(bot, legalCells, destinations);
             // Spread over the zone (owner 2026-11-05: "zones should have bots spread out in them", bots clumped in a few
             // camps while others stood untouched): an empty camp draws far more often than one already worked, a near
             // one more often than a far one, still in proportion to its spawns.

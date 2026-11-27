@@ -155,8 +155,9 @@ NORMAL PLAYER COMMANDS
   Handler: DOL.GS.Commands.BountyLocationCommand
 
 /bountyrent
-  Pay house rent with bountypoints
-  Use /bountyrent personal/guild <amount> to pay.
+  Pay house rent with bounty points
+  Use /bountyrent <personal | guild> <amount> to pay.
+  Use /bountyrent <personal | guild> max to fill the lockbox to the max.
   Handler: DOL.GS.Commands.BountyRentCommandHandler
 
 /bow
@@ -781,7 +782,8 @@ NORMAL PLAYER COMMANDS
 
 /rent
   Pay house rent
-  Use /rent personal/guild <gold> to pay.
+  Use /rent <personal | guild> <gold> to pay.
+  Use /rent <personal | guild> max to fill the lockbox to the max.
   Handler: DOL.GS.Commands.RentCommandHandler
 
 /repair
