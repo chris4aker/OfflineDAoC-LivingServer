@@ -28,6 +28,16 @@ namespace DOL.GS
         public const double ThirdRealmChance = 0.5;
         public const long ThirdRealmDelayMilliseconds = 5 * 60_000L;
 
+        /// <summary>
+        /// #523 step 1 (d), owner 2026-11-27 (47A): after a player takes a keep, the realm that lost it comes back to retake it
+        /// on a roll, not every time. The same even chance as the third realm's roll (<see cref="ThirdRealmChance"/>). When the
+        /// roll fails the keep is left as after a bot capture: the usual cooldown, then the realms' normal siege choice.
+        /// Period: a lost front keep was retaken by whoever was around and wanted it (reference.md 5.5, 5.6).
+        /// </summary>
+        public const double PlayerCaptureRetakeChance = 0.5;
+
+        public static bool RetakeFollowsPlayerCapture(double roll) => roll < PlayerCaptureRetakeChance;
+
         public static bool CanRespond(bool defender, bool attackObserved, bool battleStarted, bool thirdRealmIntervenes,
             long sinceBattleMilliseconds) =>
             defender ? attackObserved || battleStarted
