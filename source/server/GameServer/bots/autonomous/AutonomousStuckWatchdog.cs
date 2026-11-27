@@ -419,7 +419,7 @@ public static class AutonomousStuckWatchdog
         // keeps the goal clock off but not the movement clock (below); one standing at the ring is protected by Protects.
         bool travellingInRally = AutonomousRealmRaid.IsTravellingInRally(bot, out string rallyEvent);
         if (GroupProtectsFromWatchdog(bot, now) ||
-            !travellingInRally && AutonomousRealmRaid.IsInRally(bot) ||
+            AutonomousRealmRaid.IsInRally(bot) ||
             IsGroupFormationHold(bot.PersistentRecord.Activity) ||
             AutonomousObjectiveAssignments.IsIntentionalTownIdle(bot.PersistentRecord, now) &&
             AutonomousWorldBotController.IsAtAssignedIdleTown(bot))
@@ -435,20 +435,6 @@ public static class AutonomousStuckWatchdog
         // fifteen minutes without movement such a member gets the usual 15-minute recovery: a teleport to its capital that
         // keeps its raid membership, so it walks back as a late member. That is clean-up, not a rescue (the in-dungeon
         // regroup, TryRecoverInsideRaid, is for started dungeon raids only). The rally's own deadline still owns the goal clock.
-        if (travellingInRally)
-        {
-            goalObservation.LastProgressUtc = now;
-            if (!ShouldCatchStuckRally(previous.LastMovementUtc, now, bot.IsAlive, withHuman))
-                return false;
-            Log.Warn($"AUTONOMOUS_RALLY_STUCK bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} event={rallyEvent} " +
-                     $"minutes={(int)(now - previous.LastMovementUtc).TotalMinutes} at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} " +
-                     $"activity=\"{ForLog(bot.PersistentRecord.Activity)}\"");
-            if (StuckRallyRecoveryForTests != null)
-                return StuckRallyRecoveryForTests(bot, rallyEvent);
-            return RelocateToSafeCapital(bot, now, $"rally: no movement for fifteen minutes away from the staging ring ({rallyEvent})", true,
-                "AUTONOMOUS_STUCK_15M_RECOVERY");
-        }
-
         bool isRvrRoaming = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR);
         if (ShouldRecoverGoal(goalObservation.LastProgressUtc, now, bot.IsAlive, withHuman, false, isRvrRoaming))
         {

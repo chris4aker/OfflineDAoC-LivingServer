@@ -577,7 +577,8 @@ namespace DOL.GS
                     // Defense owns movement; do not resume an old dragon-ring
                     // waypoint from a different position after the fight.
                     _dragonRallyPlanning = null;
-                    _dragonRally.Interrupt();
+                    _dragonRallyRoute = null;
+                    _dragonRallyRetry = 0;
                     if (_camp != null && _groupDirective?.IsDynamic != true)
                         _recoverBeforeNextCampTarget = true;
 
