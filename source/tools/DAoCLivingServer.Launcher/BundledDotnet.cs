@@ -48,13 +48,15 @@ public static class BundledDotnet
         if (askedToStop || ranFor >= EarlyExitWindow)
             return null;
         string code = exitCode is int c ? $" (exit code {c})" : "";
-        string cause = usedBundled
-            ? "The end of runtime\\logs\\server-console.log may say why."
-            : "This game's own .NET (the tools\\dotnet folder) wasn't found, so the server looked for one installed on " +
-              "this PC and most likely found none.";
-        return $"The server closed {Math.Max(0, ranFor.TotalSeconds):0} seconds after START SERVER{code}.\n\n" +
-               cause + "\n\n" +
-               "Start the game with START OFFLINE DAOC.cmd in the game folder, or its desktop shortcut, rather than " +
-               "opening the launcher's .exe directly. Then click START SERVER again.";
+        int seconds = (int)Math.Round(Math.Max(0, ranFor.TotalSeconds));
+        string when = seconds < 1 ? "right after START SERVER"
+            : seconds == 1 ? "1 second after START SERVER"
+            : $"{seconds} seconds after START SERVER";
+        string advice = usedBundled
+            ? "The end of runtime\\logs\\server-console.log says why."
+            : "This game's own .NET (the tools\\dotnet folder in the game folder) is missing, so the server looked for " +
+              "one installed on this PC and found none it could use. Reinstall the game, or extract the whole download " +
+              "again, then click START SERVER again.";
+        return $"The server closed {when}{code}.\n\n" + advice;
     }
 }

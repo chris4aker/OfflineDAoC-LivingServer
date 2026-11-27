@@ -64,13 +64,15 @@ public sealed class BundledDotnetTests
     }
 
     [Test]
-    public void EarlyExit_Unasked_SaysExitCodeAndStartFile()
+    public void EarlyExit_BundledMissing_SaysReinstallOrExtractAgain()
     {
         string? message = BundledDotnet.EarlyExitMessage(TimeSpan.FromSeconds(2), unchecked((int)0x80008096), false, false);
+        Assert.That(message, Does.Contain("closed 2 seconds after START SERVER"));
         Assert.That(message, Does.Contain("exit code -2147450730"));
-        Assert.That(message, Does.Contain("START OFFLINE DAOC.cmd"));
-        Assert.That(message, Does.Contain("shortcut"));
         Assert.That(message, Does.Contain("tools\\dotnet"));
+        Assert.That(message, Does.Contain("Reinstall the game"));
+        Assert.That(message, Does.Contain("extract the whole download again"));
+        Assert.That(message, Does.Not.Contain("START OFFLINE DAOC.cmd"));
     }
 
     [Test]
@@ -78,8 +80,18 @@ public sealed class BundledDotnetTests
     {
         string? message = BundledDotnet.EarlyExitMessage(TimeSpan.FromSeconds(1), 1, false, true);
         Assert.That(message, Does.Contain("exit code 1"));
-        Assert.That(message, Does.Contain("server-console.log"));
-        Assert.That(message, Does.Contain("START OFFLINE DAOC.cmd"));
+        Assert.That(message, Does.Contain("closed 1 second after START SERVER"));
+        Assert.That(message, Does.Contain("end of runtime\\logs\\server-console.log"));
+        Assert.That(message, Does.Not.Contain("START OFFLINE DAOC.cmd"));
+        Assert.That(message, Does.Not.Contain("Reinstall"));
+    }
+
+    [Test]
+    public void EarlyExit_VeryFast_SaysRightAfter()
+    {
+        string? message = BundledDotnet.EarlyExitMessage(TimeSpan.FromMilliseconds(300), 1, false, true);
+        Assert.That(message, Does.Contain("closed right after START SERVER"));
+        Assert.That(message, Does.Not.Contain("0 seconds"));
     }
 
     [Test]
