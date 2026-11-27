@@ -281,7 +281,7 @@ namespace DOL.UnitTests.QuestHarness
 
         // What the player holds
 
-        public DataQuest Active(int questId) => Player.QuestList.Keys.OfType<DataQuest>().FirstOrDefault(q => q.ID == questId);
+        public DataQuest Active(int questId) => Player.GetActiveDataQuest(questId);
 
         public bool Finished(int questId) => Player.GetFinishedQuests().OfType<DataQuest>().Any(q => q.ID == questId) && Active(questId) == null;
 

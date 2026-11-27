@@ -4392,15 +4392,53 @@ namespace DOL.GS
                         IsFrontierZone(representative.CurrentRegionID, representative.CurrentZone.ID)));
                 }
 
+                int liveUncovered = AddUncoveredLiveCamps(cells, snapshot);
                 AddStarterCamps(cells, snapshot);
                 AddVerifiedDungeonCamps(cells, liveByZoneAndName);
-                return FinishCatalogDraft(cells, snapshot, sourceEmpty);
+                return FinishCatalogDraft(cells, snapshot, sourceEmpty, liveUncovered);
+        }
+
+        /// <summary>
+        /// GitHub #544 (ported from True 1.65's AddUncoveredLiveCamps): live outdoor spawn clusters that no camp of their
+        /// name covers become <c>live-uncovered:</c> camps, in every realm alike (AutonomousUncoveredLiveCamps). Without it
+        /// a CapnBry-covered zone offered camps only at its sightings, while the mostly Hibernian source-empty zones offered
+        /// every cluster. Starter creatures (level 0-1) stay with AddStarterCamps and its route check from the zone hub.
+        /// Returns the number of camps added.
+        /// </summary>
+        private static int AddUncoveredLiveCamps(List<CampCatalogCell> cells, CampMonster[] snapshot)
+        {
+            var covered = cells
+                .GroupBy(cell => (cell.RegionId, Name: AutonomousUncoveredLiveCamps.NormalizeName(cell.MonsterName)))
+                .ToDictionary(group => group.Key, group => group.Select(cell => (cell.X, cell.Y)).ToArray());
+            CampMonster[] eligible = snapshot.Where(npc =>
+                    npc.CurrentZone != null && npc.CurrentZone.IsDungeon != true &&
+                    npc.CurrentZone.ZoneRegion != null && npc.CurrentZone.ZoneRegion.IsDungeon != true &&
+                    AutonomousCapnBryGoalCatalog.IsClassicOrShroudedIslesExpansion(npc.CurrentZone.ZoneRegion.Expansion) &&
+                    !BattlegroundBrackets.IsBattlegroundRegion(npc.CurrentRegionID) &&
+                    !AutonomousAuditedCampPolicy.UsesLiveAnchor(npc.CurrentRegionID, npc.Name) &&
+                    npc.EffectiveLevel > StarterCampMaximumMobLevel)
+                .ToArray();
+            var spawns = eligible.Select(npc => new AutonomousUncoveredLiveCamps.Spawn(npc.CurrentZone.ID,
+                npc.CurrentRegionID, npc.X, npc.Y, npc.Name, npc.EffectiveLevel, npc.InternalId)).ToArray();
+            List<AutonomousUncoveredLiveCamps.Cluster> clusters =
+                AutonomousUncoveredLiveCamps.Find(spawns, covered, TargetSearchRadius);
+            foreach (AutonomousUncoveredLiveCamps.Cluster cluster in clusters)
+            {
+                CampMonster representative = eligible[cluster.Representative];
+                cells.Add(new CampCatalogCell(cluster.CampId, representative.Name,
+                    representative.CurrentZone.Description ?? representative.CurrentZone.ZoneRegion?.Description ?? $"region {representative.CurrentRegionID}",
+                    representative.CurrentRegionID, representative.X, representative.Y, representative.Z,
+                    cluster.Members.Select(index => eligible[index].EffectiveLevel).OrderBy(level => level).ToArray(),
+                    cluster.Members.Length, representative.CurrentZone, false,
+                    IsFrontierZone(representative.CurrentRegionID, representative.CurrentZone.ID)));
+            }
+            return clusters.Count;
         }
 
         /// <summary>
         /// True 1.65 (its owner 2026-11-08) stopped publishing capnbry-source-empty camps, because its AddUncoveredLiveCamps
-        /// turns their monsters into live camps instead. Living Server 1.2 has no such pass, so turning them off would leave
-        /// whole zones with few camps: they stay on here. With it off, a source-empty camp is still published when its
+        /// turns their monsters into live camps instead. Living Server ported that pass in 1.2.3 (#544) but keeps these
+        /// camps on: they also hold clusters of one or two spawns, and turning them off is a separate call. With it off, a source-empty camp is still published when its
         /// realm and level band would otherwise have no camp at all (FinishCatalogDraft).
         /// </summary>
         private static readonly bool AssignSourceEmptyCamps = true;
@@ -4414,7 +4452,7 @@ namespace DOL.GS
         /// no longer add up the same monsters (AutonomousCampCompetition). Spatial buckets keep it linear in the snapshot.
         /// </summary>
         private static CampCatalogCell[] FinishCatalogDraft(List<CampCatalogCell> cells, CampMonster[] snapshot,
-            List<CampCatalogCell> sourceEmptyFallback = null)
+            List<CampCatalogCell> sourceEmptyFallback = null, int liveUncovered = 0)
         {
             int threatCell = (int)AutonomousRouteThreatPolicy.CampSkipRadius;
             int poolCell = AutonomousCampCompetition.NeighbourRadius;
@@ -4639,7 +4677,7 @@ namespace DOL.GS
                         bands.Append(band == 0 ? "" : ",").Append(coverage[(int)realm - 1, band]);
                 }
                 Log.Info($"AUTONOMOUS_CAMP_CATALOG_DEDUPE cells={cells.Count} published={result.Count} merged={merged} " +
-                         $"amongStrongerAggressive={dangerous} sourceEmptyFallback={fallback} campsPer5LevelBand:{bands}");
+                         $"amongStrongerAggressive={dangerous} sourceEmptyFallback={fallback} liveUncovered={liveUncovered} campsPer5LevelBand:{bands}");
             }
             return result.ToArray();
         }
@@ -4681,7 +4719,9 @@ namespace DOL.GS
 
         private static bool IsSourceEmptyCamp(string campId) =>
             !string.IsNullOrWhiteSpace(campId) &&
-            campId.StartsWith("capnbry-source-empty:", StringComparison.OrdinalIgnoreCase);
+            (campId.StartsWith("capnbry-source-empty:", StringComparison.OrdinalIgnoreCase) ||
+             // #544: live-uncovered camps are live clusters too, so their targets get the same route proof
+             campId.StartsWith(AutonomousUncoveredLiveCamps.Prefix, StringComparison.OrdinalIgnoreCase));
 
         private void AbandonCamp(GameBot bot, string reason)
         {

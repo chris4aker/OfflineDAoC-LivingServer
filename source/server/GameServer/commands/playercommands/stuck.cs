@@ -23,10 +23,17 @@ namespace DOL.GS.Commands
                 return;
             }
 
-            movementComponent.UseSafePosition = true; // Will be reset if the quit timer is interrupted.
+            // Port of OpenDAoC-Core 74587b664: flip UseSafePosition first in case the player may quit at once, say what will
+            // happen, and clear it again when the quit is refused (it is also reset if the quit timer is interrupted).
+            // Before, a refused /stuck left it set, so a later ordinary quit still moved the player.
+            movementComponent.UseSafePosition = true;
+            DisplayMessage(client, "Your position will be adjusted to your last known safe point when you exit the game.");
 
             if (!player.Quit(false))
+            {
+                movementComponent.UseSafePosition = false;
                 return;
+            }
         }
     }
 }

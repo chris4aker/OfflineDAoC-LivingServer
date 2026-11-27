@@ -1048,11 +1048,8 @@ namespace DOL.GS.Quests
 				return true;
 			}
 
-			foreach (AbstractQuest quest in player.QuestList.Keys)
-			{
-				if (quest is DataQuest dataQuest && dataQuest.ID == ID)
-					return false; // player is currently doing this quest
-			}
+			if (player.IsDoingDataQuest(ID))
+				return false; // player is currently doing this quest
 
 			List<AbstractQuest> finishedQuests = player.GetFinishedQuests();
 
@@ -1082,11 +1079,8 @@ namespace DOL.GS.Quests
 				}
 
 				var activeIds = new HashSet<int>();
-				foreach (AbstractQuest quest in player.QuestList.Keys)
-				{
-					if (quest is DataQuest dataQuest)
-						activeIds.Add(dataQuest.ID);
-				}
+				foreach (DataQuest dataQuest in player.GetActiveDataQuests())
+					activeIds.Add(dataQuest.ID);
 
 				if (!QuestDependencies.AreMet(m_questDependencies, finishedNames, finishedIds, activeIds))
 					return false;
@@ -2504,7 +2498,7 @@ namespace DOL.GS.Quests
 		/// </summary>
 		private static bool RefuseWhenJournalFull(GamePlayer player)
 		{
-			if (!QuestJournal.IsFull(player.QuestList.Count))
+			if (!QuestJournal.IsFull(player.ActiveQuestCount))
 				return false;
 
 			player.Out.SendMessage(QuestJournal.FullText, eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -3307,8 +3301,7 @@ namespace DOL.GS.Quests
 			// Remove this quest from the players active quest list and either
 			// Add or update the quest in the players finished list
 
-			if (m_questPlayer.QuestList.TryRemove(this, out byte value))
-				m_questPlayer.AvailableQuestIndexes.Enqueue(value);
+			m_questPlayer.RemoveQuest(this, notifyPlayer: false);
 
 			bool add = true;
 
@@ -3389,8 +3382,7 @@ namespace DOL.GS.Quests
 		{
 			if (m_questPlayer == null || m_charQuest == null || m_charQuest.IsPersisted == false) return;
 
-			if (m_questPlayer.QuestList.TryRemove(this, out byte value))
-				m_questPlayer.AvailableQuestIndexes.Enqueue(value);
+			m_questPlayer.RemoveQuest(this, notifyPlayer: false);
 
 			if (m_charQuest.Count == 0)
 			{

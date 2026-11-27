@@ -10,14 +10,8 @@ namespace DOL.GS.PacketHandler.Client.v168
             _ = packet.ReadShort();
             _ = packet.ReadShort();
 
-            foreach (var entry in client.Player.QuestList)
-            {
-                if (questIndex != entry.Value)
-                    continue;
-
-                entry.Key.AbortQuest();
-                return;
-            }
+            // Port of OpenDAoC-Core 22197f1f6: looked up under the quest list lock, aborted outside it.
+            client.Player.GetQuestByIndex(questIndex)?.AbortQuest();
         }
     }
 }
