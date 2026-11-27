@@ -35,7 +35,7 @@ namespace DOL.AI.Brain
                 focus.ObjectState == GameObject.eObjectState.Active && focus.CurrentRegion == Body.CurrentRegion;
             if (!CompanionLeaderFocus.Takes(live, live && CanAggroTarget(focus), live && IsBreakablyControlled(focus),
                     live && Body.IsWithinRadius(focus, MAX_AGGRO_LIST_DISTANCE),
-                    live && EpicEncounterTactics.MustNotHit(bot, focus)))
+                    false))
                 return null;
 
             if (!AggroList.ContainsKey(focus))
