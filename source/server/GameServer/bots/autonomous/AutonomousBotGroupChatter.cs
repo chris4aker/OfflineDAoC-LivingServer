@@ -354,15 +354,11 @@ public static class AutonomousBotGroupChatter
     /// <summary>
     /// The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A groupmate
     /// takes the warning ("got it", "on it"); Beta 1.1.2, round 2: an inc call gets a terse "where" or "on it", not "ty for the
-    /// heads up" (too polite for a call). Unstyled, or null.
+    /// heads up" (too polite for a call). Unstyled, or null (then the voiced reply answers it as a warning).
     /// </summary>
-    private static string AlarmReply(GameBot heard, GamePlayer player, string message, eAutonomousChatIntent intent, string channel)
-    {
-        if (AutonomousChatContext.Reply(message, intent, AutonomousChatShortTalk.QuestionShape(message),
-                AutonomousBotChatCoordinator.ContextFor(heard, player, channel), Random.Shared) is { } call)
-            return call.Text;
-        return AutonomousBotVoices.TryLine(heard, "reply", out VC.Picked ok, answers: "player_headsup", relax: true) ? ok.Text : null;
-    }
+    private static string AlarmReply(GameBot heard, GamePlayer player, string message, eAutonomousChatIntent intent, string channel) =>
+        AutonomousChatContext.Reply(message, intent, AutonomousChatShortTalk.QuestionShape(message),
+            AutonomousBotChatCoordinator.ContextFor(heard, player, channel), Random.Shared)?.Text;
 
     /// <summary>For a congratulation, only the groupmates that just levelled (anyone else would not know what for); any other
     /// line keeps the whole pool. Pure.</summary>

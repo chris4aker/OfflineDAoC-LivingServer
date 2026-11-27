@@ -39,7 +39,7 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void Short_talk_and_a_question_to_the_bot_about_itself_skip_the_knowledge_lookup()
+        public void Short_talk_that_asks_nothing_skips_the_knowledge_lookup()
         {
             bool asked = false;
             string Lookup()
@@ -49,8 +49,9 @@ namespace DOL.GS.Tests
             }
             Party("ty", knowledge: Lookup, voiced: () => new AutonomousBotChatCoordinator.ReplyChoice(null, "none thanks"));
             Assert.That(asked, Is.False, "thanks is short talk, as in /faction");
-            Party("what lvl are you?", addressed: true, knowledge: Lookup, voiced: () => new AutonomousBotChatCoordinator.ReplyChoice(null, "none"));
-            Assert.That(asked, Is.False, "a groupmate named answers about itself from its own facts");
+            Assert.That(Party("hi all, quick q, how do i get to jordheim and is there a vault", knowledge: Lookup).Route, Is.EqualTo("knowledge"),
+                "a hello that asks something still asks");
+            Assert.That(AutonomousChatReplyPath.PartyAsksKnowledge("sc or drops at 25?", AutonomousChatIntentModel.Predict("sc or drops at 25?")), Is.True);
         }
 
         [Test]
@@ -59,7 +60,8 @@ namespace DOL.GS.Tests
             var choice = Party("adds!!", alarm: () => "on it", come: () => "omw", meetup: Meetup("adds!!"), pause: Pause("adds!!"));
             Assert.That(choice.Route, Is.EqualTo("context alarm"));
             Assert.That(choice.Text, Is.EqualTo("on it"));
-            Assert.That(Party("INC", alarm: () => null).Route, Is.EqualTo("none alarm"), "a warning nothing fits draws nothing");
+            Assert.That(Party("INC", alarm: () => null, voiced: () => new AutonomousBotChatCoordinator.ReplyChoice("where?", "context inc")).Route,
+                Is.EqualTo("context inc"), "a warning the situation has no call for takes the voiced reply");
         }
 
         [Test]

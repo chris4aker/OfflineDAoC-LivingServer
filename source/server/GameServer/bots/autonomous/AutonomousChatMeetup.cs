@@ -196,7 +196,14 @@ public static class AutonomousChatMeetup
         if (beside)
             return random.Next(3) switch { 0 => "k", 1 => "kk", _ => "ok" };
         if (sameRegion)
-            return place != null ? PlaceReply(place, botZone, false, true, random) : random.Next(3) switch { 0 => "k", 1 => "kk", _ => "cool" };
+            return place != null
+                ? random.Next(3) switch
+                {
+                    0 => $"k, coming to {place}",   // promise: true (a bot in the player's group follows its group in the region)
+                    1 => "k omw",                   // promise: true (it follows its group)
+                    _ => "omw, be there soon",      // promise: true (it follows its group)
+                }
+                : random.Next(3) switch { 0 => "k", 1 => "kk", _ => "cool" };
         string z = AutonomousChatFieldTalk.ShortZone(botZone);
         bool known = !string.IsNullOrWhiteSpace(botZone) && z != "here";
         if (place != null)
