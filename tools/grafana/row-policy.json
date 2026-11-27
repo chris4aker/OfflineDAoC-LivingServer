@@ -36,7 +36,9 @@
       "tool": "a file path under the user's profile folder (C:\\Users\\<name>\\.dotnet\\tools)",
       "command": "holds the tool and output file paths",
       "stdout": "dotnet-gcdump's own output: free text with the output file's full path",
-      "stderr": "dotnet-gcdump's own output: free text, exception messages with paths"
+      "stderr": "dotnet-gcdump's own output: free text, exception messages with paths",
+      "stdoutKeyLines": "the tool's error and timeout lines: free text, exception messages with paths",
+      "stderrKeyLines": "the tool's error and timeout lines: free text, exception messages with paths"
     }
   },
   "keep": {

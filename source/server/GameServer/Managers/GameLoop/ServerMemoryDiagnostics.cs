@@ -399,7 +399,8 @@ namespace DOL.GS
             string file = Path.Combine(AppContext.BaseDirectory, "logs", $"heap-{DateTime.Now:yyyyMMdd-HHmmss}-{heapMb}MB.gcdump");
             string[] arguments = HeapSnapshotTool.Arguments(Environment.ProcessId, file);
             // Issue #731: the tool path and the exact command, so a failed run can be repeated by hand. runtime= is the
-            // server's own .NET; the tool inherits the server's environment (DOTNET_ROOT included).
+            // server's own .NET version (the bundled one or a system install: rc.2 ran on a system 10.0.15, #732). The
+            // tool inherits the server's environment, whatever DOTNET_ROOT it holds.
             Log.Warn($"SERVER_HEAP_SNAPSHOT heapMB={heapMb} liveMB={LiveAfterFullCollectionMegabytes()} file=\"{file}\" " +
                      $"tool=\"{tool}\" command=\"{HeapSnapshotTool.ForRow(HeapSnapshotTool.CommandLine(tool, arguments))}\" runtime={Environment.Version} " +
                      "(the snapshot's own full collection pauses the server for a few seconds)");
@@ -441,15 +442,21 @@ namespace DOL.GS
                     try { dump.Kill(entireProcessTree: true); } catch { }
                     Log.Warn(FormattableString.Invariant($"SERVER_HEAP_SNAPSHOT overran seconds={Seconds():F0} file=\"{file}\" exists={File.Exists(file)} ") +
                              $"stdoutChars={stdout.TotalChars} stderrChars={stderr.TotalChars} " +
+                             $"stdoutKeyLines=\"{HeapSnapshotTool.ForRow(stdout.KeyLines())}\" stderrKeyLines=\"{HeapSnapshotTool.ForRow(stderr.KeyLines())}\" " +
                              $"stdout=\"{HeapSnapshotTool.ForRow(stdout.ToString())}\" stderr=\"{HeapSnapshotTool.ForRow(stderr.ToString())}\"");
                     return;
                 }
                 dump.WaitForExit(); // the parameterless wait also drains the redirected streams
                 int exit = dump.ExitCode;
-                Log.Info($"SERVER_HEAP_SNAPSHOT done exit={exit} file=\"{file}\" exists={File.Exists(file)} " +
-                         $"exitHex={HeapSnapshotTool.ExitHex(exit)} meaning={HeapSnapshotTool.ExitMeaning(exit)} " +
+                string meaning = HeapSnapshotTool.ExitMeaning(exit);
+                // A failed snapshot is a warning, so it shows in warn.log too.
+                string row = $"SERVER_HEAP_SNAPSHOT done exit={exit} file=\"{file}\" exists={File.Exists(file)} " +
+                         $"exitHex={HeapSnapshotTool.ExitHex(exit)} meaning={meaning} " +
                          FormattableString.Invariant($"seconds={Seconds():F0} stdoutChars={stdout.TotalChars} stderrChars={stderr.TotalChars} ") +
-                         $"stdout=\"{HeapSnapshotTool.ForRow(stdout.ToString())}\" stderr=\"{HeapSnapshotTool.ForRow(stderr.ToString())}\"");
+                         $"stdoutKeyLines=\"{HeapSnapshotTool.ForRow(stdout.KeyLines())}\" stderrKeyLines=\"{HeapSnapshotTool.ForRow(stderr.KeyLines())}\" " +
+                         $"stdout=\"{HeapSnapshotTool.ForRow(stdout.ToString())}\" stderr=\"{HeapSnapshotTool.ForRow(stderr.ToString())}\"";
+                if (meaning == "ok") Log.Info(row);
+                else Log.Warn(row);
             }
             catch (Exception exception)
             {

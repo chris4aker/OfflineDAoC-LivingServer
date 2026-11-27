@@ -63,6 +63,43 @@ namespace DOL.UnitTests
             Assert.That(HeapSnapshotTool.ForRow(""), Is.EqualTo("none"));
             Assert.That(HeapSnapshotTool.ForRow(null), Is.EqualTo("none"));
             Assert.That(HeapSnapshotTool.ForRow(" \r\n "), Is.EqualTo("none"));
+            // A trailing backslash would escape the field's closing quote for the Alloy drop pattern.
+            Assert.That(HeapSnapshotTool.ForRow(@"C:\Game\logs\"), Is.EqualTo(@"C:\Game\logs\\"));
+            Assert.That(HeapSnapshotTool.ForRow(@"a\b"), Is.EqualTo(@"a\b"));
+        }
+
+        [Test]
+        public void KeyLinesAreKeptWhereverTheyFall()
+        {
+            // With -v the caught exception comes late, among "still reading..." lines the head and tail would keep.
+            var output = new HeapSnapshotTool.BoundedOutput(32, 32);
+            output.AppendLine("Writing gcdump to 'C:\\x.gcdump'...");
+            for (int i = 0; i < 50; i++) output.AppendLine("  1.0s: Making GC Heap Progress...");
+            output.AppendLine(" 31.0s: Timed out after 30 seconds");
+            output.AppendLine(" 31.1s: [Error] Exception during gcdump: System.IO.EndOfStreamException: gone");
+            for (int i = 0; i < 50; i++) output.AppendLine(" 32.0s: still reading...");
+            output.AppendLine("\tFailed to collect gcdump. Try running with '-v' for more information.");
+            Assert.That(output.ToString(), Does.Not.Contain("EndOfStreamException"));
+            Assert.That(output.KeyLines(), Is.EqualTo(
+                " 31.0s: Timed out after 30 seconds\n" +
+                " 31.1s: [Error] Exception during gcdump: System.IO.EndOfStreamException: gone\n" +
+                "\tFailed to collect gcdump. Try running with '-v' for more information."));
+        }
+
+        [Test]
+        public void KeyLinesAreBounded()
+        {
+            var output = new HeapSnapshotTool.BoundedOutput();
+            output.AppendLine("[ERROR] " + new string('x', 5000));
+            for (int i = 0; i < 30; i++) output.AppendLine("Warning: " + i);
+            output.AppendLine("Assume no .NET Heap");
+            string[] lines = output.KeyLines().Split('\n');
+            Assert.That(lines, Has.Length.EqualTo(HeapSnapshotTool.MaxKeyLines + 1));
+            Assert.That(lines[0], Has.Length.EqualTo(HeapSnapshotTool.KeyLineChars));
+            Assert.That(lines[^1], Is.EqualTo("[+12 more]"));
+            Assert.That(new HeapSnapshotTool.BoundedOutput().KeyLines(), Is.Empty);
+            Assert.That(HeapSnapshotTool.IsKeyLine("Done flushing the type table"), Is.False);
+            Assert.That(HeapSnapshotTool.IsKeyLine(null), Is.False);
         }
 
         [Test]

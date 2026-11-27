@@ -7,7 +7,9 @@ section: The server
   now reads the tool's stdout and stderr asynchronously into bounded buffers (the first and last 1 KB of each) and
   writes them on the `SERVER_HEAP_SNAPSHOT done` row after the existing `exit`, `file` and `exists`, with `exitHex`,
   `meaning` (`ok`, `tool-failed` for the tool's own -1, `host-failed` when the .NET host could not start it at all),
-  `seconds` and the character counts. The start row adds the resolved `tool` path, the exact `command` and the
+  `seconds`, the character counts and, kept whole wherever they fall, up to 20 lines per stream that carry
+  `[Error]`, `[ERROR]`, `Timed out`, `Assume no`, `Warning:` or `Failed to collect` (`stdoutKeyLines`,
+  `stderrKeyLines`). A `done` row that isn't `ok` is a warning. The start row adds the resolved `tool` path, the exact `command` and the
   server's `runtime`. A tool still running after 10 minutes is stopped and logged as `SERVER_HEAP_SNAPSHOT overran`
   with its output so far. The tool now runs with `-v` (its own timeline) and `--timeout 300`: its default 30-second
   limit, counted from its start, is one of the few ways it exits -1 without a file, and the only one that grows with

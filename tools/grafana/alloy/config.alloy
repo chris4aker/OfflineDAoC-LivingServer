@@ -628,7 +628,7 @@ loki.process "offlinedaoc" {
 		selector = "{job=\"offlinedaoc\"} |~ \"^(?:SERVER_HEAP_SNAPSHOT)(?: |$)\""
 
 		stage.replace {
-			expression = "( (?:command|file|stderr|stdout|tool)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
+			expression = "( (?:command|file|stderr|stderrKeyLines|stdout|stdoutKeyLines|tool)=(?:\"(?:[^\"\\\\]|\\\\.)*\"|[^ ]*))"
 			replace    = ""
 		}
 	}

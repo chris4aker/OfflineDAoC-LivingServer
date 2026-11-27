@@ -28,6 +28,19 @@ namespace DOL.GS
         /// the start of what the tool prints; its timeline and verdict at the end).</summary>
         public const int HeadChars = 1024, TailChars = 1024;
 
+        /// <summary>
+        /// Lines kept whole wherever they fall (review of PR #736): with -v the tool writes the exceptions it caught late,
+        /// then "still reading..." once a second while its session shuts down, so the head and tail alone can miss them.
+        /// </summary>
+        public static readonly string[] KeyMarkers = ["[Error]", "[ERROR]", "Timed out", "Assume no", "Warning:", "Failed to collect"];
+
+        /// <summary>At most this many key lines are kept per stream, each cut to KeyLineChars.</summary>
+        public const int MaxKeyLines = 20, KeyLineChars = 1024;
+
+        /// <summary>Whether a line of the tool's output is one KeyMarkers names.</summary>
+        public static bool IsKeyLine(string line) =>
+            line != null && KeyMarkers.Any(marker => line.Contains(marker, StringComparison.Ordinal));
+
         /// <summary>The tool's arguments: -v adds its own timeline ("Timed out after", "Assume no .NET Heap") to stdout.</summary>
         public static string[] Arguments(int processId, string file, int timeoutSeconds = ToolTimeoutSeconds) =>
         [
@@ -65,7 +78,8 @@ namespace DOL.GS
             exitCode is int code ? "0x" + unchecked((uint)code).ToString("X8", CultureInfo.InvariantCulture) : "none";
 
         /// <summary>Text for one quoted log field: one line (line breaks become " | "), double quotes become single,
-        /// control characters dropped, "none" when empty.</summary>
+        /// control characters dropped, a trailing backslash doubled (so the closing quote can't read as escaped), "none"
+        /// when empty.</summary>
         public static string ForRow(string text)
         {
             if (string.IsNullOrWhiteSpace(text)) return "none";
@@ -87,6 +101,7 @@ namespace DOL.GS
                 else if (c == '\t') row.Append(' ');
                 else if (!char.IsControl(c)) row.Append(c);
             }
+            if (row.Length > 0 && row[^1] == '\\') row.Append('\\');
             return row.ToString();
         }
 
@@ -100,6 +115,8 @@ namespace DOL.GS
             private readonly int _head, _tail;
             private readonly StringBuilder _start = new();
             private readonly StringBuilder _end = new();
+            private readonly List<string> _keyLines = new();
+            private int _keyLinesSeen;
             private readonly Lock _sync = new();
             private long _total;
 
@@ -117,6 +134,12 @@ namespace DOL.GS
                 if (line == null) return;
                 lock (_sync)
                 {
+                    if (IsKeyLine(line))
+                    {
+                        _keyLinesSeen++;
+                        if (_keyLines.Count < MaxKeyLines)
+                            _keyLines.Add(line.Length <= KeyLineChars ? line : line.Substring(0, KeyLineChars));
+                    }
                     string text = line + "\n";
                     _total += text.Length;
                     int intoHead = Math.Min(text.Length, _head - _start.Length);
@@ -124,6 +147,17 @@ namespace DOL.GS
                     if (intoHead == text.Length) return;
                     _end.Append(text, intoHead, text.Length - intoHead);
                     if (_end.Length > _tail) _end.Remove(0, _end.Length - _tail);
+                }
+            }
+
+            /// <summary>The lines KeyMarkers names, in order (at most MaxKeyLines), "[+N more]" when more came.</summary>
+            public string KeyLines()
+            {
+                lock (_sync)
+                {
+                    string kept = string.Join("\n", _keyLines);
+                    int more = _keyLinesSeen - _keyLines.Count;
+                    return more > 0 ? $"{kept}\n[+{more.ToString(CultureInfo.InvariantCulture)} more]" : kept;
                 }
             }
 
