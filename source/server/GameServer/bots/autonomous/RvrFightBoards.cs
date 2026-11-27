@@ -314,6 +314,9 @@ public static class RvrFightBoards
                     hostile.Add(Snapshot(npc, side, sideTargets));
         }
 
+        // #529 step 2: the shadow. Which of these did any member actually know of? Logs only; the board is unchanged.
+        ShadowContacts(asker, members, hostile, now);
+
         // The tier is given once and kept (a later change of leader does not re-roll it).
         RvrGroupState state = Volatile.Read(ref entry.State);
         if (!state.SkillTier.HasValue)
@@ -324,6 +327,64 @@ public static class RvrFightBoards
 
         RvrFightBoard board = RvrFightBoard.Build(now, asker.CurrentRegionID, asker.Realm, friendly, hostile) with { State = state, MainBody = mainBody };
         return board with { Plan = RvrFightPlanner.Next(previous?.Plan, board, state, RvrTacticsSwitches.Current, now) };
+    }
+
+    /// <summary>
+    /// #529 step 2 (piece B in shadow): checks each enemy the area search listed against the contacts of the group's
+    /// autonomous gamebots (RvrContacts) and tallies it in RvrContactShadow: RVR_CONTACT_SHADOW once a minute per realm,
+    /// RVR_CONTACT_UNKNOWN for a few "listed but unknown" pairs. A group with a player in it is left out (its player has
+    /// his own eyes; its bots are his companions or helpers, which keep no contacts). Nothing on the board changes.
+    /// </summary>
+    private static void ShadowContacts(GameLiving asker, List<GameLiving> members, List<RvrCombatant> hostile, long now)
+    {
+        if (asker == null || members.Count == 0)
+            return;
+        var owners = new List<long>(members.Count);
+        foreach (GameLiving member in members)
+        {
+            if (member is GamePlayer)
+                return;
+            if (member is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsPlayerLedGroup: false, IsHiredCompanion: false } bot &&
+                bot.DatabaseID > 0)
+                owners.Add(bot.DatabaseID);
+        }
+        if (owners.Count == 0)
+            return;
+        RvrContacts contacts = AutonomousWorldBotController.RvrContactTable;
+        var listed = new List<RvrShadowListing>(hostile.Count);
+        foreach (RvrCombatant enemy in hostile)
+        {
+            bool known = contacts.KnownByAny(owners, enemy.Key, now, out RvrContact freshest);
+            listed.Add(new RvrShadowListing(enemy.Key, known, known && freshest.AgeMilliseconds(now) > RvrContactShadow.StaleAfterMilliseconds,
+                enemy.IsPlayer, enemy.Living != null ? (int)asker.GetDistanceTo(enemy.Living) : -1));
+        }
+        List<RvrShadowListing> samples = AutonomousWorldBotController.RvrContactShadowTally.Board((int)asker.Realm, RvrPartyKey.Of(asker), now,
+            listed, out List<string> lines);
+        if (!Log.IsInfoEnabled)
+            return;
+        if (lines != null)
+            foreach (string line in lines)
+                Log.Info(line);
+        if (samples == null)
+            return;
+        GameLiving leader = asker.Group?.LivingLeader ?? asker;
+        long groupId = leader is GameBot leaderBot ? leaderBot.DatabaseID : leader.ObjectID;
+        foreach (RvrShadowListing sample in samples)
+        {
+            GameLiving enemy = null;
+            foreach (RvrCombatant listedEnemy in hostile)
+                if (listedEnemy.Key == sample.Target)
+                {
+                    enemy = listedEnemy.Living;
+                    break;
+                }
+            if (enemy == null)
+                continue;
+            // "Listed but unknown": the board's area search has an enemy no member noticed, was told of or was hit by.
+            Log.Info($"RVR_CONTACT_UNKNOWN group={groupId} realm={GlobalConstants.RealmToName(asker.Realm)} target=\"{enemy.Name}\" " +
+                     $"kind={AutonomousWorldBotController.PerceivedKind(enemy)} party={RvrPartyKey.Label(RvrPartyKey.Of(enemy))} " +
+                     $"distance={sample.Distance} members={owners.Count} region={asker.CurrentRegionID}");
+        }
     }
 
     /// <summary>The RVR_FIGHT_BOARD line: the group (by its leader), the region, what it sees, both strengths, the stance and the tier.</summary>
