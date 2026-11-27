@@ -238,8 +238,37 @@ namespace DOL.GS
 
             this.MetricsEnabled = root["Server"]["MetricsEnabled"].GetBoolean(false);
             this.OtlpEndpoint = new Uri(root["Server"]["OtlpEndpoint"].GetString("http://localhost:4317/"));
-            string durationFromConfig = root["Server"]["MetricsExportInterval"].GetString("60s");
-            this.MetricsExportInterval = ParseDurationToMilliseconds(durationFromConfig);
+            this.MetricsExportInterval = MetricsIntervalMilliseconds(
+                root["Server"]["MetricsInterval"].GetString(null),
+                root["Server"]["MetricsExportInterval"].GetString(null));
+        }
+
+        /// <summary>The metrics export interval when neither key is set or the value can't be read.</summary>
+        public const int DefaultMetricsIntervalMilliseconds = 60_000;
+
+        /// <summary>
+        /// Pure (#653): the metrics export interval in milliseconds. The shipped serverconfig.xml writes
+        /// <c>MetricsInterval</c>, while the code used to read only <c>MetricsExportInterval</c>, so the interval always
+        /// fell back to 60 s. Both are accepted now, the shipped key first. A missing, unreadable or under-one-second value
+        /// gives 60 s instead of stopping the server's start.
+        /// </summary>
+        public static int MetricsIntervalMilliseconds(string metricsInterval, string metricsExportInterval)
+        {
+            foreach (string value in new[] { metricsInterval, metricsExportInterval })
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    continue;
+                try
+                {
+                    int milliseconds = ParseDurationToMilliseconds(value.Trim());
+                    return milliseconds >= 1_000 ? milliseconds : DefaultMetricsIntervalMilliseconds;
+                }
+                catch (Exception e) when (e is FormatException or OverflowException)
+                {
+                    return DefaultMetricsIntervalMilliseconds;
+                }
+            }
+            return DefaultMetricsIntervalMilliseconds;
         }
 
         /// <summary>
