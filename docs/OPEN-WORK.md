@@ -40,6 +40,8 @@ milestone plan, [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/is
 Build order inside 1.2.3: realism 2b (#479) first, RvR piece C (#530) before pieces B (#529) and D (#531), and #571
 before the companion work.
 
+- [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738) Milestone plan: every unplaced issue into 1.2.4 or 1.2.5, in build order. `needs-owner`.
+
 ### Release, install and CI
 
 - [#709](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/709) v1.2.3-rc.2: contents, build, fresh-world overnight run.
@@ -237,8 +239,6 @@ From [upstream/OPENDAOC-LEDGER-2026-11.md](upstream/OPENDAOC-LEDGER-2026-11.md).
 
 The [1.2.4 milestone](https://github.com/chris4aker/OfflineDAoC-LivingServer/milestone/2): what carries on after the polish release, with no single headline (owner,
 2026-11-26). Order as in [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738).
-
-- [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738) Milestone plan: every unplaced issue into 1.2.4 or 1.2.5, in build order. `needs-owner`.
 
 ### Epic encounters and raids
 
