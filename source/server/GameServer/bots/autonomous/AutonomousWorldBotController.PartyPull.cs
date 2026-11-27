@@ -3,7 +3,7 @@ using System.Numerics;
 namespace DOL.GS;
 
 /// <summary>
-/// The rest of the party puller's camp turn (1.2.3, #569 step 9; True165 0e0a397). See AutonomousPartyPullCamp for the
+/// The rest of the party puller's camp turn (1.2.3, #569 step 9). See AutonomousPartyPullCamp for the
 /// rules and the switch. Formation movement is not touched: the leader's hold and the followers' formation follow are
 /// unchanged. Autonomous gamebot parties only (a ranged-pull party: UsesDefensivePullGroup), outdoors only.
 /// </summary>

@@ -75,8 +75,8 @@ namespace DOL.GS
             /// <summary>
             /// A ranged pull that was made but timed out with the target alive and never at the party (it ignored the
             /// shot or couldn't path) is a failed try too: two in a row bench it like two with no firing point.
-            /// DividedRealms saw 280 of 1,097 PvE tasks expire on this loop ("Holding group formation"). Port of
-            /// rambodolphin13/DividedRealms 1d18f864, folded into the #539 bench (which already had its 7e736ca8 half).
+            /// DividedRealms saw 280 of 1,097 PvE tasks expire on this loop ("Holding group formation").
+            /// Folded into the #539 bench.
             /// </summary>
             public bool RecordIgnored(int target, long now) => RecordUnreachable(target, now);
 

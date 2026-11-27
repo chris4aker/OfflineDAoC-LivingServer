@@ -969,7 +969,7 @@ namespace DOL.GS
                 // authored monster coordinate may be farther away or above
                 // that floor; never replace the ordered chain with a generic
                 // direct PathTo merely because raw spawn distance is large.
-                // #569 step 9 (True165 0e0a397): a non-leader puller beside an arrived leader is at the camp (outdoors
+                // #569 step 9: a non-leader puller beside an arrived leader is at the camp (outdoors
                 // only), so its formation slot outside the ring no longer keeps it from its camp turn.
                 bool pullerArrivedWithLeader = PartyPullerArrivedWithLeader(bot, campDistance, dungeonApproach,
                     certifiedDarknessFallsCamp);
@@ -1889,7 +1889,7 @@ namespace DOL.GS
         public const int FormationFollowReach = 2_500;
 
         /// <summary>
-        /// Pure rule for the follow step (Nikse77 b0fcd555, via rambodolphin13/DividedRealms 0996fff6ea): a faster
+        /// Pure rule for the follow step: a faster
         /// independent route (a stablemaster horse or town teleporter) is only for the leader, and never for a formed PvE
         /// party. A follower that took one every turn dropped and re-took its formation follow: a one-second stutter.
         /// </summary>
@@ -1961,7 +1961,7 @@ namespace DOL.GS
             Vector3 strategicDestination = directive.Camp == null
                 ? new Vector3(leader.X, leader.Y, leader.Z)
                 : new Vector3(directive.Camp.X, directive.Camp.Y, directive.Camp.Z);
-            // Nikse77 2026-11-01 (via rambodolphin13): only the leader may take an independent route (a town teleporter, a
+            // Only the leader may take an independent route (a town teleporter, a
             // plotted leg). A member that took one every turn released its formation follow, the next turn re-issued it,
             // and the party visibly jerked once per second instead of walking behind its leader.
             if (MayTakeIndependentRouteWhileFollowing(directive.ObjectiveKind, bot == leader) &&
@@ -1971,7 +1971,7 @@ namespace DOL.GS
 
             bool tight = leader.CurrentRegion?.IsDungeon == true || leader.CurrentZone?.IsDungeon == true;
             // Aim around where the leader is about to be, not where it was
-            // (smooth group travel from the stefanrows/OfflineDAoC fork).
+            // (smooth group travel).
             Vector3 formationCenter = leader.IsMoving && !tight ? AutonomousGroupMotion.PredictLeader(leader) : new(leader.X, leader.Y, leader.Z);
             Vector3 formation = AutonomousBotGroupCoordinator.FormationPoint(bot, formationCenter, tight);
             // Close the gap on the move so the party travels as one unit instead of the
@@ -3296,7 +3296,7 @@ namespace DOL.GS
                 PartyPullStart partyPullWhy = PartyPullStart.NotApplicable;
                 bool partyPullHandled = !SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
                     AutonomousDefensivePull.TryBegin(bot, target, out partyPullWhy);
-                // #569 step 9 (True165 0e0a397): too far = look for a nearer target, never the ordinary pull's walk into the
+                // #569 step 9: too far = look for a nearer target, never the ordinary pull's walk into the
                 // pack; the ordinary pull only in the designed cases (contact, no ranged pull, benched, not a pull party).
                 // Outdoors only: dungeon and Darkness Falls camps keep today's pull.
                 PartyPullFallback partyPullNext = AutonomousPartyPullCamp.AfterPartyPull(partyPullHandled, partyPullWhy,
@@ -3669,7 +3669,7 @@ namespace DOL.GS
                 .Where(npc => GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
                 // A monster already fighting someone outside the bot's side (its group, or its realm raid) is theirs,
                 // as players left it; and one another bot or player outside it has pulled or hit, even before it turns on
-                // them. No "sry ks" and no shared XP (port of True165 e4d2498ca). Self-defense is handled elsewhere.
+                // them. No "sry ks" and no shared XP. Self-defense is handled elsewhere.
                 .Where(npc => !npc.InCombat || npc.TargetObject == bot ||
                               npc.TargetObject is GameLiving fighting && AutonomousMobClaims.SameFight(bot, fighting) ||
                               npc.TargetObject is not GameLiving)
@@ -4099,7 +4099,7 @@ namespace DOL.GS
             // Less competition first: crowded camps only when every camp is crowded (AutonomousCampCompetition).
             legalCells = AutonomousCampCompetition.PreferQuiet(legalCells, camp => camp.Id, camp => camp.LiveMobCount,
                 bot.PersistentRecord?.CurrentCampId, sharedGroup ? groupSize : 1);
-            // #569 step 3 (True165 14dcaa5): a PvE party picks camps it can reach within its task time (after the quiet filter)
+            // #569 step 3: a PvE party picks camps it can reach within its task time (after the quiet filter)
             if (sharedGroup && AutonomousGroupTravelBudget.Enabled &&
                 _groupDirective?.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
                 legalCells = BudgetGroupCamps(bot, legalCells, destinations);
@@ -4429,7 +4429,7 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// GitHub #544 (ported from True 1.65's AddUncoveredLiveCamps): live outdoor spawn clusters that no camp of their
+        /// GitHub #544: live outdoor spawn clusters that no camp of their
         /// name covers become <c>live-uncovered:</c> camps, in every realm alike (AutonomousUncoveredLiveCamps). Without it
         /// a CapnBry-covered zone offered camps only at its sightings, while the mostly Hibernian source-empty zones offered
         /// every cluster. Starter creatures (level 0-1) stay with AddStarterCamps and its route check from the zone hub.
@@ -6104,7 +6104,7 @@ namespace DOL.GS
             _terminalRouteFailuresInPocket = 0;
         }
 
-        // ---- Route goal fixes, ported from stefanrows/OfflineDAoC (AutonomousRouteGoalFix.cs) ----
+        // ---- Route goal fixes (AutonomousRouteGoalFix.cs) ----
 
         private Vector3 ApplyGoalSnap(Vector3 point) =>
             Vector3.DistanceSquared(point, _goalSnapFrom) <= 16 * 16 ? _goalSnapTo : point;

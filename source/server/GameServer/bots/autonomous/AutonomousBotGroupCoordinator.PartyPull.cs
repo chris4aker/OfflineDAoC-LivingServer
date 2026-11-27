@@ -7,8 +7,8 @@ using System.Text.Json;
 namespace DOL.GS;
 
 /// <summary>
-/// The puller's camp turn, coordinator side (1.2.3, #569 step 9). Port of zomboden/OfflineDAoC-True165 0e0a397
-/// (GPL-3.0, shadowofze); AutonomousPartyPullCamp has the rules. A party whose only targets are too far to shoot from a
+/// The puller's camp turn, coordinator side (1.2.3, #569 step 9).
+/// AutonomousPartyPullCamp has the rules. A party whose only targets are too far to shoot from a
 /// reachable spot moves its camp point onto the floor at one of them, like TryRepositionEmptyCamp: same camp identity and
 /// task clock, the leader walks the formation in with the ordinary camp travel. Outdoor bot-only GroupPve parties only:
 /// realm expeditions, parties hosting a real player and parties formed from a player's group keep their camp.

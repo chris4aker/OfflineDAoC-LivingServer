@@ -107,7 +107,7 @@ public sealed record SocialExpansionSettings
     public bool CraftingEraStart { get; init; } = true;
     /// <summary>Another order's craft stops at 75% or 40% of the primary (crafting_secondary_caps). Off by default.</summary>
     public bool CraftingSecondaryCaps { get; init; }
-    /// <summary>Crafting skill points per gain, 1 (classic) to 10 (crafting_skill_rate, True165's key).</summary>
+    /// <summary>Crafting skill points per gain, 1 (classic) to 10 (crafting_skill_rate).</summary>
     public double CraftingPace { get; init; } = DefaultCraftingPace;
     /// <summary>The smith's repairs: classic, light (the default) or free (player_upkeep).</summary>
     public string PlayerUpkeep { get; init; } = "light";

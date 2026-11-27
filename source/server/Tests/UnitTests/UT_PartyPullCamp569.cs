@@ -7,8 +7,8 @@ using NUnit.Framework;
 namespace DOL.UnitTests
 {
     /// <summary>
-    /// 1.2.3 (#569 step 9): the rest of the party puller's camp turn, ported from zomboden/OfflineDAoC-True165 0e0a397 (its
-    /// UT_PartyPullCamp tests, adapted). A too-far target is passed over instead of the tank walking into the pack, and
+    /// 1.2.3 (#569 step 9): the rest of the party puller's camp turn.
+    /// A too-far target is passed over instead of the tank walking into the pack, and
     /// after 45 s the camp point moves in (at most twice per camp in 10 minutes); a puller beside its arrived leader is at
     /// the camp; and it waits with the party while the camp is empty.
     /// </summary>

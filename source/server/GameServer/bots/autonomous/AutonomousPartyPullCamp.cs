@@ -3,7 +3,7 @@ using DOL.GS.ServerProperties;
 
 namespace DOL.GS
 {
-    /// <summary>Why a party ranged pull did or did not start (#569 step 9; True165 0e0a397).</summary>
+    /// <summary>Why a party ranged pull did or did not start (#569 step 9).</summary>
     public enum PartyPullStart
     {
         /// <summary>The ranged pull is under way.</summary>
@@ -36,8 +36,8 @@ namespace DOL.GS
     }
 
     /// <summary>
-    /// The rest of the party puller's camp turn (1.2.3, #569 step 9). Port of zomboden/OfflineDAoC-True165 0e0a397
-    /// (GPL-3.0, shadowofze); step 1 (AutonomousPartyPullStall) took its stall monitor, and Living Server already had the
+    /// The rest of the party puller's camp turn (1.2.3, #569 step 9).
+    /// Step 1 (AutonomousPartyPullStall) has the stall monitor, and Living Server already had the
     /// starvation fix (6d41a77) and the unreachable release (#539). This takes the three parts left:
     /// <list type="bullet">
     /// <item>A target too far for the short approach to a firing point is skipped for a minute instead of falling
