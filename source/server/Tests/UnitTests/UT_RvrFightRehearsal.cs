@@ -80,6 +80,28 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Scenario5_TwoEightsLinkIntoABattlegroupAndMeetAnEight()
+        {
+            // #599 step 1: two nearby Albion eights link (16 heads, one support roster); a pair, a far eight and the other
+            // realm do not. The fight's outcome is printed, not asserted.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.BattlegroupResult result = RvrFightRehearsal.Battlegroup(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.BattlegroupId, Does.StartWith("bgrp-albion-"), "the two eights linked");
+                Assert.That(result.Linked, Has.Count.EqualTo(2), "two groups");
+                Assert.That(result.LeadForce, Is.EqualTo(result.Linked[0]));
+                Assert.That(result.PairLinked, Is.False, "a duo stays a duo");
+                Assert.That(result.FarLinked, Is.False, "an eight 9,000 away is not linked");
+                Assert.That(result.MidgardLinked, Is.False, "the lone Midgard eight has no battlegroup");
+                Assert.That(result.RosterSizes, Is.EqualTo(new[] { 16 }), "every Albion bot of the two eights shares one roster of 16");
+                Assert.That(result.MidgardInRosters, Is.Zero);
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
+        }
+
+        [Test]
         public void Scenario3_APlayerInRangeOfABotGroup()
         {
             var clock = Stopwatch.StartNew();

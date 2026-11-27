@@ -2228,6 +2228,14 @@ namespace DOL.GS
                 return FollowDynamicGroupLeader(bot, _groupDirective);
             }
 
+            // #599 step 1: a battlegroup's follower group trails its lead group outside any event; its leader goes where
+            // the lead's leader goes instead of choosing its own destination (its members follow it, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                AutonomousRvrEventLayer.BattlegroupLeadOf(forceId) is { } battlegroupLead &&
+                AutonomousBotGroupCoordinator.BattlegroupLeader(battlegroupLead) is { IsAlive: true } battlegroupLeader &&
+                battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
+                return TrailBattlegroupLead(bot, battlegroupLead, battlegroupLeader);
+
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {
                 GameRelic escorted = RelicMgr.GetRelics().FirstOrDefault(relic =>
