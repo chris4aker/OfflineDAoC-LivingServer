@@ -85,6 +85,7 @@
   "bot_voices_debates": "True",
   "bot_voices_enabled": "True",
   "bot_voices_tells": "True",
+  "bot_weapon_set_rules": "True",
   "bot_wrong_roads": "True",
   "bot_xp_rate_by_level": "",
   "craft_made_lines": "False",
