@@ -252,13 +252,17 @@ namespace DOL.GS
 
         /// <summary>
         /// #570 (port of True165 d1320e6): a step the seam reversal guard caught leaves the shared memory and is remembered as
-        /// failed, so the next bot from the same spot to the same goal isn't handed the crossing that turns back.
+        /// failed, so the next bot from the same spot to the same goal isn't handed the crossing that turns back. A held group
+        /// member forgets without remembering it failed (rememberFailed false): it plans again from the same spot after its
+        /// hold, and a failed step there would end its trip and drop its group's camp (#570 review).
         /// </summary>
-        public static void ForgetStep(Region region, Zone from, Zone to, Vector3 start, Vector3 goal, Func<Zone, bool> allowed = null)
+        public static void ForgetStep(Region region, Zone from, Zone to, Vector3 start, Vector3 goal, Func<Zone, bool> allowed = null,
+            bool rememberFailed = true)
         {
             if (region == null || from == null || to == null) return;
             var key = StepKey(region, from, to, start, goal, allowed);
             SolvedSteps.TryRemove(key, out _);
+            if (!rememberFailed) return;
             if (FailedSteps.Count > 50_000) FailedSteps.Clear();
             FailedSteps[key] = GameLoop.GameLoopTime + FailedStepMemoryMilliseconds;
         }

@@ -24,6 +24,12 @@ namespace DOL.GS
         /// the controller's route-stall time, so a waiting member never turns into stall recovery and its AbandonCamp.
         /// </summary>
         public const long MemberHoldMilliseconds = 10_000;
+        /// <summary>
+        /// #570 review: how many holds a member gets inside <see cref="WindowMilliseconds"/> before it gives up like a solo
+        /// bot. Each hold ends with the member following its leader again; a crossing that still turns it back after that
+        /// is a route that doesn't lead on, and a bounded give-up beats pacing at the border.
+        /// </summary>
+        public const int MaxMemberHolds = 2;
 
         public struct State
         {
@@ -31,6 +37,32 @@ namespace DOL.GS
             public Vector3 Goal;
             public long Tick;
             public int Reversals;
+            /// <summary>Member holds taken since <see cref="FirstHoldTick"/> (kept by <see cref="ClearReversals"/>).</summary>
+            public int MemberHolds;
+            public long FirstHoldTick;
+        }
+
+        /// <summary>After a caught reversal: the count starts again from the next step; the member holds are kept.</summary>
+        public static void ClearReversals(ref State state)
+        {
+            state.Last = null;
+            state.Reversals = 0;
+        }
+
+        /// <summary>
+        /// Takes one member hold: true while fewer than <see cref="MaxMemberHolds"/> were taken inside the window (an older
+        /// first hold starts a fresh window), false when the member should give up instead.
+        /// </summary>
+        public static bool TakeMemberHold(ref State state, long now)
+        {
+            if (state.MemberHolds == 0 || now - state.FirstHoldTick >= WindowMilliseconds)
+            {
+                state.MemberHolds = 0;
+                state.FirstHoldTick = now;
+            }
+            if (state.MemberHolds >= MaxMemberHolds) return false;
+            state.MemberHolds++;
+            return true;
         }
 
         /// <summary>

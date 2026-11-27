@@ -5365,15 +5365,8 @@ namespace DOL.GS
                 _routeRecoveryBaselineDistance = -1f;
             }
 
-            // #570: a group member whose seam step was failed waits out its hold; the progress clock restarts meanwhile so
-            // the wait never becomes stall recovery (which can end in AbandonCamp and drop the group's camp). A moved goal
-            // (the leader walked on) plans at once.
-            if (now < _seamMemberHoldUntilTick && !destinationChanged)
-            {
-                _lastRoutePosition = current;
-                _lastRouteProgressTick = now;
+            if (HoldAfterSeamReversal(current, now, destinationChanged))
                 return true;
-            }
 
             if (_routeInterruptedByCombat)
             {
@@ -5513,94 +5506,7 @@ namespace DOL.GS
             }
 
             if (destinationZone != currentZone)
-            {
-                if (!_resolvedBoundaryStep.HasValue || _resolvedBoundaryZone != currentZone)
-                {
-                    IPathfindingMgr nav = PathfindingProvider.Instance;
-                    Func<Zone, bool> allowedZones = zone => AutonomousRealmBoundary.Allows(bot.Realm, bot.CurrentRegionID, zone.ID);
-                    if (!AutonomousZoneItinerary.TryNextStep(bot.CurrentRegion, currentZone, destinationZone,
-                            current, destination, nav, out var resolved, allowedZones))
-                    {
-                        if (TryPlanCapitalTransit(bot, destination))
-                            return HandleCapitalTransit(bot);
-                        // Four live-audited Hibernian source components have no
-                        // safe seam despite valid destinations. Only those exact
-                        // pockets may use a mesh-proven escape; everyone else
-                        // retains ordinary rejection and cooldown behavior.
-                        if (TryEscapeTerminalRoutePocket(bot, current, destination))
-                            return true;
-                        RejectPendingBoarding(bot, "No safe connected zone seam on the approach");
-                        AbandonCamp(bot, "No safe connected zone seam on the selected route");
-                        return false;
-                    }
-                    long seamNow = GameLoop.GameLoopTime;
-                    if (AutonomousSeamReversalGuard.ShouldFail(ref _seamReversal, resolved, destination, seamNow))
-                    {
-                        // Each zone sends the bot back to the other: it stands on ground that joins neither zone's main ground.
-                        // The planner never fails here, so the failure paths below never ran; take them now (#570: at the
-                        // second reversal, and both legs leave the shared step memory so no other bot is handed them).
-                        AutonomousZoneItinerary.ForgetStep(bot.CurrentRegion, currentZone, destinationZone, current, destination, allowedZones);
-                        if (_lastSeamPlanZone != null && _lastSeamPlanZone != currentZone)
-                            AutonomousZoneItinerary.ForgetStep(bot.CurrentRegion, _lastSeamPlanZone, destinationZone,
-                                _lastSeamPlanStart, destination, allowedZones);
-                        _seamReversal = default;
-                        _lastSeamPlanZone = null;
-                        _resolvedBoundaryStep = null;
-                        _resolvedBoundaryZone = null;
-                        StuckHotspots.NoteShared("seam", bot);
-                        bool memberOnly = AutonomousSeamReversalGuard.FailsMemberOnly(
-                            _groupDirective?.IsDynamic == true && bot.Group != null,
-                            _groupDirective?.Leader == null || _groupDirective.Leader == bot,
-                            AutonomousRealmRaid.GetView(bot.Group) != null);
-                        Log.Warn($"AUTONOMOUS_ZONE_SEAM_CYCLE bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
-                                 $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} zone={currentZone.ID} " +
-                                 $"position={bot.X},{bot.Y},{bot.Z} goalZone={destinationZone.ID} goal={(int)destination.X},{(int)destination.Y},{(int)destination.Z} " +
-                                 $"step={(int)resolved.Inside.X},{(int)resolved.Inside.Y}>{(int)resolved.Outside.X},{(int)resolved.Outside.Y} " +
-                                 $"reversals={AutonomousSeamReversalGuard.TriggerReversals} group={bot.Group?.MemberCount ?? 1} " +
-                                 $"outcome={(memberOnly ? "member_hold" : "give_up")} activity=\"{bot.PersistentRecord?.Activity}\"");
-                        if (memberOnly)
-                        {
-                            // The group keeps its shared camp: this member stops, waits and plans again.
-                            RejectPendingBoarding(bot, "A zone seam route that turns back on itself");
-                            bot.StopMovingOnPath();
-                            bot.StopMoving();
-                            _nextMoveOrderTick = seamNow + AutonomousSeamReversalGuard.MemberHoldMilliseconds;
-                            _seamMemberHoldUntilTick = _nextMoveOrderTick;
-                            _lastRoutePosition = current;
-                            _lastRouteProgressTick = seamNow;
-                            return false;
-                        }
-                        if (TryPlanCapitalTransit(bot, destination))
-                            return HandleCapitalTransit(bot);
-                        if (TryEscapeTerminalRoutePocket(bot, current))
-                            return true;
-                        RejectPendingBoarding(bot, "A zone seam route that turns back on itself");
-                        AbandonCamp(bot, "A zone seam route that turns back on itself");
-                        return false;
-                    }
-                    _lastSeamPlanZone = currentZone;
-                    _lastSeamPlanStart = current;
-                    _resolvedBoundaryStep = resolved;
-                    _resolvedBoundaryZone = currentZone;
-                }
-                AutonomousZoneBoundaryRouting.Step step = _resolvedBoundaryStep.Value;
-                if (Vector3.DistanceSquared(current, step.Inside) <= 96 * 96)
-                    bot.WalkTo(step.Outside, bot.MaxSpeed);
-                else
-                {
-                    _pathSegmentOrigin = current;
-                    if (bot.movementComponent is NpcMovementComponent mover)
-                    {
-                        // Both seam points were validated by the itinerary. If
-                        // this enters the goal zone, its final corridor was too.
-                        Vector3? final = destinationZone == bot.CurrentRegion.GetZone((int)step.Outside.X, (int)step.Outside.Y)
-                            ? destination : null;
-                        mover.PathAcrossValidatedSeam(step.Inside, step.Outside, final, bot.MaxSpeed);
-                    }
-                    else bot.PathTo(step.Inside, bot.MaxSpeed);
-                }
-                return true;
-            }
+                return StepAcrossZoneBorder(bot, current, destination, currentZone, destinationZone);
 
             // The canonical Detour destination is authoritative. Do not insert
             // per-bot lateral corridor waypoints: those cosmetic offsets made
@@ -5611,6 +5517,124 @@ namespace DOL.GS
                 continuousMover.PathViaValidatedWaypoint(destination, validatedContinuation.Value, bot.MaxSpeed);
             else
                 bot.PathTo(destination, bot.MaxSpeed);
+            return true;
+        }
+
+        /// <summary>
+        /// #570 review: a group member whose seam step was failed waits out its hold; the progress clock restarts meanwhile
+        /// so the wait never becomes stall recovery (which can end in AbandonCamp and drop the group's camp). A moved goal
+        /// (the leader walked on) ends the hold at once: the member follows its leader again.
+        /// </summary>
+        private bool HoldAfterSeamReversal(Vector3 current, long now, bool destinationChanged)
+        {
+            if (now >= _seamMemberHoldUntilTick) return false;
+            if (destinationChanged)
+            {
+                _seamMemberHoldUntilTick = 0;
+                return false;
+            }
+            _lastRoutePosition = current;
+            _lastRouteProgressTick = now;
+            return true;
+        }
+
+        /// <summary>One zone-border step toward a goal in another zone (the itinerary's step, checked by the seam reversal guard).</summary>
+        private bool StepAcrossZoneBorder(GameBot bot, Vector3 current, Vector3 destination, Zone currentZone, Zone destinationZone)
+        {
+            if (!_resolvedBoundaryStep.HasValue || _resolvedBoundaryZone != currentZone)
+            {
+                IPathfindingMgr nav = PathfindingProvider.Instance;
+                Func<Zone, bool> allowedZones = zone => AutonomousRealmBoundary.Allows(bot.Realm, bot.CurrentRegionID, zone.ID);
+                if (!AutonomousZoneItinerary.TryNextStep(bot.CurrentRegion, currentZone, destinationZone,
+                        current, destination, nav, out var resolved, allowedZones))
+                {
+                    if (TryPlanCapitalTransit(bot, destination))
+                        return HandleCapitalTransit(bot);
+                    // Four live-audited Hibernian source components have no
+                    // safe seam despite valid destinations. Only those exact
+                    // pockets may use a mesh-proven escape; everyone else
+                    // retains ordinary rejection and cooldown behavior.
+                    if (TryEscapeTerminalRoutePocket(bot, current, destination))
+                        return true;
+                    RejectPendingBoarding(bot, "No safe connected zone seam on the approach");
+                    AbandonCamp(bot, "No safe connected zone seam on the selected route");
+                    return false;
+                }
+                long seamNow = GameLoop.GameLoopTime;
+                if (AutonomousSeamReversalGuard.ShouldFail(ref _seamReversal, resolved, destination, seamNow))
+                {
+                    // Each zone sends the bot back to the other: it stands on ground that joins neither zone's main ground.
+                    // The planner never fails here, so the failure paths below never ran; take them now (#570: at the
+                    // second reversal).
+                    int reversals = _seamReversal.Reversals;
+                    // A group member holds and then follows its leader again, at most MaxMemberHolds times in the window;
+                    // only after that does it give up like a leader or a solo bot (#570 review: a member's give-up drops
+                    // the whole group's camp).
+                    bool memberHolds = AutonomousSeamReversalGuard.FailsMemberOnly(
+                                           _groupDirective?.IsDynamic == true && bot.Group != null,
+                                           _groupDirective?.Leader == null || _groupDirective.Leader == bot,
+                                           AutonomousRealmRaid.GetView(bot.Group) != null) &&
+                                       AutonomousSeamReversalGuard.TakeMemberHold(ref _seamReversal, seamNow);
+                    AutonomousSeamReversalGuard.ClearReversals(ref _seamReversal);
+                    // Both legs leave the shared step memory so no other bot is handed them. Remembered as failed only on
+                    // a give-up: a held member plans again from this spot, and a failed step there would end its trip.
+                    AutonomousZoneItinerary.ForgetStep(bot.CurrentRegion, currentZone, destinationZone, current, destination,
+                        allowedZones, rememberFailed: !memberHolds);
+                    if (_lastSeamPlanZone != null && _lastSeamPlanZone != currentZone)
+                        AutonomousZoneItinerary.ForgetStep(bot.CurrentRegion, _lastSeamPlanZone, destinationZone,
+                            _lastSeamPlanStart, destination, allowedZones, rememberFailed: !memberHolds);
+                    _lastSeamPlanZone = null;
+                    _resolvedBoundaryStep = null;
+                    _resolvedBoundaryZone = null;
+                    StuckHotspots.NoteShared("seam", bot);
+                    // One row per seam reversal caught, when a gamebot's zone steps turned back over the same border for one goal.
+                    Log.Warn($"AUTONOMOUS_ZONE_SEAM_CYCLE bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                             $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} zone={currentZone.ID} " +
+                             $"position={bot.X},{bot.Y},{bot.Z} goalZone={destinationZone.ID} goal={(int)destination.X},{(int)destination.Y},{(int)destination.Z} " +
+                             $"step={(int)resolved.Inside.X},{(int)resolved.Inside.Y}>{(int)resolved.Outside.X},{(int)resolved.Outside.Y} " +
+                             $"reversals={reversals} group={bot.Group?.MemberCount ?? 1} holds={_seamReversal.MemberHolds} " +
+                             $"outcome={(memberHolds ? "member_hold" : "give_up")} activity=\"{bot.PersistentRecord?.Activity}\"");
+                    if (memberHolds)
+                    {
+                        // The group keeps its shared camp: this member stops, waits, then follows its leader again.
+                        RejectPendingBoarding(bot, "A zone seam route that turns back on itself");
+                        bot.StopMovingOnPath();
+                        bot.StopMoving();
+                        _nextMoveOrderTick = seamNow + AutonomousSeamReversalGuard.MemberHoldMilliseconds;
+                        _seamMemberHoldUntilTick = _nextMoveOrderTick;
+                        _lastRoutePosition = current;
+                        _lastRouteProgressTick = seamNow;
+                        return false;
+                    }
+                    if (TryPlanCapitalTransit(bot, destination))
+                        return HandleCapitalTransit(bot);
+                    if (TryEscapeTerminalRoutePocket(bot, current))
+                        return true;
+                    RejectPendingBoarding(bot, "A zone seam route that turns back on itself");
+                    AbandonCamp(bot, "A zone seam route that turns back on itself");
+                    return false;
+                }
+                _lastSeamPlanZone = currentZone;
+                _lastSeamPlanStart = current;
+                _resolvedBoundaryStep = resolved;
+                _resolvedBoundaryZone = currentZone;
+            }
+            AutonomousZoneBoundaryRouting.Step step = _resolvedBoundaryStep.Value;
+            if (Vector3.DistanceSquared(current, step.Inside) <= 96 * 96)
+                bot.WalkTo(step.Outside, bot.MaxSpeed);
+            else
+            {
+                _pathSegmentOrigin = current;
+                if (bot.movementComponent is NpcMovementComponent mover)
+                {
+                    // Both seam points were validated by the itinerary. If
+                    // this enters the goal zone, its final corridor was too.
+                    Vector3? final = destinationZone == bot.CurrentRegion.GetZone((int)step.Outside.X, (int)step.Outside.Y)
+                        ? destination : null;
+                    mover.PathAcrossValidatedSeam(step.Inside, step.Outside, final, bot.MaxSpeed);
+                }
+                else bot.PathTo(step.Inside, bot.MaxSpeed);
+            }
             return true;
         }
 

@@ -6,4 +6,4 @@ section: Bots and companions
   gamebot whose route steps over a zone border and straight back now gives that route up at the second turn instead of
   the third; a camp that sits right on the border is left alone. The crossing that turned back is forgotten for every
   bot, so the next one isn't sent the same way, and a group member who hits it waits a moment and follows its leader
-  again instead of dropping the whole group's camp. Checked against the Cruachan Gorge / Connacht loop of #555.
+  again instead of dropping the whole group's camp (twice at most; after that it gives up like a leader would). Checked against the Cruachan Gorge / Connacht loop of #555.

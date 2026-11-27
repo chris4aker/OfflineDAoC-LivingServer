@@ -159,7 +159,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_TRANSFER_REQUEUE` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `moved`, `target_region` | `bot` | - | - |
 | `AUTONOMOUS_UNREACHABLE_TARGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `heightAbove`, `id`, `position`, `realm`, `region`, `target`, `targetRealm` | `bot`, `target` | - | - |
 | `AUTONOMOUS_XP_PROGRESS` | server.log | **ships** | `bots/GameBot.cs` | `amount`, `bot`, `class`, `id`, `level`, `xp` | `bot` | - | - |
-| `AUTONOMOUS_ZONE_SEAM_CYCLE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `activity`, `bot`, `goal`, `goalZone`, `group`, `id`, `level`, `outcome`, `position`, `realm`, `region`, `reversals`, `step`, `zone` | `bot` | - | - |
+| `AUTONOMOUS_ZONE_SEAM_CYCLE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `activity`, `bot`, `goal`, `goalZone`, `group`, `holds`, `id`, `level`, `outcome`, `position`, `realm`, `region`, `reversals`, `step`, `zone` | `bot` | one per seam reversal caught (#570: a gamebot's zone steps turned back twice over one border for one goal); rare, 2 on the owner's 11/23 log | One row per seam reversal caught, when a gamebot's zone steps turned back over the same border for one goal. |
 | `BEGGARS_CHOSEN` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `count` | - | - | - |
 | `BEGGAR_CHASE_END` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `beggar`, `player`, `reason` | `beggar`, `player` | - | - |
 | `BEGGAR_CORNER` | server.log | **ships** | `bots/autonomous/AutonomousBeggars.cs` | `at`, `bot`, `near`, `region` | `bot` | - | - |
