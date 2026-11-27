@@ -2205,6 +2205,10 @@ public static partial class AutonomousBotGroupCoordinator
             FinishGroupTask(session, eventReason, "released/rvr_event");
             return false;
         }
+        // #569 step 2 (True165 fb7487a): members lost to monsters far above them near one spot end the task there
+        // (AutonomousGroupDangerRetreat), before any regroup beside the killers.
+        if (raidView == null && TryRetreatFromDanger(session, members))
+            return false;
         if (session.TaskClock.HasExpired(GameLoop.GameLoopTime) &&
             raidView == null &&
             !(session.ObjectiveKind == eAutonomousObjectiveKind.RvR &&
