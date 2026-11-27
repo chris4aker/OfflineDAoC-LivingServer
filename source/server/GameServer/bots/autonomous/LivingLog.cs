@@ -356,6 +356,7 @@ namespace DOL.GS
             bool Has(string part) => text.Contains(part, StringComparison.OrdinalIgnoreCase);
             if (string.Equals(text, AutonomousBotGroupCoordinator.SharedTaskExpiredReason, StringComparison.Ordinal)) return ("finished", "expired");
             if (text.StartsWith("Natural break", StringComparison.Ordinal)) return ("finished", "natural_break");
+            if (text.StartsWith("Lost members to ", StringComparison.Ordinal)) return ("danger", "far_above"); // #569 step 2
             if (Has("left the locked PvE party")) return ("member_left", "no_core");
             if (text.StartsWith("A member left and fewer than two", StringComparison.Ordinal)) return ("member_left", "too_few");
             if (text.StartsWith("No replacement ", StringComparison.Ordinal)) return ("member_left", "no_replacement");
