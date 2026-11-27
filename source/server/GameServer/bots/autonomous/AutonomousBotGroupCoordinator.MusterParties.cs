@@ -58,9 +58,15 @@ public static partial class AutonomousBotGroupCoordinator
         return expires.ToUniversalTime() - utcNow.ToUniversalTime();
     }
 
-    /// <summary>Whether a bot may be put into a muster party at <paramref name="staging"/>.</summary>
+    /// <summary>
+    /// Whether a bot may be put into a muster party at <paramref name="staging"/>. Autonomous gamebots only: a companion
+    /// (temporary helper or hired, as <see cref="RvrTacticsScope"/>) is never taken. A siege crew (a siege job place, or
+    /// an engine of its own) is left out on purpose: its job is the engine at the door, and a party would give it the
+    /// leader's part instead. It records the muster like any gatherer (step 5a) and may join once its job ends.
+    /// </summary>
     private static bool FreeForMusterParty(GameBot bot, Vector3 staging, DateTime utcNow) =>
-        bot is { IsAutonomousWorldBot: true, IsAlive: true, IsTemporaryGroupHelper: false } && bot.Group == null && !bot.InCombat &&
+        bot is { IsAutonomousWorldBot: true, IsAlive: true, IsTemporaryGroupHelper: false, IsHiredCompanion: false } &&
+        bot.Group == null && !bot.InCombat && !IsSiegeCrew(bot) &&
         bot.CurrentRegion != null && BattlegroundBrackets.ForLevel(bot.Level)?.RegionId == bot.CurrentRegionID &&
         AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
         !BotDutyLeases.IsSpokenForByPlayer(bot) && !bot.IsOnStableMasterRoute && !AutonomousRealmRaid.IsReserved(bot) &&
@@ -68,6 +74,9 @@ public static partial class AutonomousBotGroupCoordinator
         Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), staging) <=
             AutonomousBattlegroundWave.GatheredRadius * AutonomousBattlegroundWave.GatheredRadius &&
         TourRemaining(bot.PersistentRecord, utcNow) is { } left && left.TotalMilliseconds >= MusterPartyMinimumTourMilliseconds;
+
+    /// <summary>A bot holding a siege job place or working an engine of its own (kept out of muster parties).</summary>
+    public static bool IsSiegeCrew(GameBot bot) => BotSiegeRuntime.Assigned(bot) || AutonomousSiegeOwnership.All(bot).Length > 0;
 
     /// <summary>
     /// Puts the free bots of <paramref name="realm"/> at a battleground keep's muster into parties: first into the realm's muster parties

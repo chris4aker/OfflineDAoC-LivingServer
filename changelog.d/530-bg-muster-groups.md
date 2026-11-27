@@ -8,5 +8,5 @@ section: RvR
   over form new parties, split evenly. The party goes in with the wave, the keep rally and the storm, and its fight board
   is the party's. Each member keeps its own battleground tour, and the party breaks up when the first member's tour
   ends, when fewer than two remain or when a player joins. A battleground party is one force in the event layer
-  (`bg:<party id>`), written by its leader. New log row `BG_MUSTER_PARTY` (formed or joined). When a wave goes is
-  unchanged. Autonomous gamebots only. Tests only.
+  (`bg:<party id>`), written by its leader. New log row `BG_MUSTER_PARTY` (formed or joined). Companions and siege
+  crews working an engine are never put into a muster party. When a wave goes is unchanged. Autonomous gamebots only. Tests only.

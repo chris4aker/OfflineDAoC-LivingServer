@@ -84,6 +84,7 @@
     "text"
   ],
   "frequency": {
+    "BG_MUSTER_PARTY": "one per autonomous gamebot party formed or joined at a battleground wave's muster, at most every 10 s per realm and keep (#530 step 5b)",
     "AUTONOMOUS_GROUP_DANGER_RETREAT": "one per gamebot PvE party that leaves a place after losing members to monsters far above it (#569)",
     "AUTONOMOUS_GROUP_CAMP_BUDGET": "one per PvE party camp pick whose candidate list the travel budget cut (none when every camp fit; #569)",
     "AUTONOMOUS_GROUP_PULL_STALL": "one per stall of a grinding gamebot party (6 minutes with no fight or experience; #569)",
