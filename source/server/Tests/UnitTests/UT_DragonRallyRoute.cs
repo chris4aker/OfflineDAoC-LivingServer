@@ -117,6 +117,156 @@ namespace DOL.UnitTests
             Assert.That(DragonRallyRoute.TryBuild(new UT_RealmRaidFormation.Mesh(),UT_RealmRaidFormation.Zone(),new(6000,0,0),Vector3.Zero,Vector3.Zero,out _),Is.False);
         }
 
+        // Issue #767: a mesh where some goals cannot be reached, and optionally no ring floor at all.
+        private sealed class BlockedMesh : PathfindingMgrBase
+        {
+            public Vector3[] Unreachable = [];
+            public bool NoFloor;
+            public override bool IsAvailable => true;
+            public override bool HasNavmesh(Zone zone) => true;
+            public override Vector3? GetClosestPoint(Zone zone, Vector3 point, float x, float y, float z, EDtPolyFlags[] filters) =>
+                NoFloor ? null : point;
+            public override bool HasLineOfSight(Zone zone, Vector3 from, Vector3 to, EDtPolyFlags[] filters) => true;
+            public override PathfindingResult GetPathStraight(Zone zone, Vector3 from, Vector3 to, EDtPolyFlags[] filters, Span<WrappedPathfindingNode> result)
+            {
+                bool blocked = Unreachable.Any(u => Vector3.DistanceSquared(u,to) < 1);
+                result[0] = new(blocked ? from : to, EDtPolyFlags.Walk);
+                return new(blocked ? PathfindingStatus.PartialPathFound : PathfindingStatus.PathFound, 1);
+            }
+        }
+
+        [Test]
+        public void AFailedRouteSaysWhichStageFailed()
+        {
+            Vector3 home=Vector3.Zero, start=new(8000,0,0), goal=new(-6000,0,0);
+            Assert.That(DragonRallyRoute.TryBuild(new BlockedMesh{Unreachable=[goal]},UT_RealmRaidFormation.Zone(),start,goal,home,out _,out var stage),Is.False);
+            Assert.That(stage,Is.EqualTo("goal-leg"),"Ring points were walked; none reaches the post.");
+            Assert.That(DragonRallyRoute.TryBuild(new UT_RealmRaidFormation.Mesh{Connected=false},UT_RealmRaidFormation.Zone(),start,goal,home,out _,out stage),Is.False);
+            Assert.That(stage,Is.EqualTo("first-leg"));
+            Assert.That(DragonRallyRoute.TryBuild(new BlockedMesh{NoFloor=true,Unreachable=[goal]},UT_RealmRaidFormation.Zone(),start,goal,home,out _,out stage),Is.False);
+            Assert.That(stage,Is.EqualTo("ring"));
+            Assert.That(DragonRallyRoute.TryBuild(new BlockedMesh(),UT_RealmRaidFormation.Zone(),start,new(1000,0,0),home,out _,out stage),Is.False);
+            Assert.That(stage,Is.EqualTo("unsafe-goal"));
+            Assert.That(DragonRallyRoute.TryBuild(new BlockedMesh(),UT_RealmRaidFormation.Zone(),start,goal,home,out _,out stage),Is.True);
+            Assert.That(stage,Is.Empty);
+        }
+
+        [Test]
+        public void AFailedRallyRouteTriesTheOtherPostsThenFallsBackWithinAMinute()
+        {
+            Vector3 home=Vector3.Zero, own=new(-6000,0,0), near=new(0,7000,0), far=new(0,-9000,0), at=new(9000,6000,0);
+            Vector3[] posts=[own,near,far];
+            var mesh=new BlockedMesh{Unreachable=[own]};
+            var zone=UT_RealmRaidFormation.Zone();
+            int failures=0; Vector3 spot=default;
+            // 1st plan: its own post, which fails.
+            Vector3 target=DragonRallyFallback.GoalForAttempt(own,posts,at,DragonRallyFallback.CountFailure(failures,spot,at)-1);
+            Assert.That(target,Is.EqualTo(own));
+            Assert.That(DragonRallyRoute.TryBuild(mesh,zone,at,target,home,out _),Is.False);
+            failures=DragonRallyFallback.CountFailure(failures,spot,at); spot=at;
+            Assert.That(DragonRallyFallback.AfterFailure(failures,neutralBoss:true),Is.EqualTo(DragonRallyFallbackAction.Retry));
+            // 2nd plan from the same spot: the nearest other post, which has a safe route.
+            target=DragonRallyFallback.GoalForAttempt(own,posts,at+new Vector3(50,0,0),DragonRallyFallback.CountFailure(failures,spot,at+new Vector3(50,0,0))-1);
+            Assert.That(target,Is.EqualTo(near));
+            Assert.That(DragonRallyRoute.TryBuild(mesh,zone,at,target,home,out var route),Is.True);
+            Assert.That(route[^1],Is.EqualTo(near));
+            Assert.That(DragonRallyRoute.AtAssembly(route[^1],posts,home),Is.True,"Another party's post counts as staged.");
+            // 3rd: the far post; then the fallback.
+            failures=DragonRallyFallback.CountFailure(failures,spot,at);
+            Assert.That(DragonRallyFallback.GoalForAttempt(own,posts,at,failures),Is.EqualTo(far));
+            failures=DragonRallyFallback.CountFailure(failures,spot,at);
+            Assert.That(failures,Is.EqualTo(DragonRallyFallback.RouteFailureLimit));
+            Assert.That(DragonRallyFallback.AfterFailure(failures,neutralBoss:true),Is.EqualTo(DragonRallyFallbackAction.OrdinaryTravel));
+            Assert.That(DragonRallyFallback.AfterFailure(failures,neutralBoss:false),Is.EqualTo(DragonRallyFallbackAction.KeepSafeRoute),
+                "An aggressive boss is never walked past on an ordinary path.");
+            Assert.That((DragonRallyFallback.RouteFailureLimit-1)*DragonRallyFallback.RetryMilliseconds,Is.LessThanOrEqualTo(60_000),
+                "Three failed plans take about a minute, not twenty.");
+            Assert.That(DragonRallyFallback.NearestPost(own,posts,at),Is.EqualTo(near));
+            // A bot that walked away starts counting again; a raid with one post keeps its own.
+            Assert.That(DragonRallyFallback.CountFailure(failures,spot,at+new Vector3(500,0,0)),Is.EqualTo(1));
+            Assert.That(DragonRallyFallback.GoalForAttempt(own,[own],at,2),Is.EqualTo(own));
+        }
+
+        [Test]
+        public void TheGlacierGiantIsNeutralAndAnAggressiveBossIsNot()
+        {
+            var giant=new DOL.AI.Brain.GlacierGiantBrain();
+            Assert.That(DragonRallyFallback.IsNeutral(giant.AggroLevel,giant.AggroRange),Is.True,"Not aggressive by default (Allakhazam 2002).");
+            var dragon=new DOL.AI.Brain.StandardMobBrain{AggroLevel=100,AggroRange=1500};
+            Assert.That(DragonRallyFallback.IsNeutral(dragon.AggroLevel,dragon.AggroRange),Is.False);
+        }
+
+        [Test]
+        public void ARallyThatPlansARouteFirstTimeIsUnchanged()
+        {
+            Vector3 home=new(20000,20000,1000), start=home+new Vector3(-6000,0,0), goal=home+new Vector3(6000,0,0);
+            Assert.That(DragonRallyFallback.GoalForAttempt(goal,[goal,home+new Vector3(0,6000,0)],start,0),Is.EqualTo(goal),"The first plan goes to its own post.");
+            Assert.That(DragonRallyRoute.TryBuild(new UT_RealmRaidFormation.Mesh(),UT_RealmRaidFormation.Zone(),start,goal,home,out var route,out var stage),Is.True);
+            Assert.That(route[^1],Is.EqualTo(goal));
+            Assert.That(stage,Is.Empty);
+        }
+
+        [Test]
+        public void AStuckRallyingBotIsCaughtAfterTheUsualBoundAndAMovingOneIsNot()
+        {
+            DateTime now=new(2026,11,27,1,0,0,DateTimeKind.Utc);
+            Assert.That(AutonomousStuckWatchdog.ShouldCatchStuckRally(now-AutonomousStuckWatchdog.StuckThreshold,now,true,false),Is.True);
+            Assert.That(AutonomousStuckWatchdog.ShouldCatchStuckRally(now-TimeSpan.FromMinutes(14),now,true,false),Is.False);
+            Assert.That(AutonomousStuckWatchdog.ShouldCatchStuckRally(now-TimeSpan.FromMinutes(30),now,false,false),Is.False,"Dead: the release owns it.");
+            Assert.That(AutonomousStuckWatchdog.ShouldCatchStuckRally(now-TimeSpan.FromMinutes(30),now,true,true),Is.False,"A player decides.");
+        }
+
+        [Test,NonParallelizable]
+        public void ATravellingRallyMemberIsNoLongerHeldButHubAndStagedMembersAre()
+        {
+            using var server=new EpicTestServerScope();
+            const BindingFlags hidden=BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.Public;
+            Type manager=typeof(AutonomousRealmRaid);
+            object raid=Activator.CreateInstance(manager.GetNestedType("Raid",BindingFlags.NonPublic),true);
+            object party=Activator.CreateInstance(manager.GetNestedType("Party",BindingFlags.NonPublic),true);
+            Vector3 home=new(651517,625897,5320), own=new(655296,635040,7751), other=new(651457,632837,5350);
+            var members=Enumerable.Range(0,2).Select(_=>
+            {
+                var bot=(Attendee)RuntimeHelpers.GetUninitializedObject(typeof(Attendee));
+                bot.Alive=true;bot.RegionId=100;bot.Position=home+new Vector3(12000,0,0);
+                typeof(GameNPC).GetField("m_brains",hidden).SetValue(bot,new ArrayList());
+                typeof(GameBot).GetProperty(nameof(GameBot.IsAutonomousWorldBot)).SetValue(bot,true);
+                return bot;
+            }).ToArray();
+            var group=new Group(members[0]);
+            typeof(Group).GetField("_groupMembers",hidden).SetValue(group,members.Cast<GameLiving>().ToList());
+            foreach(var member in members)member.Group=group;
+            raid.GetType().GetField("Definition").SetValue(raid,AutonomousRealmRaid.Definitions.Single(d=>d.Id=="openworld-midgard-glaciergiant"));
+            var boss=(GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
+            typeof(GameNPC).GetField("m_brains",hidden).SetValue(boss,new ArrayList{new DOL.AI.Brain.GlacierGiantBrain()});
+            boss.SpawnPoint=new Point3D((int)home.X,(int)home.Y,(int)home.Z);
+            raid.GetType().GetField("Boss").SetValue(raid,boss);
+            var posts=(Dictionary<int,Vector3>)raid.GetType().GetField("StagingPosts").GetValue(raid);
+            posts.Add(0,own);posts.Add(1,other);
+            party.GetType().GetField("Members").SetValue(party,members.Cast<GameBot>().ToArray());
+            party.GetType().GetField("Staging").SetValue(party,own);
+            ((IDictionary)raid.GetType().GetField("Parties").GetValue(raid)).Add(group,party);
+            var membership=(IDictionary)manager.GetField("Membership",BindingFlags.NonPublic|BindingFlags.Static).GetValue(null);
+            membership.Add(group,raid);
+            try
+            {
+                Assert.That(AutonomousRealmRaid.IsInRally(members[0]),Is.True);
+                Assert.That(AutonomousRealmRaid.IsTravellingInRally(members[0],out _),Is.False,"At or on the way to the hub: the hub's own rules hold it.");
+                raid.GetType().GetField("HubDeparted").SetValue(raid,true);
+                Assert.That(AutonomousRealmRaid.IsTravellingInRally(members[0],out string id),Is.True);
+                Assert.That(id,Is.EqualTo("openworld-midgard-glaciergiant"));
+                Assert.That(AutonomousRealmRaid.Protects(members[0]),Is.False,"Off the ring: the movement clock runs.");
+                members[1].Position=other+new Vector3(100,0,0);
+                Assert.That(AutonomousRealmRaid.Protects(members[1]),Is.True,"Standing at another party's post is a normal wait.");
+                Assert.That(AutonomousRealmRaid.TryDragonRallyFallback(members[0],out var known,out bool neutral),Is.True);
+                Assert.That(known,Is.EquivalentTo(new[]{own,other}));
+                Assert.That(neutral,Is.True,"The Glacier Giant leaves passers-by alone.");
+                raid.GetType().GetField("Started").SetValue(raid,true);
+                Assert.That(AutonomousRealmRaid.IsTravellingInRally(members[0],out _),Is.False,"The battle has its own clocks.");
+            }
+            finally{membership.Remove(group);}
+        }
+
         [Test,Explicit("Read-only installed dragon meshes"),NonParallelizable]
         public void AllDragonStagingPostsHaveBossAvoidingApproaches()
         {

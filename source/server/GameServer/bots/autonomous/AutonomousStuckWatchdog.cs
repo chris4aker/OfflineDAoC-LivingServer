@@ -206,6 +206,11 @@ public static class AutonomousStuckWatchdog
                nowUtc - lastMovementUtc >= StuckThreshold;
     }
 
+    /// <summary>A rally member off the staging ring after the hub departure (issue #767): the rally exempts it from the
+    /// goal clock, never from the movement clock. Same bound and same exceptions as <see cref="ShouldRecoverMovement"/>.</summary>
+    public static bool ShouldCatchStuckRally(DateTime lastMovementUtc, DateTime nowUtc, bool isAlive, bool inPlayerLedGroup) =>
+        ShouldRecoverMovement(lastMovementUtc, nowUtc, isAlive, inPlayerLedGroup, false);
+
     public static bool ShouldRecoverGoal(
         DateTime lastGoalProgressUtc,
         DateTime nowUtc,
@@ -406,8 +411,11 @@ public static class AutonomousStuckWatchdog
         // the ordinary watchdog; a genuine freeze during that grind is caught.
         // A raid rally has its own deadline (staging limit, at least 45 minutes after leaving the hub). 2026-10-16: the
         // 45-minute clock sent 322 Cuuldurach raiders from their rally to Tir na Nog, so 13 reached the dragon.
+        // Issue #767: that hold now covers the hub only. A member on its way to the staging ring after the departure
+        // keeps the goal clock off but not the movement clock (below); one standing at the ring is protected by Protects.
+        bool travellingInRally = AutonomousRealmRaid.IsTravellingInRally(bot, out string rallyEvent);
         if (GroupProtectsFromWatchdog(bot, now) ||
-            AutonomousRealmRaid.IsInRally(bot) ||
+            !travellingInRally && AutonomousRealmRaid.IsInRally(bot) ||
             IsGroupFormationHold(bot.PersistentRecord.Activity) ||
             AutonomousObjectiveAssignments.IsIntentionalTownIdle(bot.PersistentRecord, now) &&
             AutonomousWorldBotController.IsAtAssignedIdleTown(bot))
@@ -416,6 +424,22 @@ public static class AutonomousStuckWatchdog
             CopyPositionSnapshot(previous, current);
             goalObservation.LastProgressUtc = now;
             return false;
+        }
+
+        // Issue #767 (owner's PC, rc.2): 75 Glacier Giant raiders stood off the staging ring for about 20 minutes, retrying
+        // one route, and no clock saw them because the rally refreshed both. A stuck rally is still stuck: after the usual
+        // fifteen minutes without movement such a member gets the usual recovery, which keeps its raid membership and
+        // sends it back to the encounter. The rally's own deadline still owns the goal clock.
+        if (travellingInRally)
+        {
+            goalObservation.LastProgressUtc = now;
+            if (!ShouldCatchStuckRally(previous.LastMovementUtc, now, bot.IsAlive, withHuman))
+                return false;
+            Log.Warn($"AUTONOMOUS_RALLY_STUCK bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} event={rallyEvent} " +
+                     $"minutes={(int)(now - previous.LastMovementUtc).TotalMinutes} at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} " +
+                     $"activity=\"{ForLog(bot.PersistentRecord.Activity)}\"");
+            return RelocateToSafeCapital(bot, now, $"rally: no movement for fifteen minutes away from the staging ring ({rallyEvent})", true,
+                "AUTONOMOUS_STUCK_15M_RECOVERY");
         }
 
         bool isRvrRoaming = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR);

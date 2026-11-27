@@ -23,6 +23,9 @@ public sealed partial class AutonomousWorldBotController
     private int _dragonRallyLeg;
     private string _dragonRallyEvent;
     private long _dragonRallyRetry;
+    private Vector3 _dragonRallyTarget, _dragonRallyFailSpot;
+    private int _dragonRallyFailures;
+    private long _dragonRallyOrdinaryUntil;
     private bool TravelRealmExpedition(GameBot bot, AutonomousRealmRaid.View order)
     {
         using var aiProfile = AiProfile.Scope(AiSystem.ControllerRaidTravel); // AI_PROFILE: measures only
@@ -147,37 +150,82 @@ public sealed partial class AutonomousWorldBotController
         if (_dragonRallyEvent!=order.EventId || _dragonRallyGoal!=goal ||
             _dragonRallyPlanning!=null && Vector3.DistanceSquared(current,_dragonRallyOrigin)>96*96)
         {
+            if (_dragonRallyEvent!=order.EventId || _dragonRallyGoal!=goal)
+            { _dragonRallyFailures=0; _dragonRallyOrdinaryUntil=0; _dragonRallyTarget=goal; }
             _dragonRallyEvent=order.EventId; _dragonRallyGoal=goal;
             _dragonRallyPlanning=null; _dragonRallyRoute=null; _dragonRallyRetry=0;
+        }
+        // Issue #767 fallback: no checked route around a boss that leaves passers-by alone, so the raider walks to the
+        // nearest post the ordinary way for a while, then plans the safe route again from wherever it got to.
+        if(now<_dragonRallyOrdinaryUntil)
+        {
+            if(Vector3.DistanceSquared(current,_dragonRallyTarget)<=DragonRallyFallback.PostArrival*DragonRallyFallback.PostArrival)
+            {
+                bot.StopMovingOnPath();bot.StopMoving();
+                SetStatus(bot,order.State,order.Camp.MonsterName,"At dragon staging; waiting for the expedition order");
+                return true;
+            }
+            GuardExpeditionDanger(bot,_dragonRallyTarget);
+            IssuePath(bot,_dragonRallyTarget,preciseArrival:true);
+            SetStatus(bot,"Traveling to dragon rally",order.Camp.MonsterName,"No checked route around the boss; walking past it, it leaves passers-by alone");
+            return true;
         }
         if(now<_dragonRallyRetry) return true;
         if(_dragonRallyRoute==null)
         {
             if(_dragonRallyPlanning==null)
             {
+                AutonomousRealmRaid.TryDragonRallyFallback(bot,out var others,out _);
                 bot.StopMovingOnPath();bot.StopMoving();
                 _dragonRallyOrigin=current;
                 _dragonRallyPlanning=new RvrPlanningNavigation(PathfindingProvider.Instance);
+                int prior=DragonRallyFallback.CountFailure(_dragonRallyFailures,_dragonRallyFailSpot,current)-1;
+                _dragonRallyTarget=DragonRallyFallback.GoalForAttempt(goal,others,current,prior);
             }
             var work=_dragonRallyPlanning; work.BeginSlice();
             bool found=false;
+            string stage="";
             try
             {
-                found=DragonRallyRoute.TryBuild(work,bot.CurrentZone,_dragonRallyOrigin,goal,home,out var route);
+                found=DragonRallyRoute.TryBuild(work,bot.CurrentZone,_dragonRallyOrigin,_dragonRallyTarget,home,out var route,out stage);
                 if(found) _dragonRallyRoute=route;
             }
             catch(RvrPlanningNavigation.Yield)
             { _dragonRallyRetry=now+250; SetStatus(bot,"Planning safe dragon rally route",order.Camp.MonsterName,"Routing around the dragon; normal defense remains active"); return true; }
-            catch(RvrPlanningNavigation.Limit) { }
+            catch(RvrPlanningNavigation.Limit) { stage="budget"; }
             finally { work.EndSlice(); }
             _dragonRallyPlanning=null;
             if(!found)
             {
-                _dragonRallyRoute=null;_dragonRallyRetry=now+30_000;
+                _dragonRallyRoute=null;
+                AutonomousRealmRaid.TryDragonRallyFallback(bot,out var posts,out bool neutralBoss);
+                _dragonRallyFailures=DragonRallyFallback.CountFailure(_dragonRallyFailures,_dragonRallyFailSpot,current);
+                _dragonRallyFailSpot=current;
+                var action=DragonRallyFallback.AfterFailure(_dragonRallyFailures,neutralBoss);
+                // One failed plan of the safe route around the boss: which post, which try from this spot and which stage failed.
+                Log.Warn($"DRAGON_RALLY_ROUTE_RETRY bot={bot.Name} event={order.EventId} from={current} goal={_dragonRallyTarget} " +
+                         $"own={goal} attempt={_dragonRallyFailures} stage={stage} queries={work.Queries}");
+                if(action==DragonRallyFallbackAction.OrdinaryTravel)
+                {
+                    _dragonRallyTarget=DragonRallyFallback.NearestPost(goal,posts,current);
+                    _dragonRallyOrdinaryUntil=now+DragonRallyFallback.OrdinaryTravelMilliseconds;
+                    // A raider gives up on the safe route around a neutral boss for a while and walks (issue #767); a failure
+                    // from the new spot it reaches counts from one again.
+                    Log.Warn($"DRAGON_RALLY_FALLBACK bot={bot.Name} event={order.EventId} from={(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                             $"post={(int)_dragonRallyTarget.X},{(int)_dragonRallyTarget.Y},{(int)_dragonRallyTarget.Z} attempts={_dragonRallyFailures} " +
+                             $"stage={stage} action=ordinary-travel seconds={DragonRallyFallback.OrdinaryTravelMilliseconds/1000}");
+                    SetStatus(bot,"Traveling to dragon rally",order.Camp.MonsterName,"No checked route around the boss; walking past it, it leaves passers-by alone");
+                    return true;
+                }
+                if(action==DragonRallyFallbackAction.KeepSafeRoute && _dragonRallyFailures==DragonRallyFallback.RouteFailureLimit)
+                    Log.Warn($"DRAGON_RALLY_FALLBACK bot={bot.Name} event={order.EventId} from={(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                             $"post={(int)goal.X},{(int)goal.Y},{(int)goal.Z} attempts={_dragonRallyFailures} stage={stage} action=keep-safe-route " +
+                             $"seconds={DragonRallyFallback.RetryMilliseconds/1000}");
+                _dragonRallyRetry=now+DragonRallyFallback.RetryMilliseconds;
                 SetStatus(bot,"Dragon rally route retry",order.Camp.MonsterName,"No verified approach outside dragon aggro; not charging through the boss");
-                Log.Warn($"DRAGON_RALLY_ROUTE_RETRY bot={bot.Name} event={order.EventId} from={current} goal={goal} queries={work.Queries}");
                 return true;
             }
+            _dragonRallyFailures=0;
             _dragonRallyLeg=0;
         }
         while(_dragonRallyLeg<_dragonRallyRoute.Length && Vector3.DistanceSquared(current,_dragonRallyRoute[_dragonRallyLeg])<=80*80)

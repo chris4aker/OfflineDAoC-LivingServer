@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **759**; pending (#625, not on main yet): **0**; shipped by the pipeline: **727**.
+- Rows in code: **761**; pending (#625, not on main yet): **0**; shipped by the pipeline: **729**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -115,6 +115,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `casting`, `class`, `distance`, `level`, `manaPercent`, `moving`, `pendingCast`, `pet`, `region`, `resting`, `target`, `targetLevel`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `AUTONOMOUS_PVP_STALEMATE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `id`, `position`, `realm`, `region`, `seconds`, `target`, `targetRealm` | `bot`, `target` | - | - |
 | `AUTONOMOUS_RAID_STUCK_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `class`, `from`, `id`, `instead`, `level`, `near`, `realm`, `reason`, `snapped`, `to`, `why` | `bot` | - | Inside its raid's dungeon with every regroup point by a resting boss: |
+| `AUTONOMOUS_RALLY_STUCK` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `event`, `id`, `minutes` | `bot` | - | - |
 | `AUTONOMOUS_RESURRECTION_BLOCKED` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `corpse`, `distance`, `inCombat`, `mana`, `reason`, `spell` | `bot`, `corpse` | - | - |
 | `AUTONOMOUS_ROUTE_FLOOR_CORRECTION` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_ROUTE_GOAL_FIX` | server.log | **ships** | `bots/autonomous/AutonomousRouteGoalFix.cs` | `campRepickBlocked`, `crossingFallback`, `crossingSteered`, `floorStepGated`, `floorStepHeld`, `foreignFailureSkipped`, `gatedSkipped`, `pocketEscapeSkipped`, `repickBlocked`, `snapDzRejected`, `snapFailed`, `snapRefailed`, `snapped`, `window_s` | - | - | - |
@@ -327,7 +328,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `DRAGON_LANDED` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `home`, `name`, `position` | `name` | - | - |
 | `DRAGON_LANDING_APPROACH` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `home`, `name`, `position` | `name` | - | Finish the airborne leg using 3D flight, not ground navmesh. |
 | `DRAGON_LANDING_FORCED` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `home`, `name`, `position` | `name` | - | - |
-| `DRAGON_RALLY_ROUTE_RETRY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `bot`, `event`, `from`, `goal`, `queries` | `bot` | - | - |
+| `DRAGON_RALLY_FALLBACK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `action`, `attempts`, `bot`, `event`, `from`, `post`, `seconds`, `stage` | `bot` | - | A raider gives up on the safe route around a neutral boss for a while and walks (issue #767); |
+| `DRAGON_RALLY_ROUTE_RETRY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `attempt`, `bot`, `event`, `from`, `goal`, `own`, `queries`, `stage` | `bot` | - | One failed plan of the safe route around the boss: |
 | `DRAGON_RESET` | server.log | **ships** | `scripts/namedmobs/Dragons/DragonDiagnostics.cs` | `health`, `healthPercent`, `name`, `position`, `reason` | `name` | - | - |
 | `DRAGON_TAKEOFF` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `name`, `position` | `name` | - | - |
 | `DUTY_LEASE` | detail.log | **ships** | `bots/autonomous/BotDutyLeases.cs` | `bot`, `held`, `heldOwner`, `id`, `kind`, `outcome`, `owner`, `reason` | `bot`, `owner` | - | - |
