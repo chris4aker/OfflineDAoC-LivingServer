@@ -80,6 +80,7 @@ namespace DOL.GS
                     nearest = Math.Min(nearest, Estimate(camp));
                 foreach (AutonomousBotDecisionEngine.Camp camp in kept)
                     farthestKept = Math.Max(farthestKept, Estimate(camp));
+                // A PvE party camp pick whose candidates were cut to the leader's travel budget, with the tier that was kept.
                 Log.Info($"AUTONOMOUS_GROUP_CAMP_BUDGET group={_groupDirective.GroupId} phase=\"{_groupDirective.Phase}\" " +
                          $"region={leader.CurrentRegionID} remainingMin={remaining / 60_000d:0.0} " +
                          $"budgetMin={AutonomousGroupTravelBudget.BudgetMinutes(remaining):0.0} " +
