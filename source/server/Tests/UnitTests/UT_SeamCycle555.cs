@@ -42,6 +42,8 @@ public class UT_SeamCycle555
             Zone destination = region.GetZone((int)goal.X, (int)goal.Y);
             Assert.That((current?.ID, destination?.ID), Is.EqualTo(((ushort?)211, (ushort?)200)), "the logged zones");
             var left = new List<ushort>();
+            // #570: the seam reversal guard rides along; on the fixed route it never counts a turn.
+            var guard = default(AutonomousSeamReversalGuard.State);
             for (int hop = 0; hop < 16 && current != destination; hop++)
             {
                 bool routed = AutonomousZoneItinerary.TryNextStep(region, current, destination, start, goal, nav,
@@ -49,6 +51,9 @@ public class UT_SeamCycle555
                 Zone next = routed ? region.GetZone((int)step.Outside.X, (int)step.Outside.Y) : null;
                 TestContext.Out.WriteLine($"SEAM555 hop={hop} zone={current.ID} at={start} routed={routed} step={step} next={next?.ID}");
                 Assert.That(routed, Is.True, $"hop {hop}: no step out of zone {current.ID}");
+                Assert.That(AutonomousSeamReversalGuard.ShouldFail(ref guard, step, goal, hop * 2_000L), Is.False,
+                    $"hop {hop}: the seam reversal guard would stop the trip");
+                Assert.That(guard.Reversals, Is.EqualTo(0), $"hop {hop}: a step taken back");
                 left.Add(current.ID);
                 Assert.That(left, Does.Not.Contain(next.ID), $"hop {hop}: the trip turns back into zone {next.ID} ({string.Join(">", left)})");
                 start = step.Outside;
