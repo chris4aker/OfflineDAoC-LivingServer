@@ -21,6 +21,156 @@ public static class AutonomousBotRealmPointRewards
     public static bool IsEligibleVictim(GameNPC npc) =>
         npc is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false };
 
+    // #571 step 2 (harvest F11; idea from zomboden/OfflineDAoC-True165 74334692 and de83551a, GPL-3.0, rewritten on our
+    // reward code). Owner, 2026-11-27 (#571): "Kill share (#755): only add. A hired companion or befriended gamebot in your
+    // group may raise your share of XP, bounty points, coins and RP, but never lower it below what you'd get without it."
+    // A player's share of a PvP kill is worked out twice: as before (his group's players only) and with the persistent
+    // gamebots of his group counted as groupmates (their damage the group's, their number in the split). The second is
+    // used only when it gives him at least as much of every reward (RP, bounty points, XP, coins) and more of one
+    // (UseMixedShare). So a player who healed while his hired companion landed every blow, who had 0, gets the group share,
+    // and a player who did the damage keeps his whole reward. The gamebots' own realm points are paid on their side
+    // (PayGamebots, unchanged) and never come out of the player's. /spawn helpers and /bot companions are unchanged: their
+    // damage is already their owner's (BotBrain.GetLivingOwner).
+
+    /// <summary>A persistent gamebot (not a /spawn helper) in a group with a real player in it.</summary>
+    public static bool IsPlayerGroupBot(GameLiving member) =>
+        member is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false } bot && HasPlayer(bot.Group);
+
+    /// <summary>A player-group gamebot that may count in its group's share of this kill: of a hostile realm, in the world and
+    /// within reward range, as a player must be.</summary>
+    public static bool CountsWithPlayerGroup(GameLiving member, GameLiving victim) =>
+        victim != null && IsPlayerGroupBot(member) && member.Realm != eRealm.None && member.Realm != victim.Realm &&
+        member.ObjectState == GameObject.eObjectState.Active && member.IsWithinRadius(victim, WorldMgr.MAX_EXPFORKILL_DISTANCE);
+
+    private static bool CountsAsPlayer(GameLiving member, GameLiving victim) =>
+        member is GamePlayer player && player.ObjectState == GameObject.eObjectState.Active &&
+        player.IsWithinRadius(victim, WorldMgr.MAX_EXPFORKILL_DISTANCE);
+
+    /// <summary>A group with a real player and at least one persistent gamebot in it.</summary>
+    public static bool IsMixedGroup(Group group)
+    {
+        if (group == null) return false;
+        bool player = false, bot = false;
+        foreach (GameLiving member in group.GetMembersInTheGroup())
+        {
+            player |= member is GamePlayer;
+            bot |= member is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false };
+        }
+        return player && bot;
+    }
+
+    private static bool HasPlayer(Group group)
+    {
+        if (group == null) return false;
+        foreach (GameLiving member in group.GetMembersInTheGroup())
+            if (member is GamePlayer) return true;
+        return false;
+    }
+
+    /// <summary>
+    /// Each mixed group's count and damage with its gamebots counted: its players and player-group gamebots among the
+    /// contributors (GameLiving.TakeDamage enrols every group member in range, so a healer is there with 0 damage).
+    /// </summary>
+    public static Dictionary<Group, EntityCountTotalDamagePair> MixedGroupContributions(
+        IEnumerable<KeyValuePair<GameLiving, double>> contributors, GameLiving victim)
+    {
+        var groups = new Dictionary<Group, EntityCountTotalDamagePair>();
+        foreach (KeyValuePair<GameLiving, double> pair in contributors)
+        {
+            GameLiving member = pair.Key;
+            if (member?.Group is not Group group || !CountsAsPlayer(member, victim) && !CountsWithPlayerGroup(member, victim))
+                continue;
+            if (!groups.ContainsKey(group) && !IsMixedGroup(group))
+                continue;
+            if (groups.TryGetValue(group, out EntityCountTotalDamagePair value))
+            {
+                value.Count++;
+                value.Damage += pair.Value;
+                value.Track(member);
+            }
+            else
+                groups[group] = new EntityCountTotalDamagePair(1, pair.Value, member);
+        }
+        return groups;
+    }
+
+    /// <summary>What a player-kill share is worth to its awarder (the player rule's own inputs).</summary>
+    public readonly record struct PvpKillValues(
+        int VictimRealmPoints, int VictimRealmLevel, int AwarderRealmPoints, int AwarderRealmLevel, bool RankAdjust,
+        long VictimExperience, long AwarderExperience, int ExperienceCapPercent,
+        int VictimBountyPoints, int AwarderBountyPoints, bool BountyWorthless,
+        long VictimMoney, long AwarderMoney);
+
+    /// <summary>
+    /// The player rule's rewards for one share (AbstractServerRules.AwardPlayerOnPlayerKill, and Award for a gamebot
+    /// victim): [realm points, bounty points, experience, coins]. <paramref name="battlegroundFloor"/> applies
+    /// <see cref="KeepBattlegroundShare"/> to the realm points.
+    /// </summary>
+    public static long[] PvpKillRewards(in PvpKillValues v, int count, bool grouped, double share, Func<long, long> experienceBonus,
+        bool battlegroundFloor = false)
+    {
+        count = Math.Max(1, count);
+        share = Math.Min(1.0, Math.Max(0, share));
+        int realmPoints = CalculateRealmPointReward(v.VictimRealmPoints, v.VictimRealmLevel, v.AwarderRealmPoints,
+            v.AwarderRealmLevel, count, grouped ? count : 1, share, v.RankAdjust);
+        if (battlegroundFloor)
+            realmPoints = KeepBattlegroundShare(realmPoints, true, true, share, v.VictimRealmPoints);
+        int bounty = CalculateBountyPointReward(v.VictimBountyPoints, v.AwarderBountyPoints, count, share, v.BountyWorthless, false);
+        long capped = CalculateCappedExperienceShare(v.VictimExperience, v.AwarderExperience, count, v.ExperienceCapPercent);
+        long experience = (long)(capped * share) + (capped > 0 ? experienceBonus?.Invoke(capped) ?? 0 : 0);
+        long money = v.VictimMoney <= 0 ? 0 : (long)(Math.Min(v.VictimMoney / count, v.AwarderMoney * 2) * share);
+        return [realmPoints, bounty, experience, money];
+    }
+
+    /// <summary>
+    /// The owner's "only add" (#571, 2026-11-27): the share with the group's gamebots counted is used only when it gives
+    /// the player at least as much of every reward and more of one; otherwise his share stays as it was.
+    /// </summary>
+    public static bool UseMixedShare(IReadOnlyList<long> withoutBots, IReadOnlyList<long> withBots)
+    {
+        bool more = false;
+        for (int i = 0; i < withoutBots.Count; i++)
+        {
+            if (withBots[i] < withoutBots[i]) return false;
+            more |= withBots[i] > withoutBots[i];
+        }
+        return more;
+    }
+
+    /// <summary>The share a player is paid by: its count, its damage percent, whether it is the mixed one, and the floor.</summary>
+    public readonly record struct ShareChoice(int Count, double Percent, bool Mixed, bool BattlegroundFloor);
+
+    /// <summary>
+    /// The one "only add" choice both kill paths make (Award for a gamebot victim, AwardPlayerOnPlayerKill for a player):
+    /// the players-only share (<paramref name="count"/>, <paramref name="damage"/>), or the mixed one with the group's
+    /// gamebots counted (<paramref name="mixedCount"/> null: none), whichever <see cref="UseMixedShare"/> allows. The
+    /// battleground 1-RP floor comes only with the mixed share.
+    /// </summary>
+    public static ShareChoice ChooseShare(in PvpKillValues values, int count, double damage, int? mixedCount, double mixedDamage,
+        double totalDamage, bool battleground, Func<long, long> experienceBonus)
+    {
+        double Percent(double d) => totalDamage <= 0 ? 0 : Math.Min(1.0, d / totalDamage);
+        var players = new ShareChoice(Math.Max(1, count), Percent(damage), false, false);
+        if (mixedCount is not int mixed)
+            return players;
+        var group = new ShareChoice(Math.Max(1, mixed), Percent(mixedDamage), true, battleground);
+        return UseMixedShare(PvpKillRewards(values, players.Count, true, players.Percent, experienceBonus),
+            PvpKillRewards(values, group.Count, true, group.Percent, experienceBonus, group.BattlegroundFloor))
+            ? group : players;
+    }
+
+    /// <summary>
+    /// A battleground victim worth a few realm points (a level 21 is worth 1) split over a player and his gamebots rounds
+    /// to 0 each: with a real share the mixed share keeps at least 1 RP. Used only inside the mixed share, so it only adds.
+    /// </summary>
+    public static int KeepBattlegroundShare(int realmPoints, bool mixedGroup, bool battleground, double damagePercent,
+        int victimRealmPointValue) =>
+        realmPoints <= 0 && mixedGroup && battleground && damagePercent > 0 && victimRealmPointValue > 0 ? 1 : realmPoints;
+
+    /// <summary>The victim stands in a battleground (its zone, or one of the battleground regions).</summary>
+    public static bool InBattleground(GameLiving victim) =>
+        victim != null && (victim.CurrentZone?.IsBG == true || BattlegroundBrackets.IsBattlegroundRegion(victim.CurrentRegionID));
+
     public static int GetPlayerEquivalentRealmPointValue(byte level, int realmLevel)
     {
         // This is the pre-1.81 player formula used by GamePlayer.RealmPointsValue.
@@ -192,6 +342,9 @@ public static class AutonomousBotRealmPointRewards
         if (playerContributions.Count == 0)
             return;
 
+        // #571 step 2: the same groups with their gamebots counted, for the "only add" choice below.
+        Dictionary<Group, EntityCountTotalDamagePair> mixedContributions = MixedGroupContributions(hostileContributors, killedBot);
+
         GameLiving creditedKiller = ResolveRootRewardOwner(killer as GameLiving);
         int victimValue = GetPlayerEquivalentRealmPointValue(killedBot.Level, killedBot.RealmLevel);
 
@@ -213,9 +366,29 @@ public static class AutonomousBotRealmPointRewards
                 {
                     DbBattleground battleground = GameServer.KeepManager.GetBattleground(player.CurrentRegionID);
                     bool applyRankAdjustment = battleground == null || player.RealmLevel < battleground.MaxRealmLevel;
+                    bool battlegroundFloor = false;
+                    // #571 step 2, "only add": the group's gamebots count only when that raises every reward of his.
+                    if (player.Group != null && mixedContributions.TryGetValue(player.Group, out EntityCountTotalDamagePair mixed))
+                    {
+                        var values = new PvpKillValues(victimValue, killedBot.RealmLevel, player.RealmPointsValue, player.RealmLevel,
+                            applyRankAdjustment,
+                            GetPlayerEquivalentExperienceValue(GameServer.ServerRules.GetExperienceForLiving(killedBot.Level)),
+                            player.ExperienceValue, Properties.XP_PVP_CAP_PERCENT,
+                            GetPlayerEquivalentBountyPointValue(killedBot.Level), player.BountyPointsValue,
+                            killedBot.CurrentZone?.IsBG == true && !Properties.ALLOW_BPS_IN_BGS, 0, 0);
+                        GamePlayer awarded = player;
+                        long Bonus(long b) => DOL.GS.ServerRules.AbstractServerRules.CalculateOutpostExperienceBonus(awarded, b);
+                        ShareChoice choice = ChooseShare(values, contributorCount, contribution.Damage, mixed.Count, mixed.Damage,
+                            totalDamage, battleground != null || InBattleground(killedBot), Bonus);
+                        contributorCount = groupContributorCount = choice.Count;
+                        damagePercent = choice.Percent;
+                        battlegroundFloor = choice.BattlegroundFloor;
+                    }
                     realmPointsEarned = CalculateRealmPointReward(victimValue, killedBot.RealmLevel,
                         player.RealmPointsValue, player.RealmLevel, contributorCount,
                         groupContributorCount, damagePercent, applyRankAdjustment);
+                    if (battlegroundFloor)
+                        realmPointsEarned = KeepBattlegroundShare(realmPointsEarned, true, true, damagePercent, victimValue);
 
                     if (realmPointsEarned > 0)
                         player.GainRealmPoints(realmPointsEarned, true);

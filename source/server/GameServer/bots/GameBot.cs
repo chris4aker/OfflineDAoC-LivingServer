@@ -48,6 +48,9 @@ namespace DOL.GS
         public byte RaceId { get; set; }
         public byte GenderId { get; set; }
         public long DatabaseID { get; set; }
+        /// <summary>The melee set a hired companion's player readied last in the companion window (BotWeaponSetPolicy,
+        /// #569 step 7). Not saved: after a relog the companion's trained set decides again.</summary>
+        public eActiveWeaponSlot? PlayerReadiedSlot { get; set; }
         public bool IsAutonomousWorldBot { get; private set; }
         /// <summary>
         /// The NPC Size that draws like a player of that height (1 Short, 2 Average, 3 Tall): 48 / 50 / 52, the new client's
