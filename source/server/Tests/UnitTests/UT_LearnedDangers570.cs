@@ -150,7 +150,7 @@ namespace DOL.UnitTests
                 Assert.That(Choose(legs, unusable: [1])?.HopCount, Is.EqualTo(1), "the second horse lands beside a spot");
                 Assert.That(Choose(legs, unusable: [1])?.EstimatedSeconds, Is.EqualTo(600).Within(0.01));
                 Assert.That(Choose(ride), Is.Null, "walking (1,000 s) beats a 1,200 s ride");
-                Assert.That(Choose(ride, directWalkUnsafe: true)?.FirstLegIndex, Is.EqualTo(0),
+                Assert.That(Choose(ride, directUnsafe: true)?.FirstLegIndex, Is.EqualTo(0),
                     "a walk straight through a spot costs ten minutes more, so the horse wins");
             });
         }
