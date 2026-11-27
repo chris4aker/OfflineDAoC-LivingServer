@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using DOL.AI.Brain;
+using DOL.Events;
 using DOL.GS;
 using NUnit.Framework;
 
