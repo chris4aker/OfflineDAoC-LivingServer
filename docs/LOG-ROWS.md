@@ -299,7 +299,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANION_DELVE_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `args`, `player` | `player` | - | - |
 | `COMPANION_EQUIP_REFUSED` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `bot`, `cls`, `item`, `lvl`, `realm`, `shield`, `size`, `type` | `bot` | - | - |
 | `COMPANION_LEADER_FOCUS` | server.log | **ships** | `bots/BotBrain.LeaderFocus.cs` | `bot`, `class`, `fromBot`, `kind`, `leader`, `over`, `region`, `target`, `why` | `bot`, `leader`, `over`, `target` | change-only: one per bot of a player's group each time it turns onto a new player's target over another choice, in the frontier, battlegrounds and Darkness Falls | A bot in the player's group turned onto the player's target over its own attacker, its pet's fight or its threat (#571). |
-| `COMPANION_LEVEL_SYNC` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `from`, `owner`, `to` | `bot`, `owner` | - | A /spawn helper caught up to its owner's level (#571 step 6). |
+| `COMPANION_LEVEL_SYNC` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `from`, `owner`, `to` | `bot`, `owner` | one per /spawn helper each time its owner out-levels it, out of combat (#571 step 6) | A /spawn helper caught up to its owner's level (#571 step 6). |
 | `COMPANION_OPTION_165` | server.log | **ships** | `mode165/CompanionOptions165.cs` | `bot`, `id` | `bot` | - | - |
 | `COMPANION_REPAIR_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `companions`, `paid`, `pieces`, `player` | `player` | - | - |
 | `COMPANION_RIDE_BACK` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |

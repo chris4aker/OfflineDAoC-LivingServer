@@ -70,6 +70,8 @@ namespace DOL.UnitTests
         {
             private Owner() : base(null, null) { }
             public override byte Level { get; set; }
+            /// <summary>No client: TryMatchOwnerLevel's "now level N" line goes nowhere.</summary>
+            public override DOL.GS.PacketHandler.IPacketLib Out => null;
         }
 
         private GameServer _previous;
@@ -575,6 +577,91 @@ namespace DOL.UnitTests
                 helper.SpendSpecPoints(50, from);
                 AssertAPlayersPoints(helper, Leftover(helper), 50, $"promoted from {from}");
             }
+        }
+
+        // ---- /spawn helpers follow their owner's level (#571 step 6, GameBot.TryMatchOwnerLevel)
+
+        [TestCase(eCharacterClass.Armsman)]
+        [TestCase(eCharacterClass.Cleric)]
+        public void AGroupedSpawnHelperCatchesUpToItsOwnerAndNeverGoesDown(eCharacterClass cls)
+        {
+            GameBot helper = OwnerBot(cls, ownerLevel: 20, botLevel: 20, temporary: true);
+            Assume.That(helper.Level, Is.EqualTo(20));
+            GroupWithOwner(helper);
+            Assert.That(MatchOwnerLevel(helper), Is.False, "level with its owner: nothing to do");
+
+            helper.Owner.Level = 30;
+            Assert.That(MatchOwnerLevel(helper), Is.True, "the owner out-levelled it");
+            Assert.That(helper.Level, Is.EqualTo(30));
+
+            helper.Owner.Level = 25; // never down
+            Assert.That(MatchOwnerLevel(helper), Is.False);
+            Assert.That(helper.Level, Is.EqualTo(30));
+        }
+
+        [Test]
+        public void AHelperOutsideItsOwnersGroupStaysBelowFifty()
+        {
+            GameBot helper = OwnerBot(eCharacterClass.Armsman, ownerLevel: 20, botLevel: 20, temporary: true);
+            helper.Owner.Level = 30;
+            Assert.That(MatchOwnerLevel(helper), Is.False, "not grouped");
+            Assert.That(helper.Level, Is.EqualTo(20));
+        }
+
+        [Test]
+        public void HiredAndAutonomousHelpersDontFollowTheOwner()
+        {
+            // A /bot companion (not a temporary helper) in its owner's group.
+            GameBot companion = OwnerBot(eCharacterClass.Armsman, ownerLevel: 20, botLevel: 20, temporary: false);
+            GroupWithOwner(companion);
+            companion.Owner.Level = 30;
+            Assert.That(MatchOwnerLevel(companion), Is.False, "/bot companion");
+            Assert.That(companion.Level, Is.EqualTo(20));
+
+            // A hired companion.
+            GameBot hired = Hired(eCharacterClass.Armsman, 20, 0);
+            Assert.That(MatchOwnerLevel(hired), Is.False, "hired companion");
+            Assert.That(hired.Level, Is.EqualTo(20));
+
+            // A temporary helper that is an autonomous gamebot.
+            GameBot autonomous = OwnerBot(eCharacterClass.Armsman, ownerLevel: 20, botLevel: 20, temporary: true);
+            GroupWithOwner(autonomous);
+            typeof(GameBot).GetProperty(nameof(GameBot.IsAutonomousWorldBot))!.SetValue(autonomous, true);
+            autonomous.Owner.Level = 30;
+            Assert.That(MatchOwnerLevel(autonomous), Is.False, "autonomous gamebot");
+            Assert.That(autonomous.Level, Is.EqualTo(20));
+        }
+
+        [Test]
+        public void TheIdleTurnCallsTheLevelSync()
+        {
+            string dir = TestContext.CurrentContext.TestDirectory;
+            while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs")))
+                dir = System.IO.Path.GetDirectoryName(dir);
+            Assert.That(dir, Is.Not.Null, "repository root");
+            string brain = System.IO.File.ReadAllText(System.IO.Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs"))
+                .Replace("\r\n", "\n");
+            Assert.That(brain, Does.Contain("if (BotBody?.TryMatchOwnerLevel() == true)\n                return;"));
+        }
+
+        /// <summary>Calls the idle turn's level sync on a helper that is alive and active, as in the world.</summary>
+        private static bool MatchOwnerLevel(GameBot bot)
+        {
+            bot.ObjectState = GameObject.eObjectState.Active;
+            if (bot.Health <= 0) bot.Health = Math.Max(1, bot.MaxHealth);
+            Assume.That(bot.IsAlive, Is.True, "alive, so only the level rules can say no");
+            return (bool)typeof(GameBot).GetMethod("TryMatchOwnerLevel", Hidden)!.Invoke(bot, null)!;
+        }
+
+        /// <summary>The helper and its owner share one group. The owner isn't in the member list, so the group update
+        /// sends no packets to a player with no client; CompanionLevelSync.InOwnersGroup compares the groups only.</summary>
+        private static void GroupWithOwner(GameBot bot)
+        {
+            var group = new Group(bot.Owner);
+            var members = (List<GameLiving>)typeof(Group).GetField("_groupMembers", Hidden)!.GetValue(group);
+            members.Add(bot);
+            bot.Group = group;
+            bot.Owner.Group = group;
         }
 
         // ---- Epic Special Forces and No Lifer buffbots: made in memory, trained at their level
