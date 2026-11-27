@@ -287,7 +287,8 @@ small night strikes) has the right total but none of its distribution.
 4. **Bring a ram to a bot siege:** watch whether bots stand at it, and the hit size (`RVR_SIEGE` lines name only bot
    engines; note the door's health per hit from the client).
 5. **Go to the muster** (portal outpost) when "Warbands are gathering" appears: does anything wait for you?
-6. **Solo, hit one guard of an enemy keep at night:** `PLAYER_KEEP_DEFENSE_SIZED force=1 scale=Small defenders=24`;
+6. **Solo, hit one guard of an enemy keep at night:** `PLAYER_KEEP_DEFENSE_SIZED force=1 roster=1 scale=Small defenders=24`
+   (since #788 `force=` also counts your realm's gamebots at the keep);
    count what arrives.
 7. **Dun nGed, Da Behnn or Ailinne:** `/keep info` or the door's health; level 1 on a fresh 1.2.2 install?
 8. **After a capture:** `BOT_GUILD_CLAIM` in the next 160 s, or nothing.

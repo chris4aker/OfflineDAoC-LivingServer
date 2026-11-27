@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -5,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using DOL.GS.Keeps;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests
@@ -12,8 +14,24 @@ namespace DOL.GS.Tests
     [TestFixture, NonParallelizable]
     public class UT_PlayerKeepDefense
     {
-        [SetUp] public void SetUp() { RvrEventTestState.Clear(); }
-        [TearDown] public void TearDown() { RvrEventTestState.Clear(); }
+        // The Attacker (GameNPC) and Group fixtures need a server double: without it they throw TypeInitializationException
+        // for DOL.GS.GameObject when the fixture runs alone (#788 review).
+        private DOL.UnitTests.EpicTestServerScope _server;
+        private object _botSource;
+        private static FieldInfo BotSourceField => typeof(AutonomousRvrEventLayer).GetField("AttackerRealmBotSource", BindingFlags.NonPublic | BindingFlags.Static);
+        [SetUp] public void SetUp()
+        {
+            _server = new DOL.UnitTests.EpicTestServerScope();
+            _botSource = BotSourceField.GetValue(null);
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => Array.Empty<GameLiving>()));
+            RvrEventTestState.Clear();
+        }
+        [TearDown] public void TearDown()
+        {
+            RvrEventTestState.Clear();
+            BotSourceField.SetValue(null, _botSource);
+            _server.Dispose();
+        }
         private static AutonomousRvrEventLayer.LiveObjective Target(string id = "defense") =>
             new(id, "Test keep", AutonomousRvrEventLayer.Intent.AssaultKeep, eRealm.Midgard, 100, 100000, 100000, 100, false, 0, 0, 0, 0);
 
@@ -83,6 +101,8 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty);
         }
 
+        // Owner, 2026-11-27 (#784, answer 1B): "bots should be performing their own sieges and defense without the player",
+        // so attacker-realm bots still at the keep hold the defense open after the player leaves.
         [Test]
         public void TheAttackingRealmsBotsAtTheKeepHoldTheDefenseOpen()
         {
@@ -99,6 +119,92 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1), "Attackers seen at minute 9 hold it to minute 19");
             AutonomousRvrEventLayer.PulseDefense(seenAt + 5_000 + AutonomousRvrEventLayer.RepelMilliseconds);
             Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty);
+        }
+
+        // Review ask 2: the 4-hour cap still ends a defense whose attack is seen the whole time (a hit every five minutes,
+        // so the ten-minute rule never fires). Without the cap it would stay open.
+        [Test]
+        public void ADefenseAttackedTheWholeTimeStillEndsAtFourHours()
+        {
+            long now = GameLoop.GameLoopTime + 100;
+            var target = Target();
+            AutonomousRvrEventLayer.BeginDefenseResponse(target, eRealm.Albion, "offline", now);
+            long cap = now + AutonomousRvrEventLayer.DefenseResponseMilliseconds;
+            for (long t = now + 5 * 60_000; t < cap; t += 5 * 60_000)
+            {
+                Pressure()[target.Id] = t;
+                AutonomousRvrEventLayer.PulseDefense(t);
+                Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1), $"Still attacked at minute {(t - now) / 60_000}");
+            }
+            Pressure()[target.Id] = cap - 1_000;
+            AutonomousRvrEventLayer.PulseDefense(cap - 1_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1), "Hit a second before the cap");
+            AutonomousRvrEventLayer.PulseDefense(cap + 5_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty, "The four-hour cap ends it though the attack was seen a moment ago");
+        }
+
+        // Review ask 3: the attacking player standing at the keep (no hits after the alarm) holds the defense open, through
+        // the alarm path that records who raised it (active.AttackingPlayer = alarm.Player).
+        [Test]
+        public void TheAttackingPlayerAtTheKeepHoldsTheDefenseOpenUntilTheyLeave()
+        {
+            using var server = new DOL.UnitTests.EpicTestServerScope();
+            long now = GameLoop.GameLoopTime + 100;
+            var keep = (DOL.GS.Keeps.GameKeep)RuntimeHelpers.GetUninitializedObject(typeof(DOL.GS.Keeps.GameKeep));
+            keep.DBKeep = new DOL.Database.DbKeep { KeepID = 7, Name = "Test keep", Realm = (byte)eRealm.Midgard, Region = 100,
+                X = 100000, Y = 100000, Z = 100, BaseLevel = 50 };
+            var player = (KeepPlayer)RuntimeHelpers.GetUninitializedObject(typeof(KeepPlayer));
+            player.TestX = 100000; player.TestY = 100000; player.TestZ = 100;
+            Alarms()["rvr-keep-7"] = NewAlarm(keep, player, now);
+
+            AutonomousRvrEventLayer.PulseDefense(now);
+            Assert.That(AutonomousRvrEventLayer.Snapshot().Single().TargetId, Is.EqualTo("rvr-keep-7"), "The alarm raised the defense");
+            AutonomousRvrEventLayer.PulseDefense(now + 6 * 60_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 12 * 60_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1), "The player is still at the keep at minute 12");
+
+            player.TestX = 200000; // rides away at minute 12
+            AutonomousRvrEventLayer.PulseDefense(now + 12 * 60_000 + 5_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 21 * 60_000 + 55_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Has.Length.EqualTo(1), "Not yet ten minutes since they left");
+            AutonomousRvrEventLayer.PulseDefense(now + 22 * 60_000);
+            Assert.That(AutonomousRvrEventLayer.Snapshot(), Is.Empty, "Ten minutes after the player left, the defense ends");
+        }
+
+        private sealed class KeepPlayer : GamePlayer
+        {
+            private KeepPlayer() : base(null, null) { }
+            public int TestX, TestY, TestZ;
+            public override bool IsAlive => true;
+            public override eRealm Realm { get => eRealm.Albion; set { } }
+            public override int X => TestX;
+            public override int Y => TestY;
+            public override int Z => TestZ;
+            public override ushort CurrentRegionID { get => 100; set { } }
+            public override eObjectState ObjectState { get => eObjectState.Active; set { } }
+            public override DOL.GS.PacketHandler.IPacketLib Out => DispatchProxy.Create<DOL.GS.PacketHandler.IPacketLib, Silent>();
+        }
+
+        public class Silent : DispatchProxy
+        {
+            protected override object Invoke(MethodInfo method, object[] args) =>
+                method.ReturnType.IsValueType && method.ReturnType != typeof(void) ? Activator.CreateInstance(method.ReturnType) : null;
+        }
+
+        private static IDictionary Alarms() =>
+            (IDictionary)typeof(AutonomousRvrEventLayer).GetField("DefenseAlarms", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+
+        // The alarm record is private; fill its constructor by parameter type so the test survives a change of its fields.
+        private static object NewAlarm(AbstractGameKeep keep, GamePlayer player, long tick)
+        {
+            var type = typeof(AutonomousRvrEventLayer).GetNestedType("Alarm", BindingFlags.NonPublic);
+            var ctor = type.GetConstructors().OrderByDescending(c => c.GetParameters().Length).First();
+            object[] args = ctor.GetParameters().Select(p =>
+                p.ParameterType == typeof(long) ? tick :
+                p.ParameterType == typeof(int) ? 1 :
+                typeof(GamePlayer).IsAssignableFrom(p.ParameterType) ? player :
+                typeof(AbstractGameKeep).IsAssignableFrom(p.ParameterType) ? (object)keep : null).ToArray();
+            return ctor.Invoke(args);
         }
 
         [TestCase(true, true, 100, 0f, 0f, 0f, true)]
@@ -265,6 +371,98 @@ namespace DOL.GS.Tests
             Attacker far = At(200000);
             GroupOf(far, At(200000), At(200000));
             Assert.That(Seen(far), Is.EqualTo(1), "a whole group away from the keep is still one seen attack");
+        }
+
+        // #788 answer 49A (owner, 2026-11-27): the attacking realm's gamebots at the keep count with the player's group.
+        private static int Seen(GameLiving attacker, params GameLiving[] bots) =>
+            AutonomousRvrEventLayer.SeenForceSize(attacker, 100, 100000, 100000, 100, bots);
+
+        [Test]
+        public void TheAttackingRealmsBotsAtTheKeepAreCounted()
+        {
+            Attacker solo = At(100000);
+            Assert.That(Seen(solo, At(100500), At(101000), At(99000, y: 104000)), Is.EqualTo(4), "the player and three bots in the ring");
+            Assert.That(AutonomousRvrEventLayer.ScaleOf(Seen(solo, At(100500), At(101000), At(99000, y: 104000))),
+                Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Standard));
+
+            // A player away from the keep with eight bots attacking it: eight, Large.
+            Attacker away = At(200000);
+            var bots = Enumerable.Range(0, 8).Select(i => (GameLiving)At(100000 + i * 200)).ToArray();
+            Assert.That(Seen(away, bots), Is.EqualTo(8));
+            Assert.That(AutonomousRvrEventLayer.ScaleOf(Seen(away, bots)), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Large));
+
+            // A bot that is also in the player's group, or listed twice, counts once.
+            Attacker leader = At(100000), grouped = At(100100);
+            GroupOf(leader, grouped);
+            Assert.That(Seen(leader, grouped, grouped, At(100200)), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void BotsElsewhereOrOfOtherRealmsAreNotCounted()
+        {
+            Attacker far = At(110000), high = At(100000, z: 5000), otherRegion = At(100000), dead = At(100000),
+                midgard = At(100000), hibernia = At(100000), here = At(100000);
+            otherRegion.TestRegion = 101;
+            dead.Alive = false;
+            midgard.TestRealm = eRealm.Midgard;   // the keep's own realm: a defender, not an attacker
+            hibernia.TestRealm = eRealm.Hibernia; // the third realm
+            Assert.That(Seen(At(100000), far, high, otherRegion, dead, midgard, hibernia), Is.EqualTo(1), "only the player");
+            Assert.That(Seen(At(100000), far, high, otherRegion, dead, midgard, hibernia, here), Is.EqualTo(2));
+            Assert.That(Seen(At(200000), far, midgard, hibernia), Is.EqualTo(1), "nobody of the attack at the keep: still the floor of one");
+        }
+
+        [Test]
+        public void TheFloorAndCapsHoldWithTheBotsCounted()
+        {
+            Assert.That(Seen(null, At(100000)), Is.EqualTo(1), "no attacker: the floor");
+            Assert.That(Seen(At(200000)), Is.EqualTo(1), "no one at the keep: the floor");
+            var army = Enumerable.Range(0, 300).Select(i => (GameLiving)At(100000 + i % 50 * 100, y: 100000 + i / 50 * 100)).ToArray();
+            int seen = Seen(At(100000), army);
+            Assert.That(seen, Is.EqualTo(301));
+            var scale = AutonomousRvrEventLayer.ScaleOf(seen);
+            Assert.That(scale, Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Massive));
+            Assert.That(AutonomousRvrEventLayer.ResponseCap(true, scale), Is.EqualTo(240), "the defenders' cap is unchanged");
+            Assert.That(AutonomousRvrEventLayer.ResponseCap(false, scale), Is.EqualTo(96), "the helpers' cap is unchanged");
+        }
+
+        // #788 review ask 2: the live sizing line in PulseDefense. A group of twelve with three at the keep is Standard
+        // (sized from three; the roster of twelve would be Large); then four attacker-realm gamebots at the keep make it
+        // seven seen, and nine bots make it twelve: Large.
+        [Test]
+        public void TheAlarmSizesTheDefenseByTheGroupAndBotsAtTheKeep()
+        {
+            long now = GameLoop.GameLoopTime + 100;
+            var keep = (DOL.GS.Keeps.GameKeep)RuntimeHelpers.GetUninitializedObject(typeof(DOL.GS.Keeps.GameKeep));
+            keep.DBKeep = new DOL.Database.DbKeep { KeepID = 8, Name = "Test keep", Realm = (byte)eRealm.Midgard, Region = 100,
+                X = 100000, Y = 100000, Z = 100, BaseLevel = 50 };
+            var player = (KeepPlayer)RuntimeHelpers.GetUninitializedObject(typeof(KeepPlayer));
+            player.TestX = 100000; player.TestY = 100000; player.TestZ = 100;
+            var members = new List<GameLiving> { player, At(100500), At(101000) };
+            for (int i = 0; i < 9; i++) members.Add(At(150000));
+            GroupOf(members.ToArray());
+            Assert.That(player.Group.MemberCount, Is.EqualTo(12));
+
+            Alarms()["rvr-keep-8"] = NewAlarm(keep, player, now);
+            AutonomousRvrEventLayer.PulseDefense(now);
+            Assert.That(ScaleOfEvent("rvr-keep-8"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Standard), "three of twelve at the keep");
+
+            var bots = Enumerable.Range(0, 9).Select(i => (GameLiving)At(100000 + i * 300)).ToArray();
+            bots[8] = At(300000); // one bot far away
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => bots.Take(4)));
+            Alarms()["rvr-keep-8"] = NewAlarm(keep, player, now + 6_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 6_000);
+            Assert.That(ScaleOfEvent("rvr-keep-8"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Standard), "three and four bots: seven");
+
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => bots));
+            Alarms()["rvr-keep-8"] = NewAlarm(keep, player, now + 12_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 12_000);
+            Assert.That(ScaleOfEvent("rvr-keep-8"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Large), "three and eight bots at the keep: eleven");
+        }
+
+        private static AutonomousRvrEventLayer.DefenseScale ScaleOfEvent(string id)
+        {
+            object active = EventOf(id);
+            return (AutonomousRvrEventLayer.DefenseScale)active.GetType().GetField("DefenseScale").GetValue(active);
         }
 
         [Test]
