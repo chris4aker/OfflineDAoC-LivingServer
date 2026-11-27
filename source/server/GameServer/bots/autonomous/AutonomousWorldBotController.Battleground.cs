@@ -1073,6 +1073,16 @@ namespace DOL.GS
             if (BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID))
                 return LeaveBattleground(bot);
             if (!BattlegroundBrackets.Allows(bracket, bot.Level)) return false;
+            // #572 step 4: a gamebot forced out of a battleground stays out for 30 minutes (no entry/exit loop).
+            if (AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID))
+            {
+                if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground))
+                    AutonomousObjectiveAssignments.EndBattlegroundTour(bot, "Just taken out of the battlegrounds; not going back yet");
+                else if (_camp != null && BattlegroundBrackets.IsBattlegroundRegion(_camp.RegionId))
+                    AbandonCamp(bot, "Just taken out of the battlegrounds; not going back yet");
+                _nextPlanTick = 0;
+                return true;
+            }
             if (TryTownTeleport(bot, bracket.RegionId, goal, BattlegroundNoWalkSeconds)) return true;
 
             GameNPC porter = NearestRealmTeleporter(bot);
@@ -1117,20 +1127,30 @@ namespace DOL.GS
             GameLocation entry = BattlegroundBrackets.BotArrival(here, bot.Realm);
             // Walk to the mesh floor at the realm's arrival point (the exit portal is there).
             Vector3 exitSpot = AutonomousTownTeleporters.Arrival(new DbTeleport { RegionID = here.RegionId, X = entry.X, Y = entry.Y, Z = entry.Z }, 0);
-            if (Vector2.DistanceSquared(new(bot.X, bot.Y), new(exitSpot.X, exitSpot.Y)) > BattlegroundExitRadius * BattlegroundExitRadius)
+            // #572 step 4: finish a fight at the exit; a walk that fails for 4 minutes (or any leave past 10) takes the exit
+            // where the bot stands, so no gamebot walks at a battleground's exit forever.
+            long now = GameLoop.GameLoopTime;
+            _battlegroundLeavingSince = AutonomousBattlegroundExit.LeaveStarted(_battlegroundLeavingSince, _battlegroundLastLeaveCall, now);
+            _battlegroundLastLeaveCall = now;
+            eBattlegroundExitStep step = AutonomousBattlegroundExit.ExitStep(
+                Vector2.Distance(new(bot.X, bot.Y), new(exitSpot.X, exitSpot.Y)), BattlegroundExitRadius, bot.InCombat,
+                now - _battlegroundLeavingSince);
+            if (step == eBattlegroundExitStep.WalkToExit)
             {
                 IssuePath(bot, exitSpot);
                 SetStatus(bot, "Leaving the battleground", GoalText(), $"Walking to the {here.Name} exit portal");
                 return true;
             }
-            if (bot.InCombat) return false;
+            if (step == eBattlegroundExitStep.FinishFight) return false;
             Vector3 arrival = AutonomousTownTeleporters.Arrival(exit, 0);
             bot.StopMovingOnPath();
             bot.StopMoving();
             if (!bot.MoveTo((ushort)exit.RegionID, (int)arrival.X, (int)arrival.Y, (int)arrival.Z, (ushort)exit.Heading))
                 return false;
             Log.Info($"AUTONOMOUS_BATTLEGROUND_EXIT bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} level={bot.Level} " +
-                     $"battleground={here.Name} destination=\"{exit.TeleportID}\"");
+                     $"battleground={here.Name} destination=\"{exit.TeleportID}\" fromHere={(step == eBattlegroundExitStep.ExitFromHere ? "true" : "false")} " +
+                     $"leavingSeconds={(now - _battlegroundLeavingSince) / 1000}");
+            _battlegroundLeavingSince = _battlegroundLastLeaveCall = 0;
             bot.ForcePathReplot();
             AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Movement);
             AutonomousBotStatusPersistence.Queue(bot, true);
