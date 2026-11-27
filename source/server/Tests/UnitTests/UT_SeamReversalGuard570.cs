@@ -151,6 +151,8 @@ namespace DOL.UnitTests
             int abandon = caught.IndexOf("AbandonCamp(bot, \"A zone seam route that turns back on itself\")");
             Assert.That(member, Is.GreaterThan(0).And.LessThan(abandon), "a held member returns before the camp is given up");
             Assert.That(caught.Substring(member, abandon - member), Does.Not.Contain("AbandonCamp("));
+            Assert.That(caught.Substring(member, abandon - member), Does.Contain("return true;").And.Not.Contain("return false;"),
+                "a held member's route goes on");
             // The hold is checked before any stall recovery and cleared with the route state.
             int hold = code.IndexOf("if (HoldAfterSeamReversal(current, now, destinationChanged))");
             int stall = code.IndexOf("AutonomousRouteRecoveryPolicy.ShouldRecoverActiveRouteStall(");
@@ -219,6 +221,9 @@ namespace DOL.UnitTests
             GameServer.LoadTestDouble(_previousServer);
             _language.Dispose();
         }
+
+        [OneTimeSetUp]
+        public void Logging() => DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null, DOL.Logging.LogLibrary.None);
 
         private const BindingFlags Hidden = BindingFlags.NonPublic | BindingFlags.Instance;
 
@@ -299,7 +304,10 @@ namespace DOL.UnitTests
             MoveTo(member, SideB);
             Assert.That(Step(controller, member, b, c), Is.True, "B > A: the first turn");
             MoveTo(member, SideA);
-            Assert.That(Step(controller, member, a, c), Is.False, "A > B again: the second turn is caught");
+            Assert.That(Step(controller, member, a, c), Is.True,
+                "A > B again: the second turn is caught, and the member holds (the route goes on, not a failure)");
+            Assert.That((long)typeof(AutonomousWorldBotController).GetField("_seamMemberHoldUntilTick", Hidden)!.GetValue(controller),
+                Is.GreaterThan(GameLoop.GameLoopTime), "the hold is set");
 
             // Held, not given up: the group's camp stands and nothing is remembered as failed.
             Assert.That(member.PersistentRecord.CurrentCampId, Is.EqualTo("shared-camp"), "no AbandonCamp");

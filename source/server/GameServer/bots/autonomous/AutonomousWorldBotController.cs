@@ -5604,7 +5604,9 @@ namespace DOL.GS
                         _seamMemberHoldUntilTick = _nextMoveOrderTick;
                         _lastRoutePosition = current;
                         _lastRouteProgressTick = seamNow;
-                        return false;
+                        // The route goes on after the hold: true, as the held turns return (a false reads as a failed
+                        // route to callers such as keep travel, which drop their hop and retry 30 s later).
+                        return true;
                     }
                     if (TryPlanCapitalTransit(bot, destination))
                         return HandleCapitalTransit(bot);
