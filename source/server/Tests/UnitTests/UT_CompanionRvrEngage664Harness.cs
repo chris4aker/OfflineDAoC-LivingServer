@@ -104,7 +104,7 @@ namespace DOL.GS.Tests
         /// The companions think through Observe only (their brains stopped too), every tick for <paramref name="seconds"/>:
         /// what the group pick decides and orders, nothing else. True once a companion took an enemy.
         /// </summary>
-        private static bool ObserveFor(Scene scene, double seconds)
+        private static bool ObserveFor(Scene scene, double seconds, Action eachTick = null)
         {
             foreach (GameBot bot in scene.Group)
                 bot.Brain?.Stop();
@@ -116,6 +116,7 @@ namespace DOL.GS.Tests
                 foreach (GameBot bot in scene.Group)
                     CompanionPvpEngagement.Observe(bot);
                 engaged |= scene.Group.Any(bot => bot.Brain is BotBrain brain && brain.HasAggro);
+                eachTick?.Invoke();
             }
             return engaged;
         }
@@ -186,9 +187,17 @@ namespace DOL.GS.Tests
             }
             using (Scene eight = Make(Thidranki, 900, companions: 7, enemies: 8))
             {
-                Assert.That(ObserveFor(eight, 6), Is.True, "eight against eight: a fair fight");
-                Assert.That(CompanionRvrEngage.Holding(eight.Player), Is.False);
-                Assert.That(CompanionRvrEngage.CurrentPick(eight.Player)?.Name, Is.EqualTo("Enemy1").Or.EqualTo("Enemy5"),
+                // The group's first pick: once it is engaged the companions really fight, so the healer may fall and the
+                // pick move on within the run.
+                GameLiving first = null;
+                bool held = false;
+                Assert.That(ObserveFor(eight, 6, () =>
+                {
+                    first ??= CompanionRvrEngage.CurrentPick(eight.Player);
+                    held |= CompanionRvrEngage.Holding(eight.Player);
+                }), Is.True, "eight against eight: a fair fight");
+                Assert.That(held, Is.False, "never held off");
+                Assert.That(first?.Name, Is.EqualTo("Enemy1").Or.EqualTo("Enemy5"),
                     "the kill order: a healer first (the Midgard Healer or Shaman)");
             }
         }
