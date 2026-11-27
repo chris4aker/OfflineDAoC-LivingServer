@@ -21,7 +21,7 @@ A fix counts as working only once it is seen in a log from the owner's PC. Until
 - **1.2.2** is the latest full release (2026-11-23, [RELEASE-NOTES-1.2.2.md](RELEASE-NOTES-1.2.2.md)).
 - **1.2.3** is in release candidates: `v1.2.3-rc.2` was published as a pre-release on 2026-11-26 ([#709](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/709)); the merges
   for rc.3 are going into `main`. The `1.2.3` milestone's cut line is set by the owner after the playtest.
-- **1.2.4** is the alt roster ([#631](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/631)) and the foundations the rest builds on; **1.2.5** builds on it.
+- **1.2.4** is the foundations the rest builds on, with no single headline (owner, 2026-11-26); **1.2.5** builds on it.
   Every open issue now has a milestone; the plan and build order are on
   [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738).
 - **Done since 1.2** (closed; what shipped is in each issue's last comment and in the changelog): [#396](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/396), [#397](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/397),
@@ -155,17 +155,17 @@ Fix routes spot by spot; never rebuild navmeshes globally.
 
 ## 1.2.4
 
-The [1.2.4 milestone](https://github.com/chris4aker/OfflineDAoC-LivingServer/milestone/2): the alt roster, and the
-foundations the rest builds on. Grouped and ordered as the milestone plan, [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738), describes: anything another item
+The [1.2.4 milestone](https://github.com/chris4aker/OfflineDAoC-LivingServer/milestone/2): the foundations the rest builds
+on, with no single headline. Grouped and ordered as the milestone plan, [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738), describes: anything another item
 builds on comes first (an arrow means "then"). Every placement is a proposal for the owner to confirm or move
 (`needs-owner` on #738).
 
 - [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738) Milestone plan: every unplaced issue into 1.2.4 or 1.2.5, in build order. `needs-owner`.
 
-### The alt roster (headline)
+### The alt roster
 
-- [#631](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/631) Alt roster: bot players own up to 3 characters (the 2026-10-12 design). Owner, 2026-11-25: the headline of
-  1.2.4, right after the 1.2.3 playtest. Its "before building" asks to check low-level combat first, so the next two
+- [#631](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/631) Alt roster: bot players own up to 3 characters (the 2026-10-12 design). Planned for 1.2.4
+  (owner, 2026-11-26: one item, not the headline). Its "before building" asks to check low-level combat first, so the next two
   come with it.
 - [#570](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/570) Harvest: solo levelling life and learned dangers (hotspots, seams, hunting ground, corpse walk).
 - [#578](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/578) Harvest: classic starter quests from DOL scripts.
