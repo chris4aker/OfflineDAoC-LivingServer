@@ -299,6 +299,21 @@ namespace DOL.GS.Housing
 		}
 
 		/// <summary>
+		/// Port of OpenDAoC-Core 409c19b3d: changes the house's emblem, the cloak of its consignment merchant with it
+		/// (that needed a server restart), saves and shows it.
+		/// </summary>
+		public void SetEmblem(int emblem)
+		{
+			if (Emblem == emblem)
+				return;
+
+			Emblem = emblem;
+			ConsignmentMerchant?.SetEmblem();
+			SaveIntoDatabase();
+			SendUpdate();
+		}
+
+		/// <summary>
 		/// Sends a update of the house and the garden to all players in range
 		/// </summary>
 		public void SendUpdate()

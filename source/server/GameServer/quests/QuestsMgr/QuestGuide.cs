@@ -48,7 +48,7 @@ namespace DOL.GS.Quests
         public static void ShowNext(GamePlayer player)
         {
             if (player == null) return;
-            AbstractQuest[] active = player.QuestList.Keys.ToArray();
+            AbstractQuest[] active = player.GetActiveQuests().ToArray();
             if (active.Length == 0)
             {
                 player.Out.SendCustomTextWindow("Quest Guide", new List<string>
@@ -79,8 +79,8 @@ namespace DOL.GS.Quests
         public static bool Show(GamePlayer player, string query, int page)
         {
             if (player == null || string.IsNullOrWhiteSpace(query)) return false;
-            AbstractQuest active = player.QuestList.Keys.FirstOrDefault(q => q.Name.Equals(query, StringComparison.OrdinalIgnoreCase))
-                                   ?? player.QuestList.Keys.FirstOrDefault(q => q.Name.Contains(query, StringComparison.OrdinalIgnoreCase));
+            AbstractQuest active = player.GetActiveQuests().FirstOrDefault(q => q.Name.Equals(query, StringComparison.OrdinalIgnoreCase))
+                                   ?? player.GetActiveQuests().FirstOrDefault(q => q.Name.Contains(query, StringComparison.OrdinalIgnoreCase));
             if (active != null)
             {
                 Send(player, active, page, string.Empty);

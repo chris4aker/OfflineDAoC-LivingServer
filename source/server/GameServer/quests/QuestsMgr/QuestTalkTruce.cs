@@ -23,12 +23,10 @@ namespace DOL.GS.Quests
             if (npc == null || player == null || npc.Realm != eRealm.None || !_questNpcNames.Value.Contains(npc.Name))
                 return false;
 
-            foreach (var pair in player.QuestList) // not .Keys: that copies the keys on every aggro check
-            {
-                if (pair.Key is DataQuest dataQuest && TalksTo(dataQuest.StepType) &&
-                    QuestNames.Same(dataQuest.TargetName, npc.Name) && (dataQuest.TargetRegion == 0 || dataQuest.TargetRegion == npc.CurrentRegionID))
-                    return true;
-            }
+            // A pooled snapshot, not a copy: this runs on every aggro check.
+            if (player.AnyActiveQuest(quest => quest is DataQuest dataQuest && TalksTo(dataQuest.StepType) &&
+                    QuestNames.Same(dataQuest.TargetName, npc.Name) && (dataQuest.TargetRegion == 0 || dataQuest.TargetRegion == npc.CurrentRegionID)))
+                return true;
 
             // A quest it gives. Level range only: the full qualification check reads the database.
             List<DataQuest> given = npc.DataQuestList;

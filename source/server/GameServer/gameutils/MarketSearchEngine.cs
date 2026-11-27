@@ -105,6 +105,11 @@ namespace DOL.GS
                 if (resultSets == null || resultSets.Count == 0)
                     return query.HasAny ? [] : [.. _itemKeyCache.Keys];
 
+                // Port of OpenDAoC-Core 5d3ce2325: one set needs no intersect. A copy, never the live index set,
+                // which changes under the write lock once this read lock is released.
+                if (resultSets.Count == 1)
+                    return [.. resultSets[0]];
+
                 // Find the smallest set to start with.
                 HashSet<DbInventoryItem> smallestSet = resultSets[0];
                 int minCount = smallestSet.Count;
@@ -123,21 +128,34 @@ namespace DOL.GS
                 if (smallestSet.Count == 0)
                     return [];
 
-                // Intersect all other sets with the smallest set.
-                HashSet<DbInventoryItem> finalResult = [.. smallestSet];
+                // Port of OpenDAoC-Core 34e3357ca: keep the items of the smallest set found in every other set,
+                // without copying the smallest set into a new HashSet first (88% less allocation upstream).
+                // Same items, same order (the smallest set's) as the old IntersectWith.
+                List<DbInventoryItem> result = new(smallestSet.Count);
 
-                for (int i = 0; i < resultSets.Count; i++)
+                foreach (DbInventoryItem item in smallestSet)
                 {
-                    if (resultSets[i] == smallestSet)
-                        continue;
+                    bool inAll = true;
 
-                    finalResult.IntersectWith(resultSets[i]);
+                    for (int i = 0; i < resultSets.Count; i++)
+                    {
+                        HashSet<DbInventoryItem> set = resultSets[i];
 
-                    if (finalResult.Count == 0)
-                        break;
+                        if (set == smallestSet)
+                            continue;
+
+                        if (!set.Contains(item))
+                        {
+                            inAll = false;
+                            break;
+                        }
+                    }
+
+                    if (inAll)
+                        result.Add(item);
                 }
 
-                return finalResult;
+                return result;
             }
             finally
             {

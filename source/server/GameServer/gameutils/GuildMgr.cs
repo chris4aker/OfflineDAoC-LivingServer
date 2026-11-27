@@ -21,6 +21,10 @@ namespace DOL.GS
         private static readonly Dictionary<Guild, Dictionary<string, GuildMemberView>> _guildMemberViews = new();
         private static int _lastID;
 
+        // Used by the hack to make pets untargetable with tab on a PvP server. Effectively creates a dummy guild to get a unique ID.
+        // Port of OpenDAoC-Core 5c2fdc7bd: made once the guilds are loaded, instead of in Guild's static constructor.
+        public static Guild DummyGuild { get; private set; }
+
         public static void AddPlayerToGuildMemberViews(GamePlayer player)
         {
             if (player?.Guild == null)
@@ -276,12 +280,8 @@ namespace DOL.GS
                     {
                         House guildHouse = HouseMgr.GetHouse(guild.GuildHouseNumber);
 
-                        if (guildHouse != null)
-                        {
-                            guildHouse.Emblem = guild.Emblem;
-                            guildHouse.SaveIntoDatabase();
-                            guildHouse.SendUpdate();
-                        }
+                        // House.SetEmblem also updates the consignment merchant's cloak (port of OpenDAoC-Core 409c19b3d).
+                        guildHouse?.SetEmblem(guild.Emblem);
                     }
                 }
 
@@ -318,9 +318,7 @@ namespace DOL.GS
             if (personalHouse == null || personalHouse.Emblem == newEmblem)
                 return;
 
-            personalHouse.Emblem = newEmblem;
-            personalHouse.SaveIntoDatabase();
-            personalHouse.SendUpdate();
+            personalHouse.SetEmblem(newEmblem);
         }
 
         public static Guild GetGuildByName(string guildName)
@@ -393,6 +391,7 @@ namespace DOL.GS
                         guild = new Guild(DOLDB<DbGuild>.SelectObjects(DB.Column("GuildID").IsEqualTo(dbGuild.GuildID)).FirstOrDefault());
                     }
 
+                    RepairGuildHouseEmblem(guild);
                     AddGuild(guild);
 
                     static void RepairRanks(Guild guild)
@@ -425,6 +424,10 @@ namespace DOL.GS
                         }
                     }
                 }
+
+                // Null-safe so guilds can load without a full server configuration (unit tests).
+                if (GameServer.Instance?.Configuration?.ServerType is EGameServerType.GST_PvP)
+                    DummyGuild = GetGuildByName("DummyGuildToMakePetsUntargetable") ?? CreateGuild(0, "DummyGuildToMakePetsUntargetable");
             }
 
             static void LoadAlliances()
@@ -447,6 +450,38 @@ namespace DOL.GS
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Port of OpenDAoC-Core fed1f28ec: at start-up, a guild house that shows the wrong emblem gets the guild's.
+        /// Only a house that is this guild's guild house is touched, so a stale GuildHouseNumber can't stamp the
+        /// emblem on somebody else's house. Houses load before guilds (GameServer start-up order).
+        /// </summary>
+        private static void RepairGuildHouseEmblem(Guild guild)
+        {
+            if (!guild.GuildOwnsHouse || guild.GuildHouseNumber <= 0)
+                return;
+
+            House guildHouse = HouseMgr.GetHouse(guild.GuildHouseNumber);
+
+            if (guildHouse == null)
+                return;
+
+            int houseEmblem = guildHouse.Emblem;
+
+            if (!ShouldRepairGuildHouseEmblem(guildHouse.DatabaseItem.GuildHouse, guildHouse.DatabaseItem.GuildName, guild.Name, houseEmblem, guild.Emblem))
+                return;
+
+            if (log.IsWarnEnabled)
+                log.Warn($"Guild house emblem for '{guild.Name}' was incorrect. Fixing it. (Previous: {houseEmblem}) (New: {guild.Emblem}) (House: {guildHouse.HouseNumber})");
+
+            // Upstream passes the house's old emblem here (409c19b3d), which changes nothing; the guild's is meant.
+            guildHouse.SetEmblem(guild.Emblem);
+        }
+
+        public static bool ShouldRepairGuildHouseEmblem(bool isGuildHouse, string houseGuildName, string guildName, int houseEmblem, int guildEmblem)
+        {
+            return isGuildHouse && string.Equals(houseGuildName, guildName, StringComparison.Ordinal) && houseEmblem != guildEmblem;
         }
 
         public static int SaveAllGuilds()

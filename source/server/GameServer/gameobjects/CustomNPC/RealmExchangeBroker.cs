@@ -241,11 +241,15 @@ public sealed partial class RealmExchangeBroker : GameNPC, IGameInventoryObject
         {
             var page = new ListingPageInventory(this, player.TempProperties.GetProperty<int>(ListingsPageProperty));
             IDictionary<int, DbInventoryItem> updates = GameInventoryObjectExtensions.MoveItem(page, player, fromClientSlot, toClientSlot, itemCount);
+            // MoveItem no longer returns null for an empty from-slot (OpenDAoC-Core 7098d8ebe); the
+            // exchange keeps its old answer for that case: nothing sent, move refused.
+            if (GameInventoryObjectExtensions.IsEmptyFromSlotResult(updates))
+                return false;
             // A broker is shared, but each customer's chest is private. Never
             // broadcast one seller's slot changes to another seller's chest.
-            if (updates != null && updates.Count > 0)
+            if (updates.Count > 0)
                 player.Out.SendInventoryItemsUpdate(updates, eInventoryWindowType.Update);
-            return updates != null;
+            return true;
         }
     }
 

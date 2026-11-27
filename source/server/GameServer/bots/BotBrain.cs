@@ -492,6 +492,7 @@ namespace DOL.AI.Brain
         public virtual void OnAttackedByEnemy(AttackData ad)
         {
             CompanionPvpEngagement.RecordThreat(BotBody, Body, ad);
+            AutonomousWorldBotController.NoteRvrHit(BotBody, ad?.Attacker); // #529: a hit makes the attacker a contact (autonomous gamebots in RvR only)
             if (!Body.IsAlive || Body.ObjectState != GameObject.eObjectState.Active || FSM.GetCurrentState() == FSM.GetState(eFSMStateType.PASSIVE))
                 return;
 
