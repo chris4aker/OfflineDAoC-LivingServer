@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace DOL.GS
@@ -9,10 +10,18 @@ namespace DOL.GS
     /// Myrddraxis's heads, Aroon's Scaiths, Xaga's Beatha and Tine, Scurceol Hyrde's orbs), for judging the attempt (#768).
     /// The route judged an attempt by the boss's own health alone, and the raid fights such a boss's adds while the boss stands
     /// at full health. So a lost head fight never counted as a wipe unless half the raid fell. Owner's PC, rc.2 (4f5a2aa,
-    /// 2026-11-26/27): Myrddraxis's raid broke off 14 times in 14 attempts with 691 raider deaths and timed out after four
-    /// hours, with no try used and no Special Forces called. Owner, 2026-11-27 (#768): yes, an attempt's lowest also counts
-    /// those adds, with the same 70% / 95% rule, so a lost head fight is one of the raid's two tries and calls the Special
-    /// Forces. No boss is changed. Tests only: not yet seen in a PC log.
+    /// overnight 2026-11-26/27, 11.08 h): Myrddraxis's attempts broke off 15 times in 15, with 872 raider deaths, no try used
+    /// and no Special Forces called. Owner, 2026-11-27 (#768): yes, an attempt's lowest also counts those adds, with the same
+    /// 70% / 95% rule, so a lost head fight is one of the raid's two tries and calls the Special Forces. No boss is changed.
+    /// <para>
+    /// The evidence is code analysis, not a log: rc.2's rows carry only the body's health, so no log shows how low the heads
+    /// went, and the log study of #768 (D1) has not been run. If the heads never fall below 70% (candidate A on #768: melee
+    /// can't reach the flying heads and the heads heal each other), these attempts stay broke-off under this rule too. Whether
+    /// rc.2's outcome changes is unknown until <c>addsLowest=</c> shows up in a PC log. Known limit: a head killed and not yet
+    /// back when the attempt ends leaves its progress standing (<see cref="AddsNowPercent"/> 0), so an attempt that killed a head
+    /// and then lost with fewer than half fallen is still no wipe (Myrddraxis brings killed heads back only once his body loses
+    /// aggro). Tests only: not yet seen in a PC log.
+    /// </para>
     /// </summary>
     public sealed class RaidOrderedAddProgress
     {
@@ -63,8 +72,23 @@ namespace DOL.GS
         public static (int Now, int Lowest) Judged(int bossNow, int bossLowest, bool tracking, int addsNow, int addsLowest) =>
             tracking ? (Math.Min(bossNow, addsNow), Math.Min(bossLowest, addsLowest)) : (bossNow, bossLowest);
 
-        /// <summary>The adds' fields for the attempt's end rows: empty without ordered adds. Pure.</summary>
-        public static string Fields(bool tracking, int addsNow, int addsLowest) =>
-            tracking ? $" addsHealth={addsNow} addsLowest={addsLowest}" : "";
+        /// <summary>An adds' field of the attempt's end rows (<c>addsHealth=</c>, <c>addsLowest=</c>): "-" without ordered adds. Pure.</summary>
+        public static string Text(bool tracking, int percent) => tracking ? percent.ToString(CultureInfo.InvariantCulture) : "-";
+
+        /// <summary>How an ended attempt is judged on the boss and its ordered adds.</summary>
+        public readonly record struct Scored(bool Tracking, int AddsNow, int AddsLowest, int Now, int Lowest);
+
+        /// <summary>
+        /// The ended attempt as it is judged (pure but for this attempt's notes; EndAttempt calls it): the boss's health now and
+        /// lowest, and with ordered adds tracked, the adds' (<see cref="AddsNowPercent"/> of <paramref name="liveAddHealths"/>,
+        /// <see cref="Lowest"/>) folded in by <see cref="Judged"/>.
+        /// </summary>
+        public Scored Score(int bossNow, int bossLowest, IReadOnlyCollection<int> liveAddHealths)
+        {
+            bool tracking = Tracking;
+            int addsNow = tracking ? AddsNowPercent(BeganWith, liveAddHealths) : 100, addsLowest = Lowest;
+            var (now, lowest) = Judged(bossNow, bossLowest, tracking, addsNow, addsLowest);
+            return new Scored(tracking, addsNow, addsLowest, now, lowest);
+        }
     }
 }

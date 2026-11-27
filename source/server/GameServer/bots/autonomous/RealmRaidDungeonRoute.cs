@@ -509,7 +509,8 @@ namespace DOL.GS
             attemptOpen && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent && (outOfTether || returningHome || aggroEmpty);
 
         /// <summary>The open attempt's encounter has reset (<see cref="AttemptEndsOnReset"/>): the attempt is ended and judged.
-        /// Null when it has not; else whether it was a wipe (as <see cref="EndAttempt"/>).</summary>
+        /// Null when it has not; else whether it was a wipe (as <see cref="EndAttempt"/>). This check looks at the boss's own
+        /// health only (#768): a boss's ordered adds count when the attempt is judged, not in deciding that it has ended.</summary>
         private bool? EndAttemptIfReset(long now)
         {
             if (_target == null) return null;
@@ -824,9 +825,8 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>The ordered adds' health now (RaidOrderedAddProgress.AddsNowPercent).</summary>
-        private int OrderedAddsNow() =>
-            RaidOrderedAddProgress.AddsNowPercent(_orderedAdds.BeganWith, LiveOrderedAdds().Select(SafeHealth).ToArray());
+        /// <summary>The live ordered adds' health, for RaidOrderedAddProgress.Score (none looked up when none is tracked).</summary>
+        private int[] OrderedAddHealths() => _orderedAdds.Tracking ? LiveOrderedAdds().Select(SafeHealth).ToArray() : [];
 
         private static bool SafeAlive(GameNPC npc)
         {
@@ -884,20 +884,18 @@ namespace DOL.GS
             // #768: a boss whose adds die first in order is judged on the adds too (owner: the same 70%/95% rule), so a lost
             // head fight with the boss untouched is a try. The rows keep the boss's own health and lowest, plus the adds'.
             NoteOrderedAdds();
-            bool tracking = _orderedAdds.Tracking;
-            int addsNow = tracking ? OrderedAddsNow() : 100, addsLowest = _orderedAdds.Lowest;
-            string addsFields = RaidOrderedAddProgress.Fields(tracking, addsNow, addsLowest);
-            var (judgedNow, judgedLowest) = RaidOrderedAddProgress.Judged(_target.HealthPercent, _attemptLowestPercent, tracking, addsNow,
-                addsLowest);
+            RaidOrderedAddProgress.Scored judged = _orderedAdds.Score(_target.HealthPercent, _attemptLowestPercent, OrderedAddHealths());
+            string addsHealth = RaidOrderedAddProgress.Text(judged.Tracking, judged.AddsNow);
+            string addsLowest = RaidOrderedAddProgress.Text(judged.Tracking, judged.AddsLowest);
             _orderedAdds.Begin(0);
             string encounterName = WipeEncounter(_target, _live).Name;
-            AttemptVerdict verdict = Judge(engaged, fallen, judgedNow, judgedLowest, _attemptRaidSize,
+            AttemptVerdict verdict = Judge(engaged, fallen, judged.Now, judged.Lowest, _attemptRaidSize,
                 _freeResets.GetValueOrDefault(encounterName));
             if (verdict == AttemptVerdict.NoWipe)
             {
                 // Not a wipe: said so, with the counts (2026-11-15: Kvasir's attempt ended with no line at all).
                 log.Info($"REALM_EXPEDITION_ATTEMPT_ENDED region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
-                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False attempt={attempt}{addsFields}");
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
                 EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, false, false, how), engaged, fallen, died, left, now);
                 return false;
             }
@@ -908,7 +906,7 @@ namespace DOL.GS
                 int resets = _freeResets[encounter] = _freeResets.GetValueOrDefault(encounter) + 1;
                 log.Warn($"REALM_EXPEDITION_ENCOUNTER_RESET region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
                          $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" resets={resets} of={FreeEncounterResets} " +
-                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\" attempt={attempt}{addsFields}");
+                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\" attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
                 EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, true, false, how), engaged, fallen, died, left, now);
                 _regrouping = true;
                 _regroupSince = _musterSince = now;
@@ -920,7 +918,7 @@ namespace DOL.GS
                 // Lost skirmish: rest and muster again, but it was not the raid's attempt.
                 log.Warn($"REALM_EXPEDITION_SKIRMISH_LOST region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
                          $"raid={_attemptRaidSize} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" " +
-                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\" attempt={attempt}{addsFields}");
+                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\" attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
                 EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, false, true, how), engaged, fallen, died, left, now);
                 _regrouping = true;
                 _regroupSince = _musterSince = now;
@@ -931,7 +929,7 @@ namespace DOL.GS
             _wipes.Enqueue((encounter, failures, engaged, fallen));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{encounter}\" level={_target.Level} failures={failures} " +
                      $"of={MaximumFailedAttempts} engaged={engaged} fallen={fallen} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\"" +
-                     (encounter != _target.Name ? $" fought=\"{_target.Name}\"" : "") + $" attempt={attempt}{addsFields}");
+                     (encounter != _target.Name ? $" fought=\"{_target.Name}\"" : "") + $" attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
             EndAttemptRow(RaidAttemptRows.DungeonOutcome(true, false, false, how), engaged, fallen, died, left, now);
             if (failures >= MaximumFailedAttempts)
             {

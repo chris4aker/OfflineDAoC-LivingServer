@@ -3010,12 +3010,12 @@ namespace DOL.GS
         /// every ending but a player stop, a supersede or a sweep cap.</summary>
         public static bool SetsCooldown(string reason) => StopOutcome(reason) == null;
 
-        /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
-        /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         /// <summary>A scored wipe calls the Epic Special Forces while the raid has a try left (pure): the first of its
         /// <see cref="RealmRaidDungeonRoute.MaximumFailedAttempts"/> tries; the last one ends the raid instead.</summary>
         public static bool WipeCallsSpecialForces(int failures) => failures < RealmRaidDungeonRoute.MaximumFailedAttempts;
 
+        /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
+        /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         private static void OnWipe(Raid raid, string boss, int failures, long now, int engaged = -1, int fallen = -1)
         {
             raid.Wipes++;
