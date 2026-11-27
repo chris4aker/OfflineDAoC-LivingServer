@@ -1030,6 +1030,9 @@ namespace DOL.GS
                 AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.StableTravel);
                 log.Info($"AUTONOMOUS_STABLE_ROUTE_ARRIVE bot=\"{Name}\" id={DatabaseID} level={Level} " +
                          $"realm={GlobalConstants.RealmToName(Realm)} destination=\"{completedDestination}\" position={X},{Y},{Z}");
+                // #570 step 2: the landing death watch (AutonomousStableLandingWatch)
+                if (IsAlive && !IsHiredCompanion)
+                    AutonomousStableLandingWatch.Arrived(DatabaseID, CurrentRegionID, completedDestination, GameLoop.GameLoopTime);
             }
         }
 
@@ -1241,6 +1244,13 @@ namespace DOL.GS
             else if (IsAutonomousWorldBot && PersistentRecord != null)
             {
                 AutonomousDeathDiagnostics.Record(this, killer, PersistentRecord.Activity);
+                // #570 step 2: a death to a monster soon after a horse landing counts for that landing
+                if (string.Equals(AutonomousDeathDiagnostics.KillerKind(killer), "monster", StringComparison.Ordinal) &&
+                    AutonomousStableLandingWatch.Died(DatabaseID, Level, GameLoop.GameLoopTime) is { } deadlyLanding)
+                    log.Info($"AUTONOMOUS_STABLE_LANDING_DEADLY region={CurrentRegionID} destination=\"{deadlyLanding}\" " +
+                             $"band={AutonomousStableLandingWatch.LevelBand(Level) * 5}-{AutonomousStableLandingWatch.LevelBand(Level) * 5 + 4} " +
+                             $"bots={AutonomousStableLandingWatch.DeadlyLandingBots} minutes={AutonomousStableLandingWatch.DeadlyLandingWindowMilliseconds / 60_000} " +
+                             $"killer=\"{killer?.Name}\" killerLevel={(killer as GameLiving)?.Level ?? 0}");
                 PersistentRecord.DeathCount++;
                 GoalDiagnosticAttempt?.Died();
                 PersistentRecord.TargetName = (TargetObject as GameLiving)?.Name ?? killer?.Name ?? string.Empty;

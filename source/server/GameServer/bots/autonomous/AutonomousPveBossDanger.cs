@@ -146,6 +146,34 @@ public static class AutonomousPveBossDanger
         return false;
     }
 
+    /// <summary>
+    /// #570 step 2 (town and horse trips, after True165 AutonomousRoadHotspots a24f34987): whether the straight walk from
+    /// one point to another in the same region passes a remembered spot that warns this bot. A spot the walk starts in
+    /// (within <see cref="RouteCorridor"/>) doesn't count, so a bot inside one can still choose its way out; with
+    /// <paramref name="goalExempt"/> a spot within <see cref="AvoidRadius"/> of the goal doesn't count either (the bot is
+    /// sent there on purpose, and the goal's own spot is judged apart).
+    /// </summary>
+    public static bool WalkPasses(ushort regionId, int fromX, int fromY, int toX, int toY, int botLevel, DateTime utc,
+        bool goalExempt = false)
+    {
+        foreach (Spot spot in Volatile.Read(ref _spots))
+        {
+            if (spot.RegionId != regionId || utc - spot.Utc > Lifetime || !Warns(spot.KillerLevel, botLevel))
+                continue;
+            if (Within(spot, fromX, fromY, RouteCorridor) || goalExempt && Within(spot, toX, toY, AvoidRadius))
+                continue;
+            if (DistanceToSegment(spot.X, spot.Y, fromX, fromY, toX, toY) <= RouteCorridor)
+                return true;
+        }
+        return false;
+    }
+
+    private static bool Within(Spot spot, int x, int y, float radius)
+    {
+        double dx = (double)spot.X - x, dy = (double)spot.Y - y;
+        return dx * dx + dy * dy <= (double)radius * radius;
+    }
+
     public static double DistanceToSegment(double px, double py, double ax, double ay, double bx, double by)
     {
         double dx = bx - ax, dy = by - ay, lengthSquared = dx * dx + dy * dy;

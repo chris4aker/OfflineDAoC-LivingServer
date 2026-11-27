@@ -1347,8 +1347,9 @@ namespace DOL.GS
         {
             HashSet<ushort> reachable = ReachableRegions(bot.Realm, bot.CurrentRegionID);
             bool exchange = kind == eWorldServiceKind.RealmExchange;
-            GameNPC best = null;
-            double bestMinutes = double.MaxValue;
+            // #570 step 2: the nearest service whose trip passes no learned danger spot, else the nearest one
+            var choice = new AutonomousLearnedDangerTrips.SafestNearest<GameNPC>();
+            DateTime dangerUtc = DateTime.UtcNow;
             if (kind == eWorldServiceKind.SealMerchant)
             {
                 // Only the bot's own realm's seal merchants in Darkness Falls that have something it can pay for.
@@ -1356,7 +1357,7 @@ namespace DOL.GS
                     if (merchant is GameDarknessFallsSealsMerchant seals && IsServiceCandidate(bot, seals) &&
                         AutonomousBotEconomy.FindSealPurchase(bot, seals) != null)
                         ConsiderService(seals);
-                return best;
+                return Chosen();
             }
             // Same candidates and ordering as before (first candidate wins a tie,
             // like OrderBy + FirstOrDefault), but merchants come from each
@@ -1389,18 +1390,25 @@ namespace DOL.GS
                     }
                 }
             }
-            return best;
+            return Chosen();
 
             void ConsiderService(GameNPC npc)
             {
                 if (AutonomousServiceReachability.IsSkipped(AutonomousServiceReachability.Key(npc), bot.DatabaseID, GameLoop.GameLoopTime))
                     return;
                 double minutes = EstimateTravelMinutes(bot, npc.CurrentRegionID, npc.X, npc.Y);
-                if (minutes < bestMinutes)
-                {
-                    bestMinutes = minutes;
-                    best = npc;
-                }
+                choice.Consider(npc, minutes, AutonomousLearnedDangerTrips.ServiceDangerous(npc is RealmExchangeBroker,
+                    bot.CurrentRegionID, bot.X, bot.Y, bot.Level, npc.CurrentRegionID, npc.X, npc.Y, dangerUtc));
+            }
+
+            GameNPC Chosen()
+            {
+                // #570 step 2: one line when a learned danger spot changed the service the bot walks to
+                if (choice.Skipped)
+                    Log.Info($"AUTONOMOUS_SERVICE_DANGER_SKIP bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                             $"kind={kind} region={bot.CurrentRegionID} skipped=\"{choice.Nearest.Name}\" " +
+                             $"chosen=\"{choice.NearestSafe.Name}\" dangerous={choice.Dangerous}");
+                return choice.Choice;
             }
         }
 
@@ -1544,6 +1552,7 @@ namespace DOL.GS
                 _failedTrainerAnchors.Remove(expired);
             HashSet<ushort> reachable = ReachableRegions(bot.Realm, bot.CurrentRegionID);
             eCharacterClass characterClass = (eCharacterClass)bot.CharacterClass.ID;
+            DateTime dangerUtc = DateTime.UtcNow;
             GameTrainer[] candidates = WorldMgr.GetAllRegions()
                 .Where(region => region != null &&
                                  AutonomousCapnBryGoalCatalog.IsClassicOrShroudedIslesExpansion(region.Expansion) &&
@@ -1555,6 +1564,9 @@ namespace DOL.GS
                 .Where(trainer => trainer.TrainedClass == characterClass || trainer.TrainedClass == eCharacterClass.Unknown)
                 .Where(trainer => trainer.CurrentZone == null || IsZoneAccessible(bot.Realm, trainer.CurrentZone))
                 .OrderBy(trainer => trainer.TrainedClass == characterClass ? 0 : 1)
+                // #570 step 2: a trainer whose trip passes no learned danger spot first, a dangerous one only when no other
+                .ThenBy(trainer => AutonomousLearnedDangerTrips.ServiceDangerous(false, bot.CurrentRegionID, bot.X, bot.Y,
+                    bot.Level, trainer.CurrentRegionID, trainer.X, trainer.Y, dangerUtc) ? 1 : 0)
                 .ThenBy(trainer => EstimateTravelMinutes(bot, trainer.CurrentRegionID, trainer.X, trainer.Y))
                 .ToArray();
             foreach (GameTrainer trainer in candidates)
