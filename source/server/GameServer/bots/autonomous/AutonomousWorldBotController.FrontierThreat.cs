@@ -241,9 +241,14 @@ public sealed partial class AutonomousWorldBotController
             ? (GameSiegeWeapon)bot.TargetObject : null;
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
             !bot.IsAlive || bot.ObjectState != GameObject.eObjectState.Active || bot.IsReturningAfterRelease ||
-            bot.IsOnStableMasterRoute || !IsBattleground(bot) ||
-            (brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null && engineInHand == null ||
-            brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE ||
+            bot.IsOnStableMasterRoute || !IsBattleground(bot)) return false;
+        if ((brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null && engineInHand == null)
+        {
+            // #529 step 3: a fighting bot does not scan for a new fight, but it keeps looking (its contacts feed the board).
+            RefreshRvrContactsInCombat(brain, bot);
+            return false;
+        }
+        if (brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE ||
             !_frontierThreat.Due(GameLoop.GameLoopTime, bot.DatabaseID) || IsSafeArea(bot)) return false;
         // AI_PROFILE: only the scan itself is timed, not the cheap checks above that skip it.
         using var aiProfile = AiProfile.Scope(AiSystem.FrontierThreatScan);

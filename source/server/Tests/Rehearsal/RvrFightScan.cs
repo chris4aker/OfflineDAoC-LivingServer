@@ -20,6 +20,9 @@ namespace DOL.GS.Tests.Rehearsal
     /// (<see cref="AutonomousFrontierThreatPolicy.IntervalMilliseconds"/>). The rolls come from the world's seed. A bot that
     /// may engage does what the controller does at the end of its scan: target, aggro, the AGGRO state. Stood in: target
     /// choice is the nearest engageable enemy (the controller's SelectDistributedRvrTarget and its stance gates are private).
+    /// Line of sight is the world's navmesh ray, as the controller's (clear everywhere unless a scenario stands a wall).
+    /// #529 step 3: a fighting bot does not scan; it looks around by the controller's in-combat refresh instead
+    /// (<see cref="RvrCombatRefresh"/>: every 2 s, within 2,500, at most four rays, the same notice rule, contacts only).
     /// </summary>
     public sealed class RvrFightScan
     {
@@ -30,6 +33,16 @@ namespace DOL.GS.Tests.Rehearsal
         private readonly Random _rolls;
         private readonly List<RvrNoticeEvent> _notices = new();
         private readonly HashSet<GameBot> _bots = new();
+        private readonly Dictionary<long, long> _nextRefresh = new();
+        private readonly Dictionary<long, int> _refreshTurn = new();
+
+        /// <summary>#529 step 3: fighting bots look around (the controller's RvrCombatRefresh); as rvr_board_from_contacts by default.</summary>
+        public bool CombatRefresh { get; set; } = Properties.RVR_BOARD_FROM_CONTACTS;
+        /// <summary>How many in-combat looks were taken, and the rays they cast (the refresh's cost).</summary>
+        public int Refreshes { get; private set; }
+        public int RefreshRays { get; private set; }
+        /// <summary>The most rays one look cast.</summary>
+        public int MaxRaysPerRefresh { get; private set; }
 
         public bool Lookers { get; set; } = true;
         /// <summary>When false, a noticed enemy is logged but the bot does not engage (scenario 3 measures noticing only).</summary>
@@ -69,7 +82,11 @@ namespace DOL.GS.Tests.Rehearsal
                 double interval = _lastScan.TryGetValue(bot.DatabaseID, out long last) ? now - last : AutonomousRvrPerception.DefaultScanIntervalMilliseconds;
                 _lastScan[bot.DatabaseID] = now;
                 if (Engage && (brain.HasAggro || bot.InCombat || bot.IsAttacking))
+                {
+                    if (CombatRefresh)
+                        Refresh(bot, now);
                     continue;
+                }
                 if (!ScansNow(brain, bot, now))
                     continue;
                 Scan(brain, bot, now, AutonomousRvrPerception.ClampScanInterval(interval));
@@ -100,13 +117,67 @@ namespace DOL.GS.Tests.Rehearsal
             int radius = AutonomousRvrPerception.ScanRadius(Profile, true, 5_000);
             var visible = new List<GameLiving>();
             foreach (GamePlayer player in bot.GetPlayersInRadius((ushort)radius))
-                if (Enemy(bot, player))
+                if (Enemy(bot, player) && Sees(bot, player))
                     visible.Add(player);
             foreach (GameNPC npc in bot.GetNPCsInRadius((ushort)radius))
-                if (npc is GameBot && Enemy(bot, npc))
+                if (npc is GameBot && Enemy(bot, npc) && Sees(bot, npc))
                     visible.Add(npc);
             if (visible.Count == 0)
                 return;
+            List<GameLiving> engage = Perceive(bot, visible, now, interval);
+            if (!Engage || engage.Count == 0)
+                return;
+            GameLiving enemy = engage.OrderBy(bot.GetDistanceTo).ThenBy(t => t.ObjectID).First();
+            bot.StopMoving();
+            bot.TargetObject = enemy;
+            brain.AddToAggroList(enemy, Math.Max(100, enemy.EffectiveLevel * 12));
+            if (brain.HasAggro)
+                brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
+        }
+
+        private static bool Sees(GameBot bot, GameLiving target) =>
+            PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z), new(target.X, target.Y, target.Z),
+                PathfindingProvider.Instance.DefaultFilters);
+
+        /// <summary>
+        /// #529 step 3, as the controller's RefreshRvrContactsInCombat: every RvrCombatRefresh.IntervalMilliseconds the
+        /// fighting bot looks at the enemy bots within RvrCombatRefresh.Radius it picks (RvrCombatRefresh.Pick: at most
+        /// MaxRays rays) and runs the notice rule on those it sees. Contacts and calls only; nothing is engaged.
+        /// </summary>
+        private void Refresh(GameBot bot, long now)
+        {
+            if (_nextRefresh.TryGetValue(bot.DatabaseID, out long due) && now < due)
+                return;
+            _nextRefresh[bot.DatabaseID] = RvrCombatRefresh.NextDue(now, bot.DatabaseID);
+            Refreshes++;
+            var targets = new List<GameLiving>();
+            foreach (GamePlayer player in bot.GetPlayersInRadius((ushort)RvrCombatRefresh.Radius))
+                if (Enemy(bot, player))
+                    targets.Add(player);
+            foreach (GameNPC npc in bot.GetNPCsInRadius((ushort)RvrCombatRefresh.Radius))
+                if (npc is GameBot && Enemy(bot, npc))
+                    targets.Add(npc);
+            targets = targets.OrderBy(t => t.ObjectID).ToList();
+            var candidates = targets.Select((t, i) => new RvrRefreshCandidate(i, bot.GetDistanceTo(t), false)).ToList();
+            int turn = _refreshTurn.TryGetValue(bot.DatabaseID, out int t0) ? t0 : 0;
+            _refreshTurn[bot.DatabaseID] = turn + 1;
+            var seen = new List<GameLiving>();
+            int rays = 0;
+            foreach (int index in RvrCombatRefresh.Pick(candidates, turn))
+            {
+                rays++;
+                if (Sees(bot, targets[index]))
+                    seen.Add(targets[index]);
+            }
+            RefreshRays += rays;
+            MaxRaysPerRefresh = Math.Max(MaxRaysPerRefresh, rays);
+            if (seen.Count > 0)
+                Perceive(bot, seen, now, RvrCombatRefresh.IntervalMilliseconds);
+        }
+
+        /// <summary>The notice rule over what one look saw (the scan and the refresh): contacts, notices, calls; returns what may be engaged.</summary>
+        private List<GameLiving> Perceive(GameBot bot, List<GameLiving> visible, long now, double interval)
+        {
             var engage = new List<GameLiving>();
             foreach (var party in visible.GroupBy(RvrPartyKey.Of).OrderBy(g => g.Key))
             {
@@ -144,14 +215,7 @@ namespace DOL.GS.Tests.Rehearsal
                 if (Properties.RVR_BOT_SPOTTERS)
                     Call(bot, noticedKeys, noticedTargets, now);
             }
-            if (!Engage || engage.Count == 0)
-                return;
-            GameLiving enemy = engage.OrderBy(bot.GetDistanceTo).ThenBy(t => t.ObjectID).First();
-            bot.StopMoving();
-            bot.TargetObject = enemy;
-            brain.AddToAggroList(enemy, Math.Max(100, enemy.EffectiveLevel * 12));
-            if (brain.HasAggro)
-                brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
+            return engage;
         }
 
         private void Call(GameBot spotter, List<long> keys, List<GameLiving> targets, long now)
