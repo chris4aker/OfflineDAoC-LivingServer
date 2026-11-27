@@ -233,7 +233,10 @@ namespace DOL.UnitTests
             typeof(GameNPC).GetField("m_brains", Hidden).SetValue(bot, new ArrayList());
             typeof(GameNPC).GetField("m_ownBrain", Hidden).SetValue(bot, new BotBrain());
             bot.CurrentRegion = region;
-            bot.movementComponent = new NpcMovementComponent(bot);
+            var mover = new NpcMovementComponent(bot) { FixedSpeed = true, MaxSpeedBase = 200 };
+            bot.movementComponent = mover;
+            // GameLiving keeps its own field (GameNPC's is a `new` one); MaxSpeed and IsMoving read that one.
+            ((GameLiving)bot).movementComponent = mover;
             bot.X = (int)at.X; bot.Y = (int)at.Y; bot.Z = (int)at.Z;
             return bot;
         }
