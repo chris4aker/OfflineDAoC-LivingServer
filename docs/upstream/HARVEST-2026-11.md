@@ -103,7 +103,7 @@ and in OpenDAoC's NPC rules).
 | 43 | Geometry line of sight for mobs and bots, `/checklos` | D-F1, D-F6 | JVirant `30d3c56c1e08`, `5afb31ea3291`, `9c3ee382478b`, `c5911661178d`, `ff94d2417479` | to do, #581 (needs the PC) |
 | 44 | Keep patrol paths | D-X5 | db-public `e67704598b10` | to do, #577 |
 | 45 | Charm body types; old archery spec levels | D-X4, D-D3 | db-public `764bda56fee9`, `d462a86` | to do, #579 |
-| 46 | Classic starter quests (96 DOL scripts to sort) | D-F3 | DOLSharp `154e150`, `GameServerScripts/quests/` | to do, #578 |
+| 46 | Classic starter quests (96 DOL scripts to sort) | D-F3 | DOLSharp `154e150`, `GameServerScripts/quests/` | held for owner, #578: sorted, none we lack is 1.65 (docs/research/DOL-QUESTS-578.md) |
 | 47 | Period spawn, merchant and item audit from live logs | D-D1 | DataLoggin DB v1.2 (2004-03-22) | to do, #576 (audit only) |
 | 48 | Period loot and merchants: True165 rows, Thidranki, Uth-Moras audit | P23, D-D2, D-D5 | True165 `c52f109a`, `46d1a00d`, `cdd9515e`, `c41415df`; db-public `7141a3249aff` and two more | to do, #575 |
 | 49 | Client recipe check | D-F4 | craft_extract `0f7de6c` | to do, #580 (separate tool) |
