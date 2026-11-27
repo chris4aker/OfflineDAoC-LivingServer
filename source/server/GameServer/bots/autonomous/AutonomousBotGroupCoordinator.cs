@@ -74,6 +74,12 @@ public static partial class AutonomousBotGroupCoordinator
         public GamePlayer HostedPlayer { get; init; }
         /// <summary>#598 C: the whole group is on a battleground trip, led by <see cref="Leader"/> (not a dynamic PvE/RvR party).</summary>
         public bool BattlegroundTrip { get; init; }
+        // #569 step 3 (True165 14dcaa5): the task clock, for the camp travel budget. Only clock transitions change
+        // these, so the publish cache (record equality) is not churned every second.
+        public long? TaskDeadlineTick { get; init; }
+        public long TaskPausedRemainingMilliseconds { get; init; }
+        public long TaskRemainingMilliseconds(long now) => TaskDeadlineTick.HasValue
+            ? Math.Max(0, TaskDeadlineTick.Value - now) : TaskPausedRemainingMilliseconds;
     }
 
     public sealed class StoredMetadata
@@ -440,11 +446,35 @@ public static partial class AutonomousBotGroupCoordinator
             session.MeetupPlanned = true;
             session.PlannedCamp = camp;
             string where = session.RendezvousName;
+            // #569 step 3 (True165 14dcaa5): move only to a town every member can reach in time
+            // (AutonomousMeetupPlanPolicy), and size the wait from the farthest member (15-20 min).
+            bool reachCheck = AutonomousMeetupPlanPolicy.ReachableTownEnabled;
+            bool sizeWindow = AutonomousMeetupPlanPolicy.TravelWindowEnabled;
+            var meetupCrossings = new Dictionary<(eRealm Realm, ushort From, ushort To), DbZonePoint>();
+            double[] toCurrent = reachCheck || sizeWindow
+                ? MeetupTravelMinutes(members, session.RendezvousRegion, session.Rendezvous, meetupCrossings)
+                : Array.Empty<double>();
+            double farthestCurrent = AutonomousMeetupPlanPolicy.Farthest(toCurrent);
+            double farthestNew = -1, firstRefusedFarthest = -1;
+            int townsRefused = 0;
+            bool moved = false;
             if (camp != null && WorldMgr.GetRegion(camp.RegionId) is Region campRegion)
             {
                 Vector3 campPoint = new(camp.X, camp.Y, camp.Z);
                 float current = session.RendezvousRegion == camp.RegionId ? Vector3.Distance(session.Rendezvous, campPoint) : float.MaxValue;
-                if (TryChooseTownNear(leader, members, campRegion, campPoint, out Vector3 point, out string name) &&
+                Func<Vector3, bool> reachable = !reachCheck ? null : town =>
+                {
+                    double[] toNew = MeetupTravelMinutes(members, camp.RegionId, town, meetupCrossings);
+                    if (AutonomousMeetupPlanPolicy.ShouldMoveRendezvous(toNew, toCurrent))
+                    {
+                        farthestNew = AutonomousMeetupPlanPolicy.Farthest(toNew);
+                        return true;
+                    }
+                    if (townsRefused++ == 0)
+                        firstRefusedFarthest = AutonomousMeetupPlanPolicy.Farthest(toNew);
+                    return false;
+                };
+                if (TryChooseTownNear(leader, members, campRegion, campPoint, out Vector3 point, out string name, reachable) &&
                     Vector3.Distance(point, campPoint) + 5_000 < current)
                 {
                     Vector3 previous = session.Rendezvous;
@@ -454,7 +484,13 @@ public static partial class AutonomousBotGroupCoordinator
                     session.RendezvousName = name;
                     session.RendezvousRegion = camp.RegionId;
                     if (TryBuildRendezvousSlots(session, members))
+                    {
                         where = name;
+                        moved = true;
+                        if (sizeWindow && farthestNew < 0)
+                            farthestNew = AutonomousMeetupPlanPolicy.Farthest(
+                                MeetupTravelMinutes(members, camp.RegionId, point, meetupCrossings));
+                    }
                     else
                     {
                         session.Rendezvous = previous;
@@ -464,19 +500,38 @@ public static partial class AutonomousBotGroupCoordinator
                     }
                 }
             }
+            long windowMs = sizeWindow
+                ? AutonomousMeetupPlanPolicy.MeetupWindowMs(moved ? farthestNew : farthestCurrent)
+                : AutonomousRendezvousAttendance.TimeoutMilliseconds;
             session.Phase = "Meeting up";
             session.LeaderReadyForAssembly = true;
-            RebaseAttendance(session, members);
+            RebaseAttendance(session, members, windowMs: windowMs);
             Log.Info($"AUTONOMOUS_GROUP_MEETUP_PLANNED group={session.Id} town=\"{where}\" region={session.RendezvousRegion} " +
                      $"camp=\"{camp?.MonsterName ?? "none"}\" campRegion={camp?.RegionId ?? 0} " +
-                     $"campDistance={(camp != null && camp.RegionId == session.RendezvousRegion ? (int)Vector3.Distance(session.Rendezvous, new(camp.X, camp.Y, camp.Z)) : -1)}");
+                     $"campDistance={(camp != null && camp.RegionId == session.RendezvousRegion ? (int)Vector3.Distance(session.Rendezvous, new(camp.X, camp.Y, camp.Z)) : -1)} " +
+                     $"moved={(moved ? "true" : "false")} farthestNewMin={(moved ? farthestNew : firstRefusedFarthest):0.0} " +
+                     $"farthestCurrentMin={farthestCurrent:0.0} townsRefused={townsRefused} reachCheck={(reachCheck ? "on" : "off")} " +
+                     $"windowMin={windowMs / 60_000d:0.#}");
             WriteSessionMetadata(session, members);
             return true;
         }
     }
 
+    /// <summary>Each member's straight-line travel estimate to a meetup point, at its normal run speed (#569 step 3).</summary>
+    private static double[] MeetupTravelMinutes(GameBot[] members, ushort region, Vector3 point,
+        Dictionary<(eRealm Realm, ushort From, ushort To), DbZonePoint> crossings) =>
+        members.Select(member => AutonomousWorldBotController.EstimateTravelMinutes(member, region,
+            (int)point.X, (int)point.Y, crossings, MeetupPlanningSpeed(member.MaxSpeedBase, member.MaxSpeed))).ToArray();
+
+    /// <summary>
+    /// Plan meetups at the member's normal run speed (True165 round-3 review): MaxSpeed is 0 while mezzed or stunned and
+    /// low while snared, which made one member's estimate hundreds of minutes.
+    /// </summary>
+    public static double MeetupPlanningSpeed(int baseSpeed, int currentSpeed) => Math.Max(baseSpeed, currentSpeed);
+
+    // accept (#569 step 3): the nearest-to-camp town that passes it wins; null accepts any town.
     private static bool TryChooseTownNear(GameBot leader, GameBot[] members, Region region, Vector3 camp,
-        out Vector3 point, out string name)
+        out Vector3 point, out string name, Func<Vector3, bool> accept = null)
     {
         point = default;
         name = string.Empty;
@@ -502,7 +557,7 @@ public static partial class AutonomousBotGroupCoordinator
                         member.CurrentZone, zone, new(member.X, member.Y, member.Z), slot))
                 { valid = false; break; }
             }
-            if (!valid) continue;
+            if (!valid || accept != null && !accept(chosen)) continue;
             point = chosen;
             name = TownName(npc);
             return true;
@@ -2716,11 +2771,14 @@ public static partial class AutonomousBotGroupCoordinator
         WriteSessionMetadata(session, remaining);
     }
 
-    private static void RebaseAttendance(Session session, GameBot[] members, bool preserveDeadlines = false)
+    private static void RebaseAttendance(Session session, GameBot[] members, bool preserveDeadlines = false,
+        long windowMs = 0)
     {
         long now = GameLoop.GameLoopTime;
         if (preserveDeadlines)
             session.Attendance.RebaseAfterRosterReduction(members.Select(MemberKey), now);
+        else if (windowMs > 0)
+            session.Attendance.RebaseWithWindow(members.Select(MemberKey), now, windowMs);
         else
             session.Attendance.Rebase(members.Select(MemberKey), now);
         foreach (GameBot member in members)
@@ -3199,7 +3257,9 @@ public static partial class AutonomousBotGroupCoordinator
             Puller = puller,
             LeaderReadyForAssembly = session.LeaderReadyForAssembly,
             GroupCombatActive = groupCombatActive,
-            RecoveringBetweenPulls = session.RecoveringBetweenPulls
+            RecoveringBetweenPulls = session.RecoveringBetweenPulls,
+            TaskDeadlineTick = session.TaskClock.DeadlineTick,
+            TaskPausedRemainingMilliseconds = session.TaskClock.PausedRemainingMilliseconds
         };
     }
 

@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **761**; pending (#625, not on main yet): **0**; shipped by the pipeline: **729**.
+- Rows in code: **762**; pending (#625, not on main yet): **0**; shipped by the pipeline: **730**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -67,6 +67,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `from`, `group`, `leader`, `levels`, `minutes`, `realm`, `size` | `leader`, `levels` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_ENDED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `group`, `members`, `reason`, `size` | `members` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `group`, `leader`, `was` | `leader`, `was` | - | - |
+| `AUTONOMOUS_GROUP_CAMP_BUDGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TravelBudget.cs` | `budgetMin`, `candidates`, `farthestKeptMin`, `group`, `kept`, `nearestMin`, `phase`, `region`, `remainingMin`, `tier` | - | one per PvE party camp pick whose candidate list the travel budget cut (none when every camp fit; #569) | A PvE party camp pick whose candidates were cut to the leader's travel budget, with the tier that was kept. |
 | `AUTONOMOUS_GROUP_CAMP_DRY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.CampBonus.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_REJECTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_REPOSITIONED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
@@ -85,7 +86,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_MATCHMAKING_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousObjectiveAssignments.cs` | `bot`, `fallback`, `id`, `level`, `realm`, `waitedMinutes` | `bot` | - | - |
 | `AUTONOMOUS_GROUP_MEETUP_DEATHS` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `at`, `bot`, `deaths`, `group`, `id`, `level`, `region`, `rendezvous`, `waitedSeconds` | `bot` | - | - |
 | `AUTONOMOUS_GROUP_MEETUP_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `invited`, `leader`, `reason`, `town` | `leader` | - | - |
-| `AUTONOMOUS_GROUP_MEETUP_PLANNED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `camp`, `campDistance`, `campRegion`, `group`, `region`, `town` | - | - | - |
+| `AUTONOMOUS_GROUP_MEETUP_PLANNED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `camp`, `campDistance`, `campRegion`, `farthestCurrentMin`, `farthestNewMin`, `group`, `moved`, `reachCheck`, `region`, `town`, `townsRefused`, `windowMin` | - | - | - |
 | `AUTONOMOUS_GROUP_MEMBER_LONG_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousGroupMemberStall.cs` | `activity`, `alive`, `class`, `distance`, `heldSeconds`, `id`, `leader`, `leaderAt`, `leaderRegion`, `leaderZone`, `member`, `position`, `progress`, `region`, `returning`, `riding`, `zone` | `leader`, `member` | - | - |
 | `AUTONOMOUS_GROUP_MEMBER_RECOVERED` | server.log | **ships** | `bots/autonomous/AutonomousGroupMemberStall.cs` | `class`, `distance`, `from`, `id`, `leader`, `leaderZone`, `member`, `stalledSeconds`, `to`, `trail` | `leader`, `member` | - | - |
 | `AUTONOMOUS_GROUP_MEMBER_RECOVERY_DEFERRED` | server.log | **ships** | `bots/autonomous/AutonomousGroupMemberStall.cs` | `distance`, `id`, `leader`, `leaderZone`, `member`, `zone` | `leader`, `member` | - | - |
