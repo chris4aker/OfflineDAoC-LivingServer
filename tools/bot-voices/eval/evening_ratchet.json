@@ -2,11 +2,12 @@
  "note": "The evening ratchet (evening_read.py --ratchet): seven counts of the player's evenings (UT_ChatBudgetSimulation.PlayerEvenings) that need no judgement may not get worse. Tighten with --write after a fix; never loosen it to pass. Tests only.",
  "evenings": 18,
  "party_banter_after_60": 0,
- "say_stock_share": 0.6184,
- "faction_top10_share": 0.503,
- "how_much_paying_per_hour": 25.16,
- "name_first_share": 0.2773,
+ "say_stock_share": 0.5149,
+ "faction_top10_share": 0.5171,
+ "how_much_paying_per_hour": 25.54,
+ "name_first_share": 0.2886,
  "laughing_calls_share": 0.097,
  "party_unanswered": 5.0,
- "rebaselined": "#622 (2026-11-26): one random stream per subsystem reshuffles every evening's draws, so the baseline was re-derived once from CI run 45805246219 (build-and-test on 2499c4bb, 18 evenings), as the issue asks. No server code changed. Before: faction_top10_share 0.4965, how_much_paying_per_hour 25.13, name_first_share 0.2593, say_stock_share 0.6185, laughing_calls_share 0.1006."
+ "rebaselined": "#740 (2026-11-27, owner Chris: \"24A\", fix the simulation so each channel keeps its own state, then derive the baseline once from that cleaner run): /say keeps its own state in UT_ChatBudgetSimulation.PlayerEvenings (commit 4e1603c7), so a /faction change can't move /say. Re-derived once from CI run 45999472335 (build-and-test on 4e1603c7, 18 evenings), every count exactly as measured. No live server code changed by the isolation. Before: say_stock_share 0.6184, faction_top10_share 0.503, how_much_paying_per_hour 25.16, name_first_share 0.2773. Tighter: say_stock_share (/say's stock replies no longer pile up from the realm's state). Looser, from the model change, not from chat: faction_top10_share, how_much_paying_per_hour, name_first_share are realm-channel counts; the 4-6 bots near the player no longer split their realm check with /say, so they try a realm channel every check and the ambient stream's later draws reshuffle (the same kind of move #622's reshuffle made: faction_top10_share 0.4965 to 0.503, name_first_share 0.2593 to 0.2773).",
+ "rebaselined_before": "#622 (2026-11-26): one random stream per subsystem reshuffles every evening's draws, so the baseline was re-derived once from CI run 45805246219 (build-and-test on 2499c4bb, 18 evenings), as the issue asks. No server code changed. Before: faction_top10_share 0.4965, how_much_paying_per_hour 25.13, name_first_share 0.2593, say_stock_share 0.6185, laughing_calls_share 0.1006."
 }
