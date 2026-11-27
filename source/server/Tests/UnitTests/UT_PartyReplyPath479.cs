@@ -264,5 +264,98 @@ namespace DOL.GS.Tests
             for (int seed = 0; seed < 10; seed++)
                 Assert.That(CompanionChat165.ReplyTo(eAutonomousChatIntent.Unknown, "Wynn", new Random(seed), true), Is.AnyOf("Aye.", "Understood.", "As you say, Wynn."));
         }
+        // ------------------------------------------------------------------------------------------------- review round 2
+
+        [Test]
+        public void The_meetup_and_the_pause_come_before_the_knowledge_lookup()
+        {
+            // A line the lookup would answer (the first test) that a meet-up or pause step also answers: the step wins.
+            const string line = "where is the cleric trainer?";
+            Assert.That(AutonomousChatReplyPath.PartyAsksKnowledge(line, AutonomousChatIntentModel.Predict(line)), Is.True);
+            Assert.That(Party(line, knowledge: () => "camelot, the church", meetup: () => "k, see u there").Route, Is.EqualTo("live meetup"));
+            Assert.That(Party(line, knowledge: () => "camelot, the church", pause: () => "sure, med up").Route, Is.EqualTo("live pause"));
+            Assert.That(AutonomousBotGroupChatter.PartyWith(Ports(), line, AutonomousChatIntentModel.Predict(line), false, "group", 0,
+                () => "camelot, the church", null, null, () => "k, see u there", null, () => new AutonomousBotChatCoordinator.ReplyChoice("sure", "intent help")).Route,
+                Is.EqualTo("live meetup"), "the live composition keeps the order");
+            Assert.That(AutonomousBotGroupChatter.PartyWith(Ports(), "lol", AutonomousChatIntentModel.Predict("lol"), false, "group", 0,
+                null, null, null, null, null, () => new AutonomousBotChatCoordinator.ReplyChoice("haha", "intent laugh")).Route,
+                Is.EqualTo("none count"), "no voiced reply once the line may draw no more");
+        }
+
+        [Test]
+        public void A_companion_takes_only_lines_meant_for_it()
+        {
+            // Owner, 2026-11-27 (4A).
+            Assert.That(CompanionChat165.TakesTheLine(true, false, false, false, "can someone rez me"), Is.True, "named: its line");
+            Assert.That(CompanionChat165.TakesTheLine(false, true, true, false, "where to next?"), Is.True, "it holds the floor and the line goes on");
+            Assert.That(CompanionChat165.TakesTheLine(false, false, true, false, "where to next?"), Is.False, "a chime-in leaves the line to the gamebots");
+            Assert.That(CompanionChat165.TakesTheLine(false, true, false, false, "can someone rez me"), Is.False, "a line that does not keep the floor");
+            Assert.That(CompanionChat165.TakesTheLine(false, true, true, false, "lf guild"), Is.False, "a guild request stays with the gamebots");
+            Assert.That(CompanionChat165.TakesTheLine(true, true, true, true, "where to next?"), Is.False, "a Formal companion never takes a line");
+            foreach (string line in new[] { "can someone rez me", "anyone selling a bow?", "anyone up for a group?" })
+                Assert.That(AutonomousBotChatCoordinator.KeepsTheFloor(line, AutonomousChatIntentModel.Predict(line)), Is.False, line);
+        }
+
+        [Test]
+        public void A_companion_answers_in_the_same_order_as_before()
+        {
+            var party = new AutonomousBotChatCoordinator.ReplyChoice("camelot, the church", "knowledge");
+            Assert.That(CompanionChat165.AnswerWith("how are you", "Wynn", false, () => "fine, ready", _ => party, text => text, new Random(1)).Route,
+                Is.EqualTo("companion command"));
+            Assert.That(CompanionChat165.AnswerWith("where is the trainer?", "Wynn", true, () => null, _ => party, text => text, new Random(1)).Route,
+                Is.EqualTo("companion formal"));
+            Assert.That(CompanionChat165.AnswerWith("where is the trainer?", "Wynn", false, () => null, _ => party, text => text, new Random(1)).Route,
+                Is.EqualTo("knowledge"), "never by intent alone");
+            var none = new AutonomousBotChatCoordinator.ReplyChoice(null, "none count");
+            foreach (string line in new[] { "lets go", "add!", "hand me that" })
+                Assert.That(CompanionChat165.AnswerWith(line, "Wynn", false, () => null, _ => none, text => text, new Random(1)).Text,
+                    Is.EqualTo(CompanionChat165.StatementLine(line, AutonomousChatIntentModel.Predict(line), "Wynn", new Random(1))),
+                    $"{line}: nothing on the party path, the companion's own line or nothing");
+        }
+
+        [Test]
+        public void A_warning_is_answered_at_half_the_typing_delay()
+        {
+            Assert.That(AutonomousBotGroupChatter.WarningDueMs(4_000, true), Is.EqualTo(2_000));
+            Assert.That(AutonomousBotGroupChatter.WarningDueMs(4_000, false), Is.EqualTo(4_000));
+        }
+
+        private static string Source(string relative)
+        {
+            string root = TestContext.CurrentContext.TestDirectory;
+            for (int i = 0; i < 10 && root != null && !System.IO.File.Exists(System.IO.Path.Combine(root, relative)); i++)
+                root = System.IO.Path.GetDirectoryName(root);
+            if (root == null || !System.IO.File.Exists(System.IO.Path.Combine(root, relative)))
+                Assert.Fail($"{relative} not found above the test folder.");
+            return System.Text.RegularExpressions.Regex.Replace(System.IO.File.ReadAllText(System.IO.Path.Combine(root, relative)), @"\s+", " ");
+        }
+
+        [Test]
+        public void The_party_reply_path_is_wired_into_the_live_handlers()
+        {
+            const string Auto = "source/server/GameServer/bots/autonomous/";
+            string coordinator = Source(Auto + "AutonomousBotChatCoordinator.cs");
+            string group = Source(Auto + "AutonomousBotGroupChatter.cs");
+            string companion = Source("source/server/GameServer/mode165/CompanionChat165.cs");
+            Assert.Multiple(() =>
+            {
+                Assert.That(coordinator, Does.Match(@"if \(CompanionChat165\.OnPlayerSay\(player, message\)\) \{ AutonomousChatWhy\.Dropped\([^;]*\); return; \}"),
+                    "the gamebots leave a line the companion took");
+                Assert.That(group, Does.Contain("foreach (GamePlayer reader in bot.Group.GetPlayersInTheGroup()) " +
+                    "ChatConversations.Live.NoteBot(reader.Name, bot.DatabaseID, bot.Name, key, text, now);"), "a groupmate's line is a turn");
+                int note = group.IndexOf("NotePlayerLine(player.Name, key, message, GameLoop.GameLoopTime);", StringComparison.Ordinal);
+                int thread = group.IndexOf("AutonomousBotChatCoordinator.TryThreadReply(player, message, key,", StringComparison.Ordinal);
+                Assert.That(note, Is.GreaterThan(0), "the player's /group line is a turn");
+                Assert.That(note, Is.LessThan(thread), "before any branch answers it");
+                Assert.That(group, Does.Contain("if (!IsVoicedRoute(choice.Route)) break;"), "a step answers once");
+                Assert.That(group, Does.Contain("PartyChoice(mate, player, resolved, intent, named.Length > 0, \"group\","), "/group takes the party path");
+                Assert.That(group, Does.Contain("return PartyWith(AutonomousBotChatCoordinator.PortsFor(mate, player),"), "PartyChoice is PartyWith");
+                Assert.That(group, Does.Contain("(warning || !mate.InCombat)"), "a warning is taken by a fighting mate");
+                Assert.That(companion, Does.Contain("AnswerWith(message, owner.Name, IsFormal(bot), () => Command(bot, owner, message), " +
+                    "intent => AutonomousBotGroupChatter.PartyChoice(bot, owner, message, intent, true, \"say\", 1)"), "Answer is AnswerWith");
+                Assert.That(companion, Does.Contain("AutonomousBotChatCoordinator.ReplyChoice choice = Answer(speaker, player, resolved, Random.Shared);"));
+                Assert.That(companion, Does.Contain("return TakesTheLine(named != null, speaker.DatabaseID == floor, keepsTheFloor, IsFormal(speaker), message);"));
+            });
+        }
     }
 }

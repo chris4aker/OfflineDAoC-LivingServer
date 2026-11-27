@@ -117,9 +117,9 @@ namespace DOL.GS.Tests
                     // A hired companion named in /say (or holding the floor), CompanionChat165.Answer after its commands (#479): the party
                     // reply path its groupmates take, addressed, in /say; for a plain statement nothing there answers, its own line where
                     // it says something true of a companion.
-                    choice = PartyOf(run, ports, message, true, "say");
-                    if (string.IsNullOrWhiteSpace(choice.Text) && CompanionChat165.StatementLine(message, intent, "Wynn", run.Rng) is { } own)
-                        choice = new AutonomousBotChatCoordinator.ReplyChoice(Style(run, own), "companion " + AutonomousBotVoices.IntentName(intent));
+                    // CompanionChat165.Answer's own order (AnswerWith), with no command and a non-formal companion.
+                    choice = CompanionChat165.AnswerWith(message, "Wynn", false, () => null, _ => PartyOf(run, ports, message, true, "say"),
+                        text => Style(run, text), run.Rng);
                     break;
                 case "trade":
                 {

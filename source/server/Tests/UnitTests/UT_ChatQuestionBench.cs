@@ -299,14 +299,15 @@ namespace DOL.GS.Tests
         }
 
         /// <summary>
-        /// AutonomousChatReplyPath.Party on the stub world (#479): the /group handler's and a hired companion's /say path. The
+        /// AutonomousBotGroupChatter.PartyWith on the stub world (#479): the /group handler's and a hired companion's /say path. The
         /// responder stands in its own zone: a groupmate in the player's region but not beside them, a companion beside them; full
         /// health and power.
         /// </summary>
         private static AutonomousBotChatCoordinator.ReplyChoice PartyOf(Run run, AutonomousChatReplyPath.Ports ports, string message, bool addressed, string channel)
         {
             bool companion = channel == "say";
-            return AutonomousChatReplyPath.Party(ports, message, AutonomousChatIntentModel.Predict(message), addressed, channel,
+            // AutonomousBotGroupChatter.PartyChoice's own composition (PartyWith), with the stub world in its ports.
+            return AutonomousBotGroupChatter.PartyWith(ports, message, AutonomousChatIntentModel.Predict(message), addressed, channel, 1,
                 knowledge: () => Knowledge(run, message),
                 // The live alarm step (AutonomousBotGroupChatter.AlarmReply): the situation's call, else the voiced reply.
                 alarm: () => AutonomousChatContext.Reply(message, AutonomousChatIntentModel.Predict(message), AutonomousChatShortTalk.QuestionShape(message),

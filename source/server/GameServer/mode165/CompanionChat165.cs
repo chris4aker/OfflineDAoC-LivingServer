@@ -228,8 +228,8 @@ namespace DOL.GS
             long floor = ChatConversations.Live.FloorHolder(player.Name, room, now);
             // PC check 0730 (build 5154cae): "you ready?" in /say with the gamebot Linaibel targeted (and holding the floor after
             // her "oh hey") drew Pannax's "ok". A line the player aims at another bot, by target or by talking with it, is that bot's.
-            bool aimedElsewhere = AimedElsewhere(ids, player.TargetObject is GameBot target ? target.DatabaseID : 0, floor,
-                AutonomousBotChatCoordinator.KeepsTheFloor(message, AutonomousChatIntentModel.Predict(message)));
+            bool keepsTheFloor = AutonomousBotChatCoordinator.KeepsTheFloor(message, AutonomousChatIntentModel.Predict(message));
+            bool aimedElsewhere = AimedElsewhere(ids, player.TargetObject is GameBot target ? target.DatabaseID : 0, floor, keepsTheFloor);
             GameBot speaker = ChooseSpeaker(near, named, floor, Random.Shared, aimedElsewhere);
             if (speaker == null)
                 return false;
@@ -259,8 +259,19 @@ namespace DOL.GS
                 }
                 return 0;
             }, due);
-            return true;
+            // Owner, 2026-11-27 (4A): the gamebots nearby leave the line to the companion only when it was meant for the companion.
+            return TakesTheLine(named != null, speaker.DatabaseID == floor, keepsTheFloor, IsFormal(speaker), message);
         }
+
+        /// <summary>
+        /// Whether a companion's answer takes the player's /say line from the gamebots nearby (owner, 2026-11-27, "4A": a companion
+        /// takes only lines meant for it): the line names it, or it holds the floor and the line goes on with it
+        /// (<see cref="AutonomousBotChatCoordinator.KeepsTheFloor"/>, which leaves out someone/anyone calls, help calls and rez) and
+        /// it is no guild request. A Formal companion never takes a line from them. Any other line it answers, the gamebots may
+        /// answer too. Pure.
+        /// </summary>
+        public static bool TakesTheLine(bool named, bool holdsTheFloor, bool keepsTheFloor, bool formal, string message) =>
+            !formal && (named || holdsTheFloor && keepsTheFloor && !AutonomousBotGuildChatLines.AsksForGuild(message, true));
 
         /// <summary>
         /// A companion's answer to its player's /say line, as it types it (#479): its three commands (keep quiet, talk again, how are
@@ -269,18 +280,28 @@ namespace DOL.GS
         /// voiced reply and the budget), and for a plain statement nothing there answers, the companion's own line where it says
         /// something true of a companion (<see cref="StatementLine"/>). Text null: it says nothing.
         /// </summary>
-        public static AutonomousBotChatCoordinator.ReplyChoice Answer(GameBot bot, GamePlayer owner, string message, Random random)
+        public static AutonomousBotChatCoordinator.ReplyChoice Answer(GameBot bot, GamePlayer owner, string message, Random random) =>
+            AnswerWith(message, owner.Name, IsFormal(bot), () => Command(bot, owner, message),
+                intent => AutonomousBotGroupChatter.PartyChoice(bot, owner, message, intent, true, "say", 1), text => Typed(bot, text), random);
+
+        /// <summary>
+        /// <see cref="Answer"/>'s order with its pieces as ports (#479; the question bench runs it on its stub world): the
+        /// <paramref name="command"/>, a Formal companion's own line, the <paramref name="party"/> reply path, then
+        /// <see cref="StatementLine"/>. <paramref name="typed"/> types the companion's own lines (the party path styles its own).
+        /// </summary>
+        public static AutonomousBotChatCoordinator.ReplyChoice AnswerWith(string message, string who, bool formal, Func<string> command,
+            Func<eAutonomousChatIntent, AutonomousBotChatCoordinator.ReplyChoice> party, Func<string, string> typed, Random random)
         {
-            if (Command(bot, owner, message) is { } command)
-                return new AutonomousBotChatCoordinator.ReplyChoice(Typed(bot, command), "companion command");
+            if (command?.Invoke() is { } said)
+                return new AutonomousBotChatCoordinator.ReplyChoice(typed(said), "companion command");
             eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
-            if (IsFormal(bot))
-                return new AutonomousBotChatCoordinator.ReplyChoice(ReplyTo(intent, owner.Name, random, true), "companion formal");
-            AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotGroupChatter.PartyChoice(bot, owner, message, intent, true, "say", 1);
+            if (formal)
+                return new AutonomousBotChatCoordinator.ReplyChoice(ReplyTo(intent, who, random, true), "companion formal");
+            AutonomousBotChatCoordinator.ReplyChoice choice = party(intent);
             if (!string.IsNullOrWhiteSpace(choice.Text))
                 return choice;
-            return StatementLine(message, intent, owner.Name, random) is { } own
-                ? new AutonomousBotChatCoordinator.ReplyChoice(Typed(bot, own), "companion " + AutonomousBotVoices.IntentName(intent))
+            return StatementLine(message, intent, who, random) is { } own
+                ? new AutonomousBotChatCoordinator.ReplyChoice(typed(own), "companion " + AutonomousBotVoices.IntentName(intent))
                 : choice;
         }
 

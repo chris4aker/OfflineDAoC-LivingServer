@@ -299,9 +299,13 @@ public static class AutonomousBotGroupChatter
                     break;
                 continue;
             }
-            due = AutonomousChatArbiter.AnswerDelayMs(resolved, reply, AutonomousBotChatCoordinator.Wpm(mate), choice.Route, i == 0 && question, true, due, Random.Shared);
+            // A warning ("adds!", "inc") is taken at half the typing delay, and by a groupmate already fighting too: after "adds!" the
+            // mate is usually in combat, and "on it" must not be dropped (as before #479).
+            bool warning = i == 0 && AutonomousChatReplyBudget.IsAlarm(resolved, intent);
+            due = WarningDueMs(AutonomousChatArbiter.AnswerDelayMs(resolved, reply, AutonomousBotChatCoordinator.Wpm(mate), choice.Route, i == 0 && question, true,
+                due, Random.Shared), warning);
             string text = reply;
-            AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () =>
+            AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && (warning || !mate.InCombat), () =>
             {
                 Send(mate, text, "", player.Name);
                 AutonomousChatWhy.Record(mate, "group", "player " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, resolved),
@@ -319,6 +323,9 @@ public static class AutonomousBotGroupChatter
     /// <summary>Whether the 5 s cooldown drops a player's /group line: not a question or a line naming a groupmate (#479). Pure.</summary>
     public static bool CooledDown(long lastReply, long now, bool needsAnswer) =>
         !needsAnswer && lastReply > 0 && now - lastReply < PlayerReplyCooldownMs;
+
+    /// <summary>When the first answer to a warning is due: at half the typing delay (the talking update audit; #479 keeps it). Pure.</summary>
+    public static int WarningDueMs(int due, bool warning) => warning ? due / 2 : due;
 
     /// <summary>Whether a party answer came from the voiced reply (more than one may answer a hello), not a step before it. Pure.</summary>
     public static bool IsVoicedRoute(string route) =>
@@ -341,15 +348,24 @@ public static class AutonomousBotGroupChatter
     {
         bool sameRegion = mate.CurrentRegion == player.CurrentRegion;
         int distance = sameRegion ? mate.GetDistanceTo(player) : int.MaxValue;
-        return AutonomousChatReplyPath.Party(AutonomousBotChatCoordinator.PortsFor(mate, player), message, intent, addressed, channel,
+        return PartyWith(AutonomousBotChatCoordinator.PortsFor(mate, player), message, intent, addressed, channel, replies,
             knowledge: () => AutonomousChatKnowledge.TryAnswer(player, message, out string known) ? known : null,
             alarm: () => AlarmReply(mate, player, message, intent, channel),
             come: () => ComeReply(sameRegion, distance, mate.CurrentZone?.Description, Random.Shared),
             meetup: () => AutonomousChatMeetup.PartyReply(message, sameRegion && distance <= AutonomousChatMeetup.BesideRange, sameRegion,
                 mate.CurrentZone?.Description, Random.Shared),
             pause: () => AutonomousChatMeetup.PauseReply(message, mate.HealthPercent, mate.MaxMana > 0 ? (int?)mate.ManaPercent : null, Random.Shared),
-            voiced: replies <= 0 ? null : () => AutonomousBotChatCoordinator.VoicedChoice(mate, message, () => null, player, addressed: true, channel: channel));
+            voiced: () => AutonomousBotChatCoordinator.VoicedChoice(mate, message, () => null, player, addressed: true, channel: channel));
     }
+
+    /// <summary>
+    /// <see cref="PartyChoice"/> with its pieces as ports (#479; the question bench runs it on its stub world):
+    /// <see cref="AutonomousChatReplyPath.Party"/>, with no voiced reply once the line may draw no more (<paramref name="replies"/> 0).
+    /// </summary>
+    public static AutonomousBotChatCoordinator.ReplyChoice PartyWith(AutonomousChatReplyPath.Ports ports, string message, eAutonomousChatIntent intent,
+        bool addressed, string channel, int replies, Func<string> knowledge, Func<string> alarm, Func<string> come, Func<string> meetup, Func<string> pause,
+        Func<AutonomousBotChatCoordinator.ReplyChoice> voiced) =>
+        AutonomousChatReplyPath.Party(ports, message, intent, addressed, channel, knowledge, alarm, come, meetup, pause, replies <= 0 ? null : voiced);
 
     /// <summary>
     /// The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A groupmate
