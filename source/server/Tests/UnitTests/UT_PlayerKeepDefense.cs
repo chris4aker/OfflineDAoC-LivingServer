@@ -195,8 +195,6 @@ namespace DOL.GS.Tests
             (IDictionary)typeof(AutonomousRvrEventLayer).GetField("DefenseAlarms", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 
         // The alarm record is private; fill its constructor by parameter type so the test survives a change of its fields.
-        // A bool is the alarm's door hit or guard death (#523 (b)): these fixtures predate the lone-guard-pull rule, so their
-        // lone attacker has hit a door (UT_PlayerSiegeAlarm523 covers the guard hit alone).
         private static object NewAlarm(AbstractGameKeep keep, GamePlayer player, long tick)
         {
             var type = typeof(AutonomousRvrEventLayer).GetNestedType("Alarm", BindingFlags.NonPublic);
@@ -204,7 +202,6 @@ namespace DOL.GS.Tests
             object[] args = ctor.GetParameters().Select(p =>
                 p.ParameterType == typeof(long) ? tick :
                 p.ParameterType == typeof(int) ? 1 :
-                p.ParameterType == typeof(bool) ? true :
                 typeof(GamePlayer).IsAssignableFrom(p.ParameterType) ? player :
                 typeof(AbstractGameKeep).IsAssignableFrom(p.ParameterType) ? (object)keep : null).ToArray();
             return ctor.Invoke(args);

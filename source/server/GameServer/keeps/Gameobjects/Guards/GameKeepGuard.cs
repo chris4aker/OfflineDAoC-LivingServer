@@ -257,9 +257,6 @@ namespace DOL.GS.Keeps
 		{
 			if (killer != this)
 				GuardSpam(this);
-			// #523 (b): a guard's death raises the keep's alarm even for a lone attacker (a hit alone does not).
-			if (killer != this)
-				AutonomousRvrEventLayer.ObserveKeepAttack(Component?.Keep, killer, AutonomousRvrEventLayer.KeepAttackKind.GuardKilled);
 			base.Die(killer);
 			if (RespawnInterval == -1)
 				Delete();

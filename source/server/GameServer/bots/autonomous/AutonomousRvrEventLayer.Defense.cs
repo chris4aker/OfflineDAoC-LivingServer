@@ -14,20 +14,7 @@ namespace DOL.GS
     {
         public const long DefenseResponseMilliseconds = 4 * 60 * 60_000L;
         public const long DefenseQuietMilliseconds = 3 * 60_000L;
-        /// <summary>A player's attack on a keep, waiting for the coordinator pulse. <c>Sustained</c>: a door was hit or a
-        /// guard died in this attack (#523 (b), owner 2026-11-27, 45A), which raises a defense even for a lone attacker.</summary>
-        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick, bool Sustained = false);
-
-        /// <summary>What an enemy did to a keep (<see cref="ObserveKeepAttack"/>).</summary>
-        public enum KeepAttackKind { GuardHit, GuardKilled, DoorHit }
-
-        /// <summary>
-        /// #523 step 1 (b), owner 2026-11-27 (45A, war.md finding 2 fix 2): a lone guard pull raises no alarm. Guard damage
-        /// alone raises no defense below Standard scale (one attacker seen at the keep) until a guard dies or a door is hit.
-        /// Period: the owning guild was told when a guard died, with the enemy count (GuardSpam); a lone ganker who hit a
-        /// guard and left drew nothing (reference.md 5.1, 5.5-5.6).
-        /// </summary>
-        public static bool AlarmRaisesDefense(DefenseScale scale, bool sustained) => sustained || scale >= DefenseScale.Standard;
+        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick);
 
         // Goal 11 (owner 2026-10-07): the response is sized to the force that started the attack - a solo player, a
         // group (player + up to 7), a /raid 40 or a /raid 80 - and the announcement says how big a force was rallied.
@@ -113,9 +100,9 @@ namespace DOL.GS
 
         // Damage callbacks only replace a bounded, per-keep alarm. Recruitment,
         // chat and all population work run in the coordinator service phase.
-        public static void ObserveKeepAttack(AbstractGameKeep keep, GameObject source, KeepAttackKind kind = KeepAttackKind.GuardHit)
+        public static void ObserveKeepAttack(AbstractGameKeep keep, GameObject source)
         {
-            if (keep == null || !AutonomousRvrKeepPolicy.IsSiegeObjective(keep)) return;
+            if (!AutonomousRvrKeepPolicy.IsSiegeObjective(keep)) return;
             string id = $"rvr-keep-{keep.KeepID}";
             long now = GameLoop.GameLoopTime;
             if (source != null && source.Realm != eRealm.None && source.Realm != keep.Realm)
@@ -128,15 +115,8 @@ namespace DOL.GS
             if (player == null || player.Realm == eRealm.None || player.Realm == keep.Realm) return;
             // Goal 11: the player's raid fights this siege on its own, planned bot siege or not.
             CompanionRaidSiege.RequestAssault(player, keep);
-            bool sustained = kind != KeepAttackKind.GuardHit;
-            if (DefenseAlarms.TryGetValue(id, out var previous))
-            {
-                // A door hit or a guard death stays with the alarm while it lives (DefenseQuietMilliseconds).
-                sustained |= previous.Sustained && now - previous.Tick <= DefenseQuietMilliseconds;
-                // One alarm a second, but a door hit or a guard death is never dropped by that throttle.
-                if (now - previous.Tick < 1000 && (previous.Sustained || !sustained)) return;
-            }
-            DefenseAlarms[id] = new(keep, player, now, sustained);
+            if (DefenseAlarms.TryGetValue(id, out var previous) && now - previous.Tick < 1000) return;
+            DefenseAlarms[id] = new(keep, player, now);
         }
 
         // Battleground keeps have no planned siege event, so a siege "starts" when an enemy realm first damages the keep
@@ -317,9 +297,6 @@ namespace DOL.GS
                     // Counted here, in the coordinator pulse, not in the damage callback (#523, owner 2026-11-24).
                     int seen = SeenForceSize(alarm.Player, keep, realmBots ??= AttackerRealmBotSource().ToArray());
                     DefenseScale scale = ScaleOf(seen);
-                    // #523 (b): a lone guard pull waits. The alarm is kept, so a door hit or a guard death in the next
-                    // quiet minutes still raises it; a planned siege at the keep is still marked as attacked below.
-                    if (!Events.ContainsKey(pair.Key) && !AlarmRaisesDefense(scale, alarm.Sustained)) continue;
                     DefenseScale before = Events.TryGetValue(pair.Key, out var existing) && existing.DefenseReaction ? existing.DefenseScale : scale;
                     bool firstAlarm = BeginDefenseResponse(target, alarm.Player.Realm,
                         alarm.Player.Client?.Account?.Name ?? alarm.Player.Name, alarm.Tick, scale);
