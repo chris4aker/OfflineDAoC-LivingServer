@@ -163,7 +163,7 @@ namespace DOL.GS
         /// puller and all ordinary camps retain their existing behavior.</summary>
         public static bool TryBeginFlyingHandoff(GameBot designated, GameNPC target, bool corridorBlocker = false)
             => TryChooseFlyingHandoffShooter(designated, target, corridorBlocker, out GameBot shooter) &&
-               TryBeginCore(shooter, target, flyingHandoff: true);
+               TryBeginCore(shooter, target, flyingHandoff: true, out _);
 
         public static bool CanAttemptFlyingHandoff(GameBot designated, GameNPC target, bool corridorBlocker = false)
             => TryChooseFlyingHandoffShooter(designated, target, corridorBlocker, out _);
@@ -210,35 +210,65 @@ namespace DOL.GS
         // True means this party's pull is handled, including a failed approach.
         // Never fall through into a melee charge merely because a ranged pull failed.
         public static bool TryBegin(GameBot shooter, GameLiving target)
-            => TryBeginCore(shooter, target, flyingHandoff: false);
+            => TryBeginCore(shooter, target, flyingHandoff: false, out _);
 
-        private static bool TryBeginCore(GameBot shooter, GameLiving target, bool flyingHandoff)
+        /// <summary>
+        /// Same as TryBegin, and also says why (#569 step 9: the puller's camp turn tells "too far, look for a nearer one"
+        /// from "benched, close in"). The returned bool is exactly TryBegin's.
+        /// </summary>
+        public static bool TryBegin(GameBot shooter, GameLiving target, out PartyPullStart why)
+            => TryBeginCore(shooter, target, flyingHandoff: false, out why);
+
+        /// <summary>Pure: a target with no firing point is too far when it is beyond the short proven approach.</summary>
+        public static bool IsTooFarForFiringPoint(float distance, int range) => distance - (range - 100) > MaximumFiringAdvance;
+
+        private static bool TryBeginCore(GameBot shooter, GameLiving target, bool flyingHandoff, out PartyPullStart why)
         {
+            why = PartyPullStart.Waiting;
             // Suppress only a new scripted pull of this expedition's dragon.
             // Attacked-by-enemy and shared defense paths are unchanged.
             if (AutonomousRealmRaid.IsPendingDragonTarget(shooter,target)) return true;
             if (shooter?.CharacterClass != null &&
                 SavageBotCombatPolicy.MustMeleePull((eCharacterClass)shooter.CharacterClass.ID))
+            {
+                why = PartyPullStart.NoRangedPull;
                 return false;
+            }
             if (shooter?.Group == null ||
-                !flyingHandoff && !AutonomousBotGroupCoordinator.UsesDefensivePullGroup(shooter.Group)) return false;
+                !flyingHandoff && !AutonomousBotGroupCoordinator.UsesDefensivePullGroup(shooter.Group))
+            {
+                why = PartyPullStart.NotApplicable;
+                return false;
+            }
             State state = States.GetOrCreateValue(shooter.Group);
             lock (state)
             {
                 if (state.Active) return true;
                 // 1.2.3 (#539): a target benched for this camp is pulled the ordinary way, not stood on again.
-                if (target != null && state.Bench.IsBenched(target.ObjectID, GameLoop.GameLoopTime)) return false;
+                if (target != null && state.Bench.IsBenched(target.ObjectID, GameLoop.GameLoopTime))
+                {
+                    why = PartyPullStart.Benched;
+                    return false;
+                }
                 if (GameLoop.GameLoopTime < state.RetryAfter) return true;
                 GameBot[] members = shooter.Group.GetMembersInTheGroup().OfType<GameBot>().ToArray();
                 if (members.Length < (flyingHandoff ? 2 : MinimumPullParty) ||
                     target?.IsAlive != true || shooter.CurrentRegion != target.CurrentRegion)
                     return true;
                 // An enemy already in the party is a real defensive fight, not a ranged pull.
-                if (!flyingHandoff && members.Any(member => member.IsWithinRadius(target, ContactRadius))) return false;
+                if (!flyingHandoff && members.Any(member => member.IsWithinRadius(target, ContactRadius)))
+                {
+                    why = PartyPullStart.ContactFight;
+                    return false;
+                }
                 Spell spell = flyingHandoff ? ReadyPullSpell(shooter) : PullSpell(shooter);
                 // A puller with no ranged pull at all (common below level 50) pulls the ordinary way;
                 // reporting "handled" here left such a party standing at its camp for good.
-                if (spell == null && !flyingHandoff && !HasRangedPull(shooter)) return false;
+                if (spell == null && !flyingHandoff && !HasRangedPull(shooter))
+                {
+                    why = PartyPullStart.NoRangedPull;
+                    return false;
+                }
                 state.RetryAfter = GameLoop.GameLoopTime + TimeoutMilliseconds;
                 eActiveWeaponSlot previous = shooter.ActiveWeaponSlot;
                 if (spell == null)
@@ -255,22 +285,28 @@ namespace DOL.GS
                     // camp check (every 1.5 s) pulls once in range. Holding here stood parties 2,000
                     // units from their camp (1,087 unreachable pulls in run 11's first hour, mostly
                     // low-level parties with short pull ranges).
-                    if (Vector3.Distance(origin, enemy) - (range - 100) > MaximumFiringAdvance)
+                    if (IsTooFarForFiringPoint(Vector3.Distance(origin, enemy), range))
                     {
                         state.RetryAfter = 0;
+                        why = PartyPullStart.TooFar;
                         return false;
                     }
                     bool benched = state.Bench.RecordUnreachable(target.ObjectID, GameLoop.GameLoopTime);
                     var log = LoggerManager.Create(typeof(AutonomousDefensivePull));
                     log.Info($"AUTONOMOUS_DEFENSIVE_PULL_UNREACHABLE bot={shooter.Name} target={target.Name} region={shooter.CurrentRegionID} " +
                              $"x={shooter.X} y={shooter.Y} z={shooter.Z} tries={state.Bench.Tries(target.ObjectID)}");
-                    if (!benched) return true;
+                    if (!benched)
+                    {
+                        why = PartyPullStart.Unreachable;
+                        return true;
+                    }
                     // Benched: no more waiting on this ranged pull; the caller pulls it the ordinary way now.
                     state.RetryAfter = 0;
                     log.Warn($"AUTONOMOUS_DEFENSIVE_PULL_BENCHED bot={shooter.Name} target={target.Name} targetId={target.ObjectID} " +
                              $"camp=\"{state.Bench.CampKey}\" benched={state.Bench.BenchedCount(GameLoop.GameLoopTime)} " +
                              $"region={shooter.CurrentRegionID} x={shooter.X} y={shooter.Y} z={shooter.Z}; " +
                              $"no firing point {UnreachableBench.TriesBeforeBench} times, an ordinary pull instead");
+                    why = PartyPullStart.Benched;
                     return false;
                 }
                 state.Members = members;
@@ -302,6 +338,7 @@ namespace DOL.GS
                             brain.FollowOwner();
                         }
                 }
+                why = PartyPullStart.Started;
                 return true;
             }
         }
