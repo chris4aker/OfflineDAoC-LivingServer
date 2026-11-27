@@ -134,7 +134,8 @@ public class UT_CompanionLeaderFocus571
         {
             Assert.That(attack, Does.Contain("GameLiving leaderFocus = protectionTarget == null ? LeaderFocusTarget() : null;"));
             Assert.That(attack, Does.Contain(
-                "Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus, directAttacker, activePetTarget, threatTarget);"));
+                "Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker, activePetTarget, threatTarget);"),
+                "#569 step 6: a bot-only party's kill target (BotBrain.MainAssist) takes the same slot; never with leader focus");
             Assert.That(attack, Does.Not.Contain("Body.TargetObject = protectionTarget ?? directAttacker"), "one target choice");
             Assert.That(focus, Does.Contain("CompanionLeaderFocus.AppliesTo(CompanionLeaderFocus.On, bot.IsPlayerLedGroup,"));
             Assert.That(focus, Does.Contain("PlayerLedPullCoordinator.FindLeaderTarget(leader)"), "the player's live fight, not a selection");

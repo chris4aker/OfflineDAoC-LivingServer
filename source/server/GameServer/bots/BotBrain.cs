@@ -3561,8 +3561,7 @@ namespace DOL.AI.Brain
             GameLiving partyAssist = protectionTarget == null && leaderFocus == null ? PartyMainAssistTarget(directAttacker) : null;
             GameLiving threatTarget = protectionTarget == null && partyAssist == null && directAttacker == null && activePetTarget == null
                 ? CalculateNextAttackTarget() : null;
-            Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker,
-                activePetTarget, threatTarget);
+            Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker, activePetTarget, threatTarget);
             NoteLeaderFocus(leaderFocus, directAttacker, activePetTarget, threatTarget);
             // The tank publishes its target as the kill target; a peel on an add never moves a live one (True165 M2).
             OfferPartyKillTarget(Body.TargetObject as GameLiving, protectionTarget != null &&

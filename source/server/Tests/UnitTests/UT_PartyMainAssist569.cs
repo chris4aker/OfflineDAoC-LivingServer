@@ -91,7 +91,7 @@ namespace DOL.GS.Tests
             {
                 Assert.That(brain, Does.Contain(
                     "GameLiving partyAssist = protectionTarget == null && leaderFocus == null ? PartyMainAssistTarget(directAttacker) : null;"));
-                Assert.That(brain, Does.Contain("CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker,"));
+                Assert.That(brain, Does.Contain("CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker, activePetTarget, threatTarget);"));
                 Assert.That(brain, Does.Contain("OfferPartyKillTarget(Body.TargetObject as GameLiving, protectionTarget != null &&"));
             });
             // Leader focus and main assist never apply to the same bot: one needs a player's group, the other a bot-only one.
