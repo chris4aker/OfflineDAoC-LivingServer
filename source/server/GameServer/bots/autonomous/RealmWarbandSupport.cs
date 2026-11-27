@@ -19,10 +19,10 @@ namespace DOL.GS
             Volatile.Read(ref _groups).TryGetValue(bot.Group, out var roster) &&
             AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) ? roster : null;
 
-        /// <summary>Rebuilds the rosters every ten seconds; <paramref name="force"/>: now (the RvR fight rehearsal, #520).</summary>
-        public static void Pulse(long now, bool force = false)
+        /// <summary>Rebuilds the rosters every ten seconds; <paramref name="immediately"/>: now (the RvR fight rehearsal, #520).</summary>
+        public static void Pulse(long now, bool immediately = false)
         {
-            if (!force && now < _next) return;
+            if (!immediately && now < _next) return;
             _next = now + 10_000;
             var targets = AutonomousRvrEventLayer.ForceTargets();
             var grouped = new Dictionary<string, List<GameBot>>();

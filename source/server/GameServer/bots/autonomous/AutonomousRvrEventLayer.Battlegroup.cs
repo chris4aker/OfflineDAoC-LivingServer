@@ -80,8 +80,8 @@ public static partial class AutonomousRvrEventLayer
         List<string> Pick(BattlegroupCandidate lead, int groups, int heads)
         {
             var picked = new List<string>();
-            foreach (BattlegroupCandidate other in free.Where(other => Near(lead, other))
-                         .OrderBy(other => DistanceBetween(lead, other)).ThenBy(other => other.ForceId, StringComparer.Ordinal).ToList())
+            foreach (BattlegroupCandidate other in free.Where(c => Near(lead, c))
+                         .OrderBy(c => DistanceBetween(lead, c)).ThenBy(c => c.ForceId, StringComparer.Ordinal).ToList())
             {
                 if (groups >= BattlegroupMaxGroups) break;
                 if (heads + other.Heads > BattlegroupMaxHeads) continue;
@@ -93,7 +93,7 @@ public static partial class AutonomousRvrEventLayer
             return picked;
         }
 
-        foreach (BattlegroupView view in existing.OrderBy(view => view.Id, StringComparer.Ordinal))
+        foreach (BattlegroupView view in existing.OrderBy(v => v.Id, StringComparer.Ordinal))
         {
             if (view.Members.Count >= BattlegroupMaxGroups || !byId.TryGetValue(view.LeadForceId ?? string.Empty, out BattlegroupCandidate lead))
                 continue;
@@ -196,7 +196,7 @@ public static partial class AutonomousRvrEventLayer
         BattlegroupCandidate? Find(string id) => id != null && byId.TryGetValue(id, out BattlegroupCandidate found) ? found : null;
         lock (BattlegroupSync)
         {
-            foreach (BattlegroupRecord record in Battlegroups.Values.OrderBy(record => record.Id, StringComparer.Ordinal).ToList())
+            foreach (BattlegroupRecord record in Battlegroups.Values.OrderBy(r => r.Id, StringComparer.Ordinal).ToList())
             {
                 BattlegroupCandidate? lead = Find(record.Lead);
                 BattlegroupLeave leadReason = BattlegroupLeaveReason(lead, lead, true, 0, long.MaxValue, now);
@@ -222,7 +222,7 @@ public static partial class AutonomousRvrEventLayer
                     EndBattlegroup(record, BattlegroupLeave.TooSmall, byId, changes, now);
             }
 
-            foreach (BattlegroupLink link in PlanBattlegroups(byId.Values.ToList(), Battlegroups.Values.Select(record => record.View).ToList()))
+            foreach (BattlegroupLink link in PlanBattlegroups(byId.Values.ToList(), Battlegroups.Values.Select(r => r.View).ToList()))
             {
                 BattlegroupRecord record;
                 string what;

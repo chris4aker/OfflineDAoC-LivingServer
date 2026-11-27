@@ -389,7 +389,7 @@ namespace DOL.GS.Tests.Rehearsal
                 List<AutonomousRvrEventLayer.BattlegroupChange> changes =
                     AutonomousBotGroupCoordinator.PulseBattlegroups(world.Now, force: true) ??
                     new List<AutonomousRvrEventLayer.BattlegroupChange>();
-                RealmWarbandSupport.Pulse(world.Now, force: true);
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
                 string ForceOf(GameBot bot) => AutonomousBotGroupCoordinator.RvrForceId(bot);
                 AutonomousRvrEventLayer.BattlegroupView battlegroup = AutonomousRvrEventLayer.BattlegroupOf(ForceOf(first[0]));
                 IReadOnlyList<string> linked = battlegroup?.Members ?? Array.Empty<string>();
@@ -420,7 +420,7 @@ namespace DOL.GS.Tests.Rehearsal
             finally
             {
                 AutonomousBotGroupCoordinator.ResetBattlegroups();
-                RealmWarbandSupport.Pulse(world.Now, force: true);
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
             }
         }
 
