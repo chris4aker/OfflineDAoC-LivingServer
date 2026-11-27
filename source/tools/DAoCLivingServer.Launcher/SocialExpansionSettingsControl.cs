@@ -466,6 +466,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         BardFillsHealerSlot = _population.BardFillsHealerSlot, // no checkbox: kept as read
         MorganaQuestHelp = _population.MorganaQuestHelp, // no checkbox: kept as read (#611)
         HealerPeriodRules = _population.HealerPeriodRules, // no checkbox: kept as read
+        WeaponSetRules = _population.WeaponSetRules, // no checkbox: kept as read (#569)
         LeaderFocus = _population.LeaderFocus, // no checkbox: kept as read (#571)
         CompanionRvrEngage = _population.CompanionRvrEngage, // no checkbox: kept as read (#664)
         PopulationNewcomers = _population.PopulationNewcomers,

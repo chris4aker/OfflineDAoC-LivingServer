@@ -69,6 +69,9 @@ public sealed record SocialExpansionSettings
     /// <summary>Bot and companion healers heal like a 1.65 healer outside raids and boss fights (bot_healer_period_rules,
     /// #567 B1-B5). No checkbox: kept as read. On by default (1.2.3).</summary>
     public bool HealerPeriodRules { get; init; } = true;
+    /// <summary>Bots fight with the weapon set a player would (bot_weapon_set_rules, #569 step 7). No checkbox: kept as
+    /// read. On by default (1.2.3).</summary>
+    public bool WeaponSetRules { get; init; } = true;
     /// <summary>The damage dealers of the player's group fight the player's target first (bot_leader_focus, #571 step 1). No
     /// checkbox: kept as read. On by default (1.2.3).</summary>
     public bool LeaderFocus { get; init; } = true;
@@ -236,7 +239,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, LeaderFocus = true, CompanionRvrEngage = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, CompanionRvrEngage = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true,
     };
@@ -279,9 +282,10 @@ public sealed record SocialExpansionSettings
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
         ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
-        ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): in the frontier, the battlegrounds and Darkness Falls, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. PvE fights and autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
+        ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
         ("bot_companion_rvr_engage", "bots", "Your group engages enemies on its own in RvR (#664): in the frontier, the battlegrounds and Darkness Falls, the bots in your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) notice enemy bots the way gamebots do (line of sight, sooner when the enemy fights, casts or is close, one of them seeing it is all of them seeing it, a stealther only close up) and attack them without waiting for you: within 2,000 of you on /aggressive and 1,000 on /defensive, healers and casters first. They size the fight up first and don't open on an enemy force they would clearly lose to, but always defend. Keep guards and lords are left alone unless you attack them, a bot set to passive, /bot stay or /bot hold stays out, and your own target still comes first. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_ENGAGE."),
         ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
+        ("bot_weapon_set_rules", "bots", "Bots fight with the weapon set a player would (#569): a party's only tank with Guard fights with its trained shield and guards a member within reach, a bot carrying a two-hander and a one-hander uses the line it trained higher, a hired companion keeps the melee set you readied in its window, and archers stop flipping between bow and melee weapon. Only weapons the bot already carries are used. Gamebots, hired companions and /bot companions alike."),
         ("bot_show_as_bots", "bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
@@ -378,6 +382,7 @@ public sealed record SocialExpansionSettings
         ["endurance_regen_amount_modifier"] = EnduranceRegenModifier.ToString("0.##", CultureInfo.InvariantCulture),
         ["bot_death_animation"] = Bool(DeathFall),
         ["bot_healer_period_rules"] = Bool(HealerPeriodRules),
+        ["bot_weapon_set_rules"] = Bool(WeaponSetRules),
         ["bot_leader_focus"] = Bool(LeaderFocus),
         ["bot_companion_rvr_engage"] = Bool(CompanionRvrEngage),
         ["bot_show_as_bots"] = Bool(ShowBotsAsBots),
@@ -723,6 +728,7 @@ public sealed record SocialExpansionSettings
             EnduranceRegenModifier = enduranceRate,
             DeathFall = ReadBool("bot_death_animation", d.DeathFall),
             HealerPeriodRules = ReadBool("bot_healer_period_rules", d.HealerPeriodRules),
+            WeaponSetRules = ReadBool("bot_weapon_set_rules", d.WeaponSetRules),
             LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
             CompanionRvrEngage = ReadBool("bot_companion_rvr_engage", d.CompanionRvrEngage),
             ShowBotsAsBots = ReadBool("bot_show_as_bots", d.ShowBotsAsBots),

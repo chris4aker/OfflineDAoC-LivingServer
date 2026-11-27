@@ -24,7 +24,7 @@ namespace DOL.AI.Brain
             if (bot == null || !CompanionLeaderFocus.AppliesTo(CompanionLeaderFocus.On, bot.IsPlayerLedGroup,
                     BotPartyRoles.IsTank(bot), BotPartyRoles.IsSupport(bot)))
                 return null;
-            // The #663 places only, until the owner decides on PvE (CompanionLeaderFocus.InPve).
+            // PvE and RvR alike (CompanionLeaderFocus.InPve, owner 2026-11-27, #571).
             if (!CompanionLeaderFocus.InPlace(AutonomousWorldBotController.IsBattleground(bot)))
                 return null;
             if (bot.PlayerGroupLeader is not GamePlayer leader || !PlayerLedPullCoordinator.Available(bot, leader))
