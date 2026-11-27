@@ -83,8 +83,25 @@ namespace DOL.GS.Commands
         //private static String[] slots = {"head", "hands", "arms", "torso", "legs", "boots", "cloak", "right", "left", "2H", "distance"};
         private static byte[] slots = { 0x15, 0x16, 0x1C, 0x19, 0x1B, 0x17, 0x1A, 0x0A, 0x0B, 0x0C, 0x0D };
 
-        [ScriptLoadedEvent]
-        public static void OnScriptCompiled(DOLEvent e, object sender, EventArgs args)
+        // Port of OpenDAoC-Core f449b8769, adapted: upstream turned /ngg off because reading every item template's model
+        // at start-up takes a while and keeps over 150 MB. Here the models are read the first time a GM uses /ngg, so the
+        // command stays and the server starts without the cost.
+        private static readonly object _modelsLock = new();
+        private static bool _modelsLoaded;
+
+        private static void EnsureModelsLoaded()
+        {
+            lock (_modelsLock)
+            {
+                if (_modelsLoaded)
+                    return;
+
+                LoadModels();
+                _modelsLoaded = true;
+            }
+        }
+
+        private static void LoadModels()
         {
             IList<DbItemTemplate> temp; 
             int[] ot = { 32, 33, 34, 35, 38, 36 };
@@ -137,6 +154,8 @@ namespace DOL.GS.Commands
                 DisplaySyntax(client);
                 return;
             }
+
+            EnsureModelsLoaded();
 
             string ClasseEpic = string.Empty;
             ushort color = 0;
