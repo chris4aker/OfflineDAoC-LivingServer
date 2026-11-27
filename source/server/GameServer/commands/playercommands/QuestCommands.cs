@@ -39,15 +39,8 @@ namespace DOL.GS.Commands
 			if (player == null)
 				return;
 
-			bool searched = false;
-
-			foreach (AbstractQuest quest in player.QuestList.Keys)
-			{
-				if (quest.Command(player, AbstractQuest.eQuestCommand.SEARCH))
-				{
-					searched = true;
-				}
-			}
+			// Port of OpenDAoC-Core 22197f1f6: a quest that finishes on this search leaves the list while it is walked.
+			bool searched = player.CommandActiveQuests(AbstractQuest.eQuestCommand.SEARCH);
 
             // Also check for DataQuests started via searching
 

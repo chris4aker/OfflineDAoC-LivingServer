@@ -2931,10 +2931,13 @@ internal sealed partial class MainForm : Form
             try { lean = LeanServerMemory.Read(_database); }
             catch (Exception exception) when (exception is SQLiteException or IOException) { }
             LeanServerMemory.Apply(startInfo.Environment, lean);
+            // #732: the game's own .NET (tools\dotnet), whether or not START OFFLINE DAOC.cmd opened this launcher.
+            bool usedBundled = BundledDotnet.Apply(startInfo.Environment, _root) is not null;
             _serverProcess = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
             _serverProcess.OutputDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine(args.Data); };
             _serverProcess.ErrorDataReceived += (_, args) => { if (args.Data is not null) _serverLog?.WriteLine("ERROR: " + args.Data); };
             Process started = _serverProcess;
+            DateTime startedUtc = DateTime.UtcNow;
             _serverProcess.Exited += (_, _) => BeginInvoke(async () =>
             {
                 _serverReadinessPoll.Stop();
@@ -2948,6 +2951,16 @@ internal sealed partial class MainForm : Form
                 if (unasked)
                     _footer.Text = $"The server stopped by itself{(code is int c ? $" (exit code {c})" : "")}. " +
                                    "The end of runtime\\logs\\server-console.log says why.";
+                // #732: a server that closes within seconds never got going (most often no .NET for it); say so
+                // in a dialog and in the logs, not only in the footer.
+                string? early = BundledDotnet.EarlyExitMessage(DateTime.UtcNow - startedUtc, code, !unasked, usedBundled);
+                if (early is not null)
+                {
+                    string line = "START SERVER: " + early.Replace("\n\n", " ");
+                    _serverLog?.WriteLine("LAUNCHER: " + line);
+                    ToolTipFaultFilter.Log?.Write(line);
+                    MessageBox.Show(this, early, "The server closed at once", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             });
             _serverProcess.Start();
             ShowStartingState();

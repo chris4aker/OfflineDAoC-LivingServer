@@ -68,10 +68,8 @@ before the companion work.
 
 ### Bots and the world
 
-- [#544](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/544) Hibernian bots level about twice as fast as Albion's. **Open.** Albion has the fewest camps per band from 5
-  to 19 (world data, owner decision); the 10-19 group XP gap is not explained yet. 1.2.3 adds the sampled
-  `AUTONOMOUS_KILL_XP` row and `source/tools/kill_xp_report.py` (tests only); next: one played hour at 10-19 to tell
-  shared kills from off-target kills. Labels: `needs-PC`, `tests-only`.
+- [#544](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/544) Hibernian bots level about twice as fast as Albion's. **Open.** Albion has the fewest camps per band from 5 to 19 (world data, owner decision); the 10-19 group XP gap is not explained yet. 1.2.3 adds the sampled `AUTONOMOUS_KILL_XP` row and `source/tools/kill_xp_report.py` (tests only). Cause: the catalog made camps of every live cluster only in the source-empty zones (mostly Hibernian); 1.2.3 ports True 1.65's uncovered live camps to every realm (tests only). Next: a played session at 5-19 to compare `campsPer5LevelBand` and level-ups per realm.
+  Labels: `needs-PC`, `tests-only`.
 - [#567](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/567) Harvest: healer and support bots (heal triage, HoT precheck, pet buffs, healer queue). Parts are in 1.2.3's
   changelog fragments (`changelog.d/567-*.md`).
 - [#576](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/576) Harvest: period spawn audit from DataLoggin live logs (audit only).

@@ -19,6 +19,55 @@ public sealed partial class AutonomousWorldBotController
     internal static readonly AutonomousRvrPerception.Memory RvrPerceptionMemory = new();
     internal static readonly AutonomousRvrPerception.ObserverBudget RvrObservers = new();
     private static readonly ConditionalWeakTable<Group, StrongBox<long>> RvrSpotCalls = new();
+    /// <summary>#529 (piece B): what each autonomous gamebot knows of each enemy (RvrContacts). Written by this scan, calls and hits.</summary>
+    public static readonly RvrContacts RvrContactTable = new();
+    /// <summary>#529 step 2: the fight board's area search checked against the members' contacts (logs only).</summary>
+    public static readonly RvrContactShadow RvrContactShadowTally = new();
+
+    /// <summary>#529: the bot learns of <paramref name="target"/> now, by <paramref name="source"/> (the only way contacts are written).</summary>
+    private static void NoteRvrContact(GameBot bot, GameLiving target, RvrContactSource source, long now)
+    {
+        if (source == RvrContactSource.None || target == null || bot.DatabaseID <= 0)
+            return;
+        RvrContactTable.Note(bot.DatabaseID, (int)bot.Realm, new RvrContactSighting(RvrTargetKey(target), RvrPartyKey.Of(target),
+            (int)target.Realm, PerceivedKind(target), target.CurrentRegionID, target.X, target.Y, target.Z, target), source, now);
+    }
+
+    /// <summary>
+    /// #529: an enemy player, gamebot or pet of theirs hit an autonomous gamebot in RvR (BotBrain.OnAttackedByEnemy): the
+    /// bot knows it now. Bots a player has (companions, helpers, a player's group) keep no contacts.
+    /// </summary>
+    public static void NoteRvrHit(GameBot bot, GameLiving attacker)
+    {
+        if (bot is not { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsPlayerLedGroup: false, IsHiredCompanion: false } ||
+            attacker == null || attacker == bot || attacker.Realm == bot.Realm || attacker.Realm == eRealm.None ||
+            attacker.CurrentRegionID != bot.CurrentRegionID || PerceivedKind(attacker) == RvrPerceivedKind.Other || !IsBattleground(bot))
+            return;
+        NoteRvrContact(bot, attacker, RvrContactSource.Hit, GameLoop.GameLoopTime);
+    }
+
+    /// <summary>
+    /// #529 step 2 ("Also, now"): what the /faction alarm and the realm's news board hear. Before, the scan's pre-ray,
+    /// pre-notice list of everyone nearby; now the bot's own fresh contacts (RvrContacts.AlarmHeard: noticed, told or hit
+    /// in the last few seconds, still alive and in its region). Stealthers are never called out.
+    /// </summary>
+    private static GameLiving[] RvrAlarmHears(GameBot bot, long now)
+    {
+        List<RvrContact> fresh = RvrContactTable.Of(bot.DatabaseID, now, RvrContacts.AlarmHearsMilliseconds);
+        if (fresh.Count == 0)
+            return [];
+        List<RvrContact> heard = RvrContacts.AlarmHeard(fresh, now, bot.CurrentRegionID, (int)bot.Realm, AlarmSubject);
+        var enemies = new GameLiving[heard.Count];
+        for (int i = 0; i < heard.Count; i++)
+            enemies[i] = heard[i].Subject;
+        return enemies;
+    }
+
+    /// <summary>The enemy behind a contact as it is now (null when the table holds no living for it).</summary>
+    private static RvrAlarmSubject? AlarmSubject(RvrContact contact) => contact.Subject is GameLiving enemy
+        ? new RvrAlarmSubject(enemy.IsAlive, enemy.ObjectState == GameObject.eObjectState.Active, enemy.IsStealthed,
+            enemy.CurrentRegionID, (int)enemy.Realm)
+        : null;
 
     /// <summary>What one frontier scan knows about the rules that apply to it (see RvrFieldRules).</summary>
     private readonly record struct RvrScanContext(bool AtObjective, RvrFieldRules Rules, RvrBotAwareness Awareness,
@@ -155,13 +204,22 @@ public sealed partial class AutonomousWorldBotController
         {
             // #522: at an objective (or with the perception rule off) visible targets are engaged as before, and a stealthed
             // one only once the stealth rule notices it (the scan let it through only within RvrStealthNotice.MaxRange).
+            // #529: everything let through here is a contact taken under the old rules (Acquired, or Attacked when it fires).
             if (!visible.Any(target => target.IsStealthed))
+            {
+                foreach (GameLiving target in visible)
+                    NoteRvrContact(bot, target, RvrContacts.SourceWithoutRule(FiringOnRealm(bot, target), AttackingGroup(bot, target)), now);
                 return visible;
+            }
             Func<int> noDelay = () => 0;
             var kept = new List<GameLiving>(visible.Length);
             foreach (GameLiving target in visible)
                 if (!target.IsStealthed || context.StealthNotice && PerceiveStealthed(bot, target, context, now, interval, noDelay))
+                {
                     kept.Add(target);
+                    if (!target.IsStealthed)
+                        NoteRvrContact(bot, target, RvrContacts.SourceWithoutRule(FiringOnRealm(bot, target), AttackingGroup(bot, target)), now);
+                }
             return kept.ToArray();
         }
         RvrAwarenessProfile profile = context.Profile;
@@ -178,9 +236,11 @@ public sealed partial class AutonomousWorldBotController
                 continue;
             }
             RvrPerceivedKind kind = AutonomousRvrPerception.Effective(PerceivedKind(target), context.Rules.PerceiveBots);
-            if (!AutonomousRvrPerception.Applies(true, kind, FiringOnRealm(bot, target), AttackingGroup(bot, target)))
+            bool firing = FiringOnRealm(bot, target), attackingGroup = AttackingGroup(bot, target);
+            if (!AutonomousRvrPerception.Applies(true, kind, firing, attackingGroup))
             {
                 engage.Add(target);
+                NoteRvrContact(bot, target, RvrContacts.SourceWithoutRule(firing, attackingGroup), now);
                 continue;
             }
             long party = RvrPartyKey.Of(target);
@@ -209,6 +269,7 @@ public sealed partial class AutonomousWorldBotController
             for (int i = 0; i < results.Count; i++)
             {
                 RvrMemberOutcome outcome = results[i];
+                NoteRvrContact(bot, targets[i], RvrContacts.SourceOf(outcome.Result, outcome.Factors), now);
                 switch (outcome.Result)
                 {
                     case RvrScanResult.Engage:
@@ -249,10 +310,14 @@ public sealed partial class AutonomousWorldBotController
             if (Properties.RVR_BOT_SPOTTERS)
             {
                 var keys = new List<long>(noticed);
+                var called = new List<GameLiving>(noticed);
                 for (int i = 0; i < results.Count; i++)
                     if (results[i].Result == RvrScanResult.Noticed)
+                    {
                         keys.Add(results[i].Key);
-                AlertRvrMates(bot, spotted, keys, now, profile);
+                        called.Add(targets[i]);
+                    }
+                AlertRvrMates(bot, spotted, keys, called, now, profile);
             }
         }
         return engage.ToArray();
@@ -289,6 +354,8 @@ public sealed partial class AutonomousWorldBotController
         double chance = RvrStealthNotice.ChancePerScan(sighting, context.Awareness, interval);
         RvrScanOutcome outcome = AutonomousRvrPerception.ScanStealthed(RvrPerceptionMemory, bot.DatabaseID, RvrTargetKey(target), now,
             chance, Random.Shared.NextDouble(), reactionDelay);
+        // #529: a stealther this bot noticed is its contact (never its mates': a call about a stealther is not answered).
+        NoteRvrContact(bot, target, RvrContacts.SourceOf(outcome.Result, RvrNoticeFactors.Stealth), now);
         if (outcome.Result is RvrScanResult.Noticed || outcome.Result is RvrScanResult.Unseen && chance > 0)
             RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.StealthRolls);
         if (outcome.Result == RvrScanResult.Engage)
@@ -320,9 +387,11 @@ public sealed partial class AutonomousWorldBotController
     /// The spotter tells its group mates near it, each of whom treats the noticed enemies (<paramref name="keys"/>: the
     /// one it saw and the party mates noticed with it) as noticed after its own delay. Other groups of its warband hear it
     /// relayed: each group as a whole, half the time, 4 s later. A mate whose duty (a raid, a battleground assault, a
-    /// player's group) doesn't let it answer is not told (AutonomousRvrPerception.CallRecipients).
+    /// player's group) doesn't let it answer is not told (AutonomousRvrPerception.CallRecipients). #529: each mate told
+    /// holds the called enemies (<paramref name="called"/>, in the order of <paramref name="keys"/>) as Called contacts.
     /// </summary>
-    private static void AlertRvrMates(GameBot spotter, GameLiving target, IReadOnlyList<long> keys, long now, RvrAwarenessProfile profile)
+    private static void AlertRvrMates(GameBot spotter, GameLiving target, IReadOnlyList<long> keys, IReadOnlyList<GameLiving> called,
+        long now, RvrAwarenessProfile profile)
     {
         Group spotterGroup = spotter.Group;
         var mates = new Dictionary<long, GameBot>();
@@ -353,6 +422,8 @@ public sealed partial class AutonomousWorldBotController
                 news |= RvrPerceptionMemory.Alert(callee.Id, key, now, delay);
             if (!news)
                 continue;
+            foreach (GameLiving enemy in called)
+                NoteRvrContact(mates[callee.Id], enemy, RvrContactSource.Called, now);
             if (callee.Relayed)
             {
                 relayed++;

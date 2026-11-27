@@ -34,8 +34,6 @@ namespace DOL.GS.Commands
 
 		public void OnCommand(GameClient client, string[] args)
 		{
-			GameDoor targetDoor = null;
-
 			if (args.Length > 1 && args[1] == "show" && client.Player != null)
 			{
 				if (client.Player.TempProperties.GetProperty<bool>(DoorMgr.WANT_TO_ADD_DOORS))
@@ -60,29 +58,29 @@ namespace DOL.GS.Commands
 				return;
 			}
 
-			if (client.Player.TargetObject == null)
+			// Port of OpenDAoC-Core 3f0f163a3: any door, keep doors included. Before, a keep door (or any target that was
+			// neither a door, an NPC nor a player) passed the checks with no door, and every subcommand then crashed.
+			if (client.Player.TargetObject is not GameDoorBase targetDoor)
 			{
 				client.Out.SendMessage("You must target a door", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				return;
-			}
-
-			if (client.Player.TargetObject != null &&
-			    (client.Player.TargetObject is GameNPC || client.Player.TargetObject is GamePlayer))
-			{
-				client.Out.SendMessage("You must target a door", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-				return;
-			}
-
-			if (client.Player.TargetObject != null && client.Player.TargetObject is GameDoor)
-			{
-				targetDoor = (GameDoor) client.Player.TargetObject;
-				DoorID = targetDoor.DoorId;
-				doorType = targetDoor.DoorId/100000000;
 			}
 
 			if (args.Length < 2)
 			{
 				DisplaySyntax(client);
+				return;
+			}
+
+			DoorID = targetDoor.DoorId;
+			doorType = targetDoor.DoorId/100000000;
+
+			// Living Server: a keep or relic door's realm, level, guild, lock and database row belong to its keep or relic
+			// (and every release world restores keep doors and relics from its defaults), so on those doors only the
+			// subcommands that leave them alone run.
+			if (targetDoor is not GameDoor && !KeepDoorAllows(args[1]))
+			{
+				client.Out.SendMessage("That works only on a regular door. On a keep or relic door use '/door info', '/door heal' or '/door kill'.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				return;
 			}
 
@@ -136,7 +134,13 @@ namespace DOL.GS.Commands
 
 		#endregion
 
-		private void add(GameClient client, GameDoor targetDoor)
+		/// <summary>The /door subcommands that run on a keep or relic door (any door that is not a GameDoor).</summary>
+		public static bool KeepDoorAllows(string subcommand)
+		{
+			return subcommand is "info" or "heal" or "kill";
+		}
+
+		private void add(GameClient client, GameDoorBase targetDoor)
 		{
 			var DOOR = DOLDB<DbDoor>.SelectObject(DB.Column("InternalID").IsEqualTo(DoorID));
 
@@ -170,7 +174,7 @@ namespace DOL.GS.Commands
 			}
 		}
 
-		private void update(GameClient client, GameDoor targetDoor)
+		private void update(GameClient client, GameDoorBase targetDoor)
 		{
 			delete(client, targetDoor);
 
@@ -200,7 +204,7 @@ namespace DOL.GS.Commands
 			}
 		}
 
-		private void delete(GameClient client, GameDoor targetDoor)
+		private void delete(GameClient client, GameDoorBase targetDoor)
 		{
 			var dbDoor = DOLDB<DbDoor>.SelectObject(DB.Column("InternalID").IsEqualTo(DoorID));
 
@@ -216,7 +220,7 @@ namespace DOL.GS.Commands
 			targetDoor.RemoveFromWorld();
 		}
 
-		private void name(GameClient client, GameDoor targetDoor, string[] args)
+		private void name(GameClient client, GameDoorBase targetDoor, string[] args)
 		{
 			string doorName = string.Empty;
 
@@ -236,7 +240,7 @@ namespace DOL.GS.Commands
 			}
 		}
 
-		private void sound(GameClient client, GameDoor targetDoor, string[] args)
+		private void sound(GameClient client, GameDoorBase targetDoor, string[] args)
 		{
 			uint doorSound;
 
@@ -260,7 +264,7 @@ namespace DOL.GS.Commands
 			}
 		}
 
-		private void guild(GameClient client, GameDoor targetDoor, string[] args)
+		private void guild(GameClient client, GameDoorBase targetDoor, string[] args)
 		{
 			string guildName = string.Empty;
 
@@ -287,7 +291,7 @@ namespace DOL.GS.Commands
 			}
 		}
 
-		private void level(GameClient client, GameDoor targetDoor, string[] args)
+		private void level(GameClient client, GameDoorBase targetDoor, string[] args)
 		{
 			byte level;
 
@@ -306,7 +310,7 @@ namespace DOL.GS.Commands
 			}
 		}
 
-		private void realm(GameClient client, GameDoor targetDoor, string[] args)
+		private void realm(GameClient client, GameDoorBase targetDoor, string[] args)
 		{
 			byte realm;
 
@@ -324,7 +328,7 @@ namespace DOL.GS.Commands
 			}
 		}
 
-		private void info(GameClient client, GameDoor targetDoor)
+		private void info(GameClient client, GameDoorBase targetDoor)
 		{
 			if (targetDoor.Realm == eRealm.None)
 				Realmname = "None";
@@ -364,7 +368,7 @@ namespace DOL.GS.Commands
 			client.Out.SendCustomTextWindow("Door Information", info);
 		}
 
-		private void heal(GameClient client, GameDoor targetDoor)
+		private void heal(GameClient client, GameDoorBase targetDoor)
 		{
 			targetDoor.Health = targetDoor.MaxHealth;
 			targetDoor.SaveIntoDatabase();
@@ -372,21 +376,21 @@ namespace DOL.GS.Commands
 			                       eChatLoc.CL_SystemWindow);
 		}
 
-		private void locked(GameClient client, GameDoor targetDoor)
+		private void locked(GameClient client, GameDoorBase targetDoor)
 		{
 			targetDoor.Locked = true;
 			targetDoor.SaveIntoDatabase();
 			client.Out.SendMessage("Door " + targetDoor.Name + " is locked", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
-		private void unlocked(GameClient client, GameDoor targetDoor)
+		private void unlocked(GameClient client, GameDoorBase targetDoor)
 		{
 			targetDoor.Locked = false;
 			targetDoor.SaveIntoDatabase();
 			client.Out.SendMessage("Door " + targetDoor.Name + " is unlocked", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 		}
 
-		private void kill(GameClient client, GameDoor targetDoor, string[] args)
+		private void kill(GameClient client, GameDoorBase targetDoor, string[] args)
 		{
 			try
 			{

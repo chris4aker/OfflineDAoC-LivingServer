@@ -1625,59 +1625,10 @@ namespace DOL.GS.PacketHandler
 
 		public virtual void SendQuestListUpdate(byte indexOffset)
 		{
-			// Send up to JOURNAL_MAX_QUEST_COUNT quests.
-			// `indexOffset` is used to accommodate for the client version and represents the first index it accepts.
-			// Our dictionary's value doesn't change and starts a 0.
-			byte questIndex;
-			byte lastIndex = (byte) (JOURNAL_MAX_QUEST_COUNT + indexOffset);
-			HashSet<byte> sentIndexes = [];
-			HashSet<AbstractQuest> questsWithTooHighIndex = null;
-
-			foreach (var entry in m_gameClient.Player.QuestList)
-			{
-				questIndex = (byte) (entry.Value + indexOffset);
-
-				if (questIndex < lastIndex)
-				{
-					SendQuestPacket(entry.Key, questIndex);
-					sentIndexes.Add(questIndex);
-				}
-				else
-				{
-					questsWithTooHighIndex ??= [];
-					questsWithTooHighIndex.Add(entry.Key);
-				}
-			}
-
-			// If possible, move and send quests which indexes are too high.
-			if (questsWithTooHighIndex != null)
-			{
-				questIndex = indexOffset;
-
-				foreach (AbstractQuest questWithTooHighIndex in questsWithTooHighIndex)
-				{
-					for ( ; questIndex < lastIndex; questIndex++)
-					{
-						if (sentIndexes.Contains(questIndex))
-							continue;
-
-						m_gameClient.Player.QuestList[questWithTooHighIndex] = (byte) (questIndex - indexOffset);
-						SendQuestPacket(questWithTooHighIndex, questIndex);
-						sentIndexes.Add(questIndex);
-						break;
-					}
-
-					if (questIndex == lastIndex)
-						break;
-				}
-			}
-
-			// Send null for unused indexes.
-			for (questIndex = indexOffset; questIndex < lastIndex; questIndex++)
-			{
-				if (!sentIndexes.Contains(questIndex))
-					SendQuestPacket(null, questIndex);
-			}
+			// Send up to JOURNAL_MAX_QUEST_COUNT quests. `indexOffset` is used to accommodate for the client version and
+			// represents the first index it accepts. Port of OpenDAoC-Core cdb4384c0: the walk and the moves of quests waiting
+			// past the last slot run under the player's quest list lock, so a quest taken meanwhile can't get a slot one moves to.
+			m_gameClient.Player.SendQuestListUpdate(indexOffset, JOURNAL_MAX_QUEST_COUNT, SendQuestPacket);
 		}
 
 		public virtual void SendQuestUpdate(AbstractQuest quest)
@@ -1687,7 +1638,7 @@ namespace DOL.GS.PacketHandler
 
 		public virtual void SendQuestUpdate(AbstractQuest quest, byte indexOffset)
 		{
-			if (!m_gameClient.Player.QuestList.TryGetValue(quest, out byte index))
+			if (!m_gameClient.Player.TryGetQuestIndex(quest, out byte index))
 				return;
 
 			if (index + indexOffset >= JOURNAL_MAX_QUEST_COUNT + indexOffset)
@@ -1701,7 +1652,7 @@ namespace DOL.GS.PacketHandler
 			// The quest is already out of the list. With 25 or more left, one may still wait past the last slot (an older
 			// save with more than 25 active quests), so the whole list is sent and it moves into the freed slot; the old
 			// "more than 25" test left it hidden when exactly 25 remained (owner 2026-10-30).
-			if (m_gameClient.Player.QuestList.Count >= JOURNAL_MAX_QUEST_COUNT)
+			if (m_gameClient.Player.ActiveQuestCount >= JOURNAL_MAX_QUEST_COUNT)
 				SendQuestListUpdate();
 			else
 				SendQuestPacket(null, index);

@@ -475,6 +475,9 @@ namespace DOL.GS.Housing
 				if (guild != null)
 				{
 					guild.GuildHouseNumber = 0;
+					// Port of OpenDAoC-Core 12cffd536: save now, so a crash before the next guild save can't leave
+					// the guild pointing at a house it no longer owns.
+					guild.SaveIntoDatabase();
 				}
 			}
 
@@ -653,11 +656,12 @@ namespace DOL.GS.Housing
 				return false;
 			}
 
-			// Demand any consignment merchant inventory is removed before allowing a transfer
-			var consignmentMerchant = house.ConsignmentMerchant;
-			if (consignmentMerchant != null && (consignmentMerchant.GetDbItems(player).Any() || consignmentMerchant.TotalMoney > 0))
+			// Port of OpenDAoC-Core 1b8aec823: ask for the consignment merchant to be picked up first.
+			// MakeGuildLot moves the house to the guild's ID, but not the merchant's money row
+			// (DbHouseConsignmentMerchant.OwnerID) nor the owner of the items listed on it.
+			if (house.ConsignmentMerchant != null)
 			{
-				ChatUtil.SendSystemMessage(player, "All items and money must be removed from your consignment merchant in order to transfer this house!");
+				ChatUtil.SendSystemMessage(player, "The consignment merchant must be removed in order to transfer this house.");
 				return false;
 			}
 
@@ -754,7 +758,8 @@ namespace DOL.GS.Housing
 						long consignmentAmount = 0;
 
 						var consignmentMerchant = house.ConsignmentMerchant;
-						if (consignmentMerchant != null)
+						// Money that can't be saved back (no money row) can't pay rent (OpenDAoC-Core e540603f9).
+						if (consignmentMerchant != null && consignmentMerchant.HasMoneyRecord())
 						{
 							consignmentAmount = consignmentMerchant.TotalMoney;
 						}

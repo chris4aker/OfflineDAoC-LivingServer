@@ -70,9 +70,9 @@ public static class QuestIndicators
     {
         var steps = new List<JournalStep>();
         bool rewardQuestDone = false;
-        foreach (KeyValuePair<AbstractQuest, byte> pair in player.QuestList)
+        foreach (AbstractQuest active in player.GetActiveQuests())
         {
-            switch (pair.Key)
+            switch (active)
             {
                 case DataQuest dataQuest when dataQuest.Step > 0:
                     steps.Add(new JournalStep(dataQuest.StepType, dataQuest.TargetName, dataQuest.TargetRegion));

@@ -147,6 +147,16 @@ namespace DOL.GS
                 player.Out.SendGroupMembersUpdate(true, true);
                 EnsureMemberPositionUpdates();
 
+                // Port of OpenDAoC-Core 63f46636d: a player joining a group on a mission sees its task text at once
+                // (quest list updates also carry task and mission text for newer clients).
+                AbstractMission groupMission = Mission;
+
+                if (groupMission != null)
+                {
+                    player.Out.SendQuestListUpdate();
+                    player.Out.SendMessage(groupMission.Description, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                }
+
                 // Part of the hack to make friendly pets untargetable (or targetable again) with TAB on a PvP server.
                 // We could also check for non controlled pets (turrets for example) around the player, but it isn't very important.
                 if (GameServer.Instance.Configuration.ServerType is EGameServerType.GST_PvP)
@@ -174,7 +184,7 @@ namespace DOL.GS
                         {
                             // Update how the group member sees the added player's pet and themself.
                             SendControlledBodyGuildID(groupMember, groupMemberGuild, controlledBrain.Body);
-                            groupMember.Out.SendObjectGuildID(groupMember, groupMemberGuild ?? Guild.DummyGuild);
+                            groupMember.Out.SendObjectGuildID(groupMember, groupMemberGuild ?? GuildMgr.DummyGuild);
                         }
 
                         IControlledBrain groupMemberControlledBrain = groupMember.ControlledBrain;
@@ -188,7 +198,7 @@ namespace DOL.GS
                     }
 
                     if (updateOneself)
-                        player.Out.SendObjectGuildID(player, playerGuild ?? Guild.DummyGuild);
+                        player.Out.SendObjectGuildID(player, playerGuild ?? GuildMgr.DummyGuild);
                 }
             }
 
@@ -201,11 +211,13 @@ namespace DOL.GS
         public bool RemoveMember(GameLiving living, bool retainSingleRemainingMember = false)
         {
             bool disbandEmptyGroup;
+            AbstractMission groupMission;
             lock (_groupMembersLock)
             {
                 if (!_groupMembers.Remove(living))
                     return false;
 
+                groupMission = Mission;
                 living.Group = null;
                 living.GroupIndex = 0xFF;
                 disbandEmptyGroup = _groupMembers.Count < 1;
@@ -233,7 +245,11 @@ namespace DOL.GS
             if (living is GamePlayer player)
             {
                 player.Out.SendGroupWindowUpdate();
-                player.Out.SendQuestListUpdate();
+
+                // Port of OpenDAoC-Core 63f46636d: the journal is resent only when a group mission's text has to leave
+                // it. The mission is read under the member lock, before DisbandGroup can expire it.
+                if (groupMission != null)
+                    player.Out.SendQuestListUpdate();
 
                 List<ECSGameAbilityEffect> abilityEffects = player.effectListComponent.GetAbilityEffects();
 
@@ -316,7 +332,7 @@ namespace DOL.GS
                     }
 
                     if (updateOneself)
-                        player.Out.SendObjectGuildID(player, playerGuild ?? Guild.DummyGuild);
+                        player.Out.SendObjectGuildID(player, playerGuild ?? GuildMgr.DummyGuild);
                 }
 
                 player.Out.SendMessage("You leave your group.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -403,7 +419,7 @@ namespace DOL.GS
                     SendControlledBodyGuildID(player, playerGuild, npcControlledBrain.Body);
             }
 
-            player.Out.SendObjectGuildID(controlledBody, playerGuild ?? Guild.DummyGuild);
+            player.Out.SendObjectGuildID(controlledBody, playerGuild ?? GuildMgr.DummyGuild);
         }
 
         /// <summary>Invited gamebots still in this group that follow <paramref name="player"/> (issue #33).</summary>
