@@ -609,6 +609,30 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void AnUngroupedHelperStillGetsItsEndgamePromotionOnceWhenItsOwnerReachesFifty()
+        {
+            // The rule from before #571: the one-time endgame promotion at 50 doesn't need the group (endgamePending).
+            GameBot helper = OwnerBot(eCharacterClass.Armsman, ownerLevel: 40, botLevel: 40, temporary: true);
+            Assume.That(helper.Level, Is.EqualTo(40));
+            Assume.That(helper.Group, Is.Null, "not grouped");
+            helper.Owner.Level = 50;
+            Assert.That(MatchOwnerLevel(helper), Is.True, "the owner reached 50");
+            Assert.That(helper.Level, Is.EqualTo(50));
+            Assert.That(helper.IsEndgameCompanion, Is.True);
+            Assert.That(MatchOwnerLevel(helper), Is.False, "the promotion runs once");
+            Assert.That(helper.Level, Is.EqualTo(50));
+        }
+
+        [Test]
+        public void TheLevelSyncTellsTheOwnerLogsTheRowAndRefreshesTheGroup()
+        {
+            string sync = Method(ReadRepoFile("source", "server", "GameServer", "bots", "GameBot.cs"), "internal bool TryMatchOwnerLevel()");
+            Assert.That(sync, Does.Contain("Group?.UpdateMember(this, false, false);"));
+            Assert.That(sync, Does.Contain("Owner.Out?.SendMessage($\"{Name} is now level {Level}, matching you.\""));
+            Assert.That(sync, Does.Contain("log.Info($\"COMPANION_LEVEL_SYNC bot="));
+        }
+
+        [Test]
         public void HiredAndAutonomousHelpersDontFollowTheOwner()
         {
             // A /bot companion (not a temporary helper) in its owner's group.
@@ -635,13 +659,27 @@ namespace DOL.UnitTests
         [Test]
         public void TheIdleTurnCallsTheLevelSync()
         {
+            string brain = ReadRepoFile("source", "server", "GameServer", "bots", "BotBrain.cs");
+            Assert.That(brain, Does.Contain("if (BotBody?.TryMatchOwnerLevel() == true)\n                return;"));
+        }
+
+        /// <summary>A repository file, with "\n" line endings.</summary>
+        private static string ReadRepoFile(params string[] parts)
+        {
             string dir = TestContext.CurrentContext.TestDirectory;
             while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs")))
                 dir = System.IO.Path.GetDirectoryName(dir);
             Assert.That(dir, Is.Not.Null, "repository root");
-            string brain = System.IO.File.ReadAllText(System.IO.Path.Combine(dir, "source", "server", "GameServer", "bots", "BotBrain.cs"))
-                .Replace("\r\n", "\n");
-            Assert.That(brain, Does.Contain("if (BotBody?.TryMatchOwnerLevel() == true)\n                return;"));
+            return System.IO.File.ReadAllText(System.IO.Path.Combine(dir, System.IO.Path.Combine(parts))).Replace("\r\n", "\n");
+        }
+
+        /// <summary>The text of one method: from its signature to the next blank-line-and-member boundary.</summary>
+        private static string Method(string source, string signature)
+        {
+            int start = source.IndexOf(signature, StringComparison.Ordinal);
+            Assert.That(start, Is.GreaterThanOrEqualTo(0), signature);
+            int end = source.IndexOf("\n        private ", start + signature.Length, StringComparison.Ordinal);
+            return end < 0 ? source.Substring(start) : source.Substring(start, end - start);
         }
 
         /// <summary>Calls the idle turn's level sync on a helper that is alive and active, as in the world.</summary>
