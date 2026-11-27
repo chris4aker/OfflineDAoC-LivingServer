@@ -1285,6 +1285,10 @@ public static class AutonomousChatFieldTalk
         {
             new($"inc {keep}", "inc_call", omw), new($"{keep} inc", "inc_call", omw), new($"{keep} under attack", "inc_call", omw),
             new($"need def {keep}", "inc_call", omw), new($"def {keep} pls", "inc_call", omw), new($"{keep} is being hit", "inc_call", omw),
+            // As many ways as the old pool (12), so a realm that only hears "a keep is hit" doesn't hear the same few calls
+            // over again; each says no more than that.
+            new($"{keep} getting hit", "inc_call", omw), new($"{keep} needs def", "inc_call", omw), new($"def at {keep}", "inc_call", omw),
+            new($"inc {keep}!", "inc_call", omw), new($"{keep} under siege", "inc_call", omw), new($"anyone near {keep}? its being hit", "inc_call", omw),
         };
         if (enemyRealm != eRealm.None)
         {
