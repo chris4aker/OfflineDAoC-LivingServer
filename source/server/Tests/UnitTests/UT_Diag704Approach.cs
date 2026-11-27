@@ -97,6 +97,60 @@ public class UT_Diag704Approach
         Assert.Fail("DIAGNOSTIC REPORT\n" + report);
     }
 
+    [Test]
+    public void PrintFrontier()
+    {
+        string root = Environment.GetEnvironmentVariable("OFFLINE_DAOC_NAV_ROOT");
+        string previous = Environment.CurrentDirectory;
+        var loaded = new List<Zone>();
+        var report = new StringBuilder();
+        try
+        {
+            DOL.UnitTests.InstalledDetour.Use(root);
+            Environment.CurrentDirectory = root;
+            AutonomousZoneSeams.SetForTests(null);
+            using var db = new SQLiteConnection($"Data Source={Path.GetFullPath("../data/opendaoc.sqlite3.db")};Read Only=True;Pooling=False;");
+            db.Open();
+            Region region = UT_AuditedDungeonInstalledMesh.BuildRegion(db, 1, loaded);
+            IPathfindingMgr nav = PathfindingProvider.LocalPathfindingMgr;
+            Vector3 from = new(655198, 292757, 4859), to = new(605390, 293864, 4839);
+            Zone zone = region.GetZone((int)from.X, (int)from.Y);
+            Zone toZone = region.GetZone((int)to.X, (int)to.Y);
+            report.AppendLine($"DIAG704F zone={zone?.ID} {zone?.Description} toZone={toZone?.ID} {toZone?.Description} dist={Vector3.Distance(from, to):0}");
+            Vector3? sf = nav.GetClosestPoint(zone, from, 96, 96, 512, nav.DefaultFilters);
+            Vector3? tf = nav.GetClosestPoint(zone, to, 96, 96, 512, nav.DefaultFilters);
+            report.AppendLine($"  startFloor={sf} targetFloor={tf} planning={AutonomousNavigationSurface.TryPlanningFloor(nav, zone, from, out Vector3 ps)} {ps}");
+            foreach (int size in new[] { 256, 1024, 4096 })
+            {
+                var buf = new WrappedPathfindingNode[size];
+                var path = nav.GetPathStraight(zone, from, to, nav.DefaultFilters, buf);
+                string last = path.NodeCount > 0 ? buf[Math.Min(path.NodeCount, size) - 1].Position.ToString() : "-";
+                float walked = 0; for (int i = 1; i < Math.Min(path.NodeCount, size); i++) walked += Vector3.Distance(buf[i - 1].Position, buf[i].Position);
+                report.AppendLine($"  buffer {size}: {path.Status} nodes={path.NodeCount} last={last} lastToTarget={(path.NodeCount > 0 ? Vector3.Distance(buf[Math.Min(path.NodeCount, size) - 1].Position, to) : -1):0} walked={walked:0}");
+            }
+            report.AppendLine($"  HasCompleteCorridor={AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, from, to)} roads={AutonomousZoneRoads.TryRoute(nav, zone, from, to, out var roadRoute)} roadPoints={roadRoute?.Length}");
+            // Walk the partial path in legs: from the last reached node, does a second query reach the target?
+            var b = new WrappedPathfindingNode[4096];
+            Vector3 cur = from;
+            for (int leg = 0; leg < 6; leg++)
+            {
+                var p2 = nav.GetPathStraight(zone, cur, to, nav.DefaultFilters, b);
+                int n = Math.Min(p2.NodeCount, b.Length);
+                Vector3 end = n > 0 ? b[n - 1].Position : cur;
+                report.AppendLine($"  leg {leg}: from {cur} {p2.Status} nodes={p2.NodeCount} end={end} endToTarget={Vector3.Distance(end, to):0}");
+                if (p2.Status == PathfindingStatus.PathFound || n == 0 || Vector3.Distance(end, cur) < 50) break;
+                cur = end;
+            }
+        }
+        finally
+        {
+            AutonomousZoneSeams.SetForTests(null);
+            foreach (Zone zone in loaded) LocalPathfindingMgr.UnloadNavMesh(zone);
+            Environment.CurrentDirectory = previous;
+        }
+        Assert.Fail("DIAGNOSTIC REPORT\n" + report);
+    }
+
     private static string PathStatus(IPathfindingMgr nav, Zone zone, Vector3 from, Vector3 to)
     {
         Span<WrappedPathfindingNode> nodes = stackalloc WrappedPathfindingNode[256];
