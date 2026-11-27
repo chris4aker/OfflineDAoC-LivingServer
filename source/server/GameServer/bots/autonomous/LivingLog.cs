@@ -373,6 +373,7 @@ namespace DOL.GS
             if (Has("expedition hub formation")) return ("meetup", "hub");
             if (Has("PvE meetup lost") || Has("replacement PvE rendezvous") || Has("no valid formation slots")) return ("meetup", "unreachable");
             if (Has("No reachable non-grey group camp")) return ("no_camp", "none_reachable");
+            if (text.StartsWith("Pull stalled", StringComparison.Ordinal)) return ("stalled", "pull"); // #569 AutonomousPartyPullStall
             if (text.StartsWith("Verified individual recovery", StringComparison.Ordinal)) return ("recovery", "member_stuck");
             if (Has("Reassigned by a forced realm expedition")) return ("released", "forced_expedition");
             return ("other", "unclassified");
