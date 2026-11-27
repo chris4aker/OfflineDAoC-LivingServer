@@ -38,7 +38,43 @@ public static class AutonomousChatFieldTalk
         string Frontier)
     {
         public static readonly WorldView Empty = new([], [], [], [], 0, 0, null);
+
+        /// <summary>
+        /// #528: who is hitting each attacked keep, from the siege event (<see cref="AutonomousRvrEventLayer.ActiveSieges"/>): the
+        /// attacking realm (None when the keep is in combat with no siege event) and the attackers present (0 when none counted).
+        /// </summary>
+        public KeepAttack[] Attacks { get; init; } = [];
     }
+
+    /// <summary>#528: an attack on one of the realm's keeps, as the siege event knows it, and where the keep stands (for who could see it).</summary>
+    public sealed record KeepAttack(string Keep, eRealm Attacker, int Count, ushort Region, int X, int Y);
+
+    /// <summary>#528: a bot this close to an attacked keep (same region) has seen the attackers and may call their realm and count.</summary>
+    public const int IncSightRadius = 6_000;
+
+    /// <summary>#528: an inc count is a guess, "often a little wrong" (rubric 3.1): the real count give or take this share.</summary>
+    public const double IncCountFuzz = 0.3;
+
+    /// <summary>
+    /// #528: the count an inc call gives for <paramref name="real"/> attackers present: within plus or minus
+    /// <see cref="IncCountFuzz"/> of it by <paramref name="roll"/> in [0, 1), at least 1; 0 when none were counted. Pure.
+    /// </summary>
+    public static int IncCount(int real, double roll)
+    {
+        if (real <= 0)
+            return 0;
+        double factor = 1 - IncCountFuzz + 2 * IncCountFuzz * Math.Clamp(roll, 0, 0.999999);
+        return Math.Max(1, (int)Math.Round(real * factor, MidpointRounding.AwayFromZero));
+    }
+
+    /// <summary>
+    /// #528: the keeps of <paramref name="attacks"/> a speaker at <paramref name="region"/> (<paramref name="x"/>,
+    /// <paramref name="y"/>) could see being hit: within <see cref="IncSightRadius"/> in the same region. Pure.
+    /// </summary>
+    public static string[] SeenAttacks(IEnumerable<KeepAttack> attacks, ushort region, int x, int y) =>
+        attacks?.Where(attack => attack.Region == region &&
+                                 (long)(attack.X - x) * (attack.X - x) + (long)(attack.Y - y) * (attack.Y - y) <= (long)IncSightRadius * IncSightRadius)
+            .Select(attack => attack.Keep).ToArray() ?? Array.Empty<string>();
 
     /// <summary>What a line may say about its speaker.</summary>
     public sealed record Facts(long Id, eRealm Realm, string ClassName, int Level, string Zone, string Dungeon, bool InRvR, bool InDungeon,
@@ -84,6 +120,12 @@ public static class AutonomousChatFieldTalk
 
         /// <summary>The speaker is fighting now (a live bot): a party's pull calls fit then, at the camp or on the road.</summary>
         public bool InCombat { get; init; }
+
+        /// <summary>
+        /// #528: the attacked keeps the speaker could see (<see cref="SeenAttacks"/>): only for these may an inc call name the
+        /// attacking realm and a count. Null or empty: it knows a keep is hit (the realm hears that), not by whom.
+        /// </summary>
+        public string[] SawAttacks { get; init; }
 
         /// <summary>
         /// The speaker's group has the real player in it (the player's group, or a gamebot party hosting the player): its fight
@@ -1228,17 +1270,35 @@ public static class AutonomousChatFieldTalk
     {
         string full = w.AttackedKeeps[random.Next(w.AttackedKeeps.Length)];
         string keep = ShortKeep(full, random);
-        // TEXT-018: one enemy, two shapes: "hibs at beno" (the people), "hib zerg at beno" (a modifier). Drawn once for both.
-        eRealm enemyRealm = EnemyRealm(f.Realm, random);
-        string enemy = RealmWord(enemyRealm), enemyAs = RealmWord(enemyRealm, modifier: true);
-        int count = 3 + random.Next(20);
+        // #528: the attackers' realm and count come from the siege event, and only a speaker that could see the keep names
+        // them (before, the realm was drawn from the two enemies, wrong half the time, and the count was 3-22 at random).
+        // Anyone else in the realm knows only that the keep is hit.
+        KeepAttack attack = Array.Find(w.Attacks ?? Array.Empty<KeepAttack>(), a => string.Equals(a.Keep, full, StringComparison.OrdinalIgnoreCase));
+        bool saw = attack != null && f.SawAttacks?.Contains(full, StringComparer.OrdinalIgnoreCase) == true;
+        eRealm enemyRealm = saw && attack.Attacker != f.Realm ? attack.Attacker : eRealm.None;
+        int count = enemyRealm != eRealm.None ? IncCount(attack.Count, random.NextDouble()) : 0;
         string[] omw = Pool("omw", "omw", "k", "how many?", "porting", $"omw {keep}", $"omw to {keep}", $"porting to {keep}");   // promise: gated (SayThreadLine)
-        return Make(random, "inc", null, null, null,
-            new V($"inc {keep}", "inc_call", omw), new V($"{keep} inc", "inc_call", omw), new V($"{enemy} at {keep}", "inc_call", omw),
-            new V($"{count} {enemy} at {keep}", "inc_call", omw), new V($"{keep} under attack", "inc_call", omw), new V($"need def {keep}", "inc_call", omw),
-            new V($"def {keep} pls", "inc_call", omw), new V($"{keep} is being hit", "inc_call", omw), new V($"{enemyAs} zerg at {keep}", "inc_call", omw),
-            new V($"{enemy} hitting {keep} door", "inc_call", omw), new V($"inc {keep}, {count}+", "inc_call", omw), new V($"rams on {keep}", "inc_call", omw))
-            with { PromisePlace = full };
+        var ways = new List<V>(12)
+        {
+            new($"inc {keep}", "inc_call", omw), new($"{keep} inc", "inc_call", omw), new($"{keep} under attack", "inc_call", omw),
+            new($"need def {keep}", "inc_call", omw), new($"def {keep} pls", "inc_call", omw), new($"{keep} is being hit", "inc_call", omw),
+        };
+        if (enemyRealm != eRealm.None)
+        {
+            // TEXT-018: one enemy, two shapes: "hibs at beno" (the people), "hib zerg at beno" (a modifier).
+            string enemy = RealmWord(enemyRealm), enemyAs = RealmWord(enemyRealm, modifier: true);
+            ways.Add(new($"{enemy} at {keep}", "inc_call", omw));
+            ways.Add(new($"{enemy} hitting {keep} door", "inc_call", omw));
+            ways.Add(new($"rams on {keep}", "inc_call", omw));
+            if (count is 0 or >= 16)
+                ways.Add(new($"{enemyAs} zerg at {keep}", "inc_call", omw));
+            if (count > 0)
+            {
+                ways.Add(new($"{count} {enemy} at {keep}", "inc_call", omw));
+                ways.Add(new($"inc {keep}, {count}+", "inc_call", omw));
+            }
+        }
+        return Make(random, "inc", null, null, null, ways.ToArray()) with { PromisePlace = full };
     }
 
     private static Said AskKeep(Facts f, WorldView w, Random random)
@@ -2968,9 +3028,18 @@ public static class AutonomousChatFieldTalk
                     relicsLost++;
             }
             AbstractGameKeep any = own.FirstOrDefault() ?? keeps.FirstOrDefault(keep => keep.OriginalRealm == realm);
-            view = new WorldView(own.Select(keep => keep.Name).ToArray(), own.Where(keep => keep.InCombat).Select(keep => keep.Name).ToArray(),
+            AbstractGameKeep[] attacked = own.Where(keep => keep.InCombat).ToArray();
+            // #528: who is really hitting each keep, from the siege events (a keep in combat with no event: unknown attackers).
+            AutonomousRvrEventLayer.SiegeView[] sieges = attacked.Length == 0 ? Array.Empty<AutonomousRvrEventLayer.SiegeView>() : AutonomousRvrEventLayer.ActiveSieges(now);
+            KeepAttack[] attacks = attacked.Select(keep =>
+            {
+                AutonomousRvrEventLayer.SiegeView siege = sieges.FirstOrDefault(s => s.Defender == realm &&
+                    string.Equals(s.KeepName, keep.Name, StringComparison.OrdinalIgnoreCase));
+                return new KeepAttack(keep.Name, siege?.Attacker ?? eRealm.None, siege?.AttackersPresent ?? 0, keep.Region, keep.X, keep.Y);
+            }).ToArray();
+            view = new WorldView(own.Select(keep => keep.Name).ToArray(), attacked.Select(keep => keep.Name).ToArray(),
                 lost.Select(keep => keep.Name).ToArray(), lost.Select(keep => GlobalConstants.RealmToName(keep.Realm)).ToArray(), relicsHeld, relicsLost,
-                any?.CurrentRegion?.GetZone(any.X, any.Y)?.Description);
+                any?.CurrentRegion?.GetZone(any.X, any.Y)?.Description) { Attacks = attacks };
         }
         catch
         {
@@ -3094,6 +3163,7 @@ public static class AutonomousChatFieldTalk
             Dead = !bot.IsAlive,
             WayAsksAreReal = BotWayFinding.AsksAreReal,
             RealmLevel = bot.RealmLevel,
+            SawAttacks = SeenAttacks(World(bot.Realm).Attacks, bot.CurrentRegionID, bot.X, bot.Y),
         };
     }
 }

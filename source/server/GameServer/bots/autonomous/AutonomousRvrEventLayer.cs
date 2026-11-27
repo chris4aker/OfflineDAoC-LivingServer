@@ -2051,7 +2051,11 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>A siege as chat may describe it (the talking update): which keep, who attacks, who defends, and whether the
     /// fighting at the walls has begun. A snapshot; it never changes the event.</summary>
     public sealed record SiegeView(string TargetId, string KeepName, eRealm Attacker, eRealm Defender, ushort RegionId, int X, int Y,
-        bool BattleStarted, bool Marching, bool RelicKeep, bool AttackObserved = false);
+        bool BattleStarted, bool Marching, bool RelicKeep, bool AttackObserved = false)
+    {
+        /// <summary>#528: the attackers present at the keep now (the event's fresh attendance), for a true inc count; 0 when none counted.</summary>
+        public int AttackersPresent { get; init; }
+    }
 
     /// <summary>The sieges going on now, for chat (AutonomousChatNews): only keep sieges that have not expired.</summary>
     public static SiegeView[] ActiveSieges(long nowTick)
@@ -2059,7 +2063,8 @@ public static partial class AutonomousRvrEventLayer
         using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.Values.Where(e => e.ExpiresTick > nowTick && e.Target != null && !e.Target.IsRelicCarrier)
                 .Select(e => new SiegeView(e.TargetId, e.Target.Name, e.AttackerRealm, e.DefenderRealm, e.Target.RegionId, e.Target.X,
-                    e.Target.Y, e.BattleStarted, e.Marching, e.RelicKeep, e.AttackObserved || e.DefenseReaction))
+                    e.Target.Y, e.BattleStarted, e.Marching, e.RelicKeep, e.AttackObserved || e.DefenseReaction)
+                    { AttackersPresent = Attendance(e, e.AttackerRealm, nowTick) })
                 .ToArray();
     }
 
