@@ -44,6 +44,32 @@ namespace DOL.GS
                     result = candidate;
             return result;
         }
+
+        /// <summary>
+        /// The eligible candidate of the lowest rank, one picked at random among equals (so two buffers of a group still
+        /// spread over a rank). #571 step 4: who a player-group buffer buffs first.
+        /// </summary>
+        public static T ChooseBest(IEnumerable<T> candidates, Func<T, bool> eligible, Func<T, int> rank, Func<int, int> roll = null)
+        {
+            T result = null;
+            int best = int.MaxValue, count = 0;
+            foreach (T candidate in candidates)
+            {
+                if (candidate == null || !eligible(candidate))
+                    continue;
+                int r = rank(candidate);
+                if (r > best)
+                    continue;
+                if (r < best)
+                {
+                    best = r;
+                    count = 0;
+                }
+                if ((roll ?? Random.Shared.Next)(++count) == 0)
+                    result = candidate;
+            }
+            return result;
+        }
     }
 
     /// <summary>

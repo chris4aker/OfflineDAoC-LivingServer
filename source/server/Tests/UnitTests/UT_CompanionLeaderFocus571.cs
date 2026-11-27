@@ -88,14 +88,15 @@ public class UT_CompanionLeaderFocus571
     }
 
     [Test]
-    public void OnlyWhereRealmsFightUntilTheOwnerDecidesOnPve()
+    public void InPveAndRvrAlikeSinceTheOwnersYes()
     {
         Assert.Multiple(() =>
         {
-            Assert.That(F.InPve, Is.False, "#663: PvE stays as it is; #571 asks the owner (needs-owner)");
+            Assert.That(F.InPve, Is.True, "owner, 2026-11-27, #571: leader focus in PvE: yes");
             Assert.That(F.InPlace(true), Is.True, "frontier, battlegrounds, Darkness Falls");
-            Assert.That(F.InPlace(false), Is.False, "PvE: unchanged");
-            Assert.That(F.InPlace(false, inPve: true), Is.True, "the one-line gate, if the owner says yes");
+            Assert.That(F.InPlace(false), Is.True, "PvE too");
+            Assert.That(F.InPlace(false, inPve: false), Is.False, "with PvE off: realm fights only");
+            Assert.That(F.InPlace(false, inPve: true), Is.True);
             Assert.That(F.InPlace(true, inPve: true), Is.True);
         });
     }

@@ -16,8 +16,8 @@ namespace DOL.GS
     /// The player's target is the fight the player is in (PlayerLedPullCoordinator.FindLeaderTarget: he attacks it or casts
     /// harmful magic at it, or his pet fights it), never one he has only selected (DetShaft owner decision #170).
     ///
-    /// Where: the #663 places only (frontier, battlegrounds, Darkness Falls and the neutral battle dungeons); PvE waits on
-    /// the owner (<see cref="InPve"/>, #571 needs-owner, after "PvE stays as it is" on #663).
+    /// Where: PvE and RvR alike (owner, 2026-11-27, #571: "Leader focus in PvE: yes. Your group fights your target in
+    /// dungeons and open-world camps too"; <see cref="InPve"/>).
     /// </summary>
     public static class CompanionLeaderFocus
     {
@@ -34,10 +34,10 @@ namespace DOL.GS
             on && playerLedGroup && !tank && !support;
 
         /// <summary>
-        /// Leader focus in PvE too. Off until the owner decides (#571, `needs-owner`): on #663 he answered "PvE stays as it
-        /// is", so for now it runs only where realms fight (<see cref="InPlace"/>). The one line to change if he says yes.
+        /// Leader focus in PvE too: on (owner, 2026-11-27, #571: "Leader focus in PvE: yes"). With it off, leader focus
+        /// would run only where realms fight (<see cref="InPlace"/>).
         /// </summary>
-        public const bool InPve = false;
+        public const bool InPve = true;
 
         /// <summary>
         /// Where leader focus runs: the frontier, the battlegrounds and Darkness Falls and the other neutral battle dungeons
