@@ -38,7 +38,7 @@ IGNORE_COLUMNS = ["LastTimeRowUpdated"]
 # Columns the running game rewrites (rotating zone bonuses) never go into an update, and tables that only hold run
 # state are left out entirely.
 LIVE_COLUMNS = {"Zones": {"Experience", "Realmpoints", "Bountypoints", "Coin"}}
-LIVE_TABLES = {"TaskRefreshIntervals", "offline_runtime_status"}
+LIVE_TABLES = {"TaskRefreshIntervals", "ScheduledRollovers", "offline_runtime_status"}
 GAME_SKIP_PREFIXES = ("editions/", "patch-backups/")
 GAME_SKIP_FILES = {"runtime/data/opendaoc.sqlite3.db", "PACKAGE MANIFEST.sha256"}
 CLIENT_SKIP_PREFIXES = ("new-client/save/", "patch-backups/")

@@ -36,7 +36,7 @@ import build_release_036 as release      # noqa: E402  (include: which runtime f
 REBUILT = {"server/GameServer.dll", "server/GameServer.pdb", "server/lib/GameServer.dll", "server/lib/GameServer.pdb",
            "server/win-x64/GameServer.dll", "server/win-x64/GameServer.pdb", "OfflineDAoC.dll", "OfflineDAoC.exe",
            "OfflineDAoC.pdb", "OfflineDAoC.deps.json", "OfflineDAoC.runtimeconfig.json"}
-LIVE_STATE_TABLES = {"Keep", "Door", "Relic", "offline_runtime_status", "sqlite_sequence", "sqlite_stat1", "sqlite_stat4",
+LIVE_STATE_TABLES = {"Keep", "Door", "Relic", "offline_runtime_status", "ScheduledRollovers", "sqlite_sequence", "sqlite_stat1", "sqlite_stat4",
                      "offline_population_settings", "offline_local_options"}   # (the release sets these to its defaults)
 # Columns the running game rewrites by itself: every save time, zone bonuses, and the stats boss scripts re-roll.
 LIVE_COLUMNS = {"LastTimeRowUpdated"}
