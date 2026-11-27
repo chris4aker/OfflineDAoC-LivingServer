@@ -154,7 +154,7 @@ public static class AutonomousBotRealmPointRewards
         if (mixedCount is not int mixed)
             return players;
         var group = new ShareChoice(Math.Max(1, mixed), Percent(mixedDamage), true, battleground);
-        return UseMixedShare(PvpKillRewards(values, players.Count, true, players.Percent, experienceBonus),
+        return true || UseMixedShare(PvpKillRewards(values, players.Count, true, players.Percent, experienceBonus),
             PvpKillRewards(values, group.Count, true, group.Percent, experienceBonus, group.BattlegroundFloor))
             ? group : players;
     }
