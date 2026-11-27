@@ -484,44 +484,11 @@ namespace DOL.GS.PacketHandler.Client.v168
 					{
 						if (objectType == 29)
 						{
-							int index = objectId & 0x0F;
-							ushort questID = (ushort)((extraId >> 5) | (ushort)(objectId >> 4));
-							GameLiving questGiver = null;
-							if (client.Player.TargetObject is GameLiving) //- Unty
-								questGiver = (GameLiving)client.Player.TargetObject;
-
-							ChatUtil.SendDebugMessage(client, $"Quest ID: {questID}");
-
-							if (questID == 0)
-								return;
-							questID = (ushort)(objectId >> 4);
-
-							DataQuest dq = null;
-							questID = (ushort)(objectId >> 4);
-							foreach (DbDataQuest d in GameObject.DataQuestCache)
-							{
-								if (d.ID == questID)
-								{
-									dq = new DataQuest(d);
-									break;
-								}
-							}
-
-							if (dq != null && dq.StartType == DataQuest.eStartType.RewardQuest)
-							{
-								List<DbItemTemplate> rewards = null;
-								if (index < 8)
-									rewards = dq.FinalRewards;
-								else
-								{
-									rewards = dq.OptionalRewards;
-									index -= 8;
-								}
-								if (rewards != null && index >= 0 && index < rewards.Count)
-								{
-									item = rewards[index];
-								}
-							}
+							// Port of OpenDAoC-Core ec097f507: the client sends back the first u16 of the reward's item block,
+							// which PacketLib194.WriteQuestRewards sets to 1 + the reward's position in the last quest window.
+							// The old decoding packed a quest id into 12 bits and always got 0, so nothing showed.
+							List<DbItemTemplate> rewards = client.Player.TempProperties.GetProperty<List<DbItemTemplate>>(PacketLib194.QUEST_WINDOW_REWARDS_PROPERTY);
+							item = QuestWindowReward(rewards, objectId);
 						}
 
 						if (item == null)
@@ -909,33 +876,9 @@ namespace DOL.GS.PacketHandler.Client.v168
 				case 24://SpellsNew
 					if (client.CanSendTooltip(24, objectId))
 					{
-						var spell = SkillBase.GetSpellByTooltipID(objectId);
-
-						if (spell == null)
-						{
-							// Workaround for dynamically created spell that couldn't be retrieved from SkillBase.
-							// Either because AddScriptedSpell wasn't called, or the spell was missing values to be handled by it.
-							// This is the case for most (if not all) spells spawned by RAs.
-							// The only way to retrieve the spell is by iterating the player's effect list.
-
-							// To further complicate things, those spells don't define InternalID, but Icon.
-							// This means that we have to compare objectId against ECSGameSpellEffect.Icon first,
-							// but then reply to the client with the correct value and update Spell.InternalId
-
-							// Note: DbSpell.TooltipId becomes Spell.InternalId when created.
-
-							foreach (ECSGameSpellEffect spellEffect in client.Player.effectListComponent.GetSpellEffects())
-							{
-								if (spellEffect.Icon == objectId)
-								{
-									spell = spellEffect.SpellHandler.Spell;
-									spell.InternalID = objectId;
-									client.Out.SendDelveInfo(DelveSpell(client, spell));
-									break;
-								}
-							}
-						}
-
+						// Ports of OpenDAoC-Core 42bf098af and 95e394d35: the player's own spell (an effect on them, then their
+						// spell lists), not the level 1 template. RA spells found by icon get their InternalID set there.
+						Spell spell = FindSpellForTooltip(client, objectId, snapSkills, snapLists);
 						client.Out.SendDelveInfo(DelveSpell(client, spell));
 					}
 					break;
@@ -946,9 +889,11 @@ namespace DOL.GS.PacketHandler.Client.v168
 				case 26://SongsNew
 					{
 						if (client.CanSendTooltip(26, objectId))
-							client.Out.SendDelveInfo(DelveSong(client, objectId));
-						var spell = SkillBase.GetSpellByTooltipID(objectId);
-						client.Out.SendDelveInfo(DelveSpell(client, spell));
+						{
+							Spell spell = FindSpellForTooltip(client, objectId, snapSkills, snapLists);
+							client.Out.SendDelveInfo(DelveSong(client, spell));
+							client.Out.SendDelveInfo(DelveSpell(client, spell));
+						}
 					}
 					break;
 				case 27://RANew
@@ -1016,6 +961,70 @@ namespace DOL.GS.PacketHandler.Client.v168
 				client.Out.SendCustomTextWindow(caption, objectInfo);
 			else if ((objectType < 24 || objectType > 28) && objectType < 150) // only warn for non v1.110+ objects
 				log.Warn($"DetailDisplayHandler no info for objectID {objectId} of type {objectType}. Item: {item?.Id_nb ?? (invItem?.Id_nb ?? "null")}, client: {client}");
+		}
+
+		/// <summary>
+		/// The spell a v1.110+ spell or song tooltip asks for. Ports of OpenDAoC-Core 42bf098af, f5f3e4e43 and 95e394d35:
+		/// SkillBase's templates all have level 1, so tooltips showed level 1 values. The player's own copy is used:
+		/// an effect on them first, then their spell lists and skills, and the template only as a fallback.
+		/// </summary>
+		private static Spell FindSpellForTooltip(GameClient client, ushort tooltipId, List<(Skill, Skill)> usableSkills, List<(SpellLine, List<Skill>)> usableSpellLists)
+		{
+			IEnumerable<(Spell, ushort)> effects = client.Player.effectListComponent.GetSpellEffects()
+				.Where(effect => effect?.SpellHandler?.Spell != null)
+				.Select(effect => (effect.SpellHandler.Spell, effect.Icon));
+			return FindSpellForTooltip(effects, tooltipId, usableSkills, usableSpellLists, SkillBase.GetSpellByTooltipID);
+		}
+
+		/// <summary>
+		/// The lookup behind the client overload,
+		/// given the player's effects as (spell, icon) pairs. A spell without an InternalID (built by a realm ability and never
+		/// added to SkillBase) is matched by its effect's icon and gets that id, so the client's reply finds it.
+		/// </summary>
+		public static Spell FindSpellForTooltip(IEnumerable<(Spell spell, ushort icon)> effects, ushort tooltipId, IEnumerable<(Skill, Skill)> usableSkills,
+			IEnumerable<(SpellLine, List<Skill>)> usableSpellLists, Func<ushort, Spell> fallback)
+		{
+			foreach ((Spell spell, ushort icon) in effects)
+			{
+				if (spell.InternalID > 0)
+				{
+					if (spell.InternalID == tooltipId)
+						return spell;
+
+					continue;
+				}
+
+				if (icon == tooltipId)
+				{
+					spell.InternalID = tooltipId;
+					return spell;
+				}
+			}
+
+			foreach ((SpellLine _, List<Skill> skills) in usableSpellLists)
+			{
+				foreach (Skill skill in skills)
+				{
+					if (skill is Spell spell && spell.InternalID == tooltipId)
+						return spell;
+				}
+			}
+
+			foreach ((Skill skill, Skill _) in usableSkills)
+			{
+				if (skill is Spell spell && spell.InternalID == tooltipId)
+					return spell;
+			}
+
+			// Fallback. The spell level will be 1.
+			return fallback(tooltipId);
+		}
+
+		/// <summary>The reward a quest window delve asks for: objectId is 1 + its position (basic rewards, then optional ones).</summary>
+		public static DbItemTemplate QuestWindowReward(IList<DbItemTemplate> rewards, int objectId)
+		{
+			int index = objectId - 1;
+			return rewards != null && index >= 0 && index < rewards.Count ? rewards[index] : null;
 		}
 
 		public static void WriteStyleInfo(List<string> objectInfo, Style style, GameClient client)
@@ -2048,9 +2057,11 @@ namespace DOL.GS.PacketHandler.Client.v168
             return dw.ToString();
         }
 
-		public static string DelveSong(GameClient client, int id)
+		public static string DelveSong(GameClient client, Spell spell)
 		{
-			Spell spell = SkillBase.GetSpellByTooltipID((ushort) id);
+			if (spell == null)
+				return "(Song (Index \"0\") (Name \"(not found)\"))";
+
 			ISpellHandler spellHandler = ScriptMgr.CreateSpellHandler(client.Player, spell, SkillBase.GetSpellLine(GlobalSpellsLines.Reserved_Spells));
 
 			if (spellHandler == null)

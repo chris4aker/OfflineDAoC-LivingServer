@@ -965,43 +965,26 @@ namespace DOL.GS.PacketHandler
 			ushort icon2 = 0;
 			string spell_name1 = string.Empty;
 			string spell_name2 = string.Empty;
+			// Port of OpenDAoC-Core a376d6182: a charge's spell is looked up by id in any spell line, not only Item_Effects, so
+			// charges from other lines show on the tooltip too (and no longer scan the whole Item_Effects list per item).
 			if (item.Object_Type != (int)eObjectType.AlchemyTincture)
 			{
-				if (item.SpellID > 0/* && item.Charges > 0*/)
+				Spell charge1 = ChargeSpell(item.SpellID);
+
+				if (charge1 != null)
 				{
-					SpellLine chargeEffectsLine = SkillBase.GetSpellLine(GlobalSpellsLines.Item_Effects);
-					if (chargeEffectsLine != null)
-					{
-						List<Spell> spells = SkillBase.GetSpellList(chargeEffectsLine.KeyName);
-						foreach (Spell spl in spells)
-						{
-							if (spl.ID == item.SpellID)
-							{
-								flag |= 0x08;
-								icon1 = spl.Icon;
-								spell_name1 = spl.Name; // or best spl.Name ?
-								break;
-							}
-						}
-					}
+					flag |= 0x08;
+					icon1 = charge1.Icon;
+					spell_name1 = charge1.Name;
 				}
-				if (item.SpellID1 > 0/* && item.Charges > 0*/)
+
+				Spell charge2 = ChargeSpell(item.SpellID1);
+
+				if (charge2 != null)
 				{
-					SpellLine chargeEffectsLine = SkillBase.GetSpellLine(GlobalSpellsLines.Item_Effects);
-					if (chargeEffectsLine != null)
-					{
-						List<Spell> spells = SkillBase.GetSpellList(chargeEffectsLine.KeyName);
-						foreach (Spell spl in spells)
-						{
-							if (spl.ID == item.SpellID1)
-							{
-								flag |= 0x10;
-								icon2 = spl.Icon;
-								spell_name2 = spl.Name; // or best spl.Name ?
-								break;
-							}
-						}
-					}
+					flag |= 0x10;
+					icon2 = charge2.Icon;
+					spell_name2 = charge2.Name;
 				}
 			}
 			pak.WriteByte((byte)flag);
@@ -1034,6 +1017,9 @@ namespace DOL.GS.PacketHandler
 
 			pak.WritePascalString(nameSpan);
 		}
+
+		/// <summary>The spell an item charge casts, from any spell line; null when the item has none.</summary>
+		protected static Spell ChargeSpell(int spellId) => spellId > 0 ? SkillBase.GetSpellByID(spellId) : null;
 
 		protected override void WriteTemplateData(GSTCPPacketOut pak, DbItemTemplate template, int count)
 		{
