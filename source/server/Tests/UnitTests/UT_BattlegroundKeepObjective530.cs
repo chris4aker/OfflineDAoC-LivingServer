@@ -141,12 +141,61 @@ namespace DOL.GS.Tests
                             foreach (bool stormer in new[] { false, true })
                             {
                                 string at = $"lord={isLord} comes={comes} posted={posted} stormer={stormer}";
-                                Assert.That(L.MusterAllowsFight(L.MusterHold.None, isLord, comes, posted, stormer), Is.True, "not held: " + at);
-                                Assert.That(L.MusterAllowsFight(L.MusterHold.Storm, isLord, comes, posted, stormer), Is.EqualTo(stormer), "storm: " + at);
-                                foreach (L.MusterHold held in new[] { L.MusterHold.Gather, L.MusterHold.Rally })
-                                    Assert.That(L.MusterAllowsFight(held, isLord, comes, posted, stormer), Is.EqualTo(!isLord && (comes || posted)),
-                                        held + ": " + at);
+                                foreach (bool picking in new[] { false, true })
+                                {
+                                    string pat = $"{at} picking={picking}";
+                                    Assert.That(L.MusterAllowsFight(L.MusterHold.None, isLord, comes, posted, stormer, picking), Is.True, "not held: " + pat);
+                                    Assert.That(L.MusterAllowsFight(L.MusterHold.Storm, isLord, comes, posted, stormer, picking), Is.EqualTo(stormer), "storm: " + pat);
+                                    foreach (L.MusterHold held in new[] { L.MusterHold.Gather, L.MusterHold.Rally })
+                                        Assert.That(L.MusterAllowsFight(held, isLord, comes, posted, stormer, picking),
+                                            Is.EqualTo((comes || posted) && !(isLord && picking)), held + ": " + pat);
+                                }
                             }
+            });
+        }
+
+        [Test]
+        public void A_held_bot_fights_back_against_a_lord_that_comes_at_it()
+        {
+            // Review of d6d2bb8c: the old threat scan and combat drop kept any target that came at the muster, the lord
+            // included (self-defence); only the keep's guard pick left the lord out. A gatherer or rally holder still never
+            // picks the lord, but answers it.
+            foreach (L.MusterHold held in new[] { L.MusterHold.Gather, L.MusterHold.Rally })
+            {
+                Assert.That(L.MusterAllowsFight(held, isLord: true, comesAtMuster: true, postedContact: false, stormerMayEngage: false, picking: false),
+                    Is.True, held + ": a lord hitting the bot is fought back");
+                Assert.That(L.MusterAllowsFight(held, isLord: true, comesAtMuster: true, postedContact: false, stormerMayEngage: false, picking: true),
+                    Is.False, held + ": the guard pick never takes the lord");
+                Assert.That(L.MusterAllowsFight(held, isLord: true, comesAtMuster: false, postedContact: false, stormerMayEngage: false, picking: false),
+                    Is.False, held + ": a lord that does not come at the muster is left alone");
+            }
+        }
+
+        [Test]
+        public void The_wave_going_in_is_proposed_again_at_once()
+        {
+            // The order is proposed once before the wave's turn and again only when the wave's turn moved the muster.
+            Assert.That(AutonomousWorldBotController.BattlegroundMusterMoved(true, false), Is.True, "the wave went in");
+            Assert.That(AutonomousWorldBotController.BattlegroundMusterMoved(false, true), Is.True, "the wave is spent and gathers again");
+            Assert.That(AutonomousWorldBotController.BattlegroundMusterMoved(true, true), Is.False);
+            Assert.That(AutonomousWorldBotController.BattlegroundMusterMoved(false, false), Is.False);
+
+            string battleground = Code("bots", "autonomous", "AutonomousWorldBotController.Battleground.cs");
+            string squashed = Regex.Replace(battleground, @"\s+", " ");
+            Assert.Multiple(() =>
+            {
+                // The first order reads the wave as it stands, before the siege crew's early return.
+                int first = squashed.IndexOf("bool mustering = assault && !tooFew && AutonomousBattlegroundWave.IsGathering(bracket.RegionId, bot.Realm, out _);", StringComparison.Ordinal);
+                int firstProposal = squashed.IndexOf("ProposeBattlegroundOrder(bot, order);", StringComparison.Ordinal);
+                int siege = squashed.IndexOf("if (TryRunSiegeJob(bot)) return true;", StringComparison.Ordinal);
+                Assert.That(first, Is.GreaterThan(0), "the muster is read before the first order");
+                Assert.That(firstProposal, Is.GreaterThan(first));
+                Assert.That(siege, Is.GreaterThan(firstProposal), "a siege crew is recorded before it returns");
+                // The second proposal follows the wave's turn, with the wave's answer.
+                Assert.That(squashed, Does.Contain(
+                    "if (BattlegroundMusterMoved(mustering, gathering)) ProposeBattlegroundOrder(bot, AutonomousRvrEventLayer.DecideBattleground(central.KeepID, false, false, gathering, partId));"));
+                Assert.That(squashed, Does.Not.Contain("false &&"));
+                Assert.That(squashed, Does.Not.Contain("musteredLastTurn"));
             });
         }
 
@@ -161,7 +210,7 @@ namespace DOL.GS.Tests
                 // The threat scan, the combat drop and the keep's guard pick each call it.
                 Assert.That(threat, Does.Contain("MusterAllowsFight(bot, hold, gatherStaging, target)"));
                 Assert.That(battleground, Does.Contain("if (MusterAllowsFight(bot, hold, staging, target)) return false;"));
-                Assert.That(controller, Does.Contain("MusterAllowsFight(bot, AutonomousRvrEventLayer.MusterHold.Rally, rally, guard)"));
+                Assert.That(controller, Does.Contain("MusterAllowsFight(bot, AutonomousRvrEventLayer.MusterHold.Rally, rally, guard, picking: true)"));
                 // The gatherers' test is called only inside the rule (and defined once).
                 string all = battleground + threat + controller;
                 Assert.That(Regex.Matches(all, @"GathererMayEngage\(bot,").Count, Is.EqualTo(1), "only MusterAllowsFight calls it");
