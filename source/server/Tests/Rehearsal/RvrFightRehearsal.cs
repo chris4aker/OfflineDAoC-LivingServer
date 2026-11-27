@@ -109,6 +109,7 @@ namespace DOL.GS.Tests.Rehearsal
                 $"midgard roster: {Describe(midgardRoster)}",
                 $"boards built from live bots: {RvrFightBoards.Builds - boardsBefore}; first albion board in contact: {BoardLine(firstAlbionBoard)}; first midgard board in contact: {BoardLine(firstMidgardBoard)}",
                 $"casts started {world.Recorder.CastsStarted}, finished {world.Recorder.CastsFinished}; hits {world.Recorder.Hits.Count}",
+                $"contact shadow (#529, board-listed enemies no member knew of): albion {Shadow(eRealm.Albion)}; midgard {Shadow(eRealm.Midgard)}",
             };
             detail.AddRange(albion.Concat(midgard).Select(State));
             detail.AddRange(world.Recorder.Mezzes.Select(m => $"mez {S(m.At)} {m.Caster.Name} -> {m.Target.Name} at {m.TargetHealthPercent}% : {(m.Landed == true ? "landed" : m.Landed == false ? "refused" : "?")}"));
@@ -116,6 +117,12 @@ namespace DOL.GS.Tests.Rehearsal
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
             string row = OpenFieldRow(world, scan, albion, midgard);
             return new OpenFieldResult(row, detail, world.ServiceErrors);
+        }
+
+        private static string Shadow(eRealm realm)
+        {
+            RvrShadowTotals t = AutonomousWorldBotController.RvrContactShadowTally.Totals((int)realm);
+            return $"pairs {t.PairsUnknown}/{t.Pairs} unknown ({t.PairsUnknownShare:0.##}), enemy-seconds {t.Unknown}/{t.Listed} ({t.UnknownShare:0.##})";
         }
 
         private static RvrFightBoard ContactBoard(List<GameBot> side)

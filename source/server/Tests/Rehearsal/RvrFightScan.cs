@@ -37,7 +37,19 @@ namespace DOL.GS.Tests.Rehearsal
         public IReadOnlyList<RvrNoticeEvent> Notices => _notices;
         public RvrAwarenessProfile Profile { get; } = AutonomousRvrPerception.Profile(AutonomousRvrPerception.ParseAwareness(Properties.RVR_BOT_AWARENESS));
 
-        public RvrFightScan(int seed) => _rolls = new Random(seed * 7919 + 17);
+        public RvrFightScan(int seed)
+        {
+            _rolls = new Random(seed * 7919 + 17);
+            // #529: the scan writes the server's contact table as PerceiveRvrTargets does, so the boards' shadow has numbers.
+            AutonomousWorldBotController.RvrContactTable.Clear();
+            AutonomousWorldBotController.RvrContactShadowTally.Clear();
+            AutonomousWorldBotController.RvrContactShadowTally.TrackPairs = true;
+        }
+
+        private static void Note(GameBot bot, GameLiving target, RvrContactSource source, long now) =>
+            AutonomousWorldBotController.RvrContactTable.Note(bot.DatabaseID, (int)bot.Realm, new RvrContactSighting(RvrPartyKey.TargetKey(target),
+                RvrPartyKey.Of(target), (int)target.Realm, AutonomousWorldBotController.PerceivedKind(target), target.CurrentRegionID,
+                target.X, target.Y, target.Z, target), source, now);
 
         public void Add(IEnumerable<GameBot> bots)
         {
@@ -107,14 +119,19 @@ namespace DOL.GS.Tests.Rehearsal
                     interval, _rolls.NextDouble(), () => Reaction(bot), AutonomousWorldBotController.MayAnswerRvrCall(bot), results);
                 int primary = -1;
                 var noticedKeys = new List<long>();
+                var noticedTargets = new List<GameLiving>();
                 for (int i = 0; i < results.Count; i++)
                 {
                     RvrMemberOutcome outcome = results[i];
+                    RvrContactSource source = RvrContacts.SourceOf(outcome.Result, outcome.Factors);
+                    if (source != RvrContactSource.None)
+                        Note(bot, targets[i], source, now);
                     if (outcome.Result == RvrScanResult.Engage || outcome.Result == RvrScanResult.Noticed && outcome.DelayMilliseconds <= 0)
                         engage.Add(targets[i]);
                     if (outcome.Result == RvrScanResult.Noticed)
                     {
                         noticedKeys.Add(outcome.Key);
+                        noticedTargets.Add(targets[i]);
                         if ((outcome.Factors & RvrNoticeFactors.Party) == 0 && primary < 0)
                             primary = i;
                     }
@@ -125,7 +142,7 @@ namespace DOL.GS.Tests.Rehearsal
                 _notices.Add(new RvrNoticeEvent(now, bot, targets[primary], (int)members[primary].Sighting.Distance, seen.SinceFirstSightMilliseconds,
                     seen.Chance, AutonomousRvrPerception.Describe(seen.Factors), false));
                 if (Properties.RVR_BOT_SPOTTERS)
-                    Call(bot, noticedKeys, now);
+                    Call(bot, noticedKeys, noticedTargets, now);
             }
             if (!Engage || engage.Count == 0)
                 return;
@@ -137,7 +154,7 @@ namespace DOL.GS.Tests.Rehearsal
                 brain.FSM.SetCurrentState(eFSMStateType.AGGRO);
         }
 
-        private void Call(GameBot spotter, List<long> keys, long now)
+        private void Call(GameBot spotter, List<long> keys, List<GameLiving> targets, long now)
         {
             var mates = (spotter.Group?.GetMembersInTheGroup() ?? new List<GameLiving>()).OfType<GameBot>()
                 .Where(mate => AutonomousWorldBotController.CanHearRvrCall(mate, spotter))
@@ -150,8 +167,12 @@ namespace DOL.GS.Tests.Rehearsal
                          groupMates, [], Profile.SpotterRadius, _rolls.NextDouble, out _))
             {
                 int delay = callee.ExtraDelayMilliseconds + Reaction(mates[callee.Id]);
+                bool news = false;
                 foreach (long key in keys)
-                    _memory.Alert(callee.Id, key, now, delay);
+                    news |= _memory.Alert(callee.Id, key, now, delay);
+                if (news)
+                    foreach (GameLiving target in targets)
+                        Note(mates[callee.Id], target, RvrContactSource.Called, now);
             }
         }
 

@@ -302,8 +302,6 @@ public sealed partial class AutonomousWorldBotController
             // #617: in a battleground the engines come after the people (the visibility budget looks at people first).
             .ThenBy(target => AutonomousBattlegroundTargets.Rank(battleground, target is GameSiegeWeapon))
             .ThenBy(bot.GetDistanceTo).ToArray();
-        // Nobody calls out a stealther they have not seen: the alarms hear only the visible enemies.
-        AutonomousLivingServer.ObserveEnemies(bot, rvr.StealthNotice ? nearby.Where(target => !target.IsStealthed).ToArray() : nearby);
         bool Ray(bool seen)
         {
             RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.Rays);
@@ -323,6 +321,10 @@ public sealed partial class AutonomousWorldBotController
         // RvR perception (owner 2026-11-01; enemy gamebots and stealth since 1.2 work package 1): perceived targets only
         // once noticed and after a reaction delay. At its objective (near the keep it holds or besieges) as before.
         visibleTargets = PerceiveRvrTargets(bot, visibleTargets, rvr);
+        // #529 step 2 ("Also, now"): the /faction alarm and the news board hear what this bot knows (its fresh contacts:
+        // noticed, told or hit), not everyone within the scan radius before the ray and the notice (structure.md finding 1,
+        // "a fourth leak"). Nobody calls out a stealther.
+        AutonomousLivingServer.ObserveEnemies(bot, RvrAlarmHears(bot, scanNow));
         // A bot gathering for its realm's battleground wave fights only what comes at it (owner's PC, build 3d67b6f: the
         // gatherers saw the keep's Albion defenders and other realms within 5,000 and were pulled into the guards).
         // The same for a bot holding at its realm's keep rally once the doors are down, and a stormer going up to the lord
