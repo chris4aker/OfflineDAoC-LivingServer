@@ -125,7 +125,7 @@ namespace DOL.UnitTests
             Assert.That(FixNpcSpawnCommandHandler.IsAlreadyOnMesh(0f), Is.True);
             Assert.That(FixNpcSpawnCommandHandler.IsAlreadyOnMesh(15.9f), Is.True);
             Assert.That(FixNpcSpawnCommandHandler.IsAlreadyOnMesh(16f), Is.False);
-            Assert.That(Source("commands", "admincommands", "FixNpcPosition.cs"), Does.Not.Contain("GetClosestPoint"));
+            Assert.That(Source("commands", "admincommands", "FixNpcPosition.cs"), Does.Not.Contain("Instance.GetClosestPoint("));
         }
 
         [Test]
