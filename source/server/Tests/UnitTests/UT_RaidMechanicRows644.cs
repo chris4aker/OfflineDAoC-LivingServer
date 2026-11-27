@@ -31,6 +31,7 @@ namespace DOL.UnitTests
             LivingRowsTestKit.SetTime(5_000_000);
             RvrRecordBudget.Reset();
             RaidAttemptRows.ResetForTests();
+            RaidBossMechanics.ResetForTests();
             EncounterSignals.ClearAll();
             RaidDiagnosticRows.ForTests = null;
             _rows.Clear();
@@ -49,6 +50,7 @@ namespace DOL.UnitTests
             LivingRows.TestSink = null;
             RaidDiagnosticRows.ForTests = null;
             RaidAttemptRows.ResetForTests();
+            RaidBossMechanics.ResetForTests();
             EncounterSignals.ClearAll();
             RvrRecordBudget.Reset();
             LivingRowsTestKit.SetTime(_oldTime);
@@ -203,6 +205,20 @@ namespace DOL.UnitTests
             ("Spindler Broodmother", "Galladoria/SpindlerBroodmother.cs", ["mezz"], ["adds"]),
             ("Queen Kula", "TuscarianGlacier/KingTuscarAndQueenKula.cs", ["cold", "frostMezz", "frostRoot"], []),
             ("King Tuscar", "TuscarianGlacier/KingTuscarAndQueenKula.cs", ["hammers", "thunder", "bleed"], []),
+            // The rest of #644's list (Account #2): the other raid bosses and the open-world bosses with scripted casts.
+            ("Apocalypse", "CaerSidi/ApocalypseAnd4Horsemans .cs", ["plague", "gtaoe", "rainOfFire"], []),
+            ("Orylle", "Krondon/OrylleAndOrshom.cs", ["fire"], []),
+            ("Dura'ek the Empowered", "AvalonCity/DuraekEmpowered.cs", ["heatProc"], []),
+            ("Aidon the Archwizard", "HallOfTheCorrupt/AidonTheArchwizard.cs",
+                ["fireShield", "dd", "copyFire", "copyIce", "copyAir", "copyEarth"], []),
+            ("Iarnvidiur", "IarnvidiurLair/Iarnvidiur.cs", ["bolt", "dot", "dd", "disease"], []),
+            ("Game Epic Aros", "Dodens/GameEpicAros.cs", ["bomb", "bigBomb", "debuff", "summon"], []),
+            ("Aros the Spiritmaster", "Dodens/SpiritmasterAros.cs", ["bomb", "debuff", "dd", "stun"], []),
+            ("Black Lady", "MarfachCaverns/BlackLady.cs", ["dd"], []),
+            ("Myrddraxis", "Fomor/Myrddraxis.cs",
+                ["disease", "hasteDebuff", "dot", "dd", "stun", "pbaoe", "dd2", "head2", "head3", "head4", "head5"], []),
+            ("Evern", "Evern.cs", ["fairyHeal"], []),
+            ("Maldahar the Glimmer Prince", "MaldaharTheGlimmerPrince.cs", ["lifeTap", "pbaoe"], []),
         ];
 
         private static IEnumerable<TestCaseData> BossCases() => Bosses.Select(b => new TestCaseData(b.Boss, b.Script, b.Casts, b.Spawns).SetName("Boss " + b.Boss));
@@ -241,8 +257,11 @@ namespace DOL.UnitTests
             foreach (string mechanic in casts)
             {
                 RaidBossMechanics.Cast(false, boss, mechanic, spell);
-                Assert.That(_measured.Any(s => s.Mechanic == mechanic), Is.False, "no cast started: no signal");
+                RaidBossMechanics.CastBegan(boss, spell, target, spell.CastTime);
+                Assert.That(_measured.Any(s => s.Mechanic == mechanic), Is.False, "not asked: no signal");
                 RaidBossMechanics.Cast(true, boss, mechanic, spell);
+                Assert.That(_measured.Any(s => s.Mechanic == mechanic), Is.False, "asked, not begun: no signal yet");
+                RaidBossMechanics.CastBegan(boss, spell, target, spell.CastTime);
                 EncounterSignal s = _measured.Last();
                 Assert.That((s.Mechanic, s.Radius, s.AroundTarget, s.Target, s.Lands - s.At), Is.EqualTo((mechanic, 500, true, (GameLiving)target, 2_500L)));
             }

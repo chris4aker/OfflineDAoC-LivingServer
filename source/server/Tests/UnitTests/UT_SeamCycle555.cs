@@ -13,7 +13,9 @@ namespace DOL.UnitTests;
 /// Cruachan Gorge (zone 211) at 334880,417728,6528, travelling to the orchard nipper camp at 355817,484592,6728 (Lough Derg,
 /// zone 200), each stepped 334880,417728 > 334880,417856 (into Connacht, 207) and back. Replays the zone itinerary from that
 /// spot on the installed meshes and seams (navmesh-v1, byte-identical to the owner's): the trip must reach the goal zone
-/// without coming back to a zone it left, and end on a complete corridor.
+/// without coming back to a zone it left, and end on a complete corridor. The camp stands on the Lough Derg ridge (#421),
+/// which joins only the Valley of Bri Leith: before the fix the Gorge took a chain through Connacht onto Lough Derg's other
+/// ground, Connacht found no way onto the ridge and sent the bot back (AutonomousZoneItinerary.GoalAreaOffMain).
 /// </summary>
 [TestFixture, NonParallelizable, Explicit("Read-only installed Hibernian seam-cycle replay (#555)")]
 public class UT_SeamCycle555
@@ -39,28 +41,6 @@ public class UT_SeamCycle555
             Zone current = region.GetZone((int)start.X, (int)start.Y);
             Zone destination = region.GetZone((int)goal.X, (int)goal.Y);
             Assert.That((current?.ID, destination?.ID), Is.EqualTo(((ushort?)211, (ushort?)200)), "the logged zones");
-            // What the planner reads: the ground under the start, the arrival and the goal, and its area route from each.
-            Vector3 arrival = new(334880, 417856, 6561.641f);
-            Zone connacht = region.GetZone((int)arrival.X, (int)arrival.Y);
-            var zoneList = new List<Zone>(region.Zones);
-            TestContext.Out.WriteLine($"SEAM555 ground start={AutonomousZoneItinerary.SeamGroundAt(zoneList, 200, current, start)}/{AutonomousZoneRoads.AreaAt(current, start)} " +
-                $"arrival={AutonomousZoneItinerary.SeamGroundAt(zoneList, 200, connacht, arrival)}/{AutonomousZoneRoads.AreaAt(connacht, arrival)} " +
-                $"goal={AutonomousZoneRoads.AreaAt(destination, goal)} mains 211={AutonomousZoneSeams.MainArea(200, 211)} 207={AutonomousZoneSeams.MainArea(200, 207)} 200={AutonomousZoneSeams.MainArea(200, 200)}");
-            TestContext.Out.WriteLine($"SEAM555 areaRoute from211=[{string.Join(">", AutonomousZoneItinerary.AreaRouteForTests(zoneList, 200, current, destination, start, goal))}] " +
-                $"from207=[{string.Join(">", AutonomousZoneItinerary.AreaRouteForTests(zoneList, 200, connacht, destination, arrival, goal))}]");
-            // Is the camp on Lough Derg's main ground (the road at 342015,498967 the itinerary already stages through) or on
-            // the ridge the nearest road anchor names?
-            Vector3? campFloor = nav.GetClosestPoint(destination, goal, 64, 64, 256, nav.DefaultFilters);
-            Vector3 mainRoad = new(342015, 498967, 4980);
-            TestContext.Out.WriteLine($"SEAM555 camp floor={campFloor} toMainRoad={(campFloor.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, destination, mainRoad, campFloor.Value))} " +
-                $"fromMainRoad={(campFloor.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, destination, campFloor.Value, mainRoad))} " +
-                $"seamGroundAtCamp={AutonomousZoneItinerary.SeamGroundAt(zoneList, 200, destination, goal)}");
-            var trace = new List<string>();
-            bool probed = AutonomousZoneItinerary.ProbeNextStep(zoneList, 200, connacht, destination, arrival, goal, nav,
-                out AutonomousZoneBoundaryRouting.Step probeStep, trace);
-            TestContext.Out.WriteLine($"SEAM555 probe207 routed={probed} step={probeStep} traced={trace.Count}");
-            foreach (string line in trace.Count > 160 ? trace.GetRange(0, 160) : trace)
-                TestContext.Out.WriteLine("SEAM555 trace " + line);
             var left = new List<ushort>();
             for (int hop = 0; hop < 16 && current != destination; hop++)
             {

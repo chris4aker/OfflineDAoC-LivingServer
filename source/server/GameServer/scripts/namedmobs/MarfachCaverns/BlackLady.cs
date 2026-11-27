@@ -179,7 +179,7 @@ namespace DOL.AI.Brain
             if(Body.TargetObject != null && HasAggro)
             {
                 RemoveAdds = false;
-                Body.CastSpell(BlackLady_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                RaidBossMechanics.Cast(Body.CastSpell(BlackLady_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dd", BlackLady_DD); // #644 measurement only
 
                 if(Util.Chance(20))
                 {

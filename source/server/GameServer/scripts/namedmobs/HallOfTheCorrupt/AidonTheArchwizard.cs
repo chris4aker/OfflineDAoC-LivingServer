@@ -259,7 +259,7 @@ namespace DOL.AI.Brain
                     if (Body.TargetObject != Body)
                     {
                         Body.TargetObject = Body;
-                        Body.CastSpell(FireDS, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                        RaidBossMechanics.Cast(Body.CastSpell(FireDS, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "fireShield", FireDS); // #644 measurement only
                         if (oldTarget != null)
                             Body.TargetObject = oldTarget;
                     }
@@ -280,7 +280,7 @@ namespace DOL.AI.Brain
         public int CastDD(ECSGameTimer Timer)
         {
             if (Body.IsAlive)
-                Body.CastSpell(AidonBoss_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+                RaidBossMechanics.Cast(Body.CastSpell(AidonBoss_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dd", AidonBoss_DD); // #644 measurement only
 
             CanCast = false;
             return 0;
@@ -520,7 +520,7 @@ namespace DOL.AI.Brain
         public override void Think()
         {
             if (Body.InCombat || HasAggro)
-                Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells),false);
+                RaidBossMechanics.Cast(Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "copyFire", Aidon_DD); // #644 measurement only
 
             base.Think();
         }
@@ -642,7 +642,7 @@ namespace DOL.AI.Brain
         public override void Think()
         {
             if (Body.InCombat || HasAggro)
-                Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells),false);
+                RaidBossMechanics.Cast(Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "copyIce", Aidon_DD); // #644 measurement only
 
             base.Think();
         }
@@ -765,7 +765,7 @@ namespace DOL.AI.Brain
         public override void Think()
         {
             if (Body.InCombat || HasAggro)
-                Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells),false);
+                RaidBossMechanics.Cast(Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "copyAir", Aidon_DD); // #644 measurement only
 
             base.Think();
         }
@@ -886,7 +886,7 @@ namespace DOL.AI.Brain
         public override void Think()
         {
             if (Body.InCombat || HasAggro)
-                Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells),false);
+                RaidBossMechanics.Cast(Body.CastSpell(Aidon_DD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "copyEarth", Aidon_DD); // #644 measurement only
             base.Think();
         }
         private Spell m_Aidon_DD;

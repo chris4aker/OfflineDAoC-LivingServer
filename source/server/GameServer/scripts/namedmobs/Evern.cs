@@ -321,7 +321,7 @@ namespace DOL.AI.Brain
                     {
                         Body.TargetObject = evern;
                         Body.TurnTo(evern);
-                        Body.CastSpell(Fairy_Heal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false);
+                        RaidBossMechanics.Cast(Body.CastSpell(Fairy_Heal, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells), false), Body, "fairyHeal", Fairy_Heal); // #644 measurement only
                     }
                 }
             }

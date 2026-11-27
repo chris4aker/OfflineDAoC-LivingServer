@@ -448,7 +448,7 @@ namespace DOL.GS
 					player.Out.SendSpellEffectAnimation(this, this, 7025, 0, false, 0x01);
 				
 				SetGroundTarget(X, Y, Z);
-				CastSpell(Fire_aoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(CastSpell(Fire_aoe, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "fire", Fire_aoe); // #644 measurement only
 				return 3000;
 			}
 

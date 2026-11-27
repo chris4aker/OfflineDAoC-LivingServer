@@ -125,7 +125,7 @@ namespace DOL.AI.Brain
 							Body.TargetObject = TeleportTarget; //set target to randomly picked
 							Body.TurnTo(TeleportTarget,4000);
 							if(!Body.IsCasting && Body.GetSkillDisabledDuration(Iarnvidiur_Bolt) == 0)
-								Body.CastSpell(Iarnvidiur_Bolt, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+								RaidBossMechanics.Cast(Body.CastSpell(Iarnvidiur_Bolt, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "bolt", Iarnvidiur_Bolt); // #644 measurement only
 							new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(TeleportPlayer), 3000);
 						}
 					}
@@ -210,8 +210,8 @@ namespace DOL.AI.Brain
 							Body.TurnTo(RandomTarget);
 							switch (Util.Random(1, 2)) //pick one of 2 spells to cast
 							{
-								case 1: Body.CastSpell(Iarnvidiur_Dot,SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)); break; //dot
-								case 2: Body.CastSpell(IarnvidiurDD,SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)); break; //dd
+								case 1: RaidBossMechanics.Cast(Body.CastSpell(Iarnvidiur_Dot, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dot", Iarnvidiur_Dot); break; // #644 measurement only //dot
+								case 2: RaidBossMechanics.Cast(Body.CastSpell(IarnvidiurDD, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "dd", IarnvidiurDD); break; // #644 measurement only //dd
 							}							
 							if (oldTarget != null) Body.TargetObject = oldTarget; //return to old target
 							new ECSGameTimer(Body, new ECSGameTimer.ECSTimerCallback(ResetDD), 3000);
@@ -274,7 +274,7 @@ namespace DOL.AI.Brain
 		{
 			if (Body.TargetObject != null && HasAggro && Body.IsAlive)
 			{
-				Body.CastSpell(IarnvidiurDisease, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+				RaidBossMechanics.Cast(Body.CastSpell(IarnvidiurDisease, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), Body, "disease", IarnvidiurDisease); // #644 measurement only
 			}
 			return 0;
 		}

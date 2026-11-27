@@ -361,7 +361,7 @@ namespace DOL.GS.Scripts
         /// <returns></returns>
         private int CastBomb(ECSGameTimer timer)
         {
-            CastSpell(Bomb, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+            RaidBossMechanics.Cast(CastSpell(Bomb, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "bomb", Bomb); // #644 measurement only
             return 0;
         }
         /// <summary>
@@ -371,7 +371,7 @@ namespace DOL.GS.Scripts
         /// <returns></returns>
         private int CastBigBomb(ECSGameTimer timer)
         {
-            CastSpell(BigBomb, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+            RaidBossMechanics.Cast(CastSpell(BigBomb, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "bigBomb", BigBomb); // #644 measurement only
             return 0;
         }
         #endregion
@@ -440,7 +440,7 @@ namespace DOL.GS.Scripts
             TargetObject = DebuffTarget;
             Z = SpawnPoint.Z; // this is a fix to correct Z errors that sometimes happen during Aros fights
             TurnTo(DebuffTarget);
-            CastSpell(Debuff, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+            RaidBossMechanics.Cast(CastSpell(Debuff, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "debuff", Debuff); // #644 measurement only
             DebuffTarget = null;
             if (oldTarget != null) TargetObject = oldTarget;
             return 0;
@@ -501,7 +501,7 @@ namespace DOL.GS.Scripts
         /// <returns></returns>
         private int CastSummon(ECSGameTimer timer)
         {
-            CastSpell(Summon, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+            RaidBossMechanics.Cast(CastSpell(Summon, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "summon", Summon); // #644 measurement only
             GameLiving target = null;
             foreach (GameLiving player in EncounterTargets.InRadius(this, 1500))
             {
