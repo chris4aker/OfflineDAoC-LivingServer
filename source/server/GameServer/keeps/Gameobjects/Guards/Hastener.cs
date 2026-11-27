@@ -39,7 +39,9 @@ namespace DOL.GS.Keeps
 			{
 				return;
 			}
-			switch (Realm)
+			// Port of OpenDAoC-Core 43924def4: by the model realm, so a hastener of a keep with no realm wears the model
+			// SetRealm picked for it (as the other keep guards do), not always Albion's.
+			switch (ModelRealm)
 			{
 				case eRealm.None:
 				case eRealm.Albion:
@@ -84,7 +86,8 @@ namespace DOL.GS.Keeps
 			if (!base.Interact(player))
 				return false;
 
-			if (player.Realm != Realm)
+			if (!Serves(GameServer.Instance.Configuration.ServerType, player.Realm == Realm,
+				() => GameServer.ServerRules.IsSameRealm(player, this, true)))
 				return false;
 
 			TurnTo(player, 5000);
@@ -93,6 +96,15 @@ namespace DOL.GS.Keeps
 			return true;
 		}
 		#endregion Examine/Interact Message
+
+		/// <summary>
+		/// Whether a hastener speeds up this player. Port of OpenDAoC-Core 43924def4, adapted: on PvE and PvP servers the
+		/// server rules decide, so every player there is served (upstream's fix). On our normal RvR server it stays the
+		/// player's own realm: a hastener is a PEACE NPC, which NormalServerRules.IsSameRealm counts as everyone's realm,
+		/// so upstream's change as written would have let an enemy use another realm's keep hastener.
+		/// </summary>
+		public static bool Serves(EGameServerType serverType, bool sameRealm, Func<bool> sameRealmByServerRules) =>
+			serverType is EGameServerType.GST_PvE or EGameServerType.GST_PvP ? sameRealmByServerRules() : sameRealm;
 
 		protected override void SetRespawnTime()
 		{

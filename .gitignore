@@ -50,3 +50,10 @@ playtest-reports/
 
 # Grafana Cloud kit: the player's credentials (issue #649)
 **/monitoring.env
+# Client recipe data for the #580 check (client data: never committed; docs/research/CLIENT-RECIPE-CHECK-580.md).
+**/tdl.crf
+**/ifd.mpk
+**/crafts.csv
+**/crafts.json
+**/crafts.sqlite
+**/crafts.text

@@ -23,6 +23,12 @@ namespace DOL.GS.Spells
             {eDamageType.Energy, 20 }
         }.ToFrozenDictionary();
 
+        /// <summary>Whether a spell's delve carries cast_timer: every cast that isn't instant (OpenDAoC-Core ef017586c).</summary>
+        public static bool SendsCastTimer(int castTime) => castTime > 0;
+
+        /// <summary>The delve's cast_timer: the client adds 2000 ms to it, so casts under 2 s are negative.</summary>
+        public static int CastTimerValue(int castTime) => castTime - 2000;
+
         public static string GetSpellString(ISpellHandler spellHandler)
         {
             Spell spell = spellHandler.Spell;
@@ -31,7 +37,9 @@ namespace DOL.GS.Spells
                 .AddElement("Function", "light")
                 .AddElement("Index", unchecked((ushort) spell.InternalID))
                 .AddElement("Name", spell.Name)
-                .AddElementIf(spell.CastTime >= 2000, "cast_timer", spell.CastTime - 2000)
+                // Port of OpenDAoC-Core ef017586c: the client shows cast_timer + 2000 ms, and 2.0 s when the field is missing,
+                // so every cast under 2 s showed as 2.0 s. Casts under 2 s now send a negative value.
+                .AddElementIf(SendsCastTimer(spell.CastTime), "cast_timer", CastTimerValue(spell.CastTime))
                 .AddElementIf(spell.CastTime == 0, "instant", "1")
                 .AddElement("damage_type", GetMagicTypeId(spell))
                 .AddElement("level", spell.Level)

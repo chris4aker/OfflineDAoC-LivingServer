@@ -254,8 +254,8 @@ namespace DOL.UnitTests
         [Test]
         public void TheQuestsKeepTheirClassesSoSavedProgressLoads()
         {
-            // AbstractQuest saves DbQuest.Name = GetType().FullName and loads it back by that name; DailyQuestService clears
-            // finished dailies by "DailyQuest" in it. The captains changed the titles, not the classes.
+            // AbstractQuest saves DbQuest.Name = GetType().FullName and loads it back by that name; PeriodicQuestService clears
+            // finished dailies by their class (DailyQuest). The captains changed the titles, not the classes.
             Assert.Multiple(() =>
             {
                 foreach (string script in Scripts)
