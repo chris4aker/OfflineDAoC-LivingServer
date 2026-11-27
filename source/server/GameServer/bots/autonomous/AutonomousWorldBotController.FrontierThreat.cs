@@ -313,8 +313,7 @@ public sealed partial class AutonomousWorldBotController
             return seen;
         }
         bool Visible(GameLiving target) => FiringOnRealm(bot, target) && !target.IsStealthed ||
-            !RvrSkipsLineOfSight(bot, target, rvr, scanNow) && Ray(nav.HasLineOfSight(bot.CurrentZone,
-            new(bot.X, bot.Y, bot.Z + 48), new(target.X, target.Y, target.Z + 48), nav.BlockingDoorAvoidanceFilters));
+            !RvrSkipsLineOfSight(bot, target, rvr, scanNow) && Ray(RvrSightRay(nav, bot, target));
         var visible = siegeFighter
             ? _frontierThreat.VisiblePriority(nearby.Where(AutonomousRvrDefense.IsCombatant).ToArray(),
                 nearby.OfType<GameSiegeWeapon>().Cast<GameLiving>().ToArray(), Visible)

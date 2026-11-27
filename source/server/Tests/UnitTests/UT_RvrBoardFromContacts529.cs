@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using DOL.AI.Brain;
 using DOL.GS.Tests.Rehearsal;
 using NUnit.Framework;
 
@@ -133,6 +135,14 @@ namespace DOL.GS.Tests
             Assert.That(perception, Does.Contain("PerceiveRvrTargets(bot, seen.ToArray(), rvr, RvrCombatRefresh.IntervalMilliseconds);"),
                 "the scan's own notice rule writes the contacts");
             Assert.That(perception, Does.Contain("using var aiProfile = AiProfile.Scope(RvrCombatRefresh.ProfileName);"));
+            // Review of b5effa87: only the board's readers look, through the scan's own ray, and their notices say so.
+            Assert.That(perception, Does.Contain("if (!BotBrain.RvrTacticsApplyTo(bot))"));
+            Assert.That(perception, Does.Contain("if (RvrSightRay(nav, bot, target))"));
+            Assert.That(perception, Does.Contain("RvrScanContext rvr = RvrContext(brain, bot, committed) with { CombatLook = true };"));
+            Assert.That(scan, Does.Contain("Ray(RvrSightRay(nav, bot, target))"), "the siege fighter's scan casts the same ray");
+            Assert.That(perception, Does.Contain("nav.BlockingDoorAvoidanceFilters"));
+            Assert.That(RvrCombatRefresh.Look(true), Is.EqualTo("combat"));
+            Assert.That(RvrCombatRefresh.Look(false), Is.EqualTo("scan"));
         }
 
         [Test]
@@ -190,6 +200,92 @@ namespace DOL.GS.Tests
                 Assert.That(area.Listed["open"], Is.True);
                 Assert.That(contacts.Errors + area.Errors, Is.Zero, "no service threw");
             });
+        }
+
+        // ---- the controller's own look (review of b5effa87: the rehearsal's RvrFightScan.Refresh is a copy) -----------
+
+        private static readonly MethodInfo ControllerLook =
+            typeof(AutonomousWorldBotController).GetMethod("RefreshRvrContactsInCombat", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+        /// <summary>One look by the controller's own RefreshRvrContactsInCombat for this bot (its first: due at once).</summary>
+        private static void LookOnce(GameBot bot) =>
+            ControllerLook.Invoke(new AutonomousWorldBotController(), new object[] { (BotBrain)bot.Brain, bot });
+
+        private static bool Knows(GameBot bot, GameLiving enemy) =>
+            AutonomousWorldBotController.RvrContactTable.Knows(bot.DatabaseID, RvrPartyKey.TargetKey(enemy), GameLoop.GameLoopTime);
+
+        /// <summary>
+        /// A fighting Albion armsman, a Midgard warrior 800 east in the open (inside the sure radius) and a Midgard healer
+        /// 1,200 west behind a wall. Every brain is stopped, so only the looks called here write contacts.
+        /// </summary>
+        private static (RvrFightWorld World, Region Region, GameBot Looker, GameBot Open, GameBot Hidden) LookWorld(bool boardFromContacts)
+        {
+            var world = new RvrFightWorld(5290, new Dictionary<string, object>(RvrFightRehearsal.Repeatable)
+            {
+                ["rvr_board_from_contacts"] = boardFromContacts,
+            });
+            Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+            world.Nav.Walls.Add(new FlatNavmesh.Wall(29_400, 28_000, 29_400, 32_000));
+            GameBot looker = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "LLookerArmsman");
+            GameBot open = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "LOpenWarrior");
+            GameBot hidden = world.NewBot(eRealm.Midgard, eCharacterClass.Healer, 50, "LHiddenHealer");
+            Assert.That(world.Place(looker, region, 30_000, 30_000, 0, 1024), Is.True);
+            Assert.That(world.Place(open, region, 30_800, 30_000, 0, 3072), Is.True);
+            Assert.That(world.Place(hidden, region, 28_800, 30_000, 0, 1024), Is.True);
+            foreach (GameBot bot in new[] { looker, open, hidden })
+                bot.Brain?.Stop();
+            world.Tick(); // the zones file what was placed
+            AutonomousWorldBotController.RvrContactTable.Clear();
+            ((BotBrain)looker.Brain).AddToAggroList(open, 100);
+            return (world, region, looker, open, hidden);
+        }
+
+        [Test, Category("Rehearsal")]
+        public void The_controller_s_own_look_writes_contacts_through_the_scan_s_ray()
+        {
+            var (world, _, looker, open, hidden) = LookWorld(boardFromContacts: true);
+            using (world)
+            {
+                Assert.That(BotBrain.RvrTacticsApplyTo(looker), Is.True, "a free gamebot in the frontier: its board reads contacts");
+                LookOnce(looker);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(Knows(looker, open), Is.True, "the enemy in the open is a contact after one look");
+                    Assert.That(Knows(looker, hidden), Is.False, "the wall blocks the scan's ray: no contact");
+                    Assert.That(world.ServiceErrors, Is.Zero);
+                });
+            }
+        }
+
+        [Test, Category("Rehearsal")]
+        public void The_controller_s_own_look_is_only_for_bots_whose_board_reads_contacts()
+        {
+            var (world, region, looker, open, _) = LookWorld(boardFromContacts: true);
+            using (world)
+            {
+                GameBot raider = world.NewBot(eRealm.Albion, eCharacterClass.Cleric, 50, "LRaiderCleric");
+                Assert.That(world.Place(raider, region, 30_000, 30_100, 0, 1024), Is.True);
+                raider.Brain?.Stop();
+                world.Tick();
+                ((BotBrain)raider.Brain).AddToAggroList(open, 100);
+                BotDutyLeases.Claim(raider, eDutyLeaseKind.RealmRaid, "ut-529-raid", DutyLeaseReason.RaidReserved);
+                try
+                {
+                    Assert.That(BotBrain.RvrTacticsApplyTo(raider), Is.False, "a raider's board never reads contacts");
+                    LookOnce(raider);
+                    Assert.That(Knows(raider, open), Is.False, "a raider does not look (the cost goes only to the board's readers)");
+                }
+                finally
+                {
+                    BotDutyLeases.Release(raider, eDutyLeaseKind.RealmRaid, "ut-529-raid");
+                }
+            }
+            var (offWorld, _, offLooker, offOpen, _) = LookWorld(boardFromContacts: false);
+            using (offWorld)
+            {
+                LookOnce(offLooker);
+                Assert.That(Knows(offLooker, offOpen), Is.False, "rvr_board_from_contacts off: no look");
+            }
         }
 
         [Test]

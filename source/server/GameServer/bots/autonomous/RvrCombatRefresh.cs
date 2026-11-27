@@ -28,6 +28,13 @@ public static class RvrCombatRefresh
     public const int NearestRays = 2;
     /// <summary>The AI_PROFILE name the refresh is timed under.</summary>
     public const string ProfileName = "frontier.rvr_combat_refresh";
+    /// <summary>The height of the scan's line-of-sight ray above the feet, at both ends (RvrSightRay).</summary>
+    public const int EyeHeight = 48;
+    /// <summary>RVR_NOTICE's look= value: the scan's notice, or this refresh's (the notice-time table reads scan only).</summary>
+    public const string ScanLook = "scan", CombatLook = "combat";
+
+    /// <summary>RVR_NOTICE's look= value for a notice from the in-combat refresh or from the scan. Pure.</summary>
+    public static string Look(bool combat) => combat ? CombatLook : ScanLook;
 
     /// <summary>When this bot looks next: one interval on, spread by its id so a group does not look on one tick. Pure.</summary>
     public static long NextDue(long now, long botId) => now + IntervalMilliseconds + Math.Abs(botId % 250);
