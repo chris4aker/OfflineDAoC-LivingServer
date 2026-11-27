@@ -3878,6 +3878,10 @@ namespace DOL.GS
                                         (sharedGroup || !_recentFailedSoloCamps.ContainsKey(cell.Id)) &&
                                         !AutonomousCampRouteQuarantine.IsQuarantined(cell.Id) &&
                                         (sharedGroup || !AutonomousCampDangerBench.IsBenched(cell.Id, cell.RegionId, cell.MonsterName)) &&
+                                        // #569 step 2: a party skips camps benched for its level band, and camps beside a
+                                        // spot where parties of its band lost members to far stronger monsters
+                                        (!sharedGroup || AutonomousGroupDangerRetreat.AllowsPartyCamp(cell.Id, cell.RegionId,
+                                            cell.X, cell.Y, planningLevel, GameLoop.GameLoopTime)) &&
                                         IsZoneAccessible(bot.Realm, cell.Zone, bot.CurrentRegionID) &&
                                         AutonomousOrdinaryPveRealmPolicy.CanAssignCamp(bot.Realm, cell.RegionId,
                                             cell.Zone?.ID ?? 0, planningLevel) &&

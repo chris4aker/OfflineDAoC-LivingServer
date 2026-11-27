@@ -46,6 +46,11 @@ namespace DOL.GS
             KindTripleWield = 52;
         /// <summary>How the companion talks (owner 2026-11-18 09:14: one voice; the True 1.65 formal register is an option).</summary>
         public const byte KindSpeech = 53;
+        /// <summary>#571 step 4 (True165 1ed3b24, its kind 53, which is Speech here; True165's 53 and 54 stay reserved): who
+        /// a buffer buffs first (BotBuffTargetPolicy.TargetRank).</summary>
+        public const byte KindBuffPriority = 55;
+        /// <summary>The stored key of the "Buff priority" row (True165's).</summary>
+        public const string BuffPriorityKey = "buffpriority";
         /// <summary>The fourth Role choice of every healer's Role row (owner 2026-11-11; CompanionSpellOptions165).</summary>
         public const string MeleeHealChoice = "Melee and heal, no attack spells (melee interrupts casts)";
         public static readonly HashSet<string> Verbs = ["charm", "pet", "subpet", "song", "option"];
@@ -105,7 +110,17 @@ namespace DOL.GS
             new(KindCrowdControl, "cc", "Crowd control", ["Automatic", "Off (no mez or stun)"],
                 bot => bot.CanCastCrowdControlSpells || bot.Spells?.Any(spell => spell?.SpellType is eSpellType.Mesmerize or
                     eSpellType.Mez or eSpellType.Stun) == true, [0, 3]),
+            // #571 step 4 (True165 1ed3b24): who a buffer with single-target concentration buffs buffs first. Automatic: by job
+            // (tanks, melee, healers, casters), base dexterity and power regen to healers and casters first
+            new(KindBuffPriority, BuffPriorityKey, "Buff priority",
+                ["Automatic (by job)", "Front line first", "Casters and healers first"], KnowsRealmConcentrationBuff),
         ];
+
+        /// <summary>Whether a companion knows a single-target concentration buff it keeps up on its groupmates (the "Buff
+        /// priority" row is offered then).</summary>
+        public static bool KnowsRealmConcentrationBuff(GameBot bot) =>
+            (bot.MiscSpells ?? []).Concat(bot.InstantMiscSpells ?? []).Any(spell => spell != null && spell.Level <= bot.Level &&
+                spell.IsConcentration && spell.Target == eSpellTarget.REALM && BotBrain.IsMaintainableClassBuff(spell));
 
         /// <summary>A generic AI option's stored key and choices (choice 0 Automatic), or null for an unknown kind.</summary>
         /// <summary>The value a choice (from 0) of a generic row is stored as (True 1.65's numbers), or -1 for an unknown
