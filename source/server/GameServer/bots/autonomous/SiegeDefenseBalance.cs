@@ -20,6 +20,11 @@ namespace DOL.GS;
 /// battles. So past the share's limit the balance now trims the attackers' cap instead, by up to
 /// <see cref="MaximumAttackerTrim"/> (128 to 112 to 96 for a keep). When defenders win again the trim comes off first,
 /// then the share (docs/NIGHT-SIEGES-AND-MARFACH.md, section 4).
+///
+/// 2026-11-27 (#523 step 2): the window is server-wide, so one realm's lost keeps raised every realm's defenders
+/// (defense.md finding 1). A window per defending realm is now kept beside it, moved by the same rule and logged
+/// (SIEGE_DEFENSE_BALANCE_REALM, applied=false). The share and the attackers' cap still follow the server-wide shift
+/// until the owner picks the lever (#523, owner question 49).
 /// </summary>
 public static class SiegeDefenseBalance
 {
@@ -48,48 +53,82 @@ public static class SiegeDefenseBalance
     private static readonly Queue<bool> Results = new();
     private static double _shift;
     private static bool _loaded;
-    private static readonly List<bool> EndedBeforeLoad = new();
+    private static readonly List<SiegeResult> EndedBeforeLoad = new();
+    private static readonly Dictionary<eRealm, Queue<bool>> RealmResults = new();
+    private static readonly Dictionary<eRealm, double> RealmShifts = new();
 
-    /// <summary>Records a finished siege and moves the shift one step when the window says so.</summary>
-    public static void Record(bool attackerWon)
+    /// <summary>One finished bot siege: captured or not, and the realm that held the keep (None when unknown).</summary>
+    public readonly record struct SiegeResult(bool Captured, eRealm Defender);
+
+    /// <summary>The realms with a record of their own: the three that hold keeps.</summary>
+    public static bool HasRealmRecord(eRealm realm) => realm is eRealm.Albion or eRealm.Midgard or eRealm.Hibernia;
+
+    /// <summary>Records a finished siege and moves the shift one step when the window says so; the defending realm's
+    /// own window moves by the same rule.</summary>
+    public static void Record(bool attackerWon, eRealm defender = eRealm.None)
     {
-        string line;
+        string line, realmLine = null;
         lock (Sync)
         {
-            if (!_loaded && EndedBeforeLoad.Count < LedgerResults) EndedBeforeLoad.Add(attackerWon);
+            if (!_loaded && EndedBeforeLoad.Count < LedgerResults) EndedBeforeLoad.Add(new(attackerWon, defender));
             double before = _shift;
-            Add(attackerWon);
-            line = Line(attackerWon ? "captured" : "defended", before, _shift, Results.ToArray());
+            double realmBefore = RealmShiftLocked(defender);
+            Add(new(attackerWon, defender));
+            string what = attackerWon ? "captured" : "defended";
+            line = Line(what, before, _shift, Results.ToArray());
+            if (HasRealmRecord(defender))
+                realmLine = RealmLine(defender, what, realmBefore, RealmShifts[defender], RealmResults[defender].ToArray());
         }
-        if (Log.IsInfoEnabled) Log.Info(line);
+        if (Log.IsInfoEnabled)
+        {
+            Log.Info(line);
+            if (realmLine != null) Log.Info(realmLine);
+        }
     }
 
-    private static void Add(bool attackerWon)
+    private static void Add(SiegeResult result)
     {
-        Results.Enqueue(attackerWon);
+        Results.Enqueue(result.Captured);
         while (Results.Count > Window) Results.Dequeue();
         _shift = NextShift(_shift, Results.ToArray());
+        if (!HasRealmRecord(result.Defender)) return;
+        if (!RealmResults.TryGetValue(result.Defender, out var window)) RealmResults[result.Defender] = window = new();
+        window.Enqueue(result.Captured);
+        while (window.Count > Window) window.Dequeue();
+        RealmShifts[result.Defender] = NextShift(RealmShiftLocked(result.Defender), window.ToArray());
     }
+
+    private static double RealmShiftLocked(eRealm realm) => RealmShifts.GetValueOrDefault(realm);
 
     /// <summary>
     /// The ledger's bot sieges (oldest first) replace the record. Read once at server start (RealmEventRecords.Start),
     /// before any siege of the session can end; a result recorded before it anyway is replayed after the ledger's.
     /// </summary>
-    public static void Load(IReadOnlyList<bool> ledgerOldestFirst)
+    public static void Load(IReadOnlyList<bool> ledgerOldestFirst) =>
+        LoadResults((ledgerOldestFirst ?? []).Select(captured => new SiegeResult(captured, eRealm.None)).ToList());
+
+    /// <summary>As <see cref="Load"/>, with each siege's defending realm, so the per-realm windows are rebuilt too.</summary>
+    public static void LoadResults(IReadOnlyList<SiegeResult> ledgerOldestFirst)
     {
-        string line;
+        var lines = new List<string>();
         lock (Sync)
         {
             double before = _shift;
+            var realmsBefore = RealmShifts.ToDictionary(p => p.Key, p => p.Value);
             Results.Clear();
             _shift = 0;
+            RealmResults.Clear();
+            RealmShifts.Clear();
             var ledger = (ledgerOldestFirst ?? []).TakeLast(LedgerResults).ToList();
-            foreach (bool result in ledger.Concat(EndedBeforeLoad)) Add(result);
+            foreach (SiegeResult result in ledger.Concat(EndedBeforeLoad)) Add(result);
             EndedBeforeLoad.Clear();
             _loaded = true;
-            line = Line($"loaded {ledger.Count} from the ledger", before, _shift, Results.ToArray());
+            string what = $"loaded {ledger.Count} from the ledger";
+            lines.Add(Line(what, before, _shift, Results.ToArray()));
+            foreach (eRealm realm in RealmResults.Keys.OrderBy(r => r))
+                lines.Add(RealmLine(realm, what, realmsBefore.GetValueOrDefault(realm), RealmShifts[realm], RealmResults[realm].ToArray()));
         }
-        if (Log.IsInfoEnabled) Log.Info(line);
+        if (Log.IsInfoEnabled) foreach (string line in lines) Log.Info(line);
     }
 
     /// <summary>The shift after these results (oldest first), from none: what a restart rebuilds.</summary>
@@ -142,6 +181,18 @@ public static class SiegeDefenseBalance
         get { lock (Sync) return _shift; }
     }
 
+    /// <summary>The shift of one defending realm's own window (logged only: #523 step 2, owner question 49).</summary>
+    public static double RealmShift(eRealm realm)
+    {
+        lock (Sync) return RealmShiftLocked(realm);
+    }
+
+    /// <summary>The defending realm's own window, oldest first (true = captured).</summary>
+    public static bool[] RealmWindow(eRealm realm)
+    {
+        lock (Sync) return RealmResults.TryGetValue(realm, out var window) ? window.ToArray() : [];
+    }
+
     /// <summary>The log line of a change: what happened, the shift before and after, the share and the keep attackers' cap
     /// (setting -> in use), the window (C = captured, D = defended).</summary>
     public static string Line(string what, double before, double after, IEnumerable<bool> window) =>
@@ -150,15 +201,30 @@ public static class SiegeDefenseBalance
         $"attackerCap={RealmEventPolicy.KeepAttackers}->{AttackerCapAt(RealmEventPolicy.KeepAttackers, after)} " +
         $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\"";
 
+    /// <summary>The log line of a defending realm's own window: what happened, its shift before and after, the share
+    /// and keep attackers' cap that shift would give, the window (C = captured, D = defended), and whether it is applied
+    /// (not yet: the share and the cap follow the server-wide shift, #523 owner question 49).</summary>
+    public static string RealmLine(eRealm realm, string what, double before, double after, IEnumerable<bool> window) =>
+        $"SIEGE_DEFENSE_BALANCE_REALM realm={GlobalConstants.RealmToName(realm)} event=\"{what}\" " +
+        $"shift={before:+0.###;-0.###;0}->{after:+0.###;-0.###;0} " +
+        $"share={RatioAt(RealmEventPolicy.DefenseRatio, after):0.###} " +
+        $"attackerCap={AttackerCapAt(RealmEventPolicy.KeepAttackers, after)} " +
+        $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\" applied=false";
+
     /// <summary>Tests only.</summary>
     public static void Reset()
     {
-        lock (Sync) { Results.Clear(); _shift = 0; _loaded = true; EndedBeforeLoad.Clear(); }
+        lock (Sync) { ClearLocked(); _loaded = true; }
     }
 
     /// <summary>Tests only: as after a restart, before the ledger is read.</summary>
     public static void ResetUnloadedForTests()
     {
-        lock (Sync) { Results.Clear(); _shift = 0; _loaded = false; EndedBeforeLoad.Clear(); }
+        lock (Sync) { ClearLocked(); _loaded = false; }
+    }
+
+    private static void ClearLocked()
+    {
+        Results.Clear(); _shift = 0; EndedBeforeLoad.Clear(); RealmResults.Clear(); RealmShifts.Clear();
     }
 }

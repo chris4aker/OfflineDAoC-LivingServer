@@ -236,19 +236,35 @@ public static class RealmEventRecordStore
     /// The last <paramref name="limit"/> finished bot keep sieges, oldest first: true when the keep was captured, false when
     /// it was defended. Rally failures, superseded rallies and sieges answering a player's attack are not results.
     /// </summary>
-    public static List<bool> SiegeResults(string path,int limit)
+    public static List<bool> SiegeResults(string path,int limit)=>SiegeResultsWithDefenders(path,limit).Select(r=>r.Captured).ToList();
+    /// <summary>
+    /// As <see cref="SiegeResults"/>, with the realm that held each keep (#523 step 2: the siege balance keeps a window per
+    /// defending realm). It is read from the siege's "defender: Realm" detail; a siege without one (a retake) gives None.
+    /// </summary>
+    public static List<SiegeDefenseBalance.SiegeResult> SiegeResultsWithDefenders(string path,int limit)
     {
-        var results=new List<bool>();
+        var results=new List<SiegeDefenseBalance.SiegeResult>();
         if(!File.Exists(path))return results;
         using var connection=Open(path,true);using var command=connection.CreateCommand();
         command.CommandText="SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Events'";
         if((long)command.ExecuteScalar()==0)return results;
-        command.CommandText="SELECT Outcome FROM Events WHERE Kind IN ('Keep','Relic keep') AND Outcome IN ('Captured','Defended','Defended (timeout)') AND substr(Details,1,length(@player))<>@player AND EndedUtc<>'' ORDER BY EndedUtc DESC,Id DESC LIMIT @limit";
+        command.CommandText="SELECT Outcome,Details FROM Events WHERE Kind IN ('Keep','Relic keep') AND Outcome IN ('Captured','Defended','Defended (timeout)') AND substr(Details,1,length(@player))<>@player AND EndedUtc<>'' ORDER BY EndedUtc DESC,Id DESC LIMIT @limit";
         command.Parameters.AddWithValue("@player",PlayerAttackPrefix);command.Parameters.AddWithValue("@limit",limit);
         using var reader=command.ExecuteReader();
-        while(reader.Read())results.Add(reader.GetString(0)=="Captured");
+        while(reader.Read())results.Add(new(reader.GetString(0)=="Captured",DefenderOf(reader.GetString(1))));
         results.Reverse();
         return results;
+    }
+    /// <summary>The realm named after "defender: " in a siege's details (None when there is none). Pure.</summary>
+    public static eRealm DefenderOf(string details)
+    {
+        const string marker="defender: ";
+        int at=details?.LastIndexOf(marker,StringComparison.Ordinal)??-1;
+        if(at<0)return eRealm.None;
+        string rest=details[(at+marker.Length)..];
+        foreach(eRealm realm in new[]{eRealm.Albion,eRealm.Midgard,eRealm.Hibernia})
+            if(rest.StartsWith(GlobalConstants.RealmToName(realm),StringComparison.Ordinal))return realm;
+        return eRealm.None;
     }
     public static (List<RealmEventRecord> Rows,long Total) Read(string path,string realm,string kind,string outcome,string search,int page,int pageSize=100)
     {

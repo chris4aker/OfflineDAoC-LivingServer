@@ -1853,7 +1853,8 @@ public static partial class AutonomousRvrEventLayer
     private static void EndEvent(ActiveEvent active, long nowTick, string reason, eRealm winner = eRealm.None)
     {
         if (!active.DefenseReaction && (reason.StartsWith("Keep captured") || reason.StartsWith("Siege defended")))
-            SiegeDefenseBalance.Record(reason.StartsWith("Keep captured") && (winner == eRealm.None || winner == active.AttackerRealm));
+            SiegeDefenseBalance.Record(reason.StartsWith("Keep captured") && (winner == eRealm.None || winner == active.AttackerRealm),
+                active.DefenderRealm);
         foreach (eRealm realm in new[] { active.AttackerRealm, active.DefenderRealm, OtherRealm(active) })
         {
             (string topic, Dictionary<string, string> slots) = SiegeOutcomeNews(active.Target.Name, active.AttackerRealm, active.DefenderRealm,
