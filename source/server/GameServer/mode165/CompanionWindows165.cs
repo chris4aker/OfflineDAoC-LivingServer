@@ -626,11 +626,13 @@ namespace DOL.GS
                 want = eActiveWeaponSlot.Standard;
             else if (want == eActiveWeaponSlot.Standard && !oneHand && twoHand)
                 want = eActiveWeaponSlot.TwoHanded;
-            // (True 1.65 also kept a two-hander the companion is less trained in on its back and remembered the set for its
-            // BotWeaponSetPolicy; Living Server's bots choose their weapon set by their own rules in each fight, so only
-            // the switch is ported.)
+            // #569 step 7: the set the player readied is remembered, and the companion keeps fighting with it
+            // (BotWeaponSetPolicy, rule 2) instead of its build switching it back at the next fight.
             if (changed != eInventorySlot.DistanceWeapon)
+            {
                 bot.SwitchWeapon(want);
+                bot.PlayerReadiedSlot = want;
+            }
         }
 
         private static void Saved(GamePlayer player, GameBot bot, DbInventoryItem given, DbInventoryItem returned)
