@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **758**; pending (#625, not on main yet): **0**; shipped by the pipeline: **726**.
+- Rows in code: **760**; pending (#625, not on main yet): **0**; shipped by the pipeline: **728**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -93,6 +93,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_NO_SHOW` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_OUTCOME` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_PARTIAL_ROSTER` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `action`, `group`, `reason`, `remaining`, `removed` | `removed` | - | - |
+| `AUTONOMOUS_GROUP_PULL_STALL` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.PullStall.cs` | JSON | - | - | - |
+| `AUTONOMOUS_GROUP_PULL_STALL_END` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.PullStall.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_REGROUP_LEADER_READY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `leader`, `region`, `rendezvous` | `leader` | - | - |
 | `AUTONOMOUS_GROUP_REGROUP_READY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `remainingSeconds`, `size` | - | - | - |
 | `AUTONOMOUS_GROUP_REGROUP_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `members`, `objective`, `remainingSeconds`, `rendezvous` | `members` | - | - |
