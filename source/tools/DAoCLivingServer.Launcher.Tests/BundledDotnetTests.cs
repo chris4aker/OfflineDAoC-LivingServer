@@ -1,3 +1,4 @@
+#nullable enable
 using NUnit.Framework;
 
 namespace DAoCLivingServer.Launcher.Tests;
