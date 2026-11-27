@@ -258,7 +258,11 @@ public static partial class AutonomousBotGroupCoordinator
                         if (RemoveBrokenSessions()) _nextBrokenSessionSweep = now + 1;
                 }
                 using (AiProfile.Scope(AiSystem.PulseFormSiegeParties))
+                {
                     FormSiegeParties();
+                    // #530 step 5b: the battleground muster's solo bots form parties too.
+                    FormBattlegroundMusterParties();
+                }
                 using (AiProfile.Scope(AiSystem.PulseTryFormGroups))
                     TryFormGroups();
             }

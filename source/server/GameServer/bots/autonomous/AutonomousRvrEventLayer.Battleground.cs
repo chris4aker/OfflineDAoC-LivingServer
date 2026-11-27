@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DOL.GS;
 
@@ -93,4 +95,76 @@ public static partial class AutonomousRvrEventLayer
             MusterHold.Storm => stormerMayEngage,
             _ => !isLord && (comesAtMuster || postedContact),
         };
+
+    // ---- 5b: groups in the muster ---------------------------------------------------------------------------------
+
+    /// <summary>A party at a battleground muster holds at most a full group.</summary>
+    public const int MusterPartySize = 8;
+    /// <summary>A new muster party forms from this many free bots (the siege parties' smaller size, owner 2026-10-07).</summary>
+    public const int MusterPartyMinimum = 3;
+    /// <summary>A muster record this old no longer counts (the force's writer stopped proposing it).</summary>
+    public const long MusterRosterFreshMilliseconds = 30_000;
+    private const string SoloBattlegroundForcePrefix = "bg:rvr-";
+
+    /// <summary>The party plan: how many free bots join each existing party, and the sizes of the new parties.</summary>
+    public sealed record MusterPartyPlan(int[] Joins, int[] NewParties)
+    {
+        public int Placed => Joins.Sum() + NewParties.Sum();
+    }
+
+    /// <summary>
+    /// #530 step 5b: the realm's free bots at a battleground muster first fill its muster parties there (each to
+    /// <see cref="MusterPartySize"/>, in the order given); the rest form new parties when at least
+    /// <see cref="MusterPartyMinimum"/> remain, split as evenly as the fewest parties of at most eight allow. One or two
+    /// left over stay solo until more arrive. Pure.
+    /// </summary>
+    public static MusterPartyPlan PlanMusterParties(IReadOnlyList<int> partySizes, int free)
+    {
+        free = Math.Max(0, free);
+        int[] joins = new int[partySizes?.Count ?? 0];
+        for (int i = 0; i < joins.Length && free > 0; i++)
+        {
+            int seats = Math.Max(0, MusterPartySize - partySizes[i]);
+            joins[i] = Math.Min(seats, free);
+            free -= joins[i];
+        }
+        if (free < MusterPartyMinimum)
+            return new(joins, Array.Empty<int>());
+        int parties = (free + MusterPartySize - 1) / MusterPartySize;
+        int[] sizes = Enumerable.Range(0, parties).Select(i => free / parties + (i < free % parties ? 1 : 0)).ToArray();
+        return new(joins, sizes);
+    }
+
+    /// <summary>The solo bots mustering for one battleground keep (their realms are the coordinator's to sort).</summary>
+    public sealed record MusterRoster(string ObjectiveId, long[] MemberIds);
+
+    /// <summary>
+    /// The solo battleground forces (<c>bg:rvr-&lt;id&gt;</c>) whose record says they muster at a battleground keep, written
+    /// in the last <see cref="MusterRosterFreshMilliseconds"/>, by keep. Read from the event layer's force records (5a).
+    /// </summary>
+    public static List<MusterRoster> BattlegroundMusterRosters(long nowTick)
+    {
+        var byKeep = new Dictionary<string, List<long>>(StringComparer.Ordinal);
+        foreach (var entry in ForceIntents)
+        {
+            if (!entry.Key.StartsWith(SoloBattlegroundForcePrefix, StringComparison.Ordinal) ||
+                !long.TryParse(entry.Key.AsSpan(SoloBattlegroundForcePrefix.Length), out long id) || id <= 0)
+                continue;
+            ForceIntent intent;
+            long written;
+            lock (entry.Value)
+            {
+                intent = entry.Value.Intent;
+                written = entry.Value.LastWriteTick;
+            }
+            if (intent == null || intent.Role != ForceRole.Muster || !IsBattlegroundObjective(intent.ObjectiveId) ||
+                nowTick - written > MusterRosterFreshMilliseconds)
+                continue;
+            if (!byKeep.TryGetValue(intent.ObjectiveId, out List<long> ids))
+                byKeep[intent.ObjectiveId] = ids = new List<long>();
+            ids.Add(id);
+        }
+        return byKeep.OrderBy(pair => pair.Key, StringComparer.Ordinal)
+            .Select(pair => new MusterRoster(pair.Key, pair.Value.OrderBy(id => id).ToArray())).ToList();
+    }
 }

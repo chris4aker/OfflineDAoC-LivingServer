@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **763**; pending (#625, not on main yet): **0**; shipped by the pipeline: **731**.
+- Rows in code: **764**; pending (#625, not on main yet): **0**; shipped by the pipeline: **732**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -178,6 +178,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BG_KEEP_LEVEL_RESTORED` | server.log | **ships** | `keeps/AbstractGameKeep.cs` | `baseLevel`, `from`, `id`, `keep`, `realm`, `reason`, `to` | - | - | - |
 | `BG_KEEP_STATUS` | server.log | **ships** | `bots/autonomous/AutonomousRvrDashboard.cs` | `activities`, `atLord`, `attackersAtLord`, `attackersOnLordFloor`, `battleground`, `doorHealth`, `doors`, `guardLevel`, `guards`, `holder`, `inCombat`, `inside`, `keep`, `keepLevel`, `lord`, `lordLevel`, `medianToKeep`, `moving`, `near`, `onLord` | - | - | - |
 | `BG_LORD_PATH` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `at`, `attempt`, `bot`, `dest`, `goalSnap`, `heightToLord`, `inCombat`, `keep`, `lordAt`, `moving`, `path`, `realm`, `sample`, `target`, `walkKind`, `walkTo` | `bot`, `path`, `target` | - | - |
+| `BG_MUSTER_PARTY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.MusterParties.cs` | `added`, `battleground`, `group`, `keep`, `members`, `minutes`, `realm`, `size`, `what` | `members` | - | - |
 | `BG_POPULATION` | server.log | **ships** | `bots/autonomous/LivingRows.Battlegrounds.cs` | `assigned`, `bg`, `bgGoal`, `bots`, `bracket`, `companions`, `eligible`, `expected`, `passing`, `player`, `realm`, `t`, `travelling` | - | - | BG_POPULATION (#625 row 1; |
 | `BG_RALLY_BARREN` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `barren`, `battleground`, `bearing`, `inside`, `joint`, `keep`, `minutes`, `needed`, `peakRallied`, `point`, `realm` | - | - | - |
 | `BG_RALLY_CANDIDATES` | server.log | **ships** | `bots/autonomous/AutonomousBattlegroundKeepRally.cs` | `battleground`, `candidates`, `gate`, `keep`, `realm`, `reason` | - | - | - |
