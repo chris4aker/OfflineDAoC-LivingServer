@@ -684,7 +684,7 @@ namespace DOL.GS
         }
 
         /// <summary>Who crews a ram: melee fighters (AutonomousRamCrews.IsCrewCandidate).</summary>
-        internal static bool IsRamCrewCandidate(GameBot bot) => bot?.CharacterClass != null &&
+        public static bool IsRamCrewCandidate(GameBot bot) => bot?.CharacterClass != null &&
             AutonomousRamCrews.IsCrewCandidate(AutonomousRvrDefense.IsRangedDefender(bot),
                 BotPartyRoles.For((eCharacterClass)bot.CharacterClass.ID) == BotPartyRole.Support ||
                 (eCharacterClass)bot.CharacterClass.ID == eCharacterClass.Shaman);
