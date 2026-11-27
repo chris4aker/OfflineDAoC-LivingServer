@@ -23,9 +23,9 @@ namespace DOL.UnitTests
         {
             var spawns = new[]
             {
-                S(8, 1, 100_100, 200_100, "Forest Bear", 14),
-                S(8, 1, 100_500, 200_400, "forest bear", 14),
-                S(8, 1, 100_900, 200_800, "forest bear", 14),
+                S(8, 1, 99_100, 200_100, "Forest Bear", 14),
+                S(8, 1, 99_500, 200_400, "forest bear", 14),
+                S(8, 1, 99_900, 200_800, "forest bear", 14),
             };
             var clusters = AutonomousUncoveredLiveCamps.Find(spawns, NoCamps, Cover);
             Assert.That(clusters, Has.Count.EqualTo(1));
