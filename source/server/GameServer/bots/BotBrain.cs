@@ -3672,8 +3672,15 @@ namespace DOL.AI.Brain
 
                 if (protectionTarget != null && TryPriorityTaunt(protectionTarget))
                 {
-                    Body.StopAttack();
-                    return;
+                    // An instant taunt (a Paladin's chant taunt) keeps the swing going like any instant; one with a cast
+                    // time still stops it (#571 step 5, DetShaft 12b401e4f).
+                    if (!BotHybridMeleePolicy.ContinueMeleeAfterInstant(!rangedCaster, true, Body.IsCasting,
+                            Body.castingComponent?.SpellHandler?.Spell, Body.castingComponent?.HasPendingSkillRequests == true,
+                            PendingSpellOrNull()))
+                    {
+                        Body.StopAttack();
+                        return;
+                    }
                 }
 
                 // A caster steps aside now and then right after a cast ended, never during one (BotBrain.CombatMovement).
@@ -3709,7 +3716,13 @@ namespace DOL.AI.Brain
                 bool continueMinstrelMelee = MinstrelBotCombatPolicy.ContinueAfterInstantDamage(
                     UsesMinstrelHybridCombat, spellAction, Body.IsCasting,
                     Body.castingComponent?.SpellHandler?.Spell, hasPendingSpell, pendingSpell);
-                if (spellAction && !continueSavageMelee && !preserveRangedDraw && !continueMinstrelMelee)
+                // Any other melee bot whose spell this turn was an instant keeps its swing and chase too: the engine stops
+                // melee only for a cast with a cast time (#571 step 5, DetShaft 09baa0375).
+                bool continueHybridMelee = BotHybridMeleePolicy.ContinueMeleeAfterInstant(
+                    !rangedCaster, spellAction, Body.IsCasting,
+                    Body.castingComponent?.SpellHandler?.Spell, hasPendingSpell, pendingSpell);
+                if (spellAction && !continueSavageMelee && !preserveRangedDraw && !continueMinstrelMelee &&
+                    !continueHybridMelee)
                 {
                     Body.StopAttack();
                 }
@@ -4314,6 +4327,14 @@ namespace DOL.AI.Brain
                 .ThenByDescending(candidate => candidate.TargetObject is GameBot bot && bot.Brain is BotBrain { IsHealer: true })
                 .ThenBy(candidate => Body.GetDistanceTo(candidate))
                 .FirstOrDefault();
+        }
+
+        private Spell PendingSpellOrNull()
+        {
+            Spell pending = null;
+            if (Body.castingComponent?.HasPendingSkillRequests == true)
+                Body.castingComponent.TryPeekPendingSpell(out pending);
+            return pending;
         }
 
         private bool TryPriorityTaunt(GameLiving target)
