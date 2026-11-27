@@ -21,7 +21,9 @@ A fix counts as working only once it is seen in a log from the owner's PC. Until
 - **1.2.2** is the latest full release (2026-11-23, [RELEASE-NOTES-1.2.2.md](RELEASE-NOTES-1.2.2.md)).
 - **1.2.3** is in release candidates: `v1.2.3-rc.2` was published as a pre-release on 2026-11-26 ([#709](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/709)); the merges
   for rc.3 are going into `main`. The `1.2.3` milestone's cut line is set by the owner after the playtest.
-- **1.2.4**'s headline is the alt roster ([#631](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/631), listed under "No milestone yet" until it is given the milestone).
+- **1.2.4** is the alt roster ([#631](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/631)) and the foundations the rest builds on; **1.2.5** builds on it.
+  Every open issue now has a milestone; the plan and build order are on
+  [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738).
 - **Done since 1.2** (closed; what shipped is in each issue's last comment and in the changelog): [#396](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/396), [#397](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/397),
   [#399](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/399)-[#409](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/409), [#411](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/411), [#413](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/413), [#415](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/415)-[#424](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/424), [#437](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/437), [#438](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/438), [#473](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/473), [#475](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/475), [#477](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/477), [#478](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/478), [#482](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/482),
   [#485](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/485), [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487), [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491), [#505](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/505), [#519](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/519), [#521](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/521), [#522](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/522), [#525](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/525), [#535](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/535)-[#539](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/539), [#574](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/574), [#598](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/598). Most of them
@@ -153,106 +155,145 @@ Fix routes spot by spot; never rebuild navmeshes globally.
 
 ## 1.2.4
 
-The [1.2.4 milestone](https://github.com/chris4aker/OfflineDAoC-LivingServer/milestone/2): "Headline: the alt roster
-(bot players own characters)". No issue carries the milestone yet; the alt roster is listed under "No milestone yet",
-Other.
+The [1.2.4 milestone](https://github.com/chris4aker/OfflineDAoC-LivingServer/milestone/2): the alt roster, and the
+foundations the rest builds on. Grouped and ordered as the milestone plan, [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738), describes: anything another item
+builds on comes first (an arrow means "then"). Every placement is a proposal for the owner to confirm or move
+(`needs-owner` on #738).
 
-## No milestone yet
+- [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738) Milestone plan: every unplaced issue into 1.2.4 or 1.2.5, in build order. `needs-owner`.
 
-Open issues not yet given a release. The owner sets milestones; ask on the issue before starting one.
+### The alt roster (headline)
 
-### Harvest (the 2026-11 upstream harvest)
+- [#631](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/631) Alt roster: bot players own up to 3 characters (the 2026-10-12 design). Owner, 2026-11-25: the headline of
+  1.2.4, right after the 1.2.3 playtest. Its "before building" asks to check low-level combat first, so the next two
+  come with it.
+- [#570](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/570) Harvest: solo levelling life and learned dangers (hotspots, seams, hunting ground, corpse walk).
+- [#578](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/578) Harvest: classic starter quests from DOL scripts.
 
-From [upstream/HARVEST-2026-11.md](upstream/HARVEST-2026-11.md): one ranked list from the OpenDAoC-Core, Offline DAoC
-family and DOL sweeps.
-
-- [#569](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/569) True165 party play, pulls and travel files never taken.
-- [#570](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/570) Solo levelling life and learned dangers (hotspots, seams, hunting ground, corpse walk).
-- [#571](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/571) The player's group and companions (DetShaft fight mode, leader focus, RP shares).
-- [#572](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/572) RvR and siege group AI sources (FelixGagnonB 8v8, True165 RvR files, ram seats).
-- [#573](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/573) Bot memory, social acts, gear value and economy from True165.
-- [#575](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/575) Period loot and merchants (True165 rows, Thidranki, Uth-Moras audit).
-- [#577](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/577) Keep patrol paths from db-public. `needs-PC`, `blocked`.
-- [#578](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/578) Classic starter quests from DOL scripts.
-- [#580](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/580) Client recipe check with craft_extract (separate tool).
-- [#581](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/581) Geometry line of sight for mobs and bots (Amtenael LosCheckMgr). Needs the PC.
-- [#582](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/582) Single-zone navmesh rebuild tooling (Uthgard buildnav). Needs the PC.
-
-### RvR
-
-The plan and the audit: [rvr-audit-1.2.3/README.md](rvr-audit-1.2.3/README.md). Read it before taking any of these.
-
-- [#506](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/506) RvR that passes for the real realm war: the audit and plan (tracker).
-- [#606](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/606) RvR roadmap: the next RvR package, after the 1.2.3 playtest (tracker).
-- [#523](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/523) RvR work 5: sieges and defenses decided by who is there (one alarm for any enemy, small strikes, ends on
-  quiet, what comes after).
-- [#524](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/524) RvR work 6: where and when the war happens (front and geography weights, siege reasons, the war's clock).
-- [#527](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/527) RvR work 9: the player's seat (RvR groups, companions and musters that include the human).
-- [#528](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/528) RvR work 10: after the kill (move-on counts the player, true inc calls, kill emotes, realm-rank measure).
-- [#529](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/529) RvR work 11 (piece B): one contact table per bot and group (one perception model, shadow first).
-- [#531](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/531) RvR work 13 (piece D): one fight plan with profiles (first pick, PBAoE, realm abilities, keep profiles).
-  Rapid Fire, Camouflage, Vanish and True Sight for bots are left here from #522.
-- [#532](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/532) RvR work 14 (piece E): one movement owner (no teleports in sight, no statues, melee that moves, the legs
-  lease).
-- [#533](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/533) RvR work 15 (piece F): one flee model (a chase leash that works, retreats to guards, stealthers that run).
-- [#599](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/599) Multi-group forces outside keeps (2-3 group roams, 16-24 zergs, battlegroups).
-- [#600](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/600) Group tactics everywhere: battlegrounds, keeps and the player's group.
-- [#601](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/601) Roaming eights that find fights: hunt what is seen, milegates and chokepoints, home-realm eights.
-- [#602](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/602) Bot realm abilities: the full 1.65 active set and smart use.
-- [#603](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/603) Class group roles in a fight: bomb groups, mez/stun chains, healers, the period group make-ups.
-- [#604](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/604) Fight voice: group and battlegroup calls in chat (inc, targets, CC, regroup, rez).
-- [#605](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/605) Fight harness at scale: 8v8 per realm make-up, 16v8, 24v16, battleground storm, seeded and reported.
-- [#707](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/707) Roadmap: patrols for the classic frontier's keeps (generated routes, period check first; owner, 2026-11-26:
-  not for 1.2.3).
-
-### Realism (bots that pass for players)
+### Realism: the chat core first
 
 The plan and the audit: [realism-audit-1.2.3/README.md](realism-audit-1.2.3/README.md) (read `structure.md` first).
 
 - [#489](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/489) Bots that pass for players: the realism plan (tracker).
-- [#479](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/479) Realism 2b: one reply path, one memory and one typing delay for every channel.
-- [#480](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/480) Realism 2c: follow-ups, corrections and nudges keep their subject.
-- [#481](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/481) Realism 2d: a contract on every written line, and style that knows the line's kind.
-- [#483](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/483) Realism 2f: chat that lasts an evening (pools, reactions, pacing, the player included).
-- [#484](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/484) Realism 2g: the written lines in the period voice.
-- [#486](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/486) Realism 3b: words with acts behind them (orders, brb, camps, thanks, goodbyes).
-- [#488](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/488) Realism 4b: one idle-life layer, the player's own group first.
+- [#479](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/479) Realism 2b: one reply path, one memory and one typing delay for every channel. Then #480, then #481.
+- [#480](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/480) Realism 2c: follow-ups, corrections and nudges keep their subject (after #479).
+- [#481](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/481) Realism 2d: a contract on every written line, and style that knows the line's kind (after #480).
+- [#486](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/486) Realism 3b: words with acts behind them (orders, brb, camps, thanks, goodbyes). Independent.
+- [#488](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/488) Realism 4b: one idle-life layer, the player's own group first. Independent.
 
-### OpenDAoC ports
+### RvR foundations (after #530, in 1.2.3)
 
-The extra packages of [upstream/OPENDAOC-LEDGER-2026-11.md](upstream/OPENDAOC-LEDGER-2026-11.md).
+The plan and the audit: [rvr-audit-1.2.3/README.md](rvr-audit-1.2.3/README.md). Read it before taking any of these.
+If #530 slips, these slip with it.
 
-- [#562](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/562) Housing, guild and market.
-- [#563](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/563) Player and GM commands.
-- [#564](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/564) Client display, chat and group window.
-- [#565](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/565) Quests, gravestones and timed services.
+- [#506](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/506) RvR that passes for the real realm war: the audit and plan (tracker).
+- [#529](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/529) RvR work 11 (piece B): one contact table per bot and group (one perception model, shadow first). Then #531.
+- [#531](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/531) RvR work 13 (piece D): one fight plan with profiles (first pick, PBAoE, realm abilities, keep profiles), after
+  #529. Rapid Fire, Camouflage, Vanish and True Sight for bots are left here from #522.
+- [#528](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/528) RvR work 10: after the kill (move-on counts the player, true inc calls, kill emotes, realm-rank measure). A
+  bug fix.
+
+### The player's group
+
+- [#571](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/571) Harvest: the player's group and companions (DetShaft fight mode, leader focus, RP shares). Companions #664
+  (1.2.5) builds on it.
 
 ### Grafana Cloud kit
 
 See [GRAFANA.md](GRAFANA.md) and [LOG-ROWS.md](LOG-ROWS.md).
 
-- [#647](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/647) Agent-run setup on Ubuntu and Windows, with or without a Cloud account and Alloy.
-- [#650](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/650) Kit 2: existing agents (legacy Grafana Agent migration, Alloy module option).
-- [#651](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/651) Kit 3: one pipeline on #628's fail-closed filter, with the metrics side.
-- [#653](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/653) Kit 5: game-side meters (bots online by type and realm, metrics interval key, MetricsEnabled switch).
-  `needs-owner`.
-- [#655](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/655) Alerts and SLOs (split from #652).
+- [#647](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/647) Agent-run setup on Ubuntu and Windows, with or without a Cloud account and Alloy. Then #650, then #651.
+- [#650](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/650) Kit 2: existing agents (legacy Grafana Agent migration, Alloy module option), after #647.
+- [#651](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/651) Kit 3: one pipeline on #628's fail-closed filter, with the metrics side, after #650.
 - [#656](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/656) Dashboards must work on Windows (the server-running gate uses Linux-only metrics).
-- [#657](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/657) Host panels for players without node_exporter.
-- [#658](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/658) Upgrade from a hand-run copy of the pipeline (job label, port, positions).
 
-### Other
+### Smaller harvests and ports
 
-- [#631](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/631) Alt roster: bot players own up to 3 characters (the 2026-10-12 design). Owner, 2026-11-25: the headline of
-  1.2.4, right after the 1.2.3 playtest.
+From [upstream/HARVEST-2026-11.md](upstream/HARVEST-2026-11.md) and
+[upstream/OPENDAOC-LEDGER-2026-11.md](upstream/OPENDAOC-LEDGER-2026-11.md).
+
+- [#575](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/575) Harvest: period loot and merchants (True165 rows, Thidranki, Uth-Moras audit).
+- [#580](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/580) Harvest: client recipe check with craft_extract (separate tool).
+- [#563](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/563) OpenDAoC port: player and GM commands.
+- [#564](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/564) OpenDAoC port: client display, chat and group window.
+
+## 1.2.5
+
+The [1.2.5 milestone](https://github.com/chris4aker/OfflineDAoC-LivingServer/milestone/3): what builds on 1.2.4. Order
+as in [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738).
+
+### The RvR package (needs #529 and #531)
+
+- [#606](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/606) RvR roadmap: the next RvR package, after the 1.2.3 playtest (tracker).
+- [#533](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/533) RvR work 15 (piece F): one flee model (a chase leash that works, retreats to guards, stealthers that run),
+  after #531.
+- [#532](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/532) RvR work 14 (piece E): one movement owner (no teleports in sight, no statues, melee that moves, the legs
+  lease).
+- [#523](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/523) RvR work 5: sieges and defenses decided by who is there (one alarm for any enemy, small strikes, ends on
+  quiet, what comes after), after #529.
+- [#527](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/527) RvR work 9: the player's seat (RvR groups, companions and musters that include the human), after #530 and
+  #531.
+- [#524](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/524) RvR work 6: where and when the war happens (front and geography weights, siege reasons, the war's clock).
+- [#599](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/599) Multi-group forces outside keeps (2-3 group roams, 16-24 zergs, battlegroups), after #530.
+- [#600](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/600) Group tactics everywhere: battlegrounds, keeps and the player's group, after #531.
+- [#601](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/601) Roaming eights that find fights: hunt what is seen, milegates and chokepoints, home-realm eights.
+- [#602](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/602) Bot realm abilities: the full 1.65 active set and smart use.
+- [#603](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/603) Class group roles in a fight: bomb groups, mez/stun chains, healers, the period group make-ups.
+- [#604](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/604) Fight voice: group and battlegroup calls in chat (inc, targets, CC, regroup, rez). Needs #529, #531 and
+  realism #481.
+- [#605](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/605) Fight harness at scale: 8v8 per realm make-up, 16v8, 24v16, battleground storm, seeded and reported (on
+  #520).
+
+### Companions in RvR (all `needs-owner`)
+
+Each waits on the owner's answers on #663.
+
 - [#663](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/663) Companions in battlegrounds and RvR: engage nearby enemies on their own and spread into an attack formation
   (tracker). `needs-owner`, `needs-PC`.
 - [#664](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/664) Companions: assess and attack nearby enemies on their own in battlegrounds and RvR, not only the player's
-  target. `needs-owner`, `needs-PC`.
+  target (after #571). `needs-owner`, `needs-PC`.
 - [#665](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/665) Companions: spread into an attack formation once the enemy is engaged in battlegrounds and RvR.
   `needs-owner`, `needs-PC`.
 - [#667](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/667) Group controls: let the player order companions and their bot group in a fight (attack, assist on me, kite
   back, PBAoE, hold, regroup). `needs-owner`, `needs-PC`.
+
+### Realism: the later steps (after 2b-2d)
+
+- [#483](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/483) Realism 2f: chat that lasts an evening (pools, reactions, pacing, the player included).
+- [#484](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/484) Realism 2g: the written lines in the period voice.
+
+### Grafana extras
+
+- [#653](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/653) Kit 5: game-side meters (bots online by type and realm, metrics interval key, MetricsEnabled switch).
+  `needs-owner`.
+- [#655](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/655) Alerts and SLOs (split from #652).
+- [#657](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/657) Host panels for players without node_exporter.
+- [#658](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/658) Upgrade from a hand-run copy of the pipeline (job label, port, positions).
+
+### Bigger harvests
+
+- [#569](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/569) Harvest: True165 party play, pulls and travel files never taken.
+- [#572](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/572) Harvest: RvR and siege group AI sources (FelixGagnonB 8v8, True165 RvR files, ram seats), with the RvR
+  package.
+- [#573](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/573) Harvest: bot memory, social acts, gear value and economy from True165 (builds on the alt roster's shared
+  memory).
+- [#581](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/581) Harvest: geometry line of sight for mobs and bots (Amtenael LosCheckMgr). Touches navigation: evidence
+  first; needs the PC.
+- [#582](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/582) Harvest: single-zone navmesh rebuild tooling (Uthgard buildnav). Touches navigation: evidence first; needs
+  the PC.
+
+### Held by the owner
+
+Owner, 2026-11-24: "holding patrols for later". In 1.2.5 to keep them visible, not to schedule them.
+
+- [#577](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/577) Harvest: keep patrol paths from db-public. `needs-PC`, `blocked`.
+- [#707](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/707) Roadmap: patrols for the classic frontier's keeps (generated routes, period check first; owner, 2026-11-26:
+  not for 1.2.3).
+
+### Ports (both large)
+
+- [#562](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/562) OpenDAoC port: housing, guild and market.
+- [#565](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/565) OpenDAoC port: quests, gravestones and timed services.
 
 ## Lore
 
