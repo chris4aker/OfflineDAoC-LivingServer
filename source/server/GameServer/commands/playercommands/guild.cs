@@ -160,6 +160,12 @@ namespace DOL.GS.Commands
 			player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "Scripts.Player.Guild.GuildCreated", guildname, player.Name), eChatType.CT_Guild, eChatLoc.CL_SystemWindow);
 		}
 
+		/// <summary>True for "/gc info &lt;x&gt;", the half of the social window refresh that skips the spam check.</summary>
+		public static bool IsSocialWindowInfoRequest(string[] args)
+		{
+			return args != null && args.Length > 2 && args[1].Equals("info", StringComparison.OrdinalIgnoreCase);
+		}
+
 		/// <summary>
 		/// method to handle /gc commands from a client
 		/// </summary>
@@ -168,8 +174,13 @@ namespace DOL.GS.Commands
 		/// <returns></returns>
 		public void OnCommand(GameClient client, string[] args)
 		{
-			if (IsSpammingCommand(client.Player, "gc", 500))
-				return;
+			// Port of OpenDAoC-Core 582ff4db3: the social window's refresh button sends /gc info and /gc who together,
+			// so /gc info with arguments skips the spam check (the refresh did nothing for non-GM accounts).
+			if (!IsSocialWindowInfoRequest(args))
+			{
+				if (IsSpammingCommand(client.Player, "gc", 500))
+					return;
+			}
 
 			try
 			{
@@ -2262,23 +2273,36 @@ namespace DOL.GS.Commands
 							return;
 						}
 
-						if (args[2] is null)
+						if (args.Length < 3 || string.IsNullOrEmpty(args[2]))
 						{
 							client.Out.SendMessage("You need to specify a target guild member.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 							return;
 						}
 
 						bool noteSet = false;
-						foreach (var guildMember in GuildMgr.GetGuildMemberViews(client.Player.Guild))
+
+						foreach (var guildMemberView in GuildMgr.GetGuildMemberViews(client.Player.Guild))
 						{
-							if (guildMember.Value.Name.ToLower() != args[2].ToLower()) continue;
-							string note = String.Join(" ", args, 3, args.Length - 3);
-							guildMember.Value.Note = note;
+							string guildMemberName = guildMemberView.Value.Name;
+
+							if (!guildMemberName.Equals(args[2], StringComparison.OrdinalIgnoreCase))
+								continue;
+
+							string note = string.Join(" ", args, 3, args.Length - 3);
+
+							// Port of OpenDAoC-Core 39b80ce80: an online member's note goes on the player, so it is saved
+							// and the next member-list refresh (which reads the player) doesn't put the old one back.
+							GamePlayer guildMember = ClientService.Instance.GetPlayerByExactName(guildMemberName);
+
+							if (guildMember != null)
+								guildMember.GuildNote = note;
+
+							guildMemberView.Value.Note = note;
 							noteSet = true;
 							break;
 						}
-							
-						if(!noteSet)
+
+						if (!noteSet)
 							client.Out.SendMessage("No guild member with that name found.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 						else
 							client.Out.SendMessage($"Note set correctly for {args[2]}", eChatType.CT_System, eChatLoc.CL_SystemWindow);

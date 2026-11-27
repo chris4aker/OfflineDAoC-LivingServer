@@ -18,7 +18,8 @@ namespace DOL.GS
     /// <item>SERVER_MEMORY: every five minutes, heap by generation, fragmentation, allocation rate, collections,
     /// pauses, memory load, the largest allocating types (sampled) and the sizes of known bot caches.</item>
     /// <item>SERVER_HEAP_SNAPSHOT: a dotnet-gcdump heap snapshot into logs/ when the heap first passes
-    /// SnapshotThresholdsMegabytes (needs the dotnet-gcdump tool; each snapshot pauses the server a few seconds).</item>
+    /// SnapshotThresholdsMegabytes (needs the dotnet-gcdump tool; each snapshot pauses the server a few seconds). Its "done",
+    /// "overran" or "failed" row carries the tool's exit code and the start and end of its stdout and stderr (issue #731).</item>
     /// </list>
     /// Allocation sampling and snapshots are skipped when the server folder holds a file named gc-diagnostics.off.
     /// Read the results with tools/claude-version/gc_report.py.
@@ -107,6 +108,8 @@ namespace DOL.GS
             RegisterCache("npcDetached", () => CountNpcs(npc => npc.ObjectState != GameObject.eObjectState.Active));
             RegisterCache("botDetached", () => CountNpcs(npc => npc is GameBot && npc.ObjectState != GameObject.eObjectState.Active));
             RegisterCache("petDetached", () => CountNpcs(npc => npc is GameSummonedPet && npc.ObjectState != GameObject.eObjectState.Active));
+            // #529: the RvR contact table (per-bot rows plus the realm union); it is not IEnumerable, so the census can't see it.
+            RegisterCache("rvrContacts", () => AutonomousWorldBotController.RvrContactTable.Count);
             try { _listener = new GcListener(); }
             catch (Exception exception) { Log.Warn("GC event listener could not start; SERVER_GC_PAUSE lines are off", exception); }
             Log.Info($"SERVER_MEMORY_DIAGNOSTICS started allocationSampling={_detailed} heapSnapshots={_detailed && GcdumpPath() != null && File.Exists(Path.Combine(AppContext.BaseDirectory, SnapshotEnableFileName))} " +
@@ -396,22 +399,72 @@ namespace DOL.GS
             _snapshotsTaken++;
             _lastSnapshotTicks = now;
             string file = Path.Combine(AppContext.BaseDirectory, "logs", $"heap-{DateTime.Now:yyyyMMdd-HHmmss}-{heapMb}MB.gcdump");
-            Log.Warn($"SERVER_HEAP_SNAPSHOT heapMB={heapMb} liveMB={LiveAfterFullCollectionMegabytes()} file=\"{file}\" (the snapshot's own full collection pauses the server for a few seconds)");
-            ThreadPool.QueueUserWorkItem(_ =>
+            string[] arguments = HeapSnapshotTool.Arguments(Environment.ProcessId, file);
+            // Issue #731: the tool path and the exact command, so a failed run can be repeated by hand. runtime= is the
+            // server's own .NET version (the bundled one or a system install: rc.2 ran on a system 10.0.15, #732). The
+            // tool inherits the server's environment, whatever DOTNET_ROOT it holds.
+            Log.Warn($"SERVER_HEAP_SNAPSHOT heapMB={heapMb} liveMB={LiveAfterFullCollectionMegabytes()} file=\"{file}\" " +
+                     $"tool=\"{tool}\" command=\"{HeapSnapshotTool.ForRow(HeapSnapshotTool.CommandLine(tool, arguments))}\" runtime={Environment.Version} " +
+                     "(the snapshot's own full collection pauses the server for a few seconds)");
+            ThreadPool.QueueUserWorkItem(_ => RunSnapshotTool(tool, arguments, file));
+        }
+
+        /// <summary>
+        /// Runs dotnet-gcdump and logs what it said (issue #731: rc.2's first snapshot exited -1 with no file, and its
+        /// output went only to the launcher's server-console.log). Both streams are read asynchronously into bounded
+        /// buffers, so the tool can't block on a full pipe; a tool still running after WaitMilliseconds is stopped.
+        /// Runs on a pool thread: nothing may leave here.
+        /// </summary>
+        private static void RunSnapshotTool(string tool, string[] arguments, string file)
+        {
+            var stdout = new HeapSnapshotTool.BoundedOutput();
+            var stderr = new HeapSnapshotTool.BoundedOutput();
+            long started = Stopwatch.GetTimestamp();
+            double Seconds() => (Stopwatch.GetTimestamp() - started) / (double)Stopwatch.Frequency;
+            try
             {
-                try
+                // The logs folder normally exists (the server's own logs are in it); the tool doesn't create it.
+                Directory.CreateDirectory(Path.GetDirectoryName(file));
+                var start = new ProcessStartInfo(tool)
                 {
-                    using Process dump = Process.Start(new ProcessStartInfo(tool)
-                    {
-                        ArgumentList = { "collect", "-p", Environment.ProcessId.ToString(), "-o", file },
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    });
-                    if (dump != null && dump.WaitForExit(600_000))
-                        Log.Info($"SERVER_HEAP_SNAPSHOT done exit={dump.ExitCode} file=\"{file}\" exists={File.Exists(file)}");
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                };
+                foreach (string argument in arguments) start.ArgumentList.Add(argument);
+                using var dump = new Process { StartInfo = start };
+                dump.OutputDataReceived += (_, e) => stdout.AppendLine(e.Data);
+                dump.ErrorDataReceived += (_, e) => stderr.AppendLine(e.Data);
+                dump.Start();
+                dump.BeginOutputReadLine();
+                dump.BeginErrorReadLine();
+                if (!dump.WaitForExit(HeapSnapshotTool.WaitMilliseconds))
+                {
+                    try { dump.Kill(entireProcessTree: true); } catch { }
+                    Log.Warn(FormattableString.Invariant($"SERVER_HEAP_SNAPSHOT overran seconds={Seconds():F0} file=\"{file}\" exists={File.Exists(file)} ") +
+                             $"stdoutChars={stdout.TotalChars} stderrChars={stderr.TotalChars} " +
+                             $"stdoutKeyLines=\"{HeapSnapshotTool.ForRow(stdout.KeyLines())}\" stderrKeyLines=\"{HeapSnapshotTool.ForRow(stderr.KeyLines())}\" " +
+                             $"stdout=\"{HeapSnapshotTool.ForRow(stdout.ToString())}\" stderr=\"{HeapSnapshotTool.ForRow(stderr.ToString())}\"");
+                    return;
                 }
-                catch (Exception exception) { Log.Warn("SERVER_HEAP_SNAPSHOT failed", exception); }
-            });
+                dump.WaitForExit(); // the parameterless wait also drains the redirected streams
+                int exit = dump.ExitCode;
+                string meaning = HeapSnapshotTool.ExitMeaning(exit);
+                // A failed snapshot is a warning, so it shows in warn.log too.
+                string row = $"SERVER_HEAP_SNAPSHOT done exit={exit} file=\"{file}\" exists={File.Exists(file)} " +
+                         $"exitHex={HeapSnapshotTool.ExitHex(exit)} meaning={meaning} " +
+                         FormattableString.Invariant($"seconds={Seconds():F0} stdoutChars={stdout.TotalChars} stderrChars={stderr.TotalChars} ") +
+                         $"stdoutKeyLines=\"{HeapSnapshotTool.ForRow(stdout.KeyLines())}\" stderrKeyLines=\"{HeapSnapshotTool.ForRow(stderr.KeyLines())}\" " +
+                         $"stdout=\"{HeapSnapshotTool.ForRow(stdout.ToString())}\" stderr=\"{HeapSnapshotTool.ForRow(stderr.ToString())}\"";
+                if (meaning == "ok") Log.Info(row);
+                else Log.Warn(row);
+            }
+            catch (Exception exception)
+            {
+                Log.Warn($"SERVER_HEAP_SNAPSHOT failed tool=\"{tool}\" stdout=\"{HeapSnapshotTool.ForRow(stdout.ToString())}\" " +
+                         $"stderr=\"{HeapSnapshotTool.ForRow(stderr.ToString())}\"", exception);
+            }
         }
 
         private static string ReasonName(long reason) => reason switch

@@ -41,7 +41,7 @@ namespace DOL.GS.Quests
         }
 
         /// <summary>
-        /// The lowest journal slot no quest holds. A freed slot queued in GamePlayer.AvailableQuestIndexes can have been
+        /// The lowest journal slot no quest holds; GamePlayer.AddQuest picks it under the quest list lock. A freed slot queued in the old GamePlayer.AvailableQuestIndexes could have been
         /// taken since by a quest that moved in from past the capacity (SendQuestListUpdate), so AddQuest gives a slot
         /// only while no quest holds it (owner 2026-10-30; two quests on one slot showed as one).
         /// </summary>
