@@ -3563,7 +3563,7 @@ namespace DOL.AI.Brain
                 ? CalculateNextAttackTarget() : null;
             Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker, activePetTarget, threatTarget);
             NoteLeaderFocus(leaderFocus, directAttacker, activePetTarget, threatTarget);
-            // The tank publishes its target as the kill target; a peel on an add never moves a live one (True165 M2).
+            // The tank publishes its target as the kill target; a peel on an add never moves a live one.
             OfferPartyKillTarget(Body.TargetObject as GameLiving, protectionTarget != null &&
                 Body.TargetObject == protectionTarget && protectionTarget.TargetObject != Body);
             if (RvrTacticsTarget(Body.TargetObject as GameLiving, protectionTarget, directAttacker) is { } rvrCalled) Body.TargetObject = rvrCalled;

@@ -8,7 +8,7 @@ using A = DOL.GS.BotPartyMainAssist;
 namespace DOL.GS.Tests
 {
     /// <summary>
-    /// #569 step 6, main assist for autonomous gamebot PvE parties (port of True165 897ddfa, f745061): the tank's target is
+    /// #569 step 6, main assist for autonomous gamebot PvE parties: the tank's target is
     /// the party's kill target and the other members take it. One server setting, bot_party_main_assist, on by default.
     /// Tests only until seen in a PC log.
     /// </summary>
@@ -36,13 +36,55 @@ namespace DOL.GS.Tests
         [Test]
         public void MembersFollowTheKillTargetUnlessLowAndHit() => Assert.Multiple(() =>
         {
-            Assert.That(A.AssistsKillTarget(true, false, 100, true), Is.True, "hit but healthy: stay on the kill target");
-            Assert.That(A.AssistsKillTarget(true, false, 40, false), Is.True, "low but nobody on it: keep hitting the kill");
-            Assert.That(A.AssistsKillTarget(true, false, 49, true), Is.False, "low and being hit: fight back");
-            Assert.That(A.AssistsKillTarget(true, false, A.LowHealthPercent, true), Is.True, "exactly half is not low");
-            Assert.That(A.AssistsKillTarget(true, true, 100, false), Is.False, "never onto a mesmerized or rooted kill target");
-            Assert.That(A.AssistsKillTarget(false, false, 100, false), Is.False, "gone, stale or out of reach");
+            Assert.That(A.AssistsKillTarget(true, false, 100, true, false), Is.True, "hit but healthy: stay on the kill target");
+            Assert.That(A.AssistsKillTarget(true, false, 40, false, false), Is.True, "low but nobody on it: keep hitting the kill");
+            Assert.That(A.AssistsKillTarget(true, false, 49, true, false), Is.False, "low and being hit: fight back");
+            Assert.That(A.AssistsKillTarget(true, false, A.LowHealthPercent, true, false), Is.True, "exactly half is not low");
+            Assert.That(A.AssistsKillTarget(true, true, 100, false, false), Is.False, "never onto a mesmerized or rooted kill target");
+            Assert.That(A.AssistsKillTarget(false, false, 100, false, false), Is.False, "gone, stale or out of reach");
         });
+
+        [Test]
+        public void AMemberHitByAnEnemyPlayerFightsIt() => Assert.Multiple(() =>
+        {
+            Assert.That(A.AssistsKillTarget(true, false, 100, true, true), Is.False,
+                "an enemy player, gamebot or their pet is hitting it: fight back at once, at any health");
+            Assert.That(A.AssistsKillTarget(true, false, 100, true, false), Is.True, "a monster hitting a healthy member");
+        });
+
+        [Test]
+        public void RaidsRvrAndEnemiesInViewOutrankTheKillTarget() => Assert.Multiple(() =>
+        {
+            Assert.That(A.StepsAside(false, false, false), Is.False, "plain PvE: main assist runs");
+            Assert.That(A.StepsAside(true, false, false), Is.True, "inside a realm raid the raid's own calls win (owner, #783)");
+            Assert.That(A.StepsAside(false, true, false), Is.True, "the open-field RvR tactics apply");
+            Assert.That(A.StepsAside(false, false, true), Is.True, "an enemy player or gamebot is in view");
+        });
+
+        [Test]
+        public void PetsOfAnEnemyRealmAndSiegeEnginesAreNeverTheKillTarget() => Assert.Multiple(() =>
+        {
+            Assert.That(A.EligibleKillTarget(false, false, false), Is.True, "a monster");
+            Assert.That(A.EligibleKillTarget(true, false, false), Is.False, "a gamebot");
+            Assert.That(A.EligibleKillTarget(false, true, false), Is.False, "an enemy-realm pet");
+            Assert.That(A.EligibleKillTarget(false, false, true), Is.False, "a siege engine");
+        });
+
+        [Test]
+        public void TheBrainWiresTheStepAsideTheAttackerAndTheTargetRule()
+        {
+            string assist = Source("bots", "BotBrain.MainAssist.cs");
+            Assert.Multiple(() =>
+            {
+                Assert.That(assist, Does.Contain(
+                    "!BotPartyMainAssist.StepsAside(AutonomousRealmRaid.GetView(group) != null, RvrTacticsActive(),\n" +
+                    "                        MainAssistEnemyInView(bot));"));
+                Assert.That(assist, Does.Contain("directAttacker != null, BotPvpCrowdControl.PlayerLike(directAttacker)))"));
+                Assert.That(assist, Does.Contain("EligiblePartyKillTarget(target) && CanDefendAgainst(target) &&"));
+                Assert.That(assist, Does.Contain("target is not GameNPC { IsAlive: true } npc || !EligiblePartyKillTarget(npc) ||"));
+                Assert.That(assist, Does.Contain("npc is GameSiegeWeapon);"));
+            });
+        }
 
         [Test]
         public void TheFirstTanksTargetStaysTheKillTarget() => Assert.Multiple(() =>
