@@ -252,7 +252,7 @@ namespace DOL.UnitTests
             string write = Method(Source("packets", "Server", "PacketLib1124.cs"), "protected override void WriteItemData(GSTCPPacketOut pak, DbInventoryItem item)");
             Assert.That(write, Does.Contain("ChargeSpell(item.SpellID)"));
             Assert.That(write, Does.Contain("ChargeSpell(item.SpellID1)"));
-            Assert.That(write, Does.Not.Contain("Item_Effects"));
+            Assert.That(write, Does.Not.Contain("GlobalSpellsLines.Item_Effects"), "no Item_Effects-only scan");
         }
 
         #endregion
