@@ -2,7 +2,7 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **Melee hybrids keep swinging through their instant spells** (#571 step 5; DetShaft 09baa0375 and 12b401e4f, GPL-3.0;
+- **Melee hybrids keep swinging through their instant spells** (#571 step 5;
   tests only). After every spell, a bot's combat turn stopped its melee swing, so a Reaver casting its instant lifedrain
   every turn ran at its enemy and then stood beside it without landing a hit. The Savage and the autonomous Minstrel had
   their own narrower exceptions. Now any melee bot (Reaver, Paladin, Thane, Champion, Valewalker, Warden and the like)

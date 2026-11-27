@@ -3673,7 +3673,7 @@ namespace DOL.AI.Brain
                 if (protectionTarget != null && TryPriorityTaunt(protectionTarget))
                 {
                     // An instant taunt (a Paladin's chant taunt) keeps the swing going like any instant; one with a cast
-                    // time still stops it (#571 step 5, DetShaft 12b401e4f).
+                    // time still stops it (#571 step 5).
                     if (!BotHybridMeleePolicy.ContinueMeleeAfterInstant(!rangedCaster, IsMinstrelBot,
                             BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving), true, Body.IsCasting,
                             Body.castingComponent?.SpellHandler?.Spell, Body.castingComponent?.HasPendingSkillRequests == true,
@@ -3718,7 +3718,7 @@ namespace DOL.AI.Brain
                     UsesMinstrelHybridCombat, spellAction, Body.IsCasting,
                     Body.castingComponent?.SpellHandler?.Spell, hasPendingSpell, pendingSpell);
                 // Any other melee bot whose spell this turn was an instant keeps its swing and chase too: the engine stops
-                // melee only for a cast with a cast time (#571 step 5, DetShaft 09baa0375).
+                // melee only for a cast with a cast time (#571 step 5).
                 // The Minstrel keeps its own rule above; crowd control on a player-like enemy stops the swing (review of #777).
                 bool continueHybridMelee = BotHybridMeleePolicy.ContinueMeleeAfterInstant(
                     !rangedCaster, IsMinstrelBot, BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving), spellAction,

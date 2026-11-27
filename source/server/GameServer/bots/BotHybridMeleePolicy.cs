@@ -1,8 +1,7 @@
 namespace DOL.GS
 {
     /// <summary>
-    /// A melee bot that throws an instant spell keeps swinging (issue #571 step 5; ported from DetShaft
-    /// OfflineDAoC-LivingServer 09baa0375 and 12b401e4f, GPL-3.0). The engine already works this way: SpellHandler stops
+    /// A melee bot that throws an instant spell keeps swinging (issue #571 step 5). The engine already works this way: SpellHandler stops
     /// melee only for a spell with a cast time (OpenDAoC-Core, "Stop our melee attack"). But the bot's combat turn
     /// answered every spell action with StopAttack. So a Reaver casting its instant lifedrain every turn, or a Paladin
     /// using an instant chant taunt, ran at its enemy and stood beside it without landing a swing.
@@ -13,7 +12,7 @@ namespace DOL.GS
     {
         /// <summary>
         /// Instant and played without an instrument. A song needs the instrument in hand, so it keeps its own rule
-        /// (BotBrain.HasActiveCombatSongInstrument, True165 48b20439).
+        /// (BotBrain.HasActiveCombatSongInstrument).
         /// </summary>
         public static bool IsSwingSafeInstant(Spell spell) => spell != null && spell.IsInstantCast && !spell.NeedInstrument;
 

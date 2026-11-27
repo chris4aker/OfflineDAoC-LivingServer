@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace DOL.UnitTests
 {
-    // Issue #571 step 5 (DetShaft 09baa0375, 12b401e4f): a melee bot that casts an instant spell keeps swinging.
+    // Issue #571 step 5: a melee bot that casts an instant spell keeps swinging.
     [TestFixture]
     public class UT_BotHybridMeleePolicy
     {
