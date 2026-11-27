@@ -173,7 +173,7 @@ namespace DOL.UnitTests
             int work = controller.IndexOf("private bool WorkCamp(");
             string camp = controller[work..controller.IndexOf("private GameNPC FindCampTarget(", work)];
             int giveUp = camp.IndexOf("AutonomousDefensivePull.ShouldGiveUpCamp(bot.Group, _camp.Id, out int benchedPulls)");
-            Assert.That(giveUp, Is.GreaterThan(0).And.LessThan(camp.IndexOf("AutonomousDefensivePull.TryBegin(bot, target)")));
+            Assert.That(giveUp, Is.GreaterThan(0).And.LessThan(camp.IndexOf("AutonomousDefensivePull.TryBegin(bot, target, out partyPullWhy)")));
             Assert.That(camp.IndexOf("AbandonCamp(bot, $\"{benchedPulls}", giveUp), Is.GreaterThan(giveUp),
                 "the party gives the camp up (a new camp), it does not stand");
         }
