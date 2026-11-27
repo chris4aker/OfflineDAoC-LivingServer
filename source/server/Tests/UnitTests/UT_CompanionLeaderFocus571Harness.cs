@@ -151,14 +151,14 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void InPveThePlayerLedCompanionStillEndsOnAUntilTheOwnerDecides()
+        public void InPveThePlayerLedCompanionEndsOnB()
         {
-            Assert.That(CompanionLeaderFocus.InPve, Is.False);
+            Assert.That(CompanionLeaderFocus.InPve, Is.True, "owner, 2026-11-27, #571");
             Scene scene = Make(PveRegion, playerLed: true);
             using (scene.World)
             {
                 Assert.That(PlayerLedPullCoordinator.FindLeaderTarget(scene.Player), Is.SameAs(scene.LeadersTarget), "the player fights B");
-                Assert.That(Choice(scene), Is.SameAs(scene.Attacker), "PvE stays as it is (#663)");
+                Assert.That(Choice(scene), Is.SameAs(scene.LeadersTarget), "leader focus in PvE too (#571)");
             }
         }
     }

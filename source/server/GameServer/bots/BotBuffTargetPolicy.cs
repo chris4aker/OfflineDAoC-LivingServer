@@ -125,6 +125,143 @@ namespace DOL.GS
             _ => 1,
         };
 
+        // ---- #571 step 4 (True165 1ed3b24, GPL-3.0, "veteran buffing"): the buff decisions of a companion or a bot in a real
+        // player's group. Autonomous gamebots outside one keep the #491 rules above.
+
+        /// <summary>
+        /// Whether a buffer uses the player-group buff rules: a companion (hired, <c>/spawn</c>, <c>/bot</c>) or a bot in a
+        /// real player's group, with someone to buff besides itself. Pure.
+        /// </summary>
+        public static bool UsesPlayerGroupRules(bool playerCompanion, bool playerLedGroup, int groupMembers) =>
+            (playerCompanion || playerLedGroup) && groupMembers > 1;
+
+        /// <summary>Live form of <see cref="UsesPlayerGroupRules(bool, bool, int)"/>.</summary>
+        public static bool UsesPlayerGroupRules(GameBot caster) =>
+            caster != null && UsesPlayerGroupRules(caster.IsPlayerCompanion, caster.IsPlayerLedGroup, caster.Group?.MemberCount ?? 0);
+
+        /// <summary>The buffs that only help a class that swings a weapon: base strength, haste, endurance regen, damage
+        /// adds and weapon procs (True165 <c>PartyBuffHelps</c> and Q14). Str/con is not one: its constitution helps everyone.</summary>
+        public static bool IsWeaponBuff(eSpellType type) => type is
+            eSpellType.StrengthBuff or eSpellType.CombatSpeedBuff or eSpellType.HasteBuff or eSpellType.EnduranceRegenBuff or
+            eSpellType.DamageAdd or eSpellType.OffensiveProc;
+
+        /// <summary>
+        /// Whether a class fights with its weapon: not a pure caster, and not a healer (Cleric, Druid, Healer). The
+        /// Valewalker and the Vampiir are list casters by class type but fight in melee. Pure.
+        /// </summary>
+        public static bool SwingsWeapon(eCharacterClass characterClass, eClassType classType) =>
+            (classType != eClassType.ListCaster || characterClass is eCharacterClass.Valewalker or eCharacterClass.Vampiir) &&
+            BotPartyRoles.For(characterClass) != BotPartyRole.Support;
+
+        /// <summary>
+        /// The player-group rule on top of <see cref="Benefits(eSpellType, TargetKind, eCharacterClass, eStat, eClassType, bool)"/>:
+        /// a weapon buff goes only to a character that swings a weapon (a caster's or healer's concentration was spent on
+        /// haste it never used). Pets and unknown targets are unchanged. Pure.
+        /// </summary>
+        public static bool PlayerGroupBenefits(eSpellType type, TargetKind kind, eCharacterClass characterClass, eClassType classType) =>
+            kind != TargetKind.Character || !IsWeaponBuff(type) || SwingsWeapon(characterClass, classType);
+
+        /// <summary>
+        /// <see cref="Benefits(GameLiving, Spell)"/> as this caster judges it: with <see cref="UsesPlayerGroupRules(GameBot)"/>
+        /// also <see cref="PlayerGroupBenefits"/>. Every buff target pick in BotBrain goes through here.
+        /// </summary>
+        public static bool Benefits(GameBot caster, GameLiving target, Spell spell)
+        {
+            if (!Benefits(target, spell))
+                return false;
+            if (!UsesPlayerGroupRules(caster))
+                return true;
+            TargetKind kind = KindOf(target, out ICharacterClass characterClass);
+            return characterClass == null ||
+                PlayerGroupBenefits(spell.SpellType, kind, (eCharacterClass)characterClass.ID, characterClass.ClassType);
+        }
+
+        /// <summary>
+        /// The player-group order a buffer casts in when it can't cast everything (True165 <c>VeteranBuffSpellRank</c>),
+        /// higher first: endurance and power regen; the spec buffs (str/con, dex/qui, spec AF); base constitution and
+        /// dexterity; acuity and haste; base strength; everything else; base AF last. Spec AF stays with the spec buffs, as
+        /// in #491 (True165 ranks it with everything else). Pure.
+        /// </summary>
+        public static int PlayerGroupPriority(eSpellType type) => type switch
+        {
+            eSpellType.EnduranceRegenBuff or eSpellType.PowerRegenBuff => 6,
+            _ when IsSpecBuff(type) && type != eSpellType.AcuityBuff => 5,
+            eSpellType.ConstitutionBuff or eSpellType.DexterityBuff => 4,
+            eSpellType.AcuityBuff or eSpellType.CombatSpeedBuff or eSpellType.HasteBuff => 3,
+            eSpellType.StrengthBuff => 2,
+            eSpellType.BaseArmorFactorBuff => 0,
+            _ => 1,
+        };
+
+        /// <summary>The order for this caster: <see cref="PlayerGroupPriority"/> in a player's group, else <see cref="Priority"/>.</summary>
+        public static int Priority(GameBot caster, eSpellType type) =>
+            UsesPlayerGroupRules(caster) ? PlayerGroupPriority(type) : Priority(type);
+
+        /// <summary>The "Buff priority" AI option (hired companions; everyone else is Automatic): stored choices.</summary>
+        public const int BuffPriorityAutomatic = 0, BuffPriorityFrontLine = 1, BuffPrioritySpellUsers = 2;
+
+        /// <summary>A pet's rank: after every character (pets after players and bots).</summary>
+        public const int PetTargetRank = 9;
+
+        /// <summary>By job: tanks 0, melee 1, healers 2, casters 3 (period groups buffed the tank first). Pure.</summary>
+        public static int RoleRank(eCharacterClass characterClass, eClassType classType) => BotPartyRoles.For(characterClass) switch
+        {
+            BotPartyRole.Tank => 0,
+            BotPartyRole.Support => 2,
+            _ => SwingsWeapon(characterClass, classType) ? 1 : 3,
+        };
+
+        /// <summary>A class that casts for its living: a healer (Cleric, Druid, Healer) or a list caster.</summary>
+        public static bool IsSpellUser(eCharacterClass characterClass, eClassType classType) =>
+            BotPartyRoles.For(characterClass) == BotPartyRole.Support || classType == eClassType.ListCaster;
+
+        /// <summary>
+        /// The buffs Automatic gives spell users first (True165 <c>VeteranBuffTargetRank</c>): base dexterity (it speeds
+        /// casting, <c>GameLiving.ScaleCastTime</c>) and power regen. True165 adds dex/qui; here it stays front line first
+        /// (#491) until the owner decides (#571).
+        /// </summary>
+        public static bool SpellUsersFirstOnAutomatic(eSpellType type) => type is eSpellType.DexterityBuff or eSpellType.PowerRegenBuff;
+
+        /// <summary>
+        /// Who a player-group buffer buffs first, lower first (True165 <c>VeteranBuffTargetRank</c>): by job (<see cref="RoleRank"/>)
+        /// on Front line first, spell users first on Casters and healers first, and on Automatic spell users first only for
+        /// <see cref="SpellUsersFirstOnAutomatic"/>. Pets come last; a target of no known class ranks with melee. Pure.
+        /// </summary>
+        public static int TargetRank(TargetKind kind, eCharacterClass characterClass, eClassType classType, eSpellType type, int choice)
+        {
+            if (kind == TargetKind.Pet)
+                return PetTargetRank;
+            if (kind != TargetKind.Character)
+                return 1;
+            int role = RoleRank(characterClass, classType);
+            bool spellUsersFirst = choice == BuffPrioritySpellUsers ||
+                choice != BuffPriorityFrontLine && SpellUsersFirstOnAutomatic(type);
+            if (!spellUsersFirst)
+                return role;
+            return IsSpellUser(characterClass, classType) ? 0 : role + 1;
+        }
+
+        /// <summary>Live form of <see cref="TargetRank(TargetKind, eCharacterClass, eClassType, eSpellType, int)"/>.</summary>
+        public static int TargetRank(GameLiving target, eSpellType type, int choice)
+        {
+            TargetKind kind = KindOf(target, out ICharacterClass characterClass);
+            return characterClass == null
+                ? TargetRank(kind, eCharacterClass.Unknown, eClassType.ListCaster, type, choice)
+                : TargetRank(kind, (eCharacterClass)characterClass.ID, characterClass.ClassType, type, choice);
+        }
+
+        /// <summary>Within this range of the buffer (or the spell's range, if longer) a groupmate keeps a base buff.</summary>
+        public const int BaseBuffKeeperMinimumRange = 350;
+
+        /// <summary>
+        /// Whether a groupmate bot really keeps a base buff for this buffer (True165 <c>BaseBuffLeftToGroupmate</c>): it can
+        /// afford the concentration, is within reach of the buffer, and, in a player's group, isn't fighting (it buffs
+        /// only out of a fight). The range part is a shared fix for every bot: a healer left behind kept the buff and nobody
+        /// cast it. Pure.
+        /// </summary>
+        public static bool KeeperCovers(bool canAfford, bool inRange, bool keeperInCombat, bool playerGroupRules) =>
+            canAfford && inRange && (!playerGroupRules || !keeperInCombat);
+
         /// <summary>One other buffer of the group, as the base/spec split needs it.</summary>
         public readonly record struct Buffer(bool HasSpecBuffs, bool CanCastBase);
 
@@ -156,13 +293,16 @@ namespace DOL.GS
             if (caster?.Group == null || spell == null || !IsBaseBuff(spell.SpellType) || !HasSpecBuffs(caster))
                 return false;
             var others = new List<Buffer>();
+            bool playerGroupRules = UsesPlayerGroupRules(caster);
             foreach (GameLiving member in caster.Group.GetMembersInTheGroup())
             {
                 if (member == caster || member is not GameBot bot || !bot.IsAlive ||
                     bot.ObjectState != GameObject.eObjectState.Active || bot.CurrentRegionID != caster.CurrentRegionID)
                     continue;
                 bool canCast = KnowsSharedBuff(bot, type => type == spell.SpellType, out Spell own) &&
-                    bot.CanAffordConcentration(own);
+                    KeeperCovers(bot.CanAffordConcentration(own),
+                        caster.IsWithinRadius(bot, System.Math.Max(BaseBuffKeeperMinimumRange, own.CalculateEffectiveRange(bot))),
+                        bot.InCombat, playerGroupRules);
                 others.Add(new Buffer(HasSpecBuffs(bot), canCast));
             }
             return LeavesBaseBuff(spell.SpellType, true, others);

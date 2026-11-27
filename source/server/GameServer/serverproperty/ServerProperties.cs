@@ -2815,6 +2815,9 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_move_sit_and_walls", "Bots as people (1.2): gamebots sit while they wait for their group, at a rendezvous or at the bank, and bots waiting at a keep their realm holds, with no siege there and no enemy noticed, sit on its walls and stand when an enemy comes (owner decision 11, 2026-11-17). Sitting is only how it looks: resting is unchanged. Needs bot_movement_habits. Log: BOT_MOVE_SIT, BOT_MOVE_WALL.", true)]
 		public static bool BOT_MOVE_SIT_AND_WALLS = true;
 
+		[ServerProperty("bots", "bot_weapon_set_rules", "Bots fight with the weapon set a player would (#569): a party's only tank with Guard fights with its trained shield and guards a member within reach, a bot carrying a two-hander and a one-hander uses the line it trained higher, a hired companion keeps the melee set you readied in its window, and archers stop flipping between bow and melee weapon. Only weapons the bot already carries are used. Gamebots, hired companions and /bot companions alike.", true)]
+		public static bool BOT_WEAPON_SET_RULES;
+
 		/// <summary>
 		/// Bots as people, item 6 (work package 6).
 		/// </summary>
@@ -2902,7 +2905,7 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_HEALER_PERIOD_RULES;
 
 		/// <summary>#571 step 1: the damage dealers of a player's group fight the player's target first (CompanionLeaderFocus).</summary>
-		[ServerProperty("bots", "bot_leader_focus", "Bots in your group fight your fight (#571): in the frontier, the battlegrounds and Darkness Falls, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. PvE fights and autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS.", true)]
+		[ServerProperty("bots", "bot_leader_focus", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS.", true)]
 		public static bool BOT_LEADER_FOCUS;
 
 		/// <summary>About 4% of Crafter bots are beggars who live in their capital (AutonomousBeggars).</summary>

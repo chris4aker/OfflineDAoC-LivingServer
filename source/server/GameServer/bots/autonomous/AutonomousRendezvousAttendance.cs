@@ -27,13 +27,17 @@ namespace DOL.GS
         private readonly Dictionary<long, long> _due = new();
         private readonly HashSet<long> _arrived = new();
         private readonly Dictionary<long, DateTime> _dueUtc = new();
+        // The current wait (#569 step 3, True165 14dcaa5: sized from the farthest member, 15-20 min); 15 min unless
+        // RebaseWithWindow set it.
+        private long _windowMilliseconds = TimeoutMilliseconds;
         public long Revision { get; private set; }
+        public long WindowMilliseconds => _windowMilliseconds;
 
         public void Add(long memberId, long now, DateTime? utcNow = null)
         {
-            if (_due.TryAdd(memberId, now + TimeoutMilliseconds))
+            if (_due.TryAdd(memberId, now + _windowMilliseconds))
             {
-                _dueUtc[memberId] = (utcNow ?? DateTime.UtcNow).AddMilliseconds(TimeoutMilliseconds);
+                _dueUtc[memberId] = (utcNow ?? DateTime.UtcNow).AddMilliseconds(_windowMilliseconds);
                 Revision++;
             }
         }
@@ -87,7 +91,7 @@ namespace DOL.GS
             _deathsAtStart.TryGetValue(memberId, out int start) ? Math.Max(0, deathCount - start) : 0;
 
         public long WaitedMilliseconds(long memberId, long now) =>
-            _due.TryGetValue(memberId, out long due) ? now - (due - TimeoutMilliseconds) : 0;
+            _due.TryGetValue(memberId, out long due) ? now - (due - _windowMilliseconds) : 0;
 
         /// <summary>
         /// Starts one new, shared attendance window after the coordinator has
@@ -95,8 +99,13 @@ namespace DOL.GS
         /// expired deadlines would immediately expel members that were already
         /// present but were assigned a different slot by that rebuild.
         /// </summary>
-        public void Rebase(IEnumerable<long> memberIds, long now, DateTime? utcNow = null)
+        public void Rebase(IEnumerable<long> memberIds, long now, DateTime? utcNow = null) =>
+            RebaseWithWindow(memberIds, now, TimeoutMilliseconds, utcNow);
+
+        /// <summary>Rebase with a custom wait (#569 step 3: the meetup plan sizes it, at most 20 minutes).</summary>
+        public void RebaseWithWindow(IEnumerable<long> memberIds, long now, long windowMilliseconds, DateTime? utcNow = null)
         {
+            _windowMilliseconds = windowMilliseconds > 0 ? windowMilliseconds : TimeoutMilliseconds;
             _due.Clear();
             _arrived.Clear();
             _dueUtc.Clear();
@@ -116,7 +125,7 @@ namespace DOL.GS
             var previous = new Dictionary<long, long>(_due);
             var deathsAtStart = new Dictionary<long, int>(_deathsAtStart);   // the same wait goes on: keep counting
             DateTime utc = utcNow ?? DateTime.UtcNow;
-            Rebase(memberIds, now, utc);
+            RebaseWithWindow(memberIds, now, _windowMilliseconds, utc);   // keep the current wait length
             foreach (long memberId in _due.Keys)
                 if (deathsAtStart.TryGetValue(memberId, out int start))
                     _deathsAtStart[memberId] = start;
@@ -131,6 +140,7 @@ namespace DOL.GS
 
         public void Reset()
         {
+            _windowMilliseconds = TimeoutMilliseconds;
             _due.Clear();
             _arrived.Clear();
             _dueUtc.Clear();

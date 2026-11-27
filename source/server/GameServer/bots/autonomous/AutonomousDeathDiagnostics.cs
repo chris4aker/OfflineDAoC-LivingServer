@@ -85,7 +85,12 @@ namespace DOL.GS
             else
                 bot.LastAutonomousKiller = null;
             if (string.Equals(KillerKind(killer), "monster", StringComparison.Ordinal))
+            {
                 AutonomousRepeatDeathSpots.Record(bot.DatabaseID, bot.CurrentRegionID, bot.X, bot.Y, DateTime.UtcNow);
+                // #569 step 2: a party losing members to monsters far above them near one spot leaves it
+                if (bot.Group != null && killer is GameLiving partyKiller)
+                    AutonomousBotGroupCoordinator.NoteMemberDeath(bot, partyKiller);
+            }
             if (BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID))
             {
                 AutonomousBattlegroundWave.NoteDeath(bot.CurrentRegionID, bot.Realm, killer is DOL.GS.Keeps.GameKeepGuard);
