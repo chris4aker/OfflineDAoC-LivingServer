@@ -195,13 +195,104 @@ namespace DOL.UnitTests
             });
         }
 
-        // A player who last played after every rollover gets nothing reset; a login with no player does nothing.
+        // PeriodicQuestService's rules. The last rollovers: daily this midnight, weekly last Monday, monthly the 1st.
+        private static DateTime LastRollover(Key key) => key switch
+        {
+            Key.Daily => new DateTime(2026, 11, 26),
+            Key.Weekly => new DateTime(2026, 11, 23),
+            Key.Monthly => new DateTime(2026, 11, 1),
+            _ => DateTime.MinValue
+        };
+
+        private static uint Daily => PeriodicQuestService.MaskOf(Key.Daily);
+        private static uint Weekly => PeriodicQuestService.MaskOf(Key.Weekly);
+        private static uint Monthly => PeriodicQuestService.MaskOf(Key.Monthly);
+
         [Test]
-        public void ALoginAfterEveryRolloverResetsNothing()
+        public void ALoginResetsTheKindsWhoseRolloverCameSinceTheLastPlay()
         {
             Assert.Multiple(() =>
             {
-                Assert.That(PeriodicQuestService.TriggeredMask(DateTime.MaxValue, _ => DateTime.MinValue), Is.Zero);
+                Assert.That(new[] { Daily, Weekly, Monthly }, Is.Unique.And.All.Not.Zero);
+                Assert.That(PeriodicQuestService.TriggeredMask(new DateTime(2026, 11, 25, 22, 0, 0), LastRollover), Is.EqualTo(Daily),
+                    "played yesterday evening: the dailies only");
+                Assert.That(PeriodicQuestService.TriggeredMask(new DateTime(2026, 11, 20), LastRollover), Is.EqualTo(Daily | Weekly),
+                    "played last week");
+                Assert.That(PeriodicQuestService.TriggeredMask(new DateTime(2026, 10, 30), LastRollover), Is.EqualTo(Daily | Weekly | Monthly),
+                    "played last month");
+                Assert.That(PeriodicQuestService.TriggeredMask(new DateTime(2026, 11, 26, 9, 0, 0), LastRollover), Is.Zero,
+                    "played this morning");
+            });
+        }
+
+        // The review's blocker: GamePlayer.AddToWorld runs at login and at every region change, and PreviousLoginDate
+        // stays the same all session, so after a midnight every zone change cleared the finished dailies again.
+        [Test]
+        public void AZoneChangeAfterTheResetDoesNotResetAgain()
+        {
+            DateTime previousLogin = new(2026, 11, 25, 22, 0, 0);
+            DateTime checkedAt = DateTime.MinValue;
+
+            uint atLogin = PeriodicQuestService.CheckOnEntry(ref checkedAt, previousLogin, new DateTime(2026, 11, 26, 10, 0, 0), LastRollover);
+            uint atZoneChange = PeriodicQuestService.CheckOnEntry(ref checkedAt, previousLogin, new DateTime(2026, 11, 26, 11, 0, 0), LastRollover);
+
+            // Still online at the next midnight: the rollover resets the player (ResetPlayerQuests marks the check), and
+            // the zone change after it doesn't reset again.
+            DateTime nextMidnight = new(2026, 11, 27);
+            Func<Key, DateTime> afterMidnight = key => key == Key.Daily ? nextMidnight : LastRollover(key);
+            DateTime missedCheck = checkedAt;
+            uint zoneChangeAfterMidnightUnmarked = PeriodicQuestService.CheckOnEntry(ref missedCheck, previousLogin, nextMidnight.AddHours(1), afterMidnight);
+            checkedAt = nextMidnight.AddSeconds(1); // what ResetPlayerQuests sets at the rollover
+            uint zoneChangeAfterMidnightMarked = PeriodicQuestService.CheckOnEntry(ref checkedAt, previousLogin, nextMidnight.AddHours(1), afterMidnight);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(atLogin, Is.EqualTo(Daily), "the first entry after the midnight resets the dailies");
+                Assert.That(atZoneChange, Is.Zero, "a zone change an hour later doesn't");
+                Assert.That(zoneChangeAfterMidnightUnmarked, Is.EqualTo(Daily), "a midnight passed since the last check counts once");
+                Assert.That(zoneChangeAfterMidnightMarked, Is.Zero, "not after the rollover itself reset the player");
+                Assert.That(checkedAt, Is.EqualTo(nextMidnight.AddHours(1)));
+            });
+        }
+
+        private sealed class TestDaily : DOL.GS.Quests.DailyQuest
+        {
+            public override string QuestPropertyKey { get; set; }
+            public override void LoadQuestParameters() { }
+            public override void SaveQuestParameters() { }
+            public override void Notify(DOL.Events.DOLEvent e, object sender, EventArgs args) { }
+        }
+
+        private sealed class TestWeekly : DOL.GS.Quests.WeeklyQuest
+        {
+            public override string QuestPropertyKey { get; set; }
+            public override void LoadQuestParameters() { }
+            public override void SaveQuestParameters() { }
+            public override void Notify(DOL.Events.DOLEvent e, object sender, EventArgs args) { }
+        }
+
+        private sealed class TestMonthly : DOL.GS.Quests.MonthlyQuest
+        {
+            public override string QuestPropertyKey { get; set; }
+            public override void LoadQuestParameters() { }
+            public override void SaveQuestParameters() { }
+            public override void Notify(DOL.Events.DOLEvent e, object sender, EventArgs args) { }
+        }
+
+        [Test]
+        public void TheMaskSelectsOnlyItsKindsOfFinishedQuest()
+        {
+            AbstractQuest daily = new TestDaily(), weekly = new TestWeekly(), monthly = new TestMonthly();
+            Assert.Multiple(() =>
+            {
+                Assert.That(PeriodicQuestService.Matches(daily, Daily), Is.True);
+                Assert.That(PeriodicQuestService.Matches(weekly, Daily), Is.False);
+                Assert.That(PeriodicQuestService.Matches(monthly, Daily), Is.False);
+                Assert.That(PeriodicQuestService.Matches(weekly, Daily | Weekly), Is.True);
+                Assert.That(PeriodicQuestService.Matches(monthly, Daily | Weekly), Is.False);
+                Assert.That(PeriodicQuestService.Matches(monthly, Monthly), Is.True);
+                Assert.That(PeriodicQuestService.Matches(daily, 0), Is.False);
+                Assert.That(PeriodicQuestService.Matches(null, Daily | Weekly | Monthly), Is.False, "not a periodic quest");
                 Assert.DoesNotThrow(() => PeriodicQuestService.OnPlayerJoin(null));
             });
         }

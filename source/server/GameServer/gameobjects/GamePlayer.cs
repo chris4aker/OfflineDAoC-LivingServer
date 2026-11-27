@@ -272,6 +272,12 @@ namespace DOL.GS
         }
 
         /// <summary>
+        /// When PeriodicQuestService last reset or checked this player's daily, weekly and monthly quests in this session
+        /// (MinValue before the first entry into the world). Keeps a region change from resetting them again.
+        /// </summary>
+        public DateTime PeriodicQuestsCheckedAt { get; set; } = DateTime.MinValue;
+
+        /// <summary>
         /// Gets or sets the anonymous flag for this player
         /// (delegate to property in PlayerCharacter)
         /// </summary>

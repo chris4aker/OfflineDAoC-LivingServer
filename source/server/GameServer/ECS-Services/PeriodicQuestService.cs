@@ -17,24 +17,43 @@ namespace DOL.GS
     public static class PeriodicQuestService
     {
         private static readonly Logger log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
-        private static readonly List<QuestRegistration> _registrations = new();
+        // The quest kinds and their intervals (supports up to 32). Known without the database, so the rules below are
+        // pure; Initialize only subscribes them to the scheduler.
+        private static readonly List<QuestRegistration> _registrations = new()
+        {
+            Registration<Quests.DailyQuest>(IntervalKey.Daily, 0),
+            Registration<Quests.WeeklyQuest>(IntervalKey.Weekly, 1),
+            Registration<Quests.MonthlyQuest>(IntervalKey.Monthly, 2),
+        };
+
+        private static bool _initialized;
 
         public static void Initialize()
         {
-            if (_registrations.Count > 0)
+            if (_initialized)
                 return;
 
-            RegisterQuest<Quests.DailyQuest>(IntervalKey.Daily);
-            RegisterQuest<Quests.WeeklyQuest>(IntervalKey.Weekly);
-            RegisterQuest<Quests.MonthlyQuest>(IntervalKey.Monthly);
+            _initialized = true;
+            RolloverSchedulerService.Instance.Subscribe(IntervalKey.Daily, ResetQuests<Quests.DailyQuest>);
+            RolloverSchedulerService.Instance.Subscribe(IntervalKey.Weekly, ResetQuests<Quests.WeeklyQuest>);
+            RolloverSchedulerService.Instance.Subscribe(IntervalKey.Monthly, ResetQuests<Quests.MonthlyQuest>);
         }
 
+        /// <summary>
+        /// Called from GamePlayer.AddToWorld, which runs at login and again at every region change. Our fix of a flaw
+        /// upstream has too: PreviousLoginDate stays the same for the whole session, so after any midnight every zone
+        /// change cleared the dailies finished since, and they could be done again on demand. The player now remembers
+        /// when the periodic quests were last checked (here or at a rollover while online), and only a rollover after
+        /// both that and the last login counts.
+        /// </summary>
         public static void OnPlayerJoin(GamePlayer player)
         {
-            if (player == null || _registrations.Count == 0)
+            if (player == null || !_initialized)
                 return;
 
-            uint triggeredMask = TriggeredMask(player.PreviousLoginDate, RolloverSchedulerService.Instance.GetLastRollover);
+            DateTime checkedAt = player.PeriodicQuestsCheckedAt;
+            uint triggeredMask = CheckOnEntry(ref checkedAt, player.PreviousLoginDate, DateTime.Now, RolloverSchedulerService.Instance.GetLastRollover);
+            player.PeriodicQuestsCheckedAt = checkedAt;
 
             if (triggeredMask == 0)
                 return;
@@ -42,8 +61,19 @@ namespace DOL.GS
             player.RemoveFinishedQuests(static (quest, mask) => Matches(quest, mask), triggeredMask);
         }
 
-        /// <summary>The intervals that rolled over after the player last played, one bit per registration (pure).</summary>
-        public static uint TriggeredMask(DateTime previousLogin, Func<IntervalKey, DateTime> lastRollover)
+        /// <summary>
+        /// The quest kinds to reset when the player enters the world, and the new "checked at" time (pure): a kind is
+        /// reset when its interval rolled over after both the last login and the last check.
+        /// </summary>
+        public static uint CheckOnEntry(ref DateTime checkedAt, DateTime previousLogin, DateTime now, Func<IntervalKey, DateTime> lastRollover)
+        {
+            DateTime since = checkedAt > previousLogin ? checkedAt : previousLogin;
+            checkedAt = now;
+            return TriggeredMask(since, lastRollover);
+        }
+
+        /// <summary>The intervals that rolled over after <paramref name="since"/>, one bit per quest kind (pure).</summary>
+        public static uint TriggeredMask(DateTime since, Func<IntervalKey, DateTime> lastRollover)
         {
             uint triggeredMask = 0;
 
@@ -51,11 +81,23 @@ namespace DOL.GS
             {
                 QuestRegistration reg = _registrations[i];
 
-                if (previousLogin < lastRollover(reg.Interval))
+                if (since < lastRollover(reg.Interval))
                     triggeredMask |= reg.BitMask;
             }
 
             return triggeredMask;
+        }
+
+        /// <summary>The bit of one interval's quest kind in a mask.</summary>
+        public static uint MaskOf(IntervalKey interval)
+        {
+            foreach (QuestRegistration reg in _registrations)
+            {
+                if (reg.Interval == interval)
+                    return reg.BitMask;
+            }
+
+            return 0;
         }
 
         /// <summary>Whether a finished quest is one of the kinds in the mask.</summary>
@@ -72,12 +114,8 @@ namespace DOL.GS
             return false;
         }
 
-        private static void RegisterQuest<T>(IntervalKey intervalKey)
-        {
-            // Supports up to 32 different intervals.
-            RolloverSchedulerService.Instance.Subscribe(intervalKey, ResetQuests<T>);
-            _registrations.Add(new(intervalKey, 1u << _registrations.Count, static quest => quest is T));
-        }
+        private static QuestRegistration Registration<T>(IntervalKey intervalKey, int bit) =>
+            new(intervalKey, 1u << bit, static quest => quest is T);
 
         private static void ResetQuests<T>()
         {
@@ -89,6 +127,8 @@ namespace DOL.GS
         {
             try
             {
+                // Checked now: a zone change after this rollover doesn't reset the quests finished since again.
+                player.PeriodicQuestsCheckedAt = DateTime.Now;
                 player.RemoveFinishedQuests(static quest => quest is T);
                 QuestIndicators.Refresh(player); // the givers show their knot again
             }
