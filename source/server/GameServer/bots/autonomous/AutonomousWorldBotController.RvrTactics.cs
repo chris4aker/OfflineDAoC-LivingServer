@@ -89,13 +89,13 @@ public sealed partial class AutonomousWorldBotController
     /// <summary>
     /// #528: one enemy death a walker took part in, kept until its next look. It keeps no reference to the victim (a
     /// player who logs out is not held; #731): the victim's gamebot id (0 for anyone else), its object key
-    /// (<see cref="RvrFieldFacts.KeyOf"/>, to tell one death from another), whether it was a real player, and where and
+    /// (<see cref="RvrFieldReader.KeyOf"/>, to tell one death from another), whether it was a real player, and where and
     /// when it fell.
     /// </summary>
     public readonly record struct RvrRoamKill(long VictimBotId, long VictimKey, bool IsPlayer, long At, ushort Region, float X, float Y)
     {
         public static RvrRoamKill Of(GameLiving victim, long now) =>
-            new(victim is GameBot bot ? bot.DatabaseID : 0, RvrFieldFacts.KeyOf(victim), victim is GamePlayer, now,
+            new(victim is GameBot bot ? bot.DatabaseID : 0, RvrFieldReader.KeyOf(victim), victim is GamePlayer, now,
                 victim.CurrentRegionID, victim.X, victim.Y);
     }
 
