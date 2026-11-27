@@ -30,10 +30,11 @@ namespace DOL.GS
             _battlegroundStorming = false;
             _battlegroundStormLord = null;
             _battlegroundGatherStaging = null;
-            BattlegroundBrackets.Bracket bracket = BattlegroundBrackets.ForLevel(bot.Level);
+            // #572 51B: a bot that out-levels the battleground it is in stays and fights there until it dies.
+            BattlegroundBrackets.Bracket bracket = WorkingBattleground(bot);
             if (bracket == null)
             {
-                // Out-levelled: the tour ends here; leaving the battleground happens on the next goal's travel.
+                // Out-levelled (outside, or after its death): the tour ends here; leaving happens on the next goal's travel.
                 AutonomousObjectiveAssignments.EndBattlegroundTour(bot, $"Outgrew the battleground brackets at level {bot.Level}");
                 _nextPlanTick = 0;
                 return true;
@@ -1191,7 +1192,7 @@ namespace DOL.GS
         /// </summary>
         private string CombatGoalText(GameBot bot) =>
             _groupDirective?.IsDynamic != true && AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
-            BattlegroundBrackets.ForLevel(bot.Level) is { } bracket
+            WorkingBattleground(bot) is { } bracket
                 ? BattlegroundGoal(bracket)
                 : GoalText();
     }

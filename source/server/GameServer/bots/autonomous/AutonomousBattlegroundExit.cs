@@ -109,6 +109,74 @@ namespace DOL.GS
 
         private static readonly ConcurrentDictionary<long, Watch> Watches = new();
         private static readonly ConcurrentDictionary<long, long> ReentryBlockedUntil = new();
+        private static readonly ConcurrentDictionary<long, Sighting> Sightings = new();
+
+        // #572, owner's answer 51B (2026-11-27): an out-levelled gamebot inside a battleground stays until it dies, the
+        // period rule (1.70: players "will still be able to participate in that battleground until they exceed the level
+        // cap"; Camelot Herald, Battleground Limits: an over-cap player is removed after a death). Entry keeps the cap.
+
+        /// <summary>A sighting older than this (the bot logged out, or was not seen) does not carry a stay over.</summary>
+        public const long SightingGapMilliseconds = 2 * 60_000;
+
+        /// <summary>
+        /// The battleground a gamebot is in on a life that began there within its bracket: the region (0 = none) and when
+        /// it was last seen there alive.
+        /// </summary>
+        public readonly record struct Sighting(ushort RegionId, long LastSeen);
+
+        /// <summary>
+        /// Pure: the sighting after one look at the bot. Alive inside a battleground whose bracket fits its level: this
+        /// battleground, now. Alive inside the same battleground it was last seen in (within
+        /// <see cref="SightingGapMilliseconds"/>), now out-levelled: kept, so the stay carries on. A death, leaving every
+        /// battleground, another battleground, or a gap (a logout) ends it.
+        /// </summary>
+        public static Sighting NextSighting(Sighting held, ushort regionId, bool inBattleground, bool alive, bool levelFits,
+            long now)
+        {
+            if (!inBattleground || !alive) return default;
+            if (levelFits) return new Sighting(regionId, now);
+            return held.RegionId == regionId && held.LastSeen > 0 && now - held.LastSeen <= SightingGapMilliseconds
+                ? new Sighting(regionId, now)
+                : default;
+        }
+
+        /// <summary>
+        /// Pure (51B): a gamebot stays in the battleground it has out-levelled while it lives. Only on a life that began
+        /// there within its bracket (<paramref name="sighting"/>), and never in a player's company, where today's rules hold.
+        /// </summary>
+        public static bool StaysOutlevelled(Sighting sighting, ushort regionId, bool alive, bool inPlayerCompany, int level,
+            BattlegroundBrackets.Bracket here) =>
+            here != null && here.RegionId == regionId && sighting.RegionId == regionId && alive && !inPlayerCompany &&
+            level > here.MaxLevel;
+
+        /// <summary>
+        /// Pure: the battleground a gamebot works: the one it stands in while it stays out-levelled, otherwise its level's
+        /// (null above every bracket).
+        /// </summary>
+        public static BattlegroundBrackets.Bracket WorkingBracket(bool staysOutlevelled, ushort regionId, int level) =>
+            staysOutlevelled ? BattlegroundBrackets.ForRegion(regionId) : BattlegroundBrackets.ForLevel(level);
+
+        /// <summary>
+        /// Pure: a party member may be taken to (or kept at) a battleground's camps: its level fits, or it stays there
+        /// out-levelled. Entry itself keeps the level cap.
+        /// </summary>
+        public static bool MayBeIn(BattlegroundBrackets.Bracket bracket, int level, bool staysOutlevelledThere) =>
+            BattlegroundBrackets.Allows(bracket, level) || staysOutlevelledThere;
+
+        /// <summary>One look at a gamebot (the controller's turn); returns whether it stays out-levelled where it is.</summary>
+        public static bool ObserveStay(long botId, ushort regionId, int level, bool alive, bool inPlayerCompany, long now)
+        {
+            bool inBattleground = BattlegroundBrackets.IsBattlegroundRegion(regionId);
+            Sighting held = Sightings.TryGetValue(botId, out Sighting found) ? found : default;
+            if (!inBattleground && held.RegionId == 0) return false; // every turn outside: one lookup, nothing written
+            BattlegroundBrackets.Bracket here = inBattleground ? BattlegroundBrackets.ForRegion(regionId) : null;
+            Sighting next = NextSighting(held, regionId, inBattleground, alive, BattlegroundBrackets.Allows(here, level), now);
+            if (next.RegionId == 0)
+                Sightings.TryRemove(botId, out _);
+            else
+                Sightings[botId] = next;
+            return StaysOutlevelled(next, regionId, alive, inPlayerCompany, level, here);
+        }
 
         /// <summary>
         /// The watchdog's observation of a gamebot inside a battleground (milliseconds on the watchdog's UTC clock); returns
@@ -138,6 +206,8 @@ namespace DOL.GS
         /// <summary>A death inside a battleground (AutonomousDeathDiagnostics). Counts only against a running watch.</summary>
         public static void NoteDeath(long botId, ushort regionId)
         {
+            // 51B: a death ends the out-levelled stay; the bot then leaves and the level cap keeps it out.
+            Sightings.TryRemove(botId, out _);
             if (Watches.TryGetValue(botId, out Watch watch) && watch.RegionId == regionId)
                 Watches[botId] = watch with { DeathsWithoutGain = watch.DeathsWithoutGain + 1 };
         }
@@ -166,6 +236,7 @@ namespace DOL.GS
         {
             Watches.Clear();
             ReentryBlockedUntil.Clear();
+            Sightings.Clear();
         }
     }
 }

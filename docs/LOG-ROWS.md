@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **764**; pending (#625, not on main yet): **0**; shipped by the pipeline: **732**.
+- Rows in code: **765**; pending (#625, not on main yet): **0**; shipped by the pipeline: **733**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -27,6 +27,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_BARD_HEALER_SLOT` | server.log | **ships** | `bots/BardHealerSlot.cs` | `bot`, `group`, `id`, `level`, `size` | `bot` | - | - |
 | `AUTONOMOUS_BATTLEGROUND_EXIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `battleground`, `bot`, `destination`, `fromHere`, `id`, `leavingSeconds`, `level`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_BATTLEGROUND_FORCED_EXIT` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `blockMinutes`, `bot`, `destination`, `id`, `level`, `marker`, `realm`, `reason`, `region` | `bot` | - | - |
+| `AUTONOMOUS_BATTLEGROUND_OUTLEVEL_STAY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.BattlegroundExit.cs` | `battleground`, `bot`, `id`, `level`, `maxLevel`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_BETWEEN_TASK_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousObjectiveAssignments.cs` | `activity`, `assignment`, `bot`, `goal`, `id`, `level`, `region`, `x`, `y`, `z` | `bot` | - | - |
 | `AUTONOMOUS_BLOCKED_BACKPACK_CLEARED` | server.log | **ships** | `bots/autonomous/AutonomousBotEconomy.cs` | `bot`, `capacity`, `id`, `removed` | `bot` | - | - |
 | `AUTONOMOUS_BOT_DEATH` | server.log | **ships** | `bots/autonomous/AutonomousDeathDiagnostics.cs` | `activity`, `armorPieces`, `arrivedAtCamp`, `at`, `attackers`, `bot`, `class`, `con`, `goal`, `group`, `id`, `killer`, `killerKind`, `killerLevel`, `level`, `maxHealth`, `realm`, `region`, `zone` | `bot`, `killer` | - | - |

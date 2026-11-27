@@ -5,7 +5,8 @@ namespace DOL.GS.Tests
     /// <summary>
     /// #572 step 4: how an autonomous gamebot leaves a battleground,
     /// the backstops inside one (20 minutes without progress, 3 deaths without a gain) and the 30-minute re-entry block
-    /// after a forced exit. Tests only.
+    /// after a forced exit. Owner's answer 51B: a gamebot that out-levels the battleground it is in stays until it dies,
+    /// then leaves, and the level cap keeps it out. Tests only.
     /// </summary>
     [TestFixture]
     public sealed class UT_BattlegroundExit572
@@ -149,6 +150,131 @@ namespace DOL.GS.Tests
             Assert.That(AutonomousBattlegroundExit.ReentryBlocked(572_007, t + 30 * Minute - 1), Is.True);
             Assert.That(AutonomousBattlegroundExit.ReentryBlocked(572_007, t + 30 * Minute), Is.False);
             Assert.That(AutonomousBattlegroundExit.ReentryBlocked(572_008, t + Minute), Is.False, "another bot");
+        }
+
+        private const ushort Thidranki = 252; // levels 20-24
+        private const ushort Murdaigean = 251; // levels 25-29
+
+        private static AutonomousBattlegroundExit.Sighting Seen(ushort region, long at) => new(region, at);
+
+        [Test]
+        public void Sighting_StartsOnlyInBracket_CarriesOverWhileAliveInTheSameBattleground()
+        {
+            long t = 1_000 * Minute;
+            var none = default(AutonomousBattlegroundExit.Sighting);
+            Assert.That(AutonomousBattlegroundExit.NextSighting(none, Thidranki, true, true, true, t), Is.EqualTo(Seen(Thidranki, t)),
+                "alive and in bracket: seen");
+            Assert.That(AutonomousBattlegroundExit.NextSighting(none, Thidranki, true, true, false, t).RegionId, Is.EqualTo(0),
+                "out-levelled with no in-bracket sighting (a login there): no stay");
+            Assert.That(AutonomousBattlegroundExit.NextSighting(Seen(Thidranki, t), Thidranki, true, true, false, t + Minute),
+                Is.EqualTo(Seen(Thidranki, t + Minute)), "out-levelled on the same life: carried over");
+            Assert.That(AutonomousBattlegroundExit.NextSighting(Seen(Thidranki, t), Thidranki, true, false, false, t + Minute).RegionId,
+                Is.EqualTo(0), "dead: ended");
+            Assert.That(AutonomousBattlegroundExit.NextSighting(Seen(Thidranki, t), 1, false, true, false, t + Minute).RegionId,
+                Is.EqualTo(0), "out of the battlegrounds: ended");
+            Assert.That(AutonomousBattlegroundExit.NextSighting(Seen(Thidranki, t), Murdaigean, true, true, false, t + Minute).RegionId,
+                Is.EqualTo(0), "another battleground: ended");
+            Assert.That(AutonomousBattlegroundExit.NextSighting(Seen(Thidranki, t), Thidranki, true, true, false,
+                t + AutonomousBattlegroundExit.SightingGapMilliseconds + 1).RegionId, Is.EqualTo(0), "a gap (a logout): ended");
+        }
+
+        [Test]
+        public void StaysOutlevelled_OnlyAliveOverTheCapWithASightingThere_AndNeverInAPlayersCompany()
+        {
+            long t = 1_000 * Minute;
+            BattlegroundBrackets.Bracket here = BattlegroundBrackets.ForRegion(Thidranki);
+            var seen = Seen(Thidranki, t);
+            Assert.That(AutonomousBattlegroundExit.StaysOutlevelled(seen, Thidranki, true, false, 25, here), Is.True);
+            Assert.That(AutonomousBattlegroundExit.StaysOutlevelled(seen, Thidranki, true, false, 24, here), Is.False,
+                "in bracket: no stay needed");
+            Assert.That(AutonomousBattlegroundExit.StaysOutlevelled(seen, Thidranki, false, false, 25, here), Is.False, "dead");
+            Assert.That(AutonomousBattlegroundExit.StaysOutlevelled(seen, Thidranki, true, true, 25, here), Is.False,
+                "in a player's company: today's rules");
+            Assert.That(AutonomousBattlegroundExit.StaysOutlevelled(default, Thidranki, true, false, 25, here), Is.False,
+                "no in-bracket sighting");
+            Assert.That(AutonomousBattlegroundExit.StaysOutlevelled(Seen(Murdaigean, t), Thidranki, true, false, 25, here), Is.False,
+                "seen in another battleground");
+        }
+
+        [Test]
+        public void ObserveStay_StaysAfterTheLevelUp_UntilItDies_ThenLeavesForGood()
+        {
+            const long id = 572_101;
+            long t = 1_000 * Minute;
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 24, true, false, t), Is.False, "in bracket");
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 25, true, false, t + Minute), Is.True,
+                "levelled past the cap inside: stays");
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 25, true, false, t + 40 * Minute), Is.False,
+                "unseen for longer than the gap");
+            AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 24, true, false, t + 41 * Minute);
+            for (int minute = 42; minute < 100; minute++)
+                Assert.That(AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 25, true, false, t + minute * Minute), Is.True,
+                    "a long stay, looked at every minute");
+            AutonomousBattlegroundExit.NoteDeath(id, Thidranki);
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 25, true, false, t + 100 * Minute), Is.False,
+                "released alive inside after its death: it leaves");
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 25, true, false, t + 101 * Minute), Is.False,
+                "and the stay does not come back");
+        }
+
+        [Test]
+        public void ObserveStay_ADeadLookEndsIt_AndLeavingEndsIt()
+        {
+            const long dies = 572_102, leaves = 572_103;
+            long t = 1_000 * Minute;
+            AutonomousBattlegroundExit.ObserveStay(dies, Thidranki, 24, true, false, t);
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(dies, Thidranki, 25, false, false, t + Minute), Is.False, "dead");
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(dies, Thidranki, 25, true, false, t + 2 * Minute), Is.False,
+                "a death seen by the controller alone ends it too");
+
+            AutonomousBattlegroundExit.ObserveStay(leaves, Thidranki, 24, true, false, t);
+            AutonomousBattlegroundExit.ObserveStay(leaves, 1, 25, true, false, t + Minute);
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(leaves, Thidranki, 25, true, false, t + 2 * Minute), Is.False,
+                "back inside after leaving (by any way): no stay");
+        }
+
+        [Test]
+        public void ObserveStay_InAPlayersCompany_KeepsTodaysRules()
+        {
+            const long id = 572_104;
+            long t = 1_000 * Minute;
+            AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 24, true, true, t);
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(id, Thidranki, 25, true, true, t + Minute), Is.False);
+        }
+
+        [Test]
+        public void WorkingBracket_TheOneItStandsInWhileItStays_ItsOwnOtherwise_AndEntryKeepsTheCap()
+        {
+            Assert.That(AutonomousBattlegroundExit.WorkingBracket(true, Thidranki, 25)?.RegionId, Is.EqualTo(Thidranki));
+            Assert.That(AutonomousBattlegroundExit.WorkingBracket(false, Thidranki, 25)?.RegionId, Is.EqualTo(Murdaigean),
+                "after its death: its own bracket's battleground");
+            Assert.That(AutonomousBattlegroundExit.WorkingBracket(true, 250, 36)?.RegionId, Is.EqualTo((ushort)250),
+                "above every bracket, staying in Caledonia");
+            Assert.That(AutonomousBattlegroundExit.WorkingBracket(false, 250, 36), Is.Null, "above every bracket: tour ends");
+            BattlegroundBrackets.Bracket thidranki = BattlegroundBrackets.ForRegion(Thidranki);
+            Assert.That(BattlegroundBrackets.Allows(thidranki, 25), Is.False, "entry still refused to the out-levelled bot");
+            Assert.That(AutonomousBattlegroundExit.MayBeIn(thidranki, 25, true), Is.True, "a party member staying there");
+            Assert.That(AutonomousBattlegroundExit.MayBeIn(thidranki, 25, false), Is.False, "one outside");
+            Assert.That(AutonomousBattlegroundExit.MayBeIn(thidranki, 22, false), Is.True);
+        }
+
+        [Test]
+        public void ABotThatStays_StillMeetsTheTwentyMinuteAndThreeDeathRules()
+        {
+            const long idle = 572_105, dying = 572_106;
+            long t = 1_000 * Minute;
+            AutonomousBattlegroundExit.ObserveStay(idle, Thidranki, 24, true, false, t);
+            AutonomousBattlegroundExit.Observe(idle, Thidranki, true, 100, 0, 0, 0, false, t);
+            Assert.That(AutonomousBattlegroundExit.ObserveStay(idle, Thidranki, 25, true, false, t + Minute), Is.True);
+            Assert.That(AutonomousBattlegroundExit.Observe(idle, Thidranki, true, 100, 0, 0, 0, false, t + 20 * Minute),
+                Is.EqualTo(eBattlegroundForcedExit.NoProgress), "the 20-minute rule holds while it stays");
+
+            AutonomousBattlegroundExit.Observe(dying, Thidranki, true, 100, 0, 0, 0, false, t);
+            AutonomousBattlegroundExit.NoteDeath(dying, Thidranki);
+            AutonomousBattlegroundExit.NoteDeath(dying, Thidranki);
+            AutonomousBattlegroundExit.NoteDeath(dying, Thidranki);
+            Assert.That(AutonomousBattlegroundExit.Observe(dying, Thidranki, true, 90, 0, 0, 0, false, t + Minute),
+                Is.EqualTo(eBattlegroundForcedExit.DeathStrikes), "the 3-death rule is unchanged");
         }
 
         [Test]
