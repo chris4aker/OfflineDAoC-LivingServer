@@ -54,16 +54,21 @@ class Fixture(unittest.TestCase):
             ("Dragon_Bracer", "Dragon Bracer", 2, 51, 35, 0, 0, 1, 2, 15),
             ("Dragon_Hammer", "Dragon Hammer", 2, 51, 35, 165, 38, 1, 1, 20),
             ("siege_ram", "siege ram", 1, 1, 0, 0, 0, 1, None, None),
+            ("Glacier_Skin", "Glacier Skin", 0, 50, 35, 0, 0, 1, 168, 3),
+            ("Acuity_Ring", "Acuity Ring", 0, 50, 35, 0, 0, 1, 156, 5),
         ]
         for i in items:
             db.execute("INSERT INTO ItemTemplate (Id_nb, Name, Realm, Level, Bonus, DPS_AF, SPD_ABS, Price, Bonus1Type, Bonus1) "
                        "VALUES (?,?,?,?,?,?,?,?,?,?)", i)
         db.executemany("INSERT INTO LootTemplate VALUES (?,?,?,?)", [
-            ("l1", "bwca", "Bwca_Tooth", 30), ("l2", "bwca", "Bwca_Ring", 5)])
+            ("l1", "bwca", "Bwca_Tooth", 30), ("l2", "bwca", "Bwca_Ring", 5), ("l3", "unused", "Glacier_Skin", 1)])
         db.executemany("INSERT INTO MobXLootTemplate VALUES (?,?,?,?)", [
             ("x1", "bwca", "bwca", 1), ("x2", "Olen den Bartender", "Olen den Bartender", 1)])
         db.execute("INSERT INTO MerchantItem VALUES ('mi1', 'SiegeMerchantAlb', 'siege_ram')")
         db.execute("INSERT INTO MerchantItem VALUES ('mi2', 'capital_dyes', 'blue_cloth_dye')")
+        db.execute("INSERT INTO MerchantItem VALUES ('mi3', 'SiegeMerchantAlb', 'Glacier_Skin')")
+        db.execute("INSERT INTO MerchantItem VALUES ('mi4', 'SiegeMerchantAlb', 'Acuity_Ring')")
+        db.execute("INSERT INTO MerchantItem VALUES ('mi5', 'nobody_sells', 'Glacier_Skin')")
         db.executemany("INSERT INTO Regions VALUES (?,?,?)", [(252, "Region252", "Thidranki"), (1, "Region001", "Albion")])
         db.commit()
         db.close()
@@ -211,7 +216,14 @@ class TestPeriodLootDiff(Fixture):
     def test_sections_are_optional(self):
         out = Path(self.tmp.name) / "only.json"
         self.assertEqual(pld.main(["--world", str(self.world), "--report", str(out)]), 0)
-        self.assertEqual(set(json.loads(out.read_text(encoding="utf-8"))), {"world"})
+        self.assertEqual(set(json.loads(out.read_text(encoding="utf-8"))), {"world", "later"})
+
+    def test_later_era_bonuses(self):
+        later = self.run_tool()["later"]
+        # a loot row and a row of a list a spawned merchant uses; the period-attested Acuity (156) and a list no
+        # merchant uses are not counted
+        self.assertEqual(later["loot_rows"], [{"template": "unused", "item": "Glacier_Skin", "bonus_type": 168}])
+        self.assertEqual(later["merchant_rows"], [{"list": "SiegeMerchantAlb", "item": "Glacier_Skin", "bonus_type": 168}])
 
 
 if __name__ == "__main__":

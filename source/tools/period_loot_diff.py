@@ -20,6 +20,9 @@ Sections:
   prices    True 1.65 period_alchemy_prices.csv: the world's ItemTemplate price against the CSV's old and period price.
   thidranki db-public's Thidranki (every region a Regions row names Thidranki) against the world's: realm NPCs that sell
             (an ItemsListTemplateID or a merchant class), their lists, and whether the world has the items.
+  later     the world's own loot rows (LootTemplate) and the merchant rows of lists a spawned merchant uses whose item
+            carries a Trials of Atlantis or later bonus type (true165_prima_content.py's LATER_BONUS_TYPES, less the
+            period-attested 156 and 163-165). Always runs.
   moras     an Uth-Moras items.xml (audit reference only: it has no licence; nothing is copied): for the dragon and epic
             zones, each item's level, bonus level, armor factor, DPS, speed and bonuses against the world's item of
             that name. Moras shows armor factor at the level-50 cap (100) and levels above 50 as 50; those are not counted
@@ -49,6 +52,9 @@ MORAS_PROPERTY = {
     "SUMMONING_FOCUS": 137, "BONE_ARMY_FOCUS": 138, "ACUITY": 156, "ALL_MAGIC_BONUS": 163, "ALL_MELEE_BONUS": 164,
     "ALL_MAGIC_FOCUS": 165, "ALL_DUAL_WIELD_BONUS": 167,
 }
+# as true165_prima_content.py: 99-119 and 145-256 are later than 1.65, except the period-attested 156, 163, 164, 165
+LATER_BONUS_TYPES = set(range(99, 120)) | set(range(145, 257))
+PERIOD_ATTESTED_BONUS_TYPES = {156, 163, 164, 165}
 BONUS_SLOTS = [(f"Bonus{i}Type", f"Bonus{i}") for i in range(1, 11)] + [("ExtraBonusType", "ExtraBonus")]
 
 
@@ -338,10 +344,35 @@ def diff_moras(world, moras_items, zones=MORAS_ZONES):
     return out
 
 
+def later_bonus(item):
+    """The first later-era bonus type the item carries, or None."""
+    for t, v in BONUS_SLOTS:
+        kind = item.get(t)
+        if kind and item.get(v) and int(kind) in LATER_BONUS_TYPES and int(kind) not in PERIOD_ATTESTED_BONUS_TYPES:
+            return int(kind)
+    return None
+
+
+def diff_later_bonuses(world):
+    out = {"loot_rows": [], "merchant_rows": []}
+    for template, items in sorted(world.loot.items()):
+        for iid in sorted(items):
+            item = world.items.get(iid)
+            if item is not None and (kind := later_bonus(item)) is not None:
+                out["loot_rows"].append({"template": template, "item": item["Id_nb"], "bonus_type": kind})
+    used = {key(m.get("ItemsListTemplateID")) for mobs in world.mobs.values() for m in mobs if m.get("ItemsListTemplateID")}
+    for lid in sorted(used):
+        for r in world.lists.get(lid, []):
+            item = world.items.get(key(r.get("ItemTemplateID")))
+            if item is not None and (kind := later_bonus(item)) is not None:
+                out["merchant_rows"].append({"list": r.get("ItemListID"), "item": item["Id_nb"], "bonus_type": kind})
+    return out
+
+
 def run(args):
     db = open_world(args.world)
     world = World(db)
-    report = {"world": str(args.world)}
+    report = {"world": str(args.world), "later": diff_later_bonuses(world)}
     if args.true165:
         drops_file = true165_file(args.true165, "drops165.json")
         if drops_file:
@@ -387,6 +418,9 @@ def summary(report):
         t = report["thidranki"]
         lines.append(f"thidranki: world regions {t['world_regions']}, db-public regions {t['dbpublic_regions']}, "
                      f"db-public sellers {len(t['dbpublic'])}, world sellers {len(t['world'])}")
+    if "later" in report:
+        lines.append(f"later-era bonuses: {len(report['later']['loot_rows'])} loot rows, "
+                     f"{len(report['later']['merchant_rows'])} merchant rows of lists a spawned merchant uses")
     if "moras" in report:
         for zone, counts in sorted(report["moras"]["zones"].items()):
             lines.append(f"moras {zone}: " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())))

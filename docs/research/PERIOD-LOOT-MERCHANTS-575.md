@@ -72,8 +72,8 @@ python -I source/tools/period_loot_diff.py --world <copy of a world>\opendaoc.sq
     --true165 <OfflineDAoC-True165 checkout> --dbpublic <db-public checkout> --moras <items.xml.midgard> --report out.json
 ```
 
-The world is opened read-only (a test checks the file is unchanged). On the owner's PC, run it on a copy of the 1.2.3
-test install's world to confirm the counts on the release world.
+The world is opened read-only (a test checks the file is unchanged). The rerun on the release world is owed (see
+"Reruns owed").
 
 ## Owner questions (`needs-owner`)
 
@@ -113,8 +113,17 @@ db-public's Thidranki (nothing in it is 1.65).
 5. On the PC: kill a few of the repaired monsters and check the named drops, and the start-up log line. Tests only until
    then.
 
-## Aside: later-era bonuses in our merchant lists
+## Aside: later-era bonuses in our loot and merchant lists
 
-While matching items, the tool's check found 7 loot rows and 13 merchant rows of lists a spawned merchant uses that carry a later-era archery
-bonus type (115 or 168: Skill_Archery, AllArcherySkills), for example the Orb merchants' Glacier Skins and four
-Darkness Falls pieces (two vests, a bracer, a sword) on unnamed lists. Outside this issue; worth its own look.
+The tool's `later` section (it always runs) counts the world's loot rows, and the merchant rows of lists a spawned
+merchant uses, whose item carries a bonus type later than 1.65 (`true165_prima_content.py`'s `LATER_BONUS_TYPES`, less
+the period-attested 156 and 163-165). On the base world: **7 loot rows and 13 merchant rows**, all archery types 115
+(Skill_Archery) or 168 (AllArcherySkills), for example the Orb merchants' Glacier Skins and four Darkness Falls pieces
+(two vests, a bracer, a sword) on unnamed lists. The rows are in the report's `later` list. Outside this issue; worth
+its own look.
+
+## Reruns owed
+
+Every count above comes from the 0.36b base world (with 0.37's world update, which touches none of these tables). The
+1.2.3 release world may differ: run the tool again on a read-only copy of the 1.2.3 test install's world on the owner's
+PC (command under "Run it again") and put its summary lines on #575 before any repair is built from these counts.
