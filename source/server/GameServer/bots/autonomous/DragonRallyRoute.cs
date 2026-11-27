@@ -172,7 +172,7 @@ public static class DragonRallyFallback
 /// <summary>What the controller does this tick for a raider walking to a dragon or open-world boss rally.</summary>
 public enum DragonRallyMove
 {
-    /// <summary>Stand still: at a staging post (or at the end of its checked route) until the event or post changes.</summary>
+    /// <summary>Stand still: on the ring at a staging post (where its checked route ends) while it stays there.</summary>
     Hold,
     /// <summary>Nothing to do this tick: a plan is being sliced or a retry is due later.</summary>
     Wait,
@@ -199,7 +199,8 @@ public readonly record struct DragonRallyDecision(DragonRallyMove Move, Vector3 
 /// <summary>
 /// The rally walk of one raider (AutonomousWorldBotController.TravelDragonRally executes it). Issue #767:
 /// - a failed checked route tries the raid's other posts, then falls back (<see cref="DragonRallyFallback"/>);
-/// - a raider standing at any staging post holds there until its event or own post changes. Without this the fallback
+/// - a raider standing at any staging post holds there while it stays on the ring (within 600 of a post); pushed off it,
+///   it walks back to the nearest post. Without this the fallback
 ///   churned: after its two minutes of ordinary travel it planned the safe route again from the post it had reached, which
 ///   could walk it off the post or fail three more times (review of PR #771).
 /// </summary>
@@ -212,6 +213,8 @@ public sealed class DragonRallyPlanner
     public string EventId { get; private set; }
     public Vector3 Goal { get; private set; }
     public bool Held { get; private set; }
+    /// <summary>Pushed off the ring after it was held: walking (or planning) back to the nearest post.</summary>
+    public bool Returning { get; private set; }
     public int Failures { get; private set; }
     public Vector3 Target { get; private set; }
     public long OrdinaryUntil { get; private set; }
@@ -224,10 +227,11 @@ public sealed class DragonRallyPlanner
     /// <summary>The raider left the rally (the order is no longer a pending rally): everything starts again next time.</summary>
     public void Clear()
     {
-        EventId = null; Held = false; Failures = 0; OrdinaryUntil = 0; Planning = false; Route = null; _retry = 0; _leg = 0;
+        EventId = null; Held = false; Returning = false; Failures = 0; OrdinaryUntil = 0; Planning = false; Route = null; _retry = 0; _leg = 0;
     }
 
-    /// <summary>A fight took over movement: plan again from wherever it ends. A held raider stays held.</summary>
+    /// <summary>A fight took over movement: plan again from wherever it ends. A held raider pushed off the ring walks
+    /// back to the nearest post next time.</summary>
     public void Interrupt() { Planning = false; Route = null; _retry = 0; }
 
     /// <summary>The controller could not issue the path to the next waypoint.</summary>
@@ -242,15 +246,28 @@ public sealed class DragonRallyPlanner
         }
         if (Planning && Vector3.DistanceSquared(current, _origin) > 96 * 96) { Planning = false; Route = null; _retry = 0; }
         var posts = (order.Posts ?? Array.Empty<Vector3>()).Append(order.Own).ToArray();
-        // Held until the event or post changes. Only a raider moved far from every post (a release and respawn, a throw)
-        // starts walking again; a step off the post in a scuffle does not.
-        if (Held && posts.Any(p => Vector3.DistanceSquared(current, p) <= DisplacedDistance * DisplacedDistance)) return Hold();
-        Held = false;
+        // Held only while it stands on the ring (within 600 of a post, outside the margin): there it counts as present
+        // and the watchdog leaves it alone.
         if (DragonRallyRoute.AtAssembly(current, posts, order.Home))
         {
-            Held = true; Planning = false; Route = null; OrdinaryUntil = 0;
+            Held = true; Returning = false; Planning = false; Route = null; OrdinaryUntil = 0;
             return Hold();
         }
+        bool nearPost = posts.Any(p => Vector3.DistanceSquared(current, p) <= DisplacedDistance * DisplacedDistance);
+        if (Held)
+        {
+            // Pushed off the ring (a fight, a knock-back): back to the nearest post. This is not a new fallback and
+            // writes no fallback row. Moved far from every post (a release and respawn, a throw): the rally walk
+            // starts over.
+            Held = false;
+            Returning = nearPost;
+            Failures = 0; Planning = false; Route = null; _retry = 0;
+            if (Returning) Target = DragonRallyFallback.NearestPost(order.Own, order.Posts, current);
+        }
+        else if (Returning && !nearPost) Returning = false;
+        // A neutral boss leaves passers-by alone: ordinary travel back. An aggressive one: plan the checked route back.
+        if (Returning && order.NeutralBoss)
+            return Decide(DragonRallyMove.Walk, Target, false, "Returning to dragon rally", "Pushed off the staging post; walking back to it");
         if (now < OrdinaryUntil)
             return Decide(DragonRallyMove.Walk, Target, false, "Traveling to dragon rally", WalkNote);
         if (now < _retry) return Decide(DragonRallyMove.Wait, Target, false, null, null);
@@ -261,7 +278,9 @@ public sealed class DragonRallyPlanner
             {
                 Planning = true; _origin = current;
                 int prior = DragonRallyFallback.CountFailure(Failures, _failSpot, current) - 1;
-                Target = DragonRallyFallback.GoalForAttempt(order.Own, order.Posts, current, prior);
+                Target = Returning && prior == 0
+                    ? DragonRallyFallback.NearestPost(order.Own, order.Posts, current)
+                    : DragonRallyFallback.GoalForAttempt(order.Own, order.Posts, current, prior);
             }
             var answer = slice(_origin, Target, fresh);
             if (answer.Yielded)

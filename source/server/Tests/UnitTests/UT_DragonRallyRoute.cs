@@ -341,7 +341,9 @@ namespace DOL.UnitTests
         {
             var rally=new DragonRallyPlanner(); var asked=new List<Vector3>();
             Assert.That(rally.Step(0,GgNear,GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold),"standing at another party's post");
-            Assert.That(rally.Step(1_000,GgNear+new Vector3(1200,0,0),GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold),"a scuffle");
+            var scuffle=rally.Step(1_000,GgNear+new Vector3(1200,0,0),GgOrder(true),Failing(asked));
+            Assert.That((scuffle.Move,scuffle.Destination),Is.EqualTo((DragonRallyMove.Walk,GgNear)),"a scuffle: back to the ring, not a stop off it");
+            Assert.That(rally.Step(1_500,GgNear,GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold));
             Assert.That(rally.Step(2_000,GgFrom,GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Wait),"released and back far away: it plans");
             Assert.That(asked,Has.Count.EqualTo(1));
             var other=new DragonRallyPlanner();
@@ -351,6 +353,35 @@ namespace DOL.UnitTests
             Assert.That(other.EventId,Is.EqualTo("openworld-midgard-revenant"));
             other.Clear();
             Assert.That((other.Held,other.Failures,other.Route),Is.EqualTo((false,0,(Vector3[])null)));
+        }
+
+        [Test]
+        public void AFightPushesAHeldRaiderOffTheRingAndItReturnsWithoutANewFallback()
+        {
+            // Neutral boss: ordinary travel back to the nearest post, no plan and no row.
+            var rally=new DragonRallyPlanner(); var asked=new List<Vector3>();
+            Assert.That(rally.Step(0,GgNear,GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold));
+            rally.Interrupt();
+            Vector3 pushed=GgNear+new Vector3(1000,0,0);
+            Assert.That(DragonRallyRoute.AtAssembly(pushed,[GgOwn,GgNear,GgFar],GgHome),Is.False,"1,000 off is off the ring: not counted present");
+            for(long t=1_000;t<=10_000;t+=1_000)
+            {
+                var back=rally.Step(t,pushed,GgOrder(true),Failing(asked));
+                Assert.That((back.Move,back.Destination,back.RetryRow,back.FallbackRow),Is.EqualTo((DragonRallyMove.Walk,GgNear,false,false)));
+            }
+            Assert.That(asked,Is.Empty,"walking back is not a new fallback");
+            Assert.That(rally.Step(12_000,GgNear+new Vector3(400,0,0),GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold),"back on the ring");
+            Assert.That((rally.Held,rally.Returning),Is.EqualTo((true,false)));
+
+            // Aggressive boss: the checked route back to the nearest post, not a walk past the boss.
+            var wary=new DragonRallyPlanner(); var planned=new List<Vector3>();
+            Func<Vector3,Vector3,bool,DragonRallySlice> ok=(o,t,f)=>{ planned.Add(t); return new(false,true,[t],"",12); };
+            Assert.That(wary.Step(0,GgNear,GgOrder(false),ok).Move,Is.EqualTo(DragonRallyMove.Hold));
+            wary.Interrupt();
+            var replan=wary.Step(1_000,pushed,GgOrder(false),ok);
+            Assert.That((replan.Move,replan.Destination,replan.FallbackRow),Is.EqualTo((DragonRallyMove.Follow,GgNear,false)));
+            Assert.That(planned,Is.EqualTo(new[]{GgNear}),"the nearest post, not its own far one");
+            Assert.That(wary.Step(5_000,GgNear,GgOrder(false),ok).Move,Is.EqualTo(DragonRallyMove.Hold));
         }
 
         private static string Source(params string[] parts)
@@ -448,6 +479,30 @@ namespace DOL.UnitTests
             Assert.That(AutonomousStuckWatchdog.Observe(staged,t1.AddMinutes(16)),Is.False,"waiting at a post is a normal wait");
             Assert.That(AutonomousStuckWatchdog.Observe(traveller,t1.AddMinutes(16)),Is.True,"a stuck rally is still stuck");
             Assert.That(recovered,Is.EqualTo(new[]{traveller.DatabaseID}));
+        }
+
+        [Test,NonParallelizable]
+        public void ARaiderPushedOffThePostWalksBackAndTheWatchdogLeavesItThere()
+        {
+            using var server=new EpicTestServerScope();
+            Vector3 pushed=GgNear+new Vector3(1000,0,0);
+            using var world=new RallyWorld("openworld-midgard-glaciergiant",pushed);
+            var raider=world.Members[0];
+            var recovered=new List<long>();
+            AutonomousStuckWatchdog.StuckRallyRecoveryForTests=(bot,id)=>{ recovered.Add(bot.DatabaseID); return true; };
+            world.Set("HubDeparted",true);
+            var rally=new DragonRallyPlanner();
+            Assert.That(rally.Step(0,GgNear,GgOrder(true),Failing(new())).Move,Is.EqualTo(DragonRallyMove.Hold));
+            DateTime t1=new(2026,11,27,1,0,0,DateTimeKind.Utc);
+            Assert.That(AutonomousStuckWatchdog.Observe(raider,t1),Is.False);
+            var back=rally.Step(1_000,pushed,GgOrder(true),Failing(new()));
+            Assert.That((back.Move,back.Destination),Is.EqualTo((DragonRallyMove.Walk,GgNear)));
+            raider.Position=GgNear+new Vector3(150,0,0); // the walk back ends on the ring
+            Assert.That(rally.Step(60_000,raider.Position,GgOrder(true),Failing(new())).Move,Is.EqualTo(DragonRallyMove.Hold));
+            Assert.That(AutonomousStuckWatchdog.Observe(raider,t1.AddMinutes(2)),Is.False);
+            Assert.That(AutonomousStuckWatchdog.Observe(raider,t1.AddMinutes(18)),Is.False);
+            Assert.That(AutonomousStuckWatchdog.Observe(raider,t1.AddMinutes(40)),Is.False,"standing at a post is a normal wait");
+            Assert.That(recovered,Is.Empty);
         }
 
         [Test,NonParallelizable]

@@ -443,6 +443,7 @@ public static class AutonomousStuckWatchdog
             // Tests: a logger made before the test's logging set-up cannot write, and the teleport needs a live world.
             if (StuckRallyRecoveryForTests != null)
                 return StuckRallyRecoveryForTests(bot, rallyEvent);
+            // An open-world rally member stood still off the staging ring for 15 minutes after the departure, so it is sent to its capital and keeps its raid place (issue #767).
             Log.Warn($"AUTONOMOUS_RALLY_STUCK bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} event={rallyEvent} " +
                      $"minutes={(int)(now - previous.LastMovementUtc).TotalMinutes} at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} " +
                      $"activity=\"{ForLog(bot.PersistentRecord.Activity)}\"");

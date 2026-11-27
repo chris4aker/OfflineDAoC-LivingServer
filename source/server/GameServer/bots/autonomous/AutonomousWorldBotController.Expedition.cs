@@ -158,7 +158,7 @@ public sealed partial class AutonomousWorldBotController
         });
         if(d.StopFirst) { bot.StopMovingOnPath(); bot.StopMoving(); }
         if(d.RetryRow)
-            // One failed plan of the safe route around the boss: which post, which try from this spot and which stage failed.
+            // One failed plan of the safe route around the boss, with the post it aimed at, the try from this spot and the stage that failed.
             Log.Warn($"DRAGON_RALLY_ROUTE_RETRY bot={bot.Name} event={order.EventId} from={current} goal={d.Target} " +
                      $"own={goal} attempt={d.Attempt} stage={d.Stage} queries={d.Queries}");
         if(d.FallbackRow)
