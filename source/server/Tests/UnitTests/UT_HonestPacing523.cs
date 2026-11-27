@@ -9,8 +9,8 @@ namespace DOL.UnitTests
     /// <summary>
     /// #523 step 2, honest pacing numbers. The response reserve was a hash of the warband's lowest member id alone, so the
     /// same 30% of warbands sat out every defense (defense.md finding 1); it is now drawn per event. The siege balance kept
-    /// one server-wide window, so one realm's lost keeps raised every realm's defenders; a window per defending realm is
-    /// now kept and logged beside it (applied=false until the owner picks the lever, #523 question 49).
+    /// one server-wide window, so one realm's lost keeps raised every realm's defenders; each defending realm's own window now
+    /// sets its defenders' share and the cap on armies attacking it (owner answer 52A, applied=true).
     /// </summary>
     [TestFixture, NonParallelizable]
     public class UT_HonestPacing523
@@ -88,15 +88,76 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheAppliedLeverStillFollowsTheServerWideShift()
+        public void MidgardsLossesDoNotMoveHiberniasShareOrCap()
         {
-            // Three Albion captures: the server-wide window moves a step, and the share and cap in use follow it alone.
+            // 52A: Hibernia holds three keeps, then Midgard loses six. Only Midgard's own record moves Midgard's numbers.
+            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(false, eRealm.Hibernia);
+            double hiberniaShare = SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia);
+            int hiberniaCap = SiegeDefenseBalance.AttackerCap(128, eRealm.Hibernia);
+            Assert.That(hiberniaShare, Is.EqualTo(0.625));
+            Assert.That(hiberniaCap, Is.EqualTo(128));
+
+            foreach (int _ in Enumerable.Range(0, 6)) SiegeDefenseBalance.Record(true, eRealm.Midgard);
+            Assert.Multiple(() =>
+            {
+                Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(hiberniaShare), "Hibernia's share is its own");
+                Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Hibernia), Is.EqualTo(hiberniaCap), "Hibernia's attackers' cap is its own");
+                Assert.That(SiegeDefenseBalance.AttackerCap(240, eRealm.Hibernia), Is.EqualTo(240));
+                Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(0.75), "Albion has no sieges yet");
+                Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Albion), Is.EqualTo(128));
+                Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Midgard), Is.EqualTo(1.0), "Midgard's share at its limit");
+                Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Midgard), Is.EqualTo(96), "then the armies attacking Midgard are trimmed");
+                Assert.That(SiegeDefenseBalance.AttackerCap(240, eRealm.Midgard), Is.EqualTo(180));
+                // The server-wide window (DDD then CCCCCC) is still kept and logged, and differs from both realms'.
+                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter([false, false, false, true, true, true, true, true, true])));
+                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.Step));
+            });
+        }
+
+        [Test]
+        public void EachRealmsOwnResultsMoveItsOwnShareAndCap()
+        {
             foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(true, eRealm.Albion);
-            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(false, eRealm.Midgard);
-            double shift = SiegeDefenseBalance.Shift;
-            Assert.That(shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter([true, true, true, false, false, false])));
-            Assert.That(SiegeDefenseBalance.Ratio(0.75), Is.EqualTo(SiegeDefenseBalance.RatioAt(0.75, shift)));
-            Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(SiegeDefenseBalance.AttackerCapAt(128, shift)));
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(0.875), "three Albion keeps lost: one step more defenders");
+            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(true, eRealm.Albion);
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Albion), Is.EqualTo(SiegeDefenseBalance.MaximumShift + SiegeDefenseBalance.MaximumAttackerTrim));
+            Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Albion), Is.EqualTo(96));
+
+            // Albion holds again: the trim comes off first, then the share falls, by its own window.
+            foreach (int _ in Enumerable.Range(0, 6)) SiegeDefenseBalance.Record(false, eRealm.Albion);
+            Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Albion), Is.EqualTo(128), "the trim is off");
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(0.875), "the share is coming down");
+            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(false, eRealm.Albion);
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Albion), Is.EqualTo(SiegeDefenseBalance.ShiftAfter(
+                [true, true, true, true, true, true, false, false, false, false, false, false, false, false, false])));
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Albion), Is.EqualTo(-SiegeDefenseBalance.MaximumShift), "the floor");
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(0.5));
+            Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Albion), Is.EqualTo(128));
+
+            // The policy's share, defender cap and attackers' cap in use follow the defending realm's own shift.
+            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(true, eRealm.Hibernia);
+            foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
+            {
+                double shift = SiegeDefenseBalance.RealmShift(realm);
+                Assert.That(RealmEventPolicy.EffectiveDefenseRatioFor(realm),
+                    Is.EqualTo(SiegeDefenseBalance.RatioAt(RealmEventPolicy.DefenseRatio, shift)), realm.ToString());
+                Assert.That(RealmEventPolicy.EffectiveAttackerCap(false, realm),
+                    Is.EqualTo(SiegeDefenseBalance.AttackerCapAt(RealmEventPolicy.KeepAttackers, shift)), realm.ToString());
+                Assert.That(RealmEventPolicy.DefenderCap(true, realm), Is.EqualTo(Math.Max(8, (int)Math.Round(
+                    RealmEventPolicy.RelicAttackers * SiegeDefenseBalance.RatioAt(RealmEventPolicy.DefenseRatio, shift)))), realm.ToString());
+            }
+            Assert.That(RealmEventPolicy.EffectiveDefenseRatioFor(eRealm.Hibernia), Is.Not.EqualTo(RealmEventPolicy.EffectiveDefenseRatioFor(eRealm.Albion)));
+        }
+
+        [Test]
+        public void ASiegeWithNoKnownDefenderUsesTheServerWideRecord()
+        {
+            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(true, eRealm.Midgard);
+            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(true);
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.None), Is.EqualTo(SiegeDefenseBalance.Shift));
+            Assert.That(SiegeDefenseBalance.Ratio(0.75), Is.EqualTo(SiegeDefenseBalance.RatioAt(0.75, SiegeDefenseBalance.Shift)));
+            Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(SiegeDefenseBalance.AttackerCapAt(128, SiegeDefenseBalance.Shift)));
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.75), "the server-wide record never moves a realm's own");
         }
 
         [Test]
@@ -123,8 +184,11 @@ namespace DOL.UnitTests
             Assert.That(SiegeDefenseBalance.RealmShift(eRealm.Hibernia), Is.EqualTo(SiegeDefenseBalance.Step));
             Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Albion), Is.EqualTo(new[] { false }));
             Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter([true, true, false, true, true])));
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.875), "the rebuilt window is applied");
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(0.75), "one result: too few to move");
 
             SiegeDefenseBalance.Load([true, true, true]);
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.75));
             Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Hibernia), Is.Empty, "a new ledger replaces every record");
             Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.Step));
         }
@@ -134,10 +198,10 @@ namespace DOL.UnitTests
         {
             Assert.That(SiegeDefenseBalance.RealmLine(eRealm.Midgard, "captured", 0.125, 0.25, [true, true, false, true]),
                 Is.EqualTo("SIEGE_DEFENSE_BALANCE_REALM realm=Midgard event=\"captured\" shift=+0.125->+0.25 share=1 " +
-                           "attackerCap=128 window=\"CCDC\" applied=false"));
+                           "attackerCap=128 window=\"CCDC\" applied=true"));
             Assert.That(SiegeDefenseBalance.RealmLine(eRealm.Albion, "defended", 0, -0.125, [false, false, false]),
                 Is.EqualTo("SIEGE_DEFENSE_BALANCE_REALM realm=Albion event=\"defended\" shift=0->-0.125 share=0.625 " +
-                           "attackerCap=128 window=\"DDD\" applied=false"));
+                           "attackerCap=128 window=\"DDD\" applied=true"));
         }
 
         [TestCase("Automatic continuous siege; defender: Midgard", eRealm.Midgard)]

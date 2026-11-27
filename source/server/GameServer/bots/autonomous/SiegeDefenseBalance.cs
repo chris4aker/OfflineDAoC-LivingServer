@@ -21,10 +21,11 @@ namespace DOL.GS;
 /// <see cref="MaximumAttackerTrim"/> (128 to 112 to 96 for a keep). When defenders win again the trim comes off first,
 /// then the share (docs/NIGHT-SIEGES-AND-MARFACH.md, section 4).
 ///
-/// 2026-11-27 (#523 step 2): the window is server-wide, so one realm's lost keeps raised every realm's defenders
-/// (defense.md finding 1). A window per defending realm is now kept beside it, moved by the same rule and logged
-/// (SIEGE_DEFENSE_BALANCE_REALM, applied=false). The share and the attackers' cap still follow the server-wide shift
-/// until the owner picks the lever (#523, owner question 49).
+/// 2026-11-27 (#523 step 2): the window was server-wide, so one realm's lost keeps raised every realm's defenders
+/// (defense.md finding 1). Each defending realm now keeps its own window, moved by the same rule, steps, limits and floor,
+/// and that window alone sets its defenders' share and the cap on armies attacking it (owner answer 52A; logged as
+/// SIEGE_DEFENSE_BALANCE_REALM, applied=true). The server-wide window is still kept and logged (SIEGE_DEFENSE_BALANCE);
+/// it is applied only to a siege with no known defending realm.
 /// </summary>
 public static class SiegeDefenseBalance
 {
@@ -182,23 +183,35 @@ public static class SiegeDefenseBalance
     public static int AttackerCapAt(int fullCap, double shift) =>
         Math.Max(8, (int)Math.Round(fullCap * (1 - AttackerTrimAt(shift))));
 
-    public static double Ratio(double baseRatio)
+    /// <summary>The defenders' share in use for a siege on this realm's keep: moved by that realm's own window only
+    /// (#523, owner answer 52A). With no known defending realm, the server-wide window.</summary>
+    public static double Ratio(double baseRatio, eRealm defender = eRealm.None)
     {
-        lock (Sync) return RatioAt(baseRatio, _shift);
+        lock (Sync) return RatioAt(baseRatio, AppliedShiftLocked(defender));
     }
 
-    /// <summary>The attackers' cap in use: the full cap, trimmed once the defenders' share is at its limit.</summary>
-    public static int AttackerCap(int fullCap)
+    /// <summary>The attackers' cap in use against this defending realm: the full cap, trimmed once that realm's
+    /// defenders' share is at its limit. With no known defending realm, the server-wide window.</summary>
+    public static int AttackerCap(int fullCap, eRealm defender = eRealm.None)
     {
-        lock (Sync) return AttackerCapAt(fullCap, _shift);
+        lock (Sync) return AttackerCapAt(fullCap, AppliedShiftLocked(defender));
     }
+
+    /// <summary>The shift that sets the share and the cap for a siege on this realm's keep.</summary>
+    public static double AppliedShift(eRealm defender)
+    {
+        lock (Sync) return AppliedShiftLocked(defender);
+    }
+
+    private static double AppliedShiftLocked(eRealm defender) =>
+        HasRealmRecord(defender) ? RealmShiftLocked(defender) : _shift;
 
     public static double Shift
     {
         get { lock (Sync) return _shift; }
     }
 
-    /// <summary>The shift of one defending realm's own window (logged only: #523 step 2, owner question 49).</summary>
+    /// <summary>The shift of one defending realm's own window: what sets its share and the cap on its attackers.</summary>
     public static double RealmShift(eRealm realm)
     {
         lock (Sync) return RealmShiftLocked(realm);
@@ -210,8 +223,9 @@ public static class SiegeDefenseBalance
         lock (Sync) return RealmResults.TryGetValue(realm, out var window) ? window.ToArray() : [];
     }
 
-    /// <summary>The log line of a change: what happened, the shift before and after, the share and the keep attackers' cap
-    /// (setting -> in use), the window (C = captured, D = defended).</summary>
+    /// <summary>The log line of a change to the server-wide window: what happened, the shift before and after, the share
+    /// and the keep attackers' cap (setting -> at this shift), the window (C = captured, D = defended). Since #523 (52A) it
+    /// is applied only to a siege with no known defending realm; SIEGE_DEFENSE_BALANCE_REALM has what each realm uses.</summary>
     public static string Line(string what, double before, double after, IEnumerable<bool> window) =>
         $"SIEGE_DEFENSE_BALANCE event=\"{what}\" shift={before:+0.###;-0.###;0}->{after:+0.###;-0.###;0} " +
         $"share={RealmEventPolicy.DefenseRatio:0.###}->{RatioAt(RealmEventPolicy.DefenseRatio, after):0.###} " +
@@ -219,14 +233,14 @@ public static class SiegeDefenseBalance
         $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\"";
 
     /// <summary>The log line of a defending realm's own window: what happened, its shift before and after, the share
-    /// and keep attackers' cap that shift would give, the window (C = captured, D = defended), and whether it is applied
-    /// (not yet: the share and the cap follow the server-wide shift, #523 owner question 49).</summary>
+    /// and keep attackers' cap that shift gives, the window (C = captured, D = defended), and applied=true: this window
+    /// sets the realm's share and the cap on armies attacking it (#523, owner answer 52A).</summary>
     public static string RealmLine(eRealm realm, string what, double before, double after, IEnumerable<bool> window) =>
         $"SIEGE_DEFENSE_BALANCE_REALM realm={GlobalConstants.RealmToName(realm)} event=\"{what}\" " +
         $"shift={before:+0.###;-0.###;0}->{after:+0.###;-0.###;0} " +
         $"share={RatioAt(RealmEventPolicy.DefenseRatio, after):0.###} " +
         $"attackerCap={AttackerCapAt(RealmEventPolicy.KeepAttackers, after)} " +
-        $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\" applied=false";
+        $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\" applied=true";
 
     /// <summary>Tests only.</summary>
     public static void Reset()

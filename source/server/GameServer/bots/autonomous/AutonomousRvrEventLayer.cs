@@ -735,19 +735,21 @@ public static partial class AutonomousRvrEventLayer
     private static int DefenderCapFor(ActiveEvent active)
     {
         if (!SiegeScheduling) return Capacity(active);
-        int cap = RealmEventPolicy.DefenderCap(active.RelicKeep);
+        int cap = RealmEventPolicy.DefenderCap(active.RelicKeep, active.DefenderRealm);
         return active.MarchedAttackers <= 0 ? cap
-            : RealmEventPolicy.DefendersFor(active.MarchedAttackers, active.Attackers.Values.Sum(), RealmEventPolicy.EffectiveDefenseRatio, cap);
+            : RealmEventPolicy.DefendersFor(active.MarchedAttackers, active.Attackers.Values.Sum(),
+                RealmEventPolicy.EffectiveDefenseRatioFor(active.DefenderRealm), cap);
     }
 
     /// <summary>
     /// The attackers a bot siege may draw. 2026-11-06: once the defenders' share is at its limit and attackers still take
-    /// most keeps, the siege balance trims this cap (SiegeDefenseBalance.MaximumAttackerTrim). A forced siege, a retake and a
+    /// most keeps, the siege balance trims this cap (SiegeDefenseBalance.MaximumAttackerTrim). 2026-11-27 (#523, 52A): the
+    /// defending realm's own record sets the trim, so one realm's lost keeps never shrink the armies attacking another. A forced siege, a retake and a
     /// player-attack defense keep their own caps. Posts and slots stay sized by <see cref="Capacity"/>.
     /// </summary>
     private static int AttackerCapFor(ActiveEvent active) =>
         SiegeScheduling && !active.Forced && !active.Retake && !active.DefenseReaction
-            ? RealmEventPolicy.EffectiveAttackerCap(active.RelicKeep) : Capacity(active);
+            ? RealmEventPolicy.EffectiveAttackerCap(active.RelicKeep, active.DefenderRealm) : Capacity(active);
 
     private static int Capacity(ActiveEvent active) => active.DefenseReaction ? 240 : active.Retake ? active.RetakeCap :
         SiegeScheduling ? RealmEventPolicy.AttackerCap(active.RelicKeep) : active.RelicKeep ? RelicAssaultCap : OrdinaryAssaultCap;
@@ -1052,7 +1054,7 @@ public static partial class AutonomousRvrEventLayer
                 .Sum(other => other.Attackers.Values.Sum());
             log.Info($"RVR_SIEGE_MARCH target={active.TargetId} mustered={active.MarchedAttackers} " +
                      SiegeArmyFields(SiegeKind(active), active.MarchedAttackers, MusterNeeded(active.RelicKeep),
-                         active.Attackers.Values.Sum(), pool.Level50, pool.Rvr, elsewhere, RealmEventPolicy.EffectiveDefenseRatio) +
+                         active.Attackers.Values.Sum(), pool.Level50, pool.Rvr, elsewhere, RealmEventPolicy.EffectiveDefenseRatioFor(active.DefenderRealm)) +
                      $" reason=\"{reason}\"");
         }
     }
