@@ -86,7 +86,7 @@ namespace DOL.GS
                     });
                 }
                 return 0;
-            }, 1_500 + Random.Shared.Next(1_500));
+            }, AutonomousChatArbiter.AnswerDelayMs(message, reply, AutonomousBotChatCoordinator.Wpm(bot), "companion formal", false, true, 0, Random.Shared));
         }
 
         public static bool IsCompanion(GameBot bot) => HiredCompanionsMode.IsOn && HiredCompanions165.IsHired(bot);
@@ -206,16 +206,20 @@ namespace DOL.GS
             return zone.StartsWith("City of ", StringComparison.OrdinalIgnoreCase) ? zone[8..] : zone;
         }
 
-        /// <summary>A player spoke near their companions: one answers (always the one named).</summary>
-        public static void OnPlayerSay(GamePlayer player, string message)
+        /// <summary>
+        /// A player spoke near their companions: one answers (always the one named). True when a companion took the line (its answer
+        /// is on its way), so the gamebots nearby leave it to the companion (Realism 2b, #479; channels.md finding 1: a companion's
+        /// "ok" was followed by a gamebot's real answer).
+        /// </summary>
+        public static bool OnPlayerSay(GamePlayer player, string message)
         {
             if (!HiredCompanionsMode.IsOn || player?.Group == null || string.IsNullOrWhiteSpace(message))
-                return;
+                return false;
             long[] ids = HiredCompanions165.RosterOf(player).Select(h => h.BotId).ToArray();
             GameBot[] near = player.Group.GetMembersInTheGroup().OfType<GameBot>()
                 .Where(b => ids.Contains(b.DatabaseID) && CanSpeak(b, player) && !b.InCombat).ToArray();
             if (near.Length == 0)
-                return;
+                return false;
             GameBot named = near.FirstOrDefault(b => AutonomousBotChatCoordinator.ContainsMention(message, b.Name));
             long now = GameLoop.GameLoopTime;
             // Conversation memory (#350): the player's line is already a turn of the /say conversation (the coordinator notes
@@ -228,17 +232,70 @@ namespace DOL.GS
                 AutonomousBotChatCoordinator.KeepsTheFloor(message, AutonomousChatIntentModel.Predict(message)));
             GameBot speaker = ChooseSpeaker(near, named, floor, Random.Shared, aimedElsewhere);
             if (speaker == null)
-                return;
-            if (NextReply.TryGetValue(speaker.DatabaseID, out long next) && now < next)
-                return;
+                return false;
+            // #479: a question or a line naming the companion is never lost to its reply gap (as /faction and /say).
+            if (!(AutonomousBotChatCoordinator.NeedsAnswer(message) || named != null) && NextReply.TryGetValue(speaker.DatabaseID, out long next) && now < next)
+                return false;
+            string unnamed = named != null && AutonomousChatThreads.WithoutName(message, named.Name) is { Length: > 0 } without ? without : message;
+            string resolved = ChatConversations.Resolve(unnamed, ChatConversations.Live.In(player.Name, room, now));
+            AutonomousBotChatCoordinator.ReplyChoice choice = Answer(speaker, player, resolved, Random.Shared);
+            if (string.IsNullOrWhiteSpace(choice.Text))
+            {
+                AutonomousChatWhy.RecordSilence(player.Realm, "say", "player " + player.Name, choice.Route ?? "none", AutonomousChatReplyFit.Of(choice.Route, resolved),
+                    "the companion has nothing true to say to it", player.Name);
+                return false;
+            }
             NextReply[speaker.DatabaseID] = now + ReplyGapMs;
-            string reply = Typed(speaker, Reply(speaker, player, message, Random.Shared));
+            string reply = choice.Text;
+            int due = AutonomousChatArbiter.AnswerDelayMs(resolved, reply, AutonomousBotChatCoordinator.Wpm(speaker), choice.Route,
+                AutonomousChatQuestions.IsQuestion(resolved), true, 0, Random.Shared);
             _ = new ECSGameTimer(speaker, _ =>
             {
                 if (CanSpeak(speaker, player) && speaker.Say(reply))
+                {
                     NoteSaid(player.Name, room, speaker, reply, GameLoop.GameLoopTime);
+                    AutonomousChatWhy.Record(speaker, "say", "player " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, resolved),
+                        named != null ? "named in the line" : "the player's companion answers", reply, choice.Line?.Id, player.Name);
+                }
                 return 0;
-            }, 1_200 + Random.Shared.Next(1_200));
+            }, due);
+            return true;
+        }
+
+        /// <summary>
+        /// A companion's answer to its player's /say line, as it types it (#479): its three commands (keep quiet, talk again, how are
+        /// you); a Formal companion its own lines (<see cref="ReplyTo"/>); any other the party reply path its groupmates take in /group
+        /// (<see cref="AutonomousBotGroupChatter.PartyChoice"/>: the knowledge lookup, a warning, "come", the meet-up, a pause, the
+        /// voiced reply and the budget), and for a plain statement nothing there answers, the companion's own line where it says
+        /// something true of a companion (<see cref="StatementLine"/>). Text null: it says nothing.
+        /// </summary>
+        public static AutonomousBotChatCoordinator.ReplyChoice Answer(GameBot bot, GamePlayer owner, string message, Random random)
+        {
+            if (Command(bot, owner, message) is { } command)
+                return new AutonomousBotChatCoordinator.ReplyChoice(Typed(bot, command), "companion command");
+            eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
+            if (IsFormal(bot))
+                return new AutonomousBotChatCoordinator.ReplyChoice(ReplyTo(intent, owner.Name, random, true), "companion formal");
+            AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotGroupChatter.PartyChoice(bot, owner, message, intent, true, "say", 1);
+            if (!string.IsNullOrWhiteSpace(choice.Text))
+                return choice;
+            return StatementLine(message, intent, owner.Name, random) is { } own
+                ? new AutonomousBotChatCoordinator.ReplyChoice(Typed(bot, own), "companion " + AutonomousBotVoices.IntentName(intent))
+                : choice;
+        }
+
+        /// <summary>
+        /// The companion's own answer to a plain statement of these intents, where it says something true of a hired companion: it
+        /// follows ("lead on, im behind u"), it waits, it fights the next one, it wears what it is handed. Null for a question and
+        /// for any other intent (no "k / ok / sure {who}" to anything, channels.md finding 1). Pure.
+        /// </summary>
+        public static string StatementLine(string message, eAutonomousChatIntent intent, string who, Random random)
+        {
+            if (string.IsNullOrWhiteSpace(message) || AutonomousChatReplyBudget.AsksSomething(message))
+                return null;
+            return intent is eAutonomousChatIntent.Travel or eAutonomousChatIntent.Farewell or eAutonomousChatIntent.Grinding or eAutonomousChatIntent.Trading
+                ? ReplyTo(intent, who, random, false)
+                : null;
         }
 
         /// <summary>
@@ -272,8 +329,13 @@ namespace DOL.GS
         public static void NoteSaid(string player, string room, GameBot bot, string text, long now) =>
             ChatConversations.Live.NoteBot(player, bot.DatabaseID, bot.Name, room, text, now);
 
-        /// <summary>A companion's answer to its player's /say, as written (in the formal register when its Speech is Formal).</summary>
-        public static string Reply(GameBot bot, GamePlayer owner, string message, Random random)
+        /// <summary>A companion's answer to its player's /say by its commands and intent alone, as written (the formal register when its
+        /// Speech is Formal). A non-formal companion answers through <see cref="Answer"/>; this stays for the Formal one's tells.</summary>
+        public static string Reply(GameBot bot, GamePlayer owner, string message, Random random) =>
+            Command(bot, owner, message) ?? ReplyTo(AutonomousChatIntentModel.Predict(message), owner.Name, random, IsFormal(bot));
+
+        /// <summary>The companion's three commands: keep quiet, talk again, how are you; null for any other line.</summary>
+        private static string Command(GameBot bot, GamePlayer owner, string message)
         {
             string who = owner.Name;
             bool formal = IsFormal(bot);
@@ -293,7 +355,7 @@ namespace DOL.GS
                     ? hurt ? "Hurt, but standing. A rest would help." : oom ? "Fine, but my power is low." : "Ready to fight."
                     : hurt ? "hurt but ok, a rest would help" : oom ? "fine, low on power tho" : "fine, ready";
             }
-            return ReplyTo(AutonomousChatIntentModel.Predict(message), who, random, formal);
+            return null;
         }
 
         /// <summary>The answer to a line of this intent. Pure.</summary>

@@ -177,6 +177,93 @@ public static class AutonomousChatMeetup
         return random.Next(4) switch { 0 => "nice", 1 => "cool", 2 => "oh nice", _ => "ah cool" };
     }
 
+    /// <summary>How near a groupmate or companion counts as beside the player (the meet-up says "k", not where it is).</summary>
+    public const int BesideRange = 2_000;
+
+    /// <summary>
+    /// The meet-up answer of a groupmate or hired companion (Realism 2b, #479; channels.md finding 4: "im at the bridge", "omw" and
+    /// "be there in 5" in /group drew nothing), or null when the line says neither where the player is nor that they are coming.
+    /// Beside the player: "k". In the same region it follows its group, so it says it is coming to the place the player names (promise:
+    /// true), and "k" to "omw". In another region it can't follow, so it says where it is and asks the player to come. Pure.
+    /// </summary>
+    public static string PartyReply(string message, bool beside, bool sameRegion, string botZone, Random random)
+    {
+        random ??= Random.Shared;
+        string place = PlaceSaid(message);
+        bool coming = place == null && (SaysComing(message) || ComesSoon(message));
+        if (place == null && !coming)
+            return null;
+        if (beside)
+            return random.Next(3) switch { 0 => "k", 1 => "kk", _ => "ok" };
+        if (sameRegion)
+            return place != null ? PlaceReply(place, botZone, false, true, random) : random.Next(3) switch { 0 => "k", 1 => "kk", _ => "cool" };
+        string z = AutonomousChatFieldTalk.ShortZone(botZone);
+        bool known = !string.IsNullOrWhiteSpace(botZone) && z != "here";
+        if (place != null)
+            return known
+                ? random.Next(2) == 0 ? $"im still over in {z}, cant get to {place} from here. come find me?" : $"stuck in {z} for now, a ways from {place}"
+                : random.Next(2) == 0 ? $"cant get to {place} from where i am, come find me?" : $"{place} is a ways from me, come find me?";
+        return known
+            ? random.Next(2) == 0 ? $"k, im over in {z}" : $"cool, im in {z}"
+            : random.Next(2) == 0 ? "k, see u soon" : "cool";
+    }
+
+    private static readonly Regex Soon = new(@"^(?:i'?ll |ill |i will |gonna )?be (?:there|right there) in (?:\d+|a (?:sec|min|bit|few))(?: ?(?:mins?|minutes?|secs?))?\s*$",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    /// <summary>"be there in 5", "be there in a min": the player says they are coming, with a time. Pure.</summary>
+    public static bool ComesSoon(string message)
+    {
+        string text = Clean(message);
+        return text.Length > 0 && !text.Contains('?') && Soon.IsMatch(text);
+    }
+
+    private static readonly Regex Pause = new(
+        @"^(?:(?:i'?m |im |i am )?(?:oom|oop|lom|out of (?:mana|power|pow|endo|endurance)|low (?:on )?(?:mana|power|pow|endo|hp|health))|" +
+        @"(?:i )?need (?:to )?(?:a )?(?:rest|med|sit|break|pow|power|mana|a sec to med)|med(?:ding)?(?: break| up| a sec| quick)?|" +
+        @"(?:i'?m |im )?(?:resting|sitting|medding)|rest(?:ing)? (?:a sec|a min|up|break)|sit(?:ting)? (?:a sec|a min|to med))" +
+        @"(?:[\s,]+(?:pls|plz|please|brb|med|1 sec|one sec|a sec|quick|first|then|ty|thx|guys|all))*\s*$",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    private static readonly Regex Ready = new(@"^(?:i'?m |im |i am |all )?(?:rdy|ready|r)(?: now| to go| here| again)?\s*$",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    /// <summary>"oom", "need to rest", "med break": the player stops for power or health. Pure.</summary>
+    public static bool SaysPause(string message)
+    {
+        string text = Clean(message);
+        return text.Length > 0 && !text.Contains('?') && Pause.IsMatch(text);
+    }
+
+    /// <summary>"rdy", "ready", "im ready": the player says they are ready (a statement, not "ready?"). Pure.</summary>
+    public static bool SaysReady(string message)
+    {
+        string text = Clean(message);
+        return text.Length > 0 && !text.Contains('?') && Ready.IsMatch(text);
+    }
+
+    /// <summary>
+    /// A groupmate's or companion's answer to the player's pause or ready line (Realism 2b, #479; channels.md finding 4: "oom", "rdy"
+    /// and "need to rest" in /group drew nothing; period group shorthand "oom, med", docs/bot-voices/PERIOD-CHAT-RESEARCH.md A2), or
+    /// null for any other line. True to the bot: it meds too only when its own power is low, and to "rdy" it says it is ready only
+    /// when it is (else "sec"). <paramref name="powerPercent"/> is null for a bot with no power. Pure.
+    /// </summary>
+    public static string PauseReply(string message, int healthPercent, int? powerPercent, Random random)
+    {
+        random ??= Random.Shared;
+        bool lowPower = powerPercent is < 60;
+        bool low = powerPercent is < 40 || healthPercent < 50;
+        if (SaysPause(message))
+            return lowPower
+                ? random.Next(2) == 0 ? "k, ill med too" : "np, need pow myself"
+                : random.Next(3) switch { 0 => "np take ur time", 1 => "k, np", _ => "np, ill wait" };
+        if (SaysReady(message))
+            return low
+                ? random.Next(2) == 0 ? "sec, still low" : healthPercent < 50 ? "sec, need hp" : "sec, need pow"
+                : random.Next(3) switch { 0 => "k go", 1 => "rdy", _ => "k" };
+        return null;
+    }
+
     /// <summary>
     /// The meetup answer to a tell, or null: where the player says they are, or that they are coming. Pure.
     /// </summary>

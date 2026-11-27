@@ -298,6 +298,23 @@ namespace DOL.GS.Tests
             return text;
         }
 
+        /// <summary>
+        /// AutonomousChatReplyPath.Party on the stub world (#479): the /group handler's and a hired companion's /say path. The
+        /// responder stands in its own zone: a groupmate in the player's region but not beside them, a companion beside them; a
+        /// warning's reply needs the live situation (stub); full health and power.
+        /// </summary>
+        private static AutonomousBotChatCoordinator.ReplyChoice PartyOf(Run run, AutonomousChatReplyPath.Ports ports, string message, bool addressed, string channel)
+        {
+            bool companion = channel == "say";
+            return AutonomousChatReplyPath.Party(ports, message, AutonomousChatIntentModel.Predict(message), addressed, channel,
+                knowledge: () => Knowledge(run, message),
+                alarm: () => Stubbed(run, "[world: the group's warning reply]"),
+                come: () => AutonomousBotGroupChatter.ComeReply(true, companion ? 300 : 2_000, run.Me.Zone, run.Rng),
+                meetup: () => AutonomousChatMeetup.PartyReply(message, companion, true, run.Me.Zone, run.Rng),
+                pause: () => AutonomousChatMeetup.PauseReply(message, 100, 100, run.Rng),
+                voiced: () => VoicedOf(run, ports, message, true, channel));
+        }
+
         private static AutonomousBotChatCoordinator.ReplyChoice VoicedOf(Run run, AutonomousChatReplyPath.Ports ports, string message, bool addressed, string channel) =>
             AutonomousChatReplyPath.Voiced(ports, message, () => null, null, addressed, channel, relax: true);
 
@@ -334,11 +351,9 @@ namespace DOL.GS.Tests
             }
             else if (channel == "group")
             {
-                // OnPlayerGroupChat: the knowledge lookup first (1.2.3: as the live path does; "where is Humberton Castle" in a
-                // bot-led group), else ReplyChoiceToPlayer's voiced reply, then the budget (a line that names nobody isn't addressed).
-                string known = Knowledge(run, message);
-                choice = known != null ? new AutonomousBotChatCoordinator.ReplyChoice(Style(run, known), "knowledge")
-                    : AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, true, "group"), message, false, "group");
+                // OnPlayerGroupChat (#479): the party reply path the live handler runs (the knowledge lookup, a warning, "come", the
+                // meet-up, a pause, then the voiced reply through the budget; a line that names nobody isn't addressed).
+                choice = PartyOf(run, ports, message, false, "group");
             }
             else
             {
@@ -410,11 +425,11 @@ namespace DOL.GS.Tests
         {
             // SchedulePlayerReplies' timing: a short known fact types faster (F11), and a line said to the bot or the first answer to
             // a question in /faction comes within DirectTypingCapMs (PlayerAnswerDueMs).
+            // #479: the one delay function every channel's handler uses.
             bool question = AutonomousChatQuestions.IsQuestion(run.Q.Text);
             bool directed = run.Q.Channel is "tell" or "group" || !string.IsNullOrEmpty(run.Q.To);
-            int wpm = question && AutonomousChatArbiter.IsQuickFact(route, text) ? AutonomousChatArbiter.QuickWpm(40) : 40;
-            int delay = text == null ? 0 : AutonomousBotChatCoordinator.PlayerAnswerDueMs(AutonomousChatArbiter.DelayMs(run.Q.Text, text, wpm, 0, run.Rng), 0,
-                directed, run.Q.Channel == "faction" && question);
+            int delay = text == null ? 0 : AutonomousChatArbiter.AnswerDelayMs(run.Q.Text, text, 40, route, question,
+                directed || run.Q.Channel == "faction" && question, 0, run.Rng);
             return new Answer(run.Q.Id, route, text, stub || run.Stub || text != null && text.StartsWith("[world", StringComparison.Ordinal), fit, outcome,
                 text == null ? 0 : answerers, delay, twice);
         }

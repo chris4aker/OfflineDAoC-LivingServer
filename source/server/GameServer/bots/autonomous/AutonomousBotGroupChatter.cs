@@ -210,7 +210,10 @@ public static class AutonomousBotGroupChatter
 
     /// <summary>
     /// The player said something in /group: a groupmate answers in /group, as /faction and /say do (live test 2026-10-18:
-    /// "hi" and "where to next?" in /group got no answer). Bots that are fighting or casting stay quiet.
+    /// "hi" and "where to next?" in /group got no answer). Bots that are fighting or casting stay quiet. Realism 2b (#479): the
+    /// first answer takes the one party reply path (<see cref="AutonomousChatReplyPath.Party"/>, which the question bench runs too),
+    /// the line is a turn of the group's conversation once, here, whatever answers it, and every answer is typed at the bot's own
+    /// speed with the 12 s cap (<see cref="AutonomousChatArbiter.AnswerDelayMs"/>).
     /// </summary>
     public static void OnPlayerGroupChat(GamePlayer player, string message)
     {
@@ -228,18 +231,25 @@ public static class AutonomousBotGroupChatter
             .OrderBy(_ => Random.Shared.Next()).ToArray();
         if (mates.Length == 0)
             return;
+        // Conversation memory (DESIGN-040, #479): the player's /group line is a turn of the group's conversation before any branch
+        // answers it, so a place asked about and answered by the knowledge lookup is kept ("how do i get there" next).
+        string key = AutonomousChatThreads.GroupChannel(group);
+        NotePlayerLine(player.Name, key, message, GameLoop.GameLoopTime);
         // The talking update: "why?", "ty", a laugh or an answer to a groupmate's question follows on from what was said.
-        if (AutonomousBotChatCoordinator.TryThreadReply(player, message, AutonomousChatThreads.GroupChannel(group),
-                AutonomousBotChatCoordinator.ThreadScope.Group))
+        if (AutonomousBotChatCoordinator.TryThreadReply(player, message, key, AutonomousBotChatCoordinator.ThreadScope.Group))
             return;
+        GameBot[] named = mates.Where(mate => AutonomousBotChatCoordinator.ContainsMention(message, mate.Name)).ToArray();
         Next next = Groups.GetValue(group, _ => new Next());
         lock (next)
         {
-            if (next.LastPlayerReply > 0 && GameLoop.GameLoopTime - next.LastPlayerReply < PlayerReplyCooldownMs)
+            // #479: as in /faction and /say, a question or a line naming a groupmate is never lost to the cooldown.
+            if (CooledDown(next.LastPlayerReply, GameLoop.GameLoopTime, AutonomousBotChatCoordinator.NeedsAnswer(message) || named.Length > 0))
+            {
+                AutonomousChatWhy.Dropped(player.Name, player.Realm, "group", AutonomousChatWhy.Codes.Cooldown, "a groupmate answered you a moment ago and this line asks nothing");
                 return;
+            }
             next.LastPlayerReply = GameLoop.GameLoopTime;
         }
-        GameBot[] named = mates.Where(mate => AutonomousBotChatCoordinator.ContainsMention(message, mate.Name)).ToArray();
         // Beta 1.1.2, second pass: a line to someone else in the group draws at most a laugh (light teasing).
         if (named.Length == 0 && AutonomousChatScreen.OtherAddressee(message, null) is { } other)
         {
@@ -248,7 +258,8 @@ public static class AutonomousBotGroupChatter
             {
                 GameBot teaser = mates[0];
                 string laugh = AutonomousBotVoices.StyleFor(teaser, AutonomousChatReplyBudget.Reaction("laugh", Random.Shared));
-                AutonomousLivingServer.Later(teaser, AutonomousBotChatCoordinator.ReplyDelayMs(teaser, message, laugh, 0, Random.Shared),
+                AutonomousLivingServer.Later(teaser, AutonomousChatArbiter.AnswerDelayMs(message, laugh, AutonomousBotChatCoordinator.Wpm(teaser), "reaction", false,
+                        true, 0, Random.Shared),
                     () => teaser.Group == group && teaser.IsAlive, () => Send(teaser, laugh, "", player.Name));
             }
             else
@@ -261,75 +272,96 @@ public static class AutonomousBotGroupChatter
             message = unnamed;
         // 1.2.3 (owner's game): "where is that" right after the leader's "meet up at Humberton Castle" is completed from the
         // group's conversation before the knowledge lookup sees it ("where is Humberton Castle"), and the bot that named the
-        // place answers it.
+        // place answers it. #479: the bot that has the floor takes the line first, whatever answers it.
         string resolved = ResolvedInGroup(player, group, message, out long floorBot);
-        if (AutonomousChatKnowledge.TryAnswer(player, resolved, out string knowledge))
-        {
-            GameBot answerer = AnswererFirst(pool, floorBot, bot => bot.DatabaseID)[0];
-            AutonomousLivingServer.Later(answerer, AutonomousBotChatCoordinator.ReplyDelayMs(knowledge, 0, Random.Shared),
-                () => answerer.Group == group && answerer.IsAlive, () => Send(answerer, AutonomousBotVoices.StyleFor(answerer, knowledge), "", player.Name));
-            return;
-        }
-        eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
+        pool = AnswererFirst(pool, floorBot, bot => bot.DatabaseID);
+        eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(resolved);
         // Chat audit CORPUS-C-012: a bare "gz" in /group was thanked ("ty, off to the trainer now") by a groupmate that had not
         // levelled. Only a bot that just levelled takes congratulations.
         pool = CongratulatedOnly(intent, pool, AutonomousBotVoices.JustLeveled);
         if (pool.Length == 0)
             return;
-        // The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A
-        // groupmate takes the warning ("got it", "on it").
-        if (AutonomousChatReplyBudget.IsAlarm(message, intent))
-        {
-            GameBot heard = pool[0];
-            // Beta 1.1.2, round 2: an inc call gets a terse "where" or "on it", not "ty for the heads up" (too polite for a call).
-            if (AutonomousChatContext.Reply(message, intent, AutonomousChatShortTalk.QuestionShape(message),
-                    AutonomousBotChatCoordinator.ContextFor(heard, player, "group"), Random.Shared) is { } call)
-            {
-                string callText = AutonomousBotVoices.StyleFor(heard, call.Text);
-                AutonomousLivingServer.Later(heard, AutonomousBotChatCoordinator.ReplyDelayMs(heard, message, callText, 0, Random.Shared) / 2,
-                    () => heard.Group == group && heard.IsAlive, () => Send(heard, callText, "none", player.Name));
-            }
-            else if (AutonomousBotVoices.TryLine(heard, "reply", out VC.Picked ok, answers: "player_headsup", relax: true))
-                AutonomousLivingServer.Later(heard, AutonomousBotChatCoordinator.ReplyDelayMs(ok.Text, 0, Random.Shared) / 2,
-                    () => heard.Group == group && heard.IsAlive, () => Send(heard, ok.Text, "none", player.Name));
-            return;
-        }
-        // Play test 2026-10-27: "can u come to mularn?" to Yrilda drew nothing (read as banter). A groupmate asked to come says
-        // honestly whether it can: it follows the player within a region, it can't cross into another region on its own.
-        if (AsksToCome(message))
-        {
-            GameBot asked = pool[0];
-            string answer = ComeReply(asked.CurrentRegion == player.CurrentRegion,
-                asked.CurrentRegion == player.CurrentRegion ? asked.GetDistanceTo(player) : int.MaxValue, asked.CurrentZone?.Description, Random.Shared);
-            AutonomousLivingServer.Later(asked, AutonomousBotChatCoordinator.ReplyDelayMs(answer, 0, Random.Shared),
-                () => asked.Group == group && asked.IsAlive, () => Send(asked, AutonomousBotVoices.StyleFor(asked, answer), "", player.Name));
-            return;
-        }
         // A group is small: one answer, two for a hello or a ding.
         int count = Math.Min(AutonomousBotChatCoordinator.PlayerReplyCount(intent, false, named.Length > 0, pool.Length, Random.Shared),
             intent is eAutonomousChatIntent.Greeting or eAutonomousChatIntent.Ding ? 2 : 1);
+        bool question = AutonomousChatQuestions.IsQuestion(resolved);
         var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         int due = 0;
         string lastRoute = null;
-        for (int i = 0; i < pool.Length && used.Count < count; i++)
+        for (int i = 0; i < pool.Length && (i == 0 || used.Count < count); i++)
         {
             GameBot mate = pool[i];
-            AutonomousBotChatCoordinator.ReplyChoice choice = AutonomousBotChatCoordinator.ReplyChoiceToPlayer(mate, player, message, named.Length > 0);
+            AutonomousBotChatCoordinator.ReplyChoice choice = PartyChoice(mate, player, resolved, intent, named.Length > 0, "group", i == 0 ? count : count - used.Count);
             lastRoute = choice.Route;
             if (string.IsNullOrEmpty(choice.Text) || !AutonomousBotChatCoordinator.TryAddDistinctResponse(used, choice.Text, out string reply))
+            {
+                if (i == 0 && count == 0)
+                    break;
                 continue;
-            due = AutonomousBotChatCoordinator.ReplyDelayMs(mate, message, reply, due, Random.Shared);
+            }
+            due = AutonomousChatArbiter.AnswerDelayMs(resolved, reply, AutonomousBotChatCoordinator.Wpm(mate), choice.Route, i == 0 && question, true, due, Random.Shared);
             string text = reply;
             AutonomousLivingServer.Later(mate, due, () => mate.Group == group && mate.IsAlive && !mate.InCombat, () =>
             {
                 Send(mate, text, "", player.Name);
-                AutonomousChatWhy.Record(mate, "group", "player " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, message),
+                AutonomousChatWhy.Record(mate, "group", "player " + player.Name, "said", choice.Route, AutonomousChatReplyFit.Of(choice.Route, resolved),
                     named.Length > 0 ? "named in the line" : "a groupmate answers", text, choice.Line?.Id, player.Name);
             });
+            // A step before the voiced reply (knowledge, a warning, "come", the meet-up, a pause) is answered once.
+            if (!IsVoicedRoute(choice.Route))
+                break;
         }
         if (used.Count == 0)
-            AutonomousChatWhy.RecordSilence(player.Realm, "group", "player " + player.Name, lastRoute ?? "none", AutonomousChatReplyFit.Of(lastRoute, message),
+            AutonomousChatWhy.RecordSilence(player.Realm, "group", "player " + player.Name, lastRoute ?? "none", AutonomousChatReplyFit.Of(lastRoute, resolved),
                 count == 0 ? $"a line like this ({intent}) draws no answer" : "no reply fits it", player.Name);
+    }
+
+    /// <summary>Whether the 5 s cooldown drops a player's /group line: not a question or a line naming a groupmate (#479). Pure.</summary>
+    public static bool CooledDown(long lastReply, long now, bool needsAnswer) =>
+        !needsAnswer && lastReply > 0 && now - lastReply < PlayerReplyCooldownMs;
+
+    /// <summary>Whether a party answer came from the voiced reply (more than one may answer a hello), not a step before it. Pure.</summary>
+    public static bool IsVoicedRoute(string route) =>
+        route != null && !(route.StartsWith("knowledge", StringComparison.Ordinal) || route is "context alarm" or "context come" or "live meetup" or "live pause");
+
+    /// <summary>The player's line as a turn of a party channel's conversation, once (a second call for the same line adds nothing).</summary>
+    internal static void NotePlayerLine(string player, string key, string message, long now)
+    {
+        if (ChatConversations.Live.In(player, key, now)?.Turns.LastOrDefault() is not { ByPlayer: true } last || last.Text != message.Trim())
+            ChatConversations.Live.NotePlayer(player, key, message, now);
+    }
+
+    /// <summary>
+    /// A groupmate's or companion's answer to its player (#479): <see cref="AutonomousChatReplyPath.Party"/> with the live world in its
+    /// ports. <paramref name="channel"/> is "group" or "say"; <paramref name="replies"/> is how many voiced answers the line may still
+    /// draw (0: only a step before the voiced reply may answer it).
+    /// </summary>
+    internal static AutonomousBotChatCoordinator.ReplyChoice PartyChoice(GameBot mate, GamePlayer player, string message, eAutonomousChatIntent intent,
+        bool addressed, string channel, int replies)
+    {
+        bool sameRegion = mate.CurrentRegion == player.CurrentRegion;
+        int distance = sameRegion ? mate.GetDistanceTo(player) : int.MaxValue;
+        return AutonomousChatReplyPath.Party(AutonomousBotChatCoordinator.PortsFor(mate, player), message, intent, addressed, channel,
+            knowledge: () => AutonomousChatKnowledge.TryAnswer(player, message, out string known) ? known : null,
+            alarm: () => AlarmReply(mate, player, message, intent, channel),
+            come: () => ComeReply(sameRegion, distance, mate.CurrentZone?.Description, Random.Shared),
+            meetup: () => AutonomousChatMeetup.PartyReply(message, sameRegion && distance <= AutonomousChatMeetup.BesideRange, sameRegion,
+                mate.CurrentZone?.Description, Random.Shared),
+            pause: () => AutonomousChatMeetup.PauseReply(message, mate.HealthPercent, mate.MaxMana > 0 ? (int?)mate.ManaPercent : null, Random.Shared),
+            voiced: replies <= 0 ? null : () => AutonomousBotChatCoordinator.VoicedChoice(mate, message, () => null, player, addressed: true, channel: channel));
+    }
+
+    /// <summary>
+    /// The talking update audit: "adds!!", "INC", "train coming RUN" in a PvE group drew "im nowhere near the frontier". A groupmate
+    /// takes the warning ("got it", "on it"); Beta 1.1.2, round 2: an inc call gets a terse "where" or "on it", not "ty for the
+    /// heads up" (too polite for a call). Unstyled, or null.
+    /// </summary>
+    private static string AlarmReply(GameBot heard, GamePlayer player, string message, eAutonomousChatIntent intent, string channel)
+    {
+        if (AutonomousChatContext.Reply(message, intent, AutonomousChatShortTalk.QuestionShape(message),
+                AutonomousBotChatCoordinator.ContextFor(heard, player, channel), Random.Shared) is { } call)
+            return call.Text;
+        return AutonomousBotVoices.TryLine(heard, "reply", out VC.Picked ok, answers: "player_headsup", relax: true) ? ok.Text : null;
     }
 
     /// <summary>For a congratulation, only the groupmates that just levelled (anyone else would not know what for); any other
@@ -386,8 +418,15 @@ public static class AutonomousBotGroupChatter
             AutonomousChatEngagement.NoteGroupLine(bot.DatabaseID, text, GameLoop.GameLoopTime);
             AutonomousChatBudget.Meter.Count(AutonomousChatBudget.Channel.Group, KeyOf(bot.Group), GameLoop.GameLoopTime);
             if (remember)
-                AutonomousChatThreads.Log.Record(AutonomousChatThreads.GroupChannel(bot.Group), bot.DatabaseID, bot.Name, text, invites,
-                    GameLoop.GameLoopTime, to);
+            {
+                string key = AutonomousChatThreads.GroupChannel(bot.Group);
+                long now = GameLoop.GameLoopTime;
+                AutonomousChatThreads.Log.Record(key, bot.DatabaseID, bot.Name, text, invites, now, to);
+                // Realism 2b (#479; channels.md finding 9): a groupmate's line is a turn of the group's conversation for every player
+                // in it, so the place it names is "there" and its question is open ("how do i get there" after "try spindel").
+                foreach (GamePlayer reader in bot.Group.GetPlayersInTheGroup())
+                    ChatConversations.Live.NoteBot(reader.Name, bot.DatabaseID, bot.Name, key, text, now);
+            }
         }
     }
 }
