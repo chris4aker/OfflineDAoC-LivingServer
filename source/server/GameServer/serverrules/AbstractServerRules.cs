@@ -1990,6 +1990,16 @@ namespace DOL.GS.ServerRules
                 {
                     totalDamage += pair.Value; // Should be done before excluding players.
 
+                    // #571 step 2: a hired companion or befriended gamebot in a player's group counts in that group's share
+                    // (count and damage), as a groupmate player does; it is paid by AutonomousBotRealmPointRewards.
+                    if (AutonomousBotRealmPointRewards.CountsWithPlayerGroup(pair.Key, killedPlayer))
+                    {
+                        groupCountAndDamage ??= new();
+                        mostDamagingGroup ??= new();
+                        ProcessDamage(pair.Key, pair.Value, pair.Key.Group, mostDamagingGroup, groupCountAndDamage);
+                        continue;
+                    }
+
                     // We only care about players in range.
                     if (pair.Key is not GamePlayer player || player.ObjectState is not GameObject.eObjectState.Active || !player.IsWithinRadius(killedPlayer, WorldMgr.MAX_EXPFORKILL_DISTANCE))
                         continue;
@@ -2006,7 +2016,7 @@ namespace DOL.GS.ServerRules
                     }
                 }
 
-                static void ProcessDamage<T>(GamePlayer player, double damage, T entity, ItemOwnerTotalDamagePair mostDamagingEntity, Dictionary<T, EntityCountTotalDamagePair> entityDamage) where T : class, IGameStaticItemOwner
+                static void ProcessDamage<T>(GameLiving player, double damage, T entity, ItemOwnerTotalDamagePair mostDamagingEntity, Dictionary<T, EntityCountTotalDamagePair> entityDamage) where T : class, IGameStaticItemOwner
                 {
                     double totalDamage;
 
@@ -2138,6 +2148,11 @@ namespace DOL.GS.ServerRules
                     realmPoints = (int) (realmPoints * (1.0 + 2.0 * (killedPlayer.RealmLevel - playerToAward.RealmLevel) / 900.0));
 
                 realmPoints += CalculateGroupBonus();
+                // #571 step 2: a battleground share split with gamebots in the group doesn't round to 0.
+                realmPoints = AutonomousBotRealmPointRewards.KeepBattlegroundShare(realmPoints,
+                    AutonomousBotRealmPointRewards.IsMixedGroup(playerToAward.Group),
+                    battleground != null || AutonomousBotRealmPointRewards.InBattleground(killedPlayer), damagePercent,
+                    killedPlayer.RealmPointsValue);
 
                 if (realmPoints > 0)
                     playerToAward.GainRealmPoints(realmPoints, true);
