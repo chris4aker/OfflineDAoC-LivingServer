@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **763**; pending (#625, not on main yet): **0**; shipped by the pipeline: **731**.
+- Rows in code: **767**; pending (#625, not on main yet): **0**; shipped by the pipeline: **735**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -114,12 +114,16 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_LOGIN_MOVED_FROM_BOSS` | server.log | **ships** | `bots/autonomous/AutonomousPopulationController.cs` | `at`, `bot`, `region` | `bot` | - | Morning 2026-10-19: level 50s saved inside the Hall of the Corrupt logged in beside Aidon the Archwizard and his illusions and died within seconds, 41 times in 41 minutes. |
 | `AUTONOMOUS_LOOT_APPRAISAL_FAILED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `item`, `retainedInInventory` | `bot` | - | - |
 | `AUTONOMOUS_LOOT_REJECTED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `dropRetained`, `id`, `item`, `level`, `reason` | `bot` | - | - |
+| `AUTONOMOUS_NEAR_MISS_DEAD_END` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `gap`, `id`, `position`, `region`, `target`, `zone` | `bot` | one when a gamebot first stalls at a new near-miss dead end (a partial path ending within 256 of its target; #570) | - |
+| `AUTONOMOUS_NEAR_MISS_ROAD_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `anchors`, `bot`, `id`, `position`, `region`, `target` | `bot` | one per first stall at a near-miss dead end whose zone roads have a way to the target (#570) | - |
 | `AUTONOMOUS_NECRO_PET_RELEASE` | server.log | **ships** | `spells/Necromancer/SummonNecromancerPet.cs` | `bot`, `distance`, `hp`, `id`, `level`, `pet`, `petLevel`, `petObjectId`, `reason`, `region`, `spellId` | `bot` | - | - |
 | `AUTONOMOUS_POCKET_NUDGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `casting`, `class`, `distance`, `level`, `manaPercent`, `moving`, `pendingCast`, `pet`, `region`, `resting`, `target`, `targetLevel`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `AUTONOMOUS_PVP_STALEMATE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `id`, `position`, `realm`, `region`, `seconds`, `target`, `targetRealm` | `bot`, `target` | - | - |
 | `AUTONOMOUS_RAID_STUCK_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `class`, `from`, `id`, `instead`, `level`, `near`, `realm`, `reason`, `snapped`, `to`, `why` | `bot` | - | Inside its raid's dungeon with every regroup point by a resting boss: |
 | `AUTONOMOUS_RESURRECTION_BLOCKED` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `corpse`, `distance`, `inCombat`, `mana`, `reason`, `spell` | `bot`, `corpse` | - | - |
+| `AUTONOMOUS_ROUTE_BLOCK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RouteThreats.cs` | `at`, `bots`, `by`, `maxBotLevel`, `region`, `target`, `zone` | `by`, `target` | one when a spot turns into a shared route block (3 different solo gamebots gave a camp up there within 30 minutes; #570) | - |
+| `AUTONOMOUS_ROUTE_BLOCK_AVOID` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `kept`, `level`, `region`, `skipped` | `bot` | one per solo gamebot camp pick that skipped camps at or past a shared route block while another camp was left (#570) | - |
 | `AUTONOMOUS_ROUTE_FLOOR_CORRECTION` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_ROUTE_GOAL_FIX` | server.log | **ships** | `bots/autonomous/AutonomousRouteGoalFix.cs` | `campRepickBlocked`, `crossingFallback`, `crossingSteered`, `floorStepGated`, `floorStepHeld`, `foreignFailureSkipped`, `gatedSkipped`, `pocketEscapeSkipped`, `repickBlocked`, `snapDzRejected`, `snapFailed`, `snapRefailed`, `snapped`, `window_s` | - | - | - |
 | `AUTONOMOUS_ROUTE_ORDER_KEPT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `callers`, `total` | - | - | - |
