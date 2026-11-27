@@ -1611,8 +1611,8 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>A rally member the watchdog may still catch (issue #767): the raid has left its hub and has not begun its
-        /// battle. A member standing at the staging ring is protected before this (Protects); one at the hub, or waiting for
+        /// <summary>A rally member the watchdog may still catch (issue #767): an open-world or dragon raid (not a dungeon
+        /// expedition, whose walk has boats, portals and door waits) that has left its hub and has not begun its battle. A member standing at the staging ring is protected before this (Protects); one at the hub, or waiting for
         /// the departure, is not asked. The event id is for the log row.</summary>
         public static bool IsTravellingInRally(GameBot bot, out string eventId)
         {
@@ -1621,7 +1621,8 @@ namespace DOL.GS
             if (group == null) return false;
             using (AiProfile.Lock(Sync, AiSystem.LockRaid))
             {
-                if (!Membership.TryGetValue(group, out Raid raid) || raid.Started || !raid.HubDeparted || !raid.Parties.ContainsKey(group))
+                if (!Membership.TryGetValue(group, out Raid raid) || raid.Definition.IsDungeon || raid.Started || !raid.HubDeparted ||
+                    !raid.Parties.ContainsKey(group))
                     return false;
                 eventId = raid.Definition.Id;
                 return true;

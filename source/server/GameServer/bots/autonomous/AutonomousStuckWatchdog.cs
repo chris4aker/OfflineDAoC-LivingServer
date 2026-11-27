@@ -206,6 +206,10 @@ public static class AutonomousStuckWatchdog
                nowUtc - lastMovementUtc >= StuckThreshold;
     }
 
+    /// <summary>Tests only: replaces the capital teleport of a stuck rally member (it needs a live world) and returns its
+    /// answer from Observe. Null in the server.</summary>
+    public static Func<GameBot, string, bool> StuckRallyRecoveryForTests;
+
     /// <summary>A rally member off the staging ring after the hub departure (issue #767): the rally exempts it from the
     /// goal clock, never from the movement clock. Same bound and same exceptions as <see cref="ShouldRecoverMovement"/>.</summary>
     public static bool ShouldCatchStuckRally(DateTime lastMovementUtc, DateTime nowUtc, bool isAlive, bool inPlayerLedGroup) =>
@@ -428,8 +432,9 @@ public static class AutonomousStuckWatchdog
 
         // Issue #767 (owner's PC, rc.2): 75 Glacier Giant raiders stood off the staging ring for about 20 minutes, retrying
         // one route, and no clock saw them because the rally refreshed both. A stuck rally is still stuck: after the usual
-        // fifteen minutes without movement such a member gets the usual recovery, which keeps its raid membership and
-        // sends it back to the encounter. The rally's own deadline still owns the goal clock.
+        // fifteen minutes without movement such a member gets the usual 15-minute recovery: a teleport to its capital that
+        // keeps its raid membership, so it walks back as a late member. That is clean-up, not a rescue (the in-dungeon
+        // regroup, TryRecoverInsideRaid, is for started dungeon raids only). The rally's own deadline still owns the goal clock.
         if (travellingInRally)
         {
             goalObservation.LastProgressUtc = now;
@@ -438,6 +443,8 @@ public static class AutonomousStuckWatchdog
             Log.Warn($"AUTONOMOUS_RALLY_STUCK bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} event={rallyEvent} " +
                      $"minutes={(int)(now - previous.LastMovementUtc).TotalMinutes} at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} " +
                      $"activity=\"{ForLog(bot.PersistentRecord.Activity)}\"");
+            if (StuckRallyRecoveryForTests != null)
+                return StuckRallyRecoveryForTests(bot, rallyEvent);
             return RelocateToSafeCapital(bot, now, $"rally: no movement for fifteen minutes away from the staging ring ({rallyEvent})", true,
                 "AUTONOMOUS_STUCK_15M_RECOVERY");
         }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Concurrent;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -265,6 +267,198 @@ namespace DOL.UnitTests
                 Assert.That(AutonomousRealmRaid.IsTravellingInRally(members[0],out _),Is.False,"The battle has its own clocks.");
             }
             finally{membership.Remove(group);}
+        }
+
+        // --- Review of PR #771: the real wiring -------------------------------------------------------------------
+
+        private static readonly Vector3 GgHome=new(651517,625897,5320), GgOwn=new(655296,635040,7751), GgNear=new(651457,632837,5350),
+            GgFar=new(649709,622613,5461), GgFrom=new(663517,628897,5320);
+        private static DragonRallyOrder GgOrder(bool neutral, string id="openworld-midgard-glaciergiant") =>
+            new(id,GgOwn,GgHome,[GgOwn,GgNear,GgFar],neutral);
+
+        /// <summary>Every plan fails (the #767 log: queries=133, a complete search with no answer).</summary>
+        private static Func<Vector3,Vector3,bool,DragonRallySlice> Failing(List<Vector3> asked) =>
+            (origin,target,fresh)=>{ asked.Add(target); return new(false,false,null,"goal-leg",133); };
+
+        [Test]
+        public void ThreeFailedPlansFromOneSpotWithANeutralBossWalkToTheNearestPostAndHoldThere()
+        {
+            var rally=new DragonRallyPlanner(); var asked=new List<Vector3>();
+            var order=GgOrder(neutral:true);
+            var first=rally.Step(0,GgFrom,order,Failing(asked));
+            Assert.That((first.Move,first.RetryRow,first.FallbackRow,first.Attempt),Is.EqualTo((DragonRallyMove.Wait,true,false,1)));
+            Assert.That(rally.Step(10_000,GgFrom,order,Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Wait),"no plan before the retry is due");
+            var second=rally.Step(30_000,GgFrom+new Vector3(40,0,0),order,Failing(asked));
+            Assert.That((second.Move,second.Attempt),Is.EqualTo((DragonRallyMove.Wait,2)));
+            var third=rally.Step(60_000,GgFrom,order,Failing(asked));
+            Assert.That(asked,Is.EqualTo(new[]{GgOwn,GgNear,GgFar}),"own post, then the others nearest first");
+            Assert.That((third.Move,third.Destination,third.RetryRow,third.FallbackRow,third.FallbackAction),
+                Is.EqualTo((DragonRallyMove.Walk,GgOwn,true,true,"ordinary-travel")),"a minute, not twenty; the nearest post is its own");
+            Assert.That(rally.Step(90_000,GgFrom+new Vector3(-3000,1500,0),order,Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Walk));
+            // Arrived: it holds, and never plans again for this rally (no churn after the two minutes).
+            var arrived=rally.Step(150_000,GgOwn+new Vector3(150,0,0),order,Failing(asked));
+            Assert.That((arrived.Move,arrived.StopFirst),Is.EqualTo((DragonRallyMove.Hold,true)));
+            int plans=asked.Count;
+            for(long t=200_000;t<=1_200_000;t+=30_000)
+                Assert.That(rally.Step(t,GgOwn+new Vector3(t%60_000==0?150:-300,0,0),order,Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold));
+            Assert.That(asked.Count,Is.EqualTo(plans),"a raider at a post never plans the safe route again");
+        }
+
+        [Test]
+        public void AnAggressiveBossKeepsTheSafeRouteRetryAndNeverWalksPastIt()
+        {
+            var rally=new DragonRallyPlanner(); var asked=new List<Vector3>();
+            var order=GgOrder(neutral:false);
+            var rows=new List<DragonRallyDecision>();
+            for(long t=0;t<=300_000;t+=30_000) rows.Add(rally.Step(t,GgFrom,order,Failing(asked)));
+            Assert.That(rows.Select(r=>r.Move),Is.All.EqualTo(DragonRallyMove.Wait));
+            Assert.That(rows.Count(r=>r.RetryRow),Is.EqualTo(rows.Count));
+            Assert.That(rows.Where(r=>r.FallbackRow).Select(r=>(r.Attempt,r.FallbackAction)),Is.EqualTo(new[]{(3,"keep-safe-route")}),"logged once");
+        }
+
+        [Test]
+        public void AFirstTimeRouteIsFollowedToItsPostAndHeldAsBefore()
+        {
+            var rally=new DragonRallyPlanner();
+            Vector3 corner=GgFrom+new Vector3(0,6000,0);
+            int plans=0;
+            Func<Vector3,Vector3,bool,DragonRallySlice> ok=(o,t,f)=>{ plans++; return new(false,true,[corner,t],"",40); };
+            var d=rally.Step(0,GgFrom,GgOrder(true),ok);
+            Assert.That((d.Move,d.Destination,d.RetryRow,d.FallbackRow),Is.EqualTo((DragonRallyMove.Follow,corner,false,false)));
+            Assert.That(rally.Step(5_000,corner,GgOrder(true),ok).Destination,Is.EqualTo(GgOwn));
+            Assert.That(rally.Step(9_000,GgOwn,GgOrder(true),ok).Move,Is.EqualTo(DragonRallyMove.Hold));
+            Assert.That(plans,Is.EqualTo(1));
+            // A yielded slice keeps planning from the same origin.
+            var slow=new DragonRallyPlanner(); int slices=0;
+            Func<Vector3,Vector3,bool,DragonRallySlice> sliced=(o,t,f)=>{ Assert.That(f,Is.EqualTo(slices==0)); return ++slices<3 ? DragonRallySlice.Yield : new(false,true,[t],"",9); };
+            Assert.That(slow.Step(0,GgFrom,GgOrder(true),sliced).Move,Is.EqualTo(DragonRallyMove.Wait));
+            Assert.That(slow.Step(250,GgFrom,GgOrder(true),sliced).Move,Is.EqualTo(DragonRallyMove.Wait));
+            Assert.That(slow.Step(500,GgFrom,GgOrder(true),sliced).Move,Is.EqualTo(DragonRallyMove.Follow));
+        }
+
+        [Test]
+        public void AHeldRaiderWalksAgainOnlyWhenMovedFarOrWhenTheEventChanges()
+        {
+            var rally=new DragonRallyPlanner(); var asked=new List<Vector3>();
+            Assert.That(rally.Step(0,GgNear,GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold),"standing at another party's post");
+            Assert.That(rally.Step(1_000,GgNear+new Vector3(1200,0,0),GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Hold),"a scuffle");
+            Assert.That(rally.Step(2_000,GgFrom,GgOrder(true),Failing(asked)).Move,Is.EqualTo(DragonRallyMove.Wait),"released and back far away: it plans");
+            Assert.That(asked,Has.Count.EqualTo(1));
+            var other=new DragonRallyPlanner();
+            other.Step(0,GgNear,GgOrder(true),Failing(asked));
+            Assert.That(other.Held,Is.True);
+            other.Step(1_000,GgNear,GgOrder(true,"openworld-midgard-revenant"),Failing(asked));
+            Assert.That(other.EventId,Is.EqualTo("openworld-midgard-revenant"));
+            other.Clear();
+            Assert.That((other.Held,other.Failures,other.Route),Is.EqualTo((false,0,(Vector3[])null)));
+        }
+
+        private static string Source(params string[] parts)
+        {
+            string dir=TestContext.CurrentContext.TestDirectory;
+            string[] path=new[]{"GameServer","bots","autonomous"}.Concat(parts).ToArray();
+            while(dir!=null && !File.Exists(Path.Combine(new[]{dir}.Concat(path).ToArray()))) dir=Path.GetDirectoryName(dir);
+            Assert.That(dir,Is.Not.Null,"the server sources are next to the tests");
+            return File.ReadAllText(Path.Combine(new[]{dir}.Concat(path).ToArray())).Replace("\r\n","\n");
+        }
+
+        [Test]
+        public void TheControllerExecutesThePlannersDecisions()
+        {
+            string code=Source("AutonomousWorldBotController.Expedition.cs");
+            int start=code.IndexOf("private bool TravelDragonRally(");
+            Assert.That(start,Is.GreaterThan(0));
+            string body=code.Substring(start,code.IndexOf("\n    }\n",start)-start);
+            Assert.That(body,Does.Contain("_dragonRally.Step(now,current,new(order.EventId,goal,home,posts,neutralBoss)"));
+            Assert.That(body,Does.Contain("AutonomousRealmRaid.TryDragonRallyFallback(bot,out var posts,out bool neutralBoss)"));
+            Assert.That(body,Does.Contain("case DragonRallyMove.Walk:\n                GuardExpeditionDanger(bot,d.Destination);\n                IssuePath(bot,d.Destination,preciseArrival:true);"));
+            Assert.That(body,Does.Contain("_dragonRally.PathFailed(now)"));
+            Assert.That(body,Does.Contain("DRAGON_RALLY_FALLBACK"));
+            Assert.That(Source("AutonomousWorldBotController.cs"),Does.Contain("_dragonRally.Interrupt();"),"a fight keeps the hold");
+        }
+
+        private sealed class RallyWorld : IDisposable
+        {
+            const BindingFlags Hidden=BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.Public;
+            public readonly object Raid;
+            public readonly Attendee[] Members;
+            private readonly IDictionary _membership;
+            private readonly Group _group;
+            public RallyWorld(string id,params Vector3[] at)
+            {
+                Type manager=typeof(AutonomousRealmRaid);
+                Raid=Activator.CreateInstance(manager.GetNestedType("Raid",BindingFlags.NonPublic),true);
+                object party=Activator.CreateInstance(manager.GetNestedType("Party",BindingFlags.NonPublic),true);
+                Members=at.Select((p,i)=>
+                {
+                    var bot=(Attendee)RuntimeHelpers.GetUninitializedObject(typeof(Attendee));
+                    bot.Alive=true;bot.RegionId=100;bot.Position=p;
+                    typeof(GameNPC).GetField("m_brains",Hidden).SetValue(bot,new ArrayList());
+                    typeof(GameBot).GetProperty(nameof(GameBot.IsAutonomousWorldBot)).SetValue(bot,true);
+                    bot.DatabaseID=976_700+i;
+                    typeof(GameBot).GetProperty(nameof(GameBot.PersistentRecord)).SetValue(bot,new OfflineWorldBotRecord{BotId=976_700+i});
+                    return bot;
+                }).ToArray();
+                _group=new Group(Members[0]);
+                typeof(Group).GetField("_groupMembers",Hidden).SetValue(_group,Members.Cast<GameLiving>().ToList());
+                foreach(var member in Members)member.Group=_group;
+                Raid.GetType().GetField("Definition").SetValue(Raid,AutonomousRealmRaid.Definitions.Single(d=>d.Id==id));
+                var boss=(GameNPC)RuntimeHelpers.GetUninitializedObject(typeof(GameNPC));
+                typeof(GameNPC).GetField("m_brains",Hidden).SetValue(boss,new ArrayList{new DOL.AI.Brain.GlacierGiantBrain()});
+                boss.SpawnPoint=new Point3D((int)GgHome.X,(int)GgHome.Y,(int)GgHome.Z);
+                Raid.GetType().GetField("Boss").SetValue(Raid,boss);
+                var posts=(Dictionary<int,Vector3>)Raid.GetType().GetField("StagingPosts").GetValue(Raid);
+                posts.Add(0,GgOwn);posts.Add(1,GgNear);
+                party.GetType().GetField("Members").SetValue(party,Members.Cast<GameBot>().ToArray());
+                party.GetType().GetField("Staging").SetValue(party,GgOwn);
+                ((IDictionary)Raid.GetType().GetField("Parties").GetValue(Raid)).Add(_group,party);
+                _membership=(IDictionary)manager.GetField("Membership",BindingFlags.NonPublic|BindingFlags.Static).GetValue(null);
+                _membership.Add(_group,Raid);
+                // The position check needs a live world; the clocks are what this test is about.
+                var validated=(ConcurrentDictionary<long,DateTime>)typeof(AutonomousStuckWatchdog)
+                    .GetField("LastPositionValidation",BindingFlags.NonPublic|BindingFlags.Static).GetValue(null);
+                foreach(var member in Members) validated[member.DatabaseID]=DateTime.MaxValue;
+            }
+            public void Set(string field,bool value)=>Raid.GetType().GetField(field).SetValue(Raid,value);
+            public void Dispose()
+            {
+                _membership.Remove(_group);
+                AutonomousStuckWatchdog.StuckRallyRecoveryForTests=null;
+                foreach(var member in Members) AutonomousStuckWatchdog.Unregister(member);
+            }
+        }
+
+        [Test,NonParallelizable]
+        public void TheWatchdogRecoversARallyMemberStuckOffTheRingButNotOneAtTheHubOrAPost()
+        {
+            using var server=new EpicTestServerScope();
+            using var world=new RallyWorld("openworld-midgard-glaciergiant",GgFrom,GgNear+new Vector3(100,0,0));
+            GameBot traveller=world.Members[0], staged=world.Members[1];
+            var recovered=new List<long>();
+            AutonomousStuckWatchdog.StuckRallyRecoveryForTests=(bot,id)=>{ recovered.Add(bot.DatabaseID); Assert.That(id,Is.EqualTo("openworld-midgard-glaciergiant")); return true; };
+            DateTime t0=new(2026,11,27,0,0,0,DateTimeKind.Utc);
+            // At the hub (not departed): held however long it stands, as before.
+            foreach(var bot in world.Members) Assert.That(AutonomousStuckWatchdog.Observe(bot,t0),Is.False);
+            foreach(var bot in world.Members) Assert.That(AutonomousStuckWatchdog.Observe(bot,t0.AddMinutes(40)),Is.False);
+            Assert.That(recovered,Is.Empty,"the hub's own rules hold it");
+            world.Set("HubDeparted",true);
+            DateTime t1=t0.AddMinutes(40);
+            Assert.That(AutonomousStuckWatchdog.Observe(traveller,t1.AddMinutes(14)),Is.False);
+            Assert.That(AutonomousStuckWatchdog.Observe(staged,t1.AddMinutes(14)),Is.False);
+            Assert.That(AutonomousStuckWatchdog.Observe(staged,t1.AddMinutes(16)),Is.False,"waiting at a post is a normal wait");
+            Assert.That(AutonomousStuckWatchdog.Observe(traveller,t1.AddMinutes(16)),Is.True,"a stuck rally is still stuck");
+            Assert.That(recovered,Is.EqualTo(new[]{traveller.DatabaseID}));
+        }
+
+        [Test,NonParallelizable]
+        public void TheRallyBoundIsForOpenWorldRalliesOnlyNotDungeonExpeditions()
+        {
+            using var server=new EpicTestServerScope();
+            string dungeon=AutonomousRealmRaid.Definitions.First(d=>d.IsDungeon).Id;
+            using var world=new RallyWorld(dungeon,GgFrom);
+            world.Set("HubDeparted",true);
+            Assert.That(AutonomousRealmRaid.IsInRally(world.Members[0]),Is.True);
+            Assert.That(AutonomousRealmRaid.IsTravellingInRally(world.Members[0],out _),Is.False,"boats, portals and door waits keep the old hold");
         }
 
         [Test,Explicit("Read-only installed dragon meshes"),NonParallelizable]

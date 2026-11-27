@@ -168,3 +168,143 @@ public static class DragonRallyFallback
     public static Vector3 NearestPost(Vector3 own, IReadOnlyList<Vector3> posts, Vector3 from) =>
         (posts ?? Array.Empty<Vector3>()).Append(own).OrderBy(p => Vector2.DistanceSquared(new(p.X,p.Y),new(from.X,from.Y))).First();
 }
+
+/// <summary>What the controller does this tick for a raider walking to a dragon or open-world boss rally.</summary>
+public enum DragonRallyMove
+{
+    /// <summary>Stand still: at a staging post (or at the end of its checked route) until the event or post changes.</summary>
+    Hold,
+    /// <summary>Nothing to do this tick: a plan is being sliced or a retry is due later.</summary>
+    Wait,
+    /// <summary>Ordinary expedition travel to <see cref="DragonRallyDecision.Destination"/> (the issue #767 fallback).</summary>
+    Walk,
+    /// <summary>Path to the next waypoint of the checked route.</summary>
+    Follow,
+}
+
+/// <summary>One plan slice: still working (the planner's budget yielded), or a finished answer.</summary>
+public readonly record struct DragonRallySlice(bool Yielded, bool Found, Vector3[] Route, string Stage, int Queries)
+{
+    public static DragonRallySlice Yield => new(true, false, null, "", 0);
+}
+
+/// <summary>The raid's side of a rally this tick: its event, the party's own post, the boss's home, every post, and
+/// whether the boss leaves passers-by alone.</summary>
+public readonly record struct DragonRallyOrder(string EventId, Vector3 Own, Vector3 Home, IReadOnlyList<Vector3> Posts, bool NeutralBoss);
+
+/// <summary>The decision, plus the log rows it calls for (the controller writes them).</summary>
+public readonly record struct DragonRallyDecision(DragonRallyMove Move, Vector3 Destination, bool StopFirst, string Activity, string Progress,
+    bool RetryRow, bool FallbackRow, string FallbackAction, int Attempt, string Stage, int Queries, Vector3 Target);
+
+/// <summary>
+/// The rally walk of one raider (AutonomousWorldBotController.TravelDragonRally executes it). Issue #767:
+/// - a failed checked route tries the raid's other posts, then falls back (<see cref="DragonRallyFallback"/>);
+/// - a raider standing at any staging post holds there until its event or own post changes. Without this the fallback
+///   churned: after its two minutes of ordinary travel it planned the safe route again from the post it had reached, which
+///   could walk it off the post or fail three more times (review of PR #771).
+/// </summary>
+public sealed class DragonRallyPlanner
+{
+    public const int YieldMilliseconds = 250;
+    public const int IssueFailureMilliseconds = 15_000;
+    public const float DisplacedDistance = 1500;
+
+    public string EventId { get; private set; }
+    public Vector3 Goal { get; private set; }
+    public bool Held { get; private set; }
+    public int Failures { get; private set; }
+    public Vector3 Target { get; private set; }
+    public long OrdinaryUntil { get; private set; }
+    public bool Planning { get; private set; }
+    public Vector3[] Route { get; private set; }
+    private Vector3 _origin, _failSpot;
+    private long _retry;
+    private int _leg;
+
+    /// <summary>The raider left the rally (the order is no longer a pending rally): everything starts again next time.</summary>
+    public void Clear()
+    {
+        EventId = null; Held = false; Failures = 0; OrdinaryUntil = 0; Planning = false; Route = null; _retry = 0; _leg = 0;
+    }
+
+    /// <summary>A fight took over movement: plan again from wherever it ends. A held raider stays held.</summary>
+    public void Interrupt() { Planning = false; Route = null; _retry = 0; }
+
+    /// <summary>The controller could not issue the path to the next waypoint.</summary>
+    public void PathFailed(long now) { Route = null; _retry = now + IssueFailureMilliseconds; }
+
+    public DragonRallyDecision Step(long now, Vector3 current, DragonRallyOrder order, Func<Vector3, Vector3, bool, DragonRallySlice> slice)
+    {
+        if (EventId != order.EventId || Goal != order.Own)
+        {
+            Clear();
+            EventId = order.EventId; Goal = order.Own; Target = order.Own;
+        }
+        if (Planning && Vector3.DistanceSquared(current, _origin) > 96 * 96) { Planning = false; Route = null; _retry = 0; }
+        var posts = (order.Posts ?? Array.Empty<Vector3>()).Append(order.Own).ToArray();
+        // Held until the event or post changes. Only a raider moved far from every post (a release and respawn, a throw)
+        // starts walking again; a step off the post in a scuffle does not.
+        if (Held && posts.Any(p => Vector3.DistanceSquared(current, p) <= DisplacedDistance * DisplacedDistance)) return Hold();
+        Held = false;
+        if (DragonRallyRoute.AtAssembly(current, posts, order.Home))
+        {
+            Held = true; Planning = false; Route = null; OrdinaryUntil = 0;
+            return Hold();
+        }
+        if (now < OrdinaryUntil)
+            return Decide(DragonRallyMove.Walk, Target, false, "Traveling to dragon rally", WalkNote);
+        if (now < _retry) return Decide(DragonRallyMove.Wait, Target, false, null, null);
+        if (Route == null)
+        {
+            bool fresh = !Planning;
+            if (fresh)
+            {
+                Planning = true; _origin = current;
+                int prior = DragonRallyFallback.CountFailure(Failures, _failSpot, current) - 1;
+                Target = DragonRallyFallback.GoalForAttempt(order.Own, order.Posts, current, prior);
+            }
+            var answer = slice(_origin, Target, fresh);
+            if (answer.Yielded)
+            {
+                _retry = now + YieldMilliseconds;
+                return Decide(DragonRallyMove.Wait, Target, fresh, "Planning safe dragon rally route", "Routing around the dragon; normal defense remains active");
+            }
+            Planning = false;
+            if (!answer.Found)
+            {
+                Failures = DragonRallyFallback.CountFailure(Failures, _failSpot, current);
+                _failSpot = current;
+                Vector3 tried = Target;
+                var action = DragonRallyFallback.AfterFailure(Failures, order.NeutralBoss);
+                if (action == DragonRallyFallbackAction.OrdinaryTravel)
+                {
+                    Target = DragonRallyFallback.NearestPost(order.Own, order.Posts, current);
+                    OrdinaryUntil = now + DragonRallyFallback.OrdinaryTravelMilliseconds;
+                    return new(DragonRallyMove.Walk, Target, false, "Traveling to dragon rally", WalkNote,
+                        true, true, "ordinary-travel", Failures, answer.Stage, answer.Queries, tried);
+                }
+                _retry = now + DragonRallyFallback.RetryMilliseconds;
+                bool once = action == DragonRallyFallbackAction.KeepSafeRoute && Failures == DragonRallyFallback.RouteFailureLimit;
+                return new(DragonRallyMove.Wait, Target, true, "Dragon rally route retry",
+                    "No verified approach outside dragon aggro; not charging through the boss",
+                    true, once, once ? "keep-safe-route" : null, Failures, answer.Stage, answer.Queries, tried);
+            }
+            Failures = 0; Route = answer.Route; _leg = 0;
+        }
+        while (_leg < Route.Length && Vector3.DistanceSquared(current, Route[_leg]) <= 80 * 80) _leg++;
+        if (_leg == Route.Length)
+        {
+            Held = true; Route = null;
+            return Hold();
+        }
+        return Decide(DragonRallyMove.Follow, Route[_leg], false, "Traveling to dragon rally", "Following a checked route outside the dragon's aggro area");
+    }
+
+    private const string WalkNote = "No checked route around the boss; walking past it, it leaves passers-by alone";
+
+    private DragonRallyDecision Hold() =>
+        Decide(DragonRallyMove.Hold, Target, true, null, "At dragon staging; waiting for the expedition order");
+
+    private DragonRallyDecision Decide(DragonRallyMove move, Vector3 destination, bool stop, string activity, string progress) =>
+        new(move, destination, stop, activity, progress, false, false, null, Failures, "", 0, Target);
+}
