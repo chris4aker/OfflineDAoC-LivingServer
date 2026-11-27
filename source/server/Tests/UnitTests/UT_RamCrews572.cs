@@ -86,6 +86,17 @@ namespace DOL.GS.Tests
 
         // ---- the siege case in the fight harness ----
 
+        /// <summary>
+        /// Past the 500 ms objects-in-radius cache (GameObject.GetObjectsInRadius: taking control arms the ram, which reads
+        /// its crew before anyone stands there), then one tick so the zones file what was placed. No bot gets a second
+        /// to walk off its spot.
+        /// </summary>
+        private static void Settle(RvrFightWorld world)
+        {
+            typeof(GameLoop).GetProperty(nameof(GameLoop.GameLoopTime)).SetValue(null, GameLoop.GameLoopTime + 1_000);
+            world.Tick();
+        }
+
         private static GameSiegeRam Ram(RvrFightWorld world, Region region, int x, int y, GameLiving op)
         {
             var ram = (GameSiegeRam)AutonomousWorldBotController.CreateSiegeWeapon(BotSiegeKind.Ram);
@@ -178,7 +189,7 @@ namespace DOL.GS.Tests
                 Assert.That(world.Place(bot, region, (int)spot.X, (int)spot.Y), Is.True);
                 crew.Add(bot);
             }
-            world.Tick(); // the zones file what was placed
+            Settle(world);
             Assert.Multiple(() =>
             {
                 Assert.That(crew.All(AutonomousRamCrews.AtSeat), Is.True, "every crew member stands at its seat");
@@ -203,7 +214,7 @@ namespace DOL.GS.Tests
             // the player's ram is not registered: only an autonomous gamebot operator registers its ram (TryRunSiegeJob)
             GameBot bot = world.NewBot(eRealm.Albion, eCharacterClass.Mercenary, 50, "Beside");
             Assert.That(world.Place(bot, region, X + 150, Y), Is.True);
-            world.Tick(); // the zones file what was placed
+            Settle(world);
             Assert.Multiple(() =>
             {
                 Assert.That(AutonomousRamCrews.TryTakeSeat(bot, keep, out _, out _), Is.False, "no seat at a player's ram");
