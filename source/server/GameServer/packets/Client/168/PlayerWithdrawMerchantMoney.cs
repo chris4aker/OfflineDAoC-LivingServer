@@ -34,6 +34,13 @@ namespace DOL.GS.PacketHandler.Client.v168
 
 			lock (conMerchant.Lock)
 			{
+				// Port of OpenDAoC-Core e540603f9: no payout when the merchant's money can't be saved.
+				if (!conMerchant.HasMoneyRecord())
+				{
+					ChatUtil.SendErrorMessage(client.Player, GameConsignmentMerchant.MONEY_RECORD_MISSING_MESSAGE);
+					return;
+				}
+
 				long totalConMoney = conMerchant.TotalMoney;
 
 				if (totalConMoney > 0)

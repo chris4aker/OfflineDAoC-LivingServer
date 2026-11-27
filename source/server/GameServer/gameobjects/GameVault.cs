@@ -273,7 +273,7 @@ namespace DOL.GS
 
                     var updatedItems = GameInventoryObjectExtensions.MoveItem(this, player, fromSlot, toSlot, count);
 
-                    if (updatedItems != null && updatedItems.Count > 0)
+                    if (updatedItems.Count > 0)
                         GameInventoryObjectExtensions.NotifyObservers(this, player, _observers, updatedItems);
                 }
                 finally
@@ -336,11 +336,20 @@ namespace DOL.GS
             _observers.Remove(player.Name);
         }
 
+        /// <summary>
+        /// A vault's item cache can be reused only when it was loaded and read for the vault's current owner.
+        /// </summary>
+        public static bool IsItemCacheValid(string cachedOwner, string currentOwner, bool loaded)
+        {
+            return loaded && string.Equals(cachedOwner, currentOwner, System.StringComparison.Ordinal);
+        }
+
         protected class ItemCache : ECSGameTimerWrapperBase
         {
             private const int EXPIRES_AFTER = 30000;
 
             private readonly GameVault _vault;
+            private string _owner; // Owner the cached items were read for.
             private Dictionary<int, DbInventoryItem> _items; // Uses client slots, not DB slots.
 
             public ItemCache(GameVault vault) : base(vault)
@@ -472,9 +481,17 @@ namespace DOL.GS
                 // Always refresh or start the timer.
                 Start(EXPIRES_AFTER);
 
-                if (_items != null)
+                // Port of OpenDAoC-Core 42fd3c4f8: the cache is only valid for the owner it was read for.
+                // A house vault changes owner when the house becomes a guild house, and a personal vault
+                // is read for whichever character opens it.
+                string realOwner = _vault.GetOwner(player);
+
+                if (IsItemCacheValid(_owner, realOwner, _items != null))
                     return;
 
+                _owner = realOwner;
+
+                // A new dictionary rather than Clear() (upstream): GetItems hands the old one out after the lock.
                 _items = new();
 
                 foreach (DbInventoryItem item in _vault.GetDbItems(player))
