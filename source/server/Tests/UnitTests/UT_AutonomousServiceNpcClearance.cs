@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -203,5 +205,58 @@ public class UT_AutonomousServiceNpcClearance
         // A landing at the zone's edge whose step would leave the zone stays put.
         Assert.That(AutonomousServiceNpcClearance.TryResolveLandingStepOff(nav, TestZone, new(1, 1, 0), new Vector3(200, 200, 0), 5, out _),
             Is.False);
+    }
+    // The four wiring sites (review of #763): the pure rules above pass even when a caller stops using them, so the
+    // call sites are pinned in the source text. Reverting any of them fails here.
+    private static string Source(string relative)
+    {
+        string root = TestContext.CurrentContext.TestDirectory;
+        for (int i = 0; i < 10 && root != null && !File.Exists(Path.Combine(root, relative)); i++)
+            root = Path.GetDirectoryName(root);
+        if (root == null || !File.Exists(Path.Combine(root, relative)))
+            Assert.Fail($"{relative} not found above the test folder.");
+        return Regex.Replace(File.ReadAllText(Path.Combine(root, relative)), @"\s+", " ");
+    }
+
+    private static string Between(string text, string start, string end)
+    {
+        int from = text.IndexOf(start, StringComparison.Ordinal);
+        Assert.That(from, Is.GreaterThanOrEqualTo(0), start);
+        int to = text.IndexOf(end, from + start.Length, StringComparison.Ordinal);
+        Assert.That(to, Is.GreaterThan(from), end);
+        return text.Substring(from, to - from);
+    }
+
+    [Test]
+    public void EveryChooserUsesTheClearance()
+    {
+        const string Bots = "source/server/GameServer/bots/";
+        string coordinator = Source(Bots + "autonomous/AutonomousBotGroupCoordinator.cs");
+        string gameBot = Source(Bots + "GameBot.cs");
+        string townIdle = Source(Bots + "autonomous/AutonomousTownIdleRouting.cs");
+        Assert.Multiple(() =>
+        {
+            // 1. The town-near-camp chooser stands beside the NPC first.
+            Assert.That(coordinator, Does.Contain(
+                "if (!TryChooseMeetupAtTownNpc(nav, region, zone, npc, leader, members, out Vector3 chosen)) continue;"));
+            // 2. TryPoint's keepClearOf, used where the leader stands and at the nearby town NPCs, and the recovery regroup.
+            Assert.That(coordinator, Does.Contain(
+                "if (keepClearOf != null && TryChooseMeetupBesideService(nav, targetRegion, keepClearOf, leader, members, clearWhere, out chosen)) return true;"));
+            Assert.That(coordinator, Does.Contain(
+                "keepClearOf: NearestServiceNpc(leader, (ushort)AutonomousServiceNpcClearance.MeetClearRadius), clearWhere: \"leader_town\""));
+            Assert.That(coordinator, Does.Contain("keepClearOf: npc, clearWhere: \"town_npc\""));
+            Assert.That(coordinator, Does.Contain("ChooseLeader(session, members), members, \"recovery\", out Vector3 beside"));
+            // 3. The landing step runs in the route's arrival, for gamebots only, before the arrival row.
+            string arrival = Between(gameBot, "private void CompleteStableMasterRouteCore(", "AUTONOMOUS_STABLE_ROUTE_ARRIVE");
+            Assert.That(arrival, Does.Contain(
+                "if (IsAlive && !IsHiredCompanion && TryStepOffStableLanding(out Vector3 stepFrom, out Vector3 stepTo)"));
+            Assert.That(gameBot, Does.Contain("AutonomousServiceNpcClearance.TryResolveLandingStepOff(PathfindingProvider.Instance, CurrentZone, from, masterAt, DatabaseID, out to)"));
+            // 4. The town break rejects a spot near a service NPC, from the one radius scan.
+            Assert.That(townIdle, Does.Contain(
+                "List<Vector3> services = AutonomousServiceNpcClearance.ServicePositions(nearby);"));
+            Assert.That(townIdle, Does.Contain(
+                "if (!AutonomousServiceNpcClearance.IsClearOf(candidate.Value, services, AutonomousServiceNpcClearance.TownBreakClearRadius)) continue;"));
+            Assert.That(townIdle, Does.Contain("if (InLiveAggroRange(nearby, candidate.Value)) continue;"));
+        });
     }
 }
