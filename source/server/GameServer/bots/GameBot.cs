@@ -1030,7 +1030,7 @@ namespace DOL.GS
                         (int)Math.Round(floor.Z), Heading, true))
                     log.Info($"AUTONOMOUS_STABLE_LANDING_CORRECTION bot=\"{Name}\" id={DatabaseID} " +
                              $"region={CurrentRegionID} from={arrival} to={floor}");
-                // #569 step 4 (True165 d15d72e): every rider of a route landed on its last point, next to a busy
+                // #569 step 4: every rider of a route landed on its last point, next to a busy
                 // stable master. A gamebot steps once to its own spot 60-140 units off, away from the master (one
                 // radius query, one floor projection, one corridor check per arrival). Hired companions stay put.
                 if (IsAlive && !IsHiredCompanion && TryStepOffStableLanding(out Vector3 stepFrom, out Vector3 stepTo) &&

@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace DOL.UnitTests;
 
-// #569 step 4 (True165 78a70c0, d15d72e, 4d888bd): autonomous gamebot meetups, stable landings and town breaks stay
+// #569 step 4: autonomous gamebot meetups, stable landings and town breaks stay
 // clear of the merchants, trainers, stable masters, healers and vault keepers players click.
 [TestFixture]
 public class UT_AutonomousServiceNpcClearance

@@ -4,7 +4,7 @@ using System.Numerics;
 namespace DOL.GS;
 
 /// <summary>
-/// #569 step 4 (True165 78a70c0, its GitHub #48): autonomous gamebot party meetups stand BESIDE a merchant, trainer,
+/// #569 step 4: autonomous gamebot party meetups stand BESIDE a merchant, trainer,
 /// stable master, healer, vault keeper or the Realm Exchange broker, not on it, so the player can still click the NPC.
 /// Every meetup chooser that anchored on such an NPC (the town near the camp, the town where the leader stands, the
 /// nearby town NPCs and the recovery regroup) first tries a clear spot 300-450 units off; the old choice stays as the

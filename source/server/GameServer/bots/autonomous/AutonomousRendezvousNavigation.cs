@@ -97,7 +97,7 @@ public static class AutonomousRendezvousNavigation
         return true;
     }
 
-    // #569 step 4 (True165 78a70c0): two rings, farther first; the first walkable, connected spot wins, so a meetup
+    // #569 step 4: two rings, farther first; the first walkable, connected spot wins, so a meetup
     // sits as far from the NPC as the band allows. 2 x 6 projections at most, once per party formation.
     private static readonly float[] ClearRings = [420f, 340f];
     private const int ClearRingAngles = 6;

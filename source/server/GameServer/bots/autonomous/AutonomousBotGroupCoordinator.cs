@@ -74,7 +74,7 @@ public static partial class AutonomousBotGroupCoordinator
         public GamePlayer HostedPlayer { get; init; }
         /// <summary>#598 C: the whole group is on a battleground trip, led by <see cref="Leader"/> (not a dynamic PvE/RvR party).</summary>
         public bool BattlegroundTrip { get; init; }
-        // #569 step 3 (True165 14dcaa5): the task clock, for the camp travel budget. Only clock transitions change
+        // #569 step 3: the task clock, for the camp travel budget. Only clock transitions change
         // these, so the publish cache (record equality) is not churned every second.
         public long? TaskDeadlineTick { get; init; }
         public long TaskPausedRemainingMilliseconds { get; init; }
@@ -446,7 +446,7 @@ public static partial class AutonomousBotGroupCoordinator
             session.MeetupPlanned = true;
             session.PlannedCamp = camp;
             string where = session.RendezvousName;
-            // #569 step 3 (True165 14dcaa5): move only to a town every member can reach in time
+            // #569 step 3: move only to a town every member can reach in time
             // (AutonomousMeetupPlanPolicy), and size the wait from the farthest member (15-20 min).
             bool reachCheck = AutonomousMeetupPlanPolicy.ReachableTownEnabled;
             bool sizeWindow = AutonomousMeetupPlanPolicy.TravelWindowEnabled;
@@ -524,7 +524,7 @@ public static partial class AutonomousBotGroupCoordinator
             (int)point.X, (int)point.Y, crossings, MeetupPlanningSpeed(member.MaxSpeedBase, member.MaxSpeed))).ToArray();
 
     /// <summary>
-    /// Plan meetups at the member's normal run speed (True165 round-3 review): MaxSpeed is 0 while mezzed or stunned and
+    /// Plan meetups at the member's normal run speed: MaxSpeed is 0 while mezzed or stunned and
     /// low while snared, which made one member's estimate hundreds of minutes.
     /// </summary>
     public static double MeetupPlanningSpeed(int baseSpeed, int currentSpeed) => Math.Max(baseSpeed, currentSpeed);
@@ -1304,7 +1304,7 @@ public static partial class AutonomousBotGroupCoordinator
     /// <summary>
     /// The main tank and puller among the party's tanks: at level 50 any, else the highest level, picked at random. With
     /// <paramref name="shieldTanks"/> given, shield tanks first (Prima: the shield tank is the main tank and puller; a
-    /// two-hander is damage or the off-tank). Port of True165 d2fc3fe3d.
+    /// two-hander is damage or the off-tank).
     /// </summary>
     public static int PreferredPveTankSlot(IReadOnlyList<int> tankLevels, bool levelFiftyGroup,
         Random random = null, IReadOnlyList<bool> shieldTanks = null)
@@ -1331,7 +1331,7 @@ public static partial class AutonomousBotGroupCoordinator
 
     /// <summary>
     /// CanInitiateNewPull with the first failing gate named (AutonomousPartyPullStall's Gate* constants), same gates in
-    /// the same order (#569, from True165 0e0a397). The bool overload wraps this one, so the gate the stall monitor logs
+    /// the same order (#569). The bool overload wraps this one, so the gate the stall monitor logs
     /// can never drift from the real one. The names are constants: the pull gate allocates nothing.
     /// </summary>
     public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker, bool raidDungeonTrash, out string gate)
@@ -2206,7 +2206,7 @@ public static partial class AutonomousBotGroupCoordinator
             FinishGroupTask(session, eventReason, "released/rvr_event");
             return false;
         }
-        // #569 step 2 (True165 fb7487a): members lost to monsters far above them near one spot end the task there
+        // #569 step 2: members lost to monsters far above them near one spot end the task there
         // (AutonomousGroupDangerRetreat), before any regroup beside the killers.
         if (raidView == null && TryRetreatFromDanger(session, members))
             return false;
@@ -2380,7 +2380,7 @@ public static partial class AutonomousBotGroupCoordinator
             if (!session.RecoveringBetweenPulls)
                 session.CombatObserved = false;
         }
-        // #569 (True165 0e0a397): a grinding party with no fight or experience is logged at 6 minutes, naming the pull
+        // #569: a grinding party with no fight or experience is logged at 6 minutes, naming the pull
         // gate, and ended cleanly at 11, before the 15-minute stuck watchdog teleport (AutonomousPartyPullStall).
         if (!ObservePartyPullStall(session, members, groupCombatActive))
             return false;
@@ -3354,7 +3354,7 @@ public static partial class AutonomousBotGroupCoordinator
         // The caller's order (nearest first) is kept within each guild rank, so the roster takes the closest bots
         // that fill it; a random reshuffle here used to throw that order away (2026-10-19).
         // Within a guild rank, real healers (a Rejuvenation Cleric, a Mending Healer ...) are offered first, so a party takes
-        // them before a Smite Cleric, a Paladin or a Friar without Rejuvenation fills its healer slot (True165 d2fc3fe3d).
+        // them before a Smite Cleric, a Paladin or a Friar without Rejuvenation fills its healer slot.
         GameBot[] pool = candidates.Where(candidate => candidate?.CharacterClass != null)
             .OrderBy(candidate => AutonomousBotRealmGuilds.GuildmateRank(leader, candidate))
             .ThenBy(candidate => BotGroupRoles.IsPrimaryHealer(BotGroupRoles.HealerRank(candidate)) ? 0 : 1).ToArray();
@@ -3366,7 +3366,7 @@ public static partial class AutonomousBotGroupCoordinator
                 out template, out owners, offTanks: true, allowBardHealer: allowBardHealer)))
             return false;
         GameBot[] slotted = owners.Select(owner => owner < 0 ? leader : pool[owner]).ToArray();
-        // The best healers hold the Healer slots (a Mentalism Mentalist only as the second healer). True165 d2fc3fe3d.
+        // The best healers hold the Healer slots (a Mentalism Mentalist only as the second healer).
         eCharacterClass[] slotClasses = slotted.Select(member => (eCharacterClass)member.CharacterClass.ID).ToArray();
         int[] slotRanks = slotted.Select(BotGroupRoles.HealerRank).ToArray();
         foreach ((int first, int second) in BotGroupRoles.PreferBetterHealers(template, slotClasses, slotRanks))
@@ -3513,7 +3513,7 @@ public static partial class AutonomousBotGroupCoordinator
             GameBot ranged = members.Where(AutonomousDefensivePull.HasRangedPull)
                 .OrderBy(PullerClassPenalty)
                 // a shield tank, then a two-hander tank, then the crowd-control slot, then the rest, healers last
-                // (True165 d2fc3fe3d; Freddyshouse: the CC pulls when no tank has a ranged pull)
+                // (Freddyshouse: the CC pulls when no tank has a ranged pull)
                 .ThenBy(member => BotGroupRoles.RangedPullerOrder(
                     session.PveRoles.TryGetValue(MemberKey(member), out BotPveGroupRole role) ? role : null,
                     BotGroupRoles.IsShieldTank(member), member == crowdControl))

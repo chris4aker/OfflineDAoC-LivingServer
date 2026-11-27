@@ -5,7 +5,7 @@ using System.Numerics;
 namespace DOL.GS;
 
 /// <summary>
-/// #569 step 4 (ported by hand from True165 78a70c0, d15d72e and 4d888bd, its GitHub #48): autonomous gamebots stood
+/// #569 step 4: autonomous gamebots stood
 /// on and around stable masters, merchants, trainers, healers and vault keepers, so the player could not click them.
 /// NPCs are not in the navmesh, so nothing kept a bot off them. These rules keep the spots gamebots choose for party
 /// meetups, stable-route landings and town breaks clear of the NPCs players use. Every caller decides once (a party

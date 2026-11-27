@@ -294,7 +294,7 @@ namespace DOL.GS
             IPathfindingMgr nav = PathfindingProvider.Instance;
             if (anchor?.ObjectState != GameObject.eObjectState.Active || !nav.IsAvailable || !nav.HasNavmesh(anchor.CurrentZone)) return false;
             Vector3 center = new(anchor.X, anchor.Y, anchor.Z);
-            // #569 step 4 (True165 4d888bd): one radius scan per choice (it used to run once per candidate). The same
+            // #569 step 4: one radius scan per choice (it used to run once per candidate). The same
             // list rejects a break spot within 250 units of a merchant, trainer, stable master, healer or vault keeper,
             // which gamebots stood on for 15-30 minutes; two more candidates make up for the spots this rejects.
             List<GameNPC> nearby = anchor.GetNPCsInRadius(3_500);
