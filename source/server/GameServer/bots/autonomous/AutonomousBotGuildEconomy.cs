@@ -286,7 +286,7 @@ public static class AutonomousBotGuildEconomy
         lock (guild)
         {
             fee = CraftingEconomy.CraftingDrama.BankFee(materials, guild.GetGuildBank(), true);
-            if (fee <= 0 || !guild.AddToBank(-fee, false))
+            if (fee <= 0 || !guild.RemoveFromBank(fee, false))
                 return 0;
         }
         if (!AutonomousBotEconomy.AddMoney(crafter.DatabaseID, fee, CraftingEconomy.EconomyFlowKind.Guild))

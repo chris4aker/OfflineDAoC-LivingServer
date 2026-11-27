@@ -14,6 +14,9 @@ public sealed partial class AutonomousWorldBotController
 {
     private long _sightHoldUntil;
     private Vector3? _sightBackOffPoint;
+    // #766: the back-off walk ordered for this hold (kept after a failed walk clears _sightBackOffPoint), so its own failure
+    // is never charged to the route the hold paused.
+    private Vector3? _sightBackOffOrder;
     private RvrSightCall? _sightLastCall;
     private long _sightLastLogTick = long.MinValue / 2;
     private int _sightRepaths;
@@ -135,11 +138,13 @@ public sealed partial class AutonomousWorldBotController
         if (!fresh)
             return;
         _sightRepaths = 0;
+        _sightBackOffOrder = null;
         _sightBackOffPoint = SightBackOffPoint(bot, enemies, nearest);
         int called = CallSightFriends(bot, enemies, now);
         if (_sightBackOffPoint is Vector3 point)
         {
             bot.StopAttack();
+            _sightBackOffOrder = point;
             bot.PathTo(point, bot.MaxSpeed);
         }
         if (Log.IsInfoEnabled)
@@ -215,12 +220,26 @@ public sealed partial class AutonomousWorldBotController
             EndSightHold(bot, resume, now);
             return false;
         }
+        // #766: a back-off walk the mover could not path ends here: the bot holds where it stands instead of ordering the same
+        // walk again, and the failure stays with the hold (it is not the paused route's).
+        if (TakeBackOffFailure(bot))
+            _sightBackOffPoint = null;
         if (_sightBackOffPoint is Vector3 point && !bot.IsMoving &&
             Vector2.Distance(new(bot.X, bot.Y), new(point.X, point.Y)) > 150 && _sightRepaths < 3)
         {
             _sightRepaths++;
             bot.PathTo(point, bot.MaxSpeed);
         }
+        return true;
+    }
+
+    /// <summary>#766: consumes a pending mover failure that belongs to this hold's back-off walk; true when there was one.
+    /// Any other failure stays pending for the route's own recovery.</summary>
+    private bool TakeBackOffFailure(GameBot bot)
+    {
+        if (!bot.PeekAutonomousPathFailure(out Vector3 failed) || !RvrSightSizeUp.FailureIsBackOffs(_sightBackOffOrder, failed))
+            return false;
+        bot.TryConsumeAutonomousPathFailure(out _, out _);
         return true;
     }
 
@@ -242,6 +261,16 @@ public sealed partial class AutonomousWorldBotController
             return;
         _sightHoldUntil = 0;
         _sightBackOffPoint = null;
+        if (bot != null)
+        {
+            // #766: the route the hold paused resumes clean. A failed back-off walk is not a failure of the travel goal (the
+            // route recovery used to count it, aim its corners at the back-off point and drop the goal after three), and the
+            // wait is not a route stall (a bot that could not walk away resumed with a 30-second-old progress clock).
+            TakeBackOffFailure(bot);
+            _lastRoutePosition = new Vector3(bot.X, bot.Y, bot.Z);
+            _lastRouteProgressTick = now;
+        }
+        _sightBackOffOrder = null;
         if (Log.IsInfoEnabled && bot != null)
             Log.Info($"RVR_SIGHT_RESUME bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
                      $"region={bot.CurrentRegionID} why={why}");
