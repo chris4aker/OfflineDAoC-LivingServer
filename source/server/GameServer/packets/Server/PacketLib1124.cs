@@ -342,8 +342,8 @@ namespace DOL.GS.PacketHandler
 
 					// Make the client believe the pet is in the same guild as them.
 					// Use a dummy guild for guildless players.
-					SendObjectGuildID(npc, playerGuild ?? Guild.DummyGuild);
-					SendObjectGuildID(player, playerGuild ?? Guild.DummyGuild);
+					SendObjectGuildID(npc, playerGuild ?? GuildMgr.DummyGuild);
+					SendObjectGuildID(player, playerGuild ?? GuildMgr.DummyGuild);
 				}
 				else if ((npc.Flags & GameNPC.eFlags.PEACE) != 0 || npc.Realm is not eRealm.None)
 				{
@@ -352,8 +352,8 @@ namespace DOL.GS.PacketHandler
 
 					// Make the client believe the NPC is in the same guild as them.
 					// Use a dummy guild for guildless players.
-					SendObjectGuildID(npc, playerGuild ?? Guild.DummyGuild);
-					SendObjectGuildID(player, playerGuild ?? Guild.DummyGuild);
+					SendObjectGuildID(npc, playerGuild ?? GuildMgr.DummyGuild);
+					SendObjectGuildID(player, playerGuild ?? GuildMgr.DummyGuild);
 				}
 			}
 		}

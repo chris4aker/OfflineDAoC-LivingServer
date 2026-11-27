@@ -8151,10 +8151,17 @@ namespace DOL.GS
             get => m_guild;
             set
             {
+                bool leftGuild = value == null && m_guild != null;
+
                 if (value == null)
-                    m_guild.RemoveOnlineMember(this);
+                    m_guild?.RemoveOnlineMember(this);
 
                 m_guild = value;
+
+                // Leaving or losing the guild clears the guild emblem on the player's own house. Logging out keeps it:
+                // RemoveOnlineMember no longer clears it (port of OpenDAoC-Core 72245d297).
+                if (leftGuild)
+                    GuildMgr.RefreshPersonalHouseEmblem(this);
 
                 // Update guild name for all players if client is playing.
                 if (ObjectState == eObjectState.Active)
