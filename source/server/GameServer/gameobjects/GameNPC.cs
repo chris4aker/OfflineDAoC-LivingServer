@@ -894,6 +894,12 @@ namespace DOL.GS
 			movementComponent.ForcePathReplot();
 		}
 
+		/// <summary>#766: the pending autonomous path failure's destination, left pending.</summary>
+		public bool PeekAutonomousPathFailure(out Vector3 destination)
+		{
+			return movementComponent.PeekAutonomousPathFailure(out destination);
+		}
+
 		public bool TryConsumeAutonomousPathFailure(out PathfindingStatus status, out Vector3 destination)
 		{
 			return movementComponent.TryConsumeAutonomousPathFailure(out status, out destination);
