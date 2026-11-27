@@ -21,17 +21,20 @@ A fix counts as working only once it is seen in a log from the owner's PC. Until
 - **1.2.2** is the latest full release (2026-11-23, [RELEASE-NOTES-1.2.2.md](RELEASE-NOTES-1.2.2.md)).
 - **1.2.3** is in release candidates: `v1.2.3-rc.2` was published as a pre-release on 2026-11-26 ([#709](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/709)); the merges
   for rc.3 are going into `main`. 1.2.3 is now the polish release, with no deadline (owner, 2026-11-26).
+- **Where work goes** (owner, 2026-11-26 22:38, on #738): everything merged since rc.2 ships in 1.2.3, and rc.3 and the
+  final 1.2.3 are built from `main`. 1.2.4 work goes to `main` too: there is no `integration/1.2.4` branch, and the
+  milestone says which release an item belongs to.
 - **1.2.4** carries on after it: epic encounters and raids, the alt roster, the held upstream ports and the risky
   navigation work, with no single headline. **1.2.5** holds only the keep patrols the owner is holding. Every open issue
   has a milestone; the plan and build order are on [#738](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/738).
 - **Done since 1.2** (closed; what shipped is in each issue's last comment and in the changelog): [#396](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/396), [#397](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/397),
   [#399](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/399)-[#409](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/409), [#411](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/411), [#413](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/413), [#415](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/415)-[#424](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/424), [#437](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/437), [#438](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/438), [#473](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/473), [#475](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/475), [#477](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/477), [#478](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/478), [#482](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/482),
-  [#485](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/485), [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487), [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491), [#505](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/505), [#519](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/519), [#521](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/521), [#522](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/522), [#525](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/525), [#535](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/535)-[#539](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/539), [#574](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/574), [#598](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/598). Most of them
+  [#485](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/485), [#487](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/487), [#491](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/491), [#505](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/505), [#519](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/519), [#521](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/521), [#522](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/522), [#525](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/525), [#535](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/535)-[#539](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/539), [#574](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/574), [#598](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/598), [#725](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/725), [#732](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/732). Most of them
   are **tests only**: closing an issue does not mean it was seen on the owner's PC. Their notes, the 1.2.2 section, the
   1.2.1 PC checklist and the evidence behind the known-issues list are kept in
   [history/OPEN-WORK-1.2.1-1.2.2.md](history/OPEN-WORK-1.2.1-1.2.2.md).
 
-"Labels:" at an item are its triage labels on GitHub as of 2026-11-27; the issue itself is always the current word.
+"Labels:" at an item are its triage labels on GitHub as of 2026-11-27 (06:30Z); the issue itself is always the current word.
 
 ## 1.2.3: the polish release
 
@@ -47,10 +50,6 @@ before the companion work.
 ### Release, install and CI
 
 - [#709](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/709) v1.2.3-rc.2: contents, build, fresh-world overnight run.
-- [#725](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/725) DAoCLivingServer.Setup rejects the current `classic165_period_restored_spawn_ids.txt` (expects 1,290 IDs,
-  throws on `#` lines).
-- [#732](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/732) Launcher: opened without `START OFFLINE DAOC.cmd`, START SERVER fails silently (no bundled .NET for
-  CoreServer). Labels: `needs-PC`, `tests-only`.
 - [#687](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/687) CI navmesh set: run the database-needing navmesh tests, and make release builds take navmeshes from the set
   (#684 follow-up).
 - [#704](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/704) Installed-navmesh tests that fail on the fresh install's set (10 classes, #687 dry runs). Labels: `needs-PC`.
@@ -82,14 +81,14 @@ before the companion work.
 
 From [upstream/HARVEST-2026-11.md](upstream/HARVEST-2026-11.md).
 
-- [#570](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/570) Harvest: solo levelling life and learned dangers (hotspots, seams, hunting ground, corpse walk).
+- [#570](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/570) Harvest: solo levelling life and learned dangers (hotspots, seams, hunting ground, corpse walk). Labels: `needs-owner`, `needs-PC`, `tests-only`.
 - [#578](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/578) Harvest: classic starter quests from DOL scripts. Labels: `needs-owner`.
 - [#569](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/569) Harvest: True165 party play, pulls and travel files never taken.
 - [#571](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/571) Harvest: the player's group and companions (DetShaft fight mode, leader focus, RP shares). Companions #664
-  builds on it. Labels: `needs-PC`, `tests-only`.
+  builds on it. Labels: `needs-owner`, `needs-PC`, `tests-only`.
 - [#572](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/572) Harvest: RvR and siege group AI sources (FelixGagnonB 8v8, True165 RvR files, ram seats), with the RvR
   package.
-- [#575](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/575) Harvest: period loot and merchants (True165 rows, Thidranki, Uth-Moras audit). Labels: `needs-owner`.
+- [#575](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/575) Harvest: period loot and merchants (True165 rows, Thidranki, Uth-Moras audit). Labels: `needs-owner`, `reruns-owed`.
 - [#580](https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/580) Harvest: client recipe check with craft_extract (separate tool).
 
 ### Client polish (OpenDAoC ports)
