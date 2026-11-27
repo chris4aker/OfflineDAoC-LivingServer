@@ -726,7 +726,7 @@ public static class AutonomousPetSupport
             petBrain.Body.ObjectState is not GameObject.eObjectState.Active)
             return;
 
-        // #569 step 8 (True165 908fef5): a Hunter keeps its pet at heel while it draws the Critical Shot opener on an idle
+        // #569 step 8: a Hunter keeps its pet at heel while it draws the Critical Shot opener on an idle
         // monster (sent first, the pet put the monster in combat and the opener never happened). At most 7 s.
         if (ownerBrain.HoldsPetForCriticalShot(combatTarget, petBrain))
             combatTarget = null;
@@ -953,7 +953,7 @@ public static class AutonomousPetSupport
         // casts, but never select it as their autonomous pet upkeep.
         if (IsDisabledBotDamageShield(owner, spell))
             return false;
-        // #567 A2 (port of OfflineDAoC-True165 BotPetBuffBenefit, 03dce76ee): the caster's own pet gets no buff that does
+        // #567 A2: the caster's own pet gets no buff that does
         // nothing for a pet (power and endurance regen, acuity, fatigue), the rule party pets already had (#491).
         if (!BotBuffTargetPolicy.Benefits(spell.SpellType, BotBuffTargetPolicy.TargetKind.Pet))
             return false;

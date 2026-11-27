@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace DOL.UnitTests
 {
     /// <summary>
-    /// #569 step 8 (True165 6fb0b165, 908fef5, ff29b96): archer bots open with Critical Shot on a target that isn't
+    /// #569 step 8: archer bots open with Critical Shot on a target that isn't
     /// fighting, running or mezzed, and a Hunter keeps its pet at heel for that opener (at most 7 s). Bots never got the
     /// Critical Shot ability (players get it in OnSkillTrained), so the level comes from the bow spec.
     /// </summary>
@@ -95,9 +95,9 @@ namespace DOL.UnitTests
         private sealed class Hunter : GameBot
         {
             private Hunter() : base((OfflineWorldBotRecord)null) { }
-            public eActiveWeaponSlot Slot = eActiveWeaponSlot.Distance;
-            public int BowSpec = 30;
-            public int TestEndurance = 100;
+            public eActiveWeaponSlot Slot;
+            public int BowSpec;
+            public int TestEndurance;
             public override eActiveWeaponSlot ActiveWeaponSlot => Slot;
             public override int Endurance { get => TestEndurance; set { } }
             public override int GetModifiedSpecLevel(string keyName) => keyName == Specs.CompositeBow ? BowSpec : 0;
@@ -214,6 +214,10 @@ namespace DOL.UnitTests
         private (Hunter, Pet, Monster) Scene()
         {
             Hunter hunter = Actor<Hunter>();
+            // GetUninitializedObject skips field initializers: set the test double's bow, spec and endurance here
+            hunter.Slot = eActiveWeaponSlot.Distance;
+            hunter.BowSpec = 30;
+            hunter.TestEndurance = 100;
             Field(typeof(GameLiving), hunter, "_abilitiesLock", new System.Threading.Lock());
             Field(typeof(GameLiving), hunter, "m_abilities", new Dictionary<string, Ability>());
             Field(typeof(GameNPC), hunter, "m_ownBrain", new BotBrain { Body = hunter });

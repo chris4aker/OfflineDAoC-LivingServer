@@ -4,7 +4,7 @@ using DOL.GS.ServerProperties;
 namespace DOL.AI.Brain
 {
     /// <summary>
-    /// #569 step 8 (True165 908fef5, ff29b96): an archer bot opens with Critical Shot (NpcAttackAction sets it on the draw at
+    /// #569 step 8: an archer bot opens with Critical Shot (NpcAttackAction sets it on the draw at
     /// an idle target, BotRangedCombat.OpensWithCriticalShot); a Hunter's pet waits at heel for that opener instead of
     /// putting the monster in combat first. Bots only: the player's own pet never comes here (SynchronizeIndependentPet
     /// runs for a GameBot owner only).

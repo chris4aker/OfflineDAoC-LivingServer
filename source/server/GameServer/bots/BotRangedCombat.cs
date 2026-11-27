@@ -159,7 +159,7 @@ namespace DOL.GS
                    stance == eBotStance.Auto && !targetInMeleeRange;
         }
 
-        /// <summary>How long a Hunter holds its pet back for its Critical Shot draw at most (True165 908fef5).</summary>
+        /// <summary>How long a Hunter holds its pet back for its Critical Shot draw at most.</summary>
         public const long CriticalShotPetHoldMilliseconds = 7_000;
 
         /// <summary>Walking speed: Critical Shot can't be drawn on a target moving faster (RangeAttackComponent's player rule).</summary>
@@ -174,7 +174,7 @@ namespace DOL.GS
             Math.Max(BotStealthArcher.CriticalShotLevel(BotStealthArcher.BowSpec(bot)), bot.GetAbilityLevel(Abilities.Critical_Shot));
 
         /// <summary>
-        /// Pure (#569 step 8; True165 6fb0b165, class audit 2026-11-05: "no bot ever used Critical Shot"): an archer bot opens
+        /// Pure (#569 step 8, class audit 2026-11-05: "no bot ever used Critical Shot"): an archer bot opens
         /// with Critical Shot, as players pulled before 1.88 ("Your critical shot, which you pull with normally, hits harder",
         /// Allakhazam Composite Bow, 2002). Only at the start of a draw that has no other type yet, at a target that is not in
         /// combat, not over walking speed and not mezzed (the player rule in RangeAttackComponent), with endurance for the
@@ -187,7 +187,7 @@ namespace DOL.GS
             endurance >= RangeAttackComponent.CRITICAL_SHOT_ENDURANCE_COST + RangeAttackComponent.DEFAULT_ENDURANCE_COST;
 
         /// <summary>
-        /// Pure (#569 step 8; True165 908fef5, Prima's Hunter: "always with a critical shot followed by three or so normal
+        /// Pure (#569 step 8, Prima's Hunter: "always with a critical shot followed by three or so normal
         /// shots"): a Hunter's pet waits while its owner, bow in hand and able to Critical Shot, opens on a target that is not
         /// fighting yet. Sent first, the pet put the monster in combat and the opener never fired. Never longer than the hold,
         /// and never once the pet is already on the target.

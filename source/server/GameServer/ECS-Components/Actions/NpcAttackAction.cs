@@ -240,7 +240,7 @@ namespace DOL.GS
                     return false;
                 }
                 bot.rangeAttackComponent.UpdateAmmo(_weapon);
-                // #569 step 8 (True165 6fb0b165): an archer opens on a target that isn't fighting, running or mezzed with
+                // #569 step 8: an archer opens on a target that isn't fighting, running or mezzed with
                 // Critical Shot, as players pulled. Set here, before the draw, so the doubled draw time is taken.
                 // The draw state is checked first: most calls are mid-draw and end there.
                 if (Properties.BOT_CRITICAL_SHOT_OPENER && _target is GameLiving opening &&
@@ -261,7 +261,7 @@ namespace DOL.GS
                     _checkLosTimer.ChangeTarget(_target);
                 }
 
-                // Port of OpenDAoC-Core 978b991fc (live): a monster, guard or pet that has started its draw on this target
+                // As on live: a monster, guard or pet that has started its draw on this target
                 // lands it; LoS is checked before the draw, not during it. Gamebots keep the player's check during the draw.
                 bool aiming = _npcOwner.rangeAttackComponent.RangedAttackState is not eRangedAttackState.None && _losCheckTarget == _target;
 

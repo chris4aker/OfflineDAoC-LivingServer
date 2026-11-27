@@ -72,7 +72,7 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Port of OpenDAoC-Core c707d057f (memory leak): once the component leaves the service, drop the last weapon action
+        /// Memory leak fix: once the component leaves the service, drop the last weapon action
         /// and the start-of-attack target, which otherwise kept a dead or deleted target alive until the next fight.
         /// </summary>
         private void Stop()
@@ -2163,7 +2163,7 @@ namespace DOL.GS
             if (!string.IsNullOrEmpty(message))
                 Message.SystemToArea(ad.Attacker, message, eChatType.CT_OthersCombat, _broadcastExcludes);
 
-            // Port of OpenDAoC-Core c707d057f: the exclusion list was never cleared after use, so it kept the last fight's
+            // Memory leak fix: the exclusion list was never cleared after use, so it kept the last fight's
             // attacker, target and pet owner alive.
             Array.Clear(_broadcastExcludes);
 
