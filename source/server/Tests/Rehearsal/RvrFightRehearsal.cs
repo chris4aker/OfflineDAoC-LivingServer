@@ -83,7 +83,33 @@ namespace DOL.GS.Tests.Rehearsal
         // ---------------------------------------------------------------------------------------------------------
         // Scenario 1: two bot-only eights meet in the open
 
-        public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors);
+        /// <summary>
+        /// #531: one side's opening, from its members' first engages within <see cref="OpeningMilliseconds"/> of the side's
+        /// first: the first pick (its target and rule), how many distinct enemies the members opened on, and how many the
+        /// spread pick of before 1.2.3 would have opened on from the same scans. Null when the side never engaged by scan.
+        /// </summary>
+        public sealed record RvrOpening(GameLiving FirstTarget, string FirstRule, int Members, int OpenedOn, int SpreadOpenedOn);
+
+        public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors, RvrOpening Albion = null,
+            RvrOpening Midgard = null);
+
+        /// <summary>How long after a side's first engage its members' first engages count as its opening.</summary>
+        public const long OpeningMilliseconds = 10_000;
+
+        public static RvrOpening Opening(RvrFightScan scan, List<GameBot> side)
+        {
+            var picks = scan.Picks.Where(p => side.Contains(p.Bot)).ToList();
+            if (picks.Count == 0)
+                return null;
+            long start = picks[0].At;
+            var opening = picks.Where(p => p.At - start <= OpeningMilliseconds).GroupBy(p => p.Bot).Select(g => g.First()).ToList();
+            return new RvrOpening(picks[0].Target, picks[0].Rule, opening.Count, opening.Select(p => p.Target).Distinct().Count(),
+                opening.Select(p => p.SpreadTarget).Distinct().Count());
+        }
+
+        private static string OpeningText(RvrOpening opening) => opening == null ? "none" :
+            $"{RvrRoles.For(ClassOf(opening.FirstTarget))}:{Short(opening.FirstTarget)} rule={opening.FirstRule} " +
+            $"opened_on={opening.OpenedOn}/{opening.Members} (spread {opening.SpreadOpenedOn})";
 
         public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600)
         {
@@ -112,11 +138,13 @@ namespace DOL.GS.Tests.Rehearsal
                 $"contact shadow (#529, board-listed enemies no member knew of): albion {Shadow(eRealm.Albion)}; midgard {Shadow(eRealm.Midgard)}",
             };
             detail.AddRange(albion.Concat(midgard).Select(State));
+            // #531: each engage the scan made, by which rule, and what the spread pick of before would have taken
+            detail.AddRange(scan.Picks.Take(24).Select(p => $"pick {S(p.At)} {p.Bot.Name} -> {Short(p.Target)} rule={p.Rule} spread_would={Short(p.SpreadTarget)}"));
             detail.AddRange(world.Recorder.Mezzes.Select(m => $"mez {S(m.At)} {m.Caster.Name} -> {m.Target.Name} at {m.TargetHealthPercent}% : {(m.Landed == true ? "landed" : m.Landed == false ? "refused" : "?")}"));
             detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
             string row = OpenFieldRow(world, scan, albion, midgard);
-            return new OpenFieldResult(row, detail, world.ServiceErrors);
+            return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard));
         }
 
         private static string Shadow(eRealm realm)
@@ -166,6 +194,7 @@ namespace DOL.GS.Tests.Rehearsal
             string duration = r.Hits.Count == 0 ? "no fight" : $"{(end - firstHit) / 1000.0:0}s";
             return $"RVR_REHEARSAL open_field seed={world.Seed} sides=Alb8 vs Mid8 noticed=Alb:{Notice(albion)} Mid:{Notice(midgard)} " +
                    $"first_cc={cc} mez_refused={refused} (bot<75%={refusedHurtBot}) first_deaths={deaths} " +
+                   $"first_pick=Alb:{OpeningText(Opening(scan, albion))} Mid:{OpeningText(Opening(scan, midgard))} " +
                    $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} held={held} duration={duration}";
         }
 

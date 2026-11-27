@@ -2455,12 +2455,19 @@ namespace DOL.GS
             long actorKey = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
             // Some attackers focus the objective carrier; the others fight its
             // screen. A human is not preferred merely because it is human.
-            if (unchecked((ulong)actorKey) % 3 == 0)
-            {
-                GameLiving carrier = candidates.FirstOrDefault(GameRelic.IsPlayerCarryingRelic);
-                if (carrier != null) return carrier;
-            }
+            GameLiving carrier = CarrierFocus(bot, candidates);
+            if (carrier != null) return carrier;
             return candidates[AutonomousRvrStaging.TargetIndex(actorKey, candidates.Length, warbandSize)];
+        }
+
+        /// <summary>A relic carrier among <paramref name="candidates"/> for the third of the bots (by id) that focus the
+        /// objective carrier, or null.</summary>
+        private static GameLiving CarrierFocus(GameBot bot, GameLiving[] candidates)
+        {
+            if (candidates == null || candidates.Length == 0)
+                return null;
+            long actorKey = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
+            return unchecked((ulong)actorKey) % 3 == 0 ? candidates.FirstOrDefault(GameRelic.IsPlayerCarryingRelic) : null;
         }
 
         private bool TryEngageSharedDungeonOpponent(BotBrain brain, GameBot bot)
