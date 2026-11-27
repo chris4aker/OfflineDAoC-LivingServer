@@ -58,8 +58,11 @@ namespace DOL.UnitTests
                         continue;
                     Assert.That(opening.FirstRule, Is.AnyOf("order", "mates", "called"), $"{side}'s first pick is the plan's: {first.Row}");
                     Assert.That(opening.OpenedOn, Is.LessThanOrEqualTo(opening.SpreadOpenedOn), $"{side} opened on fewer: {first.Row}");
-                    Assert.That(RvrRoles.For(RvrFightRehearsal.ClassOf(opening.FirstTarget)), Is.Not.EqualTo(RvrRole.Tank),
-                        $"{side} opened on the kill order, not a tank: {first.Row}");
+                    // Only the kill order rules a tank out: a called pick can be a tank by design (WrongCallShare), and so can
+                    // a pick where only a tank was seen.
+                    if (opening.FirstRule == "order")
+                        Assert.That(RvrRoles.For(RvrFightRehearsal.ClassOf(opening.FirstTarget)), Is.Not.EqualTo(RvrRole.Tank),
+                            $"{side} opened on the kill order, not a tank: {first.Row}");
                 }
             });
             TestContext.Progress.WriteLine($"  #531 opening: Albion {first.Albion} / Midgard {first.Midgard}");

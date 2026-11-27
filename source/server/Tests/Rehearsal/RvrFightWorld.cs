@@ -160,6 +160,25 @@ namespace DOL.GS.Tests.Rehearsal
             _random = Util.SeededScope(seed);
             _errors = new ErrorCapture();
             Recorder = new RvrFightRecorder(this);
+            ForgetRvrState();
+        }
+
+        /// <summary>
+        /// The server's process-wide RvR tables, emptied when a world starts and when it ends. Each world starts its clock at
+        /// <see cref="Start"/> and reuses region ids and object ids, so entries another fight world left (an earlier test)
+        /// would read as fresh and as the same enemies here (review of PR #787: the rehearsal opened differently after
+        /// UT_BattlegroundFights617).
+        /// </summary>
+        private static void ForgetRvrState()
+        {
+            AutonomousWorldBotController.RvrContactTable.Clear();
+            AutonomousWorldBotController.RvrContactShadowTally.Clear();
+            AutonomousBattlegroundRallyContact.Clear();
+            foreach (string name in new[] { "RvrPerceptionMemory", "RvrObservers" })
+            {
+                object table = typeof(AutonomousWorldBotController).GetField(name, HiddenStatic)?.GetValue(null);
+                table?.GetType().GetMethod("Clear", Type.EmptyTypes)?.Invoke(table, null);
+            }
         }
 
         /// <summary>Every ServerProperty at its shipped default (the attribute's), then the scenario's values.</summary>
@@ -385,6 +404,7 @@ namespace DOL.GS.Tests.Rehearsal
                 WorldMgr.Regions.Remove(id);
             foreach (var (id, region) in _previousRegions)
                 WorldMgr.Regions[id] = region;
+            ForgetRvrState();
             _errors.Dispose();
             _random.Dispose();
             PathfindingProvider.SetPathfindingMgr(_previousNav);

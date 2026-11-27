@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
@@ -142,6 +143,45 @@ namespace DOL.GS.Tests
             }
             // the opener is a caster, a healer or a support caster, never one of the two tanks in front
             Assert.That(roles.Keys, Is.SubsetOf(new[] { RvrRole.Caster, RvrRole.Healer, RvrRole.Support }));
+        }
+
+        private static string ServerSource(string file)
+        {
+            string dir = TestContext.CurrentContext.TestDirectory;
+            string[] path = { "GameServer", "bots", "autonomous", file };
+            while (dir != null && !File.Exists(Path.Combine(new[] { dir }.Concat(path).ToArray())))
+                dir = Path.GetDirectoryName(dir);
+            Assert.That(dir, Is.Not.Null, "the server sources are next to the tests");
+            return File.ReadAllText(Path.Combine(new[] { dir }.Concat(path).ToArray())).Replace("\r\n", "\n");
+        }
+
+        /// <summary>
+        /// The rehearsal calls <see cref="AutonomousWorldBotController.PlanFirstPick"/> from its own scan, so it would still
+        /// pass with the controller's call disabled (review of PR #787). This pins the call in the controller's frontier scan:
+        /// gated by the field tactics and off for defenders and siege fighters, the relic carrier focus first, the spread
+        /// pick only when the plan has none, and the rule written on the engage row.
+        /// </summary>
+        [Test]
+        public void The_frontier_scan_takes_its_first_target_from_the_plan()
+        {
+            string code = ServerSource("AutonomousWorldBotController.FrontierThreat.cs");
+            int start = code.IndexOf("public bool TryEngageFrontierThreat(BotBrain brain)", StringComparison.Ordinal);
+            Assert.That(start, Is.GreaterThan(0));
+            int end = code.IndexOf("\n    }\n", start, StringComparison.Ordinal);
+            string body = code.Substring(start, end - start);
+            int gate = body.IndexOf("if (!defending && !siegeFighter && FirstPickApplies(bot))", StringComparison.Ordinal);
+            int carrier = body.IndexOf("enemy = CarrierFocus(bot, pickFrom);", StringComparison.Ordinal);
+            int plan = body.IndexOf("enemy = PlanFirstPick(bot, pickFrom,", StringComparison.Ordinal);
+            int spread = body.IndexOf("if (enemy == null)\n        {\n            enemy = SelectDistributedRvrTarget(bot, pickFrom);", StringComparison.Ordinal);
+            Assert.Multiple(() =>
+            {
+                Assert.That(gate, Is.GreaterThan(0), "the plan's pick is gated by the field tactics, not by a constant");
+                Assert.That(carrier, Is.GreaterThan(gate), "inside the gate, the carrier focus first");
+                Assert.That(plan, Is.GreaterThan(carrier), "then the plan");
+                Assert.That(spread, Is.GreaterThan(plan), "the spread pick only when the plan has none");
+                Assert.That(body, Does.Contain("pick={pickRule}"), "the engage row names the rule");
+                Assert.That(body, Does.Not.Contain("false && FirstPickApplies"));
+            });
         }
 
         [Test]
