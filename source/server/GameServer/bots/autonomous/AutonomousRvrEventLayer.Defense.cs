@@ -14,10 +14,11 @@ namespace DOL.GS
     {
         public const long DefenseResponseMilliseconds = 4 * 60 * 60_000L;
         public const long DefenseQuietMilliseconds = 3 * 60_000L;
-        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick, int ForceSize);
+        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick);
 
         // Goal 11 (owner 2026-10-07): the response is sized to the force that started the attack - a solo player, a
         // group (player + up to 7), a /raid 40 or a /raid 80 - and the announcement says how big a force was rallied.
+        // #523, owner 2026-11-24: sized "by the attackers actually seen" at the keep (SeenForceSize), not the roster.
         public enum DefenseScale { Small, Standard, Large, Massive }
 
         public static DefenseScale ScaleOf(int forceSize) => forceSize switch
@@ -28,8 +29,43 @@ namespace DOL.GS
             _ => DefenseScale.Small,
         };
 
-        /// <summary>The player plus everyone in their group or companion raid.</summary>
+        /// <summary>The player plus everyone in their group or companion raid, wherever they are (the roster).</summary>
         public static int ForceSize(GamePlayer player) => Math.Max(1, (int)(player?.Group?.MemberCount ?? 1));
+
+        /// <summary>
+        /// #523, owner 2026-11-24: a player-attack defense is "sized by the attackers actually seen". The attack itself
+        /// is seen, so never below one.
+        /// </summary>
+        public static int SeenForceSize(int seenAtKeep) => Math.Max(1, seenAtKeep);
+
+        /// <summary>
+        /// The attackers seen at the keep: the attacking player and the members of their group or companion raid
+        /// (companions count as group members, as <see cref="ForceSize"/> counted them) of the attacker's realm who are
+        /// alive, in play, in the keep's region and inside the fighting ring (<c>AttackerAtKeep</c>,
+        /// the ring #784 counts the attackers in). Members elsewhere or dead are not counted; pets and siege engines were never
+        /// part of the force count and still are not.
+        /// </summary>
+        public static int SeenForceSize(GameLiving attacker, ushort keepRegion, int keepX, int keepY, int keepZ)
+        {
+            if (attacker == null) return SeenForceSize(0);
+            bool AtKeep(GameLiving living) => living != null && living.Realm == attacker.Realm &&
+                AttackerAtKeep(living.IsAlive, living.ObjectState == GameObject.eObjectState.Active, living.CurrentRegionID,
+                    keepRegion, living.X - keepX, living.Y - keepY, living.Z - keepZ);
+            Group group = attacker.Group;
+            if (group == null) return SeenForceSize(AtKeep(attacker) ? 1 : 0);
+            int seen = 0;
+            bool attackerListed = false;
+            foreach (GameLiving member in group.GetMembersInTheGroup())
+            {
+                if (member == attacker) attackerListed = true;
+                if (AtKeep(member)) seen++;
+            }
+            if (!attackerListed && AtKeep(attacker)) seen++;
+            return SeenForceSize(seen);
+        }
+
+        private static int SeenForceSize(GamePlayer player, AbstractGameKeep keep) =>
+            keep == null ? SeenForceSize(0) : SeenForceSize(player, keep.Region, keep.X, keep.Y, keep.Z);
 
         public static string RallyLine(DefenseScale scale) => scale switch
         {
@@ -70,7 +106,7 @@ namespace DOL.GS
             // Goal 11: the player's raid fights this siege on its own, planned bot siege or not.
             CompanionRaidSiege.RequestAssault(player, keep);
             if (DefenseAlarms.TryGetValue(id, out var previous) && now - previous.Tick < 1000) return;
-            DefenseAlarms[id] = new(keep, player, now, ForceSize(player));
+            DefenseAlarms[id] = new(keep, player, now);
         }
 
         // Battleground keeps have no planned siege event, so a siege "starts" when an enemy realm first damages the keep
@@ -238,7 +274,9 @@ namespace DOL.GS
                     var keep = alarm.Keep;
                     var target = new LiveObjective(pair.Key, keep.Name, keep.IsRelic ? Intent.AssaultRelicKeep : Intent.AssaultKeep,
                         keep.Realm, keep.Region, keep.X, keep.Y, keep.Z, keep.IsRelic, 0, 0, 0, 0, UnderAttack: true);
-                    DefenseScale scale = ScaleOf(alarm.ForceSize);
+                    // Counted here, in the coordinator pulse, not in the damage callback (#523, owner 2026-11-24).
+                    int seen = SeenForceSize(alarm.Player, keep);
+                    DefenseScale scale = ScaleOf(seen);
                     DefenseScale before = Events.TryGetValue(pair.Key, out var existing) && existing.DefenseReaction ? existing.DefenseScale : scale;
                     bool firstAlarm = BeginDefenseResponse(target, alarm.Player.Realm,
                         alarm.Player.Client?.Account?.Name ?? alarm.Player.Name, alarm.Tick, scale);
@@ -259,7 +297,7 @@ namespace DOL.GS
                         DefenseWarnings[pair.Key] = new(alarm.Player, text, now + 15_000, now);
                         if (DefenseHornSound > 0) alarm.Player.Out.SendSoundEffect((ushort)DefenseHornSound, 0, 0, 0, 0, 0);
                         DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer)).Info(
-                            $"PLAYER_KEEP_DEFENSE_SIZED event={pair.Key} keep=\"{alarm.Keep.Name}\" force={alarm.ForceSize} scale={active.DefenseScale} " +
+                            $"PLAYER_KEEP_DEFENSE_SIZED event={pair.Key} keep=\"{alarm.Keep.Name}\" force={seen} roster={ForceSize(alarm.Player)} scale={active.DefenseScale} " +
                             $"defenders={ResponseCap(true, active.DefenseScale)} helpers={ResponseCap(false, active.DefenseScale)} first={firstAlarm}");
                     }
                     if (firstAlarm)

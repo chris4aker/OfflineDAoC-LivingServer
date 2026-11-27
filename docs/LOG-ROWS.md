@@ -475,7 +475,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `PLAYER_CLICK_TARGET` | server.log | **ships** | `packets/Client/168/PlayerTargetHandler.cs` | `examine`, `id`, `inView`, `kind`, `name`, `player`, `result` | `name`, `player` | - | - |
 | `PLAYER_DEED` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `forced`, `kind`, `player`, `target`, `witness` | `player`, `target`, `witness` | - | - |
 | `PLAYER_DEED_SKIP` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `con`, `enemies`, `killer`, `kind`, `player`, `reason` | `killer`, `player` | - | Why a death was no deed, for in-game checks (2026-10-27: |
-| `PLAYER_KEEP_DEFENSE_SIZED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `defenders`, `event`, `first`, `force`, `helpers`, `keep`, `scale` | - | - | - |
+| `PLAYER_KEEP_DEFENSE_SIZED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `defenders`, `event`, `first`, `force`, `helpers`, `keep`, `roster`, `scale` | - | - | - |
 | `PLAYER_LINE_OUTCOME` | server.log | **ships** | `bots/autonomous/LivingRows.PlayerLines.cs` | `answered`, `bots`, `ch`, `intent`, `kind`, `latencyMs`, `realm`, `replies`, `seq`, `t`, `window` | - | - | PLAYER_LINE_OUTCOME (#625 row 5): |
 | `PLAYER_NICKNAME` | server.log | no: the player's chosen nickname | `bots/autonomous/AutonomousPlayerDeeds.cs` | `nickname`, `player` | - | - | - |
 | `PLAYER_TAXI_DISMOUNT_REQUEST` | server.log | **ships** | `gameutils/PlayerTaxiSynchronization.cs` | `correctionRecently`, `horse`, `player`, `position` | `player` | - | One entry per actual detachment; |
