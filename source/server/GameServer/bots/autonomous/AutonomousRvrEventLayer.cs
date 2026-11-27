@@ -329,7 +329,11 @@ public static partial class AutonomousRvrEventLayer
             SupersedeAutomaticSieges(Events[target.Id], now);
             // News topics by stage (chat audit 2026-11-18: "outer door at ailinne is down" was said while the army mustered):
             // siege_muster and siege_warning before the battle, siege_attack and siege_defend once it has begun.
-            RealmEventNotices.Queue(target.Id, attacker, $"Warbands are marching on {Place(target.Name)}. Join the assault as you arrive!",
+            // #523 (i): a staged siege names where its army musters.
+            string musterPlace = StagedAssault ? MusterPlace(attacker, target.RegionId) : null;
+            RealmEventNotices.Queue(target.Id, attacker, musterPlace != null
+                    ? $"Warbands are gathering at {musterPlace} to assault {Place(target.Name)}. Join them there!"
+                    : $"Warbands are marching on {Place(target.Name)}. Join the assault as you arrive!",
                 "siege_muster", RealmEventNotices.KeepSlots(target.Name, target.OwningRealm));
             RealmEventRecords.Begin(target.Id, target.Name, target.IsRelicKeep ? "Relic keep" : "Keep", GlobalConstants.RealmToName(attacker), "Forced continuous siege; defender: " + GlobalConstants.RealmToName(target.OwningRealm));
             // Staged assault: the attackers gather at their physical siege camp and the battle opens
@@ -505,6 +509,7 @@ public static partial class AutonomousRvrEventLayer
                 }
                 foreach (var entry in CarrierEvents.Where(entry => entry.Key != plan?.TargetId || plan?.IsSharedEvent != true))
                     foreach (var realm in entry.Value.Participants.Values) realm.Remove(force.GroupId);
+                LeaveClaimHold(force.GroupId, plan?.IsSharedEvent == true ? plan.TargetId : null);
             }
             return plan;
         }
@@ -537,7 +542,9 @@ public static partial class AutonomousRvrEventLayer
                         force.Realm == carrier.OwningRealm
                             ? "Escorting the live allied relic carrier with capped support."
                             : "Contesting the live enemy relic carrier with capped three-realm participation.");
-                return ReservePlan(force, objectives.Where(objective => objective.Id != carrier.Id).ToArray());
+                // #523 (f): a force that stays out of the relic chase is not held in reserve for it. It may join a running
+                // siege, or open one outside the carrier's frontier (CarrierBlocksSiege below).
+                objectives = objectives.Where(objective => objective.Id != carrier.Id).ToArray();
             }
 
             // Prefer completing the best-attended compatible rally instead of
@@ -600,19 +607,27 @@ public static partial class AutonomousRvrEventLayer
             // Several sieges can run at once, one attack per realm (Midgard on Albion while Hibernia hits
             // Midgard). A new one starts on a once-a-minute roll: likely within minutes when none is
             // running, occasional with one, rare with two (owner, 2026-10-07).
-            if (CarrierEvents.Count != 0 || Events.Values.Any(active => !active.DefenseReaction &&
+            if (Events.Values.Any(active => !active.DefenseReaction &&
                     (!SiegeScheduling || active.AttackerRealm == force.Realm)))
+                return ReservePlan(force, objectives);
+            // #523 (f): a relic in motion holds only its own frontier (the period: the relic run drew the zerg, the other
+            // fronts still fought). It used to send every force on the server to the reserve for the two hours or more a
+            // carrier event lives.
+            IReadOnlyCollection<ushort> carrierFrontiers = CarrierFrontiers(objectives);
+            if (carrierFrontiers == null)
                 return ReservePlan(force, objectives);
 
             bool hasEnemy = objectives.Any(objective => objective.Kind == Intent.HuntEnemy && objective.EnemyCount > 0);
             LiveObjective[] relicCandidates = objectives.Where(objective => objective.Kind == Intent.AssaultRelicKeep && objective.IsRelicKeep &&
-                                                               objective.OwningRealm != force.Realm && !Events.ContainsKey(objective.Id) && !OnCooldown(objective.Id, nowTick))
+                                                               objective.OwningRealm != force.Realm && !Events.ContainsKey(objective.Id) && !OnCooldown(objective.Id, nowTick) &&
+                                                               !CarrierBlocksSiege(objective.RegionId, carrierFrontiers))
                 .ToArray();
             // Relic audit 2026-10-31 (M5): a realm whose own relic sits in an enemy relic keep goes for that keep first.
             LiveObjective[] retakes = relicCandidates.Where(candidate => HoldsRelicOf(candidate, force.Realm)).ToArray();
             LiveObjective relic = ChooseVariedTarget(retakes.Length > 0 ? retakes : relicCandidates, SelectedRelics);
             LiveObjective keep = ChooseVariedTarget(objectives.Where(objective => objective.Kind == Intent.AssaultKeep && !objective.IsRelicKeep &&
-                                                              objective.OwningRealm != force.Realm && !Events.ContainsKey(objective.Id) && !OnCooldown(objective.Id, nowTick))
+                                                              objective.OwningRealm != force.Realm && !Events.ContainsKey(objective.Id) && !OnCooldown(objective.Id, nowTick) &&
+                                                              !CarrierBlocksSiege(objective.RegionId, carrierFrontiers))
                 , SelectedKeeps);
             if (relic != null && HeldSentinelKeeps(relic) is { Length: > MaxSentinelsForRelicAssault } held)
             {
@@ -621,6 +636,7 @@ public static partial class AutonomousRvrEventLayer
                 LiveObjective feeder = objectives
                     .Where(o => o.Kind == Intent.AssaultKeep && !o.IsRelicKeep && o.OwningRealm == relic.OwningRealm &&
                                 !Events.ContainsKey(o.Id) && !OnCooldown(o.Id, nowTick) &&
+                                !CarrierBlocksSiege(o.RegionId, carrierFrontiers) &&
                                 held.Any(id => o.Id == $"rvr-keep-{id}"))
                     .OrderBy(o => (long)(o.X - relic.X) * (o.X - relic.X) + (long)(o.Y - relic.Y) * (o.Y - relic.Y))
                     .FirstOrDefault();
@@ -674,7 +690,11 @@ public static partial class AutonomousRvrEventLayer
                     BeginMuster(active, nowTick);
                     RealmEventRecords.Progress(selected.Id, "Rally", "Automatic siege: attackers muster at their border keep, then march to the siege camp", force.MemberCount, 0);
                 }
-                RealmEventNotices.Queue(active.TargetId, force.Realm, StagedAssault
+                // #523 (i): the notice names the muster place (the portal outpost in the target frontier, else the border keep).
+                string musterPlace = StagedAssault ? MusterPlace(force.Realm, selected.RegionId) : null;
+                RealmEventNotices.Queue(active.TargetId, force.Realm, musterPlace != null
+                    ? $"Warbands are gathering at {musterPlace} to assault {Place(selected.Name)}. Join them there!"
+                    : StagedAssault
                     ? $"Warbands are gathering to assault {Place(selected.Name)}. Join them at the siege camp!"
                     : $"Warbands are marching on {Place(selected.Name)}. Reinforcements join the battle on arrival.",
                     StagedAssault ? "siege_muster" : "siege_attack", RealmEventNotices.KeepSlots(selected.Name, selected.OwningRealm));
@@ -782,7 +802,8 @@ public static partial class AutonomousRvrEventLayer
                     ? "This force remains committed to the relic escort through defeat and regrouping."
                     : "This force remains committed to intercepting the relic through defeat and regrouping.");
         }
-        return null;
+        // #523 (h): a force that took a keep holds it for the claim; any event it joined comes first.
+        return ClaimHoldPlan(force.GroupId, objectives, nowTick);
     }
 
     public sealed record BattleNotice(string TargetId, string Kind, eRealm Attacker, eRealm Defender,
@@ -866,7 +887,8 @@ public static partial class AutonomousRvrEventLayer
         Events[target.Id] = retake;
         BeginMuster(retake, nowTick, RetakeMusterMilliseconds);
         string loser = GlobalConstants.RealmToName(retaker);
-        RealmEventNotices.Queue(target.Id, retaker, $"{Place(target.Name)} has fallen! Rally at the outpost: we take it back.",
+        string musterPlace = MusterPlace(retaker, target.RegionId) ?? "the outpost";
+        RealmEventNotices.Queue(target.Id, retaker, $"{Place(target.Name)} has fallen! Rally at {musterPlace}: we take it back.",
             "keep_lost", new Dictionary<string, string>(RealmEventNotices.KeepSlots(target.Name, newOwner)) { ["winner"] = GlobalConstants.RealmToName(newOwner) });
         RealmEventNotices.QueueScreen(target.Id, retaker, $"{loser} rallies to retake {Place(target.Name)}!", AnnouncementKind.RvrBattleground);
         RealmEventNotices.QueueScreen(target.Id, newOwner, $"{loser} is rallying to take back {Place(target.Name)}!", AnnouncementKind.RvrBattleground);
@@ -1150,6 +1172,14 @@ public static partial class AutonomousRvrEventLayer
         return (null, slots);
     }
 
+    /// <summary>
+    /// #523 (i): where a realm's siege army musters for a target in this region, as a notice names it ("the portal outpost
+    /// in Hadrian's Wall", "Castle Sauvage"), or null. The same point the army gathers at (AutonomousRvrStaging.TryGetSiegeMuster).
+    /// </summary>
+    public static string MusterPlace(eRealm realm, ushort targetRegion) =>
+        AutonomousRvrStaging.TryGetSiegeMuster(realm, targetRegion, out AutonomousRvrStaging.BorderKeep muster) &&
+        !string.IsNullOrWhiteSpace(muster.Name) ? muster.Name : null;
+
     public static string Place(string objectiveName)
     {
         if (string.IsNullOrEmpty(objectiveName)) return objectiveName;
@@ -1354,7 +1384,8 @@ public static partial class AutonomousRvrEventLayer
         using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return Events.Values.Any(entry => entry.ExpiresTick > nowTick &&
                 (entry.Attackers.ContainsKey(forceId) || entry.Defenders.ContainsKey(forceId) || entry.ThirdRealm.ContainsKey(forceId))) ||
-                CarrierEvents.Values.Any(entry => entry.ExpiresTick > nowTick && entry.Participants.Values.Any(realm => realm.ContainsKey(forceId)));
+                CarrierEvents.Values.Any(entry => entry.ExpiresTick > nowTick && entry.Participants.Values.Any(realm => realm.ContainsKey(forceId))) ||
+                IsClaimHoldForce(forceId, nowTick);
     }
 
     public static bool IsBattleForce(string forceId, long nowTick)
@@ -1370,6 +1401,8 @@ public static partial class AutonomousRvrEventLayer
         using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
             var active = Events.Values.FirstOrDefault(entry => entry.ExpiresTick > nowTick && Participants(entry, realm).ContainsKey(forceId));
+            if (active == null && ClaimHolds.TryGetValue(forceId, out var hold) && hold.Target.OwningRealm == realm)
+                return ClaimHoldPlan(forceId, null, nowTick);
             return active == null ? null : ToPlan(realm == active.DefenderRealm ? Intent.DefendEvent :
                 active.RelicKeep ? Intent.AssaultRelicKeep : Intent.AssaultKeep, active.Target, true,
                 active.BattleStarted ? "Return to the ongoing siege" : "Assemble at the physical siege rally");
@@ -1435,6 +1468,7 @@ public static partial class AutonomousRvrEventLayer
                         AutonomousRvrRally.ArrivalRadius * AutonomousRvrRally.ArrivalRadius)
                     return true;
             }
+            if (HoldsClaimPost(bot, force, nowTick)) return true;
             return IsParticipatingInBattleCombat(bot) && CarrierEvents.Values.Any(entry =>
                 entry.ExpiresTick > nowTick && entry.Participants.TryGetValue(bot.Realm, out var forces) && forces.ContainsKey(force));
         }
@@ -1482,7 +1516,7 @@ public static partial class AutonomousRvrEventLayer
         // release there is nothing Expire could end or release, so answer
         // without the layer-wide lock. (Unsynchronized Count reads: a stale
         // zero only defers a brand-new release to the next check.)
-        if (Events.Count == 0 && CarrierEvents.Count == 0 && ReleasedForces.Count == 0)
+        if (Events.Count == 0 && CarrierEvents.Count == 0 && ReleasedForces.Count == 0 && ClaimHolds.Count == 0)
         {
             reason = null;
             return false;
@@ -1672,6 +1706,7 @@ public static partial class AutonomousRvrEventLayer
                 return;
         }
         ContinueRelicCampaigns(nowTick);
+        ExpireClaimHolds(nowTick);
         RefreshCarrierEvents(nowTick);
         foreach (var active in Events.Values)
         {
@@ -1832,7 +1867,10 @@ public static partial class AutonomousRvrEventLayer
             // A player's attack is marked so the siege balance, rebuilt from this ledger after a restart, leaves it out.
             active.DefenseReaction ? RealmEventRecordStore.PlayerAttackPrefix + reason : reason,
             active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum());
-        foreach (string force in active.Attackers.Keys.Concat(active.Defenders.Keys).Concat(active.ThirdRealm.Keys))
+        // #523 (h): the army that took the keep holds it for the claim; the defenders and the third realm go at once.
+        bool hold = HoldsForClaim(active.DefenseReaction, active.RelicKeep, reason.StartsWith("Keep captured"), active.AttackerRealm, winner);
+        if (hold) BeginClaimHold(active, nowTick, reason);
+        foreach (string force in (hold ? Enumerable.Empty<string>() : active.Attackers.Keys).Concat(active.Defenders.Keys).Concat(active.ThirdRealm.Keys))
         {
             ReleasedForces[force] = reason;
             BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, force);
@@ -2048,7 +2086,8 @@ public static partial class AutonomousRvrEventLayer
                        (active.Attackers.ContainsKey(forceId) || active.Defenders.ContainsKey(forceId) ||
                         active.ThirdRealm.ContainsKey(forceId))) ||
                    CarrierEvents.Values.Any(active => active.ExpiresTick > nowTick &&
-                       active.Participants.Values.Any(realm => realm.ContainsKey(forceId)));
+                       active.Participants.Values.Any(realm => realm.ContainsKey(forceId))) ||
+                   IsClaimHoldForce(forceId, nowTick);
     }
 
     public static bool IsPlayerDefenseResponse(string targetId, long nowTick)
@@ -2080,7 +2119,8 @@ public static partial class AutonomousRvrEventLayer
             return false;
         using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             return (Events.TryGetValue(targetId, out ActiveEvent active) && active.ExpiresTick > nowTick) ||
-                   (CarrierEvents.TryGetValue(targetId, out var carrier) && carrier.ExpiresTick > nowTick);
+                   (CarrierEvents.TryGetValue(targetId, out var carrier) && carrier.ExpiresTick > nowTick) ||
+                   IsClaimHoldTarget(targetId, nowTick);
     }
 
     public static void EndTarget(string targetId, long nowTick, eRealm winner = eRealm.None) =>

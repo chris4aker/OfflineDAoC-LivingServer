@@ -16,6 +16,10 @@ namespace DOL.GS;
 /// group size (claim_num, half for towers). A real player of that realm inside the keep always
 /// gets the first chance, so bots never claim while one is there. Defense of a claimed keep is a
 /// bias in the existing defense response (AutonomousRvrEventLayer.Defense).
+/// #523 step 1 (h): the count is the realm's bot-guild members of any guild inside the keep area (the
+/// capturing army, which holds the keep for the claim: AutonomousRvrEventLayer.ClaimHold), as a player's
+/// claim counts the members of the claimer's group whatever their guild; the guild with the most of them
+/// there claims. A claim that never comes is logged once, with why (BOT_GUILD_CLAIM_SKIPPED).
 /// </summary>
 public static class AutonomousBotGuildKeeps
 {
@@ -33,9 +37,21 @@ public static class AutonomousBotGuildKeeps
 
     public static int NeededMembers(int claimNum, bool tower) => Math.Max(2, tower ? claimNum / 2 : claimNum);
 
-    public static bool CanClaim(ClaimCheck check) =>
-        check.SameRealm && !check.AlreadyClaimed && !check.InCombat && check.ClaimableType && !check.PlayerPresent &&
-        check.ClaimLimit > 0 && check.GuildClaims < check.ClaimLimit && check.MembersPresent >= check.Needed;
+    public static bool CanClaim(ClaimCheck check) => SkipReason(check) == null;
+
+    /// <summary>
+    /// Why a claim can't be made now, or null when it can: the first rule of <see cref="ClaimCheck"/> that fails
+    /// (BOT_GUILD_CLAIM_SKIPPED reason=). Pure.
+    /// </summary>
+    public static string SkipReason(ClaimCheck check) =>
+        check.AlreadyClaimed ? "claimed" :
+        !check.ClaimableType ? "not-claimable" :
+        check.ClaimLimit <= 0 ? "claims-off" :
+        !check.SameRealm ? "other-realm" :
+        check.PlayerPresent ? "player-present" :
+        check.InCombat ? "under-attack" :
+        check.GuildClaims >= check.ClaimLimit ? "guild-at-limit" :
+        check.MembersPresent < check.Needed ? "too-few" : null;
 
     public readonly record struct Claimant(string GuildId, BotGuildCharter Charter, int Present, bool AtClaimLimit = false);
 
@@ -90,8 +106,13 @@ public static class AutonomousBotGuildKeeps
             attempts++;
             try
             {
-                if (TryClaim(keep) || attempts >= MaximumAttempts || keep.Guild != null)
+                if (TryClaim(keep, out string reason, out int present, out int needed))
                     return 0;
+                if (attempts >= MaximumAttempts || keep.Guild != null)
+                {
+                    LogSkipped(keep, keep.Guild != null ? "claimed" : reason, present, needed, attempts);
+                    return 0;
+                }
             }
             catch (Exception exception)
             {
@@ -116,12 +137,22 @@ public static class AutonomousBotGuildKeeps
     public static int ClaimDefenseRank(string claimGuildId, IEnumerable<GameBot> members) =>
         ClaimDefenseRank(Enabled, claimGuildId, members?.Select(member => member?.Guild?.GuildID).ToArray());
 
-    private static bool TryClaim(AbstractGameKeep keep)
+    private static void LogSkipped(AbstractGameKeep keep, string reason, int present, int needed, int attempts)
     {
-        if (keep.Guild != null || keep.Area == null || keep.Realm is not (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia))
-            return false;
-        ushort region = keep.Region;
+        if (Log.IsInfoEnabled)
+            Log.Info($"BOT_GUILD_CLAIM_SKIPPED keep=\"{keep.Name}\" realm={GlobalConstants.RealmToName(keep.Realm)} reason={reason ?? "unknown"} " +
+                     $"present={present} needed={needed} attempts={attempts}");
+    }
+
+    private static bool TryClaim(AbstractGameKeep keep, out string reason, out int membersPresent, out int needed)
+    {
         bool tower = keep is GameKeepTower;
+        membersPresent = 0;
+        needed = NeededMembers(Properties.CLAIM_NUM, tower);
+        if (keep.Guild != null) { reason = "claimed"; return false; }
+        if (keep.Area == null) { reason = "no-keep-area"; return false; }
+        if (keep.Realm is not (eRealm.Albion or eRealm.Midgard or eRealm.Hibernia)) { reason = "no-realm"; return false; }
+        ushort region = keep.Region;
         bool claimableType = keep is not RelicGameKeep && !keep.IsPortalKeep &&
             (keep.DBKeep?.BaseLevel == 50 || Properties.ALLOW_BG_CLAIM);
         bool playerPresent = ClientService.Instance.GetPlayersOfRegion(keep.CurrentRegion)
@@ -133,6 +164,8 @@ public static class AutonomousBotGuildKeeps
                           AutonomousBotRealmGuilds.IsBotGuild(bot.Guild) && bot.CurrentAreas.Contains(keep.Area))
             .ToArray();
         var byGuild = present.GroupBy(bot => bot.Guild).ToArray();
+        // #523 (h): every realm bot-guild member inside counts, whichever guild (a player's claim counts the group).
+        membersPresent = present.Length;
         string chosenId = ChooseClaimant(byGuild.Select(group =>
         {
             AutonomousBotRealmGuilds.TryGetBotGuild(group.Key.GuildID, out AutonomousBotRealmGuilds.BotGuildInfo info);
@@ -140,13 +173,17 @@ public static class AutonomousBotGuildKeeps
                 group.Key.ClaimedKeeps.Count >= Properties.GUILDS_CLAIM_LIMIT);
         }));
         if (chosenId == null)
+        {
+            reason = !claimableType ? "not-claimable" : Properties.GUILDS_CLAIM_LIMIT <= 0 ? "claims-off" : playerPresent ? "player-present" :
+                present.Length == 0 ? "no-guild-present" : "guilds-at-limit";
             return false;
+        }
         Guild guild = byGuild.First(group => group.Key.GuildID == chosenId).Key;
-        int membersPresent = byGuild.First(group => group.Key.GuildID == chosenId).Count();
 
         var check = new ClaimCheck(guild.Realm == keep.Realm, keep.Guild != null, keep.InCombat, claimableType, playerPresent,
-            guild.ClaimedKeeps.Count, Properties.GUILDS_CLAIM_LIMIT, membersPresent, NeededMembers(Properties.CLAIM_NUM, tower));
-        if (!CanClaim(check))
+            guild.ClaimedKeeps.Count, Properties.GUILDS_CLAIM_LIMIT, membersPresent, needed);
+        reason = SkipReason(check);
+        if (reason != null)
             return false;
 
         keep.ClaimForGuild(guild);

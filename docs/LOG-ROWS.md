@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **763**; pending (#625, not on main yet): **0**; shipped by the pipeline: **731**.
+- Rows in code: **765**; pending (#625, not on main yet): **0**; shipped by the pipeline: **733**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -224,6 +224,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_GUILDS` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs`<br>`bots/autonomous/AutonomousBotRealmGuilds.cs` | `members`, `removedStale` | - | - | - |
 | `BOT_GUILD_BUFF` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildEconomy.cs` | `buff`, `guild`, `leader` | `guild`, `leader` | - | - |
 | `BOT_GUILD_CLAIM` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildKeeps.cs` | `guild`, `keep`, `present`, `realm` | `guild` | - | - |
+| `BOT_GUILD_CLAIM_SKIPPED` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildKeeps.cs` | `attempts`, `keep`, `needed`, `present`, `realm`, `reason` | - | - | - |
 | `BOT_GUILD_JOIN` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `guild`, `id`, `invitedBy` | `bot`, `guild`, `invitedBy` | - | - |
 | `BOT_GUILD_JOIN_DECLINED` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `id`, `invitedBy`, `reason` | `bot`, `invitedBy` | - | - |
 | `BOT_GUILD_REMOVE` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `by`, `guild`, `id` | `bot`, `guild` | - | - |
@@ -649,6 +650,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_CHECKSPOT_LOADED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `circuits`, `frontiers`, `ok`, `parseRejected`, `proof`, `reason`, `reserve`, `spots`, `version` | - | - | - |
 | `RVR_CHECKSPOT_REJECTED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `check`, `id`, `kind`, `off`, `realm`, `reason`, `region` | - | - | - |
 | `RVR_CHECKSPOT_VALIDATED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `failed`, `off`, `ok`, `reason`, `seconds`, `usableCircuits`, `usableSpots`, `walked` | - | - | - |
+| `RVR_CLAIM_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.ClaimHold.cs` | `bots`, `forces`, `minutes`, `realm`, `target` | - | - | - |
 | `RVR_CONTACT_SHADOW` | server.log | **ships** | `bots/autonomous/RvrContactShadow.cs` | `known`, `listed`, `pairs`, `pairsUnknown`, `pairsUnknownPlayers`, `pairsUnknownShare`, `realm`, `stale`, `unknown`, `unknownPlayers`, `unknownShare`, `windowS` | - | once a minute per realm, when a fight board of that realm listed an enemy in the minute (#529) | One minute of one realm's fight-board shadow, counting board-listed enemies and group-enemy pairs no member knew of. |
 | `RVR_CONTACT_SHADOW_FAILED` | server.log | **ships** | `bots/autonomous/RvrFightBoards.cs` | `failures` | - | the shadow's first failure, then every 1,000th (warn; the board is still built) (#529) | The shadow threw and was dropped, and the board was built without it. |
 | `RVR_CONTACT_UNKNOWN` | server.log | **ships** | `bots/autonomous/RvrFightBoards.cs` | `boardGroup`, `distance`, `group`, `kind`, `members`, `party`, `realm`, `region`, `target` | `target` | at most 20 a minute per realm: the first listed-but-unknown listing of a group-enemy pair in the shadow's minute (#529) | One enemy the board's area search listed that no member of the group noticed, was told of or was hit by. |
