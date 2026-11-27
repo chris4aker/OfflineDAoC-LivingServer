@@ -70,6 +70,11 @@ namespace DOL.UnitTests
         }
 
         private sealed class ScriptedA : Scripted { }
+
+        private sealed class TestEvent : DOLEvent
+        {
+            public TestEvent() : base("UT_QuestListLocking.Notify") { }
+        }
         private sealed class ScriptedB : Scripted { }
 
         [SetUp]
@@ -301,7 +306,7 @@ namespace DOL.UnitTests
             a.OnNotify = () => _player.RemoveQuest(a, notifyPlayer: false);
             b.OnNotify = () => _player.RemoveQuest(b, notifyPlayer: false);
 
-            Assert.DoesNotThrow(() => _player.Notify(new DOLEvent("UT_QuestListLocking.Notify"), _player, EventArgs.Empty));
+            Assert.DoesNotThrow(() => _player.Notify(new TestEvent(), _player, EventArgs.Empty));
             Assert.Multiple(() =>
             {
                 Assert.That(a.Notified, Is.EqualTo(1));
