@@ -85,6 +85,24 @@ public static class AutonomousChatArbiter
     /// <summary>The typing speed of a quick fact: half again the bot's own. Pure.</summary>
     public static int QuickWpm(int wpm) => Math.Clamp(wpm, 5, 200) * 3 / 2;
 
+    /// <summary>The longest an answer said to the bot, in its group or to its companion's player takes to type (DESIGN-018, PC check 0730).</summary>
+    public const int TypingCapMs = 12_000;
+
+    /// <summary>
+    /// When an answer to a player's line is due, in every channel that answers one (Realism 2b, #479: /group took a median 14.5 s
+    /// at a flat 40 wpm, a companion 1-2 s whatever the length): read, thought and typed at the bot's own <paramref name="wpm"/>
+    /// (<see cref="DelayMs"/>); a short known fact that answers a question at <see cref="QuickWpm"/> (F11); and, when
+    /// <paramref name="capped"/> (a line said to the bot, in its group, to a companion, or the first answer to a question in
+    /// /faction), no later than <see cref="TypingCapMs"/> after <paramref name="after"/> (the previous reply in the exchange, 0 for
+    /// the first). Pure.
+    /// </summary>
+    public static int AnswerDelayMs(string incoming, string reply, int wpm, string route, bool question, bool capped, int after, Random random)
+    {
+        int speed = question && IsQuickFact(route, reply) ? QuickWpm(wpm) : wpm;
+        int due = DelayMs(incoming, reply, speed, after, random);
+        return capped ? Math.Min(due, after + TypingCapMs) : due;
+    }
+
     /// <summary>
     /// How long a reply takes to arrive: reading the line (about 20 ms a character, at most 4 s), a moment's thought
     /// (0.3-1.5 s) and typing it at <paramref name="wpm"/> words a minute (five characters a word), so "?" comes in about
