@@ -162,7 +162,12 @@ public static class AutonomousBotRealmPointRewards
 
         int victimRealmPointValue = GetPlayerEquivalentRealmPointValue(killedBot.Level, killedBot.RealmLevel);
         if (isWorthRealmPoints)
+        {
             PayGamebots(killedBot, victimRealmPointValue, killedBot.RealmLevel, hostileContributors, totalDamage);
+            PayHiredCompanionExperience(killedBot,
+                GetPlayerEquivalentExperienceValue(GameServer.ServerRules.GetExperienceForLiving(killedBot.Level)),
+                hostileContributors, totalDamage);
+        }
 
         Dictionary<GamePlayer, EntityCountTotalDamagePair> playerContributions = new();
         Dictionary<Group, EntityCountTotalDamagePair> groupContributions = new();
@@ -281,6 +286,94 @@ public static class AutonomousBotRealmPointRewards
         }
     }
 
+    /// <summary>
+    /// #571 (True165 de83551a, owner 2026-11-27: "yes, as True165 de83551a does; under the owner's 'only add' rule the
+    /// player's own share is never lowered by it"): a hired companion earns experience from a PvP kill (an enemy player or
+    /// gamebot), by the player-kill rule, including a hire below the battleground's level bracket. Hired companions only:
+    /// other gamebots, /spawn helpers and /bot companions are unchanged. The share is the hire's group's: the players and
+    /// hired companions of its group in reach of the victim, their damage over the total, the capped base split by their
+    /// number (so a hire beside a player who did all the damage still learns, and the other way round). This pays the
+    /// hires only; it never reads or writes a player's reward, which the player paths work out as before.
+    /// </summary>
+    public static void PayHiredCompanionExperience(GameLiving victim, long victimExperienceValue,
+        IReadOnlyDictionary<GameLiving, double> hostileContributors, double totalDamage) =>
+        PayHiredCompanionExperience(victim, victimExperienceValue, hostileContributors, totalDamage,
+            bot => bot.IsHiredCompanion,
+            member => member.Realm != eRealm.None && member.Realm != victim.Realm &&
+                      member.ObjectState == GameObject.eObjectState.Active &&
+                      member.IsWithinRadius(victim, WorldMgr.MAX_EXPFORKILL_DISTANCE),
+            group => group.GetMembersInTheGroup().ToArray(),
+            level => GetPlayerEquivalentExperienceValue(GameServer.ServerRules.GetExperienceForLiving(level)),
+            Properties.XP_PVP_CAP_PERCENT);
+
+    /// <summary>The testable core of <see cref="PayHiredCompanionExperience(GameLiving, long, IReadOnlyDictionary{GameLiving, double}, double)"/>.
+    /// Returns what each hire was offered (before its own level cap in GameBot.GainExperience).</summary>
+    public static Dictionary<GameBot, long> PayHiredCompanionExperience(GameLiving victim, long victimExperienceValue,
+        IReadOnlyDictionary<GameLiving, double> hostileContributors, double totalDamage, Func<GameBot, bool> isHired,
+        Func<GameLiving, bool> inReach, Func<Group, IReadOnlyList<GameLiving>> rosterOf, Func<byte, long> experienceValueOf,
+        int pvpCapPercent)
+    {
+        var paid = new Dictionary<GameBot, long>();
+        if (victim == null || victimExperienceValue <= 0 || totalDamage <= 0 || hostileContributors == null)
+            return paid;
+
+        // The hires to pay: hired contributors, plus hired members of a contributor's group (a hire in reach is
+        // normally in XPGainers already, at 0 damage if it only healed).
+        var hires = new List<GameBot>();
+        var groups = new HashSet<Group>();
+        foreach (GameLiving contributor in hostileContributors.Keys)
+        {
+            if (contributor is GameBot hire && IsPayableHire(hire, isHired) && !hires.Contains(hire))
+                hires.Add(hire);
+            if (contributor?.Group is Group group && groups.Add(group))
+            {
+                foreach (GameLiving member in rosterOf(group))
+                    if (member is GameBot groupHire && IsPayableHire(groupHire, isHired) && !hires.Contains(groupHire))
+                        hires.Add(groupHire);
+            }
+        }
+
+        foreach (GameBot hire in hires)
+        {
+            if (!inReach(hire))
+                continue;
+            (int members, double share) = HiredCompanionShare(hire, hire.Group == null ? null : rosterOf(hire.Group),
+                hostileContributors, totalDamage, isHired, inReach);
+            long experience = (long)(CalculateCappedExperienceShare(victimExperienceValue, experienceValueOf(hire.Level),
+                members, pvpCapPercent) * share);
+            if (experience <= 0)
+                continue;
+            paid[hire] = experience;
+            // Like a player kill, not multiplied by the XP rates; the hire's own cap (its player's level) still holds.
+            hire.GainExperience(eXPSource.Player, experience);
+        }
+
+        return paid;
+    }
+
+    private static bool IsPayableHire(GameBot bot, Func<GameBot, bool> isHired) =>
+        bot is { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false } && isHired(bot);
+
+    /// <summary>
+    /// A hired companion's share of a PvP kill (#571): the players and hired companions of its group in reach, their
+    /// damage over the total damage. A hire with no group is counted alone. Other gamebots and helpers don't count.
+    /// </summary>
+    public static (int Members, double DamageShare) HiredCompanionShare(GameBot hire, IReadOnlyList<GameLiving> roster,
+        IReadOnlyDictionary<GameLiving, double> hostileContributors, double totalDamage, Func<GameBot, bool> isHired,
+        Func<GameLiving, bool> inReach)
+    {
+        if (hire == null || totalDamage <= 0)
+            return (0, 0);
+        IEnumerable<GameLiving> counted = roster == null
+            ? new GameLiving[] { hire }
+            : roster.Where(member => ReferenceEquals(member, hire) ||
+                                     (member is GamePlayer || member is GameBot bot && IsPayableHire(bot, isHired)) &&
+                                     inReach(member));
+        GameLiving[] members = counted.Distinct().ToArray();
+        double damage = members.Sum(member => hostileContributors.GetValueOrDefault(member));
+        return (Math.Max(1, members.Length), Math.Min(1.0, Math.Max(0, damage) / totalDamage));
+    }
+
     /// <summary>A player killed in PvP pays the gamebots that fought them (players are paid by the rules), only past the
     /// player's repeat-kill window (#521: RP_WORTH_SECONDS, as AwardPlayerOnPlayerKill does for players). Called before
     /// GamePlayer.Die stamps this death, so DeathTime is still the previous death. No grey floor: the player path has none
@@ -300,7 +393,9 @@ public static class AutonomousBotRealmPointRewards
             if (credited == null || credited.Realm == eRealm.None || credited.Realm == killedPlayer.Realm) continue;
             hostile[credited] = hostile.GetValueOrDefault(credited) + pair.Value;
         }
-        PayGamebots(killedPlayer, killedPlayer.RealmPointsValue, killedPlayer.RealmLevel, hostile, hostile.Sum(pair => pair.Value));
+        double total = hostile.Sum(pair => pair.Value);
+        PayGamebots(killedPlayer, killedPlayer.RealmPointsValue, killedPlayer.RealmLevel, hostile, total);
+        PayHiredCompanionExperience(killedPlayer, killedPlayer.ExperienceValue, hostile, total);
     }
 
     /// <summary>Realm level for a realm point total, from the player table (RR1L0 = 0 ... RR5L3 = 43).</summary>
