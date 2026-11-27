@@ -56,6 +56,14 @@ public static class AutonomousBotGuildKeeps
     public readonly record struct Claimant(string GuildId, BotGuildCharter Charter, int Present, bool AtClaimLimit = false);
 
     /// <summary>
+    /// #523 (h): the members a claim counts: every realm bot-guild member inside the keep area, whichever guild (as a player's
+    /// claim counts the claimer's group), guilds at their claim limit included. Pure.
+    /// </summary>
+    public static int ClaimCount(IEnumerable<Claimant> claimants) =>
+        (claimants ?? Enumerable.Empty<Claimant>()).Where(claimant => !string.IsNullOrEmpty(claimant.GuildId))
+            .Sum(claimant => Math.Max(0, claimant.Present));
+
+    /// <summary>
     /// The guild with the most members present; ties go to RvR, then Raiding, then the lowest id. A guild that already holds
     /// as many keeps as guilds_claim_limit allows is passed over (1.2 play-check prep, 2026-11-15: it was chosen anyway and
     /// then failed the limit, so the realm's biggest RvR guild, once it held a keep, stopped every other guild claiming).
@@ -139,6 +147,7 @@ public static class AutonomousBotGuildKeeps
 
     private static void LogSkipped(AbstractGameKeep keep, string reason, int present, int needed, int attempts)
     {
+        // A captured keep the bot guilds never claimed, written once after the last claim try, with the first rule that failed.
         if (Log.IsInfoEnabled)
             Log.Info($"BOT_GUILD_CLAIM_SKIPPED keep=\"{keep.Name}\" realm={GlobalConstants.RealmToName(keep.Realm)} reason={reason ?? "unknown"} " +
                      $"present={present} needed={needed} attempts={attempts}");
@@ -164,14 +173,15 @@ public static class AutonomousBotGuildKeeps
                           AutonomousBotRealmGuilds.IsBotGuild(bot.Guild) && bot.CurrentAreas.Contains(keep.Area))
             .ToArray();
         var byGuild = present.GroupBy(bot => bot.Guild).ToArray();
-        // #523 (h): every realm bot-guild member inside counts, whichever guild (a player's claim counts the group).
-        membersPresent = present.Length;
-        string chosenId = ChooseClaimant(byGuild.Select(group =>
+        Claimant[] claimants = byGuild.Select(group =>
         {
             AutonomousBotRealmGuilds.TryGetBotGuild(group.Key.GuildID, out AutonomousBotRealmGuilds.BotGuildInfo info);
             return new Claimant(group.Key.GuildID, info?.Charter ?? BotGuildCharter.Social, group.Count(),
                 group.Key.ClaimedKeeps.Count >= Properties.GUILDS_CLAIM_LIMIT);
-        }));
+        }).ToArray();
+        // #523 (h): every realm bot-guild member inside counts, whichever guild (a player's claim counts the group).
+        membersPresent = ClaimCount(claimants);
+        string chosenId = ChooseClaimant(claimants);
         if (chosenId == null)
         {
             reason = !claimableType ? "not-claimable" : Properties.GUILDS_CLAIM_LIMIT <= 0 ? "claims-off" : playerPresent ? "player-present" :

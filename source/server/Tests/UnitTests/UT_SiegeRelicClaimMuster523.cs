@@ -1,4 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using GuildKeeps = DOL.GS.AutonomousBotGuildKeeps;
 using L = DOL.GS.AutonomousRvrEventLayer;
@@ -13,8 +17,13 @@ namespace DOL.GS.Tests;
 [TestFixture, NonParallelizable]
 public sealed class UT_SiegeRelicClaimMuster523
 {
-    [SetUp] public void ResetEvents() => RvrEventTestState.Clear();
-    [TearDown] public void ClearEvents() => RvrEventTestState.Clear();
+    [SetUp] public void ResetEvents() { RvrEventTestState.Clear(); Pending.Clear(); }
+    [TearDown] public void ClearEvents() { RvrEventTestState.Clear(); Pending.Clear(); }
+
+    /// <summary>The notices waiting to be told, by (event, realm): what each realm will read or hear.</summary>
+    private static Dictionary<(string, eRealm), (string Text, long Expires, string Topic, IReadOnlyDictionary<string, string> Slots)> Pending =>
+        (Dictionary<(string, eRealm), (string Text, long Expires, string Topic, IReadOnlyDictionary<string, string> Slots)>)typeof(RealmEventNotices)
+            .GetField("Pending", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
 
     private static L.LiveObjective DunDagda() =>
         new("rvr-keep-110", "Dun Dagda", L.Intent.AssaultRelicKeep, eRealm.Hibernia, 200, 401036, 465147, 2888, true, 0, 0, 12, 9);
@@ -79,6 +88,21 @@ public sealed class UT_SiegeRelicClaimMuster523
 
         Assert.That(plan?.IsSharedEvent, Is.Not.True);
         Assert.That(L.IsTargetActive(AlbKeep().Id, 3_000), Is.False);
+    }
+
+    [Test]
+    public void AForceThatLosesTheCarrierRollIsNotHeldInReserve()
+    {
+        // A Hibernian relic on the road in Hibernia's frontier; a roll of 0.99 is above every join chance (0.78 at most).
+        var carrier = DunDagda() with { Id = "rvr-relic-carrier-3-1", Name = "Hibernian relic", Kind = L.Intent.HuntEnemy,
+            IsRelicKeep = false, IsRelicCarrier = true };
+        Assume.That(L.ShouldJoinActiveEvent(Mids("mid-d"), 0, 64, true, false, 0.99), Is.False, "the roll loses the carrier join");
+
+        L.Plan plan = L.ChooseOrJoin(Mids("mid-d"), new[] { carrier, HibKeep(), AlbKeep(), Roam() }, 3_000, 0.99);
+
+        Assert.That(plan?.IsSharedEvent, Is.True, plan?.Reason);
+        Assert.That(plan?.TargetId, Is.EqualTo(AlbKeep().Id), "it opens a siege outside the carrier's frontier, not a reserve patrol");
+        Assert.That(L.IsTargetActive(HibKeep().Id, 3_000), Is.False, "the carrier's own frontier stays held");
     }
 
     // ---- (h) --------------------------------------------------------------------------------------------------------
@@ -171,6 +195,69 @@ public sealed class UT_SiegeRelicClaimMuster523
     }
 
     [Test]
+    public void TheClaimCountsTheRealmsGuildMembersTogether()
+    {
+        var rvr = new GuildKeeps.Claimant("guild-rvr", BotGuildCharter.Rvr, 5);
+        var social = new GuildKeeps.Claimant("guild-social", BotGuildCharter.Social, 4);
+        Assert.Multiple(() =>
+        {
+            Assert.That(GuildKeeps.ClaimCount(new[] { rvr, social }), Is.EqualTo(9), "two guilds of the army count together");
+            Assert.That(GuildKeeps.ClaimCount(new[] { rvr, social }), Is.GreaterThanOrEqualTo(GuildKeeps.NeededMembers(8, false)),
+                "five and four together make the eight a keep needs, though neither guild has eight");
+            Assert.That(GuildKeeps.ChooseClaimant(new[] { rvr, social }), Is.EqualTo("guild-rvr"), "the bigger guild claims");
+            Assert.That(GuildKeeps.ClaimCount(new[] { rvr, social with { AtClaimLimit = true } }), Is.EqualTo(9),
+                "a guild at its claim limit still counts toward the claim");
+            Assert.That(GuildKeeps.ClaimCount(new GuildKeeps.Claimant[0]), Is.Zero);
+            Assert.That(GuildKeeps.ClaimCount(null), Is.Zero);
+        });
+    }
+
+    private sealed class HoldingBot : GameBot
+    {
+        private HoldingBot() : base((OfflineWorldBotRecord)null) { }
+        public override eRealm Realm { get; set; }
+        public override bool IsAlive => true;
+        public int PositionX;
+        public override bool InCombat => false;
+        public override bool IsAttacking => false;
+        public override int X => PositionX;
+        public override int Y => 380000;
+        public override int Z => 3000;
+        public override ushort CurrentRegionID { get => 1; set { } }
+    }
+
+    [Test]
+    public void AMemberHoldingTheKeepItTookIsNotIdle()
+    {
+        using var server = new DOL.UnitTests.EpicTestServerScope();
+        var keep = AlbKeep();
+        var bot = (HoldingBot)RuntimeHelpers.GetUninitializedObject(typeof(HoldingBot));
+        bot.Realm = eRealm.Midgard;
+        bot.ObjectState = GameObject.eObjectState.Active;
+        bot.PositionX = keep.X;
+        typeof(GameBot).GetProperty(nameof(GameBot.IsAutonomousWorldBot)).SetValue(bot, true);
+        typeof(GameBot).GetProperty(nameof(GameBot.PersistentRecord)).SetValue(bot, new OfflineWorldBotRecord { ObjectiveKind = "RvR" });
+        typeof(GameLiving).GetField("<TempProperties>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance)
+            .SetValue(bot, new PropertyCollection());
+        bot.TempProperties.SetProperty("RvrEventForce", "mid-hold");
+
+        Assert.That(L.ChooseOrJoin(Mids("mid-hold"), new[] { keep }, 1_000, 0)?.TargetId, Is.EqualTo(keep.Id));
+        const long taken = 10_000;
+        L.EndTarget(keep.Id, taken, eRealm.Midgard);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(L.ProtectsParticipantFromInactivity(bot, taken + 1), Is.True, "holding the keep it took is not idle");
+            Assert.That(L.ProtectsParticipantFromInactivity(bot, taken + L.ClaimHoldMilliseconds), Is.False, "the hold is over");
+        });
+        bot.PositionX = keep.X + 5_000;
+        Assert.That(L.ProtectsParticipantFromInactivity(bot, taken + 1), Is.False, "a member far from the keep is not holding it");
+        bot.PositionX = keep.X;
+        bot.Realm = eRealm.Albion;
+        Assert.That(L.ProtectsParticipantFromInactivity(bot, taken + 1), Is.False, "the hold is the capturing realm's");
+    }
+
+    [Test]
     public void TheHoldCoversTheWholeClaimWindow() =>
         Assert.That(L.ClaimHoldMilliseconds, Is.GreaterThanOrEqualTo((long)GuildKeeps.AttemptIntervalMs * GuildKeeps.MaximumAttempts));
 
@@ -185,6 +272,45 @@ public sealed class UT_SiegeRelicClaimMuster523
         string muster = L.MusterPlace(eRealm.Midgard, keep.RegionId);
         Assert.That(muster, Does.StartWith("the portal outpost in "), "Midgard musters at its outpost in Albion's frontier");
         Assert.That(L.MusterPlace(eRealm.Midgard, 100), Is.EqualTo("Svasud Faste"), "in its own frontier, at the border keep");
+        Assert.That(Pending[(keep.Id, eRealm.Midgard)].Text,
+            Is.EqualTo($"Warbands are gathering at {muster} to assault Caer Benowyc. Join them there!"), "the automatic siege's notice");
+    }
+
+    [Test]
+    public void AForcedSiegeNoticeNamesTheMusterPlace()
+    {
+        L.StagedAssault = true;
+        var keep = AlbKeep();
+        Assert.That(L.ForceStart(keep, eRealm.Midgard, 1_000, out string reason), Is.True, reason);
+        string muster = L.MusterPlace(eRealm.Midgard, keep.RegionId);
+        Assume.That(muster, Is.Not.Null);
+        Assert.That(Pending[(keep.Id, eRealm.Midgard)].Text,
+            Is.EqualTo($"Warbands are gathering at {muster} to assault Caer Benowyc. Join them there!"));
+    }
+
+    [Test]
+    public void TheRetakeCallNamesTheMusterPlace()
+    {
+        // A player's Midgard attack took Albion's keep (a player-attack defense the attackers won): Albion rallies to retake it.
+        var keep = AlbKeep();
+        Type type = typeof(L).GetNestedType("ActiveEvent", BindingFlags.NonPublic);
+        object lost = Activator.CreateInstance(type, nonPublic: true);
+        void Set(string field, object value) => type.GetField(field).SetValue(lost, value);
+        Set("TargetId", keep.Id);
+        Set("Target", keep);
+        Set("AttackerRealm", eRealm.Midgard);
+        Set("DefenderRealm", eRealm.Albion);
+        Set("DefenseReaction", true);
+        Set("CreatedTick", 1_000L);
+        Set("ExpiresTick", 1_000_000L);
+        var events = (IDictionary)typeof(L).GetField("Events", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
+        events[keep.Id] = lost;
+
+        L.EndTarget(keep.Id, 10_000, eRealm.Midgard);
+
+        string muster = L.MusterPlace(eRealm.Albion, keep.RegionId);
+        Assume.That(muster, Is.Not.Null, "Albion has a muster in its own frontier");
+        Assert.That(Pending[(keep.Id, eRealm.Albion)].Text, Is.EqualTo($"Caer Benowyc has fallen! Rally at {muster}: we take it back."));
     }
 
     [Test]

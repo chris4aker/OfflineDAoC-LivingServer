@@ -33,6 +33,7 @@ public static partial class AutonomousRvrEventLayer
         LiveObjective keep = active.Target with { OwningRealm = active.AttackerRealm };
         foreach (string force in active.Attackers.Keys)
             ClaimHolds[force] = (keep, nowTick + ClaimHoldMilliseconds, reason);
+        // The army that captured an ordinary keep stays to hold it for the bot-guild claim, then is released.
         if (Log.IsInfoEnabled)
             Log.Info($"RVR_CLAIM_HOLD target={active.TargetId} realm={GlobalConstants.RealmToName(active.AttackerRealm)} " +
                      $"forces={active.Attackers.Count} bots={active.Attackers.Values.Sum()} minutes={ClaimHoldMilliseconds / 60_000}");
@@ -59,11 +60,20 @@ public static partial class AutonomousRvrEventLayer
             "Holding the keep this force just took: rez, regroup and claim it before moving on.");
     }
 
-    /// <summary>Called under Sync. A force that took another plan (a home-defense call, a new event) leaves its hold.</summary>
+    /// <summary>
+    /// Called under Sync. A force that took another plan (a home-defense call, a new event) leaves its hold. One that took a
+    /// plan outside any event (<paramref name="planTargetId"/> null) is released as <see cref="ExpireClaimHolds"/> would
+    /// release it: the release is recorded and its duty lease freed. One that joined another event keeps its lease for it.
+    /// </summary>
     private static void LeaveClaimHold(string forceId, string planTargetId)
     {
-        if (ClaimHolds.TryGetValue(forceId, out var hold) && hold.Target.Id != planTargetId)
-            ClaimHolds.Remove(forceId);
+        if (!ClaimHolds.TryGetValue(forceId, out var hold) || hold.Target.Id == planTargetId)
+            return;
+        ClaimHolds.Remove(forceId);
+        if (planTargetId != null)
+            return;
+        ReleasedForces[forceId] = hold.Reason;
+        BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, forceId);
     }
 
     private static bool IsClaimHoldTarget(string targetId, long nowTick) =>
