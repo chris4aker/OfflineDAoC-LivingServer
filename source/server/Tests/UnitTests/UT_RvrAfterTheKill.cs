@@ -260,16 +260,24 @@ namespace DOL.UnitTests
             try
             {
                 GameBot walker = Bot(eRealm.Hibernia, autonomous: true), companion = Bot(eRealm.Hibernia, autonomous: false);
+                // A hired companion is an autonomous gamebot row hired by a player (GameBot.IsHiredCompanion).
+                GameBot hired = Bot(eRealm.Hibernia, autonomous: true);
+                hired.DatabaseID = 52_801;
+                typeof(HiredCompanions165).GetMethod("RegisterForTests", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null,
+                    [new OfflineHiredCompanionRecord { BotId = hired.DatabaseID, OwnerCharacterID = "owner-1", OwnerName = "Owner" }]);
+                Assume.That(hired.IsHiredCompanion, Is.True);
                 RvrRoamWalk walk = AtAmg(catalog, amg);
                 var walkerBox = Walking(walker, walk);
                 var companionBox = Walking(companion, walk);
+                var hiredBox = Walking(hired, walk);
                 var player = (GamePlayer)RuntimeHelpers.GetUninitializedObject(typeof(GamePlayer));
                 SetRealm(player, eRealm.Albion);
 
-                RvrAfterTheKill.Killed(player, new Dictionary<GameLiving, double> { [walker] = 10, [companion] = 5 }, walk.ArrivedAt + 30_000);
+                RvrAfterTheKill.Killed(player, new Dictionary<GameLiving, double> { [walker] = 10, [companion] = 5, [hired] = 5 }, walk.ArrivedAt + 30_000);
                 Assert.That(walkerBox.Kills, Has.Count.EqualTo(1), "the walker hears the player's death");
                 Assert.That(walkerBox.Kills[0].IsPlayer, Is.True);
                 Assert.That(companionBox.Kills, Is.Empty, "a companion is no walker");
+                Assert.That(hiredBox.Kills, Is.Empty, "a hired companion is no walker");
                 RvrAfterTheKill.Killed(player, new Dictionary<GameLiving, double> { [walker] = 10 }, walk.ArrivedAt + 31_000);
                 Assert.That(walkerBox.Kills, Has.Count.EqualTo(1), "one death is kept once");
 
@@ -278,9 +286,20 @@ namespace DOL.UnitTests
                 Assert.That(AutonomousWorldBotController.IsRoamWalker(companion, eRealm.Albion), Is.False, "companions never move on");
                 Assert.That(AutonomousWorldBotController.IsRoamWalker(player, eRealm.Hibernia), Is.False, "players never");
                 Assert.That(RvrAfterTheKill.MayEmote(companion, player), Is.False, "companions never emote");
+                Assert.That(AutonomousWorldBotController.IsRoamWalker(hired, eRealm.Albion), Is.False, "hired companions never move on");
+                Assert.That(RvrAfterTheKill.MayEmote(hired, player), Is.False, "hired companions never emote");
+
+                // Who may emote at all, before the alive/in-reach checks.
+                GameBot gamebot = Bot(eRealm.Hibernia, autonomous: true);
+                gamebot.DatabaseID = 52_802;
+                Assert.That(RvrAfterTheKill.IsKillEmoter(gamebot), Is.True, "a gamebot of its own");
+                Assert.That(RvrAfterTheKill.IsKillEmoter(hired), Is.False, "a hired companion");
+                Assert.That(RvrAfterTheKill.IsKillEmoter(companion), Is.False, "a /bot companion");
+                Assert.That(RvrAfterTheKill.IsKillEmoter(walker), Is.False, "no saved row");
             }
             finally
             {
+                typeof(HiredCompanions165).GetMethod("ClearForTests", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, null);
                 Properties.RVR_ROAM_CHECKS = previous;
             }
         }

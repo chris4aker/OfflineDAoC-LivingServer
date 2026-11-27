@@ -129,11 +129,11 @@ public sealed partial class AutonomousWorldBotController
 
     /// <summary>
     /// #528: whether <paramref name="contributor"/> to a death of a <paramref name="victimRealm"/> enemy is a roam walker
-    /// that may move on from it: an autonomous gamebot of another realm, not a temporary group helper. Companions, helpers
-    /// and players never are.
+    /// that may move on from it: an autonomous gamebot of another realm, not a temporary group helper or a hired companion.
+    /// Companions, helpers and players never are.
     /// </summary>
     public static bool IsRoamWalker(GameLiving contributor, eRealm victimRealm) =>
-        contributor is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false } bot &&
+        contributor is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsHiredCompanion: false } bot &&
         bot.Realm != victimRealm && bot.Realm != eRealm.None;
 
     /// <summary>#528: keeps <paramref name="kill"/> on a walker's box for its next look (once per death; only while it walks).</summary>

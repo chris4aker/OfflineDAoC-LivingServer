@@ -105,8 +105,16 @@ public static class RvrAfterTheKill
         }
     }
 
+    /// <summary>
+    /// A bot that may make a kill emote: an autonomous gamebot of its own. A /spawn helper, a hired companion (an autonomous
+    /// gamebot row hired by a player, and a PvP contributor since #776) and a /bot companion never do.
+    /// </summary>
+    public static bool IsKillEmoter(GameBot bot) =>
+        bot is { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsHiredCompanion: false, IsPlayerCompanion: false } &&
+        bot.DatabaseID > 0;
+
     public static bool MayEmote(GameBot bot, GameLiving corpse) =>
-        bot is { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsAlive: true } && bot.DatabaseID > 0 &&
+        IsKillEmoter(bot) && bot.IsAlive &&
         bot.ObjectState == GameObject.eObjectState.Active && !bot.IsCasting && !bot.IsStealthed && !bot.IsCrowdControlled &&
         bot.CurrentRegionID == corpse.CurrentRegionID && bot.IsWithinRadius(corpse, EmoteRadius);
 
