@@ -9599,6 +9599,17 @@ namespace DOL.GS
         /// </summary>
         /// <param name="slot_pos">SlotPosition to drop</param>
         /// <returns>true if dropped</returns>
+        /// <summary>
+        /// Whether an item can be dropped on the ground from this slot: the backpack and the four quiver slots (port of
+        /// OpenDAoC-Core b28922b5e and its fix 117370277; the quiver could not be emptied onto the ground before).
+        /// Worn and held items still can't be dropped straight from the paper doll.
+        /// </summary>
+        public static bool CanDropFromSlot(eInventorySlot slot)
+        {
+            return slot is (>= eInventorySlot.FirstBackpack and <= eInventorySlot.LastBackpack) or
+                (>= eInventorySlot.FirstQuiver and <= eInventorySlot.FourthQuiver);
+        }
+
         public virtual bool DropItem(eInventorySlot slot_pos)
         {
             WorldInventoryItem tempItem;
@@ -9616,7 +9627,7 @@ namespace DOL.GS
         {
             droppedItem = null;
 
-            if (slot_pos < eInventorySlot.FirstBackpack || slot_pos > eInventorySlot.LastBackpack)
+            if (!CanDropFromSlot(slot_pos))
                 return false;
 
             DbInventoryItem item;
