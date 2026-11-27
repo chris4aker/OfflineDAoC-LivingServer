@@ -174,6 +174,7 @@ namespace DOL.GS.Tests
         /// keep as its destination (at the door).</summary>
         private static AutonomousWorldBotController Assaulting(string keepId, Region region, GameObject door)
         {
+            NoKeeps();
             var controller = new AutonomousWorldBotController();
             Type destination = ControllerType.GetNestedType("CampDestination", BindingFlags.NonPublic);
             Assert.That(destination, Is.Not.Null, "AutonomousWorldBotController.CampDestination");
@@ -196,6 +197,16 @@ namespace DOL.GS.Tests
             SetField(controller, "_rvrDestination", make.Invoke(values));
             SetField(controller, "_rvrIntent", AutonomousRvrEventLayer.Intent.AssaultKeep);
             return controller;
+        }
+
+        /// <summary>The harness's stand-in server gets a keep manager that knows no keeps (a walk order looks for a friendly
+        /// keep door on its leg; the stand-in server has no keep manager of its own). Only this world's server is changed.</summary>
+        private static void NoKeeps()
+        {
+            FieldInfo keeps = typeof(GameServer).GetField("m_keepManager", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.That(keeps, Is.Not.Null, "GameServer.m_keepManager");
+            if (keeps.GetValue(GameServer.Instance) == null)
+                keeps.SetValue(GameServer.Instance, DispatchProxy.Create<IKeepManager, RvrFightWorld.NothingStored>());
         }
 
         /// <summary>The autonomous operator's turn at its engine (the end of TryRunSiegeJob).</summary>
