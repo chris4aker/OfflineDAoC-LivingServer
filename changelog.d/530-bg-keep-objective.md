@@ -8,6 +8,6 @@ section: RvR
   names the keep (`bg-keep-<id>`) and its part there: mustering with the realm's wave (`/muster`), attacking once the
   wave goes, holding the walls (`/defender`) or roaming. `RVR_DECIDE what=force` shows the wave going in as one change.
   The gather hold that the threat scan, the combat drop and the keep's guard pick each wrote by hand is one rule
-  (`MusterAllowsFight`). Merging them makes two small changes: a bot holding at its wave or keep rally never takes the
-  keep's lord (only the guard pick refused him before), and the guard pick also takes a contact the rally posted (#617).
-  What a bot does is otherwise unchanged. Autonomous gamebots only. Tests only.
+  (`MusterAllowsFight`). A bot holding at its wave or keep rally still never picks the keep's lord as a new target,
+  and still fights him back when he comes at it. Merging the copies makes one small change: the guard pick also takes
+  a contact the rally posted (#617). What a bot does is otherwise unchanged. Autonomous gamebots only. Tests only.

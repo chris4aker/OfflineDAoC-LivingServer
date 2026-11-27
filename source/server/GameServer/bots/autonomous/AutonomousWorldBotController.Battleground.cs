@@ -26,8 +26,6 @@ namespace DOL.GS
         private bool ExecuteBattleground(BotBrain brain, GameBot bot)
         {
             using var aiProfile = AiProfile.Scope(AiSystem.ControllerBattleground); // AI_PROFILE: measures only
-            // Last turn's muster (the wave's ShouldGather), for this turn's first order (#530 step 5a).
-            bool musteredLastTurn = _battlegroundGatherStaging.HasValue;
             _battlegroundRallyHold = null;
             _battlegroundStorming = false;
             _battlegroundStormLord = null;
@@ -75,10 +73,14 @@ namespace DOL.GS
                 ? _groupDirective.Leader.DatabaseID : bot.DatabaseID;
             // #530 step 5a: the event layer decides the battleground order (the keep as its objective, the wave as its
             // muster) and the bot proposes it, as a force of its own ("bg:" ids, so a frontier follower never reads it). No
-            // event here: not shared, and the TempProperties stay as they were. The muster is last turn's until the wave's
-            // turn below says otherwise (the intent is the keep's attack either way, so a siege crew works its job).
+            // event here: not shared, and the TempProperties stay as they were. The muster is the wave's as it stands now
+            // (AutonomousBattlegroundWave.IsGathering, a read), decided before this first proposal: a siege crew, which
+            // returns below before the wave's turn, is recorded as the wave's muster while it gathers, and a gatherer's
+            // first turn logs one change, not an attack and then a muster. The intent is the keep's attack either way, so
+            // a siege crew works its job.
+            bool mustering = assault && !tooFew && AutonomousBattlegroundWave.IsGathering(bracket.RegionId, bot.Realm, out _);
             AutonomousRvrEventLayer.BattlegroundOrder order = AutonomousRvrEventLayer.DecideBattleground(
-                central?.KeepID, central != null && !assault, tooFew, musteredLastTurn, partId);
+                central?.KeepID, central != null && !assault, tooFew, mustering, partId);
             ProposeBattlegroundOrder(bot, order);
             if (assault && !order.Attacks)
                 return RoamBattleground(bot, bracket, central);
@@ -95,12 +97,12 @@ namespace DOL.GS
                 // one at a time, while no wave ever went in.
                 Vector3 staging = default;
                 string gathered = string.Empty;
-                bool mustering = central != null &&
+                bool gathering = central != null &&
                     AutonomousBattlegroundWave.ShouldGather(bot, bracket, central, out staging, out gathered);
                 // The wave's turn moved the muster (it went in, or it is spent and gathers again): the order follows at once.
-                if (mustering != musteredLastTurn)
-                    ProposeBattlegroundOrder(bot, AutonomousRvrEventLayer.DecideBattleground(central.KeepID, false, false, mustering, partId));
-                if (mustering)
+                if (BattlegroundMusterMoved(mustering, gathering))
+                    ProposeBattlegroundOrder(bot, AutonomousRvrEventLayer.DecideBattleground(central.KeepID, false, false, gathering, partId));
+                if (gathering)
                 {
                     _battlegroundGatherStaging = staging;
                     if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), staging) > 250 * 250)
@@ -712,6 +714,12 @@ namespace DOL.GS
         private void ProposeBattlegroundOrder(GameBot bot, AutonomousRvrEventLayer.BattlegroundOrder order) =>
             ProposeRvrIntent(bot, order.Proposal, mirrorIntent: false, mirrorKeep: false, forceId: "bg:" + RvrForceId(bot));
 
+        /// <summary>
+        /// Whether the wave's own turn (ShouldGather) moved the muster from what this turn's first order said: the wave went
+        /// in (muster to attacker) or is spent and gathers again. Then the order is proposed again at once (#530 step 5a).
+        /// </summary>
+        public static bool BattlegroundMusterMoved(bool orderedMuster, bool waveGathers) => orderedMuster != waveGathers;
+
         /// <summary>What holds this battleground attacker back from a fight now, and where its muster or rally stands.</summary>
         private AutonomousRvrEventLayer.MusterHold BattlegroundMusterHold(GameBot bot, out Vector3 point)
         {
@@ -723,20 +731,24 @@ namespace DOL.GS
 
         /// <summary>
         /// The one gather-hold rule (AutonomousRvrEventLayer.MusterAllowsFight) for this bot and target, used by the threat
-        /// scan, the combat drop and the keep's guard pick. A rally's posted contact is looked up only when the target does
-        /// not come at the muster itself.
+        /// scan and the combat drop (answering a fight: a lord that comes at the bot is fought back) and by the keep's guard
+        /// pick (<paramref name="picking"/>: a new target, never the lord). A rally's posted contact is looked up only when
+        /// the target does not come at the muster itself.
         /// </summary>
-        private bool MusterAllowsFight(GameBot bot, AutonomousRvrEventLayer.MusterHold hold, Vector3 point, GameLiving target)
+        private bool MusterAllowsFight(GameBot bot, AutonomousRvrEventLayer.MusterHold hold, Vector3 point, GameLiving target,
+            bool picking = false)
         {
             if (hold == AutonomousRvrEventLayer.MusterHold.None)
                 return true;
-            if (hold == AutonomousRvrEventLayer.MusterHold.Storm)
-                return AutonomousRvrEventLayer.MusterAllowsFight(hold, target is GuardLord, false, false, StormerMayEngage(bot, target));
             bool isLord = target is GuardLord;
-            bool comes = !isLord && GathererMayEngage(bot, target, point);
-            bool posted = !isLord && !comes &&
+            if (hold == AutonomousRvrEventLayer.MusterHold.Storm)
+                return AutonomousRvrEventLayer.MusterAllowsFight(hold, isLord, false, false, StormerMayEngage(bot, target), picking);
+            if (isLord && picking)
+                return false;
+            bool comes = GathererMayEngage(bot, target, point);
+            bool posted = !comes &&
                 AutonomousBattlegroundRallyContact.Has(bot.CurrentRegionID, bot.Realm, point, target, GameLoop.GameLoopTime);
-            return AutonomousRvrEventLayer.MusterAllowsFight(hold, isLord, comes, posted, false);
+            return AutonomousRvrEventLayer.MusterAllowsFight(hold, isLord, comes, posted, false, picking);
         }
 
         /// <summary>This bot is gathering for its realm's battleground wave, at <paramref name="staging"/>.</summary>
