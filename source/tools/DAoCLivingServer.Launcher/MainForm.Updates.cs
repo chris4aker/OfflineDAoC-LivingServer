@@ -157,21 +157,33 @@ internal sealed partial class MainForm
             }
             else if (asked)
             {
-                SetUpdateStatus(problem != null
-                    ? "Couldn't reach GitHub (" + problem + "). Try again later."
-                    : $"You have the newest Living Server ({installed.DisplayName}).", problem != null ? DaocTheme.Danger : DaocTheme.Muted);
+                ShowNothingOffered(UpdateCheckNotice.NothingOffered(installed, problem, Updater.Settings.OfferTestBuilds));
             }
         }
         catch (Exception e)
         {
             Updater.Log.Write("Update check failed: " + e.Message);
             if (asked)
-                SetUpdateStatus("Couldn't check for updates: " + e.Message, DaocTheme.Danger);
+                ShowNothingOffered(UpdateCheckNotice.NothingOffered(installed, e.Message, Updater.Settings.OfferTestBuilds));
         }
         finally
         {
             _checkUpdatesLink.Enabled = true;
         }
+    }
+
+    /// <summary>
+    /// An asked check found nothing to offer (issue #795): the status line, plus a message box, because the status line
+    /// is often too narrow to see. A plain MessageBox, as it renders the same on Windows and under Wine.
+    /// </summary>
+    private void ShowNothingOffered(UpdateCheckNotice notice)
+    {
+        SetUpdateStatus(notice.StatusLine, notice.IsProblem ? DaocTheme.Danger : DaocTheme.Muted);
+        Updater.Log.Write("Told the player: " + notice.Text.Replace(Environment.NewLine, " "));
+        if (IsDisposed || !IsHandleCreated)
+            return;
+        MessageBox.Show(this, notice.Text, notice.Caption, MessageBoxButtons.OK,
+            notice.IsProblem ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
     }
 
     private void OfferUpdate(ReleaseInfo release)

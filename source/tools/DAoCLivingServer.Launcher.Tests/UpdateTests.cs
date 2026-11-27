@@ -752,3 +752,39 @@ public class UpdateDownloadTests
         Assert.That(LauncherUpdater.GameFolderFor(Path.Combine(_game, "runtime") + Path.DirectorySeparatorChar), Is.EqualTo(_game));
     }
 }
+
+// Issue #795: an asked "Check for updates" that finds nothing tells the player so, in a message box as well as the
+// status line (which is often too narrow to see).
+[TestFixture]
+public class UpdateCheckNoticeTests
+{
+    [Test]
+    public void UpToDateNamesTheInstalledBuild()
+    {
+        var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3")!, problem: null, offerTestBuilds: false);
+        Assert.That(notice.IsProblem, Is.False);
+        Assert.That(notice.Caption, Is.EqualTo("Living Server update"));
+        Assert.That(notice.Text, Is.EqualTo("You're up to date: Living Server 1.2.3 is the newest version."));
+        Assert.That(notice.StatusLine, Is.EqualTo("You have the newest Living Server (1.2.3)."));
+    }
+
+    [Test]
+    public void UpToDateWithTestBuildsSaysNoTestBuildEither()
+    {
+        var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3-rc.1")!, problem: null, offerTestBuilds: true);
+        Assert.That(notice.IsProblem, Is.False);
+        Assert.That(notice.Text, Does.StartWith("You're up to date: Living Server 1.2.3 test build 1 is the newest version."));
+        Assert.That(notice.Text, Does.Contain("No newer test build is out either."));
+    }
+
+    [Test]
+    public void ProblemSaysItCouldNotCheck()
+    {
+        var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3")!, problem: "no network", offerTestBuilds: false);
+        Assert.That(notice.IsProblem, Is.True);
+        Assert.That(notice.Text, Does.StartWith("Couldn't check for updates: no network"));
+        Assert.That(notice.Text, Does.Contain("You have Living Server 1.2.3."));
+        Assert.That(notice.Text, Does.Not.Contain("up to date"));
+        Assert.That(notice.StatusLine, Is.EqualTo("Couldn't reach GitHub (no network). Try again later."));
+    }
+}
