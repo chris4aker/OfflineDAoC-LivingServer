@@ -29,7 +29,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_BETWEEN_TASK_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousObjectiveAssignments.cs` | `activity`, `assignment`, `bot`, `goal`, `id`, `level`, `region`, `x`, `y`, `z` | `bot` | - | - |
 | `AUTONOMOUS_BLOCKED_BACKPACK_CLEARED` | server.log | **ships** | `bots/autonomous/AutonomousBotEconomy.cs` | `bot`, `capacity`, `id`, `removed` | `bot` | - | - |
 | `AUTONOMOUS_BOT_DEATH` | server.log | **ships** | `bots/autonomous/AutonomousDeathDiagnostics.cs` | `activity`, `armorPieces`, `arrivedAtCamp`, `at`, `attackers`, `bot`, `class`, `con`, `goal`, `group`, `id`, `killer`, `killerKind`, `killerLevel`, `level`, `maxHealth`, `realm`, `region`, `zone` | `bot`, `killer` | - | - |
-| `AUTONOMOUS_CAMP_CATALOG_DEDUPE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `amongStrongerAggressive`, `cells`, `merged`, `published`, `sourceEmptyFallback` | - | - | - |
+| `AUTONOMOUS_CAMP_CATALOG_DEDUPE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `amongStrongerAggressive`, `cells`, `liveUncovered`, `merged`, `published`, `sourceEmptyFallback` | - | - | - |
 | `AUTONOMOUS_CAMP_CROWD_SUMMARY` | server.log | no: free text, no key=value fields | `bots/autonomous/AutonomousWorldBotController.cs` | - | - | - | - |
 | `AUTONOMOUS_CAMP_DANGER_BENCH` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bots`, `camp`, `hours`, `target` | - | - | - |
 | `AUTONOMOUS_CAMP_OUTLEVELED` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `camp`, `class`, `id`, `level`, `target`, `targetLevel` | `bot`, `target` | - | - |
