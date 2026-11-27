@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using DOL.AI.Brain;
+using DOL.Database;
 using DOL.Events;
 using DOL.GS;
 using NUnit.Framework;
@@ -13,13 +14,35 @@ using NUnit.Framework;
 namespace DOL.UnitTests;
 
 /// <summary>
-/// #571 (True165 de83551a; owner 2026-11-27: "yes, as True165 de83551a does; under the owner's 'only add' rule the
-/// player's own share is never lowered by it"): hired companions earn experience from PvP kills, a hire below the
+/// #571 (True165 de83551a; owner, 2026-11-27, relayed on #571:
+/// "37B: yes. Hired companions under the bracket get experience from PvP kills, as True165 `de83551a` does. Under the owner's "only add" rule, the player's own share is never lowered by it."):
+/// hired companions earn experience from PvP kills, a hire below the
 /// battleground bracket included. Hired companions only; the player is never paid or charged by this path.
 /// </summary>
 [TestFixture]
 public class UT_HiredCompanionPvpXp571
 {
+    private sealed class InertServer : GameServer
+    {
+        protected override IObjectDatabase DataBaseImpl => EmptyDatabase;
+    }
+
+    private static readonly IObjectDatabase EmptyDatabase =
+        DispatchProxy.Create<IObjectDatabase, UT_UnobservedConcentration.EmptyReads>();
+
+    private GameServer _previousServer;
+
+    // Run alone (dotnet test --filter) the GameObject static constructor needs GameServer.Database.
+    [OneTimeSetUp]
+    public void LoadServer()
+    {
+        _previousServer = GameServer.Instance;
+        GameServer.LoadTestDouble((InertServer)RuntimeHelpers.GetUninitializedObject(typeof(InertServer)));
+    }
+
+    [OneTimeTearDown]
+    public void RestoreServer() => GameServer.LoadTestDouble(_previousServer);
+
     private const int Cap = 125;
     private const long VictimXp = 40_000;
 
@@ -261,6 +284,19 @@ public class UT_HiredCompanionPvpXp571
 
         Assert.That(paid, Is.Empty);
         Assert.That(hire.XpAwarded, Is.Zero);
+    }
+
+    [Test]
+    public void AHireAtItsPlayersLevelOnlyFillsItsBar()
+    {
+        // GameBot.GainExperience passes a hire's experience through this cap (HiredCompanionLevelCap: its player's level).
+        long full = GamePlayer.GetExperienceAmountForLevel(24) - 1;
+        Assert.That(HiredCompanions165.CappedExperience(5_000, full - 100, 24, 24), Is.EqualTo(100));
+        Assert.That(HiredCompanions165.CappedExperience(5_000, full, 24, 24), Is.Zero);
+        Assert.That(HiredCompanions165.CappedExperience(5_000, 0, 15, 24), Is.EqualTo(5_000), "below the cap it all counts");
+        string bot = Source("GameServer", "bots", "GameBot.cs");
+        int gain = bot.IndexOf("public override void GainExperience(GainedExperienceEventArgs", StringComparison.Ordinal);
+        Assert.That(bot.IndexOf("HiredCompanions165.CappedExperience(", gain, StringComparison.Ordinal), Is.GreaterThan(gain));
     }
 
     private static string Source(params string[] parts)

@@ -287,8 +287,9 @@ public static class AutonomousBotRealmPointRewards
     }
 
     /// <summary>
-    /// #571 (True165 de83551a, owner 2026-11-27: "yes, as True165 de83551a does; under the owner's 'only add' rule the
-    /// player's own share is never lowered by it"): a hired companion earns experience from a PvP kill (an enemy player or
+    /// #571 (True165 de83551a; owner, 2026-11-27, relayed on #571:
+    /// "37B: yes. Hired companions under the bracket get experience from PvP kills, as True165 `de83551a` does. Under the owner's "only add" rule, the player's own share is never lowered by it."):
+    /// a hired companion earns experience from a PvP kill (an enemy player or
     /// gamebot), by the player-kill rule, including a hire below the battleground's level bracket. Hired companions only:
     /// other gamebots, /spawn helpers and /bot companions are unchanged. The share is the hire's group's: the players and
     /// hired companions of its group in reach of the victim, their damage over the total, the capped base split by their
