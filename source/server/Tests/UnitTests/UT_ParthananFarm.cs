@@ -95,7 +95,7 @@ namespace DOL.UnitTests
             });
 
             state.OnTrashDeath(Npc());
-            Assert.That(state.KillCount, Is.Zero, "kills while the boss fights don't count");
+            Assert.That(state.KillCount, Is.EqualTo(1), "kills while the boss fights don't count (1 is the kill that started the sacrifice)");
             state.OnBossDeath();
             Assert.Multiple(() =>
             {
