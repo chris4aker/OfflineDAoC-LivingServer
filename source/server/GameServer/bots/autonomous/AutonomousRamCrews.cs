@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using DOL.GS.Keeps;
 
 namespace DOL.GS
 {
     /// <summary>
-    /// #572 step 2: ram crews on purpose (port of zomboden/OfflineDAoC-True165 <c>433740c6f</c>, AutonomousRamCrews.cs,
-    /// GPL-3.0; owner 2026-11-27 on #572: "(a) port the ram seats", without the "second ram only at 16+ bots" rule and
-    /// without the woodworking repair). A ram's reload and damage grow with the crew at it (GameSiegeRam.Crew: riders, or
-    /// friendly gamebots within <see cref="GameSiegeRam.BotCrewRadius"/>, up to its 12 places; owner ruling 2026-10-07),
-    /// but gamebots stood at a ram only by chance: the melee battered the gate by hand beside it or elsewhere. Now every
-    /// working ram an autonomous gamebot operates at an enemy keep door is registered by its operator, and the attacking
-    /// force's melee gamebots with no siege job take a seat at the registered ram with the most empty places (the nearest
-    /// on a tie), walk to their own spot behind it and stay; only a blow at melee reach takes them off. Casters, archers and
-    /// healers keep their jobs. A player's ram is never registered: it keeps the crew it had (#525: friendly gamebots that
-    /// stand within 300 of it). Companions and the player are never seated.
+    /// #572 step 2: ram crews on purpose (owner 2026-11-27 on #572: the ram seats, without a "second ram only at 16+ bots"
+    /// rule and without a woodworking repair). A ram's reload and damage grow with the crew at it (GameSiegeRam.Crew:
+    /// riders, or friendly gamebots within <see cref="GameSiegeRam.BotCrewRadius"/>, up to its 12 places; owner ruling
+    /// 2026-10-07), but gamebots stood at a ram only by chance: the melee battered the gate by hand beside it or elsewhere.
+    /// Now every working ram an autonomous gamebot operates at an enemy keep door is registered by its operator, and the
+    /// attacking force's melee gamebots with no siege job take a seat at the registered ram with the most empty places (the
+    /// nearest on a tie), walk to their own spot behind it and stay; only a blow at melee reach takes them off. A seat is
+    /// given only at a ram aimed at a standing, closed door. Casters, archers and healers keep their jobs. A player's ram is
+    /// never registered: it keeps the crew it had (#525: friendly gamebots that stand within 300 of it). Companions and the
+    /// player are never seated.
     /// Cost: a lock and a small dictionary per ram; one seat lookup per crew member every 5 s; no area scans.
     /// </summary>
     public static class AutonomousRamCrews
@@ -89,6 +90,12 @@ namespace DOL.GS
             ram != null && ram.IsAlive && ram.ObjectState == GameObject.eObjectState.Active && ram.Realm == realm &&
             ram.Owner != null && ram.Health > ram.DecayedHp;
 
+        /// <summary>The ram is aimed at a door that still stands closed. A door that broke or opened takes no crew: for up to
+        /// a minute after a door falls its operator still holds the ram on it, and a seat there would be given and left again
+        /// every few seconds.</summary>
+        public static bool AimedAtClosedDoor(GameSiegeRam ram) =>
+            ram?.TargetObject is GameKeepDoor { IsAlive: true, State: eDoorState.Closed };
+
         /// <summary>The operator's turn: its ram works for the force attacking this keep. Only autonomous gamebots call it, so
         /// a player's ram is never a seat.</summary>
         public static void Register(string keepTargetId, GameSiegeRam ram)
@@ -129,7 +136,8 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>A free seat at the force's working ram with the most empty places (the nearest on a tie).</summary>
+        /// <summary>A free seat at the force's working ram with the most empty places (the nearest on a tie), at a ram aimed
+        /// at a closed door only.</summary>
         public static bool TryTakeSeat(GameBot bot, string keepTargetId, out GameSiegeRam ram, out int seat)
         {
             ram = null; seat = -1;
@@ -145,7 +153,7 @@ namespace DOL.GS
                 foreach (var entry in rams)
                 {
                     if (!entry.TryGetTarget(out GameSiegeRam candidate) || !Working(candidate, bot.Realm) ||
-                        candidate.CurrentRegion != bot.CurrentRegion || !Crews.TryGetValue(candidate, out Crew crew)) continue;
+                        !AimedAtClosedDoor(candidate) || candidate.CurrentRegion != bot.CurrentRegion || !Crews.TryGetValue(candidate, out Crew crew)) continue;
                     Prune(crew, now);
                     open.Add(candidate);
                     facts.Add((candidate.MAX_PASSENGERS - crew.Seats.Count, (long)bot.GetDistanceTo(candidate)));

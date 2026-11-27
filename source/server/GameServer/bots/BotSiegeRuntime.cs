@@ -218,9 +218,11 @@ namespace DOL.GS
             w.Owner == bot && !bot.InCombat && !w.InCombat && !w.IsMoving && !bot.IsMoving && !bot.IsCasting && !bot.IsIncapacitated && w.TimesRepaired <= 3 &&
             bot.IsWithinRadius(w, WorldMgr.INTERACT_DISTANCE) && Item(bot, RepairKit) != null;
 
+        /// <summary>The bot holds a siege post: it operates an engine, or (#572 step 2) it stands at its ram crew seat. The
+        /// army then defends it first (FrontierThreat), and it is busy for group invites and for rezzing strangers.</summary>
         public static bool HoldingPosition(GameBot bot) => AutonomousSiegeOwnership.All(bot).Any(w =>
-            bot.IsWithinRadius(w, w.SIEGE_WEAPON_CONTROLE_DISTANCE));
-        /// <summary>#572 step 2 (port of True165 433740c6f): an enemy at melee reach is striking this bot
+            bot.IsWithinRadius(w, w.SIEGE_WEAPON_CONTROLE_DISTANCE)) || AutonomousRamCrews.AtSeat(bot);
+        /// <summary>#572 step 2: an enemy at melee reach is striking this bot
         /// (AutonomousWorldBotController.IsSiegeOperatorThreat): the one thing that takes a ram crew member off its seat.
         /// Wall archers and casters above do not.</summary>
         public static bool StruckInMeleeReach(GameBot bot)

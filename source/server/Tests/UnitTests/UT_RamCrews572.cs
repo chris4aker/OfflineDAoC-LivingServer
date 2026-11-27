@@ -1,15 +1,20 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
+using DOL.GS.Keeps;
 using DOL.GS.Tests.Rehearsal;
 using NUnit.Framework;
 
 namespace DOL.GS.Tests
 {
     /// <summary>
-    /// #572 step 2, ram crews on purpose (port of zomboden/OfflineDAoC-True165 433740c6f; owner 2026-11-27: port the seats,
-    /// without the "second ram only at 16+ bots" rule and without the woodworking repair). Pure rules, then a siege case in
-    /// the fight harness (RvrFightWorld) with real rams and real gamebots. Autonomous gamebots only; the player's ram keeps
+    /// #572 step 2, ram crews on purpose (owner 2026-11-27: the seats, without a "second ram only at 16+ bots" rule and
+    /// without a woodworking repair). Pure rules, then siege cases in the fight harness (RvrFightWorld) with real rams and
+    /// real gamebots, and cases that drive the controller's own turns: the operator's engine turn registers its ram, and a
+    /// melee gamebot's siege turn takes a seat, walks to it and holds it. Autonomous gamebots only; the player's ram keeps
     /// the crew #525 gave it. Tests only.
     /// </summary>
     [TestFixture, NonParallelizable]
@@ -97,13 +102,124 @@ namespace DOL.GS.Tests
             ZoneService.Instance.Tick();
         }
 
-        private static GameSiegeRam Ram(RvrFightWorld world, Region region, int x, int y, GameLiving op)
+        private static GameSiegeRam Ram(RvrFightWorld world, Region region, int x, int y, GameLiving op, GameKeepDoor door = null)
         {
             var ram = (GameSiegeRam)AutonomousWorldBotController.CreateSiegeWeapon(BotSiegeKind.Ram);
             ram.Realm = eRealm.Albion;
             Assert.That(world.Place(ram, region, x, y), Is.True, "ram placed");
             Assert.That(ram.TryTakeControl(op), Is.True, "operator in control");
+            if (door != null) ram.TargetObject = door; // aimed at the door, as its operator's turn leaves it
             return ram;
+        }
+
+        /// <summary>A keep door that stands or has fallen as the case says (no keep behind it: only its state is read).</summary>
+        private sealed class StandInDoor : GameKeepDoor
+        {
+            public bool Standing = true;
+            public eDoorState Shown = eDoorState.Closed;
+            public override bool IsAlive => Standing;
+            public override eDoorState State { get => Shown; set => Shown = value; }
+        }
+
+        private static StandInDoor Door(Region region, int x, int y)
+        {
+            var door = new StandInDoor();
+            door.CurrentRegion = region;
+            door.X = x; door.Y = y; door.Z = 0;
+            return door;
+        }
+
+        /// <summary>An enemy that is swinging at its target (the attack itself is not run: only who strikes whom is read).</summary>
+        private sealed class Striker : GameNPC
+        {
+            public override bool IsAttacking => true;
+        }
+
+        private static Striker Strike(RvrFightWorld world, Region region, GameLiving victim, int dx, int z)
+        {
+            var striker = new Striker { Name = "Striker", Realm = eRealm.Midgard, Level = 50 };
+            Assert.That(world.Place(striker, region, victim.X + dx, victim.Y, z), Is.True, "striker placed");
+            striker.TargetObject = victim;
+            return striker;
+        }
+
+        // ---- the controller's own turns, through reflection (the turns are private) ----
+
+        private const BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
+        private static readonly Type ControllerType = typeof(AutonomousWorldBotController);
+
+        private static void SetField(AutonomousWorldBotController controller, string name, object value)
+        {
+            FieldInfo field = ControllerType.GetField(name, Hidden);
+            Assert.That(field, Is.Not.Null, "AutonomousWorldBotController." + name);
+            field.SetValue(controller, value);
+        }
+
+        private static T GetField<T>(AutonomousWorldBotController controller, string name) =>
+            (T)ControllerType.GetField(name, Hidden)!.GetValue(controller);
+
+        private static bool Call(AutonomousWorldBotController controller, string name, params object[] args)
+        {
+            MethodInfo method = ControllerType.GetMethod(name, Hidden);
+            Assert.That(method, Is.Not.Null, "AutonomousWorldBotController." + name);
+            try { return (bool)method.Invoke(controller, args); }
+            catch (TargetInvocationException e) when (e.InnerException != null)
+            {
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                throw;
+            }
+        }
+
+        /// <summary>A controller whose force assaults this keep, as its RvR plan leaves it: the keep assault intent and the
+        /// keep as its destination (at the door).</summary>
+        private static AutonomousWorldBotController Assaulting(string keepId, Region region, GameObject door)
+        {
+            var controller = new AutonomousWorldBotController();
+            Type destination = ControllerType.GetNestedType("CampDestination", BindingFlags.NonPublic);
+            Assert.That(destination, Is.Not.Null, "AutonomousWorldBotController.CampDestination");
+            ConstructorInfo make = destination.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Single(c => c.GetParameters().Length > 1);
+            object[] values = make.GetParameters().Select(p => (object)(p.Name switch
+            {
+                "Id" => keepId,
+                "MonsterName" => "Keep (rehearsal)",
+                "ZoneName" => "#572 ram crews (rehearsal)",
+                "RegionId" => (object)region.ID,
+                "X" => door.X,
+                "Y" => door.Y,
+                "Z" => door.Z,
+                "LiveMobCount" => 1,
+                "IsDungeon" => false,
+                "IsFrontier" => true,
+                _ => p.HasDefaultValue ? p.DefaultValue : null,
+            })).ToArray();
+            SetField(controller, "_rvrDestination", make.Invoke(values));
+            SetField(controller, "_rvrIntent", AutonomousRvrEventLayer.Intent.AssaultKeep);
+            return controller;
+        }
+
+        /// <summary>The autonomous operator's turn at its engine (the end of TryRunSiegeJob).</summary>
+        private static bool OperatorTurn(AutonomousWorldBotController controller, GameBot op, GameSiegeRam ram, GameLiving door, string keepId)
+        {
+            SetField(controller, "_siegeJobKeep", keepId);
+            SetField(controller, "_siegeLastProgress", GameLoop.GameLoopTime);
+            ram.SiegeWeaponTimer?.Stop(); // the arming that taking control started is over: the operator aims the ram now
+            return Call(controller, "OperateEngine", op, ram, door, true, GameLoop.GameLoopTime);
+        }
+
+        /// <summary>A gamebot's siege turn (TryRunSiegeJob): its own job first, else the ram crew.</summary>
+        private static bool SiegeTurn(AutonomousWorldBotController controller, GameBot bot) => Call(controller, "TryRunSiegeJob", bot);
+
+        private static void Later(long milliseconds) =>
+            typeof(GameLoop).GetProperty(nameof(GameLoop.GameLoopTime)).SetValue(null, GameLoop.GameLoopTime + milliseconds);
+
+        /// <summary>Crew for the controller cases: Infiltrators, melee who never take a siege job (AutonomousSiegeJobs.CanOperate),
+        /// so their siege turn goes straight to the ram crew, as an operator's does once no engine is left for it.</summary>
+        private static GameBot CrewBot(RvrFightWorld world, Region region, string name, int x, int y, string objective = "RvR", byte level = 50)
+        {
+            GameBot bot = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, level, name, objective);
+            Assert.That(world.Place(bot, region, x, y), Is.True);
+            return bot;
         }
 
         private static List<GameBot> Melee(RvrFightWorld world, Region region, int count, string tag, int x, int y)
@@ -126,7 +242,8 @@ namespace DOL.GS.Tests
             GameBot op1 = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op1"), op2 = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op2");
             Assert.That(world.Place(op1, region, X, Y), Is.True);
             Assert.That(world.Place(op2, region, X, Y + 1_000), Is.True);
-            GameSiegeRam near = Ram(world, region, X + 50, Y, op1), far = Ram(world, region, X + 50, Y + 1_000, op2);
+            StandInDoor door = Door(region, X - 300, Y + 500);
+            GameSiegeRam near = Ram(world, region, X + 50, Y, op1, door), far = Ram(world, region, X + 50, Y + 1_000, op2, door);
             string keep = "rvr-keep-572-" + System.Guid.NewGuid();
             AutonomousRamCrews.Register(keep, near);
             AutonomousRamCrews.Register(keep, far);
@@ -169,10 +286,11 @@ namespace DOL.GS.Tests
             Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
             GameBot op = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op");
             Assert.That(world.Place(op, region, X, Y), Is.True);
-            GameSiegeRam ram = Ram(world, region, X + 50, Y, op);
+            StandInDoor keepDoor = Door(region, X - 400, Y);
+            GameSiegeRam ram = Ram(world, region, X + 50, Y, op, keepDoor);
             string keep = "rvr-keep-572-" + System.Guid.NewGuid();
             AutonomousRamCrews.Register(keep, ram);
-            Vector2 door = new(X - 400, Y);
+            Vector2 door = new(keepDoor.X, keepDoor.Y);
             Assert.That(ram.Crew, Is.EqualTo(0), "the operator alone is no crew");
 
             // each crew member takes its seat, then stands on its spot behind the ram (as TryCrewRam walks it there)
@@ -200,35 +318,13 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void APlayersRamIsNeverASeatButKeepsTheCrewStandingAtIt()
-        {
-            using var world = new RvrFightWorld(572, RvrFightRehearsal.Repeatable);
-            Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
-            StandInPlayer player = StandInPlayer.Make(region, eRealm.Albion, eCharacterClass.Armsman, 50, "Player");
-            Assert.That(player.Enter(region, X, Y), Is.True);
-            world.Track(player);
-            GameSiegeRam playersRam = Ram(world, region, X + 50, Y, player);
-            string keep = "rvr-keep-572-" + System.Guid.NewGuid();
-            // the player's ram is not registered: only an autonomous gamebot operator registers its ram (TryRunSiegeJob)
-            GameBot bot = world.NewBot(eRealm.Albion, eCharacterClass.Mercenary, 50, "Beside");
-            Assert.That(world.Place(bot, region, X + 150, Y), Is.True);
-            Settle(world);
-            Assert.Multiple(() =>
-            {
-                Assert.That(AutonomousRamCrews.TryTakeSeat(bot, keep, out _, out _), Is.False, "no seat at a player's ram");
-                Assert.That(AutonomousRamCrews.AtSeat(bot), Is.False);
-                Assert.That(playersRam.Crew, Is.EqualTo(1), "#525: a friendly gamebot standing at the player's ram still crews it");
-            });
-        }
-
-        [Test]
         public void ADownedRamLosesItsCrew()
         {
             using var world = new RvrFightWorld(572, RvrFightRehearsal.Repeatable);
             Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
             GameBot op = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op");
             Assert.That(world.Place(op, region, X, Y), Is.True);
-            GameSiegeRam ram = Ram(world, region, X + 50, Y, op);
+            GameSiegeRam ram = Ram(world, region, X + 50, Y, op, Door(region, X - 300, Y));
             string keep = "rvr-keep-572-" + System.Guid.NewGuid();
             AutonomousRamCrews.Register(keep, ram);
             GameBot bot = world.NewBot(eRealm.Albion, eCharacterClass.Mercenary, 50, "Crew");
@@ -243,6 +339,219 @@ namespace DOL.GS.Tests
                 Assert.That(AutonomousRamCrews.RegisteredRams(keep, eRealm.Albion), Is.EqualTo(0));
             });
             AutonomousRamCrews.Leave(bot);
+        }
+
+        // ---- the controller's turns ----
+
+        [Test]
+        public void TheOperatorsTurnRegistersItsRamAndACrewTurnTakesASeatAndWalksToIt()
+        {
+            using var world = new RvrFightWorld(572, RvrFightRehearsal.Repeatable);
+            Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
+            string keep = "rvr-keep-572-" + Guid.NewGuid();
+            StandInDoor door = Door(region, X - 300, Y);
+            GameBot op = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op");
+            Assert.That(world.Place(op, region, X, Y), Is.True);
+            GameSiegeRam ram = Ram(world, region, X + 50, Y, op);
+            AutonomousWorldBotController opTurn = Assaulting(keep, region, door);
+            Assert.That(AutonomousRamCrews.RegisteredRams(keep, eRealm.Albion), Is.EqualTo(0), "no ram before the operator's turn");
+
+            Assert.That(OperatorTurn(opTurn, op, ram, door, keep), Is.True, "the operator works its ram");
+            Assert.Multiple(() =>
+            {
+                Assert.That(ram.TargetObject, Is.SameAs(door), "the operator aims the ram at the door");
+                Assert.That(AutonomousRamCrews.RegisteredRams(keep, eRealm.Albion), Is.EqualTo(1), "and its turn registers the ram for the crew");
+            });
+
+            // a melee gamebot 600 from the ram: its siege turn takes a seat and walks to its spot behind the ram
+            GameBot walker = CrewBot(world, region, "Walker", X + 650, Y);
+            AutonomousWorldBotController walkerTurn = Assaulting(keep, region, door);
+            Assert.That(SiegeTurn(walkerTurn, walker), Is.True, "the crew turn owns the bot's turn");
+            var spot = GetField<Vector3?>(walkerTurn, "_crewSpot");
+            Vector2 planned = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), new(door.X, door.Y), 0);
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousRamCrews.KeepSeat(walker, out int seat), Is.SameAs(ram), "a seat at the operator's ram");
+                Assert.That(seat, Is.EqualTo(0));
+                Assert.That(spot.HasValue, Is.True, "a spot to walk to");
+                Assert.That(Vector2.Distance(new(spot!.Value.X, spot.Value.Y), planned), Is.LessThan(60), "the seat's own spot behind the ram");
+                Assert.That(walker.PersistentRecord.ObjectivePhase, Is.EqualTo("Joining the ram crew"), "it walks there");
+                Assert.That(AutonomousRamCrews.AtSeat(walker), Is.False, "not yet at the ram");
+            });
+
+            // a melee gamebot already on its spot stands, faces the door and crews the ram
+            Vector2 second = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), new(door.X, door.Y), 1);
+            GameBot stander = CrewBot(world, region, "Stander", (int)second.X, (int)second.Y);
+            AutonomousWorldBotController standerTurn = Assaulting(keep, region, door);
+            Assert.That(SiegeTurn(standerTurn, stander), Is.True);
+            Settle(world);
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousRamCrews.KeepSeat(stander, out int seat), Is.SameAs(ram));
+                Assert.That(seat, Is.EqualTo(1), "the next free seat");
+                Assert.That(stander.PersistentRecord.ObjectivePhase, Does.StartWith("Crewing the ram"), "it stands at its seat");
+                Assert.That(AutonomousRamCrews.AtSeat(stander), Is.True);
+                Assert.That(ram.Crew, Is.EqualTo(1), "the ram counts it (the walker is still on its way)");
+            });
+            AutonomousRamCrews.Leave(walker);
+            AutonomousRamCrews.Leave(stander);
+        }
+
+        [Test]
+        public void APlayersRamIsNeverRegisteredByAnOperatorTurnButKeepsTheCrewStandingAtIt()
+        {
+            using var world = new RvrFightWorld(572, RvrFightRehearsal.Repeatable);
+            Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
+            string keep = "rvr-keep-572-" + Guid.NewGuid();
+            StandInDoor door = Door(region, X - 300, Y);
+            StandInPlayer player = StandInPlayer.Make(region, eRealm.Albion, eCharacterClass.Armsman, 50, "Player");
+            Assert.That(player.Enter(region, X, Y + 600), Is.True);
+            world.Track(player);
+            GameSiegeRam playersRam = Ram(world, region, X + 50, Y + 600, player, door);
+            GameBot op = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op");
+            Assert.That(world.Place(op, region, X, Y), Is.True);
+            GameSiegeRam botsRam = Ram(world, region, X + 50, Y, op);
+            Assert.That(OperatorTurn(Assaulting(keep, region, door), op, botsRam, door, keep), Is.True);
+            Assert.That(AutonomousRamCrews.RegisteredRams(keep, eRealm.Albion), Is.EqualTo(1), "the gamebot's ram only");
+
+            // 13 crew turns: the 12 places of the gamebot's ram fill, and nobody is sent to the player's ram
+            var crew = new List<GameBot>();
+            int seated = 0;
+            for (int i = 0; i < 13; i++)
+            {
+                GameBot bot = CrewBot(world, region, $"Crew{i:00}", X + 1_500 + i * 40, Y - 1_500);
+                crew.Add(bot);
+                SiegeTurn(Assaulting(keep, region, door), bot);
+                GameSiegeRam at = AutonomousRamCrews.KeepSeat(bot, out _);
+                Assert.That(at, Is.Not.SameAs(playersRam), $"{bot.Name}: never a seat at the player's ram");
+                if (at == botsRam) seated++;
+            }
+            Assert.That(seated, Is.EqualTo(12), "the gamebot ram's 12 places; the 13th batters the door by hand");
+
+            // #525: a friendly gamebot that stands at the player's ram still crews it
+            GameBot beside = CrewBot(world, region, "Beside", X + 150, Y + 600);
+            Settle(world);
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousRamCrews.AtSeat(beside), Is.False);
+                Assert.That(playersRam.Crew, Is.EqualTo(1), "#525: a gamebot standing at the player's ram counts as its crew");
+            });
+            foreach (GameBot bot in crew) AutonomousRamCrews.Leave(bot);
+        }
+
+        [Test]
+        public void ADoorThatFellTakesNoCrewAndTheCrewDoesNotComeBack()
+        {
+            using var world = new RvrFightWorld(572, RvrFightRehearsal.Repeatable);
+            Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
+            string keep = "rvr-keep-572-" + Guid.NewGuid();
+            StandInDoor door = Door(region, X - 300, Y);
+            GameBot op = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op");
+            Assert.That(world.Place(op, region, X, Y), Is.True);
+            GameSiegeRam ram = Ram(world, region, X + 50, Y, op, door);
+            AutonomousRamCrews.Register(keep, ram);
+            Vector2 spot = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), new(door.X, door.Y), 0);
+            GameBot bot = CrewBot(world, region, "Crew", (int)spot.X, (int)spot.Y);
+            AutonomousWorldBotController turn = Assaulting(keep, region, door);
+            Assert.That(SiegeTurn(turn, bot), Is.True);
+            Assert.That(AutonomousRamCrews.KeepSeat(bot, out _), Is.SameAs(ram), "seated at a closed door");
+
+            // the door breaks; the operator still holds its ram on it (up to a minute), but the crew leaves for good
+            door.Standing = false;
+            Assert.That(AutonomousRamCrews.AimedAtClosedDoor(ram), Is.False);
+            SiegeTurn(turn, bot);
+            Assert.That(AutonomousRamCrews.KeepSeat(bot, out _), Is.Null, "the crew leaves the broken door");
+            for (int look = 0; look < 12; look++)
+            {
+                Later(AutonomousRamCrews.LookMilliseconds);
+                SiegeTurn(turn, bot);
+                Assert.That(AutonomousRamCrews.KeepSeat(bot, out _), Is.Null, $"look {look}: no seat again at a ram on a broken door");
+            }
+            GameBot late = CrewBot(world, region, "Late", (int)spot.X, (int)spot.Y + 40);
+            Assert.That(AutonomousRamCrews.TryTakeSeat(late, keep, out _, out _), Is.False, "nor for a newcomer");
+
+            // an opened door takes none either
+            door.Standing = true; door.Shown = eDoorState.Open;
+            Assert.That(AutonomousRamCrews.TryTakeSeat(late, keep, out _, out _), Is.False, "an open door takes no crew");
+            door.Shown = eDoorState.Closed;
+            Assert.That(AutonomousRamCrews.TryTakeSeat(late, keep, out _, out _), Is.True, "a closed, standing door does");
+            AutonomousRamCrews.Leave(late);
+        }
+
+        [Test]
+        public void ASeatedCrewMemberHoldsThroughWallFireButAnswersAMeleeBlow()
+        {
+            using var world = new RvrFightWorld(572, RvrFightRehearsal.Repeatable);
+            Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
+            string keep = "rvr-keep-572-" + Guid.NewGuid();
+            StandInDoor door = Door(region, X - 300, Y);
+            GameBot op = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op");
+            Assert.That(world.Place(op, region, X, Y), Is.True);
+            GameSiegeRam ram = Ram(world, region, X + 50, Y, op, door);
+            AutonomousRamCrews.Register(keep, ram);
+            Vector2 spot = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), new(door.X, door.Y), 0);
+            GameBot frontier = CrewBot(world, region, "Frontier", (int)spot.X, (int)spot.Y);
+            Vector2 spot2 = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), new(door.X, door.Y), 1);
+            // a battleground gamebot is of the bracket's levels (a level 50 is moved to another goal when it loads)
+            GameBot battleground = CrewBot(world, region, "Battleground", (int)spot2.X, (int)spot2.Y, "Battleground", 30);
+            Assert.That(AutonomousObjectiveAssignments.Is(battleground, eAutonomousObjectiveKind.Battleground), Is.True, "a battleground gamebot");
+            GameBot unseated = CrewBot(world, region, "Unseated", X + 2_000, Y + 2_000);
+            Assert.That(SiegeTurn(Assaulting(keep, region, door), frontier), Is.True);
+            Assert.That(SiegeTurn(Assaulting(keep, region, door), battleground), Is.True);
+            Settle(world);
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousWorldBotController.HoldsRamSeat(frontier), Is.True, "a seated frontier crew member holds");
+                Assert.That(AutonomousWorldBotController.HoldsRamSeat(battleground), Is.True, "and so does a battleground one");
+                Assert.That(AutonomousWorldBotController.HoldsRamSeat(unseated), Is.False);
+                // the army defends its crew, and a seated crew member is busy (group invites, rezzing strangers)
+                Assert.That(BotSiegeRuntime.HoldingPosition(frontier), Is.True, "a seat is a held siege post");
+                Assert.That(BotSiegeRuntime.HoldingPosition(unseated), Is.False);
+            });
+
+            // an archer on the wall shoots it: it holds its seat
+            Striker archer = Strike(world, region, frontier, 100, 250);
+            Settle(world);
+            Assert.Multiple(() =>
+            {
+                Assert.That(archer.Z, Is.EqualTo(250), "the archer stands on the wall");
+                Assert.That(BotSiegeRuntime.StruckInMeleeReach(frontier), Is.False, "fire from the wall is no melee blow");
+                Assert.That(AutonomousWorldBotController.HoldsRamSeat(frontier), Is.True, "it stays on its seat");
+            });
+
+            // an enemy at melee reach hits it: it answers the blow (the ordinary fight takes the turn)
+            Strike(world, region, frontier, 80, 0);
+            Settle(world);
+            Assert.Multiple(() =>
+            {
+                Assert.That(BotSiegeRuntime.StruckInMeleeReach(frontier), Is.True);
+                Assert.That(AutonomousWorldBotController.HoldsRamSeat(frontier), Is.False, "a melee blow takes it off the seat");
+                Assert.That(SiegeTurn(Assaulting(keep, region, door), frontier), Is.False, "its siege turn gives the fight the turn");
+            });
+            AutonomousRamCrews.Leave(frontier);
+            AutonomousRamCrews.Leave(battleground);
+        }
+
+        [Test]
+        public void TheAiTurnHoldsTheSeatBeforeTheOrdinaryFightInTheFrontierAndTheBattleground()
+        {
+            string controller = Source("bots", "autonomous", "AutonomousWorldBotController.cs");
+            int hold = controller.IndexOf("if (HoldsRamSeat(bot))", StringComparison.Ordinal);
+            int fight = controller.IndexOf("bool postCombatRecovery = BotRestRecovery.NeedsOrContinuesRest(bot)", StringComparison.Ordinal);
+            Assert.That(hold, Is.GreaterThan(0), "the AI turn asks HoldsRamSeat");
+            Assert.That(fight, Is.GreaterThan(hold), "before the ordinary fight");
+            string branch = controller[hold..fight];
+            Assert.That(branch, Does.Contain("ExecuteBattleground(brain,bot)").And.Contain("ExecuteRvr(brain,bot)"),
+                "a battleground crew member goes on with its battleground turn, a frontier one with its RvR turn");
+        }
+
+        private static string Source(params string[] parts)
+        {
+            string dir = TestContext.CurrentContext.TestDirectory;
+            while (dir != null && !File.Exists(Path.Combine(new[] { dir, "GameServer" }.Concat(parts).ToArray())))
+                dir = Path.GetDirectoryName(dir);
+            Assume.That(dir, Is.Not.Null, "the sources are next to the tests");
+            return File.ReadAllText(Path.Combine(new[] { dir, "GameServer" }.Concat(parts).ToArray())).Replace("\r\n", "\n");
         }
     }
 }
