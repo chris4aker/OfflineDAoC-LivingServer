@@ -22,10 +22,15 @@ public static partial class AutonomousBotGroupCoordinator
     }
     private static readonly ConditionalWeakTable<Session, DangerDeaths> PartyDangerDeaths = new();
 
-    /// <summary>Whether a death in this party is counted at all (pure; the coordinator passes the facts).</summary>
+    /// <summary>
+    /// Whether a death in this party is counted at all (pure; the coordinator passes the facts). Not while the party hunts
+    /// a dungeon boss (session.DungeonBoss): a party of six or more takes a red boss on purpose
+    /// (AutonomousDungeonBossGoals.Qualifies), and a red boss can meet IsFarAboveParty's floor, so a lost boss fight would
+    /// bench the dungeon for the band instead of being an ordinary loss.
+    /// </summary>
     public static bool CountsPartyDangerDeath(bool groupPve, bool ending, bool taskStarted, bool expedition, bool hostsPlayer,
-        bool fromPlayersGroup) =>
-        groupPve && !ending && taskStarted && !expedition && !hostsPlayer && !fromPlayersGroup;
+        bool fromPlayersGroup, bool huntingDungeonBoss) =>
+        groupPve && !ending && taskStarted && !expedition && !hostsPlayer && !fromPlayersGroup && !huntingDungeonBoss;
 
     /// <summary>
     /// Called once from AutonomousDeathDiagnostics.Record for a grouped autonomous bot killed by a monster. Records the death
@@ -44,7 +49,8 @@ public static partial class AutonomousBotGroupCoordinator
             if (!TryGetSession(group, out Session session) ||
                 !CountsPartyDangerDeath(session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve, session.Ending,
                     session.TaskClock.HasStarted, AutonomousRealmRaid.GetView(group) != null,
-                    session.HostedPlayer != null || BotLedGroups.IsHostedGroup(group), session.FromPlayersGroup))
+                    session.HostedPlayer != null || BotLedGroups.IsHostedGroup(group), session.FromPlayersGroup,
+                    session.DungeonBoss != null))
                 return;
             GameBot[] members = BotMembers(group);
             int average = members.Length == 0 ? bot.Level : (int)Math.Round(members.Average(member => member.Level));
@@ -81,6 +87,7 @@ public static partial class AutonomousBotGroupCoordinator
             Math.Pow(AutonomousGroupDangerRetreat.CampBlameRadius, 2));
         if (blameCamp)
             AutonomousGroupDangerRetreat.BenchCamp(camp.Id, state.PendingBand, now);
+        // A gamebot party lost members to monsters far above it near one spot and ends its task there, the place benched.
         Log.Warn($"AUTONOMOUS_GROUP_DANGER_RETREAT group={session.Id} phase=\"{session.Phase}\" killer=\"{state.PendingKiller}\" " +
                  $"killerLevel={anchor.KillerLevel} victimLevel={anchor.BotLevel} deaths={deaths} " +
                  $"region={anchor.Region} x={anchor.X} y={anchor.Y} band={state.PendingBand} " +

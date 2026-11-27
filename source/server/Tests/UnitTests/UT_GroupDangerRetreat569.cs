@@ -128,20 +128,33 @@ namespace DOL.UnitTests
         [Test]
         public void OnlyAutonomousPveGamebotPartiesCountTheDeaths() => Assert.Multiple(() =>
         {
-            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, false, false), Is.True);
-            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(false, false, true, false, false, false), Is.False,
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, false, false, false), Is.True);
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(false, false, true, false, false, false, false), Is.False,
                 "RvR warbands");
-            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, true, true, false, false, false), Is.False,
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, true, true, false, false, false, false), Is.False,
                 "already ending");
-            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, false, false, false, false), Is.False,
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, false, false, false, false, false), Is.False,
                 "deaths on the way to the first meetup are the meetup's business");
-            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, true, false, false), Is.False,
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, true, false, false, false), Is.False,
                 "realm expeditions");
-            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, true, false), Is.False,
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, true, false, false), Is.False,
                 "a party hosting a real player is never ended by it");
-            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, false, true), Is.False,
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, false, true, false), Is.False,
                 "nor a party formed from a player's group");
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, false, false, true), Is.False,
+                "nor a party hunting a dungeon boss: six or more take a red boss on purpose");
         });
+
+        [Test]
+        public void ARedDungeonBossThatAPartyChoseCanMeetTheFarAboveFloor()
+        {
+            // Why the boss exemption is needed: a level 45 party of six (camp bonus 3) may take a level 53 boss, red to it
+            // (AutonomousDungeonBossGoals.Qualifies), and that boss meets the far-above floor (45 + 3 + 4 = 52).
+            Assert.That(AutonomousDungeonBossGoals.Qualifies(45, 6, 53, 0, true), Is.True, "red for a party of six");
+            Assert.That(AutonomousDungeonBossGoals.Qualifies(45, 5, 53, 0, true), Is.False, "five take at most orange");
+            Assert.That(AutonomousGroupDangerRetreat.IsFarAboveParty(53, 45, 45, 3), Is.True);
+            Assert.That(AutonomousBotGroupCoordinator.CountsPartyDangerDeath(true, false, true, false, false, false, true), Is.False);
+        }
 
         [Test]
         public void TheRetreatHasItsOwnGroupEndedReason()
@@ -168,6 +181,8 @@ namespace DOL.UnitTests
             int note = deaths.IndexOf("AutonomousBotGroupCoordinator.NoteMemberDeath(bot, partyKiller);");
             Assert.That(monster, Is.GreaterThan(0));
             Assert.That(note, Is.GreaterThan(monster), "only a monster's kill counts, never a player's or an enemy bot's");
+            string retreat = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.DangerRetreat.cs");
+            Assert.That(retreat, Does.Contain("session.DungeonBoss != null))"), "the boss hunt is passed to the rule");
 
             string coordinator = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.cs");
             int start = coordinator.IndexOf("private static bool UpdateSession(Session session, GameBot[] members)");
