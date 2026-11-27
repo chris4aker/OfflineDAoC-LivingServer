@@ -97,6 +97,56 @@ public static class AutonomousRendezvousNavigation
         return true;
     }
 
+    // #569 step 4 (True165 78a70c0): two rings, farther first; the first walkable, connected spot wins, so a meetup
+    // sits as far from the NPC as the band allows. 2 x 6 projections at most, once per party formation.
+    private static readonly float[] ClearRings = [420f, 340f];
+    private const int ClearRingAngles = 6;
+
+    /// <summary>
+    /// #569 step 4: a meeting point BESIDE a service NPC, never on it. <see cref="TryChoosePoint"/> keeps the projected
+    /// anchor (the NPC's own spot) on flat ground, so a party waited minutes in a small ring around a stable master or
+    /// merchant that the player then could not click. This takes a walkable spot
+    /// <see cref="AutonomousServiceNpcClearance.MeetClearRadius"/>-<see cref="AutonomousServiceNpcClearance.MeetOuterRadius"/>
+    /// from <paramref name="anchor"/>, connected both ways to the floor beside the NPC and with a local exit, preferring
+    /// the farther ring. <paramref name="accept"/> can reject a spot (one near another service NPC, or outside the
+    /// town). The start angle comes from <paramref name="seed"/>, so two parties at one NPC do not share a spot.
+    /// Called while a party forms, never in a movement tick.
+    /// </summary>
+    public static bool TryChooseClearPoint(IPathfindingMgr nav, Zone zone, Vector3 anchor, int seed,
+        Func<Vector3, bool> accept, out Vector3 point)
+    {
+        point = default;
+        if (zone == null || nav == null || !nav.IsAvailable || !nav.HasNavmesh(zone)) return false;
+        Vector3? floor = nav.GetClosestPoint(zone, anchor, 48, 48, 96, nav.DefaultFilters);
+        if (!floor.HasValue) return false;
+        double start = (seed & 0x7fffffff) % 360 * Math.PI / 180;
+        foreach (float ring in ClearRings)
+            for (int k = 0; k < ClearRingAngles; k++)
+            {
+                double angle = start + k * 2 * Math.PI / ClearRingAngles;
+                Vector3 desired = new(anchor.X + (float)(Math.Cos(angle) * ring), anchor.Y + (float)(Math.Sin(angle) * ring), floor.Value.Z);
+                if (desired.X < zone.XOffset || desired.X >= zone.XOffset + zone.Width ||
+                    desired.Y < zone.YOffset || desired.Y >= zone.YOffset + zone.Height) continue;
+                Vector3? candidate = nav.GetClosestPoint(zone, desired, 48, 48, 160, nav.DefaultFilters);
+                if (!candidate.HasValue || !IsInClearBand(anchor, candidate.Value) ||
+                    MathF.Abs(candidate.Value.Z - floor.Value.Z) > 160 ||
+                    accept != null && !accept(candidate.Value) ||
+                    !ConnectedBothWays(nav, zone, floor.Value, candidate.Value) || !HasLocalExit(nav, zone, candidate.Value))
+                    continue;
+                point = candidate.Value;
+                return true;
+            }
+        return false;
+    }
+
+    /// <summary>Pure: a meetup centre beside a service NPC lies in the clear band around it (across the ground).</summary>
+    public static bool IsInClearBand(Vector3 anchor, Vector3 point)
+    {
+        float distance = Vector2.Distance(new(anchor.X, anchor.Y), new(point.X, point.Y));
+        return distance >= AutonomousServiceNpcClearance.MeetClearRadius &&
+               distance <= AutonomousServiceNpcClearance.MeetOuterRadius;
+    }
+
     public static bool HasLocalExit(IPathfindingMgr nav, Zone zone, Vector3 center)
     {
         foreach (Vector2 offset in ExitOffsets)

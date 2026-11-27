@@ -294,23 +294,37 @@ namespace DOL.GS
             IPathfindingMgr nav = PathfindingProvider.Instance;
             if (anchor?.ObjectState != GameObject.eObjectState.Active || !nav.IsAvailable || !nav.HasNavmesh(anchor.CurrentZone)) return false;
             Vector3 center = new(anchor.X, anchor.Y, anchor.Z);
-            for (int attempt = 0; attempt < 4; attempt++)
+            // #569 step 4 (True165 4d888bd): one radius scan per choice (it used to run once per candidate). The same
+            // list rejects a break spot within 250 units of a merchant, trainer, stable master, healer or vault keeper,
+            // which gamebots stood on for 15-30 minutes; two more candidates make up for the spots this rejects.
+            List<GameNPC> nearby = anchor.GetNPCsInRadius(3_500);
+            List<Vector3> services = AutonomousServiceNpcClearance.ServicePositions(nearby);
+            for (int attempt = 0; attempt < TownBreakCandidates; attempt++)
             {
                 Vector3? candidate = nav.GetRandomPoint(anchor.CurrentZone, center, town.Capital ? 900 : 600, nav.DefaultFilters);
                 if (!candidate.HasValue || anchor.CurrentRegion.GetZone((int)candidate.Value.X, (int)candidate.Value.Y) != anchor.CurrentZone ||
                     !town.Capital && town.Area?.IsContaining(new Point3D((int)candidate.Value.X, (int)candidate.Value.Y, (int)candidate.Value.Z), false) != true)
                     continue;
+                if (!AutonomousServiceNpcClearance.IsClearOf(candidate.Value, services, AutonomousServiceNpcClearance.TownBreakClearRadius))
+                    continue;
                 // Safe PvP areas need not exclude aggressive monsters. Reject a
                 // resting spot that lies in a currently live monster's aggro bubble.
-                if (InLiveAggroRange(anchor, candidate.Value)) continue;
+                if (InLiveAggroRange(nearby, candidate.Value)) continue;
                 point = candidate.Value;
                 return true;
             }
             return false;
         }
 
+        /// <summary>Random floor samples a town break tries (#569 step 4: six, up from four, for the spots the service
+        /// NPC clearance rejects).</summary>
+        public const int TownBreakCandidates = 6;
+
         private static bool InLiveAggroRange(GameObject around, Vector3 point) =>
-            around.GetNPCsInRadius(3_500).Any(npc => npc.IsAlive && IsExperienceMonster(npc) && npc.IsAggressive &&
+            InLiveAggroRange(around.GetNPCsInRadius(3_500), point);
+
+        private static bool InLiveAggroRange(IEnumerable<GameNPC> nearby, Vector3 point) =>
+            nearby.Any(npc => npc.IsAlive && IsExperienceMonster(npc) && npc.IsAggressive &&
                 npc.Brain is StandardMobBrain mobBrain &&
                 Vector3.DistanceSquared(point, new(npc.X, npc.Y, npc.Z)) <= (double)mobBrain.AggroRange * mobBrain.AggroRange);
 

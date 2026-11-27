@@ -491,7 +491,8 @@ public static partial class AutonomousBotGroupCoordinator
         foreach (GameNPC npc in towns)
         {
             Zone zone = region.GetZone(npc.X, npc.Y);
-            if (!AutonomousRendezvousNavigation.TryChoosePoint(nav, zone, new(npc.X, npc.Y, npc.Z), out Vector3 chosen)) continue;
+            // #569 step 4: beside the NPC, not on it, when a clear spot fits (AutonomousBotGroupCoordinator.ServiceClearance).
+            if (!TryChooseMeetupAtTownNpc(nav, region, zone, npc, leader, members, out Vector3 chosen)) continue;
             bool tight = zone?.IsDungeon == true;
             bool valid = true;
             foreach (GameBot member in members)
@@ -2870,9 +2871,15 @@ public static partial class AutonomousBotGroupCoordinator
             return false;
         Vector3 current = new(leader.X, leader.Y, leader.Z);
         GameBot[] members = BotMembers(leader.Group);
-        bool TryPoint(Region targetRegion, Vector3 anchor, out Vector3 chosen, bool fixedCenter = false)
+        // keepClearOf (#569 step 4): a service NPC the meetup must stand beside, not on. A clear spot is tried first;
+        // the plain choice around the anchor only when none fits.
+        bool TryPoint(Region targetRegion, Vector3 anchor, out Vector3 chosen, bool fixedCenter = false,
+            GameNPC keepClearOf = null, string clearWhere = null)
         {
             var nav = PathfindingProvider.Instance;
+            if (keepClearOf != null &&
+                TryChooseMeetupBesideService(nav, targetRegion, keepClearOf, leader, members, clearWhere, out chosen))
+                return true;
             Zone zone = targetRegion?.GetZone((int)anchor.X, (int)anchor.Y);
             bool valid = fixedCenter
                 ? AutonomousRendezvousNavigation.TryChooseFixedPoint(nav, zone, anchor, out chosen)
@@ -2926,7 +2933,11 @@ public static partial class AutonomousBotGroupCoordinator
             return true;
         }
 
-        if (IsTownArea(leader) && TryPoint(leader.CurrentRegion, current, out point))
+        // #569 step 4: "meet where the leader stands" moves beside the NPC when the leader stands at a merchant,
+        // trainer, stable master, healer or vault keeper (often a leader who just landed by horse). One radius query.
+        if (IsTownArea(leader) && TryPoint(leader.CurrentRegion, current, out point,
+                keepClearOf: NearestServiceNpc(leader, (ushort)AutonomousServiceNpcClearance.MeetClearRadius),
+                clearWhere: "leader_town"))
         {
             rendezvousName = TownName(leader);
             return true;
@@ -2941,7 +2952,8 @@ public static partial class AutonomousBotGroupCoordinator
             .Take(4).ToArray() ?? [];
         foreach (GameNPC npc in safeTownNpcs)
         {
-            if (!TryPoint(leader.CurrentRegion, new(npc.X, npc.Y, npc.Z), out point)) continue;
+            if (!TryPoint(leader.CurrentRegion, new(npc.X, npc.Y, npc.Z), out point, keepClearOf: npc,
+                    clearWhere: "town_npc")) continue;
             rendezvousName = TownName(npc);
             return true;
         }
@@ -3098,6 +3110,17 @@ public static partial class AutonomousBotGroupCoordinator
                 npc is not GameBot && (npc.Realm == realm || npc.Realm == eRealm.None) && IsSafeArea(npc))
             .OrderBy(npc => Vector3.DistanceSquared(original, new(npc.X, npc.Y, npc.Z)))
             .FirstOrDefault();
+        // #569 step 4: beside a service NPC first, then the old choice around the NPC.
+        if (town != null && TryChooseMeetupBesideService(PathfindingProvider.Instance, region, town,
+                ChooseLeader(session, members), members, "recovery", out Vector3 beside))
+        {
+            Vector3 previous = session.Rendezvous;
+            session.Rendezvous = beside;
+            if (TryBuildRendezvousSlots(session, members))
+                return;
+            session.Rendezvous = previous;
+            TryBuildRendezvousSlots(session, members);
+        }
         if (town != null && AutonomousRendezvousNavigation.TryChoosePoint(PathfindingProvider.Instance,
                 town.CurrentZone, new(town.X, town.Y, town.Z), out Vector3 connected))
         {
