@@ -52,9 +52,8 @@ namespace DOL.GS
     /// </summary>
     public static class AutonomousPartyPullCamp
     {
-        [ServerProperty("bots", "bot_party_puller_camp_turn",
-            "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD.", true)]
-        public static bool CampTurn = true;
+        /// <summary>The switch bot_party_puller_camp_turn (declared in ServerProperties, as the launcher reads it).</summary>
+        public static bool CampTurn => Properties.BOT_PARTY_PULLER_CAMP_TURN;
 
         public const long TooFarSkipMilliseconds = 60_000;
         public const long TooFarAdvanceAfterMilliseconds = 45_000;
