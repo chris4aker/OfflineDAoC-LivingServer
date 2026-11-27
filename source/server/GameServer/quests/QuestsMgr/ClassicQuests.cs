@@ -221,7 +221,7 @@ namespace DOL.GS.Quests
                 if (sender is not GamePlayer player || args is not SayEventArgs said || args is WhisperEventArgs) return;
                 string spoken = WordsOnly(said.Text);
                 if (spoken.Length == 0) return;
-                foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>().ToArray())
+                foreach (DataQuest quest in player.GetActiveDataQuests().ToArray())
                 {
                     if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                     CustomStep custom = info.Steps[quest.Step]?.Custom;
@@ -251,7 +251,7 @@ namespace DOL.GS.Quests
 
         private static bool TryChooseReward(GamePlayer player, GameNPC npc, string key)
         {
-            foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>().ToArray())
+            foreach (DataQuest quest in player.GetActiveDataQuests().ToArray())
             {
                 if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                 CustomStep custom = info.Steps[quest.Step]?.Custom;
@@ -347,7 +347,7 @@ namespace DOL.GS.Quests
                     return;
                 }
                 if (sender is not GamePlayer player || args is not DyingEventArgs dying || dying.Killer == null) return;
-                foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>().ToArray())
+                foreach (DataQuest quest in player.GetActiveDataQuests().ToArray())
                 {
                     if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                     CustomStep custom = info.Steps[quest.Step]?.Custom;
@@ -376,7 +376,7 @@ namespace DOL.GS.Quests
             foreach (GamePlayer player in killers)
             {
                 if (!player.IsWithinRadius(mob, WorldMgr.VISIBILITY_DISTANCE)) continue;
-                foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>().ToArray())
+                foreach (DataQuest quest in player.GetActiveDataQuests().ToArray())
                 {
                     if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                     List<StepDrop> drops = info.Steps[quest.Step]?.Custom?.Drops;
@@ -399,7 +399,7 @@ namespace DOL.GS.Quests
             try
             {
                 if (args is not GiveItemEventArgs give || give.Source is not GamePlayer player || give.Target is not GameNPC npc || give.Item == null) return;
-                foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>().ToArray())
+                foreach (DataQuest quest in player.GetActiveDataQuests().ToArray())
                 {
                     if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                     CustomStep custom = info.Steps[quest.Step]?.Custom;
@@ -434,7 +434,7 @@ namespace DOL.GS.Quests
                 if (sender is not GamePlayer player || args is not UseSlotEventArgs use) return;
                 DbInventoryItem item = player.Inventory.GetItem((eInventorySlot)use.Slot);
                 if (item == null) return;
-                foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>().ToArray())
+                foreach (DataQuest quest in player.GetActiveDataQuests().ToArray())
                 {
                     if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                     CustomStep custom = info.Steps[quest.Step]?.Custom;
@@ -527,7 +527,7 @@ namespace DOL.GS.Quests
                 if (sender is GamePlayer talker && args is InteractWithEventArgs spoken && ContinueConversation(talker, spoken.Target))
                     return;
                 if (sender is GamePlayer who && args is InteractWithEventArgs touched && touched.Target != null)
-                    foreach (DataQuest quest in who.QuestList.Keys.OfType<DataQuest>().ToArray())
+                    foreach (DataQuest quest in who.GetActiveDataQuests().ToArray())
                     {
                         if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo qi) || quest.Step <= 0 || quest.Step >= qi.Steps.Count) continue;
                         CustomStep custom = qi.Steps[quest.Step]?.Custom;
@@ -537,7 +537,7 @@ namespace DOL.GS.Quests
                 if (sender is not GamePlayer player || args is not InteractWithEventArgs interact || interact.Target is not GameNPC npc) return;
                 GreetOnHandInStep(player, npc);
                 OfferWhisperLinks(player, npc);
-                foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>())
+                foreach (DataQuest quest in player.GetActiveDataQuests())
                 {
                     if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                     StepInfo step = info.Steps[quest.Step];
@@ -564,7 +564,7 @@ namespace DOL.GS.Quests
         /// <summary>The step NPC's recorded arrival line when the player comes to it on a hand-in step.</summary>
         private static void GreetOnHandInStep(GamePlayer player, GameNPC npc)
         {
-            foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>())
+            foreach (DataQuest quest in player.GetActiveDataQuests())
             {
                 if (!_config.Quests.TryGetValue(quest.ID, out QuestInfo info) || quest.Step <= 0 || quest.Step >= info.Steps.Count) continue;
                 string greet = info.Steps[quest.Step]?.Greet;
@@ -577,7 +577,7 @@ namespace DOL.GS.Quests
 
         private static void OfferWhisperLinks(GamePlayer player, GameNPC npc)
         {
-            foreach (DataQuest quest in player.QuestList.Keys.OfType<DataQuest>())
+            foreach (DataQuest quest in player.GetActiveDataQuests())
             {
                 if (!_config.Quests.ContainsKey(quest.ID) || quest.Step <= 0 ||
                     quest.StepType is not (DataQuest.eStepType.Whisper or DataQuest.eStepType.WhisperFinish) ||
@@ -773,7 +773,7 @@ namespace DOL.GS.Quests
         /// </summary>
         public static void RefreshPlayer(GamePlayer player)
         {
-            DataQuest[] active = player.QuestList.Keys.OfType<DataQuest>()
+            DataQuest[] active = player.GetActiveDataQuests()
                 .Where(dq => _config.Quests.ContainsKey(dq.ID)).ToArray();
             // A quest given up (or finished) takes its monsters with it and forgets the wait, so taking it
             // again spawns them fresh (owner 2026-10-07).

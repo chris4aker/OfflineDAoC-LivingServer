@@ -68,7 +68,7 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
             }
         }
         var active = new Dictionary<int, int>();
-        foreach (AbstractQuest quest in player.QuestList.Keys)
+        foreach (AbstractQuest quest in player.GetActiveQuests())
         {
             if (quest is DataQuest dataQuest)
                 active[dataQuest.ID] = dataQuest.Step;
@@ -91,7 +91,7 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
             DbDataQuest row = EpicChainLinks.Link(GameServer.Database.FindObjectByKey<DbDataQuest>(id));
             if (row == null)
                 continue;
-            DataQuest active = target.QuestList.Keys.OfType<DataQuest>().FirstOrDefault(q => q.ID == id);
+            DataQuest active = target.GetActiveDataQuests().FirstOrDefault(q => q.ID == id);
             if (active != null)
             {
                 RemoveActive(target, active);
@@ -111,7 +111,7 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
     private void GoTo(GameClient client, GamePlayer target, IReadOnlyList<EpicQuest> chain)
     {
         var ids = new HashSet<int>(chain.Select(q => q.Id));
-        DataQuest active = target.QuestList.Keys.OfType<DataQuest>().FirstOrDefault(q => ids.Contains(q.ID));
+        DataQuest active = target.GetActiveDataQuests().FirstOrDefault(q => ids.Contains(q.ID));
         if (active != null)
         {
             ClassicQuests.Point marker = ClassicQuests.MarkerFor(active.ID, active.Step);
@@ -148,7 +148,7 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
         var ids = new HashSet<int>(chain.Select(q => q.Id));
         int last = chain[^1].Id;
         bool hadLast = ProgressOf(target).FinishedIds.Contains(last);
-        foreach (DataQuest active in target.QuestList.Keys.OfType<DataQuest>().Where(q => ids.Contains(q.ID)).ToList())
+        foreach (DataQuest active in target.GetActiveDataQuests().Where(q => ids.Contains(q.ID)).ToList())
         {
             RemoveActive(target, active);
             active.DeleteFromDatabase();
@@ -162,10 +162,6 @@ public sealed class EpicCommandHandler : AbstractCommandHandler, ICommandHandler
 
     private static void RemoveActive(GamePlayer player, DataQuest quest)
     {
-        if (player.QuestList.TryRemove(quest, out byte index))
-        {
-            player.AvailableQuestIndexes.Enqueue(index);
-            player.Out.SendQuestRemove(index);
-        }
+        player.RemoveQuest(quest, notifyPlayer: true);
     }
 }
