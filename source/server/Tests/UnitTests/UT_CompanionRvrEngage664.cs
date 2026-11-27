@@ -103,7 +103,33 @@ public class UT_CompanionRvrEngage664
         var field = new[] { C(RvrRole.Healer, 300, controlled: true), C(RvrRole.Tank, 900) };
         Assert.That(E.Pick(field, E.AggressiveBound), Is.EqualTo(1), "never break a groupmate's mez while a free enemy is in the fight");
         Assert.That(E.Pick(new[] { C(RvrRole.Healer, 300, controlled: true) }, E.AggressiveBound), Is.EqualTo(0),
-            "the last one left is fought, as a player does");
+            "mid-fight, the last one left is fought, as a player does");
+    }
+
+    [Test]
+    public void TheGroupNeverOpensOnAHeldEnemy()
+    {
+        // Review of e0027909: with no fight on, the group opened on an enemy the player or a groupmate had just mezzed
+        // (mez and run). Opening, a held enemy is never taken, even alone; mid-fight the last-one-left rule stays.
+        var alone = new[] { C(RvrRole.Healer, 300, controlled: true) };
+        Assert.That(E.Pick(alone, E.AggressiveBound, opening: true), Is.EqualTo(-1), "opening: the held enemy is left alone");
+        Assert.That(E.Pick(alone, E.AggressiveBound, opening: false), Is.EqualTo(0), "mid-fight: the last one left");
+        var field = new[] { C(RvrRole.Healer, 300, controlled: true), C(RvrRole.Tank, 900) };
+        Assert.That(E.Pick(field, E.AggressiveBound, opening: true), Is.EqualTo(1), "opening: the free one");
+    }
+
+    [Test]
+    public void TheGroupNeverOpensInASafeAreaOrUnderGuards()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(E.MayOpenOn(safeArea: false, underHostileGuards: false), Is.True);
+            Assert.That(E.MayOpenOn(safeArea: true, underHostileGuards: false), Is.False, "a border, safe or bind area");
+            Assert.That(E.MayOpenOn(safeArea: false, underHostileGuards: true), Is.False, "under its tower or keep guards");
+            Assert.That(E.GuardCover(1_850), Is.EqualTo(1_850), "the guard's own aggro range");
+            Assert.That(E.GuardCover(0), Is.EqualTo(E.DefaultGuardCover), "no range from the brain: the keep guards' 1,800");
+            Assert.That(E.GuardCover(5_000), Is.EqualTo(E.MaxGuardCover), "at most the archers' 2,100");
+        });
     }
 
     [Test]

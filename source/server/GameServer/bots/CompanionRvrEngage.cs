@@ -30,10 +30,10 @@ namespace DOL.GS
     ///   above this pick, is never sized up);
     /// - on by default with a server switch.
     ///
-    /// The pick (DetShaft/OfflineDAoC-LivingServer 77e74f670, GroupFightPolicy.PickFocus, GPL-3.0; period kill order,
-    /// docs/rvr-audit-1.2.3/reference.md 3.4: "anything that wears a dress" first, tanks last): never a held enemy while a
-    /// free one is there, then healers, then casters, then fighters, then pets; then the lowest health; then the nearest
-    /// the player. Sticky: the group stays on its pick until a better-ranked enemy appears. The player's own target (leader
+    /// The pick (the period kill order, docs/rvr-audit-1.2.3/reference.md 3.4: "anything that wears a dress" first, tanks
+    /// last): never open on a held enemy, and never a held enemy mid-fight while a free one is there; then healers, then
+    /// casters, then fighters, then pets; then the lowest health; then the nearest the player. Never an enemy in a safe
+    /// or bind area or under its realm's tower or keep guards (<see cref="MayOpenOn"/>). Sticky: the group stays on its pick until a better-ranked enemy appears. The player's own target (leader
     /// focus, #571) and an enemy hitting the group (CompanionPvpEngagement.RecordThreat) come before it.
     /// Pure rules here; the world read is CompanionRvrEngage.World.cs. Tests only until seen in a PC log.
     /// </summary>
@@ -58,7 +58,7 @@ namespace DOL.GS
         /// <summary>
         /// The size-up's boldness for the player's group: the boldest gamebot line (RvrSightSizeUp.LineFor(1) = 0.64), so
         /// the group holds only when the enemy is more than about 1.5 times its strength ("clearly losing", owner answer 4
-        /// on #663). Owner question on #664 (needs-owner for the number): 0.64 proposed, even odds (0.94) the alternative.
+        /// on #663). The owner set 0.64 on #664 (2026-11-27 12:11Z).
         /// </summary>
         public const double SizeUpBoldness = 1.0;
 
@@ -88,6 +88,22 @@ namespace DOL.GS
         public static bool Eligible(in CompanionRvrCandidate candidate, int bound) =>
             candidate.Noticed && candidate.FromPlayer <= bound;
 
+        /// <summary>A keep or tower guard's cover when its brain gives no aggro range (the keep guards' 1,800).</summary>
+        public const int DefaultGuardCover = 1_800;
+
+        /// <summary>The widest guard cover (the keep archers' 2,100): how far around an enemy the guards are looked for.</summary>
+        public const int MaxGuardCover = 2_100;
+
+        /// <summary>How far a guard with this aggro range covers (its range, at most <see cref="MaxGuardCover"/>). Pure.</summary>
+        public static int GuardCover(int aggroRange) => aggroRange > 0 ? Math.Min(aggroRange, MaxGuardCover) : DefaultGuardCover;
+
+        /// <summary>
+        /// The group may pick this enemy on its own: it is not in a safe or bind area and not within the cover of a live
+        /// guard of a realm hostile to the player (charging it there brings the guards in). The player's own target (leader
+        /// focus) and an enemy hitting the group come before the pick and are not held by this. Pure.
+        /// </summary>
+        public static bool MayOpenOn(bool safeArea, bool underHostileGuards) => !safeArea && !underHostileGuards;
+
         /// <summary>Whether <paramref name="a"/> comes before <paramref name="b"/> in the pick order. Pure.</summary>
         public static bool Before(in CompanionRvrCandidate a, in CompanionRvrCandidate b)
         {
@@ -100,13 +116,16 @@ namespace DOL.GS
         /// <summary>
         /// The group's pick: the index of the candidate to engage, or -1. <paramref name="current"/> is the index of the
         /// group's pick from before (-1 when none or gone); it is kept while it is eligible, not held by a groupmate while a
-        /// free one is there, and no eligible candidate outranks it. Pure.
+        /// free one is there, and no eligible candidate outranks it. <paramref name="opening"/>: the group has no pick yet
+        /// and would open the fight, so a held enemy is never taken (mez and run: the group does not break the hold); mid-fight
+        /// a held enemy is taken only when it is the last one left. Pure.
         /// </summary>
-        public static int Pick(IReadOnlyList<CompanionRvrCandidate> candidates, int bound, int current = -1)
+        public static int Pick(IReadOnlyList<CompanionRvrCandidate> candidates, int bound, int current = -1, bool opening = false)
         {
             int best = -1;
             for (int i = 0; i < candidates.Count; i++)
-                if (Eligible(candidates[i], bound) && (best < 0 || Before(candidates[i], candidates[best])))
+                if (Eligible(candidates[i], bound) && !(opening && candidates[i].Controlled) &&
+                    (best < 0 || Before(candidates[i], candidates[best])))
                     best = i;
             if (best < 0 || current < 0 || current >= candidates.Count || !Eligible(candidates[current], bound))
                 return best;

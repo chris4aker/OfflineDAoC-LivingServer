@@ -3647,7 +3647,7 @@ namespace DOL.GS
                 .Where(npc => GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
                 // A monster already fighting someone outside the bot's side (its group, or its realm raid) is theirs,
                 // as players left it; and one another bot or player outside it has pulled or hit, even before it turns on
-                // them. No "sry ks" and no shared XP (port of True165 e4d2498ca). Self-defense is handled elsewhere.
+                // them. No "sry ks" and no shared XP. Self-defense is handled elsewhere.
                 .Where(npc => !npc.InCombat || npc.TargetObject == bot ||
                               npc.TargetObject is GameLiving fighting && AutonomousMobClaims.SameFight(bot, fighting) ||
                               npc.TargetObject is not GameLiving)
@@ -4407,7 +4407,7 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// GitHub #544 (ported from True 1.65's AddUncoveredLiveCamps): live outdoor spawn clusters that no camp of their
+        /// GitHub #544 (AddUncoveredLiveCamps): live outdoor spawn clusters that no camp of their
         /// name covers become <c>live-uncovered:</c> camps, in every realm alike (AutonomousUncoveredLiveCamps). Without it
         /// a CapnBry-covered zone offered camps only at its sightings, while the mostly Hibernian source-empty zones offered
         /// every cluster. Starter creatures (level 0-1) stay with AddStarterCamps and its route check from the zone hub.
@@ -6082,7 +6082,7 @@ namespace DOL.GS
             _terminalRouteFailuresInPocket = 0;
         }
 
-        // ---- Route goal fixes, ported from stefanrows/OfflineDAoC (AutonomousRouteGoalFix.cs) ----
+        // ---- Route goal fixes (AutonomousRouteGoalFix.cs) ----
 
         private Vector3 ApplyGoalSnap(Vector3 point) =>
             Vector3.DistanceSquared(point, _goalSnapFrom) <= 16 * 16 ? _goalSnapTo : point;
@@ -6595,7 +6595,8 @@ namespace DOL.GS
         private static bool IsInFrontier(GamePlayer player) =>
             player?.CurrentZone != null && IsFrontierZone(player.CurrentRegionID, player.CurrentZone.ID);
 
-        private static bool IsSafeArea(GameObject obj)
+        /// <summary>The object stands in a safe or bind area (also read by the player's group pick, CompanionRvrEngage).</summary>
+        public static bool IsSafeArea(GameObject obj)
         {
             List<IArea> areas = obj?.CurrentZone?.GetAreasOfSpot(obj);
             if (areas == null) return false;

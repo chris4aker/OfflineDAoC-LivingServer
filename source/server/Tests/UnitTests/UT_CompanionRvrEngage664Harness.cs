@@ -50,6 +50,7 @@ namespace DOL.GS.Tests
         private sealed class Scene : IDisposable
         {
             public RvrFightWorld World;
+            public Region Region;
             public StandInPlayer Player;
             public readonly List<GameBot> Group = new();
             public readonly List<GameBot> Enemies = new();
@@ -63,6 +64,7 @@ namespace DOL.GS.Tests
             var scene = new Scene { World = new RvrFightWorld(664, settings) };
             RvrFightWorld world = scene.World;
             Region region = world.AddRegion(regionId, regionId, "#664 flat field (rehearsal)");
+            scene.Region = region;
             scene.Player = StandInPlayer.Make(region, eRealm.Albion, eCharacterClass.Armsman, 22, "Leader");
             Assert.That(scene.Player.Enter(region, X, Y), Is.True, "the player entered");
             world.Track(scene.Player);
@@ -119,6 +121,40 @@ namespace DOL.GS.Tests
                 eachTick?.Invoke();
             }
             return engaged;
+        }
+
+        [Test]
+        public void TheGroupDoesNotOpenOnAnEnemyUnderItsRealmsGuards()
+        {
+            // Review of e0027909: the group charged an enemy bot under its keep's guards, and then the guards joined.
+            using Scene scene = Make(Thidranki, 1_500);
+            RvrFightRehearsal.RehearsalLord guard = RvrFightRehearsal.RehearsalLord.Make(scene.Region);
+            guard.Realm = eRealm.Midgard;
+            guard.Level = 30;
+            Assert.That(scene.World.Place(guard, scene.Region, X + 1_800, Y), Is.True, "guard placed, 300 past the enemy");
+            guard.Brain?.Stop();
+            scene.World.Tick();
+            bool engaged = ObserveFor(scene, 6);
+            Assert.Multiple(() =>
+            {
+                Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.Null, "no pick under the guards");
+                Assert.That(engaged, Is.False, "nobody charged it");
+                Assert.That(scene.World.ServiceErrors, Is.Zero, string.Join("\n", scene.World.Errors));
+            });
+        }
+
+        [Test]
+        public void TheGroupDoesNotOpenOnAnEnemyInASafeArea()
+        {
+            using Scene scene = Make(Thidranki, 1_500);
+            scene.Region.AddArea(new Area.Circle("#664 safe area (rehearsal)", X + 1_500, Y, 0, 400) { IsSafeArea = true });
+            bool engaged = ObserveFor(scene, 6);
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousWorldBotController.IsSafeArea(scene.Enemies[0]), Is.True, "the enemy stands in it");
+                Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.Null, "no pick in a safe area");
+                Assert.That(engaged, Is.False, "nobody charged it");
+            });
         }
 
         [Test]

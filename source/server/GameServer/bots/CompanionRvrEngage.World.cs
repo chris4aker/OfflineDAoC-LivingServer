@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Reflection;
 using DOL.AI.Brain;
+using DOL.GS.Keeps;
 using DOL.Logging;
 using DOL.GS.ServerProperties;
 
@@ -216,12 +217,17 @@ namespace DOL.GS
         private static void Decide(GamePlayer leader, Party party, int bound, bool defensive)
         {
             if (party.Pick != null && !StillGood(leader, party.Pick, bound)) party.Pick = null;
-            var targets = party.Ready;
+            // Never an enemy in a safe or bind area or under hostile guards (review of e0027909): the guards would join.
+            var targets = new List<GameLiving>(party.Ready.Count);
+            foreach (GameLiving target in party.Ready)
+                if (MayOpenOn(InSafeArea(target), UnderHostileGuards(leader, target)))
+                    targets.Add(target);
             var candidates = new List<CompanionRvrCandidate>(targets.Count);
             foreach (GameLiving target in targets)
                 candidates.Add(Candidate(leader, target, true));
             int current = party.Pick == null ? -1 : targets.IndexOf(party.Pick);
-            int chosen = Pick(candidates, bound, current);
+            // Opening a fight (no pick yet): a held enemy is never taken (review of e0027909: mez and run).
+            int chosen = Pick(candidates, bound, current, opening: party.Pick == null);
             GameLiving pick = chosen >= 0 ? targets[chosen] : null;
             if (pick == null)
             {
@@ -247,6 +253,20 @@ namespace DOL.GS
             party.Held = false;
             if (changed)
                 Note(leader, party, "engage", pick, candidates[chosen], decision, defensive, sized);
+        }
+
+        /// <summary>The enemy stands in a safe or bind area (as the autonomous scan's IsSafeArea).</summary>
+        private static bool InSafeArea(GameLiving target) => AutonomousWorldBotController.IsSafeArea(target);
+
+        /// <summary>A live keep or tower guard of a realm hostile to the player covers the enemy (GuardCover of its aggro range).</summary>
+        private static bool UnderHostileGuards(GamePlayer leader, GameLiving target)
+        {
+            foreach (GameNPC npc in target.GetNPCsInRadius((ushort)MaxGuardCover))
+                if (npc is GameKeepGuard guard && guard.IsAlive && guard.ObjectState == GameObject.eObjectState.Active &&
+                    guard.Realm != leader.Realm && guard.Realm != eRealm.None &&
+                    target.IsWithinRadius(guard, GuardCover((guard.Brain as IOldAggressiveBrain)?.AggroRange ?? 0)))
+                    return true;
+            return false;
         }
 
         /// <summary>The size-up facts: the player and his group within RvrSightSizeUp.AllyRadius against the enemy people the group has noticed.</summary>

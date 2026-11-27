@@ -670,7 +670,7 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("world", "check_los_during_cast", "Should we perform LoS checks during spell casts (players and gamebots; see check_los_during_npc_cast for other NPCs).", true)]
 		public static bool CHECK_LOS_DURING_CAST;
 
-		// Port of OpenDAoC-Core cbe604ce1 and 978b991fc (live): a monster, guard or pet lands what it started unless crowd
+		// A monster, guard or pet lands what it started unless crowd
 		// controlled. Gamebots keep the player's checks (NpcFinishRules).
 		[ServerProperty("world", "check_los_during_npc_cast", "Should NPCs other than gamebots perform LoS checks during spell casts.", false)]
 		public static bool CHECK_LOS_DURING_NPC_CAST;
@@ -2909,7 +2909,7 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_LEADER_FOCUS;
 
 		/// <summary>#664 step 1: the player's group picks and engages enemies on its own in RvR (CompanionRvrEngage).</summary>
-		[ServerProperty("bots", "bot_companion_rvr_engage", "Your group engages enemies on its own in RvR (#664): in the frontier, the battlegrounds and Darkness Falls, the bots in your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) notice enemy bots the way gamebots do (line of sight, sooner when the enemy fights, casts or is close, one of them seeing it is all of them seeing it, a stealther only close up) and attack them without waiting for you: within 2,000 of you on /aggressive and 1,000 on /defensive, healers and casters first. They size the fight up first and don't open on an enemy force they would clearly lose to, but always defend. Keep guards and lords are left alone unless you attack them, a bot set to passive, /bot stay or /bot hold stays out, and your own target still comes first. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_ENGAGE.", true)]
+		[ServerProperty("bots", "bot_companion_rvr_engage", "Your group engages enemies on its own in RvR (#664): in the frontier, the battlegrounds and Darkness Falls, the bots in your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) notice enemy bots the way gamebots do (line of sight, sooner when the enemy fights, casts or is close, one of them seeing it is all of them seeing it, a stealther only close up) and attack them without waiting for you: within 2,000 of you on /aggressive and 1,000 on /defensive, healers and casters first. They size the fight up first and don't open on an enemy force they would clearly lose to, but always defend. Keep guards and lords are left alone unless you attack them, and so is an enemy standing under its tower or keep guards or in a safe area. They never open a fight on an enemy you or a groupmate holds with a mez or root. A bot set to passive, /bot stay or /bot hold stays out, and your own target still comes first. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_ENGAGE.", true)]
 		public static bool BOT_COMPANION_RVR_ENGAGE;
 
 		/// <summary>About 4% of Crafter bots are beggars who live in their capital (AutonomousBeggars).</summary>
