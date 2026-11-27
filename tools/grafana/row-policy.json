@@ -88,6 +88,7 @@
     "AUTONOMOUS_GROUP_CAMP_BUDGET": "one per PvE party camp pick whose candidate list the travel budget cut (none when every camp fit; #569)",
     "AUTONOMOUS_GROUP_PULL_STALL": "one per stall of a grinding gamebot party (6 minutes with no fight or experience; #569)",
     "AUTONOMOUS_GROUP_PULL_STALL_END": "one at the end of a stall that reaches 11 minutes, when the party's task ends (#569)",
+    "PLAYER_KEEP_DEFENSE_SIZED": "one per player keep attack when its first alarm rallies the bot defense, then one each time the defense grows a tier (#523)",
     "COMPANION_LEADER_FOCUS": "change-only: one per bot of a player's group each time it turns onto a new player's target over another choice, in the frontier, battlegrounds and Darkness Falls",
     "AUTONOMOUS_KILL_XP": "every 25th autonomous gamebot PvE kill, at most 120 a minute (bot_kill_xp_sample_every)",
     "AUTONOMOUS_GOAL_ATTEMPT": "one per finished gamebot goal attempt (detail.log)",
