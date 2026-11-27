@@ -46,7 +46,7 @@ namespace DOL.GS
 			{
 				if (ad != null && (ad.AttackResult == eAttackResult.HitUnstyled || ad.AttackResult == eAttackResult.HitStyle))
 				{
-					CastSpell(HeatAoeProc, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells));
+					RaidBossMechanics.Cast(CastSpell(HeatAoeProc, SkillBase.GetSpellLine(GlobalSpellsLines.Mob_Spells)), this, "heatProc", HeatAoeProc); // #644 measurement only
 				}
 			}
 			base.OnAttackEnemy(ad);

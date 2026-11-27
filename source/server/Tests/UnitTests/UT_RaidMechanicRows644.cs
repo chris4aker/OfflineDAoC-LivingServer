@@ -205,6 +205,20 @@ namespace DOL.UnitTests
             ("Spindler Broodmother", "Galladoria/SpindlerBroodmother.cs", ["mezz"], ["adds"]),
             ("Queen Kula", "TuscarianGlacier/KingTuscarAndQueenKula.cs", ["cold", "frostMezz", "frostRoot"], []),
             ("King Tuscar", "TuscarianGlacier/KingTuscarAndQueenKula.cs", ["hammers", "thunder", "bleed"], []),
+            // The rest of #644's list (Account #2): the other raid bosses and the open-world bosses with scripted casts.
+            ("Apocalypse", "CaerSidi/ApocalypseAnd4Horsemans .cs", ["plague", "gtaoe", "rainOfFire"], []),
+            ("Orylle", "Krondon/OrylleAndOrshom.cs", ["fire"], []),
+            ("Dura'ek the Empowered", "AvalonCity/DuraekEmpowered.cs", ["heatProc"], []),
+            ("Aidon the Archwizard", "HallOfTheCorrupt/AidonTheArchwizard.cs",
+                ["fireShield", "dd", "copyFire", "copyIce", "copyAir", "copyEarth"], []),
+            ("Iarnvidiur", "IarnvidiurLair/Iarnvidiur.cs", ["bolt", "dot", "dd", "disease"], []),
+            ("Game Epic Aros", "Dodens/GameEpicAros.cs", ["bomb", "bigBomb", "debuff", "summon"], []),
+            ("Aros the Spiritmaster", "Dodens/SpiritmasterAros.cs", ["bomb", "debuff", "dd", "stun"], []),
+            ("Black Lady", "MarfachCaverns/BlackLady.cs", ["dd"], []),
+            ("Myrddraxis", "Fomor/Myrddraxis.cs",
+                ["disease", "hasteDebuff", "dot", "dd", "stun", "pbaoe", "dd2", "head2", "head3", "head4", "head5"], []),
+            ("Evern", "Evern.cs", ["fairyHeal"], []),
+            ("Maldahar the Glimmer Prince", "MaldaharTheGlimmerPrince.cs", ["lifeTap", "pbaoe"], []),
         ];
 
         private static IEnumerable<TestCaseData> BossCases() => Bosses.Select(b => new TestCaseData(b.Boss, b.Script, b.Casts, b.Spawns).SetName("Boss " + b.Boss));
