@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Zone-seam trip simulator: replays the autonomous gamebots' zone itinerary (AutonomousZoneItinerary.TryNextStep) over
 one region with the installed navmesh/seams.json, navmesh/roads.json and zone meshes, step by step, and reports each
-border crossing it picks and whether the trip turns back on itself (AUTONOMOUS_ZONE_SEAM_CYCLE: three reversals).
+border crossing it picks and whether the trip turns back on itself (AUTONOMOUS_ZONE_SEAM_CYCLE: two reversals since #570, AutonomousSeamReversalGuard.TriggerReversals).
 
 It mirrors the C# planner's order: the seam-area route, then the plain zone chains over listed borders, then a deferred
 area loop, then the same over every border; per border the listed crossings grouped by near-side ground (best two per
@@ -287,6 +287,6 @@ for hop in range(A.hops):
     if not step: print(f'  zone {z}: no step (the bot would try capital transit, a pocket escape or give the camp up)'); break
     rev = last is not None and reversal(last, step); reversals = reversals + 1 if rev else 0
     print(f'  hop {hop}: zone {z} route {">".join(map(str, route))}: {fmt(step[0])} > {fmt(step[1])}{"  REVERSAL" if rev else ""}')
-    if reversals >= 3: print(f'  AUTONOMOUS_ZONE_SEAM_CYCLE at {fmt(step[0])}'); break
+    if reversals >= 2: print(f'  AUTONOMOUS_ZONE_SEAM_CYCLE at {fmt(step[0])}'); break
     last = step; start = step[1]
 else: print('  hop limit')

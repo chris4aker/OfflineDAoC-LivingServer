@@ -53,7 +53,7 @@ namespace DOL.GS
         private const int EmptyCampReplanMilliseconds = 75_000;
         private const int DarknessFallsSoloRespawnHoldMilliseconds = 240_000;
         private const int EmptyGroupCampRoamMilliseconds = 180_000;
-        private const int RouteStallReplotMilliseconds = 12_000;
+        public const int RouteStallReplotMilliseconds = 12_000;
         private const int RouteRecoveryAttemptsBeforeNewGoal = AutonomousRouteRecoveryPolicy.MaximumLocalAttempts;
         private static readonly Logger Log = LoggerManager.Create(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly object ZonePointLock = new();
@@ -130,12 +130,14 @@ namespace DOL.GS
         private Vector3 _pathSegmentOrigin;
         private AutonomousZoneBoundaryRouting.Step? _resolvedBoundaryStep;
         private Zone _resolvedBoundaryZone;
-        // The last seam step handed out for the current goal and how many times the next one took it back (see IsReversal).
-        private AutonomousZoneBoundaryRouting.Step? _lastSeamStep;
-        private Vector3 _lastSeamGoal;
-        private long _lastSeamStepTick;
-        private int _seamReversals;
-        public const int MaximumSeamReversals = 3;
+        // The last seam step handed out for the current goal and how many times the next one took it back (#570:
+        // AutonomousSeamReversalGuard), where that step was planned (to forget it from the shared memory) and how long a
+        // group member waits after its own step was failed.
+        private AutonomousSeamReversalGuard.State _seamReversal;
+        private Zone _lastSeamPlanZone;
+        private Vector3 _lastSeamPlanStart;
+        private long _seamMemberHoldUntilTick;
+        public const int MaximumSeamReversals = AutonomousSeamReversalGuard.TriggerReversals;
         private Vector3? _patrolDestination;
         // RvR uses the same collision-safe/stable/zone route machinery as PvE,
         // but never treats the destination as a monster camp.
@@ -5323,6 +5325,16 @@ namespace DOL.GS
                 _routeRecoveryBaselineDistance = -1f;
             }
 
+            // #570: a group member whose seam step was failed waits out its hold; the progress clock restarts meanwhile so
+            // the wait never becomes stall recovery (which can end in AbandonCamp and drop the group's camp). A moved goal
+            // (the leader walked on) plans at once.
+            if (now < _seamMemberHoldUntilTick && !destinationChanged)
+            {
+                _lastRoutePosition = current;
+                _lastRouteProgressTick = now;
+                return true;
+            }
+
             if (_routeInterruptedByCombat)
             {
                 _routeInterruptedByCombat = false;
@@ -5465,9 +5477,9 @@ namespace DOL.GS
                 if (!_resolvedBoundaryStep.HasValue || _resolvedBoundaryZone != currentZone)
                 {
                     IPathfindingMgr nav = PathfindingProvider.Instance;
+                    Func<Zone, bool> allowedZones = zone => AutonomousRealmBoundary.Allows(bot.Realm, bot.CurrentRegionID, zone.ID);
                     if (!AutonomousZoneItinerary.TryNextStep(bot.CurrentRegion, currentZone, destinationZone,
-                            current, destination, nav, out var resolved,
-                            zone => AutonomousRealmBoundary.Allows(bot.Realm, bot.CurrentRegionID, zone.ID)))
+                            current, destination, nav, out var resolved, allowedZones))
                     {
                         if (TryPlanCapitalTransit(bot, destination))
                             return HandleCapitalTransit(bot);
@@ -5482,29 +5494,42 @@ namespace DOL.GS
                         return false;
                     }
                     long seamNow = GameLoop.GameLoopTime;
-                    if (_lastSeamStep is { } lastSeam && seamNow - _lastSeamStepTick < 5 * 60_000 &&
-                        Vector3.DistanceSquared(_lastSeamGoal, destination) < 500f * 500f &&
-                        AutonomousZoneBoundaryRouting.IsReversal(lastSeam, resolved))
-                        _seamReversals++;
-                    else
-                        _seamReversals = 0;
-                    _lastSeamStep = resolved;
-                    _lastSeamGoal = destination;
-                    _lastSeamStepTick = seamNow;
-                    if (_seamReversals >= MaximumSeamReversals)
+                    if (AutonomousSeamReversalGuard.ShouldFail(ref _seamReversal, resolved, destination, seamNow))
                     {
                         // Each zone sends the bot back to the other: it stands on ground that joins neither zone's main ground.
-                        // The planner never fails here, so the failure paths below never ran; take them now.
-                        _seamReversals = 0;
-                        _lastSeamStep = null;
+                        // The planner never fails here, so the failure paths below never ran; take them now (#570: at the
+                        // second reversal, and both legs leave the shared step memory so no other bot is handed them).
+                        AutonomousZoneItinerary.ForgetStep(bot.CurrentRegion, currentZone, destinationZone, current, destination, allowedZones);
+                        if (_lastSeamPlanZone != null && _lastSeamPlanZone != currentZone)
+                            AutonomousZoneItinerary.ForgetStep(bot.CurrentRegion, _lastSeamPlanZone, destinationZone,
+                                _lastSeamPlanStart, destination, allowedZones);
+                        _seamReversal = default;
+                        _lastSeamPlanZone = null;
                         _resolvedBoundaryStep = null;
                         _resolvedBoundaryZone = null;
                         StuckHotspots.NoteShared("seam", bot);
+                        bool memberOnly = AutonomousSeamReversalGuard.FailsMemberOnly(
+                            _groupDirective?.IsDynamic == true && bot.Group != null,
+                            _groupDirective?.Leader == null || _groupDirective.Leader == bot,
+                            AutonomousRealmRaid.GetView(bot.Group) != null);
                         Log.Warn($"AUTONOMOUS_ZONE_SEAM_CYCLE bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
                                  $"realm={GlobalConstants.RealmToName(bot.Realm)} region={bot.CurrentRegionID} zone={currentZone.ID} " +
                                  $"position={bot.X},{bot.Y},{bot.Z} goalZone={destinationZone.ID} goal={(int)destination.X},{(int)destination.Y},{(int)destination.Z} " +
                                  $"step={(int)resolved.Inside.X},{(int)resolved.Inside.Y}>{(int)resolved.Outside.X},{(int)resolved.Outside.Y} " +
-                                 $"activity=\"{bot.PersistentRecord?.Activity}\"");
+                                 $"reversals={AutonomousSeamReversalGuard.TriggerReversals} group={bot.Group?.MemberCount ?? 1} " +
+                                 $"outcome={(memberOnly ? "member_hold" : "give_up")} activity=\"{bot.PersistentRecord?.Activity}\"");
+                        if (memberOnly)
+                        {
+                            // The group keeps its shared camp: this member stops, waits and plans again.
+                            RejectPendingBoarding(bot, "A zone seam route that turns back on itself");
+                            bot.StopMovingOnPath();
+                            bot.StopMoving();
+                            _nextMoveOrderTick = seamNow + AutonomousSeamReversalGuard.MemberHoldMilliseconds;
+                            _seamMemberHoldUntilTick = _nextMoveOrderTick;
+                            _lastRoutePosition = current;
+                            _lastRouteProgressTick = seamNow;
+                            return false;
+                        }
                         if (TryPlanCapitalTransit(bot, destination))
                             return HandleCapitalTransit(bot);
                         if (TryEscapeTerminalRoutePocket(bot, current))
@@ -5513,6 +5538,8 @@ namespace DOL.GS
                         AbandonCamp(bot, "A zone seam route that turns back on itself");
                         return false;
                     }
+                    _lastSeamPlanZone = currentZone;
+                    _lastSeamPlanStart = current;
                     _resolvedBoundaryStep = resolved;
                     _resolvedBoundaryZone = currentZone;
                 }
@@ -6252,6 +6279,7 @@ namespace DOL.GS
             _capitalTransit = null;
             _resolvedBoundaryStep = null;
             _resolvedBoundaryZone = null;
+            _seamMemberHoldUntilTick = 0;
             _nextMoveOrderTick = 0;
             _issuedRouteDestination = null;
             _routeRecoveryWaypoint = null;
