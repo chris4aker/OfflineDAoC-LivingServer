@@ -570,6 +570,11 @@ namespace DOL.GS
                 if (!brain.HasAggro && !bot.IsAttacking && !bot.IsCasting &&
                     AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.RvR) && BotSiegeRuntime.HoldingPosition(bot))
                     return ExecuteRvr(brain,bot);
+                // #572 step 2: a ram crew member holds its seat against arrows and spells from the walls too; only a blow
+                // at melee reach sends it to the ordinary fight.
+                if (!bot.IsCasting && AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.RvR) &&
+                    AutonomousRamCrews.AtSeat(bot) && !BotSiegeRuntime.StruckInMeleeReach(bot))
+                    return ExecuteRvr(brain,bot);
 
                 bool postCombatRecovery = BotRestRecovery.NeedsOrContinuesRest(bot) && !BotRestRecovery.BlocksRest(bot);
                 if (brain.HasAggro || (bot.InCombat && !postCombatRecovery) || bot.IsAttacking)

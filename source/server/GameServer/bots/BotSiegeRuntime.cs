@@ -220,6 +220,22 @@ namespace DOL.GS
 
         public static bool HoldingPosition(GameBot bot) => AutonomousSiegeOwnership.All(bot).Any(w =>
             bot.IsWithinRadius(w, w.SIEGE_WEAPON_CONTROLE_DISTANCE));
+        /// <summary>#572 step 2 (port of True165 433740c6f): an enemy at melee reach is striking this bot
+        /// (AutonomousWorldBotController.IsSiegeOperatorThreat): the one thing that takes a ram crew member off its seat.
+        /// Wall archers and casters above do not.</summary>
+        public static bool StruckInMeleeReach(GameBot bot)
+        {
+            if (bot == null) return false;
+            foreach (GameNPC npc in bot.GetNPCsInRadius(350))
+                if (npc.IsAlive && npc.TargetObject == bot && npc.IsAttacking && npc.Realm != bot.Realm &&
+                    AutonomousWorldBotController.IsSiegeOperatorThreat(System.Numerics.Vector2.Distance(new(bot.X, bot.Y), new(npc.X, npc.Y)), npc.Z - bot.Z))
+                    return true;
+            foreach (GamePlayer player in bot.GetPlayersInRadius(350))
+                if (player.IsAlive && player.TargetObject == bot && player.IsAttacking && player.Realm != bot.Realm &&
+                    AutonomousWorldBotController.IsSiegeOperatorThreat(System.Numerics.Vector2.Distance(new(bot.X, bot.Y), new(player.X, player.Y)), player.Z - bot.Z))
+                    return true;
+            return false;
+        }
         public static bool Assigned(GameBot bot) => bot?.TempProperties.GetProperty<long>("SiegeJobUntil",0) > GameLoop.GameLoopTime;
     }
 }
