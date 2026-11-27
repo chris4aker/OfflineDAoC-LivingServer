@@ -510,6 +510,13 @@ namespace DOL.GS
         /// <summary>The pathfinder's last result (diagnostics).</summary>
         public PathfindingStatus LastPathfindingStatus => _pathfinder.PathfindingStatus;
 
+        /// <summary>#766: whether an autonomous path failure is pending, and its order's destination, without consuming it.</summary>
+        public bool PeekAutonomousPathFailure(out Vector3 destination)
+        {
+            destination = _autonomousPathFailureDestination;
+            return _autonomousPathFailurePending;
+        }
+
         public bool TryConsumeAutonomousPathFailure(out PathfindingStatus status, out Vector3 destination)
         {
             status = _autonomousPathFailureStatus;
