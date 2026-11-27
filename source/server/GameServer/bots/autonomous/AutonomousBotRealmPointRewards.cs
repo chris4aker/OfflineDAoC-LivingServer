@@ -137,6 +137,28 @@ public static class AutonomousBotRealmPointRewards
         return more;
     }
 
+    /// <summary>The share a player is paid by: its count, its damage percent, whether it is the mixed one, and the floor.</summary>
+    public readonly record struct ShareChoice(int Count, double Percent, bool Mixed, bool BattlegroundFloor);
+
+    /// <summary>
+    /// The one "only add" choice both kill paths make (Award for a gamebot victim, AwardPlayerOnPlayerKill for a player):
+    /// the players-only share (<paramref name="count"/>, <paramref name="damage"/>), or the mixed one with the group's
+    /// gamebots counted (<paramref name="mixedCount"/> null: none), whichever <see cref="UseMixedShare"/> allows. The
+    /// battleground 1-RP floor comes only with the mixed share.
+    /// </summary>
+    public static ShareChoice ChooseShare(in PvpKillValues values, int count, double damage, int? mixedCount, double mixedDamage,
+        double totalDamage, bool battleground, Func<long, long> experienceBonus)
+    {
+        double Percent(double d) => totalDamage <= 0 ? 0 : Math.Min(1.0, d / totalDamage);
+        var players = new ShareChoice(Math.Max(1, count), Percent(damage), false, false);
+        if (mixedCount is not int mixed)
+            return players;
+        var group = new ShareChoice(Math.Max(1, mixed), Percent(mixedDamage), true, battleground);
+        return UseMixedShare(PvpKillRewards(values, players.Count, true, players.Percent, experienceBonus),
+            PvpKillRewards(values, group.Count, true, group.Percent, experienceBonus, group.BattlegroundFloor))
+            ? group : players;
+    }
+
     /// <summary>
     /// A battleground victim worth a few realm points (a level 21 is worth 1) split over a player and his gamebots rounds
     /// to 0 each: with a real share the mixed share keeps at least 1 RP. Used only inside the mixed share, so it only adds.
@@ -351,16 +373,11 @@ public static class AutonomousBotRealmPointRewards
                             killedBot.CurrentZone?.IsBG == true && !Properties.ALLOW_BPS_IN_BGS, 0, 0);
                         GamePlayer awarded = player;
                         long Bonus(long b) => DOL.GS.ServerRules.AbstractServerRules.CalculateOutpostExperienceBonus(awarded, b);
-                        bool floor = battleground != null || InBattleground(killedBot);
-                        double mixedPercent = Math.Min(1.0, mixed.Damage / totalDamage);
-                        if (UseMixedShare(PvpKillRewards(values, contributorCount, true, damagePercent, Bonus),
-                                PvpKillRewards(values, mixed.Count, true, mixedPercent, Bonus, floor)))
-                        {
-                            contribution = mixed;
-                            damagePercent = mixedPercent;
-                            contributorCount = groupContributorCount = Math.Max(1, mixed.Count);
-                            battlegroundFloor = floor;
-                        }
+                        ShareChoice choice = ChooseShare(values, contributorCount, contribution.Damage, mixed.Count, mixed.Damage,
+                            totalDamage, battleground != null || InBattleground(killedBot), Bonus);
+                        contributorCount = groupContributorCount = choice.Count;
+                        damagePercent = choice.Percent;
+                        battlegroundFloor = choice.BattlegroundFloor;
                     }
                     realmPointsEarned = CalculateRealmPointReward(victimValue, killedBot.RealmLevel,
                         player.RealmPointsValue, player.RealmLevel, contributorCount,

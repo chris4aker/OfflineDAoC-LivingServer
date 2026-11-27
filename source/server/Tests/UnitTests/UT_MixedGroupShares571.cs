@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using DOL.AI.Brain;
+using DOL.Database;
 using DOL.GS;
 using NUnit.Framework;
 using R = DOL.GS.AutonomousBotRealmPointRewards;
@@ -20,6 +21,28 @@ namespace DOL.UnitTests;
 [TestFixture]
 public class UT_MixedGroupShares571
 {
+    // GameObject's static constructor fills the data quest cache from GameServer.Database: load an inert server first, so
+    // every test also runs alone (as UT_AnimistRewardParity does).
+    private sealed class InertServer : GameServer
+    {
+        protected override IObjectDatabase DataBaseImpl => EmptyDatabase;
+    }
+
+    private static readonly IObjectDatabase EmptyDatabase =
+        DispatchProxy.Create<IObjectDatabase, UT_UnobservedConcentration.EmptyReads>();
+
+    private GameServer _previousServer;
+
+    [OneTimeSetUp]
+    public void LoadServer()
+    {
+        _previousServer = GameServer.Instance;
+        GameServer.LoadTestDouble((InertServer)RuntimeHelpers.GetUninitializedObject(typeof(InertServer)));
+    }
+
+    [OneTimeTearDown]
+    public void RestoreServer() => GameServer.LoadTestDouble(_previousServer);
+
     private sealed class ShareBot : GameBot
     {
         private ShareBot() : base((OfflineWorldBotRecord)null) { }
@@ -91,6 +114,25 @@ public class UT_MixedGroupShares571
             Assert.That(alone, Is.EqualTo(new long[] { 900, 31, 1_000, 5_000 }), "RP, BP, XP, coins: the worked case");
             Assert.That(split, Is.EqualTo(new long[] { 506, 15, 500, 2_500 }), "what a parity split would have paid");
             Assert.That(R.UseMixedShare(alone, split), Is.False, "only add: he keeps 900 RP, full XP, BP and coins");
+        });
+    }
+
+    [Test]
+    public void BothKillPathsChooseTheSameWayAndAPlayerWhoDidItAllKeepsCountOne()
+    {
+        // The choice Award and AwardPlayerOnPlayerKill both make (ChooseShare): 100 of 100 beside one idle companion.
+        R.ShareChoice kept = R.ChooseShare(Level50, 1, 100, 2, 100, 100, false, null);
+        R.ShareChoice healer = R.ChooseShare(Level50, 1, 0, 2, 100, 100, true, null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(kept, Is.EqualTo(new R.ShareChoice(1, 1.0, false, false)), "count 1, his full share, no floor");
+            Assert.That(R.ChooseShare(Level50, 1, 70, 2, 100, 100, false, null), Is.EqualTo(new R.ShareChoice(1, 0.7, false, false)));
+            Assert.That(R.ChooseShare(Level50, 1, 100, 8, 100, 100, false, null).Count, Is.EqualTo(1), "seven idle bots");
+            Assert.That(healer, Is.EqualTo(new R.ShareChoice(2, 1.0, true, true)), "the healer takes the group share");
+            Assert.That(R.ChooseShare(Level50, 1, 100, null, 0, 100, true, null), Is.EqualTo(new R.ShareChoice(1, 1.0, false, false)),
+                "no mixed group: as before");
+            Assert.That(R.ChooseShare(Level50, 2, 50, null, 0, 100, false, null), Is.EqualTo(new R.ShareChoice(2, 0.5, false, false)),
+                "a group of players: as before");
         });
     }
 
@@ -236,9 +278,13 @@ public class UT_MixedGroupShares571
         Assert.Multiple(() =>
         {
             Assert.That(rules, Does.Contain("bool mixedShare = isWorthAnything && UseMixedShare();"), "a player victim");
-            Assert.That(rules, Does.Contain("if (!AutonomousBotRealmPointRewards.UseMixedShare("));
-            Assert.That(rewards, Does.Contain("if (UseMixedShare(PvpKillRewards(values, contributorCount, true, damagePercent, Bonus),"),
+            Assert.That(rules, Does.Contain("AutonomousBotRealmPointRewards.ShareChoice choice = AutonomousBotRealmPointRewards.ChooseShare(values,"));
+            Assert.That(rules, Does.Contain("if (!choice.Mixed)\n                    return false;\n                entityCountTotalDamagePair = mixed;"),
+                "the player victim's share is the choice's");
+            Assert.That(rewards, Does.Contain("ShareChoice choice = ChooseShare(values, contributorCount, contribution.Damage, mixed.Count, mixed.Damage,"),
                 "a gamebot victim");
+            Assert.That(rewards, Does.Contain("contributorCount = groupContributorCount = choice.Count;\n                        damagePercent = choice.Percent;"),
+                "the gamebot victim's share is the choice's");
             Assert.That(payGamebots, Does.Not.Contain("Mixed"), "the gamebots' own side is unchanged");
         });
     }

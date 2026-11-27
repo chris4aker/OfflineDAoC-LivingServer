@@ -2106,11 +2106,10 @@ namespace DOL.GS.ServerRules
                     !Properties.ALLOW_BPS_IN_BGS && killedPlayer.CurrentZone?.IsBG == true,
                     killedPlayer.MoneyValue, playerToAward.MoneyValue);
                 long Bonus(long b) => CalculateOutpostExperienceBonus(playerToAward, b);
-                bool floor = battleground != null || AutonomousBotRealmPointRewards.InBattleground(killedPlayer);
-                double Percent(EntityCountTotalDamagePair p) => Math.Min(1.0, p.Damage / playerTotalDamageReceived);
-                if (!AutonomousBotRealmPointRewards.UseMixedShare(
-                        AutonomousBotRealmPointRewards.PvpKillRewards(values, entityCountTotalDamagePair.Count, true, Percent(entityCountTotalDamagePair), Bonus),
-                        AutonomousBotRealmPointRewards.PvpKillRewards(values, mixed.Count, true, Percent(mixed), Bonus, floor)))
+                AutonomousBotRealmPointRewards.ShareChoice choice = AutonomousBotRealmPointRewards.ChooseShare(values,
+                    entityCountTotalDamagePair.Count, entityCountTotalDamagePair.Damage, mixed.Count, mixed.Damage,
+                    playerTotalDamageReceived, battleground != null || AutonomousBotRealmPointRewards.InBattleground(killedPlayer), Bonus);
+                if (!choice.Mixed)
                     return false;
                 entityCountTotalDamagePair = mixed;
                 return true;
