@@ -31,6 +31,12 @@
     "BOT_LED_RECRUIT": {
       "hosting": "the player hosting the group",
       "left": "who left (a name)"
+    },
+    "SERVER_HEAP_SNAPSHOT": {
+      "tool": "a file path under the user's profile folder (C:\\Users\\<name>\\.dotnet\\tools)",
+      "command": "holds the tool and output file paths",
+      "stdout": "dotnet-gcdump's own output: free text with the output file's full path",
+      "stderr": "dotnet-gcdump's own output: free text, exception messages with paths"
     }
   },
   "keep": {
