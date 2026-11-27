@@ -13,7 +13,7 @@ namespace DOL.GS.Tests.Rehearsal
     /// </summary>
     public sealed class RvrFightActives
     {
-        public sealed record Start(long At, GameLiving By, int On);
+        public sealed record Start(long At, GameBot By, int On);
 
         private static readonly (string Key, eEffect Effect, string Label)[] Tracked =
         {
