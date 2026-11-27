@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **758**; pending (#625, not on main yet): **0**; shipped by the pipeline: **726**.
+- Rows in code: **759**; pending (#625, not on main yet): **0**; shipped by the pipeline: **727**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -73,6 +73,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_CAMP_UNREACHABLE_PULLS` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `benched`, `bot`, `camp`, `class`, `id`, `level`, `region`, `target`, `x`, `y`, `z` | `bot` | - | 1.2.3 (#539): a party whose ranged pulls found no firing point on several of this camp's targets gives the camp up (the solo rule, AbandonCampAfterUnreachablePulls, has no party counterpart). |
 | `AUTONOMOUS_GROUP_CAMP_WAIT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CASUALTY_CLEARED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `localRecovery`, `returning` | - | - | - |
+| `AUTONOMOUS_GROUP_DANGER_RETREAT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.DangerRetreat.cs` | `alive`, `band`, `benchMinutes`, `camp`, `deaths`, `group`, `killer`, `killerLevel`, `phase`, `region`, `size`, `victimLevel`, `x`, `y` | - | - | - |
 | `AUTONOMOUS_GROUP_DUNGEON_ENTRY_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `dungeon`, `group`, `members`, `source` | - | - | - |
 | `AUTONOMOUS_GROUP_DUNGEON_READY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `dungeon`, `group`, `members` | - | - | - |
 | `AUTONOMOUS_GROUP_FORMATION` | server.log | **ships** | `bots/autonomous/AutonomousGroupFormationFollow.cs` | `atSlot`, `atSlotSlowLeader`, `averageTrail`, `borderChecks`, `borderHandOffs`, `borderWalks`, `casting`, `combat`, `held`, `noPath`, `noSpeed`, `other`, `otherZone`, `partial`, `seamRoutes`, `sitting`, `standingAtAim`, `standingAtLastWalkEnd`, `standingPct`, `standingTwice`, `standingWhileLeaderWalks`, `trailLeaderChecks`, `trailOver300Pct`, `walkingChecks` | - | - | - |
