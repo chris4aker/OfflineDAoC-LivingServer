@@ -1,5 +1,12 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using DOL.Database;
 using DOL.GS;
+using DOL.GS.PlayerClass;
 using NUnit.Framework;
 using static DOL.GS.BotBuffTargetPolicy;
 
@@ -144,5 +151,153 @@ namespace DOL.UnitTests
             Assert.That(KeeperCovers(true, true, true, true), Is.False, "fighting, in a player's group: this buffer casts it");
             Assert.That(KeeperCovers(true, true, true, false), Is.True, "fighting, autonomous group: unchanged");
         });
+    }
+    /// <summary>
+    /// #571 step 4, the live wiring (review of #760): real GameBot and Group objects (no constructor run), as
+    /// UT_PlayerBuffRefusals661 builds them. A /spawn companion in a player's group with a Wizard and an Armsman uses the
+    /// player-group rules; an autonomous gamebot caster keeps #491's.
+    /// </summary>
+    [TestFixture]
+    [NonParallelizable]
+    public class UT_CompanionBuffs571Live
+    {
+        private class ClassBot : GameBot
+        {
+            private ClassBot() : base((OfflineWorldBotRecord)null) { }
+            public ICharacterClass TestClass;
+            public override ICharacterClass CharacterClass => TestClass;
+        }
+
+        private static void SetField(Type type, object target, string name, object value)
+        {
+            FieldInfo field = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            Assert.That(field, Is.Not.Null, $"{type.Name}.{name}");
+            field.SetValue(target, value);
+        }
+
+        private static ClassBot Bot(ICharacterClass characterClass, byte level = 50)
+        {
+            var bot = (ClassBot)RuntimeHelpers.GetUninitializedObject(typeof(ClassBot));
+            bot.TestClass = characterClass;
+            SetField(typeof(GameNPC), bot, "m_brains", new ArrayList());
+            SetField(typeof(GameObject), bot, "m_level", level);
+            return bot;
+        }
+
+        private static GamePlayer Player() => (GamePlayer)RuntimeHelpers.GetUninitializedObject(typeof(GamePlayer));
+
+        private static Spell SpellOf(eSpellType type, byte concentration = 0) =>
+            new(new DbSpell { Type = type.ToString(), Target = "Realm", Value = 10, Name = type.ToString(),
+                Concentration = concentration }, 20);
+
+        /// <summary>A group of the given members (the first leads).</summary>
+        private static Group GroupOf(params GameLiving[] members)
+        {
+            var group = new Group(members[0]);
+            SetField(typeof(Group), group, "_groupMembers", members.ToList());
+            foreach (GameLiving member in members)
+                member.Group = group;
+            return group;
+        }
+
+        private static readonly IObjectDatabase EmptyDatabase = DispatchProxy.Create<IObjectDatabase, UT_UnobservedConcentration.EmptyReads>();
+
+        private sealed class Server : GameServer
+        {
+            protected override IObjectDatabase DataBaseImpl => EmptyDatabase;
+        }
+
+        private GameServer _previous;
+        private ClassBot _companion, _autonomous, _wizard, _armsman;
+
+        [OneTimeSetUp]
+        public void InitializeLogging() => DOL.Logging.LoggerManager.InitializeWithExplicitLibrary(null, DOL.Logging.LogLibrary.None);
+
+        [TearDown]
+        public void Cleanup() => GameServer.LoadTestDouble(_previous);
+
+        [SetUp]
+        public void Setup()
+        {
+            _previous = GameServer.Instance;
+            GameServer.LoadTestDouble((Server)RuntimeHelpers.GetUninitializedObject(typeof(Server)));
+            _wizard = Bot(new ClassWizard());
+            _armsman = Bot(new ClassArmsman());
+            // a /spawn helper of the player: IsPlayerCompanion
+            _companion = Bot(new ClassCleric());
+            GamePlayer player = Player();
+            SetField(typeof(GameBot), _companion, "<IsTemporaryGroupHelper>k__BackingField", true);
+            SetField(typeof(GameBot), _companion, "<Owner>k__BackingField", player);
+            SetField(typeof(GameBot), _companion, "<PlayerGroupLeader>k__BackingField", player);
+            GroupOf(player, _companion, _wizard, _armsman);
+            // an autonomous gamebot buffer in a gamebot group
+            _autonomous = Bot(new ClassCleric());
+            SetField(typeof(GameBot), _autonomous, "<IsAutonomousWorldBot>k__BackingField", true);
+            GroupOf(_autonomous, Bot(new ClassWizard()), Bot(new ClassArmsman()));
+        }
+
+        [Test]
+        public void TheCompanionUsesThePlayerGroupRulesAndTheGamebotDoesNot() => Assert.Multiple(() =>
+        {
+            Assert.That(UsesPlayerGroupRules(_companion), Is.True);
+            Assert.That(UsesPlayerGroupRules(_autonomous), Is.False);
+        });
+
+        [Test]
+        public void TheCompanionLeavesHasteOffTheWizard()
+        {
+            Spell haste = SpellOf(eSpellType.CombatSpeedBuff);
+            Assert.Multiple(() =>
+            {
+                Assert.That(Benefits(_companion, _wizard, haste), Is.False, "companion: no haste on a Wizard");
+                Assert.That(Benefits(_companion, _armsman, haste), Is.True, "companion: haste on the Armsman");
+                Assert.That(Benefits(_autonomous, _wizard, haste), Is.True, "autonomous gamebot: #491 rules, unchanged");
+                Assert.That(Benefits(_companion, _wizard, SpellOf(eSpellType.StrengthConstitutionBuff)), Is.True, "str/con keeps its constitution");
+            });
+        }
+
+        [Test]
+        public void TheArmsmanGetsStrConFirst()
+        {
+            eSpellType sc = eSpellType.StrengthConstitutionBuff;
+            Assert.Multiple(() =>
+            {
+                Assert.That(TargetRank(_armsman, sc, BuffPriorityAutomatic), Is.LessThan(TargetRank(_wizard, sc, BuffPriorityAutomatic)));
+                Assert.That(TargetRank(_wizard, sc, BuffPrioritySpellUsers), Is.LessThan(TargetRank(_armsman, sc, BuffPrioritySpellUsers)));
+                GameLiving first = BotBuffReservations<GameLiving>.ChooseBest(new GameLiving[] { _wizard, _armsman }, _ => true,
+                    target => TargetRank(target, sc, BuffPriorityAutomatic));
+                Assert.That(first, Is.SameAs(_armsman));
+            });
+        }
+
+        [Test]
+        public void TheCompanionUsesTheNewOrderAndTheGamebotKeeps491s() => Assert.Multiple(() =>
+        {
+            // base constitution before haste for the companion; #491 put haste (2) before every base buff (0)
+            Assert.That(Priority(_companion, eSpellType.ConstitutionBuff), Is.GreaterThan(Priority(_companion, eSpellType.CombatSpeedBuff)));
+            Assert.That(Priority(_autonomous, eSpellType.ConstitutionBuff), Is.LessThan(Priority(_autonomous, eSpellType.CombatSpeedBuff)));
+            Assert.That(Priority(_companion, eSpellType.PowerRegenBuff), Is.EqualTo(PlayerGroupPriority(eSpellType.PowerRegenBuff)));
+            Assert.That(Priority(_autonomous, eSpellType.PowerRegenBuff), Is.EqualTo(Priority(eSpellType.PowerRegenBuff)));
+        });
+
+        [Test]
+        public void TheBuffPriorityRowIsOfferedToARealmConcentrationBuffer()
+        {
+            ClassBot cleric = Bot(new ClassCleric());
+            cleric.MiscSpells = [SpellOf(eSpellType.StrengthConstitutionBuff, 33)];
+            cleric.InstantMiscSpells = [];
+            ClassBot noConc = Bot(new ClassCleric());
+            noConc.MiscSpells = [SpellOf(eSpellType.StrengthConstitutionBuff)];
+            ClassBot tooLow = Bot(new ClassCleric(), 10);
+            tooLow.MiscSpells = [SpellOf(eSpellType.StrengthConstitutionBuff, 33)];
+            ClassBot armsman = Bot(new ClassArmsman());
+            Assert.Multiple(() =>
+            {
+                Assert.That(CompanionOptions165.KnowsRealmConcentrationBuff(cleric), Is.True, "a str/con concentration buffer");
+                Assert.That(CompanionOptions165.KnowsRealmConcentrationBuff(noConc), Is.False, "a timed buff is not a concentration buff");
+                Assert.That(CompanionOptions165.KnowsRealmConcentrationBuff(tooLow), Is.False, "below the spell's level");
+                Assert.That(CompanionOptions165.KnowsRealmConcentrationBuff(armsman), Is.False, "no buffs at all");
+            });
+        }
     }
 }
