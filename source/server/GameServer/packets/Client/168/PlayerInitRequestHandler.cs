@@ -97,7 +97,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 
             // Owner 2026-10-30: an older save with more than 25 active quests keeps every one of them; the journal shows
             // 25 and the rest are listed as slots free. Said once per login instead of hiding them without a word.
-            if (firstEntry && Quests.QuestJournal.WaitingText(player.QuestList.Count) is string waitingQuests)
+            if (firstEntry && Quests.QuestJournal.WaitingText(player.ActiveQuestCount) is string waitingQuests)
                 player.Out.SendMessage(waitingQuests, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 
             if (player.PreviousLoginDate.AddMinutes(ServerProperties.Properties.NEAR_KEEP_RELOG_GRACE_PERIOD) < DateTime.Now)
