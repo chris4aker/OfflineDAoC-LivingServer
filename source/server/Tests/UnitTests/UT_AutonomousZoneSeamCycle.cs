@@ -58,6 +58,7 @@ public sealed class UT_AutonomousZoneSeamCycle
     }
 
     [Test]
-    public void ThreeReversalsInARowBreakTheCycle() =>
-        Assert.That(AutonomousWorldBotController.MaximumSeamReversals, Is.EqualTo(3));
+    public void TwoReversalsInARowBreakTheCycle() =>
+        // #570: A>B, B>A, A>B is enough (was three until 1.2.3).
+        Assert.That(AutonomousWorldBotController.MaximumSeamReversals, Is.EqualTo(2));
 }

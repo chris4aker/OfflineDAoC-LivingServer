@@ -65,6 +65,8 @@
   "bot_nolifer_buffbot_era_conc_range": "True",
   "bot_nolifer_buffbot_percent": "30",
   "bot_nolifer_buffbots": "True",
+  "bot_party_pull_stall_end": "True",
+  "bot_party_pull_stall_log": "True",
   "bot_personalities_enabled": "True",
   "bot_place_knowledge": "True",
   "bot_player_guild_economy": "True",

@@ -1325,42 +1325,72 @@ public static partial class AutonomousBotGroupCoordinator
     /// never gated here.</summary>
     /// <param name="raidDungeonTrash">The corridor blocker is an ordinary monster inside the bot's own raid dungeon
     /// (AutonomousDungeonPolicy.ExpeditionMayClearCorridor).</param>
-    public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker = false, bool raidDungeonTrash = false)
+    public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker = false, bool raidDungeonTrash = false) =>
+        CanInitiateNewPull(bot, corridorBlocker, raidDungeonTrash, out _);
+
+    /// <summary>
+    /// CanInitiateNewPull with the first failing gate named (AutonomousPartyPullStall's Gate* constants), same gates in
+    /// the same order (#569, from True165 0e0a397). The bool overload wraps this one, so the gate the stall monitor logs
+    /// can never drift from the real one. The names are constants: the pull gate allocates nothing.
+    /// </summary>
+    public static bool CanInitiateNewPull(GameBot bot, bool corridorBlocker, bool raidDungeonTrash, out string gate)
     {
+        gate = AutonomousPartyPullStall.GateOpen;
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup || bot.Group == null)
             return true;
         using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
         {
             Group group = bot.Group;
             if (group == null || !Sessions.TryGetValue(group, out Session session))
+            {
+                gate = AutonomousPartyPullStall.GateNoSession;
                 return false;
+            }
             // Waiting expedition parties may defend themselves, but cannot
             // initiate a fresh pull ahead of the staging/landing order.
             if (AutonomousRealmRaid.GetTravelView(bot) is { } expedition)
             {
                 if (!AutonomousDungeonPolicy.ExpeditionMayClearCorridor(expedition.Hold, expedition.Crossing, corridorBlocker,
-                        raidDungeonTrash)) return false;
+                        raidDungeonTrash))
+                {
+                    gate = AutonomousPartyPullStall.GateExpeditionHold;
+                    return false;
+                }
                 // Only locally present living members take part in puller
                 // selection. A casualty or reinforcement across the world is
                 // not a veto on every surviving party's combat.
                 var expeditionPuller = RaidPullerFor(session, BotMembers(group), bot);
-                return bot == expeditionPuller && bot.HealthPercent >= 70;
+                bool expeditionReady = bot == expeditionPuller && bot.HealthPercent >= 70;
+                if (!expeditionReady) gate = AutonomousPartyPullStall.GateExpeditionPuller;
+                return expeditionReady;
             }
             GameBot[] members = BotMembers(group);
             GameBot leader = ChooseLeader(session, members);
             GameBot puller = ChoosePuller(session, members);
-            if (leader == null) return false;
+            if (leader == null)
+            {
+                gate = AutonomousPartyPullStall.GateNoLeader;
+                return false;
+            }
             bool combatActor = AutonomousRvrStaging.UsesIndependentCombatActors(session.ObjectiveKind) || bot == puller;
-            return !IsAssemblyPhase(session.Phase) && !session.Recovery.IsRegrouping && combatActor &&
-                !session.Recovery.HasCasualty(RecoveryMembers(session, members, false)) &&
-                !session.RecoveringBetweenPulls && MembersReadyForPull(members) &&
-                // Bot-led groups: the hosted player near the camp, alive, and up on health and power like the rest.
-                BotLedGroups.ViewOf(group)?.BlocksPull != true &&
-                (session.ObjectiveKind != eAutonomousObjectiveKind.GroupPve ||
-                    HasActivePveComposition(session, members)) &&
-                members.Length >= 2 && members.All(member => !member.IsOnStableMasterRoute &&
-                    member.CurrentRegionID == leader.CurrentRegionID && member.GetDistanceTo(leader) <=
-                        PullCohesionRadius(corridorBlocker, bot.CurrentZone?.IsDungeon == true));
+            if (IsAssemblyPhase(session.Phase)) gate = AutonomousPartyPullStall.GateAssembly;
+            else if (session.Recovery.IsRegrouping) gate = AutonomousPartyPullStall.GateRegrouping;
+            else if (!combatActor) gate = AutonomousPartyPullStall.GateNotPuller;
+            else if (session.Recovery.HasCasualty(RecoveryMembers(session, members, false))) gate = AutonomousPartyPullStall.GateCasualty;
+            else if (session.RecoveringBetweenPulls) gate = AutonomousPartyPullStall.GateRecovering;
+            else if (!MembersReadyForPull(members)) gate = AutonomousPartyPullStall.GateResources;
+            // Bot-led groups: the hosted player near the camp, alive, and up on health and power like the rest.
+            else if (BotLedGroups.ViewOf(group)?.BlocksPull == true) gate = AutonomousPartyPullStall.GateHostedPlayer;
+            else if (session.ObjectiveKind == eAutonomousObjectiveKind.GroupPve && !HasActivePveComposition(session, members))
+                gate = AutonomousPartyPullStall.GateComposition;
+            else if (members.Length < 2) gate = AutonomousPartyPullStall.GateSize;
+            else if (!members.All(member => !member.IsOnStableMasterRoute &&
+                         member.CurrentRegionID == leader.CurrentRegionID && member.GetDistanceTo(leader) <=
+                             PullCohesionRadius(corridorBlocker, bot.CurrentZone?.IsDungeon == true)))
+                gate = AutonomousPartyPullStall.GatePlacement;
+            else
+                return true;
+            return false;
         }
     }
 
@@ -2345,6 +2375,10 @@ public static partial class AutonomousBotGroupCoordinator
             if (!session.RecoveringBetweenPulls)
                 session.CombatObserved = false;
         }
+        // #569 (True165 0e0a397): a grinding party with no fight or experience is logged at 6 minutes, naming the pull
+        // gate, and ended cleanly at 11, before the 15-minute stuck watchdog teleport (AutonomousPartyPullStall).
+        if (!ObservePartyPullStall(session, members, groupCombatActive))
+            return false;
 
         if (session.Phase == "Meeting up" && !(session.ObjectiveKind == eAutonomousObjectiveKind.RvR &&
             AutonomousRvrEventLayer.IsEventForce(session.Id, GameLoop.GameLoopTime)))
