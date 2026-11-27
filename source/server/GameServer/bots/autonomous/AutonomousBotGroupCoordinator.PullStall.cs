@@ -99,9 +99,11 @@ public static partial class AutonomousBotGroupCoordinator
         if (action == PullStallAction.Log)
         {
             state.StallLogged = true;
+            // A grinding gamebot party had no group fight and no experience for 6 minutes, and gate names what holds its pull.
             Log.Info("AUTONOMOUS_GROUP_PULL_STALL " + JsonSerializer.Serialize(fields));
             return true;
         }
+        // The stalled party reached 11 minutes, so its task ends cleanly here before the 15-minute stuck watchdog teleport.
         Log.Warn("AUTONOMOUS_GROUP_PULL_STALL_END " + JsonSerializer.Serialize(fields));
         FinishGroupTask(session, $"Pull stalled {minutes} minutes at {campId}: {gate}");
         return false;
