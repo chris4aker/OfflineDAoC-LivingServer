@@ -3678,8 +3678,16 @@ namespace DOL.AI.Brain
 
                 if (protectionTarget != null && TryPriorityTaunt(protectionTarget))
                 {
-                    Body.StopAttack();
-                    return;
+                    // An instant taunt (a Paladin's chant taunt) keeps the swing going like any instant; one with a cast
+                    // time still stops it (#571 step 5).
+                    if (!BotHybridMeleePolicy.ContinueMeleeAfterInstant(!rangedCaster, IsMinstrelBot,
+                            BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving), true, Body.IsCasting,
+                            Body.castingComponent?.SpellHandler?.Spell, Body.castingComponent?.HasPendingSkillRequests == true,
+                            PendingSpellOrNull()))
+                    {
+                        Body.StopAttack();
+                        return;
+                    }
                 }
 
                 // A caster steps aside now and then right after a cast ended, never during one (BotBrain.CombatMovement).
@@ -3715,7 +3723,15 @@ namespace DOL.AI.Brain
                 bool continueMinstrelMelee = MinstrelBotCombatPolicy.ContinueAfterInstantDamage(
                     UsesMinstrelHybridCombat, spellAction, Body.IsCasting,
                     Body.castingComponent?.SpellHandler?.Spell, hasPendingSpell, pendingSpell);
-                if (spellAction && !continueSavageMelee && !preserveRangedDraw && !continueMinstrelMelee)
+                // Any other melee bot whose spell this turn was an instant keeps its swing and chase too: the engine stops
+                // melee only for a cast with a cast time (#571 step 5).
+                // The Minstrel keeps its own rule above; crowd control on a player-like enemy stops the swing (review of #777).
+                bool continueHybridMelee = BotHybridMeleePolicy.ContinueMeleeAfterInstant(
+                    !rangedCaster, IsMinstrelBot, BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving), spellAction,
+                    Body.IsCasting,
+                    Body.castingComponent?.SpellHandler?.Spell, hasPendingSpell, pendingSpell);
+                if (spellAction && !continueSavageMelee && !preserveRangedDraw && !continueMinstrelMelee &&
+                    !continueHybridMelee)
                 {
                     Body.StopAttack();
                 }
@@ -4328,6 +4344,16 @@ namespace DOL.AI.Brain
                 .ThenByDescending(candidate => candidate.TargetObject is GameBot bot && bot.Brain is BotBrain { IsHealer: true })
                 .ThenBy(candidate => Body.GetDistanceTo(candidate))
                 .FirstOrDefault();
+        }
+
+        private bool IsMinstrelBot => BotBody?.CharacterClass?.ID == (int)eCharacterClass.Minstrel;
+
+        private Spell PendingSpellOrNull()
+        {
+            Spell pending = null;
+            if (Body.castingComponent?.HasPendingSkillRequests == true)
+                Body.castingComponent.TryPeekPendingSpell(out pending);
+            return pending;
         }
 
         private bool TryPriorityTaunt(GameLiving target)
