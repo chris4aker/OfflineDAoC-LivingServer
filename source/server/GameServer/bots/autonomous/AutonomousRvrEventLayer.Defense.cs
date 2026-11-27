@@ -307,6 +307,7 @@ namespace DOL.GS
                         DefenseWarnings[pair.Key] = new(alarm.Player, text, now + 15_000, now);
                         if (DefenseHornSound > 0) alarm.Player.Out.SendSoundEffect((ushort)DefenseHornSound, 0, 0, 0, 0, 0);
                         DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer)).Info(
+                            // The size of the bot defense against a player's keep attack, where force= counts the player's group and the attacking realm's gamebots at the keep and roster= the whole group.
                             $"PLAYER_KEEP_DEFENSE_SIZED event={pair.Key} keep=\"{alarm.Keep.Name}\" force={seen} roster={ForceSize(alarm.Player)} scale={active.DefenseScale} " +
                             $"defenders={ResponseCap(true, active.DefenseScale)} helpers={ResponseCap(false, active.DefenseScale)} first={firstAlarm}");
                     }
