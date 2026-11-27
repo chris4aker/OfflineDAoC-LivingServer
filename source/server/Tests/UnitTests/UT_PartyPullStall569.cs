@@ -95,22 +95,25 @@ namespace DOL.UnitTests
         });
 
         [Test]
-        public void TheLogNamesTheMemberThatHoldsThePull() => Assert.Multiple(() =>
+        public void TheLogNamesTheMemberThatHoldsThePull()
         {
-            Assert.That(AutonomousPartyPullStall.ResourceGate(85, 40, 100, true), Is.EqualTo("85/40/100"));
-            Assert.That(AutonomousPartyPullStall.ResourceGate(50, 0, 100, false), Is.EqualTo("50/-/100"));
-            Assert.That(AutonomousPartyPullStall.ResourceGate(95, 90, 90, true), Is.Null);
-            const int cohesion = 500;
-            Assert.That(AutonomousPartyPullStall.PlacementGate(true, true, 10, cohesion), Is.EqualTo("riding"));
-            Assert.That(AutonomousPartyPullStall.PlacementGate(false, false, int.MaxValue, cohesion), Is.EqualTo("region"));
-            Assert.That(AutonomousPartyPullStall.PlacementGate(false, true, 900, cohesion), Is.EqualTo("cohesion 900"));
-            Assert.That(AutonomousPartyPullStall.PlacementGate(false, true, 400, cohesion), Is.Null);
-            // the row ships: bot names only under the keys the pipeline drops
             string stall = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.PullStall.cs");
-            Assert.That(stall, Does.Contain("bot = puller?.Name ?? string.Empty,"));
-            Assert.That(stall, Does.Contain("name = holder,"));
-            Assert.That(stall, Does.Not.Contain("puller = puller"));
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousPartyPullStall.ResourceGate(85, 40, 100, true), Is.EqualTo("85/40/100"));
+                Assert.That(AutonomousPartyPullStall.ResourceGate(50, 0, 100, false), Is.EqualTo("50/-/100"));
+                Assert.That(AutonomousPartyPullStall.ResourceGate(95, 90, 90, true), Is.Null);
+                const int cohesion = 500;
+                Assert.That(AutonomousPartyPullStall.PlacementGate(true, true, 10, cohesion), Is.EqualTo("riding"));
+                Assert.That(AutonomousPartyPullStall.PlacementGate(false, false, int.MaxValue, cohesion), Is.EqualTo("region"));
+                Assert.That(AutonomousPartyPullStall.PlacementGate(false, true, 900, cohesion), Is.EqualTo("cohesion 900"));
+                Assert.That(AutonomousPartyPullStall.PlacementGate(false, true, 400, cohesion), Is.Null);
+                // the row ships: bot names only under the keys the pipeline drops
+                Assert.That(stall, Does.Contain("bot = puller?.Name ?? string.Empty,"));
+                Assert.That(stall, Does.Contain("name = holder,"));
+                Assert.That(stall, Does.Not.Contain("puller = puller"));
+            });
+        }
 
         [Test]
         public void BothSwitchesDefaultOnAndShipOn()
@@ -165,6 +168,8 @@ namespace DOL.UnitTests
             Assert.That(stall, Does.Contain("Log.Info(\"AUTONOMOUS_GROUP_PULL_STALL \" + JsonSerializer.Serialize(fields));"));
             Assert.That(stall, Does.Contain("Log.Warn(\"AUTONOMOUS_GROUP_PULL_STALL_END \" + JsonSerializer.Serialize(fields));"));
             Assert.That(stall, Does.Contain("FinishGroupTask(session, $\"Pull stalled {minutes} minutes at {campId}: {gate}\");"));
+            Assert.That(GroupEndedLog.Classify("Pull stalled 11 minutes at camp-1: resources"), Is.EqualTo(("stalled", "pull")),
+                "GROUP_ENDED gives the stall its own reason");
         }
     }
 }
