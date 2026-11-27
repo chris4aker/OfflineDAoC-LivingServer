@@ -1276,7 +1276,10 @@ public static class AutonomousChatFieldTalk
         KeepAttack attack = Array.Find(w.Attacks ?? Array.Empty<KeepAttack>(), a => string.Equals(a.Keep, full, StringComparison.OrdinalIgnoreCase));
         bool saw = attack != null && f.SawAttacks?.Contains(full, StringComparer.OrdinalIgnoreCase) == true;
         eRealm enemyRealm = saw && attack.Attacker != f.Realm ? attack.Attacker : eRealm.None;
-        int count = enemyRealm != eRealm.None ? IncCount(attack.Count, random.NextDouble()) : 0;
+        // The two draws the old made-up realm and count took, kept so every seeded chat simulation keeps its random stream.
+        _ = random.Next(2);
+        double countRoll = random.Next(20) / 20.0;
+        int count = enemyRealm != eRealm.None ? IncCount(attack.Count, countRoll) : 0;
         string[] omw = Pool("omw", "omw", "k", "how many?", "porting", $"omw {keep}", $"omw to {keep}", $"porting to {keep}");   // promise: gated (SayThreadLine)
         var ways = new List<V>(12)
         {
