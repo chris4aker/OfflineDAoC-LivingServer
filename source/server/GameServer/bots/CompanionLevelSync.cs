@@ -3,8 +3,7 @@ using System;
 namespace DOL.GS
 {
     /// <summary>
-    /// /spawn helpers keep up with their owner's level while grouped with him (issue #571 step 6; ported from DetShaft
-    /// OfflineDAoC-LivingServer 56972bb08 / 6ce49e33b, GPL-3.0). Helpers earn no experience (SuppressLootAndProgress),
+    /// /spawn helpers keep up with their owner's level while grouped with him (issue #571 step 6). Helpers earn no experience (SuppressLootAndProgress),
     /// so before this a helper spawned at 20 stayed 20 until it was respawned, and the only catch-up was the one-time
     /// endgame upgrade when the owner reached 50. GameBot.TryMatchOwnerLevel applies these rules on the helper's idle
     /// turn. Hired companions, /bot companions, autonomous gamebots and the Epic Special Forces never use them.

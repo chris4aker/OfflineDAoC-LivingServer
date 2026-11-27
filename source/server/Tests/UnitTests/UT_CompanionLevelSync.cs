@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace DOL.UnitTests
 {
-    // Issue #571 step 6 (DetShaft 56972bb08): /spawn helpers level with their owner.
+    // Issue #571 step 6: /spawn helpers level with their owner.
     [TestFixture]
     public class UT_CompanionLevelSync
     {

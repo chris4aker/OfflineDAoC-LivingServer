@@ -5337,7 +5337,7 @@ namespace DOL.GS
             }
         }
 
-        // Level sync for /spawn helpers (#571 step 6, DetShaft 56972bb08): when the
+        // Level sync for /spawn helpers (#571 step 6): when the
         // owner out-levels a helper in his group, the helper catches up to his
         // level, with its stats, specs, spells, styles, generated kit and pet
         // brought up to date. Upward only. It also keeps the one-time endgame kit
