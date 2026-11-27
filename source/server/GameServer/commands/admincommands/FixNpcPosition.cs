@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
+using DOL.AI.Brain;
 using DOL.Logging;
 using static DOL.GS.GameNPC;
 
@@ -11,7 +12,7 @@ namespace DOL.GS.Commands
         "&fixnpcspawn",
         ePrivLevel.Admin,
         "Fix NPC positions and spawn points using navmesh.",
-        "/fixnpcspawn [target|zone|region|world] <SnapDown> <SnapUp> <DryRun(true(default)/false)>",
+        "/fixnpcspawn [target|visible|zone|region|world] <SnapDown> <SnapUp> <DryRun(true(default)/false)>",
         "/fixnpcspawn goto <index> - Teleport to a fixed NPC from the last run",
         "/fixnpcspawn result <page|clear> - Print results (2k per page) or clear memory")]
     public class FixNpcSpawnCommandHandler : AbstractCommandHandler, ICommandHandler
@@ -44,8 +45,9 @@ namespace DOL.GS.Commands
             }
 
             string scope = subCommand;
-            float snapDown = 512f;
-            float snapUp = 512f;
+            // Port of OpenDAoC-Core b2770fa85: larger default snap distances.
+            float snapDown = 4096f;
+            float snapUp = 4096f;
             bool dryRun = true;
 
             if (args.Length > 2)
@@ -147,31 +149,40 @@ namespace DOL.GS.Commands
 
         private List<GameNPC> GetNpcsByScope(GameClient client, string scope)
         {
+            GamePlayer player = client.Player;
             List<GameNPC> list = GameLoop.GetListForTick<GameNPC>();
 
             switch (scope)
             {
                 case "target":
                 {
-                    if (client.Player.TargetObject is GameNPC targetNpc)
+                    if (player.TargetObject is GameNPC targetNpc)
                         list.Add(targetNpc);
                     else
                         DisplayMessage(client, "Your target is not an NPC.");
 
                     break;
                 }
+                case "visible":
+                {
+                    // Port of OpenDAoC-Core 29a935897.
+                    foreach (GameNPC npc in player.GetNPCsInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                        list.Add(npc);
+
+                    break;
+                }
                 case "zone":
                 {
-                    if (client.Player.CurrentZone != null)
-                        list.AddRange(GetZoneNpcs(client.Player.CurrentZone));
+                    if (player.CurrentZone != null)
+                        list.AddRange(GetZoneNpcs(player.CurrentZone));
 
                     break;
                 }
                 case "region":
                 {
-                    if (client.Player.CurrentRegion != null)
+                    if (player.CurrentRegion != null)
                     {
-                        foreach (Zone zone in client.Player.CurrentRegion.Zones)
+                        foreach (Zone zone in player.CurrentRegion.Zones)
                             list.AddRange(GetZoneNpcs(zone));
                     }
 
@@ -189,7 +200,7 @@ namespace DOL.GS.Commands
                 }
                 default:
                 {
-                    DisplayMessage(client, $"Unknown scope '{scope}'. Use: target, zone, region, world.");
+                    DisplayMessage(client, $"Unknown scope '{scope}'. Use: target, visible, zone, region, world.");
                     return null;
                 }
             }
@@ -206,6 +217,7 @@ namespace DOL.GS.Commands
         {
             int processed = 0;
             int fixedCount = 0;
+            bool hasScriptedNpc = false;
 
             foreach (GameNPC npc in npcs)
             {
@@ -223,6 +235,9 @@ namespace DOL.GS.Commands
 
                 if (result != null)
                 {
+                    if (result.IsScripted)
+                        hasScriptedNpc = true;
+
                     if (fixedCount < PAGE_SIZE)
                         DisplayResult(client, fixedCount, result);
 
@@ -235,6 +250,10 @@ namespace DOL.GS.Commands
 
             if (fixedCount > 0)
                 DisplayMessage(client, $"Total results: {_results.Count}. Type '/fixnpcspawn result <page>' to view details or '/fixnpcspawn goto <index>' to teleport.");
+
+            // Port of OpenDAoC-Core ec9cfe94d.
+            if (hasScriptedNpc)
+                DisplayMessage(client, "Notice: Scripted NPCs will not be moved by this command and must be fixed in the code.");
         }
 
         private static FixResult CheckAndFixNpc(
@@ -248,10 +267,8 @@ namespace DOL.GS.Commands
             Vector3 pos = new(spawnPoint.X, spawnPoint.Y, spawnPoint.Z);
             EDtPolyFlags[] filters = PathfindingProvider.Instance.DefaultFilters;
 
-            // Check if already valid.
-            if (PathfindingProvider.Instance.GetClosestPoint(zone, pos, filters).HasValue)
-                return null;
-
+            // Port of OpenDAoC-Core 1a3b12ba7: GetClosestPoint finds a point within a wide box, so it called spawn points
+            // well off the mesh valid. A spawn point is now left alone only when the snapped point is under 16 units away.
             Vector3? fixedPos = CalculateFixedPosition(zone, pos, snapMaxDistanceDown, snapMaxDistanceUp, filters);
 
             if (!fixedPos.HasValue)
@@ -259,7 +276,11 @@ namespace DOL.GS.Commands
 
             float distance = (pos - fixedPos.Value).Length();
 
-            if (!dryRun)
+            if (IsAlreadyOnMesh(distance))
+                return null;
+
+            // Port of OpenDAoC-Core ec9cfe94d: a scripted NPC is listed (tagged) but never moved; its script places it.
+            if (!dryRun && !npc.LoadedFromScript)
             {
                 npc.MoveInRegion(
                     zone.ZoneRegion.ID,
@@ -278,13 +299,15 @@ namespace DOL.GS.Commands
                 OriginalPos = pos,
                 NewPos = fixedPos.Value,
                 Zone = zone,
-                Distance = distance
+                Distance = distance,
+                IsScripted = npc.LoadedFromScript
             };
         }
 
         private void DisplayResult(GameClient client, int index, FixResult result)
         {
-            DisplayMessage(client, $"[{index}]: {result.Npc.Name} (Dist: {result.Distance:F1}) in {result.Zone.Description}");
+            string scriptedTag = result.IsScripted ? " [Scripted]" : string.Empty;
+            DisplayMessage(client, $"[{index}]:{scriptedTag} {result.Npc.Name} (Dist: {result.Distance:F1}) in {result.Zone.Description}");
         }
 
         private static Vector3? CalculateFixedPosition(
@@ -294,20 +317,40 @@ namespace DOL.GS.Commands
             float snapMaxDistanceUp,
             EDtPolyFlags[] filters)
         {
-            Vector3? fixedPos = null;
+            Vector3? posDown = null;
+            Vector3? posUp = null;
 
             if (snapMaxDistanceDown > 0)
-                fixedPos = PathfindingProvider.Instance.GetFloorBeneath(zone, pos, snapMaxDistanceDown, filters);
+                posDown = PathfindingProvider.Instance.GetFloorBeneath(zone, pos, snapMaxDistanceDown, filters);
 
-            if (!fixedPos.HasValue && snapMaxDistanceUp > 0)
-                fixedPos = PathfindingProvider.Instance.GetRoofAbove(zone, pos, snapMaxDistanceUp, filters);
+            if (snapMaxDistanceUp > 0)
+                posUp = PathfindingProvider.Instance.GetRoofAbove(zone, pos, snapMaxDistanceUp, filters);
 
-            return fixedPos;
+            return ChooseSnapPoint(pos, posDown, posUp);
+        }
+
+        /// <summary>A snapped point this close to the spawn point means the spawn point is already on the mesh.</summary>
+        public static bool IsAlreadyOnMesh(float distance) => distance < 16f;
+
+        /// <summary>
+        /// Port of OpenDAoC-Core 9ff5d3c7e: with a floor below and a roof above, take the nearer one (the floor on a tie)
+        /// instead of always the floor.
+        /// </summary>
+        public static Vector3? ChooseSnapPoint(Vector3 pos, Vector3? posDown, Vector3? posUp)
+        {
+            if (posDown.HasValue && posUp.HasValue)
+                return Vector3.DistanceSquared(pos, posDown.Value) <= Vector3.DistanceSquared(pos, posUp.Value) ? posDown : posUp;
+
+            return posDown ?? posUp;
         }
 
         private static bool ShouldNpcBeExcluded(GameNPC npc)
         {
+            // Living Server: gamebots and companion bots (GameBot) and pets are not spawn points; they move on their own
+            // and must never be saved into the mob table by this command.
             return npc == null ||
+                npc is IGamePlayer ||
+                npc.Brain is IControlledBrain ||
                 (npc.Flags & (eFlags.FLYING | eFlags.SWIMMING)) != 0 ||
                 npc is GameConsignmentMerchant ||
                 npc.InHouse ||
@@ -329,6 +372,7 @@ namespace DOL.GS.Commands
             public Vector3 NewPos;
             public Zone Zone;
             public float Distance;
+            public bool IsScripted;
         }
     }
 }
