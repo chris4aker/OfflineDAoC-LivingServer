@@ -154,7 +154,7 @@ public static class AutonomousStableRoutePlanner
         double direct = Distance(startX, startY, goalX, goalY) / walkSpeed;
         if (legs == null || legs.Count == 0)
             return null;
-        // #570 step 2 (port of True165 AutonomousStableRoutePlanner, owner items P3 and 18 there): an unusable leg (a
+        // #570 step 2: an unusable leg (a
         // landing beside a learned danger spot) is never ridden, first or later; finishing on foot through a spot (from a
         // landing, or the whole way) is not forbidden, it only costs more, so a safer finish wins when it is at most the
         // penalty slower. The reported estimate stays the real travel time.

@@ -6,23 +6,21 @@ namespace DOL.GS;
 
 /// <summary>
 /// #570 step 2: the learned danger spots (<see cref="AutonomousPveBossDanger"/>) also steer a gamebot's town and horse
-/// trips, not only its camps. Port of the trip rules of OfflineDAoC-True165 (GPL-3.0) AutonomousRoadHotspots
-/// (a24f34987, last a97fd32: BlocksService, FinishWalkUnsafe, LandingNearHotspot, WalkLegUnsafe) onto our shared spot
-/// memory instead of a second one. There, merchant and Realm Exchange trips walked low Hibernian bots through the
-/// Silvermine and Lough Derg spots (347 bots in 30 hours), and a Howth horse left riders to walk the Silvermine road to
-/// Eilwen (47% died within 5 minutes). Monsters are not touched.
+/// trips, not only its camps, using the one shared spot memory. Without it, merchant and Realm Exchange trips can walk
+/// low bots through a known deadly spot, and a horse can leave riders to walk a deadly road to their goal. Monsters are
+/// not touched.
 /// </summary>
 public static class AutonomousLearnedDangerTrips
 {
     /// <summary>A finishing walk (from a landing, or the whole way on foot) straight through a spot costs this much more,
-    /// so a safer landing wins unless it is more than ten minutes slower (True165 FinishWalkDetourSeconds).</summary>
+    /// so a safer landing wins unless it is more than ten minutes slower .</summary>
     public const double UnsafeFinishPenaltySeconds = 600;
 
     /// <summary>A bot whose goal is this close to a landing is going there, not through it, and may ride to it.</summary>
     public const double LandingGoalRadius = 3_000;
 
     /// <summary>
-    /// Pure rule (True165 BlocksService): a service trip is dangerous to this bot when the service stands beside a spot
+    /// Pure rule: a service trip is dangerous to this bot when the service stands beside a spot
     /// that warns it, or (same region) the straight way there passes one. The realm's one Realm Exchange broker
     /// (<paramref name="onlyOfItsKind"/>) is judged by its own spot alone: a straight line across a realm is not a route,
     /// and without it the bot would sell its exchange goods to a merchant.
@@ -73,14 +71,14 @@ public static class AutonomousLearnedDangerTrips
     public static bool PassesThrough(double landingToGoal) => landingToGoal > LandingGoalRadius;
 
     /// <summary>
-    /// Pure rule (True165 LandingNearHotspot): a solo bot does not ride to a landing beside a spot that warns it, unless
+    /// Pure rule: a solo bot does not ride to a landing beside a spot that warns it, unless
     /// its goal is beside the landing.
     /// </summary>
     public static bool LandingDangerous(ushort region, int landingX, int landingY, double landingToGoal, int botLevel, DateTime utc) =>
         PassesThrough(landingToGoal) && AutonomousPveBossDanger.IsNear(region, landingX, landingY, botLevel, utc);
 
     /// <summary>
-    /// Pure rule (True165 FinishWalkUnsafe): the straight walk from a landing (or the bot) to its goal passes a spot. A
+    /// Pure rule: the straight walk from a landing (or the bot) to its goal passes a spot. A
     /// spot at the start (the landing rule judges it) or at the goal (the bot was sent there) does not count.
     /// </summary>
     public static bool FinishWalkDangerous(ushort region, int startX, int startY, int goalX, int goalY, int botLevel, DateTime utc) =>
@@ -106,8 +104,7 @@ public static class AutonomousLearnedDangerTrips
 }
 
 /// <summary>
-/// #570 step 2: landings where gamebots keep dying soon after they get off a horse. Port of OfflineDAoC-True165 (GPL-3.0)
-/// AutonomousStableLandingWatch (feecfac1d, last 3aaeae2; there 1,250 landing deaths in 4.2 hours, Howth alone 260).
+/// #570 step 2: landings where gamebots keep dying soon after they get off a horse.
 /// A death within <see cref="WatchMilliseconds"/> of a landing counts for that landing and the bot's 5-level band; once
 /// <see cref="DeadlyLandingBots"/> different bots of one band died there within <see cref="DeadlyLandingWindowMilliseconds"/>,
 /// solo bots of that band ride to it only when they are going there, until the deaths age out. In memory only.

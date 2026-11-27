@@ -6,8 +6,7 @@ namespace DOL.UnitTests
 {
     /// <summary>
     /// #570 step 2: the learned danger spots (AutonomousPveBossDanger) steer town and horse trips too, and landings where
-    /// bots keep dying soon after they get off a horse are remembered (port of True165 AutonomousRoadHotspots a24f34987 /
-    /// a97fd32 and AutonomousStableLandingWatch feecfac1d / 3aaeae2). Pure rules; tests only until a PC log.
+    /// bots keep dying soon after they get off a horse are remembered. Pure rules; tests only until a PC log.
     /// </summary>
     [TestFixture, NonParallelizable]
     public class UT_LearnedDangers570

@@ -10,8 +10,7 @@ namespace DOL.GS;
 /// <see cref="Lifetime"/>, and a levelling bot counts a straight walk past one as a long trip, so it usually
 /// picks another camp. In memory only: a restart forgets.
 ///
-/// Ported from stefanrows/OfflineDAoC (AutonomousPveBossDanger, GPL-3.0), where two named bosses killed
-/// level-50 bots about 5,500 times in 19 hours. Here (2026-10-19, one hour): a merucha camp (levels 30-33)
+/// Here (2026-10-19, one hour): a merucha camp (levels 30-33)
 /// on the Connacht road killed 18 bots of levels 10-17 on their way to Muire Tomb and Silvermine camps, and
 /// 159 bots under level 20 died to red or purple monsters, 126 of them before reaching their camp.
 ///
@@ -147,7 +146,7 @@ public static class AutonomousPveBossDanger
     }
 
     /// <summary>
-    /// #570 step 2 (town and horse trips, after True165 AutonomousRoadHotspots a24f34987): whether the straight walk from
+    /// #570 step 2 (town and horse trips): whether the straight walk from
     /// one point to another in the same region passes a remembered spot that warns this bot. A spot the walk starts in
     /// (within <see cref="RouteCorridor"/>) doesn't count, so a bot inside one can still choose its way out; with
     /// <paramref name="goalExempt"/> a spot within <see cref="AvoidRadius"/> of the goal doesn't count either (the bot is

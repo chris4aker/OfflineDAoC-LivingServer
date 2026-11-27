@@ -78,8 +78,8 @@ namespace DOL.GS
 
         /// <summary>
         /// A player's own companion (a /spawn helper, or a hired companion; never a world bot with goals): the companion
-        /// follow, buff, song, stealth and PvP rules apply to it. Hired companions (from True 1.65, HiredCompanions165)
-        /// are persistent bots, but their player's (owner 2026-10-31 in True 1.65: hired Shamans and Bards buffed instead of
+        /// follow, buff, song, stealth and PvP rules apply to it. Hired companions (HiredCompanions165)
+        /// are persistent bots, but their player's (hired Shamans and Bards buffed instead of
         /// following a walking player).
         /// </summary>
         public bool IsPlayerCompanion => IsTemporaryGroupHelper && !IsAutonomousWorldBot || IsHiredCompanion;
@@ -812,7 +812,7 @@ namespace DOL.GS
 
         public ushort CreationModel => _creationModel == 0 ? Model : _creationModel;
 
-        /// <summary>A hired companion wears the classic look its player chose in the hire window (from True 1.65).</summary>
+        /// <summary>A hired companion wears the classic look its player chose in the hire window.</summary>
         public void SetLookModel(ushort model)
         {
             if (model == 0)
@@ -1276,7 +1276,7 @@ namespace DOL.GS
                 AutonomousLivingServer.OnBotDied(this, killer);
             }
             StartDeathRecoveryTimer();
-            // a hired companion's player sees it DEAD in the roster at once (True 1.65, 2026-11-01)
+            // a hired companion's player sees it DEAD in the roster at once
             if (IsHiredCompanion && HiredCompanions165.OwnerOf(this) is { } hirer)
                 Hire165.SendRosterNumbers(hirer);
         }
@@ -1768,7 +1768,7 @@ namespace DOL.GS
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
         // the companion bots' formal voice. A gamebot talks like a player.
         // A hired companion talks as any gamebot (owner 2026-11-18 09:14); with its Speech option on Formal it keeps the
-        // True 1.65 companion's return lines.
+        // A hired companion's return lines.
         private string ReturnDialogue(string stage) => IsAutonomousWorldBot && !(IsHiredCompanion && CompanionChat165.IsFormal(this))
             ? GamebotReturnLine(stage, Random.Shared, StableRouteDestination, CurrentZone?.Description)
             : CompanionReturnDialogue(stage);
@@ -2171,7 +2171,7 @@ namespace DOL.GS
 
             long experienceGained = arguments.ExpTotal;
             long baseExperience = arguments.ExpBase;
-            // A hired companion earns at its player's XP rate, other bots at the gamebot rate (True 1.65, owner 2026-11-10).
+            // A hired companion earns at its player's XP rate, other bots at the gamebot rate.
             bool hiredCompanion = IsHiredCompanion;
             if (arguments.AllowMultiply)
             {
@@ -2194,7 +2194,7 @@ namespace DOL.GS
                 experienceGained += baseExperience;
             }
 
-            // A hired companion never passes its player's level (True 1.65, owner 2026-10-31): at the player's level it fills
+            // A hired companion never passes its player's level: at the player's level it fills
             // its bar and waits; once the player levels, its next experience levels it too.
             byte? hiredCap = hiredCompanion ? HiredCompanionLevelCap() : null;
             experienceGained = HiredCompanions165.CappedExperience(experienceGained, Experience, Level, hiredCap);
@@ -2230,7 +2230,7 @@ namespace DOL.GS
                 LogCompanionSkills($"level {Level}");
                 if (hiredCompanion)
                 {
-                    // the group window and the roster show the new level (True 1.65, GitHub issue #7)
+                    // the group window and the roster show the new level
                     Group?.UpdateGroupWindow();
                     if (HiredCompanions165.OwnerOf(this) is { } hirer)
                         Hire165.Refresh(hirer);
@@ -2269,7 +2269,7 @@ namespace DOL.GS
         private static long ScaleExperienceFor(long experience, bool isRvR, int level, bool hiredCompanion) =>
             hiredCompanion ? ScaleHiredCompanionExperience(experience, isRvR, level) : ScaleAutonomousExperience(experience, isRvR, level);
 
-        /// <summary>A hired companion earns at the player rate (xp_rate, or xp_rate_by_level), as its player does (True 1.65).</summary>
+        /// <summary>A hired companion earns at the player rate (xp_rate, or xp_rate_by_level), as its player does.</summary>
         private static long ScaleHiredCompanionExperience(long experience, bool isRvR, int level)
         {
             double rate = LevelRangeXpRates.PlayerRate(level);
@@ -3422,12 +3422,12 @@ namespace DOL.GS
 
         public void WakeTemporaryCompanionRest()
         {
-            // hired companions too (True 1.65 audit 2026-11-03): /pull or an attack order left them seated and frozen
+            // hired companions too: /pull or an attack order left them seated and frozen
             if (IsTemporaryGroupHelper || IsHiredCompanion)
                 WakeRecoveryRest();
         }
 
-        /// <summary>Right-clicking your own hired companion opens the hire window on its roster row (from True 1.65).</summary>
+        /// <summary>Right-clicking your own hired companion opens the hire window on its roster row.</summary>
         public override bool Interact(GamePlayer player)
         {
             if (player != null && IsHiredCompanion &&
@@ -4095,7 +4095,7 @@ namespace DOL.GS
             return 0;
         }
 
-        // ---- hired companions: their player trains their specs (from True 1.65, owner 2026-10-30)
+        // ---- hired companions: their player trains their specs
 
         /// <summary>
         /// Spec points the companion can spend now, counted as a player's are (GamePlayer.VerifySpecPoints): every point a
@@ -4277,8 +4277,7 @@ namespace DOL.GS
             LogCompanionSkills("trained");
         }
 
-        /// <summary>COMPANION_SKILLS_165: what a hired companion can use after training or a level (True 1.65, owner
-        /// 2026-10-30: a level 5 Hunter trained Beastcraft 5 and seemed to use none of it).</summary>
+        /// <summary>COMPANION_SKILLS_165: what a hired companion can use after training or a level (a level 5 Hunter trained Beastcraft 5 and seemed to use none of it).</summary>
         internal void LogCompanionSkills(string why)
         {
             if (!IsHiredCompanion || !log.IsInfoEnabled)
@@ -4434,7 +4433,7 @@ namespace DOL.GS
         /// Pure: the alive flag a status save writes. GameLiving.IsAlive is false for anything out of the world, and the
         /// status queue can save a bot after it left the world (a hired companion parked by /hire dismiss or its player's
         /// logout, owner's PC 2026-11-17 on 5ddd003: IsAlive=0 with Health=116, so summon and login said "dead"). Out of
-        /// the world, health decides. True 1.65 (f68cc75) has the same rule; the port in #287 missed it.
+        /// the world, health decides; #287 missed this rule.
         /// </summary>
         public static bool SavedAlive(bool inWorld, bool aliveInWorld, int health) => inWorld ? aliveInWorld : health > 0;
 
@@ -5262,8 +5261,7 @@ namespace DOL.GS
         private bool AreSpellsEqual(Spell spellOne, Spell spellTwo)
         {
             // Ranks of one proc line may differ in proc chance (Valewalker
-            // Witherstrike 20 vs 15); they still replace one another
-            // (stefanrows/OfflineDAoC fork, 0.185.0).
+            // Witherstrike 20 vs 15); they still replace one another.
             bool sameProcLine = spellOne.SpellType is eSpellType.OffensiveProc or eSpellType.DefensiveProc &&
                                 spellOne.Group != 0;
             return spellOne.DamageType == spellTwo.DamageType &&
