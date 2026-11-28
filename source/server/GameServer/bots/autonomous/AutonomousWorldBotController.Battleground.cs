@@ -74,11 +74,13 @@ namespace DOL.GS
             // #530 step 5a: the event layer decides the battleground order (the keep as its objective, the wave as its
             // muster) and the bot proposes it, as a force of its own ("bg:" ids, so a frontier follower never reads it). No
             // event here: not shared, and the TempProperties stay as they were. The muster is the wave's as it stands now
-            // (AutonomousBattlegroundWave.IsGathering, a read), decided before this first proposal: a siege crew, which
+            // (AutonomousBattlegroundWave.IsMustering, a read), decided before this first proposal: a siege crew, which
             // returns below before the wave's turn, is recorded as the wave's muster while it gathers, and a gatherer's
-            // first turn logs one change, not an attack and then a muster. The intent is the keep's attack either way, so
-            // a siege crew works its job.
-            bool mustering = assault && !tooFew && AutonomousBattlegroundWave.IsGathering(bracket.RegionId, bot.Realm, out _);
+            // first turn logs one change, not an attack and then a muster. It follows ShouldGather's gates-down rule: with
+            // every gate down the wave record still gathers but nobody does, so the order is the attack and this turn
+            // writes once (not a muster and then an attack every turn). The intent is the keep's attack either way, so a
+            // siege crew works its job.
+            bool mustering = assault && !tooFew && AutonomousBattlegroundWave.IsMustering(bracket.RegionId, bot.Realm, central);
             AutonomousRvrEventLayer.BattlegroundOrder order = AutonomousRvrEventLayer.DecideBattleground(
                 central?.KeepID, central != null && !assault, tooFew, mustering, partId);
             ProposeBattlegroundOrder(bot, order);
