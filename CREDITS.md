@@ -44,6 +44,8 @@ section 5 requires. Third-party notices for dependencies, tools and data sources
   for fixes.
 - **Cancain**: bots returning from battlegrounds, `/friend` with gamebots and `/allrelease`.
 - **Nikse77, Rmarcoux86 and MoomoocowPlus**: fixes and ideas.
+- **[mod-playerbots](https://github.com/mod-playerbots/mod-playerbots)** (AzerothCore): the idea of a per-pair trade
+  discount for the bot trade (no code taken).
 - **Krolgosh-web**: the report behind the lag fix for large populations (issue #25).
 - Everyone on GitHub and r/daoc who reported what they found.
 
