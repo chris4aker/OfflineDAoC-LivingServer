@@ -2251,6 +2251,12 @@ namespace DOL.GS
                 battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
                 return TrailBattlegroupLead(bot, forceId, battlegroupLead, battlegroupLeader);
 
+            // #599 step 3: the realm's zerg. Its lead holds the region's gates in turn; a recruit in another region travels to
+            // the zerg first (once in the lead's region it trails the lead, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                !_rvrSharedEvent && AutonomousRvrEventLayer.ZergOrderOf(forceId) is { } zergOrder && TakeZergTurn(bot, forceId, zergOrder))
+                return true;
+
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {
                 GameRelic escorted = RelicMgr.GetRelics().FirstOrDefault(relic =>

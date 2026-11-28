@@ -67,9 +67,10 @@ public static partial class AutonomousRvrEventLayer
 
     /// <summary>
     /// Who proposed an intent. <see cref="IntentSource.Battlegroup"/> (#599 step 1): a battlegroup's follower group takes its
-    /// lead group's intent and objective while it trails the lead.
+    /// lead group's intent and objective while it trails the lead. <see cref="IntentSource.Zerg"/> (#599 step 3): the realm's
+    /// zerg holds a gate (its lead) or a recruit travels to it, objective <c>zerg-&lt;realm&gt;-&lt;n&gt;</c>.
     /// </summary>
-    public enum IntentSource { Plan, Committed, Released, RoamOverride, ChatPromise, Battleground, Battlegroup }
+    public enum IntentSource { Plan, Committed, Released, RoamOverride, ChatPromise, Battleground, Battlegroup, Zerg }
 
     /// <summary>A force's intent: its objective, its role there, its slots, since when, and why.</summary>
     public sealed record ForceIntent(string ForceId, Intent Intent, string ObjectiveId, ForceRole Role, string Slot,

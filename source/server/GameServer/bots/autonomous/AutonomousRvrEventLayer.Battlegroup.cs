@@ -45,10 +45,14 @@ public static partial class AutonomousRvrEventLayer
     public sealed record BattlegroupLink(string BattlegroupId, string LeadForceId, IReadOnlyList<string> Joining);
 
     /// <summary>A battlegroup as it stands: its id, realm, region, lead group and every group in it (the lead first).</summary>
-    public sealed record BattlegroupView(string Id, eRealm Realm, ushort Region, string LeadForceId, IReadOnlyList<string> Members);
+    public sealed record BattlegroupView(string Id, eRealm Realm, ushort Region, string LeadForceId, IReadOnlyList<string> Members,
+        bool IsZerg = false);
 
-    /// <summary>Why a group left (or a battlegroup ended).</summary>
-    public enum BattlegroupLeave { None, Gone, LeadGone, Event, Player, Region, Leash, Stay, TooSmall, Stuck }
+    /// <summary>
+    /// Why a group left (or a battlegroup ended). <see cref="BattlegroupLeave.Late"/> and <see cref="BattlegroupLeave.Zerg"/>
+    /// (#599 step 3): a zerg recruit that never reached the zerg, and a group the realm's zerg took from its battlegroup.
+    /// </summary>
+    public enum BattlegroupLeave { None, Gone, LeadGone, Event, Player, Region, Leash, Stay, TooSmall, Stuck, Late, Zerg }
 
     /// <summary>One change of the record, as logged (RVR_FORCE_BATTLEGROUP): formed, joined, left or ended.</summary>
     public readonly record struct BattlegroupChange(string What, string Id, string ForceId, string Why);
@@ -173,6 +177,9 @@ public static partial class AutonomousRvrEventLayer
         public string ForceId;
         public long StayUntil;
         public long FarSince;
+        /// <summary>#599 step 3: when it joined, and whether a zerg recruit has reached the zerg yet.</summary>
+        public long JoinedTick;
+        public bool Arrived = true;
     }
 
     private sealed class BattlegroupRecord
@@ -183,7 +190,15 @@ public static partial class AutonomousRvrEventLayer
         public long FormedTick;
         public readonly List<BattlegroupMember> Members = new(); // the lead first
         public string Lead => Members.Count > 0 ? Members[0].ForceId : null;
-        public BattlegroupView View => new(Id, Realm, Region, Lead, Members.Select(member => member.ForceId).ToArray());
+        /// <summary>#599 step 3: the realm's zerg, with its size target and the gates it rolls between.</summary>
+        public bool Zerg;
+        public int Target, Free;
+        public bool ScheduleOn;
+        public ZergAnchor[] Anchors = Array.Empty<ZergAnchor>();
+        public int AnchorIndex;
+        public long AnchorSince;
+        public ZergAnchor Anchor => Anchors.Length > 0 ? Anchors[AnchorIndex % Anchors.Length] : null;
+        public BattlegroupView View => new(Id, Realm, Region, Lead, Members.Select(member => member.ForceId).ToArray(), Zerg);
     }
 
     private static readonly object BattlegroupSync = new();
@@ -194,7 +209,8 @@ public static partial class AutonomousRvrEventLayer
     private static int _nextBattlegroupNumber;
 
     /// <summary>Whether a group that left by <paramref name="reason"/> rests before it may link again. Pure.</summary>
-    public static bool BattlegroupLeaveRests(BattlegroupLeave reason) => reason is BattlegroupLeave.Stay or BattlegroupLeave.Stuck;
+    public static bool BattlegroupLeaveRests(BattlegroupLeave reason) =>
+        reason is BattlegroupLeave.Stay or BattlegroupLeave.Stuck or BattlegroupLeave.Late;
 
     /// <summary>
     /// A follower group's leader made no progress on the trail (the controller's <c>BattlegroupTrailStuck</c>): the group
@@ -221,7 +237,18 @@ public static partial class AutonomousRvrEventLayer
     /// left or that is down to one group ends), then <see cref="PlanBattlegroups"/> links. Each change is logged once as
     /// RVR_FORCE_BATTLEGROUP. Returns the changes (tests).
     /// </summary>
-    public static List<BattlegroupChange> PulseBattlegroups(IReadOnlyList<BattlegroupCandidate> candidates, long now)
+    public static List<BattlegroupChange> PulseBattlegroups(IReadOnlyList<BattlegroupCandidate> candidates, long now) =>
+        PulseBattlegroups(candidates, now, null, false);
+
+    /// <summary>
+    /// The pulse with the realm's zerg (#599 step 3): <paramref name="freeFrontierBots"/> is each realm's free frontier
+    /// gamebots online (null: no zerg is planned), <paramref name="scheduleOn"/> whether bot_schedule_mode is on, and
+    /// <paramref name="frontierRegions"/> the regions a zerg may form in (null: any). After the leave rules, each realm's zerg
+    /// rolls on to its next gate when its hold is over, then forms or is topped up (<see cref="PlanZerg"/>), taking groups
+    /// out of their battlegroups; then the battlegroups link as before, from the groups no zerg holds.
+    /// </summary>
+    public static List<BattlegroupChange> PulseBattlegroups(IReadOnlyList<BattlegroupCandidate> candidates, long now,
+        IReadOnlyDictionary<eRealm, int> freeFrontierBots, bool scheduleOn, IReadOnlyCollection<ushort> frontierRegions = null)
     {
         var changes = new List<BattlegroupChange>();
         var byId = new Dictionary<string, BattlegroupCandidate>(StringComparer.Ordinal);
@@ -245,10 +272,15 @@ public static partial class AutonomousRvrEventLayer
                 foreach (BattlegroupMember member in record.Members.Skip(1).ToList())
                 {
                     BattlegroupCandidate? self = Find(member.ForceId);
-                    if (self is { } here && lead is { } leader && here.Region == leader.Region)
+                    // #599 step 3: a zerg recruit travelling in from afar is held to the leash only once it has arrived.
+                    if (!member.Arrived && ZergArrived(self, lead))
+                        member.Arrived = true;
+                    if (member.Arrived && self is { } here && lead is { } leader && here.Region == leader.Region)
                         member.FarSince = NextFarSince(member.FarSince, DistanceBetween(leader, here), now);
-                    BattlegroupLeave reason = BattlegroupLeaveReason(self, lead, false, member.FarSince, member.StayUntil, now,
-                        BattlegroupStuckReports.Contains(member.ForceId));
+                    bool stuck = BattlegroupStuckReports.Contains(member.ForceId);
+                    BattlegroupLeave reason = member.Arrived
+                        ? BattlegroupLeaveReason(self, lead, false, member.FarSince, member.StayUntil, now, stuck)
+                        : ZergRecruitLeaveReason(self, lead, member.JoinedTick, member.StayUntil, now, stuck);
                     if (reason == BattlegroupLeave.None)
                         continue;
                     record.Members.Remove(member);
@@ -264,9 +296,14 @@ public static partial class AutonomousRvrEventLayer
                     EndBattlegroup(record, BattlegroupLeave.TooSmall, byId, changes, now);
             }
 
+            if (freeFrontierBots != null)
+                PulseZergs(byId, now, freeFrontierBots, scheduleOn, frontierRegions, changes);
             BattlegroupStuckReports.Clear();
-            foreach (BattlegroupLink link in PlanBattlegroups(byId.Values.ToList(), Battlegroups.Values.Select(r => r.View).ToList(),
-                         BattlegroupRelinkAfter.Keys.ToList()))
+            // The groups a zerg holds are not free to link; the zergs are not battlegroups to top up.
+            var unavailable = new List<string>(BattlegroupRelinkAfter.Keys);
+            unavailable.AddRange(Battlegroups.Values.Where(r => r.Zerg).SelectMany(r => r.Members.Select(member => member.ForceId)));
+            foreach (BattlegroupLink link in PlanBattlegroups(byId.Values.ToList(),
+                         Battlegroups.Values.Where(r => !r.Zerg).Select(r => r.View).ToList(), unavailable))
             {
                 BattlegroupRecord record;
                 string what;
@@ -287,7 +324,7 @@ public static partial class AutonomousRvrEventLayer
                 }
                 foreach (string id in link.Joining)
                 {
-                    record.Members.Add(new BattlegroupMember { ForceId = id, StayUntil = now + BattlegroupStay(id, now) });
+                    record.Members.Add(new BattlegroupMember { ForceId = id, StayUntil = now + BattlegroupStay(id, now), JoinedTick = now });
                     BattlegroupOfForce[id] = record;
                 }
                 string added = string.Join(",", link.Joining);
@@ -321,6 +358,11 @@ public static partial class AutonomousRvrEventLayer
         string force, string why, long now)
     {
         if (!Log.IsInfoEnabled) return;
+        if (record.Zerg)
+        {
+            LogZerg(what, record, byId, force, why, now);
+            return;
+        }
         int heads = record.Members.Sum(member => byId.TryGetValue(member.ForceId, out BattlegroupCandidate candidate) ? candidate.Heads : 0);
         // One change of a frontier battlegroup (formed, joined, left or ended), with its groups and heads.
         Log.Info($"RVR_FORCE_BATTLEGROUP what={what} id={record.Id} realm={GlobalConstants.RealmToName(record.Realm)} " +
@@ -363,6 +405,7 @@ public static partial class AutonomousRvrEventLayer
             BattlegroupRelinkAfter.Clear();
             BattlegroupStuckReports.Clear();
             _nextBattlegroupNumber = 0;
+            _nextZergNumber = 0;
         }
     }
 }

@@ -501,6 +501,80 @@ namespace DOL.GS.Tests.Rehearsal
             }
         }
 
+        // ---------------------------------------------------------------------------------------------------------
+        // Scenario 6 (#599 step 3): three Albion eights, one far beyond the battlegroup link, form the realm's zerg (24v8)
+
+        public sealed record ZergResult(string Row, IReadOnlyList<string> Detail, int Errors, string ZergId, string LeadForce,
+            IReadOnlyList<string> Members, bool FarJoined, bool MidgardJoined, int[] RosterSizes, int MidgardInRosters,
+            int AlbionAlive, int MidgardAlive, string FewerId);
+
+        /// <summary>
+        /// Three Albion eights on the Hadrian's Wall stand-in: two 1,800 apart and a third 12,000 west, beyond the battlegroup's
+        /// 3,000 link. A Midgard eight stands 2,600 east of the first. The realm's free frontier gamebots are stood in at 72 (the
+        /// rehearsal places no full roster), so the zerg's target is 24. The coordinator's battlegroup pulse and the support
+        /// rosters run once (AutonomousBotGroupCoordinator.PulseBattlegroups, RealmWarbandSupport.Pulse); then the fight runs.
+        /// A second pulse from scratch with the stand-in at 26 (a third is 8, under the floor of 16, the schedule off) shows
+        /// what forms instead (FewerId). The row shows who joined, each Albion bot's support roster and the bots standing at the
+        /// end. The outcome is reported, not judged.
+        /// </summary>
+        public static ZergResult Zerg(int seed, double seconds = 60)
+        {
+            using var world = new RvrFightWorld(seed, Repeatable);
+            AutonomousBotGroupCoordinator.ResetBattlegroups();
+            try
+            {
+                Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+                List<GameBot> first = Eight(world, region, eRealm.Albion, 30_000, 30_000, 3072, 50, "A", out _);
+                List<GameBot> second = Eight(world, region, eRealm.Albion, 28_200, 30_000, 3072, 50, "B", out _);
+                List<GameBot> far = Eight(world, region, eRealm.Albion, 18_000, 30_000, 3072, 50, "F", out _);
+                List<GameBot> midgard = Eight(world, region, eRealm.Midgard, 32_600, 30_000, 1024, 50, "M", out _);
+                string ForceOf(GameBot bot) => AutonomousBotGroupCoordinator.RvrForceId(bot);
+
+                var fewer = AutonomousBotGroupCoordinator.PulseBattlegroups(world.Now, force: true,
+                    new Dictionary<eRealm, int> { [eRealm.Albion] = 26, [eRealm.Midgard] = 8 });
+                string fewerId = AutonomousRvrEventLayer.BattlegroupOf(ForceOf(first[0]))?.Id ?? "none";
+                AutonomousBotGroupCoordinator.ResetBattlegroups();
+
+                List<AutonomousRvrEventLayer.BattlegroupChange> changes =
+                    AutonomousBotGroupCoordinator.PulseBattlegroups(world.Now, force: true,
+                        new Dictionary<eRealm, int> { [eRealm.Albion] = 72, [eRealm.Midgard] = 8 }) ??
+                    new List<AutonomousRvrEventLayer.BattlegroupChange>();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+                AutonomousRvrEventLayer.BattlegroupView zerg = AutonomousRvrEventLayer.BattlegroupOf(ForceOf(first[0]));
+                IReadOnlyList<string> members = zerg?.Members ?? Array.Empty<string>();
+                List<GameBot> albion = first.Concat(second).Concat(far).ToList();
+                int[] rosters = albion.Select(bot => RealmWarbandSupport.Get(bot)?.Members.Length ?? 0).Distinct().OrderBy(n => n).ToArray();
+                int midgardInRosters = albion.SelectMany(bot => RealmWarbandSupport.Get(bot)?.Members ?? Array.Empty<GameLiving>())
+                    .Distinct().Count(member => member.Realm == eRealm.Midgard);
+                AutonomousRvrEventLayer.ZergOrder order = AutonomousRvrEventLayer.ZergOrderOf(ForceOf(first[0]));
+
+                var scan = new RvrFightScan(seed);
+                scan.Add(albion);
+                scan.Add(midgard);
+                world.Run(seconds, w => scan.Tick(w.Now));
+
+                int albionAlive = albion.Count(bot => bot.IsAlive), midgardAlive = midgard.Count(bot => bot.IsAlive);
+                string row = $"RVR_REHEARSAL zerg seed={seed} sides=Alb8+Alb8+Alb8 vs Mid8 free=72 zerg={zerg?.Id ?? "none"} " +
+                             $"groups={members.Count} heads={members.Count * 8} far_joined={members.Contains(ForceOf(far[0]))} " +
+                             $"gate={order?.Anchor?.SpotId ?? "-"} roster={string.Join("/", rosters)} midgard_in_roster={midgardInRosters} " +
+                             $"free26={fewerId} standing=Alb:{albionAlive}/24 Mid:{midgardAlive}/8 after={seconds:0}s";
+                var detail = new List<string>();
+                detail.AddRange((fewer ?? new List<AutonomousRvrEventLayer.BattlegroupChange>())
+                    .Select(change => $"free=26: {change.What} {change.Id} force={change.ForceId} why={change.Why}"));
+                detail.AddRange(changes.Select(change => $"free=72: {change.What} {change.Id} force={change.ForceId} why={change.Why}"));
+                detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
+                detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+                return new ZergResult(row, detail, world.ServiceErrors, zerg?.IsZerg == true ? zerg.Id : null, zerg?.LeadForceId, members,
+                    members.Contains(ForceOf(far[0])), AutonomousRvrEventLayer.BattlegroupOf(ForceOf(midgard[0])) != null, rosters,
+                    midgardInRosters, albionAlive, midgardAlive, fewerId);
+            }
+            finally
+            {
+                AutonomousBotGroupCoordinator.ResetBattlegroups();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+            }
+        }
+
         private static RvrFightPlan PlanOf(List<GameBot> side)
         {
             GameBot asker = side.FirstOrDefault(b => b.IsAlive);

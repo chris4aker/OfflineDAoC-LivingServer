@@ -15,8 +15,13 @@ public static partial class AutonomousBotGroupCoordinator
     private static long _nextBattlegroupTick;
     private static Dictionary<string, Group> _battlegroupGroups = new();
 
-    /// <summary>One battlegroup pulse. <paramref name="force"/>: run now (the RvR fight rehearsal, #520).</summary>
-    public static List<AutonomousRvrEventLayer.BattlegroupChange> PulseBattlegroups(long now, bool force = false)
+    /// <summary>
+    /// One battlegroup pulse. <paramref name="force"/>: run now (the RvR fight rehearsal, #520). #599 step 3: each realm's
+    /// free frontier gamebots are counted for its zerg's size (<see cref="FreeFrontierBots"/>);
+    /// <paramref name="freeFrontierBotsStandIn"/> replaces the count (the rehearsal, which places no full roster).
+    /// </summary>
+    public static List<AutonomousRvrEventLayer.BattlegroupChange> PulseBattlegroups(long now, bool force = false,
+        IReadOnlyDictionary<eRealm, int> freeFrontierBotsStandIn = null)
     {
         if (!force && now < Interlocked.Read(ref _nextBattlegroupTick))
             return null;
@@ -37,9 +42,34 @@ public static partial class AutonomousBotGroupCoordinator
                 warband.Hosted || members.Any(member => member is GamePlayer)));
             groups[warband.Id] = warband.Group;
         }
-        List<AutonomousRvrEventLayer.BattlegroupChange> changes = AutonomousRvrEventLayer.PulseBattlegroups(candidates, now);
+        IReadOnlyDictionary<eRealm, int> free = freeFrontierBotsStandIn ?? FreeFrontierBots(candidates);
+        bool scheduleOn = AutonomousBotSchedule.CurrentMode != AutonomousBotSchedule.Mode.Off;
+        RvrCheckSpotCatalog catalog = RvrCheckSpots.Catalog;
+        ushort[] frontiers = catalog?.Frontiers.Select(frontier => frontier.Region).ToArray();
+        List<AutonomousRvrEventLayer.BattlegroupChange> changes =
+            AutonomousRvrEventLayer.PulseBattlegroups(candidates, now, free, scheduleOn, frontiers is { Length: > 0 } ? frontiers : null);
         Volatile.Write(ref _battlegroupGroups, groups);
         return changes;
+    }
+
+    /// <summary>
+    /// #599 step 3: each realm's free frontier gamebots online, the zerg's base (owner 50A): the heads of the warbands in no
+    /// event and with no player, plus the solo RvR gamebots that are alive, spoken for by no player and in no event.
+    /// Autonomous gamebots only (the registry holds no players and no companions).
+    /// </summary>
+    private static Dictionary<eRealm, int> FreeFrontierBots(IReadOnlyList<AutonomousRvrEventLayer.BattlegroupCandidate> warbands)
+    {
+        var free = new Dictionary<eRealm, int>();
+        foreach (AutonomousRvrEventLayer.BattlegroupCandidate warband in warbands)
+            if (!warband.InEvent && !warband.HostsPlayer)
+                free[warband.Realm] = free.GetValueOrDefault(warband.Realm) + warband.Heads;
+        Dictionary<string, string> committed = AutonomousRvrEventLayer.ForceTargets();
+        foreach (GameBot bot in AutonomousBotRegistry.Snapshot())
+            if (bot.Group == null && bot.IsAlive && !bot.IsTemporaryGroupHelper &&
+                AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) && !BotDutyLeases.IsSpokenForByPlayer(bot) &&
+                !committed.ContainsKey($"rvr-{bot.DatabaseID}"))
+                free[bot.Realm] = free.GetValueOrDefault(bot.Realm) + 1;
+        return free;
     }
 
     /// <summary>The group behind a warband's force id, as of the last battlegroup pulse (null when it was not a warband).</summary>
