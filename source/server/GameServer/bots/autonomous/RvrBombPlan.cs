@@ -55,7 +55,7 @@ public static class RvrBombPlan
 
     /// <summary>
     /// Two or more bombers bomb at once (53A): one that has arrived holds while <paramref name="matesComing"/> of the
-    /// group's other bombers are not yet in place at the pile (within the walk limit, outside a bomb's reach), for at most
+    /// group's other bombers are not yet ready at the pile (within the walk limit, neither holding nor bombing), for at most
     /// <see cref="SyncHoldMilliseconds"/> since it arrived (<paramref name="heldMs"/>). Pure.
     /// </summary>
     public static bool Hold(int matesComing, long heldMs) => matesComing > 0 && heldMs < SyncHoldMilliseconds;

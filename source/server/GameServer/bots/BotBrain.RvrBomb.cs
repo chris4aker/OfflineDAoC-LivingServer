@@ -66,8 +66,9 @@ namespace DOL.AI.Brain
         public bool RvrBombHolding => _rvrBombSpell != null && _rvrBombHeldSince != 0;
 
         /// <summary>
-        /// The group's other bombers not yet in place at the pile centred on <paramref name="centre"/>: alive, within the
-        /// walk limit of it, outside a bomb's reach of it and not holding there. Whether walking in already or about to.
+        /// The group's other bombers not yet ready at the pile centred on <paramref name="centre"/>: alive, within the walk
+        /// limit of it, and neither holding there nor casting a bomb. Whether walking in already, about to, or standing in
+        /// reach busy with something else.
         /// </summary>
         private int RvrBombMatesComing(RvrFightBoard board, GameLiving centre, int radius)
         {
@@ -76,7 +77,7 @@ namespace DOL.AI.Brain
             foreach (RvrCombatant member in board.Members)
                 if (!member.IsPet && !ReferenceEquals(member.Living, Body) && member.Living is GameBot { Brain: BotBrain brain } mate &&
                     brain.IsRvrBomber() && !brain.RvrBombHolding && mate.IsWithinRadius(centre, (int)RvrBombPlan.WalkLimit) &&
-                    !mate.IsWithinRadius(centre, (int)reach))
+                    !(mate.IsWithinRadius(centre, (int)reach) && mate.IsCasting && mate.CurrentSpellHandler?.Spell is { IsPBAoE: true }))
                     count++;
             return count;
         }
