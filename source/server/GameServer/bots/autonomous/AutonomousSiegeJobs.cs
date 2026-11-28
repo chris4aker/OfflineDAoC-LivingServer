@@ -84,9 +84,38 @@ namespace DOL.GS
         public static int OthersBuilding(GameBot bot, ushort region, string keep)
         {
             if (bot == null || keep == null) return 0;
-            long now = GameLoop.GameLoopTime;
-            lock (Gate) return Jobs.Count(p => p.Key.Region == region && p.Key.Keep == keep && p.Key.Realm == bot.Realm &&
+            lock (Gate) return CountOthersBuilding(bot, region, keep, GameLoop.GameLoopTime);
+        }
+
+        // Callers hold Gate.
+        private static int CountOthersBuilding(GameBot bot, ushort region, string keep, long now) =>
+            Jobs.Count(p => p.Key.Region == region && p.Key.Keep == keep && p.Key.Realm == bot.Realm &&
                 p.Value.Building && p.Value.Until >= now && p.Value.Bot.TryGetTarget(out GameBot b) && b != bot && b.IsAlive);
+
+        /// <summary>
+        /// #831: the door cap's one admission for a build. Counts the realm's other builds at this keep and, when
+        /// <paramref name="standing"/> plus those builds leave a place, marks this bot's job as building, in one step under
+        /// the job lock. Two bots starting at the same door at once can't both take the last place (rc.2, rvr-keep-53:
+        /// both passed the check while walking to their spots, then both started, and the door had 4 places taken).
+        /// False, with nothing marked, when the cap is reached or the bot holds no job at this keep. A bot already marked
+        /// building is admitted again (its place is its own).
+        /// </summary>
+        public static bool TryStartBuilding(GameBot bot, ushort region, string keep, int standing, out int othersBuilding)
+        {
+            othersBuilding = 0;
+            if (bot == null || keep == null) return false;
+            lock (Gate)
+            {
+                long now = GameLoop.GameLoopTime;
+                var own = Jobs.Where(p => p.Key.Region == region && p.Key.Keep == keep && p.Key.Realm == bot.Realm &&
+                    p.Value.Bot.TryGetTarget(out GameBot b) && b == bot).Select(p => p.Key).ToArray();
+                if (own.Length == 0) return false;
+                othersBuilding = CountOthersBuilding(bot, region, keep, now);
+                if (own.Any(key => Jobs[key].Building)) return true;
+                if (DoorCapReached(standing, othersBuilding)) return false;
+                foreach (var key in own) Jobs[key] = Jobs[key] with { Building = true };
+                return true;
+            }
         }
 
         /// <summary>Tests only.</summary>
