@@ -969,7 +969,12 @@ namespace DOL.GS
                 // authored monster coordinate may be farther away or above
                 // that floor; never replace the ordered chain with a generic
                 // direct PathTo merely because raw spawn distance is large.
-                if (!certifiedDarknessFallsCamp && (campDistance > CampArrivalRadius || dungeonApproach))
+                // #569 step 9: a non-leader puller beside an arrived leader is at the camp (outdoors
+                // only), so its formation slot outside the ring no longer keeps it from its camp turn.
+                bool pullerArrivedWithLeader = PartyPullerArrivedWithLeader(bot, campDistance, dungeonApproach,
+                    certifiedDarknessFallsCamp);
+                if (!certifiedDarknessFallsCamp && !pullerArrivedWithLeader &&
+                    (campDistance > CampArrivalRadius || dungeonApproach))
                 {
                     _emptyCampSinceTick = 0;
                     _patrolDestination = null;
@@ -1884,7 +1889,7 @@ namespace DOL.GS
         public const int FormationFollowReach = 2_500;
 
         /// <summary>
-        /// Pure rule for the follow step (Nikse77 b0fcd555, via rambodolphin13/DividedRealms 0996fff6ea): a faster
+        /// Pure rule for the follow step: a faster
         /// independent route (a stablemaster horse or town teleporter) is only for the leader, and never for a formed PvE
         /// party. A follower that took one every turn dropped and re-took its formation follow: a one-second stutter.
         /// </summary>
@@ -1956,7 +1961,7 @@ namespace DOL.GS
             Vector3 strategicDestination = directive.Camp == null
                 ? new Vector3(leader.X, leader.Y, leader.Z)
                 : new Vector3(directive.Camp.X, directive.Camp.Y, directive.Camp.Z);
-            // Nikse77 2026-11-01 (via rambodolphin13): only the leader may take an independent route (a town teleporter, a
+            // Only the leader may take an independent route (a town teleporter, a
             // plotted leg). A member that took one every turn released its formation follow, the next turn re-issued it,
             // and the party visibly jerked once per second instead of walking behind its leader.
             if (MayTakeIndependentRouteWhileFollowing(directive.ObjectiveKind, bot == leader) &&
@@ -1966,7 +1971,7 @@ namespace DOL.GS
 
             bool tight = leader.CurrentRegion?.IsDungeon == true || leader.CurrentZone?.IsDungeon == true;
             // Aim around where the leader is about to be, not where it was
-            // (smooth group travel from the stefanrows/OfflineDAoC fork).
+            // (smooth group travel).
             Vector3 formationCenter = leader.IsMoving && !tight ? AutonomousGroupMotion.PredictLeader(leader) : new(leader.X, leader.Y, leader.Z);
             Vector3 formation = AutonomousBotGroupCoordinator.FormationPoint(bot, formationCenter, tight);
             // Close the gap on the move so the party travels as one unit instead of the
@@ -2400,8 +2405,9 @@ namespace DOL.GS
                 .Where(guard => !closedDoor || guard is not GuardLord)
                 // Holding at a battleground rally: what comes at the rally (the gatherers' rule), never the lord (the rally goes
                 // up together). Was any guard within 1,500 of the rally point, which stood inside the keep on build 3b808b4.
+                // The one gather-hold rule (#530 step 5a), as in the threat scan and the combat drop.
                 .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
-                    guard is not GuardLord && GathererMayEngage(bot, guard, rally))
+                    MusterAllowsFight(bot, AutonomousRvrEventLayer.MusterHold.Rally, rally, guard, picking: true))
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))
@@ -3271,6 +3277,8 @@ namespace DOL.GS
                 }
                 if (GuardDungeonTravel(bot, new(target.X, target.Y, target.Z)))
                     return !brain.HasAggro;
+                long emptySinceBefore = _emptyCampSinceTick;
+                string reportedEmptyBefore = _reportedEmptySharedCampId;
                 _emptyCampSinceTick = 0;
                 _reportedEmptySharedCampId = string.Empty;
                 _patrolDestination = null;
@@ -3286,8 +3294,19 @@ namespace DOL.GS
                     AbandonCamp(bot, $"{benchedPulls} {_camp.MonsterName} had no ranged firing point");
                     return true;
                 }
-                if (!SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
-                    AutonomousDefensivePull.TryBegin(bot, target))
+                PartyPullStart partyPullWhy = PartyPullStart.NotApplicable;
+                bool partyPullHandled = !SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
+                    AutonomousDefensivePull.TryBegin(bot, target, out partyPullWhy);
+                // #569 step 9: too far = look for a nearer target, never the ordinary pull's walk into the
+                // pack; the ordinary pull only in the designed cases (contact, no ranged pull, benched, not a pull party).
+                // Outdoors only: dungeon and Darkness Falls camps keep today's pull.
+                PartyPullFallback partyPullNext = AutonomousPartyPullCamp.AfterPartyPull(partyPullHandled, partyPullWhy,
+                    AutonomousPartyPullCamp.CampTurn && !_camp.IsDungeon &&
+                    _camp.RegionId != AutonomousDarknessFallsPolicy.RegionId);
+                NotePartyPullOutcome(partyPullNext);
+                if (partyPullNext == PartyPullFallback.SkipTooFar)
+                    return SkipTooFarPartyTarget(bot, target, emptySinceBefore, reportedEmptyBefore);
+                if (partyPullNext == PartyPullFallback.Handled)
                 {
                     // Claimed only once the shot is under way, not while the party waits out a retry.
                     if (AutonomousDefensivePull.IsPulling(bot.Group, target))
@@ -3315,6 +3334,7 @@ namespace DOL.GS
             }
 
             _emptyCampSinceTick = _emptyCampSinceTick == 0 ? GameLoop.GameLoopTime : _emptyCampSinceTick;
+            NotePartyEmptyCampTurn();   // #569 step 9: a truly empty camp ends the too-far episode
             // A crowded camp that others keep empty is left after 15 s, not 75 s (owner 2026-11-05, reset-day S36): the
             // extra bots spread to other camps instead of queueing for each respawn.
             bool crowdedCamp = (bot.Group?.MemberCount ?? 1) <= 1 && AutonomousCampCompetition.Occupancy(_camp.Id) > 4;
@@ -3380,6 +3400,9 @@ namespace DOL.GS
                 return true;
             }
 
+            // #569 step 9: a party puller that is not the leader waits with the party (patrolling broke formation)
+            if (HoldPartyPullerAtEmptyCamp(bot))
+                return true;
             PatrolCamp(bot);
             if (_camp == null) return true;
             SetStatus(bot, $"Searching the {_camp.MonsterName} camp", GoalText(),
@@ -3647,7 +3670,7 @@ namespace DOL.GS
                 .Where(npc => GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
                 // A monster already fighting someone outside the bot's side (its group, or its realm raid) is theirs,
                 // as players left it; and one another bot or player outside it has pulled or hit, even before it turns on
-                // them. No "sry ks" and no shared XP (port of True165 e4d2498ca). Self-defense is handled elsewhere.
+                // them. No "sry ks" and no shared XP. Self-defense is handled elsewhere.
                 .Where(npc => !npc.InCombat || npc.TargetObject == bot ||
                               npc.TargetObject is GameLiving fighting && AutonomousMobClaims.SameFight(bot, fighting) ||
                               npc.TargetObject is not GameLiving)
@@ -4077,7 +4100,7 @@ namespace DOL.GS
             // Less competition first: crowded camps only when every camp is crowded (AutonomousCampCompetition).
             legalCells = AutonomousCampCompetition.PreferQuiet(legalCells, camp => camp.Id, camp => camp.LiveMobCount,
                 bot.PersistentRecord?.CurrentCampId, sharedGroup ? groupSize : 1);
-            // #569 step 3 (True165 14dcaa5): a PvE party picks camps it can reach within its task time (after the quiet filter)
+            // #569 step 3: a PvE party picks camps it can reach within its task time (after the quiet filter)
             if (sharedGroup && AutonomousGroupTravelBudget.Enabled &&
                 _groupDirective?.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
                 legalCells = BudgetGroupCamps(bot, legalCells, destinations);
@@ -4407,7 +4430,7 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// GitHub #544 (ported from True 1.65's AddUncoveredLiveCamps): live outdoor spawn clusters that no camp of their
+        /// GitHub #544: live outdoor spawn clusters that no camp of their
         /// name covers become <c>live-uncovered:</c> camps, in every realm alike (AutonomousUncoveredLiveCamps). Without it
         /// a CapnBry-covered zone offered camps only at its sightings, while the mostly Hibernian source-empty zones offered
         /// every cluster. Starter creatures (level 0-1) stay with AddStarterCamps and its route check from the zone hub.
@@ -6082,7 +6105,7 @@ namespace DOL.GS
             _terminalRouteFailuresInPocket = 0;
         }
 
-        // ---- Route goal fixes, ported from stefanrows/OfflineDAoC (AutonomousRouteGoalFix.cs) ----
+        // ---- Route goal fixes (AutonomousRouteGoalFix.cs) ----
 
         private Vector3 ApplyGoalSnap(Vector3 point) =>
             Vector3.DistanceSquared(point, _goalSnapFrom) <= 16 * 16 ? _goalSnapTo : point;

@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **766**; pending (#625, not on main yet): **0**; shipped by the pipeline: **734**.
+- Rows in code: **771**; pending (#625, not on main yet): **0**; shipped by the pipeline: **739**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -67,6 +67,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `from`, `group`, `leader`, `levels`, `minutes`, `realm`, `size` | `leader`, `levels` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_ENDED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `group`, `members`, `reason`, `size` | `members` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `group`, `leader`, `was` | `leader`, `was` | - | - |
+| `AUTONOMOUS_GROUP_CAMP_ADVANCED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.PartyPull.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_BUDGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TravelBudget.cs` | `budgetMin`, `candidates`, `farthestKeptMin`, `group`, `kept`, `nearestMin`, `phase`, `region`, `remainingMin`, `tier` | - | one per PvE party camp pick whose candidate list the travel budget cut (none when every camp fit; #569) | A PvE party camp pick whose candidates were cut to the leader's travel budget, with the tier that was kept. |
 | `AUTONOMOUS_GROUP_CAMP_DRY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.CampBonus.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_REJECTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
@@ -116,6 +117,9 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_LOOT_APPRAISAL_FAILED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `item`, `retainedInInventory` | `bot` | - | - |
 | `AUTONOMOUS_LOOT_REJECTED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `dropRetained`, `id`, `item`, `level`, `reason` | `bot` | - | - |
 | `AUTONOMOUS_NECRO_PET_RELEASE` | server.log | **ships** | `spells/Necromancer/SummonNecromancerPet.cs` | `bot`, `distance`, `hp`, `id`, `level`, `pet`, `petLevel`, `petObjectId`, `reason`, `region`, `spellId` | `bot` | - | - |
+| `AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `campDistance`, `leader`, `leaderCampDistance`, `toLeader` | `bot`, `leader` | - | - |
+| `AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `region`, `target`, `x`, `y`, `z` | `bot` | - | - |
+| `AUTONOMOUS_PARTY_PULL_TOO_FAR` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `distance`, `skips`, `skipsSinceLastLog`, `target`, `tooFarSeconds` | `bot`, `target` | - | - |
 | `AUTONOMOUS_POCKET_NUDGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `casting`, `class`, `distance`, `level`, `manaPercent`, `moving`, `pendingCast`, `pet`, `region`, `resting`, `target`, `targetLevel`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `AUTONOMOUS_PVP_STALEMATE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `id`, `position`, `realm`, `region`, `seconds`, `target`, `targetRealm` | `bot`, `target` | - | - |
@@ -301,6 +305,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANION_DELVE_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `args`, `player` | `player` | - | - |
 | `COMPANION_EQUIP_REFUSED` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `bot`, `cls`, `item`, `lvl`, `realm`, `shield`, `size`, `type` | `bot` | - | - |
 | `COMPANION_LEADER_FOCUS` | server.log | **ships** | `bots/BotBrain.LeaderFocus.cs` | `bot`, `class`, `fromBot`, `kind`, `leader`, `over`, `region`, `target`, `why` | `bot`, `leader`, `over`, `target` | change-only: one per bot of a player's group each time it turns onto a new player's target over another choice, in the frontier, battlegrounds and Darkness Falls | A bot in the player's group turned onto the player's target over its own attacker, its pet's fight or its threat (#571). |
+| `COMPANION_LEVEL_SYNC` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `from`, `owner`, `to` | `bot`, `owner` | one per /spawn helper each time its owner out-levels it, out of combat (#571 step 6) | A /spawn helper caught up to its owner's level (#571 step 6). |
 | `COMPANION_OPTION_165` | server.log | **ships** | `mode165/CompanionOptions165.cs` | `bot`, `id` | `bot` | - | - |
 | `COMPANION_PATH_DF` | server.log | **ships** | `bots/autonomous/CompanionDarknessFallsPaths.cs` | `bot`, `from`, `id`, `kind`, `nodes`, `old_gate`, `region`, `status`, `to` | `bot` | at most one per player-led bot per 30 s, in Darkness Falls (#571 step 3) | COMPANION_PATH_DF: a player-led bot's Darkness Falls path that the gamebot gate would have refused (it now takes the ordinary path). |
 | `COMPANION_REPAIR_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `companions`, `paid`, `pieces`, `player` | `player` | - | - |
