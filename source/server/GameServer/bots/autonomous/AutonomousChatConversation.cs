@@ -309,7 +309,6 @@ public sealed class ChatConversations
         (new Regex(LeadIn + @"(?:what|which|whats the|whats a good|what is the best|whats the best) spec(?:s)? (?:for|on|is best for|should i go for|do i go for) " + They + "$"), "spec"),
         (new Regex(LeadIn + @"how (?:do|should|would) (?:i|u|you) spec (?:" + They + "|it)$"), "spec"),
         (new Regex(LeadIn + @"what (?:armor|armour) (?:do|does|can|will) " + They + @" (?:wear|use|get)$"), "armor"),
-        (new Regex(LeadIn + @"(?:what|which) race(?: is)? (?:best|good|the best) (?:for )?" + They + "$"), "race"),
         (new Regex(LeadIn + @"(?:are|r) (?:they|them|those) (?<how>any good|good|ok|decent|fun|strong)(?<rest> solo| for solo| in groups| in a group| in rvr| at solo)?$"), "good"),
         (new Regex(LeadIn + @"(?:can|do) (?:they|them|those|one) solo(?: well| ok)?$"), "solo"),
     ];
@@ -379,7 +378,6 @@ public sealed class ChatConversations
         "trains" => "who trains " + ClassPlural(cls),
         "spec" => "what spec for " + cls,
         "armor" => $"what armor does {AutonomousBotVoiceCorpus.AOrAn(cls)} {cls} wear",
-        "race" => $"what race is best for {AutonomousBotVoiceCorpus.AOrAn(cls)} {cls}",
         "good" => $"are {ClassPlural(cls)} {m.Groups["how"].Value}{m.Groups["rest"].Value}",
         _ => $"can {ClassPlural(cls)} solo",
     };

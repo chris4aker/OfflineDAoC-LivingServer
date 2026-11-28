@@ -79,10 +79,14 @@ public class UT_ChatFollowUps480
     [TestCase("who trains them?", "who trains minstrels?")]
     [TestCase("what spec for one?", "what spec for minstrel?")]
     [TestCase("what armor do they wear?", "what armor does a minstrel wear?")]
-    [TestCase("what race is best for one?", "what race is best for a minstrel?")]
     [TestCase("are they good solo?", "are minstrels good solo?")]
     public void AClassFollowUpAsksAboutTheClassInPlay(string line, string full) =>
         Assert.That(Convo.Resolve(line, After("thinking of rolling a minstrel"), 24), Is.EqualTo(full), line);
+
+    [Test]
+    public void ARaceQuestionIsLeftAlone() =>
+        // Nothing answers "what race is best for a minstrel" yet; completing it only turned silence into an unrelated class line.
+        Assert.That(Convo.Resolve("what race is best for one?", After("thinking of rolling a minstrel"), 24), Is.EqualTo("what race is best for one?"));
 
     [Test]
     public void TheClassIsTheOneNamedNotTheAskers()

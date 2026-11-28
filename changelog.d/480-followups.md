@@ -7,8 +7,8 @@ section: Chat
   - After you talk about a place, "what lvl is it?", "where?", "how far is that?", "what zone is that in?" and "ok how do
     i find it" ask about that place. "is it good xp?", "is it hard?" and "can i solo it?" ask whether it suits your level.
     Before, these got silence, the bot's own level ("32" by tell) or a lore line about the barrows.
-  - After you name a class, "who trains them?", "what spec for one?", "what armor do they wear?", "what race is best for
-    one?" and "are they good solo?" ask about that class. Before, the answer was for your own class ("your armsman
+  - After you name a class, "who trains them?", "what spec for one?", "what armor do they wear?" and "are they good
+    solo?" ask about that class. Before, the answer was for your own class ("your armsman
     trainer").
   - After you name an item, "who sells them?", "where do i get one?" and "who makes those?" ask about that item, and "who
     makes ..." gets the same crafter-or-exchange answer as "who sells ...".
