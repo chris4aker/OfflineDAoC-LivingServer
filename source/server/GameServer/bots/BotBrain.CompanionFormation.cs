@@ -107,7 +107,10 @@ namespace DOL.AI.Brain
             if (!support && target != null && target.CurrentRegionID == bot.CurrentRegionID && PrefersCurrentSpellRange())
                 spot = RvrPositioning.WithinRange(spot, Flat(target), Math.Max(300, OffensiveApproachRange(target) - 75));
             spot = CompanionRvrFormation.Clamp(spot, fight.Player, CompanionRvrFormation.PlayerBound);
-            if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now))
+            bool setOff = CompanionRvrFormation.ProveWalk is { } prove
+                ? prove(bot, spot) is Vector3 proven && BeginRvrPlaceWalk(bot, proven, RvrPlaceWalk.Place, now)
+                : StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now);
+            if (!setOff)
                 return false;
             _companionFormationDueAt = 0;
             float depth = fight.Line is Vector2 anchor ? -RvrPositioning.Ahead(spot, anchor, fight.Front) : 0;

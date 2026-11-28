@@ -47,6 +47,12 @@ namespace DOL.GS
         /// <summary>The group's read is rebuilt at most this often (one per group, shared by its bots).</summary>
         public const long ReadMilliseconds = 1_000;
 
+        /// <summary>
+        /// Tests only: replaces the walk's proof on the navmesh (the fight harness's stand-in navmesh has no grounded surface
+        /// walk, so every proof there fails). Null in the game: the gamebots' proven-leg walk (BotBrain.ProveRvrWalk).
+        /// </summary>
+        public static Func<GameBot, Vector2, Vector3?> ProveWalk;
+
         /// <summary>The formation runs for this bot: the switch is on, the player is in a #663 place and the bot joins. Pure.</summary>
         public static bool Applies(bool on, bool warZone, bool joins) => on && warZone && joins;
 

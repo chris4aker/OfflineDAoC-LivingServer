@@ -162,7 +162,22 @@ namespace DOL.GS.Tests
         }
 
         [TearDown]
-        public void RestoreRolls() => CompanionRvrEngage.Roll = _roll;
+        public void RestoreRolls()
+        {
+            CompanionRvrEngage.Roll = _roll;
+            F.ProveWalk = null;
+        }
+
+        /// <summary>The stand-in navmesh has no grounded surface walk (AutonomousNavigationSurface.MoveAlongDryGround needs the
+        /// real mesh manager), so the walk's proof is the straight line on its flat floor, capped at the longest place walk.</summary>
+        private static void FlatProof() => F.ProveWalk = (bot, spot) =>
+        {
+            var from = new Vector2(bot.X, bot.Y);
+            float length = Vector2.Distance(from, spot);
+            if (length < RvrPositioning.SlotTolerance) return null;
+            Vector2 to = length > RvrPositioning.MaxWalk ? from + (spot - from) / length * RvrPositioning.MaxWalk : spot;
+            return new Vector3(to.X, to.Y, 0);
+        };
 
         private sealed class Scene : IDisposable
         {
@@ -215,6 +230,7 @@ namespace DOL.GS.Tests
         public void OnceEngagedTheBacklineSpreadsOutBehindTheTanksNearThePlayer()
         {
             using Scene scene = Make(Thidranki);
+            FlatProof();
             List<GameBot> healers = Healers(scene);
             Assert.That(healers[0].GetDistanceTo(healers[1]), Is.LessThan((int)RvrPositioning.MezSpread), "bunched at the start");
             bool fought = false;
@@ -258,6 +274,7 @@ namespace DOL.GS.Tests
             // The formation turn alone (every brain stopped; the group pick through Observe, then each back member's turn),
             // so the rule and the walk are tested apart from the FSM that calls them.
             using Scene scene = Make(Thidranki);
+            FlatProof();
             foreach (GameBot bot in scene.Group)
                 bot.Brain?.Stop();
             List<GameBot> healers = Healers(scene);
@@ -286,6 +303,7 @@ namespace DOL.GS.Tests
         public void WithTheSwitchOffTheHealersStayWhereTheyAre()
         {
             using Scene scene = Make(Thidranki, switchOn: false);
+            FlatProof();
             List<GameBot> healers = Healers(scene);
             scene.World.Run(15);
             Assert.That(healers[0].GetDistanceTo(healers[1]), Is.LessThan((int)RvrPositioning.MezSpread),
