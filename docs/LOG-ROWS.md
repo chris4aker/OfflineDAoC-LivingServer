@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **777**; pending (#625, not on main yet): **0**; shipped by the pipeline: **745**.
+- Rows in code: **778**; pending (#625, not on main yet): **0**; shipped by the pipeline: **746**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -680,6 +680,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_FIGHT_BOARD` | server.log | **ships** | `bots/autonomous/RvrFightBoards.cs` | `builds`, `contact`, `enemies`, `enemyHealers`, `enemyHealth`, `enemyLevel`, `enemyPets`, `enemyPower`, `friendlyHealers`, `friendlyHealth`, `friendlyLevel`, `friendlyPower`, `from`, `group`, `leader`, `main`, `members`, `realm`, `region`, `skill`, `stance`, `thirdParty`, `wipes` | `leader` | - | - |
 | `RVR_FIGHT_END` | server.log | **ships** | `bots/autonomous/RvrRecord.Fights.cs` | `by`, `deaths`, `end`, `fight`, `firstCcS`, `firstDeathRealm`, `firstDeathS`, `groups`, `held`, `playerDeaths`, `playerIn`, `playerKills`, `playerNearest`, `region`, `seconds`, `size`, `sizes`, `winner`, `x`, `y` | - | - | - |
 | `RVR_FIGHT_OPEN` | server.log | **ships** | `bots/autonomous/RvrRecord.Fights.cs` | `by`, `fight`, `groups`, `playerDistance`, `playerIn`, `realms`, `region`, `x`, `y` | - | - | - |
+| `RVR_FORCE_BATTLEGROUP` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Battlegroup.cs` | `force`, `groups`, `heads`, `id`, `lead`, `minutes`, `realm`, `region`, `what`, `why` | - | one per battlegroup change (formed, joined, left, ended), at most one per group per 10 s pulse (#599) | One change of a frontier battlegroup (formed, joined, left or ended), with its groups and heads. |
 | `RVR_FORCE_CLUSTER` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `biggest`, `bots`, `clusters`, `over24`, `parties`, `realm`, `t` | - | - | - |
 | `RVR_FRONTIER_DEPARTURE` | detail.log | **ships** | `bots/autonomous/AutonomousFrontierTransport.cs` | `count`, `destination`, `force`, `porter`, `region` | - | - | - |
 | `RVR_FRONTIER_WAIT_LONG` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierTransport.cs` | `at`, `bot`, `ceremony`, `grouped`, `heldForWarband`, `id`, `level`, `notReady`, `notReadyMembers`, `objective`, `party`, `passage`, `phase`, `porter`, `realm`, `spotDist`, `ticket`, `to`, `waited` | `bot` | - | - |
