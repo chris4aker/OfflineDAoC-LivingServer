@@ -1,9 +1,9 @@
 ---
 version: 1.2.3
-section: From OpenDAoC upstream: housing, guild and market
+section: Houses, guilds and the market
 ---
-- **/rent and /bountyrent** (#562, port package X1 step 2, `e4b9e02b1`; GPL-3.0 code by Baptiste Marie of
-  OpenDAoC-Core, ported by hand; owner answer 23A, 2026-11-27: port as upstream; `UT_RentCommands`). **Tests only.**
+- **/rent and /bountyrent** (#562, package X1 step 2, `e4b9e02b1`; owner answer 23A,
+  2026-11-27; `UT_RentCommands`). **Tests only.**
   Players only: bots don't own houses.
   - `/rent guild` no longer hands the gold to the player as well as paying the rent, and tells the guild once.
   - Zero, negative and overflowing amounts are refused (an overflowing amount used to put a wrapped sum in the
