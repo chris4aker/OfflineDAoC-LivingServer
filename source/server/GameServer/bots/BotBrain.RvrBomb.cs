@@ -163,6 +163,12 @@ namespace DOL.AI.Brain
                            !Body.IsMoving;
             if (!arrived)
             {
+                if (!RvrBombPlan.StillAsleep(board.Enemies, new Vector2(centre.X, centre.Y), spell.Radius))
+                {
+                    // the pile woke while it walked in (another hit, or a mate's bomb landed first): today's rules again
+                    EndRvrBomb(0);
+                    return false;
+                }
                 if (now < _rvrBombWalkUntil)
                     return true; // still walking in: this owns the turn
                 EndRvrBomb(5_000);

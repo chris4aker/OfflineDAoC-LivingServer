@@ -95,6 +95,27 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void A_pile_that_woke_ends_the_walk() => Assert.Multiple(() =>
+        {
+            Vector2 centre = new(1_000, 0);
+            var asleep = new List<RvrCombatant> { Enemy(1_000, 0, true), Enemy(1_100, 50, true), Enemy(1_050, -80, true) };
+            Assert.That(RvrBombPlan.StillAsleep(asleep, centre, 350), Is.True, "three asleep: walk on");
+            var oneWoke = new List<RvrCombatant> { Enemy(1_000, 0, true), Enemy(1_100, 50, true), Enemy(1_050, -80, false) };
+            Assert.That(RvrBombPlan.StillAsleep(oneWoke, centre, 350), Is.True, "two still asleep: still a pile");
+            var woke = new List<RvrCombatant> { Enemy(1_000, 0, true), Enemy(1_100, 50, false), Enemy(1_050, -80, false) };
+            Assert.That(RvrBombPlan.StillAsleep(woke, centre, 350), Is.False, "one asleep: the walk ends");
+            var allWoke = new List<RvrCombatant> { Enemy(1_000, 0, false), Enemy(1_100, 50, false), Enemy(1_050, -80, false) };
+            Assert.That(RvrBombPlan.StillAsleep(allWoke, centre, 350), Is.False, "the first bomb woke them all: the walk ends");
+            var wandered = new List<RvrCombatant> { Enemy(1_000, 0, true), Enemy(1_600, 0, true) };
+            Assert.That(RvrBombPlan.StillAsleep(wandered, centre, 350), Is.False, "the second sleeper is out of the bomb's reach");
+            Assert.That(RvrBombPlan.StillAsleep(null, centre, 350), Is.False);
+            // the same count as the pick: a pile Choose would walk to is asleep, and Decide says None once it is not
+            Assert.That(RvrBombPlan.Choose(woke, Vector2.Zero, 350).Centre, Is.Null);
+            (int mezzed, int free) = RvrBombPlan.Reach(woke, centre, 350);
+            Assert.That(RvrBombPlan.Decide(2, mezzed, free, Long), Is.EqualTo(RvrBombAction.None), "two bombers: no bomb on it either");
+        });
+
+        [Test]
         public void Reach_counts_inside_the_edge_margin_and_counts_pets()
         {
             var list = new List<RvrCombatant>

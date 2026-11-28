@@ -21,7 +21,7 @@ public enum RvrBombAction : byte
 /// Mentalist)" and caster groups mezzed, then bombed (reference.md 3.6); but "any damage breaks [a mez], so AE damage on a
 /// mezzed group is the classic mistake" (3.3). So: once the group's area mez has landed (two or more enemies mezzed in one
 /// bomb's reach), a group with two or more bombers walks them in and bombs the pile at once (the first to arrive holds
-/// a moment for the others), the whole pile taking every bomb; a group with one bomber walks it in and waits beside the
+/// a moment for the others, and a bomber whose pile wakes before it gets there gives the walk up); a group with one bomber walks it in and waits beside the
 /// pile, and bombs when the first mez there is about to wear off. Without a mezzed pile nothing changes. Pure. Our design values (no source measured them): the 2 s wake window,
 /// the 1,500 walk (a caster now stands about that far back, step 2e) and the timers.
 /// </summary>
@@ -42,7 +42,7 @@ public static class RvrBombPlan
     /// <summary>The longest a lone bomber waits beside the pile (past a 60 s mez on an unresisted target).</summary>
     public const long MaxWaitMilliseconds = 65_000;
     /// <summary>Two or more bombers: the first to arrive holds this long at most for the others still walking in (about
-    /// one bomb's cast time), so the bombs land together.</summary>
+    /// one bomb's cast time), so the bombs of bombers already near land together.</summary>
     public const long SyncHoldMilliseconds = 3_000;
 
     /// <summary>
@@ -94,6 +94,15 @@ public static class RvrBombPlan
         }
         return (mezzed, free);
     }
+
+    /// <summary>
+    /// Whether the pile centred at <paramref name="centre"/> is still asleep: a bomb of <paramref name="radius"/> there still
+    /// reaches <see cref="MinimumMezzed"/> mezzed enemies. A bomber walking in recounts this on every tick and gives the walk
+    /// up once the pile wakes (another hit broke the mez, or the first bomb landed before it got there), so it does not
+    /// walk on into awake enemies. Pure.
+    /// </summary>
+    public static bool StillAsleep(IReadOnlyList<RvrCombatant> enemies, Vector2 centre, int radius) =>
+        enemies != null && Reach(enemies, centre, radius).Mezzed >= MinimumMezzed;
 
     /// <summary>
     /// The pile to walk in on: a mezzed enemy within <see cref="WalkLimit"/> of <paramref name="from"/> whose bomb reaches
