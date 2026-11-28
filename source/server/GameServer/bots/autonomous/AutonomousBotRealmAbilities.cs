@@ -26,7 +26,15 @@ public static class AutonomousBotRealmAbilities
     public const string AugStr = "AtlasOF_AugStr", AugCon = "AtlasOF_AugCon", AugDex = "AtlasOF_AugDex",
         AugQui = "AtlasOF_AugQui", AugAcuity = "AtlasOF_AugAcuity", FirstAid = "AtlasOF_FirstAid",
         IgnorePain = "AtlasOF_IgnorePain", IgnorePainTank = "AtlasOF_IgnorePainTank", SecondWind = "AtlasOF_SecondWind",
-        Purge = "AtlasOF_Purge", PurgeReduced = "AtlasOF_PurgeReduced";
+        Purge = "AtlasOF_Purge", PurgeReduced = "AtlasOF_PurgeReduced", AvoidanceOfMagic = "AtlasOF_AvoidanceOfMagic";
+
+    /// <summary>
+    /// Abilities 1.65 removed (Avoidance of Magic, Brilliant Aura of Deflection, Volcanic Pillar; #531 step 2b). A gamebot
+    /// never buys one, neither in its build nor with its leftover points; what the class tables offer players is left
+    /// as it is (an open owner question on #531).
+    /// </summary>
+    public static readonly HashSet<string> RemovedAt165 = new(StringComparer.OrdinalIgnoreCase)
+        { AvoidanceOfMagic, "AtlasOF_BrilliantAura", "AtlasOF_VolcanicPillar" };
 
     /// <summary>Prerequisites, as the Atlas handlers' CheckRequirement (written for GamePlayer only).</summary>
     public static (string Key, int Level)? Requirement(string key, int classId) => key switch
@@ -59,24 +67,24 @@ public static class AutonomousBotRealmAbilities
         ("AugStr", 3), ("MasteryOfArms", 1), ("AugCon", 3), (SecondWind, 1), ("MasteryOfPain", 2), ("Determination", 1),
         ("DeterminationHybrid", 1), ("AugDex", 3), (FirstAid, 2), (IgnorePainTank, 1), (IgnorePain, 1),
         ("Toughness", 2), ("MasteryOfBlocking", 2), ("MasteryOfParrying", 2), ("MasteryOfArms", 2), ("MasteryOfPain", 3),
-        ("AvoidanceOfMagic", 1), ("AugQui", 2), ("Dodger", 1), ("DualistsReflexes", 1));
+        ("AugQui", 2), ("Dodger", 1), ("DualistsReflexes", 1));
 
     private static readonly Step[] CasterBuild = Build(("AugAcuity", 2), ("MasteryOfMagery", 1), ("AugCon", 1),
         ("WildPower", 1), ("Serenity", 1), ("AugDex", 1), ("MasteryOfTheArcane", 1), (PurgeReduced, 1), (Purge, 1),
         ("AugAcuity", 3), ("MasteryOfMagery", 2), ("Toughness", 1), ("EtherealBond", 1), ("WildMinion", 1),
-        ("AvoidanceOfMagic", 1), (FirstAid, 1), ("Determination", 1), ("AugCon", 2), ("MasteryOfMagery", 3),
+        (FirstAid, 1), ("Determination", 1), ("AugCon", 2), ("MasteryOfMagery", 3),
         ("WildPower", 2), ("AugAcuity", 4), ("MasteryOfTheArcane", 2), ("WildArcana", 1));
 
     private static readonly Step[] HealerBuild = Build(("AugAcuity", 2), ("MasteryOfHealing", 1), ("WildHealing", 1),
         ("AugCon", 1), ("Serenity", 1), (PurgeReduced, 1), (Purge, 1), ("AugDex", 1), ("AugAcuity", 3),
-        ("MasteryOfHealing", 2), ("Toughness", 1), ("EtherealBond", 1), ("WildHealing", 2), ("AvoidanceOfMagic", 1),
+        ("MasteryOfHealing", 2), ("Toughness", 1), ("EtherealBond", 1), ("WildHealing", 2),
         ("AugCon", 2), (FirstAid, 1), ("Determination", 1), ("DeterminationHybrid", 1), ("MasteryOfHealing", 3),
         ("AugAcuity", 4), ("WildPower", 1), ("MasteryOfMagery", 1));
 
     private static readonly Step[] ArcherBuild = Build(("AugDex", 3), ("MasteryOfArchery", 1), ("FalconsEye", 1),
         ("AugQui", 2), ("Dodger", 1), ("AugCon", 1), (PurgeReduced, 1), (Purge, 1), ("AugStr", 1),
         ("MasteryOfArchery", 2), ("Toughness", 1), ("FalconsEye", 2), ("AugCon", 3), (SecondWind, 1),
-        ("MasteryOfPain", 1), ("MasteryOfArchery", 3), ("AvoidanceOfMagic", 1), ("Determination", 1));
+        ("MasteryOfPain", 1), ("MasteryOfArchery", 3), ("Determination", 1));
 
     public static Archetype ArchetypeOf(ICollection<string> available)
     {
@@ -123,7 +131,7 @@ public static class AutonomousBotRealmAbilities
         };
         foreach (Step step in build)
         {
-            if (!available.TryGetValue(step.Key, out int max) || Redundant(step.Key) || !Meets(step.Key)) continue;
+            if (!available.TryGetValue(step.Key, out int max) || RemovedAt165.Contains(step.Key) || Redundant(step.Key) || !Meets(step.Key)) continue;
             if (!Raise(step.Key, Math.Min(step.Level, max))) return owned;
         }
         // The rest, cheapest next level first (ties by name), low-value passives last.
@@ -132,7 +140,7 @@ public static class AutonomousBotRealmAbilities
             string next = null; int nextPrice = int.MaxValue; bool nextLow = true;
             foreach (var (key, max) in available.OrderBy(pair => pair.Key, StringComparer.Ordinal))
             {
-                if (Owned(key) >= max || Redundant(key) || !Meets(key)) continue;
+                if (Owned(key) >= max || RemovedAt165.Contains(key) || Redundant(key) || !Meets(key)) continue;
                 int price = cost(key, Owned(key));
                 if (price <= 0 || price >= 1000) continue;
                 bool low = LowValue.Contains(key);
