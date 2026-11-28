@@ -285,6 +285,62 @@ namespace DOL.UnitTests
         public void TheOwnRecordAppliesFromTheThirdSiege(int own, bool applies) =>
             Assert.That(SiegeDefenseBalance.OwnRecordApplies(own), Is.EqualTo(applies));
 
+        // ---- The caps of a siege use the defending realm's record (review of #799, re-review point 1) ----
+
+        /// <summary>
+        /// Twelve Midgard captures, then twelve Albion defenses: Midgard's own record sits at its trim (+0.5: share 1.0,
+        /// attackers 96, defenders 128) while the server-wide record has fallen to its floor (-0.25: share 0.5, attackers
+        /// 128, defenders 64). A siege on a Midgard keep must take Midgard's numbers in DefenderCapFor (its cap and its
+        /// share) and AttackerCapFor; passing no realm there gives the server-wide numbers and fails this.
+        /// </summary>
+        private static object MidgardSiege(int marched)
+        {
+            SiegeDefenseBalance.ResetUnloadedForTests();
+            SiegeDefenseBalance.LoadResults([
+                .. Enumerable.Repeat(new SiegeDefenseBalance.SiegeResult(true, eRealm.Midgard), 12),
+                .. Enumerable.Repeat(new SiegeDefenseBalance.SiegeResult(false, eRealm.Albion), 12),
+            ]);
+            AutonomousRvrEventLayer.SiegeScheduling = true;
+            Type type = typeof(AutonomousRvrEventLayer).GetNestedType("ActiveEvent", BindingFlags.NonPublic);
+            object active = Activator.CreateInstance(type, nonPublic: true);
+            void Set(string field, object value) => type.GetField(field).SetValue(active, value);
+            Set("TargetId", "rvr-keep-799cap");
+            Set("RelicKeep", false);
+            Set("AttackerRealm", eRealm.Albion);
+            Set("DefenderRealm", eRealm.Midgard);
+            Set("MarchedAttackers", marched);
+            return active;
+        }
+
+        private static int Cap(string method, object active) =>
+            (int)typeof(AutonomousRvrEventLayer).GetMethod(method, BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, [active]);
+
+        [Test]
+        public void TheTwoRecordsDifferInTheCapTest() => Assert.Multiple(() =>
+        {
+            MidgardSiege(0);
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Midgard), Is.EqualTo(0.5), "Midgard at its trim");
+            Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(-0.25), "server-wide at its floor");
+            Assert.That(RealmEventPolicy.EffectiveAttackerCap(false), Is.EqualTo(128), "server-wide attackers");
+            Assert.That(RealmEventPolicy.DefenderCap(false), Is.EqualTo(64), "server-wide defenders");
+        });
+
+        [Test]
+        public void TheAttackersCapIsTheDefendingRealmsOwn()
+        {
+            object active = MidgardSiege(0);
+            Assert.That(Cap("AttackerCapFor", active), Is.EqualTo(96), "Midgard's trim, not the server-wide 128");
+        }
+
+        [TestCase(0, 128)]    // no march yet: the cap from Midgard's share (server-wide: 64)
+        [TestCase(40, 40)]    // Midgard's share of 1.0 of the army that marched (server-wide: 20)
+        [TestCase(200, 128)]  // a big army meets Midgard's cap (server-wide: 64)
+        public void TheDefendersCapIsTheDefendingRealmsOwn(int marched, int expected)
+        {
+            object active = MidgardSiege(marched);
+            Assert.That(Cap("DefenderCapFor", active), Is.EqualTo(expected));
+        }
+
         // ---- The finished row names the defending realm (review of #799, point 1) ----
 
         [Test]
