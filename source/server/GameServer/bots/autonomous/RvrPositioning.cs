@@ -120,9 +120,25 @@ public static class RvrPositioning
     public const float SpreadMargin = 30f;
     /// <summary>The spread on "incoming": wider, as players scattered before a charge.</summary>
     public const float ScatterSpread = 450f;
-    /// <summary>The backline's distance from the tanks' line: at least, and at most (so casters stay in range).</summary>
+    /// <summary>The backline's spread depth behind the tanks' line: at least, and at most. A member with a spell reach
+    /// stands deeper, by <see cref="DepthFor"/> (#531 step 2e).</summary>
     public const float MinBackDepth = 250f;
     public const float MaxBackDepth = 700f;
+    /// <summary>
+    /// #531 step 2e, caster depth (reference.md 6: "casters stand at 1,200-1,500 behind the tanks"; 3.2: nuke and mez
+    /// 1,500). A back-line member with a spell reach stands this far inside it from the enemy, so its spells still land.
+    /// </summary>
+    public const float ReachMargin = 150f;
+    /// <summary>The deepest a caster stands behind the line (a 1,500 nuke less the margin; a bolt reach is not used).</summary>
+    public const float MaxCasterDepth = 1_350f;
+    /// <summary>
+    /// A healer stands about this far from the enemy (healers "stand behind the tanks and kite", reference.md 3.6; the 900
+    /// keep-away of the #572 8v8 tunings, an emulator figure used as the starting value), and never farther from the line
+    /// than its heal reaches.
+    /// </summary>
+    public const float HealerStandOff = 900f;
+    /// <summary>A cover pick tries the place itself, then this many degrees round the line to each side, twice.</summary>
+    public const double CoverStepDegrees = 12;
     /// <summary>A backline member closer than this behind the line, or in front of it, is out of place.</summary>
     public const float MinLineDepth = 120f;
     /// <summary>A member this far from its place walks to it even when nothing else is wrong.</summary>
@@ -336,7 +352,86 @@ public static class RvrPositioning
     }
 
     /// <summary>One member of the layout: its record on the board, where it stands, and the guard's charge if any.</summary>
-    public readonly record struct Placed(RvrCombatant Member, RvrStand Stand, GameLiving Charge = null);
+    /// <summary>A member and where it stands. Reach (#531 step 2e): a back-line member's spell reach (a
+    /// caster's longest damage or control spell, a healer's heal); 0 keeps the layout's own depth.</summary>
+    public readonly record struct Placed(RvrCombatant Member, RvrStand Stand, GameLiving Charge = null, float Reach = 0);
+
+    /// <summary>
+    /// #531 step 2e: how far behind the tanks' line a back-line member stands. <paramref name="radius"/> is the layout's
+    /// depth (<see cref="BackRadius"/>, which keeps the mez spread) and the least it gets; <paramref name="gap"/> is how far
+    /// the enemy is ahead of the line (0 in melee contact). A caster stands its reach less <see cref="ReachMargin"/> from
+    /// the enemy, at most <see cref="MaxCasterDepth"/> behind the line; a healer <see cref="HealerStandOff"/> from the
+    /// enemy, no deeper than its heal reaches the line. No reach: <paramref name="radius"/>, as before. Pure.
+    /// </summary>
+    public static float DepthFor(bool healer, float reach, float gap, float radius)
+    {
+        if (reach <= 0)
+            return radius;
+        gap = Math.Max(0, gap);
+        float want = healer ? HealerStandOff - gap : reach - ReachMargin - gap;
+        float most = healer ? reach - ReachMargin : Math.Min(reach - ReachMargin, MaxCasterDepth);
+        return Math.Max(radius, Math.Min(want, most));
+    }
+
+    /// <summary>
+    /// #531 step 2e, the healer's cover pick: the places it tries, in order: its own, then <see cref="CoverStepDegrees"/>
+    /// and twice that round <paramref name="line"/> to each side, at the same depth. Pure.
+    /// </summary>
+    public static Vector2[] CoverCandidates(Vector2 spot, Vector2 line)
+    {
+        Vector2 arm = spot - line;
+        var result = new Vector2[5];
+        result[0] = spot;
+        int k = 1;
+        foreach (double degrees in new[] { CoverStepDegrees, -CoverStepDegrees, 2 * CoverStepDegrees, -2 * CoverStepDegrees })
+        {
+            double a = degrees * Math.PI / 180;
+            float cos = (float)Math.Cos(a), sin = (float)Math.Sin(a);
+            result[k++] = line + new Vector2(arm.X * cos - arm.Y * sin, arm.X * sin + arm.Y * cos);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// #531 step 2e: whether a healer's cover place at <paramref name="at"/> keeps the spread from the other back-liners
+    /// <paramref name="others"/>: at least the spread (<see cref="ScatterSpread"/> on "incoming", else <see cref="MezSpread"/>)
+    /// from each, and <see cref="MezSpread"/> + 10 from another healer. That is wider than <see cref="NeedsMove"/>'s
+    /// "Spread" test, so a healer that took the place is not sent off it again. Pure.
+    /// </summary>
+    public static bool CoverKeepsSpread(Vector2 at, bool incoming, IReadOnlyList<(Vector2 Position, bool Healer)> others)
+    {
+        if (others == null)
+            return true;
+        float spread = incoming ? ScatterSpread : MezSpread;
+        foreach ((Vector2 position, bool healer) in others)
+        {
+            float distance = Vector2.Distance(at, position);
+            if (distance < spread || healer && distance < MezSpread + 10)
+                return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// #531 step 2e: whether a healer's cover place at <paramref name="at"/> is near enough its own place
+    /// <paramref name="spot"/> (at most <see cref="FarFromSlot"/> less <see cref="SlotTolerance"/>) that a healer standing
+    /// anywhere within <see cref="SlotTolerance"/> of it is not sent back by <see cref="NeedsMove"/>'s "Far" test. Pure.
+    /// </summary>
+    public static bool CoverNearSlot(Vector2 at, Vector2 spot) => Vector2.Distance(at, spot) <= FarFromSlot - SlotTolerance;
+
+    /// <summary>
+    /// #531 step 2e: the first candidate that sees the tanks' line and is hidden from the nearest enemy caster (rocks and
+    /// walls, reference.md 6), else 0 (its own place). Pure.
+    /// </summary>
+    public static int PickCover(IReadOnlyList<(bool SeesLine, bool SeenByCaster)> candidates)
+    {
+        if (candidates == null)
+            return 0;
+        for (int i = 0; i < candidates.Count; i++)
+            if (candidates[i].SeesLine && !candidates[i].SeenByCaster)
+                return i;
+        return 0;
+    }
 
     /// <summary>
     /// The places of a group facing an enemy at <paramref name="enemy"/>: the backline on the arc behind the tanks' line
@@ -387,6 +482,8 @@ public static class RvrPositioning
             }
         float radius = BackRadius(backs.Count, healerGap, spread);
         (float raggedRadial, double raggedDegrees) = Ragged(tier);
+        // #531 step 2e: how far the enemy is ahead of the line, for each member's depth from its reach
+        float gap = Math.Max(0, Ahead(enemy, anchor, front));
 
         var spots = new Vector2[backs.Count];
         var memberErrors = new RvrSlotError[backs.Count];
@@ -395,13 +492,13 @@ public static class RvrPositioning
             int j = arc[a];
             RvrCombatant member = members[backs[j]].Member;
             double angle = slots[a].Angle;
-            float depth = radius;
+            float depth = DepthFor(healer[j], members[backs[j]].Reach, gap, radius);
             if (errors)
             {
                 double jitter = RvrPeelPlan.Roll(member.Key, 0, JitterSalt) * 2 - 1;
                 double jitter2 = RvrPeelPlan.Roll(member.Key, 1, JitterSalt) * 2 - 1;
                 angle += jitter * raggedDegrees * Math.PI / 180;
-                depth = Math.Clamp(depth + (float)jitter2 * raggedRadial, MinBackDepth * 0.8f, MaxBackDepth + raggedRadial);
+                depth = Math.Clamp(depth + (float)jitter2 * raggedRadial, MinBackDepth * 0.8f, Math.Max(depth, MaxBackDepth) + raggedRadial);
                 memberErrors[j] = Errors(tier, member.Key, now, healer[j]);
             }
             spots[j] = anchor + Direction(angle) * depth;

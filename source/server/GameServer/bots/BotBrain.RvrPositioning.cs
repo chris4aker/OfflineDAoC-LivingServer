@@ -170,7 +170,7 @@ namespace DOL.AI.Brain
                     stand = RvrStand.Escort;
                     charge = sticksTo;
                 }
-                placed.Add(new RvrPositioning.Placed(member, stand, charge));
+                placed.Add(new RvrPositioning.Placed(member, stand, charge, RvrPlacedReach(member, stand)));
                 positions.Add((RvrPeelPlan.At(member), stand));
                 centre += RvrPeelPlan.At(member);
             }
@@ -225,6 +225,9 @@ namespace DOL.AI.Brain
             if (now < _rvrPlaceDueAt)
                 return false;
             Vector2 spot = mine.Spot;
+            // #531 step 2e: a healer takes a place near its own that the casters across the field can't see
+            if (mine.Healer && line is Vector2 coverLine)
+                spot = RvrCoverSpot(bot, board, spot, coverLine, incoming, others);
             if (!support && target != null && PrefersCurrentSpellRange())
                 spot = RvrPositioning.WithinRange(spot, Flat(target), Math.Max(300, OffensiveApproachRange(target) - 75));
             if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now))
@@ -232,6 +235,94 @@ namespace DOL.AI.Brain
             _rvrPlaceDueAt = 0;
             LogRvrBackline(reason, line is Vector2 anchor ? -RvrPositioning.Ahead(spot, anchor, front) : 0, tier, now);
             return true;
+        }
+
+        /// <summary>
+        /// #531 step 2e: the reach the layout gives a board member: a back-line gamebot's spell reach sets its depth (a
+        /// caster's spells, a healer's heals); 0 for anyone else (today's depth).
+        /// </summary>
+        public static float RvrPlacedReach(RvrCombatant member, RvrStand stand) =>
+            stand == RvrStand.Back && member?.Living is GameBot { Brain: BotBrain memberBrain }
+                ? memberBrain.RvrReach(RvrPositioning.CountsAsHealer(member.Role, member.Class)) : 0;
+
+        /// <summary>
+        /// #531 step 2e: the reach a back-line bot keeps from the enemy: a healer's longest heal, anyone else's longest
+        /// damage or control spell (the range it walks in to). 0: none (an archer, or no spells).
+        /// </summary>
+        internal float RvrReach(bool healer)
+        {
+            if (!healer)
+                return SpellApproachRange();
+            int reach = 0;
+            foreach (Spell heal in new[] { BotBody?.HealBig, BotBody?.HealEfficient, BotBody?.HealInstant, BotBody?.HealGroup })
+                if (heal != null && heal.Range > 0)
+                    reach = Math.Max(reach, heal.CalculateEffectiveRange(Body));
+            return reach;
+        }
+
+        /// <summary>The farthest an enemy caster is looked for, for the cover pick (beyond its spell range).</summary>
+        private const float RvrCoverCasterRange = 2_000f;
+
+        /// <summary>
+        /// #531 step 2e, the cover pick (reference.md 6: casters "use rocks, walls and the milegate's edges to break line of
+        /// sight"): of its place and four places beside it on its arc (RvrPositioning.CoverCandidates), a healer takes the
+        /// first that sees the tanks' line and that the nearest enemy caster can't see, by the zone's sight check. A place
+        /// beside its own that stands inside the spread of another back-liner is skipped (RvrPositioning.CoverKeepsSpread), or
+        /// NeedsMove would send it off again. Its own place when no enemy caster is near (measured from the healer's place, not
+        /// where it stands now), there is no mesh, or none hides it. Runs only when the healer walks for its place (at most
+        /// once a second).
+        /// </summary>
+        private Vector2 RvrCoverSpot(GameBot bot, RvrFightBoard board, Vector2 spot, Vector2 line, bool incoming,
+            IReadOnlyList<(Vector2 Position, bool Healer)> others)
+        {
+            RvrCombatant caster = null;
+            float nearest = RvrCoverCasterRange;
+            foreach (RvrCombatant foe in board.Enemies)
+            {
+                if (foe?.Living == null || foe.IsPet || foe.Role != RvrRole.Caster || !foe.Living.IsAlive)
+                    continue;
+                float distance = Vector2.Distance(spot, new Vector2(foe.X, foe.Y));
+                if (distance < nearest)
+                {
+                    nearest = distance;
+                    caster = foe;
+                }
+            }
+            IPathfindingMgr nav = PathfindingProvider.Instance;
+            Zone zone = bot.CurrentZone;
+            if (caster == null || nav == null || zone == null || !nav.HasNavmesh(zone))
+                return spot;
+            return RvrCoverPick(nav, zone, new Vector3(caster.X, caster.Y, caster.Z), bot.Z, spot, line, incoming, others);
+        }
+
+        /// <summary>
+        /// The cover pick's sight checks (a seam for its tests): of <see cref="RvrPositioning.CoverCandidates"/>, the first
+        /// that sees <paramref name="line"/> and that the caster at <paramref name="caster"/> can't see, skipping a place
+        /// beside the healer's own that is inside another back-liner's spread or too far from its own to hold
+        /// (<see cref="RvrPositioning.CoverNearSlot"/>); else <paramref name="spot"/>. Eyes at +48.
+        /// </summary>
+        public static Vector2 RvrCoverPick(IPathfindingMgr nav, Zone zone, Vector3 caster, float z, Vector2 spot, Vector2 line,
+            bool incoming, IReadOnlyList<(Vector2 Position, bool Healer)> others)
+        {
+            Vector2[] candidates = RvrPositioning.CoverCandidates(spot, line);
+            var seen = new List<(bool SeesLine, bool SeenByCaster)>(candidates.Length);
+            Vector3 eye = new(caster.X, caster.Y, caster.Z + 48), lineAt = new(line.X, line.Y, z + 48);
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                if (i > 0 && (!RvrPositioning.CoverKeepsSpread(candidates[i], incoming, others)
+                    || !RvrPositioning.CoverNearSlot(candidates[i], spot)))
+                {
+                    seen.Add((false, true)); // no raycast: standing there would break the spread or send it back (Far)
+                    continue;
+                }
+                Vector3 at = new(candidates[i].X, candidates[i].Y, z + 48);
+                bool seesLine = nav.HasLineOfSight(zone, at, lineAt, nav.DefaultFilters);
+                bool seenByCaster = seesLine && nav.HasLineOfSight(zone, eye, at, nav.DefaultFilters);
+                seen.Add((seesLine, seenByCaster));
+                if (seesLine && !seenByCaster)
+                    break;
+            }
+            return candidates[RvrPositioning.PickCover(seen)];
         }
 
         // ---- standing in fire (Bots as people WP2) ---------------------------------------------------------------------------

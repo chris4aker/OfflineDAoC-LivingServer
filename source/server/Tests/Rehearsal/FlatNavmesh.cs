@@ -69,8 +69,13 @@ namespace DOL.GS.Tests.Rehearsal
             return true;
         }
 
+        /// <summary>A variant for tests: a sight line this returns true for is blocked (a rock between the two). Null: all clear.</summary>
+        public Func<Vector3, Vector3, bool> SightBlocked { get; init; }
+
         public bool HasLineOfSight(Zone zone, Vector3 position, Vector3 target, EDtPolyFlags[] filters)
         {
+            if (SightBlocked?.Invoke(position, target) == true)
+                return false;
             foreach (Wall wall in Walls)
                 if (Crosses(wall, position, target))
                     return false;
