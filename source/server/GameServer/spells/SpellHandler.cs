@@ -1184,8 +1184,7 @@ namespace DOL.GS.Spells
 						{
 							// Allow flute mez to keep trying (1.65 compliance). A bot
 							// cannot cancel it with another song, so its retry never
-							// ended and froze the bot; bots replan instead
-							// (stefanrows/OfflineDAoC fork, 0.187.0).
+							// ended and froze the bot; bots replan instead.
 							if (m_spell.IsPulsing && m_spell.SpellType is eSpellType.Mesmerize && Caster is GamePlayer)
 								CastState = eCastState.CastingRetry;
 							else
@@ -1264,8 +1263,9 @@ namespace DOL.GS.Spells
 			if (syphon > 0 && Util.Chance(syphon))
 				return 0;
 
+			// A gamebot pays its own cost, doubled on a cast it quickcasts (#531 step 2d), as a player does.
 			if (Caster is GameBot botCaster)
-				return BotSpellPower.Cost(botCaster, Spell, SpellLine);
+				return BotSpellPower.Cost(botCaster, Spell, SpellLine) * (IsQuickCasting && Spell.CastTime > 0 ? 2 : 1);
 
 			double powerCost = m_spell.Power;
 			GamePlayer playerCaster = Caster as GamePlayer;

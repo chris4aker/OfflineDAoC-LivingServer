@@ -1020,7 +1020,7 @@ namespace DOL.AI.Brain
         {
             if (candidate == null || Body.ControlledBrain is not ControlledMobBrain petBrain)
                 return candidate;
-            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt; an add instead, or back to its owner (BotBrain.RaidBoss)
+            // sh-bosses M2: never at a boss pets cannot hurt; an add instead, or back to its owner (BotBrain.RaidBoss)
             if (PetsDoNoDamageTo(candidate) && (candidate = PetTargetInsteadOfBoss(candidate, petBrain)) == null)
                 return null;
 
@@ -1502,7 +1502,7 @@ namespace DOL.AI.Brain
             if (TemporaryGroupStableTravel.SyncStowWithLeaderRide(BotBody) || Body.StowedForRide)
                 return;
 
-            // True 1.65 (veteran review M6): a party that called RUN, a solo bot bailing out, a hired healer surviving
+            // Veteran review M6: a party that called RUN, a solo bot bailing out, a hired healer surviving
             // to raise its player: run, fight nothing (BotBrain.Retreat)
             if (BotBody?.IsOnStableMasterRoute == false && TryHoldRetreat())
                 return;
@@ -1528,7 +1528,7 @@ namespace DOL.AI.Brain
             if (CompanionRaidSiege.Think(this))
                 return;
 
-            // A hired companion (HiredCompanions165, from True 1.65) never runs the world bots' goals: out of its player's
+            // A hired companion (HiredCompanions165) never runs the world bots' goals: out of its player's
             // group it rejoins them, with its player gone it waits. Inside the group it thinks as every companion does.
             if (HiredCompanions165.KeepWithOwner(BotBody))
                 return;
@@ -1579,7 +1579,7 @@ namespace DOL.AI.Brain
                 (BotBody.TryReturnTemporaryCompanionToLeader() || TryResurrectCompanionOwner()))
                 return;
             // A hired healer raises its dead player first, as a /spawn helper does; one left far behind or stuck comes back
-            // to its player (True 1.65, owner 2026-10-30 / 2026-10-31).
+            // to its player (owner 2026-10-30 / 2026-10-31).
             if (BotBody?.IsHiredCompanion == true &&
                 (TryResurrectCompanionOwner() || HiredCompanions165.TryRecallToOwner(BotBody) || HiredCompanions165.TryUnstick(BotBody)))
                 return;
@@ -3095,7 +3095,6 @@ namespace DOL.AI.Brain
         /// <summary>
         /// Another living groupmate provides a faster speed: a bot that knows one
         /// (it will run it), or a real player who is running one right now.
-        /// From the stefanrows/OfflineDAoC fork (0.200.0).
         /// </summary>
         private bool GroupmateHasStrongerSpeed(Spell speed)
         {
@@ -3477,7 +3476,7 @@ namespace DOL.AI.Brain
                 return;
             NoteCastForStep();
 
-            // True 1.65 (veteran review M6): a solo caster steps straight back from a rooted or snared monster (once per 20 s)
+            // Veteran review M6: a solo caster steps straight back from a rooted or snared monster (once per 20 s)
             if (TryCasterStepBack())
                 return;
 
@@ -3818,7 +3817,7 @@ namespace DOL.AI.Brain
                             if (Body.ActiveWeaponSlot != eActiveWeaponSlot.Distance)
                                 Body.SwitchWeapon(eActiveWeaponSlot.Distance);
 
-                            // df-bosses L2 (True 1.65): an archer stands where a raid boss takes damage (Legion: inside 1,400)
+                            // df-bosses L2: an archer stands where a raid boss takes damage (Legion: inside 1,400)
                             int rangedAttackRange = CapRangeForTarget(livingTarget, Body.attackComponent.AttackRange);
                             if (BotRangedCombat.ShouldCloseToRangedRange(
                                     true, distance, rangedAttackRange))
@@ -3906,7 +3905,7 @@ namespace DOL.AI.Brain
             // target (1,000), not at nuke range (1,500), so every shroom can be
             // planted beside the Animist instead of out by the enemy.
             int shroomRange = BotAnimistPolicy.ShroomStandoffRange(BotBody);
-            // df-bosses L2 (True 1.65): never beyond the range a raid boss can be damaged from (BotBrain.RaidBoss)
+            // df-bosses L2: never beyond the range a raid boss can be damaged from (BotBrain.RaidBoss)
             return CapRangeForTarget(target, shroomRange > 0 && range > 0 ? Math.Min(range, shroomRange) : range);
         }
 
@@ -4259,7 +4258,7 @@ namespace DOL.AI.Brain
             // The Druid remains a support actor. Only its pet gets an attack
             // order, and an existing matching order is not restarted each tick.
             if (pet is ControlledMobBrain controlled && controlled.OrderedAttackTarget == target) return;
-            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt (Summoner Lossren); an add instead, or no order
+            // sh-bosses M2: never at a boss pets cannot hurt (Summoner Lossren); an add instead, or no order
             if (PetsDoNoDamageTo(target))
             {
                 if (pet is not ControlledMobBrain mob || (target = PetTargetInsteadOfBoss(target, mob)) == null ||
@@ -4522,7 +4521,7 @@ namespace DOL.AI.Brain
             }
             else if (!casted && type == eCheckSpellType.Offensive)
             {
-                // df-bosses L2 (True 1.65): from where the target takes no damage, no attack spell: the caller walks in to range
+                // df-bosses L2: from where the target takes no damage, no attack spell: the caller walks in to range
                 if (BeyondTargetDamageRange()) return false;
                 if (TryPvpCrowdControl()) return true;
                 // #568 C4: Life Transfer, Amnesia for the pet, shedding a monster to the tank, PvP utility (once a second)
@@ -6126,7 +6125,7 @@ namespace DOL.AI.Brain
                 foreach (GameLiving m in AutonomousRealmRaid.SupportPets(BotBody, 1800))
                     if (m.HealthPercent < 80 && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
                         raidPatient = m;
-                // dragon-fight M1 (True 1.65): a real player of the realm fighting beside the raid, not in its parties, is healed too
+                // dragon-fight M1: a real player of the realm fighting beside the raid, not in its parties, is healed too
                 foreach (GameLiving m in BotGroupSupport.RaidGuests(BotBody))
                     if (m.IsAlive && m.CurrentRegionID == Body.CurrentRegionID && m.HealthPercent < 80 &&
                         Body.IsWithinRadius(m, 1800) && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
@@ -6354,7 +6353,6 @@ namespace DOL.AI.Brain
             {
                 // The same spell is already being cast (a cure mezz on a mate who is still mezzed is picked again on
                 // every turn): let it finish. Stopping it below and starting over made the healer recast without end.
-                // (From stefanrows/OfflineDAoC 714a9e20, via rambodolphin13/OfflineDAoC 88e7414.)
                 if (IsAlreadyCastingSpell(BotBody.IsCasting, BotBody.castingComponent?.SpellHandler?.Spell?.ID, spellToCast.ID,
                         BotBody.castingComponent?.SpellHandler?.Target, spellTarget))
                     return true;

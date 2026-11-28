@@ -73,6 +73,9 @@ public static class BotQuickCast
         return true;
     }
 
+    /// <summary>Tests only: arm this spell as <see cref="TryArm"/> does once Quickcast carries it (the effect is the caller's).</summary>
+    public static void ArmForTest(GameBot bot, Spell spell) => ArmedFor.GetOrCreateValue(bot).SpellId = spell.ID;
+
     /// <summary>Whether the spell handler may take the bot's Quickcast for this spell (armed by <see cref="TryArm"/>).</summary>
     public static bool IsArmed(GameBot bot, Spell spell) =>
         bot != null && spell != null && ArmedFor.TryGetValue(bot, out Armed armed) && armed.SpellId == spell.ID;
