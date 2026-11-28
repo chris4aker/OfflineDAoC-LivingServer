@@ -969,7 +969,12 @@ namespace DOL.GS
                 // authored monster coordinate may be farther away or above
                 // that floor; never replace the ordered chain with a generic
                 // direct PathTo merely because raw spawn distance is large.
-                if (!certifiedDarknessFallsCamp && (campDistance > CampArrivalRadius || dungeonApproach))
+                // #569 step 9: a non-leader puller beside an arrived leader is at the camp (outdoors
+                // only), so its formation slot outside the ring no longer keeps it from its camp turn.
+                bool pullerArrivedWithLeader = PartyPullerArrivedWithLeader(bot, campDistance, dungeonApproach,
+                    certifiedDarknessFallsCamp);
+                if (!certifiedDarknessFallsCamp && !pullerArrivedWithLeader &&
+                    (campDistance > CampArrivalRadius || dungeonApproach))
                 {
                     _emptyCampSinceTick = 0;
                     _patrolDestination = null;
@@ -3271,6 +3276,8 @@ namespace DOL.GS
                 }
                 if (GuardDungeonTravel(bot, new(target.X, target.Y, target.Z)))
                     return !brain.HasAggro;
+                long emptySinceBefore = _emptyCampSinceTick;
+                string reportedEmptyBefore = _reportedEmptySharedCampId;
                 _emptyCampSinceTick = 0;
                 _reportedEmptySharedCampId = string.Empty;
                 _patrolDestination = null;
@@ -3286,8 +3293,19 @@ namespace DOL.GS
                     AbandonCamp(bot, $"{benchedPulls} {_camp.MonsterName} had no ranged firing point");
                     return true;
                 }
-                if (!SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
-                    AutonomousDefensivePull.TryBegin(bot, target))
+                PartyPullStart partyPullWhy = PartyPullStart.NotApplicable;
+                bool partyPullHandled = !SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
+                    AutonomousDefensivePull.TryBegin(bot, target, out partyPullWhy);
+                // #569 step 9: too far = look for a nearer target, never the ordinary pull's walk into the
+                // pack; the ordinary pull only in the designed cases (contact, no ranged pull, benched, not a pull party).
+                // Outdoors only: dungeon and Darkness Falls camps keep today's pull.
+                PartyPullFallback partyPullNext = AutonomousPartyPullCamp.AfterPartyPull(partyPullHandled, partyPullWhy,
+                    AutonomousPartyPullCamp.CampTurn && !_camp.IsDungeon &&
+                    _camp.RegionId != AutonomousDarknessFallsPolicy.RegionId);
+                NotePartyPullOutcome(partyPullNext);
+                if (partyPullNext == PartyPullFallback.SkipTooFar)
+                    return SkipTooFarPartyTarget(bot, target, emptySinceBefore, reportedEmptyBefore);
+                if (partyPullNext == PartyPullFallback.Handled)
                 {
                     // Claimed only once the shot is under way, not while the party waits out a retry.
                     if (AutonomousDefensivePull.IsPulling(bot.Group, target))
@@ -3315,6 +3333,7 @@ namespace DOL.GS
             }
 
             _emptyCampSinceTick = _emptyCampSinceTick == 0 ? GameLoop.GameLoopTime : _emptyCampSinceTick;
+            NotePartyEmptyCampTurn();   // #569 step 9: a truly empty camp ends the too-far episode
             // A crowded camp that others keep empty is left after 15 s, not 75 s (owner 2026-11-05, reset-day S36): the
             // extra bots spread to other camps instead of queueing for each respawn.
             bool crowdedCamp = (bot.Group?.MemberCount ?? 1) <= 1 && AutonomousCampCompetition.Occupancy(_camp.Id) > 4;
@@ -3380,6 +3399,9 @@ namespace DOL.GS
                 return true;
             }
 
+            // #569 step 9: a party puller that is not the leader waits with the party (patrolling broke formation)
+            if (HoldPartyPullerAtEmptyCamp(bot))
+                return true;
             PatrolCamp(bot);
             if (_camp == null) return true;
             SetStatus(bot, $"Searching the {_camp.MonsterName} camp", GoalText(),
