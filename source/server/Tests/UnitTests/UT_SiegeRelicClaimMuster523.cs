@@ -380,7 +380,12 @@ public sealed class UT_SiegeRelicClaimMuster523
         var events = (IDictionary)typeof(L).GetField("Events", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
         events[keep.Id] = lost;
 
-        L.EndTarget(keep.Id, 10_000, eRealm.Midgard);
+        // #523 (d), 47A: the retake after a player capture is a roll; this test needs the roll to come up.
+        FieldInfo retakeRoll = typeof(L).GetField("RetakeRoll", BindingFlags.Static | BindingFlags.NonPublic);
+        object roll = retakeRoll.GetValue(null);
+        retakeRoll.SetValue(null, (Func<double>)(() => 0.0));
+        try { L.EndTarget(keep.Id, 10_000, eRealm.Midgard); }
+        finally { retakeRoll.SetValue(null, roll); }
 
         string muster = L.MusterPlace(eRealm.Albion, keep.RegionId);
         Assume.That(muster, Is.Not.Null, "Albion has a muster in its own frontier");

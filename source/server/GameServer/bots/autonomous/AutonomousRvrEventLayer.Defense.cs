@@ -14,7 +14,20 @@ namespace DOL.GS
     {
         public const long DefenseResponseMilliseconds = 4 * 60 * 60_000L;
         public const long DefenseQuietMilliseconds = 3 * 60_000L;
-        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick);
+        /// <summary>A player's attack on a keep, waiting for the coordinator pulse. <c>Sustained</c>: a door was hit or a
+        /// guard died in this attack (#523 (b), owner 2026-11-27, 45A), which raises a defense even for a lone attacker.</summary>
+        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick, bool Sustained = false);
+
+        /// <summary>What an enemy did to a keep (<see cref="ObserveKeepAttack"/>).</summary>
+        public enum KeepAttackKind { GuardHit, GuardKilled, DoorHit }
+
+        /// <summary>
+        /// #523 step 1 (b), owner 2026-11-27 (45A, war.md finding 2 fix 2): a lone guard pull raises no alarm. Guard damage
+        /// alone raises no defense below Standard scale (one attacker seen at the keep) until a guard dies or a door is hit.
+        /// Period: the owning guild was told when a guard died, with the enemy count (GuardSpam); a lone ganker who hit a
+        /// guard and left drew nothing (reference.md 5.1, 5.5-5.6).
+        /// </summary>
+        public static bool AlarmRaisesDefense(DefenseScale scale, bool sustained) => sustained || scale >= DefenseScale.Standard;
 
         // Goal 11 (owner 2026-10-07): the response is sized to the force that started the attack - a solo player, a
         // group (player + up to 7), a /raid 40 or a /raid 80 - and the announcement says how big a force was rallied.
@@ -98,6 +111,7 @@ namespace DOL.GS
             _ => "A small defense force has been rallied!",
         };
 
+        // #523 (c), owner 2026-11-27 (46B): a player's attack keeps the horn and the size line (this replaces war.md fix 3).
         // A war horn, once to the attacking player when the defense is first raised and again only when the force grows
         // into a bigger tier; never repeated per hit. Client sound id (cc_sounds.csv). Default 219 (RelicTaken_Hibernia.wav,
         // a swelling low horn call); 0 turns it off.
@@ -113,9 +127,9 @@ namespace DOL.GS
 
         // Damage callbacks only replace a bounded, per-keep alarm. Recruitment,
         // chat and all population work run in the coordinator service phase.
-        public static void ObserveKeepAttack(AbstractGameKeep keep, GameObject source)
+        public static void ObserveKeepAttack(AbstractGameKeep keep, GameObject source, KeepAttackKind kind = KeepAttackKind.GuardHit)
         {
-            if (!AutonomousRvrKeepPolicy.IsSiegeObjective(keep)) return;
+            if (keep == null || !AutonomousRvrKeepPolicy.IsSiegeObjective(keep)) return;
             string id = $"rvr-keep-{keep.KeepID}";
             long now = GameLoop.GameLoopTime;
             if (source != null && source.Realm != eRealm.None && source.Realm != keep.Realm)
@@ -128,8 +142,15 @@ namespace DOL.GS
             if (player == null || player.Realm == eRealm.None || player.Realm == keep.Realm) return;
             // Goal 11: the player's raid fights this siege on its own, planned bot siege or not.
             CompanionRaidSiege.RequestAssault(player, keep);
-            if (DefenseAlarms.TryGetValue(id, out var previous) && now - previous.Tick < 1000) return;
-            DefenseAlarms[id] = new(keep, player, now);
+            bool sustained = kind != KeepAttackKind.GuardHit;
+            if (DefenseAlarms.TryGetValue(id, out var previous))
+            {
+                // A door hit or a guard death stays with the alarm while it lives (DefenseQuietMilliseconds).
+                sustained |= previous.Sustained && now - previous.Tick <= DefenseQuietMilliseconds;
+                // One alarm a second, but a door hit or a guard death is never dropped by that throttle.
+                if (now - previous.Tick < 1000 && (previous.Sustained || !sustained)) return;
+            }
+            DefenseAlarms[id] = new(keep, player, now, sustained);
         }
 
         // Battleground keeps have no planned siege event, so a siege "starts" when an enemy realm first damages the keep
@@ -229,6 +250,15 @@ namespace DOL.GS
             return Math.Max(Math.Max(active.LastPressureTick, active.AttackersLastSeenTick), hit <= nowTick ? hit : 0);
         }
 
+        /// <summary>
+        /// #523 step 1 (e), owner 2026-11-27 (48A): on the player path the third realm answers as it does a bot siege, through
+        /// <see cref="RealmEventPolicy.CanRespond"/>: only when its roll came up (<see cref="RealmEventPolicy.ThirdRealmChance"/>)
+        /// and <see cref="RealmEventPolicy.ThirdRealmDelayMilliseconds"/> after the alarm. Period: the third realm often
+        /// arrived late (reference.md 5.6).
+        /// </summary>
+        public static bool ThirdRealmJoinsDefense(bool intervenes, long sinceAlarmMilliseconds) =>
+            RealmEventPolicy.CanRespond(false, true, true, intervenes, sinceAlarmMilliseconds);
+
         /// <summary>Share of whole warbands held back from each event (incidental nearby combat stays with normal AI).</summary>
         public const int ResponseReservePercent = 30;
 
@@ -293,8 +323,8 @@ namespace DOL.GS
                 {
                     active = new ActiveEvent { TargetId = target.Id, Target = target, AttackerRealm = attacker,
                         DefenderRealm = target.OwningRealm, RelicKeep = target.IsRelicKeep, CreatedTick = now,
-                        ExpiresTick = now + DefenseResponseMilliseconds, BattleStarted = true, DefenseReaction = true,
-                        DefenseScale = scale };
+                        ExpiresTick = now + DefenseResponseMilliseconds, BattleStarted = true, BattleStartedTick = now,
+                        DefenseReaction = true, DefenseScale = scale };
                     Events[target.Id] = active;
                     RealmEventRecords.Begin(target.Id, target.Name, target.IsRelicKeep ? "Relic keep" : "Keep",
                         GlobalConstants.RealmToName(attacker), "Player attack: immediate defense response, until the attackers leave");
@@ -335,6 +365,9 @@ namespace DOL.GS
                     int seen = SeenForceSize(alarm.Player, keep, realmBots ??= AttackerRealmBotSource().ToArray(),
                         bot => IsOwnRecruit(defense, bot));
                     DefenseScale scale = ScaleOf(seen);
+                    // #523 (b): a lone guard pull waits. The alarm is kept, so a door hit or a guard death in the next
+                    // quiet minutes still raises it; a planned siege at the keep is still marked as attacked below.
+                    if (!Events.ContainsKey(pair.Key) && !AlarmRaisesDefense(scale, alarm.Sustained)) continue;
                     DefenseScale before = Events.TryGetValue(pair.Key, out var existing) && existing.DefenseReaction ? existing.DefenseScale : scale;
                     bool firstAlarm = BeginDefenseResponse(target, alarm.Player.Realm,
                         alarm.Player.Client?.Account?.Name ?? alarm.Player.Name, alarm.Tick, scale);
@@ -421,6 +454,9 @@ namespace DOL.GS
                         Force force = candidate.Force;
                         if (!active.BattleStarted && force.Realm != active.DefenderRealm) continue;
                         if (Participants(active, force.Realm).ContainsKey(force.GroupId)) continue;
+                        // #523 (e), owner 2026-11-27 (48A): the third realm joins a player's siege on its roll, after a delay.
+                        if (active.DefenseReaction && force.Realm == OtherRealm(active) &&
+                            !ThirdRealmJoinsDefense(active.ThirdRealmIntervenes, now - active.BattleStartedTick)) continue;
                         if (ReleasedForces.ContainsKey(force.GroupId) ||
                             CarrierEvents.Values.Any(c => c.Participants.Values.Any(r => r.ContainsKey(force.GroupId)))) continue;
                         // Keep a 30% reserve of whole warbands, drawn afresh for each event (#523 step 2);
