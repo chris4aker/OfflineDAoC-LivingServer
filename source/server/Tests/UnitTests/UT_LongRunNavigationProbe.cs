@@ -316,7 +316,9 @@ namespace DOL.UnitTests
                     (magMellTicket, new Vector3(343430, 526748, 5448)),
                     (new Vector3(332555, 485333, 5215), new Vector3(343430, 526748, 5448)),
                     (new Vector3(403458, 441679, 3111), new Vector3(421892, 488015, 1824)),
-                    (new Vector3(385088, 483424, 7262), new Vector3(421892, 488015, 1824)),
+                    // #704: the September sample here started at 385088,483424, the Valley seam the itinerary chose then
+                    // (pinned below as a cut). Today's route into the Valley from the Mag Mell ticket is the sample instead.
+                    (magMellTicket, new Vector3(421892, 488015, 1824)),
                 })
                 {
                     Zone from = hibernia.GetZone((int)startPoint.X, (int)startPoint.Y);
@@ -334,16 +336,28 @@ namespace DOL.UnitTests
                     }
                     Assert.That(cursorZone, Is.EqualTo(to), $"First boarding walk from {startPoint} reaches the horse's zone");
                     Assert.That(snapped, Is.Not.Null, $"Horse origin {horseOrigin} has walkable terrain");
-                    if (snapped.HasValue)
-                    {
-                        Vector3 floorStart = UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav, from, startPoint);
-                        bool boardingWalk = InstalledBotRoute.Itinerary(hibernia, nav, floorStart, snapped.Value, out string boardingTrace);
-                        TestContext.WriteLine($"BOARDING {startPoint} -> {horseOrigin}: cursor={cursor} walk={boardingWalk}: {boardingTrace}");
-                        var boardingGround = InstalledBotRoute.Ground(200, from, floorStart);
-                        TestContext.WriteLine($"BOARDING_GROUND {startPoint} zone={from.ID} area={boardingGround.Area} main={boardingGround.Main} exit={AutonomousRendezvousNavigation.HasLocalExit(nav, from, floorStart)}");
-                    }
                     Assert.That(snapped.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, to, cursor, snapped.Value),
                         Is.True, $"First boarding walk from {startPoint} reaches horse {horseOrigin}");
+                    if (snapped.HasValue)
+                    {
+                        // The bot's route itself: from the floor-step start, every leg complete, no zone entered twice.
+                        Vector3 floorStart = UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav, from, startPoint);
+                        bool boardingWalk = InstalledBotRoute.Itinerary(hibernia, nav, floorStart, snapped.Value, out string boardingTrace);
+                        TestContext.WriteLine($"BOARDING {startPoint} -> {horseOrigin}: walk={boardingWalk}: {boardingTrace}");
+                        Assert.That(boardingWalk, Is.True, $"The bot's boarding route from {startPoint} to horse {horseOrigin}: {boardingTrace}");
+                    }
+                }
+                {
+                    // The cut (#704): September's Valley seam point stands on side ground in zone 206 (not its main ground)
+                    // with no route to the Druim Cain horse. The itinerary no longer steps there (the DF walk above).
+                    Vector3 oldSeam = new(385088, 483424, 7262), horse = new(421892, 488015, 1824);
+                    Zone valleyZone = hibernia.GetZone((int)oldSeam.X, (int)oldSeam.Y);
+                    var oldGround = InstalledBotRoute.Ground(200, valleyZone, oldSeam);
+                    Vector3? horseFloor = nav.GetClosestPoint(valleyZone, horse, 48, 48, 256, nav.DefaultFilters);
+                    Assert.That(oldGround.Area.HasValue && oldGround.Main.HasValue && oldGround.Area != oldGround.Main, Is.True,
+                        $"The cut: the September Valley seam point is side ground (area {oldGround.Area}, main {oldGround.Main})");
+                    Assert.That(horseFloor.HasValue && InstalledBotRoute.SameZone(nav, valleyZone, oldSeam, horseFloor.Value, out _) == InstalledBotRoute.Walk.None,
+                        Is.True, "The cut: no walk from the September Valley seam point to the Druim Cain horse");
                 }
                 Zone blackMountains = regions[1].GetZone(515616, 494274);
                 // #704: in September the prop-top's floor had a short step onto connected ground. On the 1.2 meshes its scrap
