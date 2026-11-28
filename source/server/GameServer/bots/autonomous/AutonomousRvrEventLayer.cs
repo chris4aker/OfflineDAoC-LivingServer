@@ -735,19 +735,21 @@ public static partial class AutonomousRvrEventLayer
     private static int DefenderCapFor(ActiveEvent active)
     {
         if (!SiegeScheduling) return Capacity(active);
-        int cap = RealmEventPolicy.DefenderCap(active.RelicKeep);
+        int cap = RealmEventPolicy.DefenderCap(active.RelicKeep, active.DefenderRealm);
         return active.MarchedAttackers <= 0 ? cap
-            : RealmEventPolicy.DefendersFor(active.MarchedAttackers, active.Attackers.Values.Sum(), RealmEventPolicy.EffectiveDefenseRatio, cap);
+            : RealmEventPolicy.DefendersFor(active.MarchedAttackers, active.Attackers.Values.Sum(),
+                RealmEventPolicy.EffectiveDefenseRatioFor(active.DefenderRealm), cap);
     }
 
     /// <summary>
     /// The attackers a bot siege may draw. 2026-11-06: once the defenders' share is at its limit and attackers still take
-    /// most keeps, the siege balance trims this cap (SiegeDefenseBalance.MaximumAttackerTrim). A forced siege, a retake and a
+    /// most keeps, the siege balance trims this cap (SiegeDefenseBalance.MaximumAttackerTrim). 2026-11-27 (#523, question 52): the
+    /// defending realm's own record sets the trim from its third siege (the server-wide record before that), so one realm's lost keeps never shrink the armies attacking another. A forced siege, a retake and a
     /// player-attack defense keep their own caps. Posts and slots stay sized by <see cref="Capacity"/>.
     /// </summary>
     private static int AttackerCapFor(ActiveEvent active) =>
         SiegeScheduling && !active.Forced && !active.Retake && !active.DefenseReaction
-            ? RealmEventPolicy.EffectiveAttackerCap(active.RelicKeep) : Capacity(active);
+            ? RealmEventPolicy.EffectiveAttackerCap(active.RelicKeep, active.DefenderRealm) : Capacity(active);
 
     private static int Capacity(ActiveEvent active) => active.DefenseReaction ? 240 : active.Retake ? active.RetakeCap :
         SiegeScheduling ? RealmEventPolicy.AttackerCap(active.RelicKeep) : active.RelicKeep ? RelicAssaultCap : OrdinaryAssaultCap;
@@ -1052,7 +1054,7 @@ public static partial class AutonomousRvrEventLayer
                 .Sum(other => other.Attackers.Values.Sum());
             log.Info($"RVR_SIEGE_MARCH target={active.TargetId} mustered={active.MarchedAttackers} " +
                      SiegeArmyFields(SiegeKind(active), active.MarchedAttackers, MusterNeeded(active.RelicKeep),
-                         active.Attackers.Values.Sum(), pool.Level50, pool.Rvr, elsewhere, RealmEventPolicy.EffectiveDefenseRatio) +
+                         active.Attackers.Values.Sum(), pool.Level50, pool.Rvr, elsewhere, RealmEventPolicy.EffectiveDefenseRatioFor(active.DefenderRealm)) +
                      $" reason=\"{reason}\"");
         }
     }
@@ -1850,10 +1852,24 @@ public static partial class AutonomousRvrEventLayer
         reason?.Contains("four-hour") == true || reason?.Contains("timer") == true ? "Timed out" :
         string.IsNullOrWhiteSpace(reason) ? "Ended" : "Ended: " + reason.Split(':', '.')[0].Trim();
 
+    /// <summary>
+    /// The details a finished keep event leaves in the ledger: the end reason, then "; defender: Realm" (#523 step 2). Progress
+    /// and Finish replace a row's details, so the "defender:" of Begin was gone by the end and every finished siege read back
+    /// with no defending realm after a restart; the siege balance rebuilds each realm's record from this part
+    /// (<see cref="SiegeDefenseBalance.DefenderOf"/>). A player's attack keeps <see cref="RealmEventRecordStore.PlayerAttackPrefix"/>
+    /// at the front, so the balance still leaves it out. Pure.
+    /// </summary>
+    public static string FinishedSiegeDetails(bool playerAttack, string reason, eRealm defender)
+    {
+        string details = (playerAttack ? RealmEventRecordStore.PlayerAttackPrefix : "") + reason;
+        return SiegeDefenseBalance.HasRealmRecord(defender) ? $"{details}; defender: {GlobalConstants.RealmToName(defender)}" : details;
+    }
+
     private static void EndEvent(ActiveEvent active, long nowTick, string reason, eRealm winner = eRealm.None)
     {
         if (!active.DefenseReaction && (reason.StartsWith("Keep captured") || reason.StartsWith("Siege defended")))
-            SiegeDefenseBalance.Record(reason.StartsWith("Keep captured") && (winner == eRealm.None || winner == active.AttackerRealm));
+            SiegeDefenseBalance.Record(reason.StartsWith("Keep captured") && (winner == eRealm.None || winner == active.AttackerRealm),
+                active.DefenderRealm);
         foreach (eRealm realm in new[] { active.AttackerRealm, active.DefenderRealm, OtherRealm(active) })
         {
             (string topic, Dictionary<string, string> slots) = SiegeOutcomeNews(active.Target.Name, active.AttackerRealm, active.DefenderRealm,
@@ -1865,7 +1881,7 @@ public static partial class AutonomousRvrEventLayer
         RealmEventRecords.Finish(active.TargetId, reason.StartsWith("Rally failed") ? "Failed rally" : reason.StartsWith("Keep captured") ? "Captured" :
             reason.StartsWith("Siege defended") ? reason.Contains("expired") ? "Defended (timeout)" : "Defended" : SiegeEndOutcome(reason),
             // A player's attack is marked so the siege balance, rebuilt from this ledger after a restart, leaves it out.
-            active.DefenseReaction ? RealmEventRecordStore.PlayerAttackPrefix + reason : reason,
+            FinishedSiegeDetails(active.DefenseReaction, reason, active.DefenderRealm),
             active.Attackers.Values.Sum() + active.Defenders.Values.Sum() + active.ThirdRealm.Values.Sum());
         // #523 (h): the army that took the keep holds it for the claim; the defenders and the third realm go at once.
         bool hold = HoldsForClaim(active.DefenseReaction, active.RelicKeep, reason.StartsWith("Keep captured"), active.AttackerRealm, winner);

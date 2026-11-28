@@ -229,7 +229,38 @@ namespace DOL.GS
             return Math.Max(Math.Max(active.LastPressureTick, active.AttackersLastSeenTick), hit <= nowTick ? hit : 0);
         }
 
-        public static bool ResponseReserve(long id) => unchecked((ulong)id * 2654435761UL) % 100 < 30;
+        /// <summary>Share of whole warbands held back from each event (incidental nearby combat stays with normal AI).</summary>
+        public const int ResponseReservePercent = 30;
+
+        /// <summary>
+        /// Whether a warband (named by its lowest member id) sits out this event. #523 step 2: the draw was the id alone, so
+        /// the same 30% of warbands sat out every defense for as long as the roster lasted (defense.md finding 1). It is now
+        /// drawn per event: still 30% of the warbands each time, but different ones from event to event, and the same
+        /// event always holds back the same ones.
+        /// </summary>
+        public static bool ResponseReserve(long id, ulong eventSeed) =>
+            Mix(unchecked((ulong)id ^ Mix(eventSeed))) % 100 < ResponseReservePercent;
+
+        /// <summary>A warband held back from this event: in the reserve, unless it is of the guild that claims the keep.</summary>
+        public static bool HeldInReserve(long lowestMemberId, ulong eventSeed, int claimDefenseRank) =>
+            claimDefenseRank != 0 && ResponseReserve(lowestMemberId, eventSeed);
+
+        /// <summary>A stable seed for one event: its target and the tick it began (FNV-1a over the target id).</summary>
+        public static ulong ReserveSeed(string targetId, long createdTick)
+        {
+            ulong hash = 14695981039346656037UL;
+            foreach (char c in targetId ?? "")
+                hash = unchecked((hash ^ c) * 1099511628211UL);
+            return unchecked(hash ^ (ulong)createdTick);
+        }
+
+        private static ulong Mix(ulong z)
+        {
+            // splitmix64's finaliser: neighbouring ids and seeds land far apart.
+            z = unchecked((z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL);
+            z = unchecked((z ^ (z >> 27)) * 0x94D049BB133111EBUL);
+            return z ^ (z >> 31);
+        }
 
         public static bool CanRedirectDefense(eRealm previousDefender, eRealm nextDefender,
             string previousPlayer, string nextPlayer, long previousPressure, long nextPressure) =>
@@ -392,10 +423,10 @@ namespace DOL.GS
                         if (Participants(active, force.Realm).ContainsKey(force.GroupId)) continue;
                         if (ReleasedForces.ContainsKey(force.GroupId) ||
                             CarrierEvents.Values.Any(c => c.Participants.Values.Any(r => r.ContainsKey(force.GroupId)))) continue;
-                        // Keep a deterministic 30% reserve of whole warbands;
+                        // Keep a 30% reserve of whole warbands, drawn afresh for each event (#523 step 2);
                         // incidental nearby combat remains handled by normal AI.
-                        if (ResponseReserve(candidate.Members.Min(b => b.DatabaseID)) &&
-                            AutonomousBotGuildKeeps.ClaimDefenseRank(claimGuildId, candidate.Members) != 0) continue;
+                        if (HeldInReserve(candidate.Members.Min(b => b.DatabaseID), ReserveSeed(active.TargetId, active.CreatedTick),
+                                AutonomousBotGuildKeeps.ClaimDefenseRank(claimGuildId, candidate.Members))) continue;
                         if (candidate.Members.Any(b => b.InCombat || b.IsAttacking || b.IsStunned || b.IsMezzed ||
                             (b.Brain as BotBrain)?.HasAggro == true || GameRelic.IsPlayerCarryingRelic(b))) continue;
                         // Missing/dead members may catch up. Only mixed-level,
