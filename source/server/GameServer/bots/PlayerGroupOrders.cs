@@ -44,7 +44,7 @@ namespace DOL.GS
         /// <summary>The fight is over once nobody of the group near the player has been in combat for this long. A design value.</summary>
         public const long FightOverQuietMilliseconds = 5_000;
 
-        /// <summary>An attack or assist order given out of a fight waits this long for one, then ends. A design value.</summary>
+        /// <summary>An attack, assist or hold order given out of a fight waits this long for one, then ends. A design value.</summary>
         public const long NoFightMilliseconds = 120_000;
 
         /// <summary>Regroup: a bot is back once it is within this of the player. A design value.</summary>

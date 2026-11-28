@@ -40,13 +40,33 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// #667: a fight order other than hold ends /hold ("until the next order"); the /aggressive or /defensive stance the
-        /// player had before stays.
+        /// #667: a fight order other than hold lifts /hold while it runs; the /aggressive or /defensive stance the player
+        /// had before stays. <see cref="Restore"/> puts the /hold back when the order ends.
         /// </summary>
         public static void EndHold(GamePlayer player)
         {
             if (player == null || !Modes.TryGetValue(player, out Mode mode) || !mode.Hold) return;
             mode.Hold = false;
+            CompanionRvrEngage.Reset(player);
+        }
+
+        /// <summary>
+        /// #667: when a fight order ends on its own (the fight is over, its target is gone, the next order), the player's
+        /// stance from before the order comes back: /defensive or /aggressive, and a standing /hold. Unlike
+        /// <see cref="Set"/> and <see cref="SetHold"/> this ends no order.
+        /// </summary>
+        public static void Restore(GamePlayer player, bool defensive, bool hold)
+        {
+            if (player == null) return;
+            if (!Modes.TryGetValue(player, out Mode mode))
+            {
+                if (!defensive && !hold) return;
+                mode = Modes.GetOrCreateValue(player);
+            }
+            if (mode.Defensive == defensive && mode.Hold == hold) return;
+            mode.Defensive = defensive;
+            mode.Hold = hold;
+            mode.Pull = null;
             CompanionRvrEngage.Reset(player);
         }
 

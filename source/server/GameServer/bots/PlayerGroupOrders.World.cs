@@ -26,6 +26,8 @@ namespace DOL.GS
             public string Via;
             public long GivenAt, LastFight, NextCheck, LastAnswer;
             public bool SawFight, Warned;
+            /// <summary>The player's stance before the order (/defensive, a standing /hold), put back when it ends.</summary>
+            public bool WasDefensive, WasHolding;
         }
 
         private static readonly ConditionalWeakTable<GamePlayer, State> States = new();
@@ -77,7 +79,10 @@ namespace DOL.GS
                     return "Select an enemy near you to attack first.";
             }
 
+            // The order before this one ends first and puts back the stance from before it, so that is the stance saved.
             End(player, "next");
+            bool wasDefensive = CompanionEngagementMode.PlayerDefensive(player);
+            bool wasHolding = CompanionEngagementMode.PlayerHolding(player);
             long now = GameLoop.GameLoopTime;
             State state = States.GetOrCreateValue(player);
             bool warn = false;
@@ -99,6 +104,8 @@ namespace DOL.GS
                 state.LastFight = 0;
                 state.SawFight = false;
                 state.NextCheck = now + CheckIntervalMilliseconds;
+                state.WasDefensive = wasDefensive;
+                state.WasHolding = wasHolding;
             }
             switch (order)
             {
@@ -134,7 +141,7 @@ namespace DOL.GS
         {
             GroupOrder.Attack => "They go for your target now, until it falls, you give another order or the fight ends.",
             GroupOrder.Assist => "They fight only your fight and switch when you switch, until your next order or the fight ends.",
-            GroupOrder.Hold => "They only defend themselves and healers keep healing, until your next order or the fight ends (/hold holds until /aggressive or /defensive).",
+            GroupOrder.Hold => "They only defend themselves and healers keep healing, until your next order or the fight ends; then your stance from before comes back (/hold holds until /aggressive or /defensive).",
             GroupOrder.Regroup => "They break off and come back to you, then defend you and the group; one that can't get back (rooted, or below half health) fights back.",
             _ => string.Empty,
         };
@@ -310,18 +317,22 @@ namespace DOL.GS
             GroupOrder order;
             GameLiving target;
             string via;
+            bool wasDefensive, wasHolding;
             lock (state)
             {
                 order = state.Order;
                 target = state.Target;
                 via = state.Via;
+                wasDefensive = state.WasDefensive;
+                wasHolding = state.WasHolding;
                 if (order == GroupOrder.None) return;
                 state.Order = GroupOrder.None;
                 state.Target = null;
             }
-            // A held order ends its /hold too, unless a stance command is what ended it (it set its own stance).
-            if (order == GroupOrder.Hold && why != "stance")
-                CompanionEngagementMode.EndHold(player);
+            // The stance from before the order comes back (/order hold's own /hold ends with it, a standing /hold an
+            // order lifted returns), unless a stance command is what ended the order: it set its own stance.
+            if (why != "stance")
+                CompanionEngagementMode.Restore(player, wasDefensive, wasHolding);
             Note(player, "ended", order, target, via, -1, false, why);
         }
 

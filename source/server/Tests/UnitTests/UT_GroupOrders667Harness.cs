@@ -443,6 +443,107 @@ namespace DOL.GS.Tests
             Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.False, "and with it the hold stance");
         }
 
+        /// <summary>
+        /// Companion 0 becomes a /spawn helper of the player (the harness's companions are gamebots, which /defensive never
+        /// governs), so <see cref="CompanionEngagementMode.DefensiveLeader"/> shows the player's stance.
+        /// </summary>
+        private static GameBot AsSpawnHelper(Scene scene)
+        {
+            GameBot helper = scene.Group[0];
+            typeof(GameBot).GetProperty(nameof(GameBot.IsAutonomousWorldBot))!.SetValue(helper, false);
+            typeof(GameBot).GetProperty(nameof(GameBot.IsTemporaryGroupHelper))!.SetValue(helper, true);
+            typeof(GameBot).GetProperty(nameof(GameBot.Owner))!.SetValue(helper, scene.Player);
+            return helper;
+        }
+
+        /// <summary>Fights for 2 s, then stays quiet until an order given now has ended with the fight.</summary>
+        private static void FightThenItEnds(Scene scene)
+        {
+            FightThenQuiet(scene, 2, fighting: true);
+            FightThenQuiet(scene, (GameLiving.IN_COMBAT_DURATION + PlayerGroupOrders.FightOverQuietMilliseconds) / 1000.0 + 2,
+                fighting: false);
+            Assert.That(scene.Player.InCombat, Is.False, "precondition: the fight is over");
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None), "the order ended with the fight");
+        }
+
+        [Test]
+        public void OrderHoldFromDefensiveComesBackToDefensive()
+        {
+            // Review of #824 (issuecomment-7241086810): /defensive, /order hold, the fight ends: /defensive again.
+            using Scene scene = Make(4_000, defensive: true);
+            StopBrains(scene);
+            GameBot helper = AsSpawnHelper(scene);
+            Assert.That(CompanionEngagementMode.DefensiveLeader(helper), Is.EqualTo(scene.Player), "precondition: /defensive governs the helper");
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "hold"), Is.True);
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.True, "the order's /hold");
+            Assert.That(CompanionEngagementMode.DefensiveLeader(helper), Is.Null, "hold replaces /defensive while it runs");
+            FightThenItEnds(scene);
+            Assert.Multiple(() =>
+            {
+                Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.False, "the order's /hold ended");
+                Assert.That(CompanionEngagementMode.PlayerDefensive(scene.Player), Is.True, "/defensive is back");
+                Assert.That(CompanionEngagementMode.DefensiveLeader(helper), Is.EqualTo(scene.Player), "and governs the helper again");
+            });
+        }
+
+        [Test]
+        public void OrderHoldFromAggressiveComesBackToAggressive()
+        {
+            // The control: from /aggressive the order's end leaves the group on /aggressive.
+            using Scene scene = Make(4_000);
+            StopBrains(scene);
+            GameBot helper = AsSpawnHelper(scene);
+            CompanionEngagementMode.Set(scene.Player, defensive: false);
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "hold"), Is.True);
+            FightThenItEnds(scene);
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.False);
+            Assert.That(CompanionEngagementMode.PlayerDefensive(scene.Player), Is.False);
+            Assert.That(CompanionEngagementMode.DefensiveLeader(helper), Is.Null);
+        }
+
+        [Test]
+        public void AStandingHoldComesBackWhenAnAttackOrderEnds()
+        {
+            // Review of #824: /hold, /order attack, its target is gone: /hold again (it lasts until /aggressive or /defensive).
+            using Scene scene = Make(1_500);
+            CompanionEngagementMode.SetHold(scene.Player);
+            scene.Player.TargetObject = scene.Enemy;
+            PlayerGroupOrders.Give(scene.Player, GroupOrder.Attack, "command", out bool given);
+            Assert.That(given, Is.True);
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.False, "the attack lifts /hold while it runs");
+            scene.Enemy.RemoveFromWorld();
+            ObserveFor(scene, 1);
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None), "precondition: the attack ended");
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.True, "/hold is back");
+        }
+
+        [Test]
+        public void AStandingHoldOutlastsAnOrderHold()
+        {
+            // Review of #824: /hold, /order hold, the fight ends: /hold is still on.
+            using Scene scene = Make(4_000);
+            StopBrains(scene);
+            CompanionEngagementMode.SetHold(scene.Player);
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "hold"), Is.True);
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Hold));
+            FightThenItEnds(scene);
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.True, "/hold still holds");
+        }
+
+        [Test]
+        public void AStanceCommandDuringAnOrderWins()
+        {
+            // /aggressive during an order ends it, and the stance from before the order does not come back over it.
+            using Scene scene = Make(4_000, defensive: true);
+            StopBrains(scene);
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "hold"), Is.True);
+            CompanionEngagementMode.Set(scene.Player, defensive: false);
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None));
+            FightThenItEnds(scene);
+            Assert.That(CompanionEngagementMode.PlayerDefensive(scene.Player), Is.False, "/aggressive stays");
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.False);
+        }
+
         [Test]
         public void AGamebotOutsideThePlayersGroupIsUntouched()
         {

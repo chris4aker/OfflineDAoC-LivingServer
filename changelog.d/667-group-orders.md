@@ -14,6 +14,7 @@ section: Bots and companions
   - **regroup**: they break off and come back to you. Once beside you they defend you and the group; one that can't get
     back (rooted, or below half health) fights back what is hitting it. Healers keep healing.
   - An order lasts until your next order or the end of the fight. `/aggressive`, `/defensive` and `/hold` end it too.
+    When it ends on its own, your stance from before comes back: `/defensive` or `/aggressive`, and a `/hold` you had on.
   - Give it as a slash command or a macro (`/macro Atk /order attack`), or say the word alone in `/group` (`attack`,
     `assist me`, `hold`, `regroup`). `/order` alone lists the orders.
   - One of your bots answers in `/group`. When an attack in RvR looks like a fight you'd lose, it warns you and goes in
