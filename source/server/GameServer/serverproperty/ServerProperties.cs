@@ -2640,6 +2640,12 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_GROUP_LOOKERS;
 
 		/// <summary>
+		/// #529 step 3 (piece B): the fight board lists what the group knows of, not everyone within 3,500; fighting bots keep looking.
+		/// </summary>
+		[ServerProperty("bots", "rvr_board_from_contacts", "RvR (1.2.3, #529): a gamebot group's fight board, which its called target, crowd control, size-up and retreat read, lists only the enemies one of its members noticed, was told of by a mate or was hit by in the last 15 s, instead of every enemy within 3,500 units whether anyone saw them or not (behind a hill, behind a wall, out of view). A gamebot in a fight looks around every 2 s (enemies within 2,500, a few line-of-sight checks, the usual notice rule) so a new enemy joining the fight is seen without hitting first. Groups with you in them, and companions, are unchanged. Log: RVR_FIGHT_BOARD (from), RVR_CONTACT_SHADOW (board), RVR_SCAN_BUDGET (combatRefreshes, combatRays). False: the board searches the area as before 1.2.3, and fighting bots don't look around.", true)]
+		public static bool RVR_BOARD_FROM_CONTACTS;
+
+		/// <summary>
 		/// 1.2 work package 2 (assist): a main assist and a called target.
 		/// </summary>
 		[ServerProperty("bots", "rvr_bot_assist", "Open-field RvR (1.2): in a bot-only group outside raids, battleground assaults and keep fights, one fighter (a tank first) is the main assist and the group's target is called by the 2003 kill order (casters, healers, bladeturn casters, crowd controllers, tanks last; versus Midgard the Shaman first, versus Hibernia the Bard, the Eldritch, then the Druids). A call is held 4-8 s; an enemy using Mastery of Concentration or just resurrected becomes the call; one the group cannot reach is never called. The first target is the plan's too (1.2.3, #531): the group opens on one enemy (the call, else the one mates already fight, else the kill order), people before pets and siege engines, free enemies before crowd-controlled ones, instead of spreading over two or three. Members follow after their own delay by the group's skill tier, and some tunnel. Log: RVR_ASSIST_CALL, RVR_ASSIST_SWITCH, RVR_DECIDE (pick). Needs rvr_bot_field_tactics.", true)]

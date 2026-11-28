@@ -2082,11 +2082,11 @@ namespace DOL.GS
         /// Outside a turn the proposal is written at once. Null: refused, nothing changed.
         /// </summary>
         private AutonomousRvrEventLayer.ForceIntent ProposeRvrIntent(GameBot bot, AutonomousRvrEventLayer.IntentProposal proposal,
-            bool mirrorIntent, bool mirrorKeep, string forceId = null)
+            bool mirrorIntent, bool mirrorKeep, string forceId = null, bool? writer = null)
         {
             bool outside = !_forceTurn.Open;
             if (outside)
-                _forceTurn.Begin(forceId ?? RvrForceId(bot), IsRvrForceWriter(bot));
+                _forceTurn.Begin(forceId ?? RvrForceId(bot), writer ?? IsRvrForceWriter(bot));
             AutonomousRvrEventLayer.ForceIntent decided =
                 _forceTurn.Propose(new(_rvrIntent, _rvrSharedEvent), proposal, GameLoop.GameLoopTime);
             if (decided != null)

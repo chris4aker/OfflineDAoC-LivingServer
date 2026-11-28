@@ -418,6 +418,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         LivingBreaks = _breaks.Checked,
         LivingBodyLanguage = _body.Checked,
         SightSizeUp = _population.SightSizeUp, // no checkbox: kept as read (#662)
+        BoardFromContacts = _population.BoardFromContacts, // no checkbox: kept as read (#529)
         LivingBeggars = _beggars.Checked,
         LivingBuffBots = _buffBots.Checked,
         LivingDeeds = _deeds.Checked,

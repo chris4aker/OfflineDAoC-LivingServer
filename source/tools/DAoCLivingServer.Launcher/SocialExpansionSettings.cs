@@ -45,6 +45,9 @@ public sealed record SocialExpansionSettings
     /// <summary>A solo or duo gamebot sizes up a fight on sight and opens or backs off (bot_rvr_sight_size_up, #662). No checkbox:
     /// kept as read. On by default (1.2.3).</summary>
     public bool SightSizeUp { get; init; } = true;
+    /// <summary>A gamebot group's fight board lists only the enemies its members know of, and fighting bots keep looking
+    /// (rvr_board_from_contacts, #529 step 3). No checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool BoardFromContacts { get; init; } = true;
     /// <summary>About 4% of Crafter bots are beggars in their capital (AutonomousBeggars). On by default.</summary>
     public bool LivingBeggars { get; init; } = true;
     /// <summary>Some No Lifer bots run a level-50 buffbot that keeps them buffed (NoLiferBuffBots, Living Server 1.2). On by default.</summary>
@@ -253,7 +256,7 @@ public sealed record SocialExpansionSettings
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
         RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, CompanionRvrEngage = true, CompanionRvrFormation = true, PartyMainAssist = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
-        SightSizeUp = true,
+        SightSizeUp = true, BoardFromContacts = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -282,6 +285,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
         ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots do not jump; sitting comes with Moving like people (bot_movement_habits)."),
         ("bot_rvr_sight_size_up", "bots", "A solo or duo gamebot sizes up a fight when enemies come into its perception range, in the frontier and the battlegrounds (keep assaults included), and opens or backs off (#662). Boldness moves the line; no solo bot ever opens on three or more enemies. Backing off, it pulls back out of range, waits nearby, calls its close friends, then goes back to what it was doing. Not companions, not PvE."),
+        ("rvr_board_from_contacts", "bots", "RvR (1.2.3, #529): a gamebot group's fight board, which its called target, crowd control, size-up and retreat read, lists only the enemies one of its members noticed, was told of by a mate or was hit by in the last 15 s, instead of every enemy within 3,500 units whether anyone saw them or not (behind a hill, behind a wall, out of view). A gamebot in a fight looks around every 2 s (enemies within 2,500, a few line-of-sight checks, the usual notice rule) so a new enemy joining the fight is seen without hitting first. Groups with you in them, and companions, are unchanged. Log: RVR_FIGHT_BOARD (from), RVR_CONTACT_SHADOW (board), RVR_SCAN_BUDGET (combatRefreshes, combatRays). False: the board searches the area as before 1.2.3, and fighting bots don't look around."),
         ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),
         ("bot_nolifer_buffbots", "bots", "Server life: some No Lifer bots (bot_nolifer_buffbot_percent of them, 30 by default) run a second character, a level-50 buffbot (Albion Cleric, Midgard Shaman, Hibernia Druid, all in buffs). It follows its main where it is safe, parks at the nearest bind when the main goes into a dungeon, the frontier or a raid, and keeps the main buffed. It never joins a group, fights or loots, is not counted in the population, and logs in and out with its main. A bot is a No Lifer by its roster id, whether bot personalities are on or off."),
         ("bot_living_deeds", "bots", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname."),
@@ -380,6 +384,7 @@ public sealed record SocialExpansionSettings
         ["bot_living_breaks"] = Bool(LivingBreaks),
         ["bot_living_body_language"] = Bool(LivingBodyLanguage),
         ["bot_rvr_sight_size_up"] = Bool(SightSizeUp),
+        ["rvr_board_from_contacts"] = Bool(BoardFromContacts),
         ["bot_living_beggars"] = Bool(LivingBeggars),
         ["bot_nolifer_buffbots"] = Bool(LivingBuffBots),
         ["bot_living_deeds"] = Bool(LivingDeeds),
@@ -729,6 +734,7 @@ public sealed record SocialExpansionSettings
             LivingBreaks = ReadBool("bot_living_breaks", d.LivingBreaks),
             LivingBodyLanguage = ReadBool("bot_living_body_language", d.LivingBodyLanguage),
             SightSizeUp = ReadBool("bot_rvr_sight_size_up", d.SightSizeUp),
+            BoardFromContacts = ReadBool("rvr_board_from_contacts", d.BoardFromContacts),
             LivingBeggars = ReadBool("bot_living_beggars", d.LivingBeggars),
             LivingBuffBots = ReadBool("bot_nolifer_buffbots", d.LivingBuffBots),
             LivingDeeds = ReadBool("bot_living_deeds", d.LivingDeeds),
