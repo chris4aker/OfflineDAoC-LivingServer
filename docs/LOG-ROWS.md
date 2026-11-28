@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **771**; pending (#625, not on main yet): **0**; shipped by the pipeline: **739**.
+- Rows in code: **774**; pending (#625, not on main yet): **0**; shipped by the pipeline: **742**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -306,7 +306,9 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANION_DELVE_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `args`, `player` | `player` | - | - |
 | `COMPANION_EQUIP_REFUSED` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `bot`, `cls`, `item`, `lvl`, `realm`, `shield`, `size`, `type` | `bot` | - | - |
 | `COMPANION_LEADER_FOCUS` | server.log | **ships** | `bots/BotBrain.LeaderFocus.cs` | `bot`, `class`, `fromBot`, `kind`, `leader`, `over`, `region`, `target`, `why` | `bot`, `leader`, `over`, `target` | change-only: one per bot of a player's group each time it turns onto a new player's target over another choice, in the frontier, battlegrounds and Darkness Falls | A bot in the player's group turned onto the player's target over its own attacker, its pet's fight or its threat (#571). |
+| `COMPANION_LEVEL_SYNC` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `from`, `owner`, `to` | `bot`, `owner` | one per /spawn helper each time its owner out-levels it, out of combat (#571 step 6) | A /spawn helper caught up to its owner's level (#571 step 6). |
 | `COMPANION_OPTION_165` | server.log | **ships** | `mode165/CompanionOptions165.cs` | `bot`, `id` | `bot` | - | - |
+| `COMPANION_PATH_DF` | server.log | **ships** | `bots/autonomous/CompanionDarknessFallsPaths.cs` | `bot`, `from`, `id`, `kind`, `nodes`, `old_gate`, `region`, `status`, `to` | `bot` | at most one per player-led bot per 30 s, in Darkness Falls (#571 step 3) | COMPANION_PATH_DF: a player-led bot's Darkness Falls path that the gamebot gate would have refused (it now takes the ordinary path). |
 | `COMPANION_REPAIR_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `companions`, `paid`, `pieces`, `player` | `player` | - | - |
 | `COMPANION_RIDE_BACK` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
 | `COMPANION_RIDE_STOWED` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
@@ -515,13 +517,13 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RAID_THREAT` | server.log | **ships** | `bots/autonomous/LivingRows.RaidMechanics.cs` | `attempt`, `boss`, `from`, `heldMs`, `t`, `to`, `toKind`, `why` | - | - | RAID_THREAT attempt= boss="" t= from= to= toKind= why= heldMs=. |
 | `RAID_UNREACHABLE_TARGET` | server.log | **ships** | `bots/CompanionRaidSiege.cs` | `bot`, `heightAbove`, `player`, `position`, `target` | `bot`, `player`, `target` | - | - |
 | `REALM_EVENT_LEDGER` | server.log | no: free text, no key=value fields | `bots/autonomous/RealmEventRecords.cs` | - | - | - | - |
-| `REALM_EXPEDITION_ATTEMPT_ENDED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `region`, `target`, `wipe` | `target` | - | Not a wipe: said so, with the counts (2026-11-15: |
+| `REALM_EXPEDITION_ATTEMPT_ENDED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `addsHealth`, `addsLowest`, `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `region`, `target`, `wipe` | `target` | - | Not a wipe: said so, with the counts (2026-11-15: |
 | `REALM_EXPEDITION_BARRED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `reason`, `region`, `target` | `target` | - | Never a target behind a living boss's barrier (Easmarach's falls): |
 | `REALM_EXPEDITION_CLEAR_FIRST` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `boss`, `left`, `names`, `region` | `names` | - | - |
 | `REALM_EXPEDITION_COURT_LEASH` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `atMuster`, `court`, `fromMuster`, `fromPatrol`, `held`, `lord`, `muster`, `reason`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_COURT_WINDOW` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `muster`, `region`, `target`, `verdict` | `target` | - | - |
 | `REALM_EXPEDITION_EARLY_PULL` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `decision`, `health`, `inside`, `muster`, `musterFromSpawn`, `near`, `needed`, `pinned`, `raid`, `reason`, `region`, `resets`, `target`, `tether` | `target` | - | - |
-| `REALM_EXPEDITION_ENCOUNTER_RESET` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `of`, `reason`, `region`, `resets`, `target` | `target` | - | - |
+| `REALM_EXPEDITION_ENCOUNTER_RESET` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `addsHealth`, `addsLowest`, `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `of`, `reason`, `region`, `resets`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_FINAL_ENGAGE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `living`, `minutes`, `mustered`, `needed`, `region`, `retry`, `target` | `attempt`, `target` | - | - |
 | `REALM_EXPEDITION_FINAL_MUSTER` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `living`, `minutes`, `mustered`, `needed`, `region`, `target` | `target` | - | - |
 | `REALM_EXPEDITION_FORMED_WAIT` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `front`, `inside`, `living`, `minutes`, `outside`, `reason`, `region` | - | - | - |
@@ -553,7 +555,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_EXPEDITION_ROUTE_GATE_EMPTY` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `gates`, `reason`, `region` | - | - | - |
 | `REALM_EXPEDITION_ROUTE_LOSSES` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `fallen`, `inside`, `killer`, `raid`, `reason`, `region`, `target` | `killer`, `target` | - | - |
 | `REALM_EXPEDITION_ROUTE_RETRY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `position`, `reason`, `region` | `bot` | - | - |
-| `REALM_EXPEDITION_SKIRMISH_LOST` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `raid`, `reason`, `region`, `target` | `target` | - | Lost skirmish: rest and muster again, but it was not the raid's attempt. |
+| `REALM_EXPEDITION_SKIRMISH_LOST` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `addsHealth`, `addsLowest`, `attempt`, `engaged`, `fallen`, `health`, `how`, `lowest`, `raid`, `reason`, `region`, `target` | `target` | - | Lost skirmish: rest and muster again, but it was not the raid's attempt. |
 | `REALM_EXPEDITION_STRANDED_REGROUP` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
 | `REALM_EXPEDITION_TACTIC` | server.log | **ships** | `bots/autonomous/EpicEncounterTactics.Earthmenders.cs`<br>`bots/autonomous/RealmRaidDungeonRoute.cs` | `approach`, `assign`, `encounter`, `fights`, `from`, `front`, `heals`, `health`, `kill`, `reason`, `region`, `tactic`, `to` | `fights`, `from`, `to` | - | A boss shielded by its adds, or one that dies with another, is fought through its tactic (EpicEncounterTactics). |
 | `REALM_EXPEDITION_TACTIC_ASIDE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `encounter`, `minutes`, `reason`, `region`, `tactic` | - | - | - |
@@ -566,7 +568,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `REALM_EXPEDITION_TARGET_SWITCH` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `approach`, `from`, `front`, `level`, `reason`, `region`, `to` | `from`, `to` | - | - |
 | `REALM_EXPEDITION_TRAIL_GATE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `aggro`, `at`, `from`, `kills`, `level`, `reason`, `region`, `target`, `trail` | `from`, `target` | - | - |
 | `REALM_EXPEDITION_TRAIL_GATE_PASSED` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `cap`, `from`, `kills`, `level`, `reason`, `region`, `target` | `from`, `target` | - | Killed on the trail TrailGateRekillCap times with no other named down since: |
-| `REALM_EXPEDITION_WIPE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `at`, `attempt`, `engaged`, `failures`, `fallen`, `fought`, `health`, `how`, `killer`, `level`, `lowest`, `of`, `raidTarget`, `region`, `target` | `fought`, `killer`, `raidTarget`, `target` | - | - |
+| `REALM_EXPEDITION_WIPE` | server.log | **ships** | `bots/autonomous/RealmRaidDungeonRoute.cs` | `addsHealth`, `addsLowest`, `at`, `attempt`, `engaged`, `failures`, `fallen`, `fought`, `health`, `how`, `killer`, `level`, `lowest`, `of`, `raidTarget`, `region`, `target` | `fought`, `killer`, `raidTarget`, `target` | - | - |
 | `REALM_LEVEL_SPREAD` | server.log | **ships** | `bots/autonomous/LivingLog.cs` | `band`, `baseline`, `bots`, `gained`, `gone`, `hour`, `levelled`, `new`, `realm`, `rerolled` | - | - | ---- Row 6: REALM_LEVEL_SPREAD ---------------------------------------------------------------------------------- Row 6 (#544): |
 | `REALM_RAID_CALLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.Call.cs` | `after`, `event`, `forced`, `opened`, `realm`, `reason` | - | - | - |
 | `REALM_RAID_CALL_CANCELLED` | server.log | **ships** | `bots/autonomous/AutonomousRealmRaid.Call.cs` | `event`, `realm`, `reason` | - | - | - |
@@ -771,6 +773,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `SHROUDED_ISLES_PORTAL` | server.log | **ships** | `world/ShroudedIslesPortals.cs` | `id`, `pad`, `radius`, `region` | - | - | - |
 | `SHROUDED_ISLES_PORTAL_SKIPPED` | server.log | **ships** | `world/ShroudedIslesPortals.cs` | `id`, `region`, `target` | - | - | - |
 | `SIEGE_DEFENSE_BALANCE` | server.log | **ships** | `bots/autonomous/SiegeDefenseBalance.cs` | `attackerCap`, `event`, `share`, `shift`, `window` | - | - | - |
+| `SIEGE_DEFENSE_BALANCE_REALM` | server.log | **ships** | `bots/autonomous/SiegeDefenseBalance.cs` | `applied`, `attackerCap`, `event`, `realm`, `share`, `shift`, `window` | - | once per bot siege that ends captured or defended, for its defending realm, and once per realm at start-up when the record is rebuilt (#523) | A defending realm's own six-siege record moved; |
 | `STORYLINE_ABANDONED` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `reason`, `story` | - | - | - |
 | `STORYLINE_EPISODE` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `finished`, `scene`, `story` | - | - | - |
 | `STORYLINE_SIDE` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `player`, `side`, `story` | `player` | - | - |

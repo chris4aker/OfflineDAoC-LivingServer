@@ -236,17 +236,22 @@ public static class RealmEventRecordStore
     /// The last <paramref name="limit"/> finished bot keep sieges, oldest first: true when the keep was captured, false when
     /// it was defended. Rally failures, superseded rallies and sieges answering a player's attack are not results.
     /// </summary>
-    public static List<bool> SiegeResults(string path,int limit)
+    public static List<bool> SiegeResults(string path,int limit)=>SiegeResultsWithDetails(path,limit).Select(r=>r.Captured).ToList();
+    /// <summary>
+    /// As <see cref="SiegeResults"/>, with each siege's details (#523 step 2: the server reads the "defender: Realm" part
+    /// to keep a siege balance window per defending realm). Shared with the launcher, so it uses no server types.
+    /// </summary>
+    public static List<(bool Captured,string Details)> SiegeResultsWithDetails(string path,int limit)
     {
-        var results=new List<bool>();
+        var results=new List<(bool Captured,string Details)>();
         if(!File.Exists(path))return results;
         using var connection=Open(path,true);using var command=connection.CreateCommand();
         command.CommandText="SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Events'";
         if((long)command.ExecuteScalar()==0)return results;
-        command.CommandText="SELECT Outcome FROM Events WHERE Kind IN ('Keep','Relic keep') AND Outcome IN ('Captured','Defended','Defended (timeout)') AND substr(Details,1,length(@player))<>@player AND EndedUtc<>'' ORDER BY EndedUtc DESC,Id DESC LIMIT @limit";
+        command.CommandText="SELECT Outcome,Details FROM Events WHERE Kind IN ('Keep','Relic keep') AND Outcome IN ('Captured','Defended','Defended (timeout)') AND substr(Details,1,length(@player))<>@player AND EndedUtc<>'' ORDER BY EndedUtc DESC,Id DESC LIMIT @limit";
         command.Parameters.AddWithValue("@player",PlayerAttackPrefix);command.Parameters.AddWithValue("@limit",limit);
         using var reader=command.ExecuteReader();
-        while(reader.Read())results.Add(reader.GetString(0)=="Captured");
+        while(reader.Read())results.Add((reader.GetString(0)=="Captured",reader.IsDBNull(1)?"":reader.GetString(1)));
         results.Reverse();
         return results;
     }

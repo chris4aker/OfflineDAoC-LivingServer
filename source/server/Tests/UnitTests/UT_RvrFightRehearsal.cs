@@ -47,6 +47,25 @@ namespace DOL.UnitTests
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
             Assert.That(first.Errors + again.Errors, Is.Zero, "no service threw");
+            // #531 step 1: each eight's opening came from the plan's first pick (not the spread), and the plan opened on no more
+            // enemies than the spread pick would have from the same scans.
+            Assert.Multiple(() =>
+            {
+                foreach ((string side, RvrFightRehearsal.RvrOpening opening) in new[] { ("Albion", first.Albion), ("Midgard", first.Midgard) })
+                {
+                    Assert.That(opening, Is.Not.Null, $"{side} engaged by scan: {first.Row}");
+                    if (opening == null)
+                        continue;
+                    Assert.That(opening.FirstRule, Is.AnyOf("order", "mates", "called"), $"{side}'s first pick is the plan's: {first.Row}");
+                    Assert.That(opening.OpenedOn, Is.LessThanOrEqualTo(opening.SpreadOpenedOn), $"{side} opened on fewer: {first.Row}");
+                    // Only the kill order rules a tank out: a called pick can be a tank by design (WrongCallShare), and so can
+                    // a pick where only a tank was seen.
+                    if (opening.FirstRule == "order")
+                        Assert.That(RvrRoles.For(RvrFightRehearsal.ClassOf(opening.FirstTarget)), Is.Not.EqualTo(RvrRole.Tank),
+                            $"{side} opened on the kill order, not a tank: {first.Row}");
+                }
+            });
+            TestContext.Progress.WriteLine($"  #531 opening: Albion {first.Albion} / Midgard {first.Midgard}");
         }
 
         [Test]

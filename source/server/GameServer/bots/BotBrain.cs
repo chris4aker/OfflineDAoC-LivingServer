@@ -1606,7 +1606,7 @@ namespace DOL.AI.Brain
                 Body.IsWithinRadius(leaderTarget, GROUP_DEFENSE_ASSIST_RADIUS))
                 AssistPlayerAttack(leaderTarget);
 
-            if (BotBody?.TryApplyEndgameCompanionUpgrade() == true)
+            if (BotBody?.TryMatchOwnerLevel() == true)
                 return;
 
             WakeNearbyNaturalAggroBrains();
