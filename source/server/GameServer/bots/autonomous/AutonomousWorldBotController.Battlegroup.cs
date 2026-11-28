@@ -44,9 +44,18 @@ namespace DOL.GS
         public static bool BattlegroupTrailStuck(long progressTick, long now) =>
             progressTick > 0 && now - progressTick >= BattlegroupTrailStuckMilliseconds;
 
+        /// <summary>After a refused trail path the trailer waits this long before it asks again (one look interval), so a
+        /// trailer with no path does not ask for one every turn until the stuck report (#766, region 200).</summary>
+        public const long BattlegroupTrailPathBackoffMilliseconds = 5_000L;
+
+        /// <summary>Whether the trailer may ask for a path: none refused yet (0), or the back-off since the last refusal at
+        /// <paramref name="refusedTick"/> is over. Pure.</summary>
+        public static bool BattlegroupTrailMayAskPath(long refusedTick, long now) =>
+            refusedTick == 0 || now - refusedTick >= BattlegroupTrailPathBackoffMilliseconds;
+
         private Vector3? _battlegroupTrailGoal;
         private Vector3 _battlegroupTrailMark;
-        private long _battlegroupTrailProgressTick, _battlegroupTrailTurnTick;
+        private long _battlegroupTrailProgressTick, _battlegroupTrailTurnTick, _battlegroupTrailRefusedTick;
 
         private bool TrailBattlegroupLead(GameBot bot, string forceId, string leadForce, GameBot lead)
         {
@@ -60,6 +69,7 @@ namespace DOL.GS
             {
                 _battlegroupTrailGoal = null;
                 _battlegroupTrailProgressTick = 0;
+                _battlegroupTrailRefusedTick = 0;
             }
             _battlegroupTrailTurnTick = now;
             float distance = Vector2.Distance(new(bot.X, bot.Y), new(lead.X, lead.Y));
@@ -74,9 +84,18 @@ namespace DOL.GS
                     _battlegroupTrailMark = here;
                     _battlegroupTrailProgressTick = now;
                 }
-                // A refused path counts against the stuck clock; the next turn picks the goal again.
-                if (!IssueVariedRvrPath(bot, _battlegroupTrailGoal.Value))
-                    _battlegroupTrailGoal = null;
+                // A refused path counts against the stuck clock; the goal is picked again, and the next path is asked for
+                // only after the back-off.
+                if (BattlegroupTrailMayAskPath(_battlegroupTrailRefusedTick, now))
+                {
+                    if (!IssueVariedRvrPath(bot, _battlegroupTrailGoal.Value))
+                    {
+                        _battlegroupTrailGoal = null;
+                        _battlegroupTrailRefusedTick = now;
+                    }
+                    else
+                        _battlegroupTrailRefusedTick = 0;
+                }
                 if (BattlegroupTrailStuck(_battlegroupTrailProgressTick, now))
                 {
                     AutonomousRvrEventLayer.ReportBattlegroupStuck(forceId);
@@ -88,6 +107,7 @@ namespace DOL.GS
             }
             _battlegroupTrailGoal = null;
             _battlegroupTrailProgressTick = 0;
+            _battlegroupTrailRefusedTick = 0;
             bot.StopMovingOnPath();
             bot.StopMoving();
             SetRvrStatus(bot, "With the battlegroup", "Roam with the other groups of the battlegroup",

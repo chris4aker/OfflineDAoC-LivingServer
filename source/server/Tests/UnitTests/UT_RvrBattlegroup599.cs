@@ -296,14 +296,24 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void A_refused_trail_path_is_asked_again_only_after_the_back_off()
+        {
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailMayAskPath(0, 1_000_000), Is.True, "nothing refused yet");
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailMayAskPath(10_000, 14_999), Is.False);
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailMayAskPath(10_000, 15_000), Is.True);
+            Assert.That(AutonomousWorldBotController.BattlegroupTrailPathBackoffMilliseconds,
+                Is.LessThan(AutonomousWorldBotController.BattlegroupTrailStuckMilliseconds), "several asks before the stuck report");
+        }
+
+        [Test]
         public void The_trail_keeps_one_goal_for_the_route_and_reports_a_stuck_trail()
         {
             string trail = Regex.Replace(Code("bots", "autonomous", "AutonomousWorldBotController.Battlegroup.cs"), @"\s+", " ");
             Assert.Multiple(() =>
             {
                 Assert.That(trail, Does.Contain("if (BattlegroupTrailRetarget(_battlegroupTrailGoal is { } held ? new Vector2(held.X, held.Y) : null, new(lead.X, lead.Y), new(bot.X, bot.Y))) _battlegroupTrailGoal = new Vector3(lead.X, lead.Y, lead.Z);"));
-                Assert.That(trail, Does.Contain("if (!IssueVariedRvrPath(bot, _battlegroupTrailGoal.Value)) _battlegroupTrailGoal = null;"),
-                    "the held goal goes to the route, and a refused path is not ignored");
+                Assert.That(trail, Does.Contain("if (BattlegroupTrailMayAskPath(_battlegroupTrailRefusedTick, now)) { if (!IssueVariedRvrPath(bot, _battlegroupTrailGoal.Value)) { _battlegroupTrailGoal = null; _battlegroupTrailRefusedTick = now; } else _battlegroupTrailRefusedTick = 0; }"),
+                    "the held goal goes to the route, a refused path is not ignored, and the next ask waits out the back-off");
                 Assert.That(Regex.Matches(trail, @"IssueVariedRvrPath\(").Count, Is.EqualTo(1), "never the lead's live spot");
                 Assert.That(trail, Does.Contain("if (BattlegroupTrailStuck(_battlegroupTrailProgressTick, now)) { AutonomousRvrEventLayer.ReportBattlegroupStuck(forceId);"));
             });
