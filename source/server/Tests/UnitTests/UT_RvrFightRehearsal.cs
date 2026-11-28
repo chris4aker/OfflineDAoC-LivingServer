@@ -50,15 +50,8 @@ namespace DOL.UnitTests
             Assert.That(actives, Is.Not.Null, "the realm-ability row");
             // #531 step 2f: the row says what each side's bombers did with a mezzed pile
             Assert.That(first.Row, Does.Contain(" bomb=Alb:["), "the row has the bombers");
-            // ... and Albion's lone bomber (the Wizard, beside the Sorcerer's area mez) waited by a mezzed pile and bombed it:
-            // the plan's walk-in (BotBrain.TryRvrBomb) and its lift of the mez veto are wired
-            BombText alb = BombOf(first.Row, "Alb");
-            Assert.Multiple(() =>
-            {
-                Assert.That(alb.Bombers, Is.EqualTo(1), "Albion has one bomber: " + first.Row);
-                Assert.That(alb.Waited, Is.Not.EqualTo("no"), "the lone bomber waited beside a mezzed pile: " + first.Row);
-                Assert.That(alb.OnMezzed, Is.GreaterThanOrEqualTo(1), "and bombed it: " + first.Row);
-            });
+            // (seed 520's eights hold no Wizard, Runemaster or Spiritmaster: the bomb cases below give Albion its bombers)
+            Assert.That(BombOf(first.Row, "Alb").Bombers, Is.Zero, "no period bomber in Albion's eight: " + first.Row);
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
@@ -97,12 +90,31 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Scenario1_ALoneBomberWaitsOutTheMezThenBombsThePile()
+        {
+            // #531 step 2f, owner answer 53A: a group with one bomber walks in and waits beside the mezzed pile, and bombs as
+            // the first mez there is about to wear off. Albion fights with one bomber beside its Sorcerer's area mez. This pins
+            // the plan's walk-in (BotBrain.TryRvrBomb) and its lift of the mez veto.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.OpenFieldResult result = RvrFightRehearsal.OpenField(Seed, albionBombers: 1);
+            Print(result.Row, result.Detail, clock);
+            BombText alb = BombOf(result.Row, "Alb");
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+                Assert.That(alb.Bombers, Is.EqualTo(1), "Albion has one bomber: " + result.Row);
+                Assert.That(alb.Waited, Is.Not.EqualTo("no"), "the lone bomber waited beside a mezzed pile: " + result.Row);
+                Assert.That(alb.OnMezzed, Is.GreaterThanOrEqualTo(1), "and bombed it: " + result.Row);
+            });
+        }
+
+        [Test]
         public void Scenario1_TwoBombersBombAMezzedPileTogether()
         {
             // #531 step 2f, owner answer 53A: a group with two or more bombers bombs the mezzed pile at once. Albion fights
-            // with a second bomber beside its Wizard and its Sorcerer's area mez.
+            // with two bombers beside its Sorcerer's area mez.
             var clock = Stopwatch.StartNew();
-            RvrFightRehearsal.OpenFieldResult result = RvrFightRehearsal.OpenField(Seed, pairBombers: true);
+            RvrFightRehearsal.OpenFieldResult result = RvrFightRehearsal.OpenField(Seed, albionBombers: 2);
             Print(result.Row, result.Detail, clock);
             BombText alb = BombOf(result.Row, "Alb");
             var albion = result.Bombs.Where(b => b.Caster.Realm == eRealm.Albion).ToList();

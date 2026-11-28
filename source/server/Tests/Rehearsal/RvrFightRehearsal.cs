@@ -111,9 +111,11 @@ namespace DOL.GS.Tests.Rehearsal
             $"{RvrRoles.For(ClassOf(opening.FirstTarget))}:{Short(opening.FirstTarget)} rule={opening.FirstRule} " +
             $"opened_on={opening.OpenedOn}/{opening.Members} (spread {opening.SpreadOpenedOn})";
 
-        /// <param name="pairBombers">#531 step 2f: Albion's first other nuker (not the Wizard or the area mezzer) gets the
-        /// stand-in bomb too, so Albion fights with two bombers beside its area mez.</param>
-        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600, bool pairBombers = false)
+        /// <param name="albionBombers">#531 step 2f: -1 (the default): the period bombers in the eights (RvrFightKits.Bombs)
+        /// get the stand-in bomb. 1 or more: that many of Albion's back line get it instead (a Wizard first, then the other
+        /// nukers, then the rest, the area mezzer last), so Albion fights beside its Sorcerer's area mez with a lone bomber or
+        /// with two. The roster built for seed 520 has no Wizard, Runemaster or Spiritmaster.</param>
+        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600, int albionBombers = -1)
         {
             using var world = new RvrFightWorld(seed, Repeatable);
             Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
@@ -126,11 +128,13 @@ namespace DOL.GS.Tests.Rehearsal
             var actives = new RvrFightActives();
             actives.Grant(albion.Concat(midgard));
             // #531 step 2f: the eights' bombers get a stand-in point blank bomb
-            foreach (GameBot bot in albion.Concat(midgard).Where(b => RvrFightKits.Bombs((eCharacterClass)b.CharacterClass.ID)))
+            IEnumerable<GameBot> bombers = albionBombers < 0
+                ? albion.Concat(midgard).Where(b => RvrFightKits.Bombs(ClassOf(b)))
+                : albion.Where(b => RvrPositioning.StandFor(RvrRoles.For(ClassOf(b)), ClassOf(b)) == RvrStand.Back && !RvrFightKits.Heals(ClassOf(b)))
+                    .OrderBy(b => RvrFightKits.Bombs(ClassOf(b)) ? 0 : RvrFightKits.AreaMezzes(ClassOf(b)) ? 3 : RvrFightKits.Nukes(ClassOf(b)) ? 1 : 2)
+                    .Take(albionBombers);
+            foreach (GameBot bot in bombers.ToList())
                 RvrFightKits.AddBomb(bot);
-            if (pairBombers && albion.FirstOrDefault(b => RvrFightKits.Nukes(ClassOf(b)) && !RvrFightKits.Bombs(ClassOf(b)) &&
-                    !RvrFightKits.AreaMezzes(ClassOf(b))) is { } second)
-                RvrFightKits.AddBomb(second);
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
