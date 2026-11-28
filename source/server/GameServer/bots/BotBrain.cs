@@ -6695,9 +6695,11 @@ namespace DOL.AI.Brain
             GameLiving deadMember = group.GetMembersInTheGroup()
                 .Where(member => member != Body && !member.IsAlive && member.ObjectState is GameObject.eObjectState.Active &&
                                  member.CurrentRegionID == Body.CurrentRegionID)
-                // Raise nearby casualties, but do not abandon recovery to chase
-                // a distant corpse back into the failed pull/dungeon room.
-                .Where(member => !regrouping || BotBody.IsWithinRadius(member, range))
+                // Raise nearby casualties. A distant corpse: an autonomous gamebot party grants one resurrector a walk to
+                // it, regrouping or not, unless it lies by what killed it (#570 step 4); everyone else keeps the old rule
+                // (never chase a distant corpse back into the failed pull while regrouping).
+                .Where(member => BotBody.IsWithinRadius(member, range) ||
+                                 AutonomousBotGroupCoordinator.MayWalkToCorpse(BotBody, member, regrouping))
                 .OrderBy(member => member == AssistedPlayer ? 0 : 1)
                 .ThenBy(Body.GetDistanceTo)
                 .FirstOrDefault();
