@@ -131,7 +131,7 @@ namespace DOL.GS
             target.CurrentRegionID == leader.CurrentRegionID && CompanionPvpEngagement.Enemy(leader, target);
 
         /// <summary>The bot, its pet and its owner bot: who "me" is for /hold's self-defence.</summary>
-        private static bool HitsUs(GameBot bot, GameLiving actor, GameLiving target)
+        internal static bool HitsUs(GameBot bot, GameLiving actor, GameLiving target)
         {
             if (target == null) return false;
             GameLiving pet = bot.ControlledBrain?.Body;
@@ -258,7 +258,25 @@ namespace DOL.GS
             int fromPlayer = target.CurrentRegionID == leader.CurrentRegionID ? leader.GetDistanceTo(target) : int.MaxValue;
             if (fromPlayer <= leash) return true;
             return MayFight(false, HitsUs(bot, actor, target), true, true, fromPlayer, leash,
-                PlayerLedPullCoordinator.FindLeaderTarget(leader) == target, HittingGroup(leader, target));
+                PlayerLedPullCoordinator.FindLeaderTarget(leader) == target || PlayerGroupOrders.Ordered(leader, target),
+                HittingGroup(leader, target));
+        }
+
+        /// <summary>
+        /// #667: the size-up for an attack the player orders (the group's line, as an opening): the player and his group
+        /// near him against the enemy bots near <paramref name="target"/>. Only for the warning (owner answer 5: obey, but
+        /// warn); the group goes in whatever it says.
+        /// </summary>
+        public static RvrSightDecision SizeUpAgainst(GamePlayer leader, GameLiving target)
+        {
+            if (leader?.Group == null || target == null || !AutonomousWorldBotController.IsBattleground(leader)) return default;
+            var known = new List<GameLiving>();
+            foreach (GameNPC npc in target.GetNPCsInRadius((ushort)RvrSightSizeUp.AllyRadius))
+                if (npc is GameBot && npc.IsAlive && CompanionPvpEngagement.Enemy(leader, npc) && !npc.IsStealthed)
+                    known.Add(npc);
+            if (target is GameBot && !known.Contains(target) && CompanionPvpEngagement.Enemy(leader, target))
+                known.Add(target);
+            return known.Count == 0 ? default : SizeUp(Facts(leader, known));
         }
 
         /// <summary>Who looks: the player and his bots near him, alive, in his region.</summary>

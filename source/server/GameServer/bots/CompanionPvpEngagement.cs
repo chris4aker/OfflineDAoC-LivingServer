@@ -130,6 +130,11 @@ namespace DOL.GS
             // #664 step 2: under /hold the group opens nothing and assists nobody; each bot only defends itself (in its brain,
             // through CompanionEngagementMode.Allows).
             if (CompanionEngagementMode.PlayerHolding(leader)) return;
+            // #667: under assist the player alone calls the target, and under regroup the group is breaking off: no focus
+            // of the group's own (no shared threat, no #664 pick, no /defensive nearby pull, no /raid radar).
+            GroupOrder order = PlayerGroupOrders.Current(leader);
+            if (order == GroupOrder.Regroup) return;
+            bool ownPick = !PlayerGroupOrders.SuppressesOwnPick(order);
             State state = States.GetOrCreateValue(leader);
             GameLiving focus;
             lock (state)
@@ -139,16 +144,17 @@ namespace DOL.GS
                 state.NextScan = now + 500;
                 focus = now < state.FocusUntil ? state.Focus : null;
                 if (!Live(leader, focus)) state.Focus = focus = null;
-                if (focus == null)
+                if (focus == null && ownPick)
                     focus = state.Threats.Where(p => p.Value > now && Live(leader, p.Key))
                         .OrderBy(p => leader.GetDistanceTo(p.Key)).Select(p => p.Key).FirstOrDefault();
             }
-            GameLiving ordered = PlayerLedPullCoordinator.FindLeaderTarget(leader);
+            // #667: an attack order's target is the group's focus as the player's own attack is.
+            GameLiving ordered = PlayerLedPullCoordinator.FindLeaderTarget(leader) ?? PlayerGroupOrders.AttackTarget(leader);
             if (ordered != null) { Order(leader, ordered); focus = Enemy(leader, ordered) ? ordered : null; }
             bool defensive = CompanionEngagementMode.DefensiveLeader(helper) != null;
             if (focus != null && !CompanionEngagementMode.Allows(helper, focus)) focus = null;
             bool groupPick = false;
-            if (CompanionRvrEngage.Applies(leader))
+            if (ownPick && CompanionRvrEngage.Applies(leader))
             {
                 // #664 (bot_companion_rvr_engage): the group's own pick, by perception, bounded by the player, sized up.
                 // It replaces the /defensive 350 scan and the /raid radar circle in the #663 places.
@@ -158,7 +164,7 @@ namespace DOL.GS
                     groupPick = focus != null;
                 }
             }
-            else
+            else if (ownPick)
             {
                 if (focus == null && defensive)
                     focus = SelectNearby(helper, leader.GetNPCsInRadius(CompanionEngagementMode.DefensiveRadius), BotSiegeRuntime.Visible);
@@ -166,9 +172,12 @@ namespace DOL.GS
                     focus = SelectRoamer(helper, leader.GetNPCsInRadius((ushort)FrontierRaidAggroRadius(defensive)), BotSiegeRuntime.Visible);
             }
             if (focus == null) return;
+            // #667: under attack or assist every bot that obeys the player takes the focus, gamebots of his group too.
+            bool byOrder = focus == ordered && (order is GroupOrder.Attack or GroupOrder.Assist);
             foreach (GameLiving member in leader.Group.GetMembersInTheGroup())
                 if (member is GameBot bot &&
-                    (groupPick ? CompanionRvrEngage.Joins(bot, leader) && CompanionEngagementMode.Allows(bot, focus) : Leader(bot) == leader) &&
+                    (groupPick ? CompanionRvrEngage.Joins(bot, leader) && CompanionEngagementMode.Allows(bot, focus) :
+                     byOrder ? PlayerGroupOrders.Obeys(bot, leader) && CompanionEngagementMode.Allows(bot, focus) : Leader(bot) == leader) &&
                     PlayerLedPullCoordinator.Available(bot, leader) &&
                     bot.IsWithinRadius(focus, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) && CompanionRaidSiege.MayAssist(bot, focus) &&
                     bot.Brain is BotBrain brain)

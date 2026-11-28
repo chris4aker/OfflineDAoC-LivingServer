@@ -215,7 +215,8 @@ public class UT_CompanionRvrEngage664
         string observe = File.ReadAllText(Path.Combine(root, "source", "server", "GameServer", "bots", "CompanionPvpEngagement.cs"));
         Assert.Multiple(() =>
         {
-            Assert.That(observe, Does.Contain("if (CompanionRvrEngage.Applies(leader))"));
+            // #667: the group's own pick also stands aside under the assist and regroup orders (ownPick).
+            Assert.That(observe, Does.Contain("if (ownPick && CompanionRvrEngage.Applies(leader))"));
             Assert.That(observe, Does.Contain("CompanionRvrEngage.Choose(leader, CompanionEngagementMode.PlayerDefensive(leader))"));
             Assert.That(observe.IndexOf("CompanionRvrEngage.Choose("), Is.GreaterThan(observe.IndexOf("PlayerLedPullCoordinator.FindLeaderTarget(leader)")),
                 "the player's own target and the group's attackers come first");

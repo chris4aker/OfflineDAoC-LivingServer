@@ -220,6 +220,10 @@ public static class AutonomousBotGroupChatter
         AutonomousBeggars.OnPlayerAsked(player, message, "group");
         if (player?.Group != null && !string.IsNullOrWhiteSpace(message))
             BotChatTranscript.Player("group", player, message);
+        // #667: an order word as the whole line ("attack", "assist me", "regroup") is an order, not talk; the group's
+        // answer is the order's own, so the chatter doesn't answer it too.
+        if (PlayerGroupOrders.FromGroupChat(player, message))
+            return;
         if (!AutonomousBotVoices.Enabled || player?.Group == null || string.IsNullOrWhiteSpace(message))
             return;
         // Beta 1.1.2: the screen runs before every route, the thread follow-ups too (round 3).
