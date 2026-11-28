@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **790**; pending (#625, not on main yet): **0**; shipped by the pipeline: **758**.
+- Rows in code: **791**; pending (#625, not on main yet): **0**; shipped by the pipeline: **759**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -694,6 +694,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_FIGHT_OPEN` | server.log | **ships** | `bots/autonomous/RvrRecord.Fights.cs` | `by`, `fight`, `groups`, `playerDistance`, `playerIn`, `realms`, `region`, `x`, `y` | - | - | - |
 | `RVR_FORCE_BATTLEGROUP` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Battlegroup.cs` | `force`, `groups`, `heads`, `id`, `lead`, `minutes`, `realm`, `region`, `what`, `why` | - | one per battlegroup change (formed, joined, left, ended), at most one per group per 10 s pulse (#599) | One change of a frontier battlegroup (formed, joined, left or ended), with its groups and heads. |
 | `RVR_FORCE_CLUSTER` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `biggest`, `bots`, `clusters`, `over24`, `parties`, `realm`, `t` | - | - | - |
+| `RVR_FORCE_ZERG` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Zerg.cs` | `anchor`, `arrived`, `attack`, `force`, `free`, `groups`, `heads`, `id`, `lead`, `minutes`, `online`, `realm`, `region`, `schedule`, `target`, `what`, `why` | - | one per zerg change (formed, joined, left, moved, ended), at most one per group per 10 s pulse; one zerg per realm (#599 step 3) | One change of a realm's zerg (formed, joined, left, moved or ended), with its groups, heads, size target and gate. |
 | `RVR_FRONTIER_DEPARTURE` | detail.log | **ships** | `bots/autonomous/AutonomousFrontierTransport.cs` | `count`, `destination`, `force`, `porter`, `region` | - | - | - |
 | `RVR_FRONTIER_WAIT_LONG` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierTransport.cs` | `at`, `bot`, `ceremony`, `grouped`, `heldForWarband`, `id`, `level`, `notReady`, `notReadyMembers`, `objective`, `party`, `passage`, `phase`, `porter`, `realm`, `spotDist`, `ticket`, `to`, `waited` | `bot` | - | - |
 | `RVR_HOME_DEFENSE_BREAKOFF` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `attackLeft`, `defenders`, `force`, `from`, `realm`, `size`, `to` | - | - | - |
