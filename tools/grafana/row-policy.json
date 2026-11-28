@@ -84,6 +84,9 @@
     "text"
   ],
   "frequency": {
+    "AUTONOMOUS_SERVICE_DANGER_SKIP": "one per gamebot service search whose nearest merchant, broker or seal merchant lay beside or past a learned danger spot while a safe one was left (#570)",
+    "AUTONOMOUS_STABLE_LANDING_SKIP": "sampled: at most one per gamebot per 5 minutes, only when the learned danger rules changed its horse plan (#570)",
+    "AUTONOMOUS_STABLE_LANDING_DEADLY": "one when a horse landing turns deadly for a 5-level band (6 different gamebots dead within 5 minutes of landing in an hour; #570)",
     "AUTONOMOUS_ROUTE_BLOCK": "one when a spot turns into a shared route block (3 different solo gamebots gave a camp up there within 30 minutes; #570)",
     "AUTONOMOUS_ROUTE_BLOCK_AVOID": "one per solo gamebot camp pick that skipped camps at or past a shared route block while another camp was left (#570)",
     "AUTONOMOUS_NEAR_MISS_DEAD_END": "one when a gamebot first stalls at a new near-miss dead end (a partial path ending within 256 of its target; #570)",
