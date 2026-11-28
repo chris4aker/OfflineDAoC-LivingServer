@@ -23,7 +23,18 @@ sys.path.insert(0, str(HERE.parent))
 import alloy  # noqa: E402
 
 REPO = HERE.parents[2]
-CONFIG = REPO / "tools/grafana/alloy/config.alloy"
+# #817: the committed copy lags a pull request's code (main regenerates it after the merge), so the tests read the
+# config the kit builds from this checkout's code, written to a temp file.
+_CONFIG_DIR = None
+
+
+def current_config() -> Path:
+    global _CONFIG_DIR
+    if _CONFIG_DIR is None:
+        import kit  # noqa: E402
+        _CONFIG_DIR = tempfile.TemporaryDirectory()
+        (Path(_CONFIG_DIR.name) / "config.alloy").write_text(kit.Kit(REPO).alloy_config(), encoding="utf-8", newline="\n")
+    return Path(_CONFIG_DIR.name) / "config.alloy"
 ALLOY = os.environ.get("ALLOY_BIN") or shutil.which("alloy")
 
 LINES = [
@@ -61,7 +72,7 @@ def unescape(value: str) -> str:
 @unittest.skipUnless(ALLOY, "no Alloy binary (set ALLOY_BIN)")
 class RealAlloyTests(unittest.TestCase):
     def test_alloy_ships_what_the_replay_ships(self):
-        flt = alloy.load_filter(CONFIG)
+        flt = alloy.load_filter(current_config())
         want = []
         for raw in LINES:
             shipped = flt.apply(raw)
@@ -71,7 +82,7 @@ class RealAlloyTests(unittest.TestCase):
             root = Path(tmp)
             (root / "logs").mkdir()
             (root / "logs/server.log").write_text("\n".join(LINES) + "\n", encoding="utf-8")
-            text = CONFIG.read_text(encoding="utf-8")
+            text = current_config().read_text(encoding="utf-8")
             text = text[:text.index('loki.write "offlinedaoc"')] + 'loki.echo "offlinedaoc" { }\n'
             text = text.replace("forward_to = [loki.write.offlinedaoc.receiver]", "forward_to = [loki.echo.offlinedaoc.receiver]")
             (root / "test.alloy").write_text(text, encoding="utf-8")
