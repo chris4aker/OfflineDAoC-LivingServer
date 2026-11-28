@@ -246,6 +246,9 @@ public sealed partial class AutonomousWorldBotController
         var nav = PathfindingProvider.Instance;
         Vector3 floor = zone != null && nav.IsAvailable && nav.HasNavmesh(zone)
             ? nav.GetClosestPoint(zone, arrival, 160, 160, 800, nav.DefaultFilters) ?? arrival : arrival;
+        // #532 step 1a: not in sight of a player; the ordinary retry runs meanwhile and asks again at its next failure.
+        if (AutonomousRvrUnseenMove.Holds(bot, floor, "keep_route_restart"))
+            return false;
         if (!bot.MoveInRegion(bot.CurrentRegionID, (int)Math.Round(floor.X), (int)Math.Round(floor.Y), (int)Math.Round(floor.Z),
                 bot.Heading, true))
             return false;
