@@ -111,7 +111,11 @@ namespace DOL.GS
         // Once per whole party/raid, not 80 independent proximity scans.
         public static void Observe(GameBot helper)
         {
+            // #664: in the #663 places the player's whole group (befriended gamebots and /bot companions too) takes the
+            // group's own pick (CompanionRvrEngage); the rest of this stays the companions' (Leader).
             GamePlayer leader = Leader(helper);
+            if (leader == null && CompanionRvrEngage.GroupLeader(helper) is GamePlayer groupLeader && CompanionRvrEngage.Applies(groupLeader))
+                leader = groupLeader;
             if (leader?.IsAlive != true || !PlayerLedPullCoordinator.Available(helper, leader)) return;
             State state = States.GetOrCreateValue(leader);
             GameLiving focus;
@@ -130,13 +134,29 @@ namespace DOL.GS
             if (ordered != null) { Order(leader, ordered); focus = Enemy(leader, ordered) ? ordered : null; }
             bool defensive = CompanionEngagementMode.DefensiveLeader(helper) != null;
             if (focus != null && !CompanionEngagementMode.Allows(helper, focus)) focus = null;
-            if (focus == null && defensive)
-                focus = SelectNearby(helper, leader.GetNPCsInRadius(CompanionEngagementMode.DefensiveRadius), BotSiegeRuntime.Visible);
-            if (focus == null && FrontierRaidAggro(leader))
-                focus = SelectRoamer(helper, leader.GetNPCsInRadius((ushort)FrontierRaidAggroRadius(defensive)), BotSiegeRuntime.Visible);
+            bool groupPick = false;
+            if (CompanionRvrEngage.Applies(leader))
+            {
+                // #664 (bot_companion_rvr_engage): the group's own pick, by perception, bounded by the player, sized up.
+                // It replaces the /defensive 350 scan and the /raid radar circle in the #663 places.
+                if (focus == null)
+                {
+                    focus = CompanionRvrEngage.Choose(leader, CompanionEngagementMode.PlayerDefensive(leader));
+                    groupPick = focus != null;
+                }
+            }
+            else
+            {
+                if (focus == null && defensive)
+                    focus = SelectNearby(helper, leader.GetNPCsInRadius(CompanionEngagementMode.DefensiveRadius), BotSiegeRuntime.Visible);
+                if (focus == null && FrontierRaidAggro(leader))
+                    focus = SelectRoamer(helper, leader.GetNPCsInRadius((ushort)FrontierRaidAggroRadius(defensive)), BotSiegeRuntime.Visible);
+            }
             if (focus == null) return;
             foreach (GameLiving member in leader.Group.GetMembersInTheGroup())
-                if (member is GameBot bot && Leader(bot) == leader && PlayerLedPullCoordinator.Available(bot, leader) &&
+                if (member is GameBot bot &&
+                    (groupPick ? CompanionRvrEngage.Joins(bot, leader) && CompanionEngagementMode.Allows(bot, focus) : Leader(bot) == leader) &&
+                    PlayerLedPullCoordinator.Available(bot, leader) &&
                     bot.IsWithinRadius(focus, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) && CompanionRaidSiege.MayAssist(bot, focus) &&
                     bot.Brain is BotBrain brain)
                     brain.AssistPlayerAttack(focus);
