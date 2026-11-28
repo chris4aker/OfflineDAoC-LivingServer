@@ -307,6 +307,32 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void UnderHoldTheFirstSpellHitOnABotIsAnsweredThroughTheRealAttackPath()
+        {
+            // Review of #814: a spell hit reaches the brain (GameLiving.OnAttackedByEnemy's event) before the attacker
+            // tracker hears of it, and a bolt in flight or a finished cast leaves the caster targeting someone else. The real
+            // path must still let the bot that was hit put its attacker on its aggro list at the first hit.
+            using Scene scene = Make(Thidranki, 250, companions: 3);
+            CompanionEngagementMode.SetHold(scene.Player);
+            GameBot victim = scene.Group[0], other = scene.Group[2];
+            GameBot enemy = scene.Enemies[0];
+            enemy.TargetObject = scene.Player; // its cast is done and it has turned to someone else
+            Assert.That(enemy.IsCasting || enemy.IsAttacking, Is.False, "not casting or swinging at the victim");
+            var victimBrain = (BotBrain)victim.Brain;
+            Assert.That(victimBrain.HasAggro, Is.False, "nothing on its aggro list before the hit");
+            victim.OnAttackedByEnemy(new AttackData
+            {
+                Attacker = enemy, Target = victim, AttackType = AttackData.eAttackType.Spell,
+                AttackResult = eAttackResult.HitUnstyled, Damage = 40, Interval = 4_000,
+            });
+            Assert.Multiple(() =>
+            {
+                Assert.That(victimBrain.HasAggro, Is.True, "the bot the spell hit fights back at once");
+                Assert.That(((BotBrain)other.Brain).HasAggro, Is.False, "a groupmate it didn't hit stays out under /hold");
+            });
+        }
+
+        [Test]
         public void APickThatRunsPastTheLeashIsLetGoByEveryBotUnlessItIsHittingThem()
         {
             using Scene scene = Make(Thidranki, 1_500);

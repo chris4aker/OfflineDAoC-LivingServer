@@ -138,12 +138,48 @@ namespace DOL.GS
             return Hits(target, actor) || actor != bot && Hits(target, bot) || pet != null && pet != actor && Hits(target, pet);
         }
 
-        /// <summary><paramref name="enemy"/> is hitting <paramref name="victim"/>: it is among the victim's attackers, or it
-        /// has the victim targeted and is attacking or casting.</summary>
+        /// <summary><paramref name="enemy"/> is hitting <paramref name="victim"/>: it just hit the victim (<see cref="NoteHit"/>),
+        /// it is among the victim's attackers, or it has the victim targeted and is attacking or casting.</summary>
         private static bool Hits(GameLiving enemy, GameLiving victim) =>
             victim != null && enemy.IsAlive &&
-            (victim.attackComponent?.AttackerTracker?.ContainsAttacker(enemy) == true ||
+            (JustHit(enemy, victim) ||
+             victim.attackComponent?.AttackerTracker?.ContainsAttacker(enemy) == true ||
              enemy.TargetObject == victim && (enemy.IsAttacking || enemy.IsCasting));
+
+        /// <summary>How long a hit noted by <see cref="NoteHit"/> counts as "hitting" without the attacker tracker.</summary>
+        public const long JustHitMilliseconds = 2_000;
+
+        private sealed class HitNote
+        {
+            public GameLiving Attacker;
+            public long Tick;
+        }
+
+        private static readonly ConditionalWeakTable<GameLiving, HitNote> LastHits = new();
+
+        /// <summary>
+        /// A bot or a bot's pet was hit (GameBot/GameNPC.OnAttackedByEnemy, before the brain hears of it). The attacker tracker
+        /// only learns of a spell hit after the brain has decided on aggro (GameLiving.OnAttackedByEnemy), so /hold's
+        /// self-defence reads this note: the first bolt, a DoT tick or a finished cast is answered at once.
+        /// </summary>
+        public static void NoteHit(GameLiving victim, AttackData ad)
+        {
+            GameLiving attacker = ad?.Attacker;
+            if (victim == null || attacker == null || attacker == victim || !ad.IsHit || !ad.CausesCombat || OwnerBot(victim) == null) return;
+            HitNote note = LastHits.GetOrCreateValue(victim);
+            lock (note)
+            {
+                note.Attacker = attacker;
+                note.Tick = GameLoop.GameLoopTime;
+            }
+        }
+
+        private static bool JustHit(GameLiving enemy, GameLiving victim)
+        {
+            if (!LastHits.TryGetValue(victim, out HitNote note)) return false;
+            lock (note)
+                return note.Attacker == enemy && GameLoop.GameLoopTime - note.Tick <= JustHitMilliseconds;
+        }
 
         /// <summary>
         /// <paramref name="target"/> is hitting someone of the player's group near him (the player, a bot, a pet of
@@ -339,7 +375,9 @@ namespace DOL.GS
                     targets.Add(party.Pick);
                 else
                 {
-                    Drop(leader, party, "sight", defensive);
+                    // Seen (or still remembered) but now under hostile guards or in a safe area: logged as its own reason.
+                    bool barred = !MayOpenOn(InSafeArea(party.Pick), UnderHostileGuards(leader, party.Pick));
+                    Drop(leader, party, barred ? "guards" : "sight", defensive);
                     party.Pick = null;
                 }
             }
@@ -427,8 +465,8 @@ namespace DOL.GS
             };
         }
 
-        /// <summary>The group let its pick go (step 2): <paramref name="why"/> is leash (past the leash) or sight (out of
-        /// sight longer than the memory).</summary>
+        /// <summary>The group let its pick go (step 2): <paramref name="why"/> is leash (past the leash), sight (out of
+        /// sight longer than the memory) or guards (it stepped under hostile guards or into a safe area).</summary>
         private static void Drop(GamePlayer leader, Party party, string why, bool defensive)
         {
             GameLiving target = party.Pick;
