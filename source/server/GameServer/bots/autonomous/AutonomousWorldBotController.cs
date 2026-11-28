@@ -415,6 +415,8 @@ namespace DOL.GS
                 VisitPlaces(bot, GameLoop.GameLoopTime);
                 return false;
             }
+            // #572 51B: the in-bracket sighting an out-levelled stay needs (no-op outside the battlegrounds).
+            ObserveBattlegroundStay(bot);
 
             try
             {
@@ -2263,6 +2265,12 @@ namespace DOL.GS
                 battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
                 return TrailBattlegroupLead(bot, forceId, battlegroupLead, battlegroupLeader);
 
+            // #599 step 3: the realm's zerg. Its lead holds the region's gates in turn; a recruit in another region travels to
+            // the zerg first (once in the lead's region it trails the lead, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                !_rvrSharedEvent && AutonomousRvrEventLayer.ZergOrderOf(forceId) is { } zergOrder && TakeZergTurn(bot, forceId, zergOrder))
+                return true;
+
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {
                 GameRelic escorted = RelicMgr.GetRelics().FirstOrDefault(relic =>
@@ -3922,10 +3930,13 @@ namespace DOL.GS
             HashSet<ushort> reachableRegions = ReachableRegions(bot.Realm,
                 BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ? RealmRaidNeutralEvents.HomeRegion(bot.Realm) : bot.CurrentRegionID);
             // #572 step 4: no battleground camps for a bot just forced out of one (30 minutes).
+            // #572 51B: a bot staying out-levelled keeps the camps of the battleground it is in (entry keeps the cap).
             BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled &&
-                !AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID) ? BattlegroundBrackets.ForLevel(bot.Level) : null;
+                !AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID) ? WorkingBattleground(bot) : null;
             if (campBattleground != null && (!sharedGroup || bot.Group == null ||
-                    bot.Group.GetMembersInTheGroup().All(member => BattlegroundBrackets.Allows(campBattleground, member.Level))))
+                    bot.Group.GetMembersInTheGroup().All(member => AutonomousBattlegroundExit.MayBeIn(campBattleground,
+                        member.Level, member is GameBot stayer && stayer.CurrentRegionID == campBattleground.RegionId &&
+                        StaysOutlevelled(stayer)))))
                 reachableRegions.Add(campBattleground.RegionId);
             HashSet<string> rejectedDungeons = AutonomousBotGroupCoordinator.RejectedDungeonCamps(bot);
             foreach (string id in _rejectedDungeonCamps.Where(pair => pair.Value <= GameLoop.GameLoopTime).Select(pair => pair.Key).ToArray())
