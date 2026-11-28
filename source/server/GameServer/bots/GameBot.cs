@@ -1800,7 +1800,7 @@ namespace DOL.GS
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
         // the companion bots' formal voice. A gamebot talks like a player.
         // A hired companion talks as any gamebot (owner 2026-11-18 09:14); with its Speech option on Formal it keeps the
-        // A hired companion's return lines.
+        // companion's return lines.
         private string ReturnDialogue(string stage) => IsAutonomousWorldBot && !(IsHiredCompanion && CompanionChat165.IsFormal(this))
             ? GamebotReturnLine(stage, Random.Shared, StableRouteDestination, CurrentZone?.Description)
             : CompanionReturnDialogue(stage);

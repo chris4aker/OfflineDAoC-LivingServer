@@ -553,7 +553,7 @@ namespace DOL.GS
                     return true;
 
                 // Relic audit 2026-10-31 (L4): a relic carrier runs home. It used to stand and fight (the combat block below
-                // ran first) and walk to loot bags. Only a crowd-controlled or cornered carrier fights back.
+                // ran first), and it must not walk to loot bags either. Only a crowd-controlled or cornered carrier fights back.
                 if (RelicCarrierRuns(brain, bot, nowTick))
                     return ExecuteRvr(brain, bot);
 
@@ -3937,7 +3937,7 @@ namespace DOL.GS
                 if (validCount == 0 ||
                     !sharedGroup && !AutonomousSoloCampFloor.CampQualifies(bot.Level, validCount, cell.Levels.Length))
                     continue;
-                // No camp beside a spot where a monster far above this bot killed one recently (AutonomousPveBossDanger).
+                // No camp beside a spot where a monster far above this bot killed one recently (boss danger).
                 if (AutonomousPveBossDanger.IsNear(cell.RegionId, cell.X, cell.Y, sharedGroup ? lowestMemberLevel : planningLevel, dangerUtc))
                     continue;
                 // Nor beside a place where this bot itself died again and again (AutonomousRepeatDeathSpots).
@@ -4478,7 +4478,8 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// The uncovered live camps pass (#544, 1.2.3) also turns these camps' monsters into live camps, but Living Server keeps these
+        /// Capnbry-source-empty camps could be dropped, because the uncovered-live-camps pass (#544, 1.2.3)
+        /// turns their monsters into live camps instead. Living Server keeps these
         /// camps on: they also hold clusters of one or two spawns, and turning them off is a separate call. With it off, a source-empty camp is still published when its
         /// realm and level band would otherwise have no camp at all (FinishCatalogDraft).
         /// </summary>

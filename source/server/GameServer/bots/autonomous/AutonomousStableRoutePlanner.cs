@@ -299,12 +299,14 @@ public static class AutonomousStableRoutePlanner
         bool directUnsafe = false;
         string skipped = null;
         long nowTick = GameLoop.GameLoopTime;
+        // The skip row's "wouldBoard" is the plan without any learned danger rule, the stable master walk exclusions included.
+        HashSet<int> excludedBefore = excluded == null ? null : new HashSet<int>(excluded);
         if (bot.Group == null && !boundedMeetupApproach && !bot.IsHiredCompanion)
             MarkLearnedDangers(bot, goal, candidates, nowUtc, nowTick, ref excluded, ref unusable, ref finishUnsafe,
                 ref directUnsafe, ref skipped);
         bool sampled = skipped != null && AutonomousLearnedDangerTrips.TryTakeSkipSample(bot.ObjectID, nowTick);
         RouteDecision? unrestricted = sampled
-            ? ChooseFirstLeg(bot.X, bot.Y, goal.X, goal.Y, Math.Max(1, (int)bot.MaxSpeed), money, metrics, excluded)
+            ? ChooseFirstLeg(bot.X, bot.Y, goal.X, goal.Y, Math.Max(1, (int)bot.MaxSpeed), money, metrics, excludedBefore)
             : null;
 
         for (int attempt = 0; attempt < Math.Min(AutonomousStableBoardingFailureCache.MaximumNewProbesPerSearch,
