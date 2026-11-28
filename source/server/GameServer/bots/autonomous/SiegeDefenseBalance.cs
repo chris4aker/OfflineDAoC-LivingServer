@@ -23,9 +23,11 @@ namespace DOL.GS;
 ///
 /// 2026-11-27 (#523 step 2): the window was server-wide, so one realm's lost keeps raised every realm's defenders
 /// (defense.md finding 1). Each defending realm now keeps its own window, moved by the same rule, steps, limits and floor,
-/// and that window alone sets its defenders' share and the cap on armies attacking it (owner answer 52A; logged as
-/// SIEGE_DEFENSE_BALANCE_REALM, applied=true). The server-wide window is still kept and logged (SIEGE_DEFENSE_BALANCE);
-/// it is applied only to a siege with no known defending realm.
+/// and once it has <see cref="OwnRecordSieges"/> sieges of its own, that window alone sets its defenders' share and the cap
+/// on armies attacking it (owner's answer to question 52, #523 issuecomment-7227740738: "A realm uses the server-wide record
+/// until it has at least 3 sieges of its own, then switches to its own record. The ledger replay at start carries over").
+/// Until then, and for a siege with no known defending realm, the server-wide window applies. Both are logged
+/// (SIEGE_DEFENSE_BALANCE; SIEGE_DEFENSE_BALANCE_REALM with applied=own or applied=server).
 /// </summary>
 public static class SiegeDefenseBalance
 {
@@ -46,6 +48,9 @@ public static class SiegeDefenseBalance
     /// at 0.53-0.61 and 0.5 / 0.2 (the first 1.1.3 draft) at 0.39-0.47.
     /// </summary>
     public const double HighWinShare = 0.65, LowWinShare = 0.35;
+    /// <summary>The sieges of its own a defending realm needs before its own window replaces the server-wide one (owner,
+    /// question 52, #523 issuecomment-7227740738).</summary>
+    public const int OwnRecordSieges = 3;
     /// <summary>Sieges replayed from the ledger at start: four windows, twice the steps from one limit to the other.</summary>
     public const int LedgerResults = 24;
 
@@ -183,15 +188,15 @@ public static class SiegeDefenseBalance
     public static int AttackerCapAt(int fullCap, double shift) =>
         Math.Max(8, (int)Math.Round(fullCap * (1 - AttackerTrimAt(shift))));
 
-    /// <summary>The defenders' share in use for a siege on this realm's keep: moved by that realm's own window only
-    /// (#523, owner answer 52A). With no known defending realm, the server-wide window.</summary>
+    /// <summary>The defenders' share in use for a siege on this realm's keep: moved by that realm's own window once it has
+    /// <see cref="OwnRecordSieges"/> sieges, by the server-wide window before that or with no known defending realm.</summary>
     public static double Ratio(double baseRatio, eRealm defender = eRealm.None)
     {
         lock (Sync) return RatioAt(baseRatio, AppliedShiftLocked(defender));
     }
 
-    /// <summary>The attackers' cap in use against this defending realm: the full cap, trimmed once that realm's
-    /// defenders' share is at its limit. With no known defending realm, the server-wide window.</summary>
+    /// <summary>The attackers' cap in use against this defending realm: the full cap, trimmed once the applied window's
+    /// defenders' share is at its limit (<see cref="AppliedShift"/>).</summary>
     public static int AttackerCap(int fullCap, eRealm defender = eRealm.None)
     {
         lock (Sync) return AttackerCapAt(fullCap, AppliedShiftLocked(defender));
@@ -204,7 +209,20 @@ public static class SiegeDefenseBalance
     }
 
     private static double AppliedShiftLocked(eRealm defender) =>
-        HasRealmRecord(defender) ? RealmShiftLocked(defender) : _shift;
+        UsesOwnRecordLocked(defender) ? RealmShiftLocked(defender) : _shift;
+
+    /// <summary>Whether this defending realm's own window is the one applied: it has at least <see cref="OwnRecordSieges"/>
+    /// sieges of its own (the window keeps the last six, so once reached it stays reached).</summary>
+    public static bool UsesOwnRecord(eRealm defender)
+    {
+        lock (Sync) return UsesOwnRecordLocked(defender);
+    }
+
+    private static bool UsesOwnRecordLocked(eRealm defender) =>
+        HasRealmRecord(defender) && RealmResults.TryGetValue(defender, out var window) && OwnRecordApplies(window.Count);
+
+    /// <summary>The owner's rule for question 52: a realm's own record applies from its third siege. Pure.</summary>
+    public static bool OwnRecordApplies(int ownSieges) => ownSieges >= OwnRecordSieges;
 
     public static double Shift
     {
@@ -225,7 +243,8 @@ public static class SiegeDefenseBalance
 
     /// <summary>The log line of a change to the server-wide window: what happened, the shift before and after, the share
     /// and the keep attackers' cap (setting -> at this shift), the window (C = captured, D = defended). Since #523 (52A) it
-    /// is applied only to a siege with no known defending realm; SIEGE_DEFENSE_BALANCE_REALM has what each realm uses.</summary>
+    /// is applied to a realm with fewer than three sieges of its own and to a siege with no known defending realm;
+    /// SIEGE_DEFENSE_BALANCE_REALM says which window each realm uses.</summary>
     public static string Line(string what, double before, double after, IEnumerable<bool> window) =>
         $"SIEGE_DEFENSE_BALANCE event=\"{what}\" shift={before:+0.###;-0.###;0}->{after:+0.###;-0.###;0} " +
         $"share={RealmEventPolicy.DefenseRatio:0.###}->{RatioAt(RealmEventPolicy.DefenseRatio, after):0.###} " +
@@ -233,15 +252,17 @@ public static class SiegeDefenseBalance
         $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\"";
 
     /// <summary>The log line of a defending realm's own window: what happened, its shift before and after, the share
-    /// and keep attackers' cap that shift gives, the window (C = captured, D = defended), and applied=true: this window
-    /// sets the realm's share and the cap on armies attacking it (#523, owner answer 52A).</summary>
+    /// and keep attackers' cap that shift gives, the window (C = captured, D = defended), and which window sets the realm's
+    /// share and the cap on armies attacking it: applied=own from its third siege, applied=server before that (owner,
+    /// question 52).</summary>
     public static string RealmLine(eRealm realm, string what, double before, double after, IEnumerable<bool> window) =>
-        // A defending realm's own six-siege record moved, and with it its defenders' share and the cap on armies attacking it.
+        // A defending realm's own six-siege record moved; from its third siege (applied=own) it sets its defenders' share and the cap on armies attacking it, before that (applied=server) the server-wide record does.
         $"SIEGE_DEFENSE_BALANCE_REALM realm={GlobalConstants.RealmToName(realm)} event=\"{what}\" " +
         $"shift={before:+0.###;-0.###;0}->{after:+0.###;-0.###;0} " +
         $"share={RatioAt(RealmEventPolicy.DefenseRatio, after):0.###} " +
         $"attackerCap={AttackerCapAt(RealmEventPolicy.KeepAttackers, after)} " +
-        $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\" applied=true";
+        $"window=\"{string.Concat((window ?? []).Select(won => won ? 'C' : 'D'))}\" " +
+        $"applied={(OwnRecordApplies((window ?? []).Count()) ? "own" : "server")}";
 
     /// <summary>Tests only.</summary>
     public static void Reset()

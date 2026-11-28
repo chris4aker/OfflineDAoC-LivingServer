@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -10,7 +12,8 @@ namespace DOL.UnitTests
     /// #523 step 2, honest pacing numbers. The response reserve was a hash of the warband's lowest member id alone, so the
     /// same 30% of warbands sat out every defense (defense.md finding 1); it is now drawn per event. The siege balance kept
     /// one server-wide window, so one realm's lost keeps raised every realm's defenders; each defending realm's own window now
-    /// sets its defenders' share and the cap on armies attacking it (owner answer 52A, applied=true).
+    /// sets its defenders' share and the cap on armies attacking it once it has three sieges, the server-wide window before
+    /// that (owner's answer to question 52, #523 issuecomment-7227740738; applied=own or applied=server).
     /// </summary>
     [TestFixture, NonParallelizable]
     public class UT_HonestPacing523
@@ -103,7 +106,8 @@ namespace DOL.UnitTests
                 Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(hiberniaShare), "Hibernia's share is its own");
                 Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Hibernia), Is.EqualTo(hiberniaCap), "Hibernia's attackers' cap is its own");
                 Assert.That(SiegeDefenseBalance.AttackerCap(240, eRealm.Hibernia), Is.EqualTo(240));
-                Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(0.75), "Albion has no sieges yet");
+                Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(SiegeDefenseBalance.RatioAt(0.75, SiegeDefenseBalance.Shift)),
+                    "Albion has no sieges yet: the server-wide record");
                 Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Albion), Is.EqualTo(128));
                 Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Midgard), Is.EqualTo(1.0), "Midgard's share at its limit");
                 Assert.That(SiegeDefenseBalance.AttackerCap(128, eRealm.Midgard), Is.EqualTo(96), "then the armies attacking Midgard are trimmed");
@@ -138,7 +142,9 @@ namespace DOL.UnitTests
             foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(true, eRealm.Hibernia);
             foreach (eRealm realm in new[] { eRealm.Albion, eRealm.Midgard, eRealm.Hibernia })
             {
-                double shift = SiegeDefenseBalance.RealmShift(realm);
+                // Albion and Hibernia have their own three; Midgard has none, so it follows the server-wide record.
+                double shift = realm == eRealm.Midgard ? SiegeDefenseBalance.Shift : SiegeDefenseBalance.RealmShift(realm);
+                Assert.That(SiegeDefenseBalance.AppliedShift(realm), Is.EqualTo(shift), realm.ToString());
                 Assert.That(RealmEventPolicy.EffectiveDefenseRatioFor(realm),
                     Is.EqualTo(SiegeDefenseBalance.RatioAt(RealmEventPolicy.DefenseRatio, shift)), realm.ToString());
                 Assert.That(RealmEventPolicy.EffectiveAttackerCap(false, realm),
@@ -157,7 +163,11 @@ namespace DOL.UnitTests
             Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.None), Is.EqualTo(SiegeDefenseBalance.Shift));
             Assert.That(SiegeDefenseBalance.Ratio(0.75), Is.EqualTo(SiegeDefenseBalance.RatioAt(0.75, SiegeDefenseBalance.Shift)));
             Assert.That(SiegeDefenseBalance.AttackerCap(128), Is.EqualTo(SiegeDefenseBalance.AttackerCapAt(128, SiegeDefenseBalance.Shift)));
-            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.75), "the server-wide record never moves a realm's own");
+            Assert.That(SiegeDefenseBalance.RealmShift(eRealm.Hibernia), Is.Zero, "the server-wide record never moves a realm's own");
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Hibernia), Is.EqualTo(SiegeDefenseBalance.Shift),
+                "a realm with no sieges of its own uses the server-wide record");
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Midgard), Is.EqualTo(SiegeDefenseBalance.RealmShift(eRealm.Midgard)),
+                "Midgard has three of its own");
         }
 
         [Test]
@@ -185,10 +195,11 @@ namespace DOL.UnitTests
             Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Albion), Is.EqualTo(new[] { false }));
             Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter([true, true, false, true, true])));
             Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.875), "the rebuilt window is applied");
-            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(0.75), "one result: too few to move");
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Albion), Is.EqualTo(SiegeDefenseBalance.RatioAt(0.75, SiegeDefenseBalance.Shift)),
+                "one result of its own: Albion uses the server-wide record");
 
             SiegeDefenseBalance.Load([true, true, true]);
-            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.75));
+            Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.875), "no record of its own: the server-wide one");
             Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Hibernia), Is.Empty, "a new ledger replaces every record");
             Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.Step));
         }
@@ -198,10 +209,12 @@ namespace DOL.UnitTests
         {
             Assert.That(SiegeDefenseBalance.RealmLine(eRealm.Midgard, "captured", 0.125, 0.25, [true, true, false, true]),
                 Is.EqualTo("SIEGE_DEFENSE_BALANCE_REALM realm=Midgard event=\"captured\" shift=+0.125->+0.25 share=1 " +
-                           "attackerCap=128 window=\"CCDC\" applied=true"));
+                           "attackerCap=128 window=\"CCDC\" applied=own"));
             Assert.That(SiegeDefenseBalance.RealmLine(eRealm.Albion, "defended", 0, -0.125, [false, false, false]),
                 Is.EqualTo("SIEGE_DEFENSE_BALANCE_REALM realm=Albion event=\"defended\" shift=0->-0.125 share=0.625 " +
-                           "attackerCap=128 window=\"DDD\" applied=true"));
+                           "attackerCap=128 window=\"DDD\" applied=own"));
+            Assert.That(SiegeDefenseBalance.RealmLine(eRealm.Hibernia, "defended", 0, 0, [false, false]),
+                Does.EndWith("window=\"DD\" applied=server"), "two of its own: the server-wide record is applied");
         }
 
         [TestCase("Automatic continuous siege; defender: Midgard", eRealm.Midgard)]
@@ -209,11 +222,153 @@ namespace DOL.UnitTests
         [TestCase("Automatic continuous siege; defender: Hibernia", eRealm.Hibernia)]
         [TestCase("Retake attempt after a player captured the keep; one try", eRealm.None)]
         [TestCase("Keep captured: ownership changed", eRealm.None)]
+        [TestCase("Keep captured: ownership changed; defender: Midgard", eRealm.Midgard)]
+        [TestCase("Siege defended: no attacker reached the keep for 10 minutes; defender: Hibernia", eRealm.Hibernia)]
         [TestCase("", eRealm.None)]
         [TestCase(null, eRealm.None)]
         public void TheLedgerNamesTheDefender(string details, eRealm expected)
         {
             Assert.That(SiegeDefenseBalance.DefenderOf(details), Is.EqualTo(expected));
+        }
+
+        // ---- Owner's answer to question 52 (#523 issuecomment-7227740738): the server-wide record until three of its own ----
+
+        [Test]
+        public void ARealmFollowsTheServerWideRecordUntilItHasThreeSiegesOfItsOwn()
+        {
+            foreach (int _ in Enumerable.Range(0, 3)) SiegeDefenseBalance.Record(true);
+            SiegeDefenseBalance.Record(false, eRealm.Hibernia);
+            SiegeDefenseBalance.Record(false, eRealm.Hibernia);
+            Assert.Multiple(() =>
+            {
+                Assert.That(SiegeDefenseBalance.UsesOwnRecord(eRealm.Hibernia), Is.False, "two of its own");
+                Assert.That(SiegeDefenseBalance.Shift, Is.EqualTo(SiegeDefenseBalance.ShiftAfter([true, true, true, false, false])));
+                Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Hibernia), Is.EqualTo(SiegeDefenseBalance.Shift));
+                Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Hibernia), Is.Not.EqualTo(SiegeDefenseBalance.RealmShift(eRealm.Hibernia)));
+                Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(SiegeDefenseBalance.RatioAt(0.75, SiegeDefenseBalance.Shift)));
+            });
+
+            SiegeDefenseBalance.Record(false, eRealm.Hibernia);
+            Assert.Multiple(() =>
+            {
+                Assert.That(SiegeDefenseBalance.UsesOwnRecord(eRealm.Hibernia), Is.True, "the third of its own");
+                Assert.That(SiegeDefenseBalance.RealmShift(eRealm.Hibernia), Is.EqualTo(-SiegeDefenseBalance.Step));
+                Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Hibernia), Is.EqualTo(-SiegeDefenseBalance.Step), "its own record now");
+                Assert.That(SiegeDefenseBalance.Ratio(0.75, eRealm.Hibernia), Is.EqualTo(0.625));
+                Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Albion), Is.EqualTo(SiegeDefenseBalance.Shift), "Albion has none: server-wide");
+            });
+        }
+
+        [Test]
+        public void TheSwitchToItsOwnRecordCarriesOverTheLedgerReplay()
+        {
+            SiegeDefenseBalance.ResetUnloadedForTests();
+            SiegeDefenseBalance.LoadResults([
+                new(true, eRealm.None), new(true, eRealm.None), new(true, eRealm.None),
+                new(false, eRealm.Hibernia), new(false, eRealm.Hibernia),
+            ]);
+            Assert.That(SiegeDefenseBalance.UsesOwnRecord(eRealm.Hibernia), Is.False, "two of its own after the replay");
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Hibernia), Is.EqualTo(SiegeDefenseBalance.Shift));
+
+            SiegeDefenseBalance.LoadResults([
+                new(true, eRealm.None), new(true, eRealm.None), new(true, eRealm.None),
+                new(false, eRealm.Hibernia), new(false, eRealm.Hibernia), new(false, eRealm.Hibernia),
+            ]);
+            Assert.That(SiegeDefenseBalance.UsesOwnRecord(eRealm.Hibernia), Is.True, "three of its own after the replay");
+            Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Hibernia), Is.EqualTo(-SiegeDefenseBalance.Step));
+        }
+
+        [TestCase(0, false)]
+        [TestCase(2, false)]
+        [TestCase(3, true)]
+        [TestCase(6, true)]
+        public void TheOwnRecordAppliesFromTheThirdSiege(int own, bool applies) =>
+            Assert.That(SiegeDefenseBalance.OwnRecordApplies(own), Is.EqualTo(applies));
+
+        // ---- The finished row names the defending realm (review of #799, point 1) ----
+
+        [Test]
+        public void TheFinishedRowNamesTheDefender()
+        {
+            string bot = AutonomousRvrEventLayer.FinishedSiegeDetails(false, "Keep captured: ownership changed", eRealm.Midgard);
+            string player = AutonomousRvrEventLayer.FinishedSiegeDetails(true, "Siege defended: the attackers left", eRealm.Albion);
+            Assert.Multiple(() =>
+            {
+                Assert.That(bot, Is.EqualTo("Keep captured: ownership changed; defender: Midgard"));
+                Assert.That(SiegeDefenseBalance.DefenderOf(bot), Is.EqualTo(eRealm.Midgard));
+                Assert.That(player, Does.StartWith(RealmEventRecordStore.PlayerAttackPrefix), "a player attack is still left out of the balance");
+                Assert.That(AutonomousRvrEventLayer.FinishedSiegeDetails(false, "Ended", eRealm.None), Is.EqualTo("Ended"));
+            });
+        }
+
+        private static AutonomousRvrEventLayer.LiveObjective MidKeep(int n) =>
+            new("rvr-keep-799" + n, "Midgard keep " + n, AutonomousRvrEventLayer.Intent.AssaultKeep, eRealm.Midgard, 100,
+                400000 + n * 20000, 400000, 3000, false, 0, 0, 2, 2);
+
+        private static Dictionary<string, RealmEventRecord> PendingRows() =>
+            (Dictionary<string, RealmEventRecord>)typeof(RealmEventRecords).GetField("Pending", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+
+        /// <summary>
+        /// Points 1 and 3 of the review of #799: Albion takes three Midgard keeps through the event layer (ChooseOrJoin, a
+        /// Progress that replaces the row's details as the recruit pass does, EndTarget). Only Midgard's record moves. The
+        /// ledger rows EndEvent wrote are saved to a ledger file and read back as a restart reads them
+        /// (SiegeResultsWithDetails, FromLedger, LoadResults): each names Midgard, so the rebuilt record is Midgard's.
+        /// </summary>
+        [Test]
+        public void ACaptureThroughTheEventLayerMovesOnlyTheDefendersRecordAndSurvivesARestart()
+        {
+            DOL.GS.Tests.RvrEventTestState.Clear();
+            string folder = Path.Combine(Path.GetTempPath(), "ut-siege-ledger-799-" + Guid.NewGuid().ToString("N"));
+            try
+            {
+                var keeps = Enumerable.Range(0, 3).Select(MidKeep).ToArray();
+                for (int n = 0; n < keeps.Length; n++)
+                {
+                    long t = 1_000 + n * 120_000L;
+                    var force = new AutonomousRvrEventLayer.Force("alb-799-" + n, eRealm.Albion, 8, 50, 2);
+                    AutonomousRvrEventLayer.Plan plan = AutonomousRvrEventLayer.ChooseOrJoin(force, new[] { keeps[n] }, t, 0);
+                    Assert.That(plan?.TargetId, Is.EqualTo(keeps[n].Id), plan?.Reason);
+                    RealmEventRecords.Progress(keeps[n].Id, "Battle", "Reinforcements converging: attackers=8, defenders=0, third realm=0", 8, 8);
+                    AutonomousRvrEventLayer.EndTarget(keeps[n].Id, t + 60_000, eRealm.Albion);
+                    if (n == 0)
+                    {
+                        Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Midgard), Is.EqualTo(new[] { true }), "the capture is Midgard's");
+                        Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Albion), Is.Empty);
+                        Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Hibernia), Is.Empty);
+                    }
+                }
+                Assert.Multiple(() =>
+                {
+                    Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Midgard), Is.EqualTo(new[] { true, true, true }));
+                    Assert.That(SiegeDefenseBalance.RealmShift(eRealm.Midgard), Is.EqualTo(SiegeDefenseBalance.Step), "Midgard's record moved");
+                    Assert.That(SiegeDefenseBalance.UsesOwnRecord(eRealm.Midgard), Is.True);
+                    Assert.That(SiegeDefenseBalance.RealmShift(eRealm.Albion), Is.Zero, "Albion's did not");
+                    Assert.That(SiegeDefenseBalance.RealmShift(eRealm.Hibernia), Is.Zero, "Hibernia's did not");
+                    Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Albion), Is.Empty);
+                    Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Hibernia), Is.Empty);
+                });
+
+                // The rows EndEvent finished, through the real ledger file.
+                var ids = keeps.Select(k => k.Id).ToHashSet();
+                var rows = PendingRows().Values.Where(r => ids.Contains(r.EventId) && r.Phase == "Ended").ToArray();
+                Assert.That(rows, Has.Length.EqualTo(3));
+                Assert.That(rows.Select(r => r.Details), Has.All.EndWith("; defender: Midgard"));
+                string path = RealmEventRecordStore.PathIn(folder);
+                RealmEventRecordStore.Save(path, rows);
+                var results = SiegeDefenseBalance.FromLedger(RealmEventRecordStore.SiegeResultsWithDetails(path, SiegeDefenseBalance.LedgerResults));
+                Assert.That(results, Is.EqualTo(Enumerable.Repeat(new SiegeDefenseBalance.SiegeResult(true, eRealm.Midgard), 3)));
+
+                SiegeDefenseBalance.ResetUnloadedForTests();
+                SiegeDefenseBalance.LoadResults(results);
+                Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Midgard), Is.EqualTo(new[] { true, true, true }), "rebuilt after a restart");
+                Assert.That(SiegeDefenseBalance.AppliedShift(eRealm.Midgard), Is.EqualTo(SiegeDefenseBalance.Step));
+                Assert.That(SiegeDefenseBalance.RealmWindow(eRealm.Albion), Is.Empty);
+            }
+            finally
+            {
+                DOL.GS.Tests.RvrEventTestState.Clear();
+                if (Directory.Exists(folder)) Directory.Delete(folder, true);
+            }
         }
 
         [Test]

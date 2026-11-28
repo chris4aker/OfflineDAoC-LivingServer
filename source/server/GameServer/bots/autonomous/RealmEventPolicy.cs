@@ -55,7 +55,7 @@ namespace DOL.GS
         public static double EffectiveDefenseRatio => EffectiveDefenseRatioFor(eRealm.None);
 
         /// <summary>The ratio in use for a siege on this realm's keep: the setting, steered by that realm's own last sieges
-        /// (#523, owner answer 52A).</summary>
+        /// once it has three, by the server-wide record before that (#523, owner's answer to question 52).</summary>
         public static double EffectiveDefenseRatioFor(eRealm defender) => SiegeDefenseBalance.Ratio(DefenseRatio, defender);
 
         public static int AttackerCap(bool relic) => relic ? RelicAttackers : KeepAttackers;
