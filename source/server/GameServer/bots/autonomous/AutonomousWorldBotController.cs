@@ -137,6 +137,8 @@ namespace DOL.GS
         private Zone _lastSeamPlanZone;
         private Vector3 _lastSeamPlanStart;
         private long _seamMemberHoldUntilTick;
+        // #532 step 1a: a route-pocket escape that waited because a player could see it (AutonomousRvrUnseenMove).
+        private long _unseenMoveHoldUntilTick;
         public const int MaximumSeamReversals = AutonomousSeamReversalGuard.TriggerReversals;
         private Vector3? _patrolDestination;
         // RvR uses the same collision-safe/stable/zone route machinery as PvE,
@@ -361,6 +363,8 @@ namespace DOL.GS
             inPocket = true;
             if (!AutonomousNavigationSurface.TryNearestWalkableFloor(PathfindingProvider.Instance, zone,
                     new Vector3(bot.X, bot.Y, bot.Z), 600, out Vector3 floor, leavePocket: true) ||
+                // #532 step 1a: not in sight of a player (the caller checks again in a minute).
+                AutonomousRvrUnseenMove.Holds(bot, floor, "listed_pocket") ||
                 !bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X, (int)floor.Y, (int)floor.Z, bot.Heading, true))
                 return false;
             bot.StopMovingOnPath();
@@ -5486,6 +5490,8 @@ namespace DOL.GS
 
             if (HoldAfterSeamReversal(current, now, destinationChanged))
                 return true;
+            if (HoldForUnseenMove(bot, current, now, destinationChanged))
+                return true;
 
             if (_routeInterruptedByCombat)
             {
@@ -5651,6 +5657,29 @@ namespace DOL.GS
             {
                 _seamMemberHoldUntilTick = 0;
                 return false;
+            }
+            _lastRoutePosition = current;
+            _lastRouteProgressTick = now;
+            return true;
+        }
+
+        /// <summary>
+        /// #532 step 1a: a bot whose pocket escape waited for no player to see it stands out the hold instead of planning the
+        /// same failing route again (each failure can be hundreds of queries). The progress clock restarts meanwhile so the
+        /// wait never becomes stall recovery; the watchdog's own still clock is untouched. A moved goal ends the hold.
+        /// </summary>
+        private bool HoldForUnseenMove(GameBot bot, Vector3 current, long now, bool destinationChanged)
+        {
+            if (now >= _unseenMoveHoldUntilTick) return false;
+            if (destinationChanged)
+            {
+                _unseenMoveHoldUntilTick = 0;
+                return false;
+            }
+            if (bot.IsMoving)
+            {
+                bot.StopMovingOnPath();
+                bot.StopMoving();
             }
             _lastRoutePosition = current;
             _lastRouteProgressTick = now;
@@ -6092,6 +6121,9 @@ namespace DOL.GS
         private bool TryEscapeTerminalRoutePocket(GameBot bot, Vector3 current, Vector3? goal = null)
         {
             long now = GameLoop.GameLoopTime;
+            // #532 step 1a: the escape is waiting for no player to see it; the failure is not counted again meanwhile.
+            if (now < _unseenMoveHoldUntilTick)
+                return true;
             bool repeated = AutonomousRouteRecoveryPolicy.IsSameRepeatedFailurePocket(
                 _lastTerminalRouteFailureRegion, bot.CurrentRegionID,
                 _lastTerminalRouteFailurePosition, current, now - _lastTerminalRouteFailureTick);
@@ -6197,6 +6229,21 @@ namespace DOL.GS
                     _pocketEscapeRun.Clear();
                     return false;
                 }
+            }
+
+            // #532 step 1a: an escape within the region waits while a player could see either end. The failure just counted
+            // is taken back, so waiting never climbs to the capital move; the bot stands for the hold and then tries again.
+            if (escapeRegion == bot.CurrentRegionID &&
+                AutonomousRvrUnseenMove.Holds(bot, escape, shortHop ? "pocket_hop" : "pocket_escape"))
+            {
+                _terminalRouteFailuresInPocket = Math.Max(0, _terminalRouteFailuresInPocket - 1);
+                _unseenMoveHoldUntilTick = now + AutonomousRvrUnseenMove.HoldMilliseconds;
+                bot.StopMovingOnPath();
+                bot.StopMoving();
+                SetStatus(bot, "Finding a way round", GoalText(),
+                    "No route from this spot; looking for another way while others are near",
+                    _camp?.MonsterName ?? string.Empty, _camp?.ZoneName ?? escapeName);
+                return true;
             }
 
             ushort failedSourceRegion = bot.CurrentRegionID;
@@ -6370,6 +6417,12 @@ namespace DOL.GS
                 AutonomousRouteGoalFixMetrics.FloorStepGated();
                 found = false;
             }
+            // #532 step 1a: not in sight of a player. Not a miss (the floor is good): the step is asked again after the hold.
+            if (found && AutonomousRvrUnseenMove.Holds(bot, floor, "floor_step"))
+            {
+                _nextFloorStepTick = GameLoop.GameLoopTime + AutonomousRvrUnseenMove.HoldMilliseconds;
+                return false;
+            }
             if (!found || !bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X, (int)floor.Y, (int)floor.Z, bot.Heading, true))
             {
                 _floorStepMissActive = true;
@@ -6531,6 +6584,7 @@ namespace DOL.GS
             _resolvedBoundaryStep = null;
             _resolvedBoundaryZone = null;
             _seamMemberHoldUntilTick = 0;
+            _unseenMoveHoldUntilTick = 0;
             _nextMoveOrderTick = 0;
             _issuedRouteDestination = null;
             _routeRecoveryWaypoint = null;
