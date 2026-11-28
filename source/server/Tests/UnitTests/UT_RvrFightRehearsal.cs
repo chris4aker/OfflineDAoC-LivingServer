@@ -85,6 +85,25 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Scenario4_SoloBotsAtABattlegroundMusterFormGroups()
+        {
+            // #530 step 5b: the muster's solo gamebots are put into parties, and each party's fight board lists the party.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.MusterResult result = RvrFightRehearsal.MusterGroups(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Placed, Is.EqualTo(14), "every free solo at the muster placed");
+                Assert.That(result.PartySizes, Is.EqualTo(new[] { 7, 7 }), "fourteen: two parties of seven, never over eight");
+                Assert.That(result.OutsidersTaken, Is.Zero, "no other realm, no grouped bot, no other bracket, no tour about to end");
+                Assert.That(result.Solos, Is.Zero);
+                Assert.That(result.BoardMembersBefore, Is.LessThanOrEqualTo(1), "before: a solo bot's board");
+                Assert.That(result.BoardMembersAfter, Is.EqualTo(new[] { 7, 7 }), "after: the party's board");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
+        }
+
+        [Test]
         public void Scenario3_APlayerInRangeOfABotGroup()
         {
             var clock = Stopwatch.StartNew();

@@ -84,6 +84,7 @@
     "text"
   ],
   "frequency": {
+    "BG_MUSTER_PARTY": "one per autonomous gamebot party formed or joined at a battleground wave's muster, at most every 10 s per realm and keep (#530 step 5b)",
     "COMPANION_RVR_ENGAGE": "change-only: one per player's group each time its own pick in the frontier, battlegrounds or Darkness Falls changes call (engage or hold) or target",
     "DRAGON_RALLY_ROUTE_RETRY": "one per failed plan of a raider's safe route to an open-world boss rally: at most one per raider every 30 seconds while the plans fail (#767)",
     "DRAGON_RALLY_FALLBACK": "one per raider per spot after three failed rally plans from it: the walk past a neutral boss, or the keep-safe-route note for an aggressive one (#767)",
