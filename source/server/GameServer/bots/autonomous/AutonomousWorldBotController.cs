@@ -146,6 +146,13 @@ namespace DOL.GS
         private long _nextSiegeCombatAttendanceTick;
         public const int SiegeCombatAttendanceRadius = 9_500;
 
+        /// <summary>#572 step 2: a ram crew member (frontier or battleground) at its seat stays there through wall arrows,
+        /// spells and the aggro they bring; only an enemy striking it at melee reach sends it to the ordinary fight.</summary>
+        public static bool HoldsRamSeat(GameBot bot) => bot != null && !bot.IsCasting &&
+            (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) ||
+             AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground)) &&
+            AutonomousRamCrews.AtSeat(bot) && !BotSiegeRuntime.StruckInMeleeReach(bot);
+
         /// <summary>
         /// A siege participant fighting at the keep (inside the rally-post ring) is physically there.
         /// Presence was only reported at a bot's own rally post outside combat: run 12's Albion army
@@ -570,6 +577,11 @@ namespace DOL.GS
                 if (!brain.HasAggro && !bot.IsAttacking && !bot.IsCasting &&
                     AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.RvR) && BotSiegeRuntime.HoldingPosition(bot))
                     return ExecuteRvr(brain,bot);
+                // #572 step 2: a ram crew member holds its seat against arrows and spells from the walls too, in the
+                // frontier and in a battleground; only a blow at melee reach sends it to the ordinary fight.
+                if (HoldsRamSeat(bot))
+                    return AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.Battleground)
+                        ? ExecuteBattleground(brain,bot) : ExecuteRvr(brain,bot);
 
                 bool postCombatRecovery = BotRestRecovery.NeedsOrContinuesRest(bot) && !BotRestRecovery.BlocksRest(bot);
                 if (brain.HasAggro || (bot.InCombat && !postCombatRecovery) || bot.IsAttacking)
