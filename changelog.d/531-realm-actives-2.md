@@ -13,7 +13,8 @@ section: RvR
     as it does before it attacks again.
   - A Scout, Hunter or Ranger whose group an enemy assassin strikes uses **True Sight**. For 60 seconds it sees every
     hidden enemy in its line of sight, at any range, as a player on True Sight does. Vanish still hides from it.
-  - A hidden gamebot is uncovered by the player's rule: a hit uncovers it, and a miss doesn't. Companions are unchanged.
+  - A hidden gamebot is uncovered by the player's rule: any melee swing, a miss included, or a spell that does damage;
+    a spell that does no damage leaves it hidden. Companions are unchanged.
   - Each works as it does for a player and then waits out its 30-minute timer, so it comes once a fight. The bots buy
     them in their realm ability builds after Purge: Perfect Recovery for the Healer, Vanish for the Infiltrator, True Sight
     for the archers.

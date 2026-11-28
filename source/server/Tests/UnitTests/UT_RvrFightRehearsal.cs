@@ -98,11 +98,12 @@ namespace DOL.UnitTests
                 Assert.That(result.RetreatVanished, Is.True, "a retreat's start fires Vanish (BotBrain.BeginRetreat)");
                 Assert.That(result.IdleUnhidesWithoutVanish, Is.True, "control: the idle unhide unhides a bot without Vanish");
                 Assert.That(result.IdleKeptVanishHidden, Is.True, "the idle unhide leaves a vanished bot hidden");
-                // the uncover rule: autonomous gamebots by the player's rule, companions as before (#521)
-                Assert.That(result.GamebotHiddenAfterMiss, Is.True, "a miss leaves a stealthed autonomous gamebot hidden");
+                // the uncover rule: autonomous gamebots by the player's rule (GameLiving.OnAttackedByEnemy), companions as before (#521)
+                Assert.That(result.GamebotHiddenAfterZeroDamageSpell, Is.True, "a zero-damage spell leaves a stealthed autonomous gamebot hidden");
+                Assert.That(result.GamebotUncoveredByMiss, Is.True, "a melee swing uncovers it, a miss included, as it does the player");
                 Assert.That(result.GamebotUncoveredByHit, Is.True, "a hit uncovers it");
                 Assert.That(result.CompanionIsCompanion, Is.True, "the companion case is a companion");
-                Assert.That(result.CompanionUncoveredByMiss, Is.True, "a miss still uncovers a stealthed companion");
+                Assert.That(result.CompanionUncoveredByZeroDamageSpell, Is.True, "any attack still uncovers a stealthed companion");
                 // True Sight (owner answer 71A)
                 Assert.That(result.TrueSightOn, Is.True, $"the Hunter put True Sight on once an assassin struck its mate: {result.Row}");
                 Assert.That(result.TrueSightTimerMs, Is.GreaterThan(29 * 60_000L), "and went on its 30-minute timer");

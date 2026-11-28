@@ -798,13 +798,21 @@ namespace DOL.GS.Tests.Rehearsal
             bool Raised, int RaisedHealthPercent, long PrTimerMs, bool SecondRaisedByPr,
             bool Vanished, int EnemySeeRange, bool HiddenAfterHit, bool VanishEndedOnUnhide,
             bool RetreatVanished, bool IdleKeptVanishHidden, bool IdleUnhidesWithoutVanish,
-            bool GamebotHiddenAfterMiss, bool GamebotUncoveredByHit, bool CompanionIsCompanion, bool CompanionUncoveredByMiss,
+            bool GamebotHiddenAfterZeroDamageSpell, bool GamebotUncoveredByMiss, bool GamebotUncoveredByHit, bool CompanionIsCompanion,
+            bool CompanionUncoveredByZeroDamageSpell,
             bool TrueSightOn, long TrueSightTimerMs, double TrueSightChanceAt1200, double NoTrueSightChanceAt1200, int TrueSightCandidateRange);
 
         private static void Miss(GameLiving attacker, GameLiving victim) => victim.OnAttackedByEnemy(new AttackData
         {
             Attacker = attacker, Target = victim, AttackType = AttackData.eAttackType.MeleeOneHand,
             AttackResult = eAttackResult.Missed, Damage = 0, Interval = 3_000,
+        });
+
+        /// <summary>A spell that lands for no damage (a debuff, a resisted nuke's zero): the player's rule does not uncover on it.</summary>
+        private static void ZeroDamageSpell(GameLiving attacker, GameLiving victim) => victim.OnAttackedByEnemy(new AttackData
+        {
+            Attacker = attacker, Target = victim, AttackType = AttackData.eAttackType.Spell,
+            AttackResult = eAttackResult.HitUnstyled, Damage = 0, Interval = 3_000,
         });
 
         private static readonly System.Reflection.BindingFlags Private =
@@ -919,14 +927,18 @@ namespace DOL.GS.Tests.Rehearsal
             detail.Add($"wiring: retreat vanished={retreatVanished} idle kept the vanished bot hidden={idleKept} " +
                        $"idle unhid one without Vanish={idleUnhides}");
 
-            // (d) the uncover rule: an autonomous gamebot by the player's rule (a hit uncovers, a miss doesn't); a companion as
-            // before (any attack uncovers it; #521)
+            // (d) the uncover rule: an autonomous gamebot by the player's rule (GameLiving: a melee swing uncovers, a miss
+            // included, and so does a spell that does damage; a zero-damage spell doesn't); a companion as before (any attack
+            // uncovers it; #521)
             plain.Flags |= GameNPC.eFlags.STEALTH;
             GameBot enemy = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "UWarrior");
             world.Place(enemy, region, 56_100, 56_000, 0, 3072);
             enemy.Brain?.Stop();
+            ZeroDamageSpell(enemy, plain);
+            bool hiddenAfterSpell = plain.IsStealthed;
             Miss(enemy, plain);
-            bool hiddenAfterMiss = plain.IsStealthed;
+            bool uncoveredByMiss = !plain.IsStealthed;
+            plain.Flags |= GameNPC.eFlags.STEALTH;
             Hit(enemy, plain, 50);
             bool uncoveredByHit = !plain.IsStealthed;
             GameBot companion = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, 50, "UCompanion");
@@ -935,10 +947,10 @@ namespace DOL.GS.Tests.Rehearsal
             typeof(GameBot).GetProperty(nameof(GameBot.IsTemporaryGroupHelper))!.SetValue(companion, true);
             bool isCompanion = DOL.GS.ServerRules.PvpRules.KindOf(companion) == DOL.GS.ServerRules.PvpCharacterKind.Companion;
             companion.Flags |= GameNPC.eFlags.STEALTH;
-            Miss(enemy, companion);
+            ZeroDamageSpell(enemy, companion);
             bool companionUncovered = !companion.IsStealthed;
-            detail.Add($"uncover: gamebot hidden after a miss={hiddenAfterMiss} uncovered by a hit={uncoveredByHit} " +
-                       $"companion kind ok={isCompanion} companion uncovered by a miss={companionUncovered}");
+            detail.Add($"uncover: gamebot hidden after a zero-damage spell={hiddenAfterSpell} uncovered by a melee miss={uncoveredByMiss} " +
+                       $"by a hit={uncoveredByHit} companion kind ok={isCompanion} companion uncovered by a zero-damage spell={companionUncovered}");
 
             // (e) True Sight: an enemy Infiltrator strikes a Hunter's group mate; the Hunter's turn puts True Sight on, and while it
             // runs the Hunter's stealth rule sees the hidden Infiltrator at 1,200 at once (owner answer 71A), its mate's doesn't
@@ -971,11 +983,11 @@ namespace DOL.GS.Tests.Rehearsal
             string row = $"RVR_REHEARSAL realm_abilities_escape_rez seed={seed} pr_raised={raised}:{warrior.HealthPercent}% " +
                          $"pr_timer={timer / 60_000}min pr_second={secondRaised} vanish={vanished} see={seeRange} " +
                          $"hidden_after_hit={hiddenAfterHit} vanish_ends_on_unhide={endedOnUnhide} retreat_vanish={retreatVanished} " +
-                         $"idle_keeps={idleKept} miss_keeps_gamebot={hiddenAfterMiss} hit_uncovers_gamebot={uncoveredByHit} " +
-                         $"miss_uncovers_companion={companionUncovered} ts={tsOn}:{tsTimer / 60_000}min ts_sees_1200={tsChance}";
+                         $"idle_keeps={idleKept} zero_spell_keeps_gamebot={hiddenAfterSpell} miss_uncovers_gamebot={uncoveredByMiss} " +
+                         $"hit_uncovers_gamebot={uncoveredByHit} zero_spell_uncovers_companion={companionUncovered} ts={tsOn}:{tsTimer / 60_000}min ts_sees_1200={tsChance}";
             return new EscapeAndRezResult(row, detail, world.ServiceErrors, raised, warrior.HealthPercent, timer, secondRaised,
                 vanished, seeRange, hiddenAfterHit, endedOnUnhide, retreatVanished, idleKept, idleUnhides,
-                hiddenAfterMiss, uncoveredByHit, isCompanion, companionUncovered, tsOn, tsTimer, tsChance, mateChance, candidate);
+                hiddenAfterSpell, uncoveredByMiss, uncoveredByHit, isCompanion, companionUncovered, tsOn, tsTimer, tsChance, mateChance, candidate);
         }
 
         private static string Outcome(RvrMezAttempt attempt) => attempt?.Landed switch { true => "landed", false => "refused", _ => "no-cast" };
