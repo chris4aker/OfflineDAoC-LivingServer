@@ -71,7 +71,9 @@ public sealed partial class AutonomousWorldBotController
         RvrFightPlan plan = RvrFightBoards.PeekPlan(bot);
         GameLiving called = plan?.CalledTarget;
         // #599 step 2: a battlegroup's follower group opens on the lead group's call when the scan has it within the call
-        // radius of the group's centre (BattlegroupCallTakes).
+        // radius of the group's centre (BattlegroupCallTakes). Intended: unlike the plan's RvrAssist.BattlegroupCandidate, this
+        // skips the wall, unreachable and crowd-control filters. It is only the opener; the group's next board replans
+        // with those filters and drops a call it can't fight.
         GameLiving shared = RvrFightBoards.BattlegroupCallOf(bot, now);
         if (shared != null && pool.Contains(shared) &&
             BattlegroupCallTakes((float)Math.Sqrt((shared.X - cx) * (shared.X - cx) + (shared.Y - cy) * (shared.Y - cy))))
@@ -97,7 +99,9 @@ public sealed partial class AutonomousWorldBotController
                 DistanceFromGroup: (float)Math.Sqrt(dx * dx + dy * dy), MatesOn: on, Called: called != null && called == target);
         }
         int pick = RvrFirstPick.Pick(candidates, tier, seed, out reason);
-        if (pick >= 0 && reason == RvrFirstPickReason.Called && shared != null && pool[pick] == shared)
+        // The lead's call logs as battlegroup whether the shared call came in just now or the group's plan already holds it.
+        if (pick >= 0 && reason == RvrFirstPickReason.Called &&
+            (shared != null ? pool[pick] == shared : plan?.CallFromBattlegroup == true && pool[pick] == plan.CalledTarget))
             reason = RvrFirstPickReason.Battlegroup;
         return pick < 0 ? null : pool[pick];
     }

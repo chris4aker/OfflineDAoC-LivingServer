@@ -401,7 +401,7 @@ namespace DOL.GS.Tests.Rehearsal
         public sealed record BattlegroupResult(string Row, IReadOnlyList<string> Detail, int Errors, string BattlegroupId,
             string LeadForce, IReadOnlyList<string> Linked, bool PairLinked, bool FarLinked, bool MidgardLinked, int[] RosterSizes,
             int MidgardInRosters, int AlbionAlive, int MidgardAlive, int BothCalledSeconds = 0, int SharedCallSeconds = 0,
-            int FollowerBattlegroupPicks = 0, int FollowerPicks = 0);
+            int FollowerBattlegroupPicks = 0, int FollowerPicks = 0, int BattlegroupCallSeconds = 0);
 
         /// <summary>
         /// Two Albion eights stand 1,800 apart on the Hadrian's Wall stand-in with a Midgard eight 2,600 east of the first. An
@@ -444,10 +444,11 @@ namespace DOL.GS.Tests.Rehearsal
                 scan.Add(albion);
                 scan.Add(midgard);
                 // #599 step 2: once a second, each group's published plan; the seconds both groups held a call, and those
-                // they held the same one (the follower took the lead's call).
+                // they held the same one, and those the follower held it because it took the lead's call (CallFromBattlegroup: 0
+                // by construction without the shared call, so a revert fails scenario 5).
                 List<GameBot> lead = battlegroup != null && battlegroup.LeadForceId == ForceOf(second[0]) ? second : first;
                 List<GameBot> follower = ReferenceEquals(lead, first) ? second : first;
-                int bothCalled = 0, sharedCall = 0;
+                int bothCalled = 0, sharedCall = 0, battlegroupCall = 0;
                 long nextSample = 0;
                 var callLines = new List<string>();
                 world.Run(seconds, w =>
@@ -463,6 +464,8 @@ namespace DOL.GS.Tests.Rehearsal
                     bool same = leadPlan.CalledTarget == followerPlan.CalledTarget;
                     if (same)
                         sharedCall++;
+                    if (same && followerPlan.CallFromBattlegroup)
+                        battlegroupCall++;
                     if (callLines.Count < 12)
                         callLines.Add($"call {S(w.Now)} lead={Short(leadPlan.CalledTarget)} follower={Short(followerPlan.CalledTarget)} " +
                                       $"from_battlegroup={followerPlan.CallFromBattlegroup} same={same}");
@@ -474,7 +477,7 @@ namespace DOL.GS.Tests.Rehearsal
                 string row = $"RVR_REHEARSAL battlegroup seed={seed} sides=Alb8+Alb8 vs Mid8 battlegroup={battlegroup?.Id ?? "none"} " +
                              $"groups={linked.Count} heads={linked.Count * 8} pair_linked={In(pair[0])} far_linked={In(far[0])} " +
                              $"roster={string.Join("/", rosters)} midgard_in_roster={midgardInRosters} " +
-                             $"shared_call={sharedCall}/{bothCalled}s follower_first_pick=battlegroup:{battlegroupPicks}/{followerPicks.Count} " +
+                             $"shared_call={sharedCall}/{bothCalled}s battlegroup_call={battlegroupCall}s follower_first_pick=battlegroup:{battlegroupPicks}/{followerPicks.Count} " +
                              $"standing=Alb:{albionAlive}/16 Mid:{midgardAlive}/8 after={seconds:0}s";
                 var detail = new List<string>();
                 detail.AddRange(callLines);
@@ -484,7 +487,7 @@ namespace DOL.GS.Tests.Rehearsal
                 detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
                 return new BattlegroupResult(row, detail, world.ServiceErrors, battlegroup?.Id, battlegroup?.LeadForceId, linked,
                     In(pair[0]), In(far[0]), AutonomousRvrEventLayer.BattlegroupOf(ForceOf(midgard[0])) != null, rosters, midgardInRosters,
-                    albionAlive, midgardAlive, bothCalled, sharedCall, battlegroupPicks, followerPicks.Count);
+                    albionAlive, midgardAlive, bothCalled, sharedCall, battlegroupPicks, followerPicks.Count, battlegroupCall);
             }
             finally
             {

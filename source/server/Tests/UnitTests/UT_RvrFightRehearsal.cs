@@ -116,8 +116,10 @@ namespace DOL.UnitTests
                 Assert.That(result.MidgardLinked, Is.False, "the lone Midgard eight has no battlegroup");
                 Assert.That(result.RosterSizes, Is.EqualTo(new[] { 16 }), "every Albion bot of the two eights shares one roster of 16");
                 Assert.That(result.MidgardInRosters, Is.Zero);
-                // #599 step 2: the follower group's main assist took the lead group's call (one shared target).
+                // #599 step 2: the follower group's main assist took the lead group's call (one shared target). The same target alone
+                // could match by kill order; CallFromBattlegroup says the follower held it because the lead called it.
                 Assert.That(result.SharedCallSeconds, Is.GreaterThan(0), $"the two groups held one shared call: {result.Row}");
+                Assert.That(result.BattlegroupCallSeconds, Is.GreaterThan(0), $"the follower took the lead's call: {result.Row}");
                 Assert.That(result.Errors, Is.Zero, "no service threw");
             });
         }
