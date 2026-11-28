@@ -55,6 +55,139 @@ namespace DOL.UnitTests
         public bool CorpseThreats(ConColor con, bool aggressive, bool fighting) =>
             AutonomousBotGroupCoordinator.IsCorpseThreat(con, aggressive, fighting);
 
+        // ---- the arbitration (one walker, the 3 s recheck, the 30 s refusal) ----
+
+        private static AutonomousBotGroupCoordinator.CorpseWalkStep Arbitrate(bool hasClaim, bool current, bool sameWalker,
+            bool sameCorpse, long started, long nextCheck, long nextChoice, long now, out long refuseUntil) =>
+            AutonomousBotGroupCoordinator.ArbitrateCorpseWalk(hasClaim, current, sameWalker, sameCorpse, started, nextCheck,
+                nextChoice, now, out refuseUntil);
+
+        [TestCase(false, true)]
+        [TestCase(true, false)]
+        [TestCase(false, false)]
+        public void OnlyTheGrantedWalkerToTheGrantedCorpseMayWalk(bool sameWalker, bool sameCorpse)
+        {
+            Assert.That(Arbitrate(true, true, sameWalker, sameCorpse, 1_000, 10_000, 0, 5_000, out long refuse),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Hold), "one walker, one corpse per party");
+            Assert.That(refuse, Is.Zero);
+            Assert.That(Arbitrate(true, true, sameWalker, sameCorpse, 1_000, 2_000, 0, 5_000, out _),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Hold), "not even when the holder's recheck is due");
+        }
+
+        [Test]
+        public void TheGrantedWalkerKeepsItsGrantUntilTheRecheckIsDue()
+        {
+            const long started = 1_000, nextCheck = started + AutonomousBotGroupCoordinator.CorpseWalkSafetyRecheckMilliseconds;
+            Assert.That(Arbitrate(true, true, true, true, started, nextCheck, 0, nextCheck - 1, out long refuse),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Grant));
+            Assert.That(refuse, Is.Zero);
+            Assert.That(Arbitrate(true, true, true, true, started, nextCheck, 0, nextCheck, out _),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Recheck), "3 s on, the corpse is scanned again");
+            Assert.That(Arbitrate(true, true, true, true, started, nextCheck, 0, nextCheck + 20_000, out _),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Recheck));
+            Assert.That(AutonomousBotGroupCoordinator.CorpseWalkSafetyRecheckMilliseconds, Is.EqualTo(3_000));
+        }
+
+        [Test]
+        public void AWalkThatRanOutOfTimeRefusesItsCorpseFor30Seconds()
+        {
+            const long started = 1_000;
+            long now = started + AutonomousBotGroupCoordinator.CorpseWalkMaxMilliseconds;
+            Assert.That(Arbitrate(true, false, true, true, started, now - 1_000, 0, now, out long refuse),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Choose), "the lapsed grant is dropped");
+            Assert.That(refuse, Is.EqualTo(now + 30_000));
+            Assert.That(AutonomousBotGroupCoordinator.CorpseWalkRefusalMilliseconds, Is.EqualTo(30_000));
+
+            Assert.That(Arbitrate(true, false, true, true, started, started + 3_000, 0, now - 1, out refuse),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Choose));
+            Assert.That(refuse, Is.Zero, "a walk that went stale (walker died, corpse raised) refuses nothing");
+        }
+
+        [Test]
+        public void ALapsedGrantFreesThePartyForAnyWalker()
+        {
+            Assert.That(Arbitrate(true, false, false, false, 1_000, 4_000, 0, 9_000, out _),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Choose));
+            Assert.That(Arbitrate(true, false, false, false, 1_000, 4_000, 10_000, 9_000, out _),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Hold), "but the next choice still waits its turn");
+        }
+
+        [Test]
+        public void WithNoGrantTheNextChoiceWaitsItsTurn()
+        {
+            Assert.That(Arbitrate(false, false, false, false, 0, 0, 5_000, 4_999, out long refuse),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Hold));
+            Assert.That(refuse, Is.Zero);
+            Assert.That(Arbitrate(false, false, false, false, 0, 0, 5_000, 5_000, out _),
+                Is.EqualTo(AutonomousBotGroupCoordinator.CorpseWalkStep.Choose));
+        }
+
+        [Test]
+        public void ARefusedCorpseIsNotOfferedUntilItsRefusalRunsOut()
+        {
+            var refused = new System.Collections.Generic.Dictionary<long, long> { [7] = 40_000 };
+            Assert.That(AutonomousBotGroupCoordinator.IsCorpseWalkRefused(refused, 7, 39_999), Is.True);
+            Assert.That(AutonomousBotGroupCoordinator.IsCorpseWalkRefused(refused, 7, 40_000), Is.False);
+            Assert.That(AutonomousBotGroupCoordinator.IsCorpseWalkRefused(refused, 8, 0), Is.False, "another corpse");
+        }
+
+        // ---- the monster beside the corpse ----
+
+        [Test]
+        public void AnAttackableMonsterThatOutclassesTheWalkerRefusesTheWalk()
+        {
+            Assert.That(AutonomousBotGroupCoordinator.IsCorpseNeighbourThreat(false, true, true, false, true,
+                ConColor.ORANGE, true, false), Is.True);
+            Assert.That(AutonomousBotGroupCoordinator.IsCorpseNeighbourThreat(false, true, true, false, true,
+                ConColor.YELLOW, true, true), Is.False, "an even fight is not a reason to leave the body");
+        }
+
+        [TestCase(true, true, true, false, true, TestName = "another bot")]
+        [TestCase(false, false, true, false, true, TestName = "a dead monster")]
+        [TestCase(false, true, false, false, true, TestName = "an inactive monster")]
+        [TestCase(false, true, true, true, true, TestName = "a peaceful or untargetable monster")]
+        [TestCase(false, true, true, false, false, TestName = "a monster the walker may not attack")]
+        public void HarmlessNeighboursNeverRefuse(bool isBot, bool alive, bool active, bool peace, bool attackable) =>
+            Assert.That(AutonomousBotGroupCoordinator.IsCorpseNeighbourThreat(isBot, alive, active, peace, attackable,
+                ConColor.PURPLE, true, true), Is.False);
+
+        [Test]
+        public void TheGrantUsesTheArbitrationRule()
+        {
+            string walk = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.CorpseWalk.cs");
+            int method = walk.IndexOf("public static bool MayWalkToCorpse(", StringComparison.Ordinal);
+            Assert.That(method, Is.GreaterThan(0));
+            string body = walk.Substring(method, Math.Min(6_000, walk.Length - method));
+            Assert.That(body, Does.Contain("bool current = claim != null && ClaimCurrent(claim, group, now);"));
+            Assert.That(body, Does.Contain("CorpseWalkStep step = ArbitrateCorpseWalk(claim != null, current, claim?.Walker == walker,\n" +
+                "                claim?.Corpse == corpseBot, claim?.Started ?? 0, claim?.NextSafetyCheck ?? 0, state.NextChoiceTick, now,\n" +
+                "                out long refuseUntil);"));
+            Assert.That(body, Does.Contain("if (refuseUntil > 0)\n                    state.Refused[MemberKey(claim.Corpse)] = refuseUntil;"),
+                "a timed-out walk's refusal is stored");
+            Assert.That(body, Does.Contain("case CorpseWalkStep.Hold:\n                    return false;"));
+            Assert.That(body, Does.Contain("case CorpseWalkStep.Grant:\n                    claim.LastSeen = now;\n                    return true;"));
+            Assert.That(body, Does.Contain("candidates = step == CorpseWalkStep.Recheck ? [claim.Corpse] : BotMembers(group)"),
+                "a recheck scans the claimed corpse alone");
+            Assert.That(body, Does.Contain("!IsCorpseWalkRefused(state.Refused, MemberKey(member), now))"));
+            Assert.That(body, Does.Contain("if (CorpseSafeToApproach(walker, candidate, now, out string reason))"));
+        }
+
+        [Test]
+        public void TheMonsterScanJudgesTheMonstersConAsTheWalkerSeesIt()
+        {
+            string walk = Source("bots", "autonomous", "AutonomousBotGroupCoordinator.CorpseWalk.cs");
+            int method = walk.IndexOf("private static bool CorpseSafeToApproach(", StringComparison.Ordinal);
+            Assert.That(method, Is.GreaterThan(0));
+            string body = walk.Substring(method);
+            Assert.That(body, Does.Contain("foreach (GameNPC npc in corpse.GetNPCsInRadius(CorpseThreatRadius))"));
+            Assert.That(body, Does.Contain("GameServer.ServerRules.IsAllowedToAttack(walker, npc, true)"));
+            Assert.That(body, Does.Contain("if (IsCorpseNeighbourThreat(isBot, alive, active, peaceOrCantTarget, attackable,\n" +
+                "                    ConLevels.GetConColor(walker.GetConLevel(npc)), aggressive, npc.InCombat))\n" +
+                "            {\n                reason = "), "the walker's view of the monster, and a threat refuses");
+            Assert.That(body, Does.Not.Contain("npc.GetConLevel(walker)"), "not the monster's view of the walker");
+            Assert.That(AutonomousBotGroupCoordinator.CorpseThreatRadius, Is.EqualTo(1_500));
+        }
+
         [Test]
         public void OutsideAGamebotPartyTheOldRuleStands()
         {

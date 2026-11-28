@@ -64,6 +64,56 @@ public static partial class AutonomousBotGroupCoordinator
     public static bool IsCorpseThreat(ConColor conToWalker, bool aggressive, bool fighting) =>
         conToWalker >= ConColor.ORANGE && (aggressive || fighting);
 
+    /// <summary>What <see cref="MayWalkToCorpse"/> does with one resurrector's ask, before any world scan.</summary>
+    public enum CorpseWalkStep
+    {
+        /// <summary>No walk now: another resurrector or another corpse holds the grant, or the next choice is not due.</summary>
+        Hold,
+        /// <summary>This walker keeps its grant to this corpse; no scan until the safety recheck is due.</summary>
+        Grant,
+        /// <summary>This walker's grant is due its safety recheck: the claimed corpse alone is scanned again.</summary>
+        Recheck,
+        /// <summary>No current grant: the nearest unrefused corpses are scanned and one may be granted.</summary>
+        Choose
+    }
+
+    /// <summary>
+    /// Pure rule: the grant arbitration. One walker and one corpse per party hold the grant; a current grant is rechecked
+    /// every <see cref="CorpseWalkSafetyRecheckMilliseconds"/>; a lapsed grant is dropped, and when it lapsed because its
+    /// <see cref="CorpseWalkMaxMilliseconds"/> ran out its corpse is refused for <see cref="CorpseWalkRefusalMilliseconds"/>
+    /// (<paramref name="refuseClaimedCorpseUntil"/>, 0 when not refused). A new choice waits for <paramref name="nextChoiceTick"/>.
+    /// </summary>
+    public static CorpseWalkStep ArbitrateCorpseWalk(bool hasClaim, bool claimCurrent, bool claimWalkerIsAsker,
+        bool claimCorpseIsAsked, long claimStarted, long claimNextSafetyCheck, long nextChoiceTick, long now,
+        out long refuseClaimedCorpseUntil)
+    {
+        refuseClaimedCorpseUntil = 0;
+        if (hasClaim && !claimCurrent)
+        {
+            if (now - claimStarted >= CorpseWalkMaxMilliseconds)
+                refuseClaimedCorpseUntil = now + CorpseWalkRefusalMilliseconds;
+            hasClaim = false;
+        }
+        if (hasClaim)
+        {
+            if (!claimWalkerIsAsker || !claimCorpseIsAsked)
+                return CorpseWalkStep.Hold;
+            return now < claimNextSafetyCheck ? CorpseWalkStep.Grant : CorpseWalkStep.Recheck;
+        }
+        return now < nextChoiceTick ? CorpseWalkStep.Hold : CorpseWalkStep.Choose;
+    }
+
+    /// <summary>Pure rule: a corpse on the refusal list is not offered a walk until its refusal runs out.</summary>
+    public static bool IsCorpseWalkRefused(IReadOnlyDictionary<long, long> refused, long corpseKey, long now) =>
+        refused.TryGetValue(corpseKey, out long until) && until > now;
+
+    /// <summary>Pure rule: does one monster beside the corpse make the walk unsafe? Other bots, the dead, inactive, peaceful
+    /// and untargetable monsters and those the walker may not attack never do; the rest by <see cref="IsCorpseThreat"/>,
+    /// with <paramref name="conToWalker"/> the monster's con as the walker sees it (walker.GetConLevel(npc)).</summary>
+    public static bool IsCorpseNeighbourThreat(bool isBot, bool alive, bool active, bool peaceOrCantTarget, bool attackable,
+        ConColor conToWalker, bool aggressive, bool fighting) =>
+        !isBot && alive && active && !peaceOrCantTarget && attackable && IsCorpseThreat(conToWalker, aggressive, fighting);
+
     /// <summary>Pure rule: how long a party corpse with a resurrector in sight waits before it releases.</summary>
     public static long CorpseReleaseWait(bool raiseUnderWay) =>
         raiseUnderWay ? CorpseWalkReleaseWaitMilliseconds : CorpseReleaseWaitMilliseconds;
@@ -107,29 +157,29 @@ public static partial class AutonomousBotGroupCoordinator
                 return !regrouping;
             state = CorpseWalks.GetOrCreateValue(session);
             CorpseWalkClaim claim = state.Claim;
-            if (claim != null && !ClaimCurrent(claim, group, now))
+            bool current = claim != null && ClaimCurrent(claim, group, now);
+            CorpseWalkStep step = ArbitrateCorpseWalk(claim != null, current, claim?.Walker == walker,
+                claim?.Corpse == corpseBot, claim?.Started ?? 0, claim?.NextSafetyCheck ?? 0, state.NextChoiceTick, now,
+                out long refuseUntil);
+            if (claim != null && !current)
             {
-                if (now - claim.Started >= CorpseWalkMaxMilliseconds)
-                    state.Refused[MemberKey(claim.Corpse)] = now + CorpseWalkRefusalMilliseconds;
+                if (refuseUntil > 0)
+                    state.Refused[MemberKey(claim.Corpse)] = refuseUntil;
                 state.Claim = claim = null;
             }
-            if (claim != null)
+            switch (step)
             {
-                if (claim.Walker != walker || claim.Corpse != corpseBot)
+                case CorpseWalkStep.Hold:
                     return false;
-                if (now < claim.NextSafetyCheck)
-                {
+                case CorpseWalkStep.Grant:
                     claim.LastSeen = now;
                     return true;
-                }
             }
-            else if (now < state.NextChoiceTick)
-                return false;
-            candidates = claim != null ? [claim.Corpse] : BotMembers(group)
+            candidates = step == CorpseWalkStep.Recheck ? [claim.Corpse] : BotMembers(group)
                 .Where(member => member != walker && !member.IsAlive && member.ObjectState == GameObject.eObjectState.Active &&
                                  member.CurrentRegionID == walker.CurrentRegionID &&
                                  walker.IsWithinRadius(member, CorpseWalkMaxDistance) &&
-                                 !(state.Refused.TryGetValue(MemberKey(member), out long until) && until > now))
+                                 !IsCorpseWalkRefused(state.Refused, MemberKey(member), now))
                 .OrderBy(walker.GetDistanceTo)
                 .Take(2)
                 .ToArray();
@@ -216,12 +266,15 @@ public static partial class AutonomousBotGroupCoordinator
             return false;
         foreach (GameNPC npc in corpse.GetNPCsInRadius(CorpseThreatRadius))
         {
-            if (npc is GameBot || !npc.IsAlive || npc.ObjectState != GameObject.eObjectState.Active ||
-                (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0 ||
-                !GameServer.ServerRules.IsAllowedToAttack(walker, npc, true))
-                continue;
+            bool isBot = npc is GameBot;
+            bool alive = npc.IsAlive;
+            bool active = npc.ObjectState == GameObject.eObjectState.Active;
+            bool peaceOrCantTarget = (npc.Flags & (GameNPC.eFlags.PEACE | GameNPC.eFlags.CANTTARGET)) != 0;
+            bool attackable = !isBot && alive && active && !peaceOrCantTarget &&
+                              GameServer.ServerRules.IsAllowedToAttack(walker, npc, true);
             bool aggressive = npc.Brain is StandardMobBrain mob && mob.AggroLevel > 0 && mob.AggroRange > 0;
-            if (IsCorpseThreat(ConLevels.GetConColor(walker.GetConLevel(npc)), aggressive, npc.InCombat))
+            if (IsCorpseNeighbourThreat(isBot, alive, active, peaceOrCantTarget, attackable,
+                    ConLevels.GetConColor(walker.GetConLevel(npc)), aggressive, npc.InCombat))
             {
                 reason = $"{npc.Name} (level {npc.Level}) beside the corpse";
                 return false;
