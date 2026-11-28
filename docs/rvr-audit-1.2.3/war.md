@@ -446,8 +446,9 @@ Each is a place, an action and a log tag.
 2. **Where sieges go.** Count `RVR_EVENT_OPENED target=` by keep over a day. Expected today: about even over the 21 keeps
    (finding 4). Then count `RVR_KEEP_TAKEN` per realm per hour. Do Hib keeps fall first (finding 8)?
 3. **The player's keep alarm.** Hit one guard at Bledmeer with a level 50, then ride away. Look for
-   `PLAYER_KEEP_DEFENSE_SIZED`. Then look for the event's end line (`RVR_EVENT_ENDED`, reason "four-hour defense response
-   expired"), and see how long defenders stand at Bledmeer (finding 2).
+   `PLAYER_KEEP_DEFENSE_SIZED`. Then look for the event's end line (`RVR_EVENT_ENDED`; since #784 the reason is "Siege
+   defended: the attackers left the keep 10 minutes ago", or the four-hour cap if attackers stay), and see how long
+   defenders stand at Bledmeer (finding 2).
 4. **Joining a group.** In Emain, `/lfg` and send a tell to a bot leader of an RvR party. Expect no answer and the
    `in_frontier` block in the log (finding 1).
 5. **Inc calls.** Over an hour of realm chat in the frontier, compare each inc's realm and count with the
