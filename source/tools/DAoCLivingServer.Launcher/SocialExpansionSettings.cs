@@ -45,6 +45,9 @@ public sealed record SocialExpansionSettings
     /// <summary>A solo or duo gamebot sizes up a fight on sight and opens or backs off (bot_rvr_sight_size_up, #662). No checkbox:
     /// kept as read. On by default (1.2.3).</summary>
     public bool SightSizeUp { get; init; } = true;
+    /// <summary>A gamebot group's fight board lists only the enemies its members know of, and fighting bots keep looking
+    /// (rvr_board_from_contacts, #529 step 3). No checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool BoardFromContacts { get; init; } = true;
     /// <summary>About 4% of Crafter bots are beggars in their capital (AutonomousBeggars). On by default.</summary>
     public bool LivingBeggars { get; init; } = true;
     /// <summary>Some No Lifer bots run a level-50 buffbot that keeps them buffed (NoLiferBuffBots, Living Server 1.2). On by default.</summary>
@@ -75,6 +78,12 @@ public sealed record SocialExpansionSettings
     /// <summary>The damage dealers of the player's group fight the player's target first (bot_leader_focus, #571 step 1). No
     /// checkbox: kept as read. On by default (1.2.3).</summary>
     public bool LeaderFocus { get; init; } = true;
+    /// <summary>The player's group engages enemies on its own in RvR (bot_companion_rvr_engage, #664 step 1). No checkbox:
+    /// kept as read. On by default (1.2.3).</summary>
+    public bool CompanionRvrEngage { get; init; } = true;
+    /// <summary>Gamebot parties fight one kill target, the tank's (bot_party_main_assist, #569 step 6). No checkbox: kept as
+    /// read. On by default (1.2.3).</summary>
+    public bool PartyMainAssist { get; init; } = true;
     /// <summary>Archer bots open with Critical Shot and a Hunter's pet waits for it (bot_critical_shot_opener, #569 step 8).
     /// No checkbox: kept as read. On by default (1.2.3).</summary>
     public bool CriticalShotOpener { get; init; } = true;
@@ -242,9 +251,9 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, CompanionRvrEngage = true, PartyMainAssist = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
-        SightSizeUp = true,
+        SightSizeUp = true, BoardFromContacts = true,
     };
 
     // Key, category and description of each setting, as the server and the Python helpers write them.
@@ -273,6 +282,7 @@ public sealed record SocialExpansionSettings
         ("bot_living_breaks", "bots", "Server life: an idle bot now and then says brb and logs off for 5-25 minutes, and a bot grouped with you rarely goes linkdead for 30-90 seconds (the group hears about it) and comes back with an apology. Never during a fight, siege or relic march."),
         ("bot_living_body_language", "bots", "Server life: autonomous gamebots standing around in town, waiting for their group or resting look around, emote now and then (ponder, shrug, laugh, stretch their legs with a step or two in town), turn and wave at you when you walk up, and cheer when someone dings nearby. Only where a real player can see it; never in a fight. Bots do not jump; sitting comes with Moving like people (bot_movement_habits)."),
         ("bot_rvr_sight_size_up", "bots", "A solo or duo gamebot sizes up a fight when enemies come into its perception range, in the frontier and the battlegrounds (keep assaults included), and opens or backs off (#662). Boldness moves the line; no solo bot ever opens on three or more enemies. Backing off, it pulls back out of range, waits nearby, calls its close friends, then goes back to what it was doing. Not companions, not PvE."),
+        ("rvr_board_from_contacts", "bots", "RvR (1.2.3, #529): a gamebot group's fight board, which its called target, crowd control, size-up and retreat read, lists only the enemies one of its members noticed, was told of by a mate or was hit by in the last 15 s, instead of every enemy within 3,500 units whether anyone saw them or not (behind a hill, behind a wall, out of view). A gamebot in a fight looks around every 2 s (enemies within 2,500, a few line-of-sight checks, the usual notice rule) so a new enemy joining the fight is seen without hitting first. Groups with you in them, and companions, are unchanged. Log: RVR_FIGHT_BOARD (from), RVR_CONTACT_SHADOW (board), RVR_SCAN_BUDGET (combatRefreshes, combatRays). False: the board searches the area as before 1.2.3, and fighting bots don't look around."),
         ("bot_living_beggars", "bots", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight."),
         ("bot_nolifer_buffbots", "bots", "Server life: some No Lifer bots (bot_nolifer_buffbot_percent of them, 30 by default) run a second character, a level-50 buffbot (Albion Cleric, Midgard Shaman, Hibernia Druid, all in buffs). It follows its main where it is safe, parks at the nearest bind when the main goes into a dungeon, the frontier or a raid, and keeps the main buffed. It never joins a group, fights or loots, is not counted in the population, and logs in and out with its main. A bot is a No Lifer by its roster id, whether bot personalities are on or off."),
         ("bot_living_deeds", "bots", "Server life: bots of your realm that see you solo a named monster, go on a kill streak in the frontier, get zerged or die to something silly tell /faction a few minutes later, and others react. Deeds build a reputation the realm talks about, and a nickname."),
@@ -281,11 +291,13 @@ public sealed record SocialExpansionSettings
         ("bot_living_rumours", "bots", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see."),
         ("bot_living_holidays", "bots", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes."),
         ("bot_living_holidays_thanksgiving", "bots", "Server life: which Thanksgiving the holiday chatter marks: us (the fourth Thursday of November, the default), canada (the second Monday of October) or off."),
-        ("hired_companions", "bots", "Hired companions (some code from the True 1.65 project): players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged."),
+        ("hired_companions", "bots", "Hired companions: players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged."),
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
         ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
         ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
+        ("bot_companion_rvr_engage", "bots", "Your group engages enemies on its own in RvR (#664): in the frontier, the battlegrounds and Darkness Falls, the bots in your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) notice enemy bots the way gamebots do (line of sight, sooner when the enemy fights, casts or is close, one of them seeing it is all of them seeing it, a stealther only close up) and attack them without waiting for you: within 2,000 of you on /aggressive and 1,000 on /defensive, healers and casters first. They size the fight up first and don't open on an enemy force they would clearly lose to, but always defend. Keep guards and lords are left alone unless you attack them, and so is an enemy standing under its tower or keep guards or in a safe area. They never open a fight on an enemy you or a groupmate holds with a mez or root. A bot set to passive, /bot stay or /bot hold stays out, and your own target still comes first. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_ENGAGE."),
+        ("bot_party_main_assist", "bots", "Gamebot parties fight one kill target (#569): in a party of autonomous gamebots doing group PvE, the tank's target is the party's kill target and the other members hit it before whoever is hitting them or their own top threat. A member below half health that is being hit fights back, and a member hit by an enemy player fights that player at any health. A monster a groupmate has mesmerized or rooted, an enemy pet and a siege engine are never the kill target. It doesn't apply in realm raids (the raid's own calls win), under the RvR tactics, or with an enemy player in view. Groups with a real player in them keep leader focus (bot_leader_focus), and RvR warbands and companions are unchanged. Log: AUTONOMOUS_PARTY_KILL_TARGET."),
         ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
         ("bot_critical_shot_opener", "bots", "Archer bots open with Critical Shot (#569): a Hunter, Scout or Ranger gamebot, hired companion or /bot companion draws a Critical Shot as its first shot at a target that isn't fighting, running or mezzed, as players pulled, when it has the endurance, and a Hunter keeps its pet at heel for that shot (at most 7 seconds) instead of sending it in first. The draw time, damage and endurance are the player's. Your own character and pet are unchanged."),
         ("bot_party_puller_camp_turn", "bots", "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD."),
@@ -368,6 +380,7 @@ public sealed record SocialExpansionSettings
         ["bot_living_breaks"] = Bool(LivingBreaks),
         ["bot_living_body_language"] = Bool(LivingBodyLanguage),
         ["bot_rvr_sight_size_up"] = Bool(SightSizeUp),
+        ["rvr_board_from_contacts"] = Bool(BoardFromContacts),
         ["bot_living_beggars"] = Bool(LivingBeggars),
         ["bot_nolifer_buffbots"] = Bool(LivingBuffBots),
         ["bot_living_deeds"] = Bool(LivingDeeds),
@@ -388,6 +401,8 @@ public sealed record SocialExpansionSettings
         ["bot_healer_period_rules"] = Bool(HealerPeriodRules),
         ["bot_weapon_set_rules"] = Bool(WeaponSetRules),
         ["bot_leader_focus"] = Bool(LeaderFocus),
+        ["bot_companion_rvr_engage"] = Bool(CompanionRvrEngage),
+        ["bot_party_main_assist"] = Bool(PartyMainAssist),
         ["bot_critical_shot_opener"] = Bool(CriticalShotOpener),
         ["bot_party_puller_camp_turn"] = Bool(PartyPullerCampTurn),
         ["bot_show_as_bots"] = Bool(ShowBotsAsBots),
@@ -714,6 +729,7 @@ public sealed record SocialExpansionSettings
             LivingBreaks = ReadBool("bot_living_breaks", d.LivingBreaks),
             LivingBodyLanguage = ReadBool("bot_living_body_language", d.LivingBodyLanguage),
             SightSizeUp = ReadBool("bot_rvr_sight_size_up", d.SightSizeUp),
+            BoardFromContacts = ReadBool("rvr_board_from_contacts", d.BoardFromContacts),
             LivingBeggars = ReadBool("bot_living_beggars", d.LivingBeggars),
             LivingBuffBots = ReadBool("bot_nolifer_buffbots", d.LivingBuffBots),
             LivingDeeds = ReadBool("bot_living_deeds", d.LivingDeeds),
@@ -735,6 +751,8 @@ public sealed record SocialExpansionSettings
             HealerPeriodRules = ReadBool("bot_healer_period_rules", d.HealerPeriodRules),
             WeaponSetRules = ReadBool("bot_weapon_set_rules", d.WeaponSetRules),
             LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
+            CompanionRvrEngage = ReadBool("bot_companion_rvr_engage", d.CompanionRvrEngage),
+            PartyMainAssist = ReadBool("bot_party_main_assist", d.PartyMainAssist),
             CriticalShotOpener = ReadBool("bot_critical_shot_opener", d.CriticalShotOpener),
             PartyPullerCampTurn = ReadBool("bot_party_puller_camp_turn", d.PartyPullerCampTurn),
             ShowBotsAsBots = ReadBool("bot_show_as_bots", d.ShowBotsAsBots),

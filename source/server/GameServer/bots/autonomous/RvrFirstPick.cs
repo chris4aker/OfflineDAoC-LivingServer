@@ -14,6 +14,8 @@ public enum RvrFirstPickReason : byte
     Mates,
     /// <summary>A new opener, chosen by the kill order.</summary>
     Order,
+    /// <summary>#599 step 2: the battlegroup lead group's called target, taken as the group's call.</summary>
+    Battlegroup,
 }
 
 /// <summary>
@@ -138,6 +140,7 @@ public static class RvrFirstPick
         RvrFirstPickReason.Called => "called",
         RvrFirstPickReason.Mates => "mates",
         RvrFirstPickReason.Order => "order",
+        RvrFirstPickReason.Battlegroup => "battlegroup",
         _ => "none",
     };
 }

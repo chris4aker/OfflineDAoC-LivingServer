@@ -195,7 +195,33 @@ public static class RvrAssist
 
     /// <summary>The plan with no assist train.</summary>
     public static RvrFightPlan Cleared(RvrFightPlan plan) =>
-        plan.MainAssist == null && plan.CalledTarget == null ? plan : plan with { MainAssist = null, CalledTarget = null, CalledAt = 0 };
+        plan.MainAssist == null && plan.CalledTarget == null && !plan.CallFromBattlegroup ? plan
+            : plan with { MainAssist = null, CalledTarget = null, CalledAt = 0, CallFromBattlegroup = false };
+
+    /// <summary>
+    /// #599 step 2: the battlegroup lead group's call (<see cref="RvrFightBoard.BattlegroupCall"/>) when it is on this
+    /// group's board and may be called by it: listed, within <see cref="CallRadius"/> of the group's centre, not
+    /// unreachable or on a wall, and not mesmerized. The lead's call is the notice (the battlegroup chat's "/bc" call, or a
+    /// main assist's /assist on the lead's main assist), so the group need not be in contact itself. Null otherwise. Pure.
+    /// </summary>
+    public static RvrCombatant BattlegroupCandidate(RvrFightBoard board, RvrFieldFacts facts)
+    {
+        GameLiving call = board?.BattlegroupCall;
+        if (call == null)
+            return null;
+        facts ??= RvrFieldFacts.Empty;
+        const float radius = (float)CallRadius * CallRadius;
+        foreach (RvrCombatant enemy in board.Enemies)
+        {
+            if (enemy == null || !ReferenceEquals(enemy.Living, call))
+                continue;
+            if (facts.Enemy(enemy).CannotBeCalled || (enemy.Control & RvrControlState.Mezzed) != 0)
+                return null;
+            float dx = enemy.X - board.FriendlyCentroid.X, dy = enemy.Y - board.FriendlyCentroid.Y;
+            return dx * dx + dy * dy <= radius ? enemy : null;
+        }
+        return null;
+    }
 
     /// <summary>
     /// The plan step (RvrFightPlanner.PlanAssist): the main assist and the called target. The call is held 4-8 s and
@@ -215,9 +241,17 @@ public static class RvrAssist
         if (Heads(board).Count < 2)
             return Cleared(plan);
         List<RvrCombatant> candidates = Candidates(board, facts);
-        if (candidates.Count == 0)
+        // #599 step 2: a battlegroup's follower group takes the lead group's call when it is on its own board, before its
+        // own call and its own rising-enemy switch ("one leader group calls the targets, the others follow"). A call already
+        // on that target keeps its time, so the members' follow delays do not start again.
+        RvrCombatant shared = BattlegroupCandidate(board, facts);
+        if (candidates.Count == 0 && shared == null)
             return Cleared(plan);
         RvrCombatant mainAssist = ChooseMainAssist(board, facts, plan.MainAssist);
+        if (shared != null)
+            return ReferenceEquals(plan.CalledTarget, shared.Living)
+                ? plan with { MainAssist = mainAssist.Living, CallFromBattlegroup = true }
+                : plan with { MainAssist = mainAssist.Living, CalledTarget = shared.Living, CalledAt = now, CallFromBattlegroup = true };
         RvrSkillTier tier = plan.SkillTier;
         ulong seed = GroupSeed(board);
 
@@ -248,15 +282,15 @@ public static class RvrAssist
         bool holding = held != null && (held.Control & RvrControlState.Mezzed) == 0 &&
                        now - plan.CalledAt < HoldMilliseconds(seed, plan.CalledAt);
         if (holding && (rising == null || ReferenceEquals(rising, held)))
-            return plan with { MainAssist = mainAssist.Living };
+            return plan with { MainAssist = mainAssist.Living, CallFromBattlegroup = false };
         if (rising != null)
-            return plan with { MainAssist = mainAssist.Living, CalledTarget = rising.Living, CalledAt = now };
+            return plan with { MainAssist = mainAssist.Living, CalledTarget = rising.Living, CalledAt = now, CallFromBattlegroup = false };
 
         RvrCombatant pick = null;
         if (WrongCall(tier, seed, now))
             pick = Best(candidates, facts, tier, seed, now, tanksOnly: true);
         pick ??= Best(candidates, facts, tier, seed, now, tanksOnly: false);
-        return plan with { MainAssist = mainAssist.Living, CalledTarget = pick.Living, CalledAt = now };
+        return plan with { MainAssist = mainAssist.Living, CalledTarget = pick.Living, CalledAt = now, CallFromBattlegroup = false };
     }
 
     /// <summary>Whether the call a group makes at <paramref name="now"/> is one of the tier's calls on a tank. Pure.</summary>

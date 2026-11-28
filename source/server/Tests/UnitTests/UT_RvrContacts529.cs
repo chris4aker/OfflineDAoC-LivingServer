@@ -362,9 +362,13 @@ namespace DOL.GS.Tests
                 .Where(f => !f.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
                 .Where(f => Regex.IsMatch(File.ReadAllText(f), @"\bRvrContact(Table|ShadowTally)\b"))
                 .Select(Path.GetFileName).OrderBy(n => n, StringComparer.Ordinal).ToArray();
-            Assert.That(readers, Is.EqualTo(new[] { "AutonomousWorldBotController.RvrFirstPick.cs", "AutonomousWorldBotController.RvrPerception.cs",
-                    "RvrFightBoards.cs", "ServerMemoryDiagnostics.cs" }),
+            Assert.That(readers, Is.EqualTo(new[] { "AutonomousChatFieldTalk.cs", "AutonomousWorldBotController.RvrFirstPick.cs",
+                    "AutonomousWorldBotController.RvrPerception.cs", "RvrFightBoards.cs", "ServerMemoryDiagnostics.cs" }),
                 "a new reader of the contact table is a new decision from it: add it here with its step (#529)");
+            // #528 (#740 review): an inc call counts only the attackers its speaker knows of, from its own contacts.
+            string field = Code("bots", "autonomous", "AutonomousChatFieldTalk.cs");
+            Assert.That(Regex.Matches(field, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows)\(").Cast<Match>().Select(m => m.Value),
+                Is.EqualTo(new[] { "RvrContactTable.Of(" }), "the inc call reads only the speaker's own contacts");
             // #531 step 1: the plan's first pick reads the bot's own proposals, nothing else
             string firstPick = Code("bots", "autonomous", "AutonomousWorldBotController.RvrFirstPick.cs");
             Assert.That(Regex.Matches(firstPick, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows|Group)\(").Cast<Match>().Select(m => m.Value),
@@ -373,8 +377,11 @@ namespace DOL.GS.Tests
             Assert.That(Regex.Matches(perception, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows)\(").Cast<Match>().Select(m => m.Value),
                 Is.EqualTo(new[] { "RvrContactTable.Of(" }), "the alarm is the scan's only reader in steps 1-2");
             string boards = Code("bots", "autonomous", "RvrFightBoards.cs");
-            Assert.That(Regex.Matches(boards, @"contacts\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows)\(").Cast<Match>().Select(m => m.Value),
+            Assert.That(Regex.Matches(boards, @"contacts\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows|Group)\(").Cast<Match>().Select(m => m.Value),
                 Is.EqualTo(new[] { "contacts.KnownByAny(" }), "the board's shadow reads only the group question");
+            // step 3: the board lists the group's contacts
+            Assert.That(Regex.Matches(boards, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows|Group)\(").Cast<Match>().Select(m => m.Value),
+                Is.EqualTo(new[] { "RvrContactTable.Group(" }), "the board lists the group's contacts (#529 step 3)");
             Assert.That(Code("Managers", "GameLoop", "ServerMemoryDiagnostics.cs"),
                 Does.Contain("RegisterCache(\"rvrContacts\", () => AutonomousWorldBotController.RvrContactTable.Count);"));
         }
@@ -401,18 +408,20 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void The_board_runs_the_shadow_and_lists_as_before()
+        public void The_board_runs_the_shadow_and_keeps_the_area_search_for_it_and_the_switch_off()
         {
             string boards = Code("bots", "autonomous", "RvrFightBoards.cs");
-            Assert.That(boards, Does.Contain("ShadowContacts(asker, members, hostile, now);"));
-            Assert.That(Regex.IsMatch(boards, @"try\s*\{\s*ShadowContacts\(asker, members, hostile, now\);\s*\}\s*catch \(Exception exception\)"),
+            const string call = "ShadowContacts(asker, owners, area ?? AreaEnemies(asker), now, fromContacts);";
+            Assert.That(boards, Does.Contain(call));
+            Assert.That(Regex.IsMatch(boards, @"try\s*\{\s*if \(owners != null\)\s*ShadowContacts\(asker, owners, area \?\? AreaEnemies\(asker\), now, fromContacts\);\s*\}\s*catch \(Exception exception\)"),
                 Is.True, "the shadow cannot break the board build");
             Assert.That(boards, Does.Contain("RVR_CONTACT_UNKNOWN group={partyKey} boardGroup={boardGroup}"),
                 "the sampled rows use the shadow's group key");
             Assert.That(boards, Does.Contain("RvrContactShadowTally.Board((int)asker.Realm, partyKey, now,"));
-            // the area search still decides what the board lists (step 3 switches it, not this step)
+            // step 3: the area search is kept for the switch-off path and the shadow
             Assert.That(boards, Does.Contain("foreach (GamePlayer player in asker.GetPlayersInRadius(RvrFightBoard.ScanRadius))"));
-            Assert.That(boards.IndexOf("ShadowContacts(asker, members, hostile, now);", StringComparison.Ordinal),
+            Assert.That(boards, Does.Contain("bool fromContacts = UsesContacts(Properties.RVR_BOARD_FROM_CONTACTS, owners);"));
+            Assert.That(boards.IndexOf(call, StringComparison.Ordinal),
                 Is.LessThan(boards.IndexOf("RvrFightBoard.Build(now, asker.CurrentRegionID", StringComparison.Ordinal)));
         }
     }
