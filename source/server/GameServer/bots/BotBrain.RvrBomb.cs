@@ -62,19 +62,21 @@ namespace DOL.AI.Brain
             return count;
         }
 
-        /// <summary>This bomber is still walking in on a pile centred within <paramref name="radius"/> of <paramref name="centre"/>
-        /// (not yet arrived: neither holding nor waiting).</summary>
-        private bool RvrBombWalkingInOn(GameLiving centre, int radius) =>
-            _rvrBombSpell != null && _rvrBombHeldSince == 0 && _rvrBombWaitUntil == 0 && _rvrBombCentre is { IsAlive: true } mine &&
-            mine.IsWithinRadius(centre, radius);
+        /// <summary>This bomber has arrived at a pile and holds for its group's other bombers (the rehearsal's row).</summary>
+        public bool RvrBombHolding => _rvrBombSpell != null && _rvrBombHeldSince != 0;
 
-        /// <summary>The group's other bombers still walking in on the same pile.</summary>
-        private int RvrBombMatesWalkingIn(RvrFightBoard board, GameLiving centre, int radius)
+        /// <summary>
+        /// The group's other bombers not yet in place at the pile centred on <paramref name="centre"/>: alive, within the
+        /// walk limit of it, outside a bomb's reach of it and not holding there. Whether walking in already or about to.
+        /// </summary>
+        private int RvrBombMatesComing(RvrFightBoard board, GameLiving centre, int radius)
         {
             int count = 0;
+            float reach = Math.Max(1, radius - BotAoePolicy.EdgeMargin);
             foreach (RvrCombatant member in board.Members)
-                if (!member.IsPet && !ReferenceEquals(member.Living, Body) && member.Living is GameBot { Brain: BotBrain brain } &&
-                    brain.RvrBombWalkingInOn(centre, radius))
+                if (!member.IsPet && !ReferenceEquals(member.Living, Body) && member.Living is GameBot { Brain: BotBrain brain } mate &&
+                    brain.IsRvrBomber() && !brain.RvrBombHolding && mate.IsWithinRadius(centre, (int)RvrBombPlan.WalkLimit) &&
+                    !mate.IsWithinRadius(centre, (int)reach))
                     count++;
             return count;
         }
@@ -200,7 +202,7 @@ namespace DOL.AI.Brain
             {
                 if (_rvrBombHeldSince == 0)
                     _rvrBombHeldSince = now;
-                if (RvrBombPlan.Hold(RvrBombMatesWalkingIn(board, centre, spell.Radius), now - _rvrBombHeldSince))
+                if (RvrBombPlan.Hold(RvrBombMatesComing(board, centre, spell.Radius), now - _rvrBombHeldSince))
                 {
                     Body.StopMoving();
                     if (Body.attackComponent?.AttackState == true)

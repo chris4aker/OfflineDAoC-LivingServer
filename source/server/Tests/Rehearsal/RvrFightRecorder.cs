@@ -47,6 +47,8 @@ namespace DOL.GS.Tests.Rehearsal
         private readonly HashSet<GameLiving> _bombing = new();
         private readonly List<(long At, GameLiving Bomber)> _bombWaits = new();
         private readonly HashSet<GameLiving> _waiting = new();
+        private readonly List<(long At, GameLiving Bomber)> _bombHolds = new();
+        private readonly HashSet<GameLiving> _holding = new();
 
         public IReadOnlyList<RvrHit> Hits => _hits;
         public IReadOnlyList<RvrDeath> Deaths => _deaths;
@@ -56,6 +58,8 @@ namespace DOL.GS.Tests.Rehearsal
         /// <summary>#531 step 2f: each point blank bomb started, and each time a lone bomber began waiting beside a pile.</summary>
         public IReadOnlyList<RvrBombCast> Bombs => _bombs;
         public IReadOnlyList<(long At, GameLiving Bomber)> BombWaits => _bombWaits;
+        /// <summary>Each time a bomber of two or more began holding at a pile for the others.</summary>
+        public IReadOnlyList<(long At, GameLiving Bomber)> BombHolds => _bombHolds;
         public int CastsFinished => _castsFinished;
         /// <summary>Each group's called targets in order, as its published plan named them.</summary>
         public IReadOnlyDictionary<object, List<(long At, GameLiving Target)>> Calls => _calls;
@@ -143,6 +147,13 @@ namespace DOL.GS.Tests.Rehearsal
                 }
                 else
                     _waiting.Remove(living);
+                if (living is GameBot { Brain: BotBrain holderBrain } && holderBrain.RvrBombHolding)
+                {
+                    if (_holding.Add(living))
+                        _bombHolds.Add((now, living));
+                }
+                else
+                    _holding.Remove(living);
                 bool controlled = living.IsAlive && (living.IsMezzed || living.IsStunned);
                 if (controlled && !_mezzedSince.ContainsKey(living))
                 {

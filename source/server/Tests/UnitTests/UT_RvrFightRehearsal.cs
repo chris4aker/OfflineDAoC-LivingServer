@@ -89,6 +89,14 @@ namespace DOL.UnitTests
                 m.Groups[3].Success ? int.Parse(m.Groups[3].Value) : 0, m.Groups[4].Success ? int.Parse(m.Groups[4].Value) : 0);
         }
 
+        /// <summary>The seeds the bomb cases run (a fight takes well under a second; whether an area mez lands on two or more
+        /// enemies together differs by seed, so each case asserts over the set).</summary>
+        private static readonly int[] BombSeeds = [520, 521, 522, 523, 524, 525, 526, 527, 528, 529];
+
+        private static string BombRows(System.Collections.Generic.IEnumerable<RvrFightRehearsal.OpenFieldResult> results) =>
+            string.Join(" | ", results.Select(r => System.Text.RegularExpressions.Regex.Match(r.Row, @"seed=\d+").Value + " " +
+                System.Text.RegularExpressions.Regex.Match(r.Row, @"bomb=Alb:\[[^\]]*\]").Value));
+
         [Test]
         public void Scenario1_ALoneBomberWaitsOutTheMezThenBombsThePile()
         {
@@ -96,42 +104,61 @@ namespace DOL.UnitTests
             // the first mez there is about to wear off. Albion fights with one bomber beside its Sorcerer's area mez. This pins
             // the plan's walk-in (BotBrain.TryRvrBomb) and its lift of the mez veto.
             var clock = Stopwatch.StartNew();
-            RvrFightRehearsal.OpenFieldResult result = RvrFightRehearsal.OpenField(Seed, albionBombers: 1);
-            Print(result.Row, result.Detail, clock);
-            BombText alb = BombOf(result.Row, "Alb");
+            var results = BombSeeds.Select(seed => RvrFightRehearsal.OpenField(seed, albionBombers: 1)).ToList();
+            string rows = BombRows(results);
+            TestContext.Out.WriteLine(rows);
+            TestContext.Out.WriteLine($"  (wall time {clock.Elapsed.TotalSeconds:0.0}s)");
+            TestContext.Progress.WriteLine(rows);
+            var albs = results.Select(r => BombOf(r.Row, "Alb")).ToList();
             Assert.Multiple(() =>
             {
-                Assert.That(result.Errors, Is.Zero, "no service threw");
-                Assert.That(alb.Bombers, Is.EqualTo(1), "Albion has one bomber: " + result.Row);
-                Assert.That(alb.Waited, Is.Not.EqualTo("no"), "the lone bomber waited beside a mezzed pile: " + result.Row);
-                Assert.That(alb.OnMezzed, Is.GreaterThanOrEqualTo(1), "and bombed it: " + result.Row);
+                Assert.That(results.Sum(r => r.Errors), Is.Zero, "no service threw");
+                Assert.That(albs.Select(a => a.Bombers), Is.All.EqualTo(1), "Albion has one bomber: " + rows);
+                Assert.That(albs.Any(a => a.Waited != "no" && a.OnMezzed >= 1), Is.True,
+                    "in some fight the lone bomber waited beside a mezzed pile and bombed it: " + rows);
             });
         }
 
         [Test]
         public void Scenario1_TwoBombersBombAMezzedPileTogether()
         {
-            // #531 step 2f, owner answer 53A: a group with two or more bombers bombs the mezzed pile at once. Albion fights
-            // with two bombers beside its Sorcerer's area mez.
+            // #531 step 2f, owner answer 53A: a group with two or more bombers bombs the mezzed pile at once: the first to
+            // arrive holds a moment for the other. Albion fights with two bombers beside its Sorcerer's area mez.
             var clock = Stopwatch.StartNew();
-            RvrFightRehearsal.OpenFieldResult result = RvrFightRehearsal.OpenField(Seed, albionBombers: 2);
-            Print(result.Row, result.Detail, clock);
-            BombText alb = BombOf(result.Row, "Alb");
-            var albion = result.Bombs.Where(b => b.Caster.Realm == eRealm.Albion).ToList();
-            RvrBombCast pile = albion.FirstOrDefault(b => b.Mezzed >= RvrBombPlan.MinimumMezzed);
+            var results = BombSeeds.Select(seed => RvrFightRehearsal.OpenField(seed, albionBombers: 2)).ToList();
+            string rows = BombRows(results);
+            TestContext.Out.WriteLine(rows);
+            TestContext.Out.WriteLine($"  (wall time {clock.Elapsed.TotalSeconds:0.0}s)");
+            TestContext.Progress.WriteLine(rows);
+            long window = RvrBombPlan.SyncHoldMilliseconds + 1_000;
+            int piles = 0, together = 0;
+            var lines = new System.Collections.Generic.List<string>();
+            foreach (RvrFightRehearsal.OpenFieldResult r in results)
+            {
+                var albion = r.Bombs.Where(b => b.Caster.Realm == eRealm.Albion).ToList();
+                RvrBombCast pile = albion.FirstOrDefault(b => b.Mezzed >= RvrBombPlan.MinimumMezzed);
+                if (pile == null)
+                    continue;
+                piles++;
+                bool partner = albion.Any(b => b.Caster != pile.Caster && System.Math.Abs(b.At - pile.At) <= window);
+                bool held = r.BombHolds.Any(h => h.Bomber.Realm == eRealm.Albion && h.At <= pile.At && pile.At - h.At <= window);
+                if (partner || held)
+                    together++;
+                string seedText = System.Text.RegularExpressions.Regex.Match(r.Row, @"seed=\d+").Value;
+                string casts = string.Join(",", albion.Select(b => (b.At - pile.At) + ":" + b.Caster.Name + "x" + b.Mezzed + "m" + b.Free + "f"));
+                lines.Add(seedText + ": partner=" + partner + " held=" + held + " " + casts);
+            }
+            TestContext.Out.WriteLine(string.Join("\n", lines));
+            string why = string.Join("; ", lines) + " " + rows;
             Assert.Multiple(() =>
             {
-                Assert.That(result.Errors, Is.Zero, "no service threw");
-                Assert.That(alb.Bombers, Is.EqualTo(2), "Albion has two bombers: " + result.Row);
-                Assert.That(alb.Waited, Is.EqualTo("no"), "two bombers never wait for the mez to wear off: " + result.Row);
-                Assert.That(pile, Is.Not.Null, "Albion bombed a mezzed pile: " + result.Row);
-                if (pile == null)
-                    return;
-                // the other bomber's bomb starts with it: the first to arrive held for it (a moment at most)
-                long window = RvrBombPlan.SyncHoldMilliseconds + 1_000;
-                Assert.That(albion.Any(b => b.Caster != pile.Caster && System.Math.Abs(b.At - pile.At) <= window), Is.True,
-                    $"both bombers bombed together (within {window} ms): " +
-                    string.Join(", ", albion.Select(b => $"{b.At - albion[0].At}:{b.Caster.Name}x{b.Mezzed}m{b.Free}f")) + " " + result.Row);
+                Assert.That(results.Sum(r => r.Errors), Is.Zero, "no service threw");
+                Assert.That(results.Select(r => BombOf(r.Row, "Alb").Bombers), Is.All.EqualTo(2), "Albion has two bombers: " + rows);
+                Assert.That(results.Select(r => BombOf(r.Row, "Alb").Waited), Is.All.EqualTo("no"),
+                    "two bombers never wait for the mez to wear off: " + rows);
+                Assert.That(piles, Is.GreaterThan(0), "Albion bombed a mezzed pile: " + why);
+                Assert.That(together, Is.EqualTo(piles),
+                    "each first bomb on a mezzed pile came with the other bomber's, or after a hold for it: " + why);
             });
         }
 

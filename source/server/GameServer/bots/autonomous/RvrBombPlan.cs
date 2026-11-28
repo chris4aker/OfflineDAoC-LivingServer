@@ -54,11 +54,11 @@ public static class RvrBombPlan
         Math.Clamp(shortestMezLeftMs - WakeWindowMilliseconds + WaitMarginMilliseconds, WaitMarginMilliseconds, MaxWaitMilliseconds);
 
     /// <summary>
-    /// Two or more bombers bomb at once (53A): one that has arrived holds while <paramref name="matesWalkingIn"/> of the
-    /// group's other bombers are still walking in on the same pile, for at most <see cref="SyncHoldMilliseconds"/> since it
-    /// arrived (<paramref name="heldMs"/>). Pure.
+    /// Two or more bombers bomb at once (53A): one that has arrived holds while <paramref name="matesComing"/> of the
+    /// group's other bombers are not yet in place at the pile (within the walk limit, outside a bomb's reach), for at most
+    /// <see cref="SyncHoldMilliseconds"/> since it arrived (<paramref name="heldMs"/>). Pure.
     /// </summary>
-    public static bool Hold(int matesWalkingIn, long heldMs) => matesWalkingIn > 0 && heldMs < SyncHoldMilliseconds;
+    public static bool Hold(int matesComing, long heldMs) => matesComing > 0 && heldMs < SyncHoldMilliseconds;
 
     /// <summary>A pile: the mezzed enemy it is centred on, and how many mezzed and free enemies a bomb there reaches.</summary>
     public readonly record struct Pile(RvrCombatant Centre, int Mezzed, int Free);

@@ -91,7 +91,8 @@ namespace DOL.GS.Tests.Rehearsal
         public sealed record RvrOpening(GameLiving FirstTarget, string FirstRule, int Members, int OpenedOn, int SpreadOpenedOn);
 
         public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors, RvrOpening Albion = null,
-            RvrOpening Midgard = null, IReadOnlyList<RvrBombCast> Bombs = null);
+            RvrOpening Midgard = null, IReadOnlyList<RvrBombCast> Bombs = null,
+            IReadOnlyList<(long At, GameLiving Bomber)> BombHolds = null);
 
         /// <summary>How long after a side's first engage its members' first engages count as its opening.</summary>
         public const long OpeningMilliseconds = 10_000;
@@ -162,7 +163,7 @@ namespace DOL.GS.Tests.Rehearsal
             detail.Add(actives.Row(world.Seed, world.Recorder));
             string row = OpenFieldRow(world, scan, albion, midgard);
             return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard),
-                world.Recorder.Bombs.ToList());
+                world.Recorder.Bombs.ToList(), world.Recorder.BombHolds.ToList());
         }
 
         private static string Shadow(eRealm realm)
