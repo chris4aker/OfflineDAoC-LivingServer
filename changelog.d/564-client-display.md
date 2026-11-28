@@ -2,7 +2,7 @@
 version: 1.2.3
 section: Fixes
 ---
-- **Client display fixes for the original 1.127 client** (#564; ports of OpenDAoC-Core, tests only):
+- **Client display fixes for the original 1.127 client** (#564; tests only):
   - Touching a frontier portal stone opens your realm's war map again, instead of an empty Accept/Decline box
     (d74d4941f).
   - The keep hookpoint store (guards, siege engines, oil) uses the 1.127 layout, so its items, prices and icons show

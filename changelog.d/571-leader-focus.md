@@ -2,7 +2,7 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **Your group fights your target in RvR** (#571 step 1; port of DividedRealms `ad8e087c`, BotBrain.LeaderFocus.cs). In
+- **Your group fights your target in RvR** (#571 step 1). In
   the frontier, the battlegrounds and Darkness Falls, when you attack something, cast harmful magic at it or send your
   pet in, the damage dealers in your group take that target before whoever is hitting them or whatever they were already
   fighting, the way a period group follows its main assist. That covers your `/spawn` and `/raid` helpers, hired

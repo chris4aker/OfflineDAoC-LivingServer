@@ -2,7 +2,7 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **Bots pick their weapons like players** (#569; port of OfflineDAoC-True165 27164a0).
+- **Bots pick their weapons like players** (#569).
   - A party's only tank with Guard fights with sword and shield when it has trained its shield, and its Guard goes on
     a groupmate close enough to be guarded: the one being hit first, then the healer.
   - A bot carrying both a two-hander and a one-hander fights with the one whose line it has trained higher.
