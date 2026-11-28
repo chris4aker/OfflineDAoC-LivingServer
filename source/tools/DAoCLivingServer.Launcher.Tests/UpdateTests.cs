@@ -754,7 +754,7 @@ public class UpdateDownloadTests
 }
 
 // Issue #795: an asked "Check for updates" that finds nothing tells the player so, in a message box as well as the
-// status line (which is often too narrow to see).
+// status line.
 [TestFixture]
 public class UpdateCheckNoticeTests
 {

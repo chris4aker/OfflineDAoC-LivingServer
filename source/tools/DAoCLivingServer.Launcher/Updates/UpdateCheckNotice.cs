@@ -1,8 +1,9 @@
 namespace DAoCLivingServer.Updates;
 
 // What the launcher tells the player after they click "Check for updates" and no update is offered (issue #795).
-// The answer used to go only into the update strip's status line, which is often squeezed to no width, so the click
-// seemed to do nothing. The launcher now also shows this notice in a plain message box (Windows, and Linux under Wine).
+// The answer used to go only into the update strip's status line, which was squeezed to almost no width, so the click
+// seemed to do nothing. The status line now has a row of its own, and the launcher also shows this notice in a plain
+// message box (Windows, and Linux under Wine).
 // The automatic check at start-up never shows it.
 public sealed record UpdateCheckNotice(string Caption, string Text, string StatusLine, bool IsProblem)
 {

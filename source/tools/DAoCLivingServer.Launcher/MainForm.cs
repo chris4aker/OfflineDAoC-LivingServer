@@ -214,7 +214,8 @@ internal sealed partial class MainForm : Form
             Padding = new Padding(5),
             BackColor = Color.Transparent,
         };
-        rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 132));
+        // 152, not 132: the update status has its own row under the version label (issue #795, MainForm.Updates.cs).
+        rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 152));
         rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 116));
         rootLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 31));

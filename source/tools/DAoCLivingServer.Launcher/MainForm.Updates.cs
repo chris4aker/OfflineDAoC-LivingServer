@@ -67,7 +67,8 @@ internal sealed partial class MainForm
     private LauncherUpdater Updater => _updater ??= new LauncherUpdater(LauncherUpdater.GameFolderFor(_root),
         _releaseWeb = new HttpReleaseWeb(LauncherUpdater.UserAgent));
 
-    /// <summary>Puts the update line beside the version label (it follows the label when the window scales).</summary>
+    /// <summary>Puts the update controls beside the version label and the update status on its own row under them (both
+    /// follow the label when the window scales).</summary>
     private void AddUpdateStrip(Panel titlePanel, Label versionLabel)
     {
         if (LauncherBuild.Version == null)
@@ -81,8 +82,13 @@ internal sealed partial class MainForm
         {
             int gap = UiScale.Px(titlePanel, 14);
             _updateStrip.Location = new Point(versionLabel.Right + gap, versionLabel.Top + Math.Max(0, (versionLabel.Height - _updateStrip.Height) / 2));
-            int left = _updateStrip.Right;
-            _updateStatus.SetBounds(left, _updateStrip.Top, Math.Max(0, titlePanel.ClientSize.Width - left - UiScale.Px(titlePanel, 4)), _updateStrip.Height);
+            // Issue #795: the status used to take only the width left of the strip, about 65 px once "Offer test builds"
+            // joined it, so its messages showed only as a hover tooltip. It now has the header's width from the version
+            // label on, on a row of its own (the header row in the constructor is 152 px for it).
+            int left = versionLabel.Left;
+            int top = Math.Max(versionLabel.Bottom, _updateStrip.Bottom);
+            _updateStatus.SetBounds(left, top, Math.Max(0, titlePanel.ClientSize.Width - left - UiScale.Px(titlePanel, 4)),
+                _updateStatus.PreferredHeight);
         };
         _checkUpdatesLink.LinkClicked += async (_, _) => await CheckForUpdatesAsync(asked: true);
         _autoUpdateCheck.Checked = Updater.Settings.CheckAutomatically;
@@ -173,8 +179,8 @@ internal sealed partial class MainForm
     }
 
     /// <summary>
-    /// An asked check found nothing to offer (issue #795): the status line, plus a message box, because the status line
-    /// is often too narrow to see. A plain MessageBox, as it renders the same on Windows and under Wine.
+    /// An asked check found nothing to offer (issue #795): the status line, plus a message box, so the click visibly
+    /// answers. A plain MessageBox, as it renders the same on Windows and under Wine.
     /// </summary>
     private void ShowNothingOffered(UpdateCheckNotice notice)
     {
