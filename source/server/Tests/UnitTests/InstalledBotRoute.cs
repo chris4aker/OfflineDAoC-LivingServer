@@ -134,7 +134,5 @@ namespace DOL.UnitTests
         /// <summary>The ground (road/seam area) a point stands on, and its zone's main ground, for the side-ground pins.</summary>
         internal static (int? Area, int? Main) Ground(ushort regionId, Zone zone, Vector3 point) =>
             (AutonomousZoneRoads.AreaAt(zone, point), AutonomousZoneSeams.MainArea(regionId, zone.ID));
-
-        internal static string Describe(IEnumerable<Vector3> points) => string.Join(" ", points.Select(p => $"({p.X:0},{p.Y:0},{p.Z:0})"));
     }
 }
