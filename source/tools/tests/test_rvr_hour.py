@@ -1,5 +1,6 @@
 """rvr_hour.py, the "RvR hour" report (issue #505): fights rebuilt from an older log's RVR_BOT_KILLED, fights and sieges
-from the 1.2.3 record rows, the player's rows, masking, and the timelines.
+from the 1.2.3 record rows, the player's rows, masking, and the timelines;
+fights by their biggest side and the multi-group force rows (#599 step 5).
 
     python -m unittest discover -s source/tools/tests -v
 """
@@ -218,6 +219,186 @@ class Pure(unittest.TestCase):
         self.assertEqual(rvr_hour.size_bucket(2), "1v1")
         self.assertEqual(rvr_hour.size_bucket(8), "small (3-8)")
         self.assertEqual(rvr_hour.size_bucket(30), "zerg (25+)")
+
+
+# ---- #599 step 5: fights by side, and the multi-group forces --------------------------------------------------------
+
+def fight_end(t, fid, sizes, groups, deaths="Albion:0,Midgard:1", winner="Albion"):
+    size = sum(int(p.split(":")[1]) for p in sizes.split(","))
+    return (f"11/24 {t} | INF | DOL.GS.RvrFights | RVR_FIGHT_END fight={fid} region=163 x=1000 y=1000 seconds=40 "
+            f"by=engage end=quiet size={size} sizes={sizes} deaths={deaths} groups={groups} firstDeathS=5 "
+            f"firstDeathRealm=Midgard firstCcS=2 winner={winner} held={winner} playerIn=false playerDeaths=0 "
+            f"playerKills=0 playerNearest=-1")
+
+
+def fight_open(t, fid, groups):
+    return (f"11/24 {t} | INF | DOL.GS.RvrFights | RVR_FIGHT_OPEN fight={fid} region=163 x=1000 y=1000 by=engage "
+            f"realms=Albion,Midgard groups={groups} playerIn=false playerDistance=-1")
+
+
+def force(t, tag, what, fid, realm, groups, heads, why="-", minutes=0, extra=""):
+    return (f"11/24 {t} | INF | DOL.GS.AutonomousRvrEventLayer | {tag} what={what} id={fid} realm={realm} region=163 "
+            f"lead=s1 groups={groups} heads={heads}{extra} force=s{groups} why={why} minutes={minutes}")
+
+
+def cluster(t, realm, biggest, over24=0):
+    return (f"11/24 {t} | INF | DOL.GS.RvrRecordPulse | RVR_FORCE_CLUSTER t=1 realm={realm} parties=4 bots=30 "
+            f"clusters=2 biggest={biggest} over24={over24}")
+
+
+def board(t, enemies, contact="true"):
+    return (f"11/24 {t} | INF | DOL.GS.RvrFightBoards | RVR_FIGHT_BOARD group=10 leader=\"L\" realm=Albion region=163 "
+            f"main=True members=8 enemies={enemies} enemyPets=0 contact={contact} stance=Engage")
+
+
+ZG = " target=24 online=90 free=72 schedule=off attack=- anchor=amg"
+FORCE_LOG = [
+    BUILD,
+    # four fights in the 20:00 hour: 16v8 (two Albion groups), 24v8 (three), 4v4 and 1v1
+    fight_open("20:01:00", 1, "Albion:10+11;Midgard:20"),
+    fight_end("20:01:40", 1, "Albion:16,Midgard:8", "Albion:10+11;Midgard:20"),
+    fight_open("20:10:00", 2, "Albion:10+11+12;Midgard:21"),
+    fight_end("20:10:40", 2, "Albion:24,Midgard:8", "Albion:10+11+12;Midgard:21"),
+    fight_open("20:20:00", 3, "Albion:13;Midgard:22"),
+    fight_end("20:20:40", 3, "Albion:4,Midgard:4", "Albion:13;Midgard:22", deaths="Albion:1,Midgard:1", winner="even"),
+    fight_open("20:30:00", 4, "Albion:14;Midgard:23"),
+    fight_end("20:30:40", 4, "Albion:1,Midgard:1", "Albion:14;Midgard:23"),
+    # a battlegroup: formed, joined, a leave on the leash, ended
+    force("20:00:10", "RVR_FORCE_BATTLEGROUP", "formed", "bgrp-albion-001", "Albion", 2, 16),
+    force("20:05:00", "RVR_FORCE_BATTLEGROUP", "joined", "bgrp-albion-001", "Albion", 3, 22),
+    force("20:15:00", "RVR_FORCE_BATTLEGROUP", "left", "bgrp-albion-001", "Albion", 2, 14, why="leash", minutes=15),
+    force("20:25:00", "RVR_FORCE_BATTLEGROUP", "ended", "bgrp-albion-001", "Albion", 1, 8, why="toosmall", minutes=25),
+    # a zerg: formed at 16 in the 20:00 hour, topped up to 24, rolled on, ended in the 21:00 hour
+    force("20:40:00", "RVR_FORCE_ZERG", "formed", "zerg-midgard-001", "Midgard", 2, 16, extra=ZG),
+    force("20:41:00", "RVR_FORCE_ZERG", "joined", "zerg-midgard-001", "Midgard", 3, 24, extra=ZG, minutes=1),
+    force("20:49:00", "RVR_FORCE_ZERG", "moved", "zerg-midgard-001", "Midgard", 3, 24, why="hold", extra=ZG, minutes=9),
+    force("21:10:00", "RVR_FORCE_ZERG", "ended", "zerg-midgard-001", "Midgard", 3, 24, why="event", extra=ZG, minutes=30),
+    # a battleground battlegroup, its id reused after it ended
+    force("20:50:00", "RVR_FORCE_BG_BATTLEGROUP", "formed", "bgbg-albion-bg-keep-7", "Albion", 2, 14, why="wave",
+          extra=" keep=bg-keep-7"),
+    force("20:55:00", "RVR_FORCE_BG_BATTLEGROUP", "ended", "bgbg-albion-bg-keep-7", "Albion", 1, 7, why="toosmall",
+          minutes=5, extra=" keep=bg-keep-7"),
+    force("20:58:00", "RVR_FORCE_BG_BATTLEGROUP", "formed", "bgbg-albion-bg-keep-7", "Albion", 2, 12, why="wave",
+          extra=" keep=bg-keep-7"),
+    cluster("20:05:00", "Albion", 6),
+    cluster("20:10:00", "Albion", 12),
+    cluster("20:15:00", "Albion", 20),
+    cluster("20:20:00", "Midgard", 30, over24=1),
+    board("20:10:05", 8),
+    board("20:10:06", 24),
+    board("20:10:07", 3, contact="false"),
+    "11/24 21:20:00 | INF | DOL.GS.RvrRecordPulse | RVR_HOUR t=12 minutes=60 realm=Albion botsInWar=40 solo=10 small=14 "
+    "eight=16 fights=0 kills=0 deaths=0 captures=0 keepsHeld=4 stalls=0 dropped=0 topRules=a:1",
+]
+
+
+class FightsBySide(unittest.TestCase):
+    def setUp(self):
+        self.path = write(FORCE_LOG)
+        self.result = rvr_hour.report(list(rvr_hour.read(self.path, 2026)))
+        self.hour = self.result["hours"][0]
+
+    def test_side_buckets(self):
+        for size, name in ((1, "1-2"), (2, "1-2"), (3, "3-8"), (8, "3-8"), (9, "9-16"), (16, "9-16"), (17, "17-24"),
+                           (24, "17-24"), (25, "25+"), (0, "none")):
+            self.assertEqual(rvr_hour.side_bucket(size), name, size)
+
+    def test_parse_groups(self):
+        self.assertEqual(rvr_hour.parse_groups("Albion:10+11;Midgard:20"), {"Albion": {"10", "11"}, "Midgard": {"20"}})
+        self.assertEqual(rvr_hour.parse_groups(""), {})
+
+    def test_the_hour_counts_fights_by_their_biggest_side(self):
+        sizes = self.hour["fight_sizes"]
+        self.assertEqual(sizes["by_side"], {"1-2": 1, "3-8": 1, "9-16": 1, "17-24": 1})
+        self.assertEqual(list(sizes["by_side"]), ["1-2", "3-8", "9-16", "17-24"])   # smallest first
+        self.assertEqual(sizes["matchups"], {"16v8": 1, "24v8": 1, "4v4": 1, "1v1": 1})
+        self.assertEqual(sizes["multi_group"], 2)
+        self.assertEqual(sizes["three_groups"], 1)
+        self.assertEqual(sizes["biggest_side"], 24)
+        # the total-size buckets stay as they were (24v8 is 32 in all)
+        self.assertEqual(self.hour["fights"]["by_size"], {"group (9-24)": 1, "zerg (25+)": 1, "small (3-8)": 1, "1v1": 1})
+
+    def test_each_realm_counts_its_own_side(self):
+        self.assertEqual(self.hour["realms"]["Albion"]["fights_by_side"], {"9-16": 1, "17-24": 1, "3-8": 1, "1-2": 1})
+        self.assertEqual(self.hour["realms"]["Midgard"]["fights_by_side"], {"3-8": 3, "1-2": 1})
+
+    def test_the_forces_of_the_hour(self):
+        forces = self.hour["forces"]
+        bg = forces["battlegroup"]["Albion"]
+        self.assertEqual((bg["formed"], bg["ended"], bg["alive"], bg["joins"]), (1, 1, 1, 1))
+        self.assertEqual(bg["leaves"], {"leash": 1})
+        self.assertEqual((bg["peak_heads"], bg["peak_groups"]), (22, 3))
+        self.assertEqual(bg["median_minutes_ended"], 25)
+        zerg = forces["zerg"]["Midgard"]
+        self.assertEqual((zerg["formed"], zerg["ended"], zerg["alive"], zerg["peak_heads"], zerg["moves"]), (1, 0, 1, 24, 1))
+        self.assertEqual(forces["bg_battlegroup"]["Albion"]["formed"], 2)
+        self.assertEqual(forces["bg_battlegroup"]["Albion"]["alive"], 2)
+        self.assertNotIn("Albion", forces["zerg"])
+
+    def test_a_force_alive_across_hours_counts_in_both(self):
+        later = self.result["hours"][1]
+        zerg = later["forces"]["zerg"]["Midgard"]
+        self.assertEqual((zerg["formed"], zerg["ended"], zerg["alive"]), (0, 1, 1))
+        self.assertEqual(zerg["median_minutes_ended"], 30)
+        # the battleground battlegroup re-formed at 20:58 and never ended: still alive at 21:00
+        self.assertEqual(later["forces"]["bg_battlegroup"]["Albion"]["alive"], 1)
+        # with no row of its own this hour, it counts at the size it carried over
+        self.assertEqual(later["forces"]["bg_battlegroup"]["Albion"]["peak_heads"], 12)
+        self.assertEqual(later["forces"]["battlegroup"], {})
+
+    def test_forces_are_split_on_a_reused_id(self):
+        bgbg = [fo for fo in self.result["forces"] if fo.kind == "bg_battlegroup"]
+        self.assertEqual(len(bgbg), 2)
+        self.assertEqual(bgbg[0].end_why, "toosmall")
+        self.assertIsNone(bgbg[1].end)
+
+    def test_clusters_and_boards(self):
+        clusters = self.hour["clusters"]
+        self.assertEqual(clusters["Albion"]["biggest"], 20)
+        self.assertEqual((clusters["Albion"]["samples"], clusters["Albion"]["samples_9_15"],
+                          clusters["Albion"]["samples_16_plus"]), (3, 1, 1))
+        self.assertEqual(clusters["Midgard"]["samples_over24"], 1)
+        boards = self.hour["boards"]
+        self.assertEqual(boards["in_contact"], 2)
+        self.assertEqual(boards["enemies_seen"], {"3-8": 1, "17-24": 1})
+        self.assertEqual(boards["most_enemies_seen"], 24)
+
+    def test_text_json_and_the_force_timelines(self):
+        code, text = run([str(self.path), "--year", "2026"])
+        self.assertEqual(code, 0)
+        self.assertIn("fights by biggest side: 1-2: 1, 3-8: 1, 9-16: 1, 17-24: 1", text)
+        self.assertIn("a side of 2+ groups 2, of 3+ groups 1", text)
+        self.assertIn("zerg Midgard: formed 1", text)
+        self.assertIn("Forces (4):", text)
+        code, js = run([str(self.path), "--year", "2026", "--json"])
+        self.assertIn('"matchup": "24v8"', js)
+        self.assertIn('"kind": "zerg"', js)
+        code, timeline = run([str(self.path), "--year", "2026", "--forces"])
+        self.assertEqual(code, 0)
+        self.assertIn("force 11/24 20:40-21:10 zerg zerg-midgard-001 Midgard", timeline)
+        self.assertIn("what=moved", timeline)
+
+
+class OlderLogsSayWhatTheyNeed(unittest.TestCase):
+    def test_no_force_rows(self):
+        result = rvr_hour.report(list(rvr_hour.read(write(OLD_LOG), 2026)))
+        hour = result["hours"][0]
+        self.assertEqual(hour["forces"], {"battlegroup": "needs RVR_FORCE_BATTLEGROUP", "zerg": "needs RVR_FORCE_ZERG",
+                                          "bg_battlegroup": "needs RVR_FORCE_BG_BATTLEGROUP"})
+        self.assertEqual(hour["clusters"], "needs RVR_FORCE_CLUSTER")
+        self.assertEqual(hour["boards"], "needs RVR_FIGHT_BOARD")
+        # rebuilt fights without killerGroup= don't name their groups
+        self.assertEqual(hour["fight_sizes"]["multi_group"], "needs RVR_FIGHT_END groups=")
+        self.assertEqual(hour["fight_sizes"]["by_side"], {"1-2": 2, "3-8": 1})
+        self.assertEqual(result["forces"], [])
+        code, text = run([str(write(OLD_LOG)), "--year", "2026", "--forces"])
+        self.assertIn("no RVR_FORCE_* rows", text)
+
+    def test_a_force_seen_after_it_formed(self):
+        lines = [BUILD, force("20:05:00", "RVR_FORCE_ZERG", "left", "zerg-albion-003", "Albion", 2, 16, why="late", extra=ZG)]
+        (fo,) = rvr_hour.forces(list(rvr_hour.read(write(lines), 2026)))
+        self.assertFalse(fo.formed_seen)
+        self.assertEqual(dict(fo.leaves), {"late": 1})
 
 
 if __name__ == "__main__":

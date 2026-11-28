@@ -6,11 +6,13 @@
     python3 source/tools/rvr_hour.py server.log --fights          # every fight's timeline
     python3 source/tools/rvr_hour.py server.log --fight 12        # one fight
     python3 source/tools/rvr_hour.py server.log --sieges          # every siege's timeline
+    python3 source/tools/rvr_hour.py server.log --forces          # every battlegroup's and zerg's timeline
     python3 source/tools/played_check_log.py server.log --rvr-hour   # the same report from the played check
 
 Per hour and per realm: bots in the war, perception (notices by distance band, median time_since_first_los_ms), fights
 by size and outcome (with the busiest 4,000-unit cell's share), kills on and by the player and by what, called-target
-kills, assist calls, roaming checks, sieges begun / finished / stalled with reasons, travel stalls, teleports in the
+kills, assist calls, fights by their biggest side (one group, two, three, a zerg) and the multi-group forces that formed
+(battlegroups, zergs, battleground battlegroups, the 3,000-unit clusters; #599), roaming checks, sieges begun / finished / stalled with reasons, travel stalls, teleports in the
 player's sight, the player's idle minutes in the war, his /rvrodd flags, and the decision trace (RVR_DECIDE) by layer and
 rule. Every figure is stamped with the log section's FORK_BUILD commit.
 
@@ -40,6 +42,10 @@ CELL = 4000
 FIGHT_GAP_S = 30            # a rebuilt fight ends after this long without a kill (as RvrFightLedger.IdleEndMilliseconds)
 FIGHT_RADIUS = 3000         # a kill joins a rebuilt fight within this of its centre (RvrFightLedger.JoinRadius)
 SIZE_BUCKETS = ((1, 2, "1v1"), (3, 8, "small (3-8)"), (9, 24, "group (9-24)"), (25, 10 ** 6, "zerg (25+)"))
+# A fight by its biggest side, in groups of 8 (#599): one group, a 2-group battlegroup, 3 groups or a small zerg, a zerg.
+SIDE_BUCKETS = ((1, 2, "1-2"), (3, 8, "3-8"), (9, 16, "9-16"), (17, 24, "17-24"), (25, 10 ** 6, "25+"))
+# The multi-group force rows (#599 steps 1, 3 and 4), by the name the report gives them.
+FORCE_TAGS = {"RVR_FORCE_BATTLEGROUP": "battlegroup", "RVR_FORCE_ZERG": "zerg", "RVR_FORCE_BG_BATTLEGROUP": "bg_battlegroup"}
 # Per-bot traces that name a keep: counted on the siege, not listed in its timeline.
 NOISY_SIEGE_TAGS = {"BG_STORM_TRACE", "BG_LORD_PATH", "BG_TOWER_FOOT", "RVR_LORD_FORMATION", "RVR_KEEP_TRAVEL_STALL",
                     "BG_RALLY_CANDIDATES", "BG_WAVE_STATUS", "BG_RALLY_STATUS"}
@@ -163,10 +169,29 @@ class Fight:
     called_kills: int = 0
     kills: int = 0
     events: list = field(default_factory=list)
+    groups: dict = field(default_factory=lambda: defaultdict(set))   # realm -> group ids (leader ids, RVR_FIGHT_* groups=)
 
     @property
     def size(self) -> int:
         return sum(len(v) for v in self.members.values())
+
+    @property
+    def sides(self) -> dict:
+        return {realm: len(m) for realm, m in self.members.items() if realm in REALMS and m}
+
+    @property
+    def biggest_side(self) -> int:
+        return max(self.sides.values(), default=0)
+
+    @property
+    def matchup(self) -> str:
+        """The sides biggest first, as '16v8' ('16v8v4' in a three-way fight)."""
+        return "v".join(str(n) for n in sorted(self.sides.values(), reverse=True)) or "none"
+
+    @property
+    def most_groups(self) -> int:
+        """The most groups on one side (from groups=; 0 when the log doesn't name them)."""
+        return max((len(g) for realm, g in self.groups.items() if realm in REALMS), default=0)
 
     @property
     def seconds(self) -> float:
@@ -178,6 +203,23 @@ def size_bucket(size: int) -> str:
         if low <= size <= high:
             return name
     return "none"
+
+
+def side_bucket(size: int) -> str:
+    for low, high, name in SIDE_BUCKETS:
+        if low <= size <= high:
+            return name
+    return "none"
+
+
+def parse_groups(value) -> dict:
+    """'Albion:10+11;Midgard:20' -> {'Albion': {'10', '11'}, 'Midgard': {'20'}} (RVR_FIGHT_OPEN / RVR_FIGHT_END groups=)."""
+    out = defaultdict(set)
+    for part in str(value or "").split(";"):
+        realm, sep, ids = part.partition(":")
+        if sep and realm:
+            out[realm].update(g for g in ids.split("+") if g)
+    return out
 
 
 def outcome(sizes: dict, deaths: Counter) -> str:
@@ -230,6 +272,9 @@ def add_kill(fight: Fight, line: Line):
     fight.members[killer_realm].add(killer)
     fight.deaths[victim_realm] += 1
     fight.kills += 1
+    for realm, group in ((victim_realm, f.get("victimGroup")), (killer_realm, f.get("killerGroup"))):
+        if group and group not in ("0", "-", "none"):
+            fight.groups[realm].add(group)
     if fight.first_death_s is None:
         fight.first_death_s = (line.t - fight.start).total_seconds()
     if killer_type == "GamePlayer":
@@ -250,6 +295,7 @@ def record_fights(lines: list[Line]) -> list[Fight]:
             fid = f"{line.build}#{fid}"
             fights[fid] = Fight(fid, int(num(f.get("region"), 0)), num(f.get("x"), 0), num(f.get("y"), 0), line.t, line.t,
                                 line.build, "record")
+            fights[fid].groups = parse_groups(f.get("groups"))
             fights[fid].events.append(line)
             continue
         if not fid or fid == "0":
@@ -273,6 +319,8 @@ def record_fights(lines: list[Line]) -> list[Fight]:
                     fight.members[realm] = set(range(int(num(n, 0))))
             fight.deaths = Counter({p.split(":")[0]: int(num(p.split(":")[1], 0))
                                     for p in str(f.get("deaths", "")).split(",") if ":" in p})
+            if f.get("groups"):
+                fight.groups = parse_groups(f.get("groups"))
             fight.winner, fight.held = f.get("winner", "none"), f.get("held", "none")
             fight.first_death_s = num(f.get("firstDeathS"))
             fight.first_cc_s = num(f.get("firstCcS"))
@@ -280,6 +328,128 @@ def record_fights(lines: list[Line]) -> list[Fight]:
             fight.player_deaths = int(num(f.get("playerDeaths"), 0))
             fight.player_kills = int(num(f.get("playerKills"), 0))
     return list(fights.values())
+
+
+# ---- Forces (#599) ---------------------------------------------------------------------------------------------------
+
+@dataclass
+class Force:
+    """One battlegroup, zerg or battleground battlegroup, from its RVR_FORCE_* rows: formed to ended."""
+    key: str
+    id: str
+    kind: str
+    realm: str
+    region: int
+    start: dt.datetime
+    build: str
+    end: dt.datetime | None = None
+    end_why: str | None = None
+    formed_seen: bool = True          # False when the log starts after it formed (its first row is not what=formed)
+    peak_heads: int = 0
+    peak_groups: int = 0
+    joins: int = 0
+    leaves: Counter = field(default_factory=Counter)
+    minutes: float | None = None
+    events: list = field(default_factory=list)
+
+    def alive_in(self, hour: dt.datetime) -> bool:
+        return hour_of(self.start) <= hour and (self.end is None or hour_of(self.end) >= hour)
+
+
+def forces(lines: list[Line]) -> list[Force]:
+    """Every force in the log. An id is a new force after its 'ended' (battleground ids repeat per realm and keep)."""
+    out: list[Force] = []
+    live: dict[str, Force] = {}
+    for line in lines:
+        kind = FORCE_TAGS.get(line.tag)
+        if kind is None:
+            continue
+        f = line.f
+        fid = f.get("id")
+        if not fid:
+            continue
+        key = f"{line.build}#{fid}"
+        what = f.get("what", "?")
+        force = live.get(key)
+        if force is None or what == "formed":
+            force = Force(key, fid, kind, f.get("realm", "?"), int(num(f.get("region"), 0) or 0), line.t, line.build,
+                          formed_seen=what == "formed")
+            out.append(force)
+            live[key] = force
+        force.events.append(line)
+        force.peak_heads = max(force.peak_heads, int(num(f.get("heads"), 0) or 0))
+        force.peak_groups = max(force.peak_groups, int(num(f.get("groups"), 0) or 0))
+        if what == "joined":
+            force.joins += 1
+        elif what == "left":
+            force.leaves[f.get("why", "?")] += 1
+        elif what == "ended":
+            force.end, force.end_why = line.t, f.get("why", "?")
+            force.minutes = num(f.get("minutes"))
+            del live[key]
+    return out
+
+
+def force_hour(all_forces: list[Force], hl: list[Line], hour: dt.datetime, any_rows: set) -> dict:
+    """Per kind and realm: formed, ended, alive, joins and leaves with reasons, peak heads and groups, lifetime."""
+    out = {}
+    for tag, kind in FORCE_TAGS.items():
+        if tag not in any_rows:
+            out[kind] = f"needs {tag}"
+            continue
+        rows = [l for l in hl if l.tag == tag]
+        by_realm = {}
+        for realm in REALMS:
+            alive = [fo for fo in all_forces if fo.kind == kind and fo.realm == realm and fo.alive_in(hour)]
+            rr = [l.f for l in rows if l.f.get("realm") == realm]
+            if not alive and not rr:
+                continue
+            ended = [fo for fo in alive if fo.end and hour_of(fo.end) == hour]
+            # a force that carries over from the hour before counts at its size then, until a row of this hour changes it
+            carried = [(int(num(before[-1].f.get("heads"), 0) or 0), int(num(before[-1].f.get("groups"), 0) or 0))
+                       for fo in alive if (before := [l for l in fo.events if l.t < hour])]
+            by_realm[realm] = {
+                "formed": sum(1 for f in rr if f.get("what") == "formed"),
+                "ended": len(ended),
+                "alive": len(alive),
+                "joins": sum(1 for f in rr if f.get("what") == "joined"),
+                "leaves": dict(Counter(f.get("why", "?") for f in rr if f.get("what") == "left")),
+                "peak_heads": max([int(num(f.get("heads"), 0) or 0) for f in rr] + [c[0] for c in carried], default=0),
+                "peak_groups": max([int(num(f.get("groups"), 0) or 0) for f in rr] + [c[1] for c in carried], default=0),
+                "median_minutes_ended": median([fo.minutes for fo in ended]),
+            }
+            if kind == "zerg":
+                by_realm[realm]["moves"] = sum(1 for f in rr if f.get("what") == "moved")
+        out[kind] = by_realm
+    return out
+
+
+def cluster_hour(hl: list[Line], any_rows: set) -> dict | str:
+    """RVR_FORCE_CLUSTER per realm: samples, the biggest cluster, samples at 9-15 and at 16+, and those over 24."""
+    if "RVR_FORCE_CLUSTER" not in any_rows:
+        return "needs RVR_FORCE_CLUSTER"
+    out = {}
+    for realm in REALMS:
+        biggest = [int(num(l.f.get("biggest"), 0) or 0) for l in hl if l.tag == "RVR_FORCE_CLUSTER" and l.f.get("realm") == realm]
+        over24 = [int(num(l.f.get("over24"), 0) or 0) for l in hl if l.tag == "RVR_FORCE_CLUSTER" and l.f.get("realm") == realm]
+        if biggest:
+            out[realm] = {"samples": len(biggest), "biggest": max(biggest), "median_biggest": median(biggest),
+                          "samples_9_15": sum(1 for b in biggest if 9 <= b <= 15),
+                          "samples_16_plus": sum(1 for b in biggest if b >= 16),
+                          "samples_over24": sum(1 for n in over24 if n > 0)}
+    return out
+
+
+def board_hour(hl: list[Line], any_rows: set) -> dict | str:
+    """RVR_FIGHT_BOARD in contact: how many enemies the groups saw, by the side buckets."""
+    if "RVR_FIGHT_BOARD" not in any_rows:
+        return "needs RVR_FIGHT_BOARD"
+    boards = [l.f for l in hl if l.tag == "RVR_FIGHT_BOARD" and l.f.get("contact") == "true"]
+    seen = [int(num(f.get("enemies"), 0) or 0) for f in boards]
+    return {"in_contact": len(boards),
+            "enemies_seen": {name: sum(1 for n in seen if low <= n <= high) for low, high, name in SIDE_BUCKETS
+                             if any(low <= n <= high for n in seen)},
+            "most_enemies_seen": max(seen, default=0)}
 
 
 # ---- Sieges ----------------------------------------------------------------------------------------------------------
@@ -433,6 +603,9 @@ def report(lines: list[Line]) -> dict:
     has_record = any(line.tag == "RVR_FIGHT_END" for line in lines)
     fights = record_fights(lines) if has_record else rebuild_fights([l for l in lines if l.tag == "RVR_BOT_KILLED"])
     all_sieges = sieges(lines)
+    all_forces = forces(lines)
+    any_rows = {line.tag for line in lines}
+    named_groups = any(fi.groups for fi in fights)
     hours = []
     for hour in sorted(by_hour):
         hl = by_hour[hour]
@@ -483,6 +656,7 @@ def report(lines: list[Line]) -> dict:
             rf = [fi for fi in fights if hour_of(fi.start) == hour and realm in fi.members]
             r["fights"] = len(rf)
             r["fights_won"] = sum(1 for fi in rf if fi.winner == realm)
+            r["fights_by_side"] = dict(Counter(side_bucket(fi.sides.get(realm, 0)) for fi in rf if fi.sides.get(realm)))
             h["realms"][realm] = r
 
         # fights
@@ -502,6 +676,18 @@ def report(lines: list[Line]) -> dict:
                              f"({100 * busiest[1] / len(hf):.0f}%)") if busiest else "none",
             "with_player": sum(1 for fi in hf if fi.player_in),
         }
+        # fights by their biggest side and the multi-group forces (#599)
+        h["fight_sizes"] = {
+            "by_side": {name: n for _, _, name in SIDE_BUCKETS
+                        if (n := sum(1 for fi in hf if side_bucket(fi.biggest_side) == name))},
+            "matchups": dict(Counter(fi.matchup for fi in hf).most_common(6)),
+            "multi_group": sum(1 for fi in hf if fi.most_groups >= 2) if named_groups else "needs RVR_FIGHT_END groups=",
+            "three_groups": sum(1 for fi in hf if fi.most_groups >= 3) if named_groups else "needs RVR_FIGHT_END groups=",
+            "biggest_side": max((fi.biggest_side for fi in hf), default=0),
+        }
+        h["forces"] = force_hour(all_forces, hl, hour, any_rows)
+        h["clusters"] = cluster_hour(hl, any_rows)
+        h["boards"] = board_hour(hl, any_rows)
         called = sum(1 for l in kills if l.f.get("calledTarget") == "true")
         has_called = any("calledTarget" in l.f for l in kills)
         h["tactics"] = {
@@ -574,7 +760,7 @@ def report(lines: list[Line]) -> dict:
         if dropped:
             h["notes"].append(f"rate-limited rows dropped: {', '.join(sorted(set(dropped)))}")
         hours.append(h)
-    return {"hours": hours, "fights": fights, "sieges": all_sieges, "has_record": has_record}
+    return {"hours": hours, "fights": fights, "sieges": all_sieges, "forces": all_forces, "has_record": has_record}
 
 
 # ---- Text ------------------------------------------------------------------------------------------------------------
@@ -610,6 +796,23 @@ def text(result: dict, path: Path) -> str:
         out.append(f"  fights: {f['count']} [{f['source']}] by size {fmt(f['by_size'])}; outcome {fmt(f['by_outcome'])}; "
                    f"deaths {f['deaths']}; median {fmt(f['median_seconds'])} s, first death {fmt(f['median_first_death_s'])} s, "
                    f"first CC {fmt(f['median_first_cc_s'])}; busiest {f['busiest_cell']}; with the player {f['with_player']}")
+        fs = h["fight_sizes"]
+        out.append(f"  fights by biggest side: {fmt(fs['by_side'])}; matchups {fmt(fs['matchups'])}; a side of 2+ groups "
+                   f"{fs['multi_group']}, of 3+ groups {fs['three_groups']}; biggest side {fs['biggest_side']}")
+        for kind, block in h["forces"].items():
+            if isinstance(block, str):
+                out.append(f"  {kind}: {block}")
+                continue
+            for realm, x in block.items():
+                extra = f", moves {x['moves']}" if "moves" in x else ""
+                out.append(f"  {kind} {realm}: formed {x['formed']}, ended {x['ended']}, alive {x['alive']}, joins "
+                           f"{x['joins']}, leaves {fmt(x['leaves'])}, peak {x['peak_heads']} heads in {x['peak_groups']} "
+                           f"groups, median life {fmt(x['median_minutes_ended']) if x['median_minutes_ended'] is not None else '-'} min{extra}")
+            if not block:
+                out.append(f"  {kind}: none")
+        cl = h["clusters"]
+        out.append("  clusters: " + (cl if isinstance(cl, str) else "; ".join(f"{r}: {fmt(v)}" for r, v in cl.items()) or "none"))
+        out.append(f"  boards in contact: {fmt(h['boards'])}")
         out.append(f"  tactics: {fmt(h['tactics'])}")
         p = dict(h["player"])
         odd = p.pop("odd_flags")
@@ -623,6 +826,10 @@ def text(result: dict, path: Path) -> str:
         out.append(f"  decisions: {fmt(h['decisions'])}")
         for note in h["notes"]:
             out.append(f"  note: {note}")
+    out.append("")
+    out.append(f"Forces ({len(result['forces'])}):")
+    for fo in result["forces"]:
+        out.append(f"  {force_summary(fo)}")
     out.append("")
     out.append(f"Sieges ({len(result['sieges'])}):")
     for s in result["sieges"]:
@@ -643,6 +850,20 @@ def fight_timeline(fight: Fight) -> str:
     return "\n".join(out)
 
 
+def force_summary(force: Force) -> str:
+    return (f"{force.start:%m/%d %H:%M}-{(force.end.strftime('%H:%M') if force.end else 'end')} {force.kind} {force.id} "
+            f"{force.realm} region {force.region}{'' if force.formed_seen else ' (formed before the log)'}: peak "
+            f"{force.peak_heads} heads in {force.peak_groups} groups, joins {force.joins}, leaves "
+            f"{fmt(dict(force.leaves)) if force.leaves else 0}, ended {force.end_why or 'no'}")
+
+
+def force_timeline(force: Force) -> str:
+    out = [f"force {force_summary(force)} [build {force.build}]"]
+    for line in force.events:
+        out.append(f"  +{(line.t - force.start).total_seconds() / 60:5.1f}m {mask(line.text)}")
+    return "\n".join(out)
+
+
 def siege_timeline(siege: Siege) -> str:
     out = [f"siege {siege.key} {siege.keep} [{siege.kind}, build {siege.build}] {siege.start:%m/%d %H:%M:%S}-"
            f"{(siege.end.strftime('%H:%M:%S') if siege.end else 'end of log')}: {siege.result}; ram hits {siege.ram_hits}"]
@@ -657,7 +878,12 @@ def as_json(result: dict) -> dict:
         "fights": [{"id": f.id, "source": f.source, "build": f.build, "region": f.region, "start": f.start.isoformat(),
                     "seconds": f.seconds, "size": f.size, "sides": {r: len(m) for r, m in f.members.items()},
                     "deaths": dict(f.deaths), "winner": f.winner, "held": f.held, "first_death_s": f.first_death_s,
-                    "first_cc_s": f.first_cc_s, "player_in": f.player_in} for f in result["fights"]],
+                    "first_cc_s": f.first_cc_s, "player_in": f.player_in, "biggest_side": f.biggest_side,
+                    "matchup": f.matchup, "groups": {r: len(g) for r, g in f.groups.items()}} for f in result["fights"]],
+        "forces": [{"id": fo.id, "kind": fo.kind, "build": fo.build, "realm": fo.realm, "region": fo.region,
+                    "start": fo.start.isoformat(), "end": fo.end.isoformat() if fo.end else None, "end_why": fo.end_why,
+                    "formed_seen": fo.formed_seen, "peak_heads": fo.peak_heads, "peak_groups": fo.peak_groups,
+                    "joins": fo.joins, "leaves": dict(fo.leaves), "minutes": fo.minutes} for fo in result["forces"]],
         "sieges": [{"key": s.key, "keep": s.keep, "kind": s.kind, "attacker": s.attacker, "start": s.start.isoformat(),
                     "end": s.end.isoformat() if s.end else None, "result": s.result, "ram_hits": s.ram_hits,
                     "stalls": dict(s.stalls)} for s in result["sieges"]],
@@ -673,6 +899,7 @@ def main(argv=None) -> int:
     parser.add_argument("--fights", action="store_true", help="every fight's timeline")
     parser.add_argument("--fight", help="one fight's timeline, by id (r12 for a rebuilt fight)")
     parser.add_argument("--sieges", action="store_true", help="every siege's timeline")
+    parser.add_argument("--forces", action="store_true", help="every battlegroup's, zerg's and battleground battlegroup's timeline")
     parser.add_argument("--min-size", type=int, default=0, help="with --fights: only fights at least this big")
     args = parser.parse_args(argv)
     path = Path(args.log)
@@ -697,6 +924,8 @@ def main(argv=None) -> int:
         print("\n\n".join(fight_timeline(f) for f in result["fights"] if f.size >= args.min_size))
     elif args.sieges:
         print("\n\n".join(siege_timeline(s) for s in result["sieges"]))
+    elif args.forces:
+        print("\n\n".join(force_timeline(fo) for fo in result["forces"]) or "no RVR_FORCE_* rows")
     else:
         print(text(result, path))
     return 0 if lines else 1
