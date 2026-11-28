@@ -23,11 +23,18 @@ namespace DOL.UnitTests
         /// corridor alone is complete, Road when the zone road route joins them and each of its legs (start to the first
         /// anchor, anchor to anchor, the last anchor to the end) is a complete direct corridor, None otherwise.
         /// </summary>
-        internal static Walk SameZone(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end, out string detail)
+        internal static Walk SameZone(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end, out string detail) =>
+            SameZone(nav, zone, start, end, out detail, out _);
+
+        /// <param name="legEnds">The end of each leg in order (the road anchors, then <paramref name="end"/>); one entry for a
+        /// direct walk, empty for none.</param>
+        internal static Walk SameZone(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end, out string detail, out Vector3[] legEnds)
         {
+            legEnds = [];
             if (AutonomousZoneItinerary.HasDirectCorridor(nav, zone, start, end))
             {
                 detail = "direct";
+                legEnds = [end];
                 return Walk.Direct;
             }
             if (!AutonomousZoneRoads.TryRoute(nav, zone, start, end, out Vector3[] via) || via == null)
@@ -47,6 +54,7 @@ namespace DOL.UnitTests
                 from = to;
             }
             detail = $"road route, {via.Length + 1} complete legs";
+            legEnds = via.Append(end).ToArray();
             return Walk.Road;
         }
 

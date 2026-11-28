@@ -57,16 +57,20 @@ public class UT_ExpeditionHubFailures
                     Vector3 floorStart=near ?? s.Item3;
                     var ground=InstalledBotRoute.Ground(200,zone,floorStart);
                     bool walk=InstalledBotRoute.Itinerary(region,nav,floorStart,target,out string trace);
-                    TestContext.Progress.WriteLine($"SHELF {s} floor={near} area={ground.Area} main={ground.Main} localExit={near.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav,zone,floorStart)} walk={walk}: {trace}");
+                    Vector3 loughExit=new(332733,485215,5215);
+                    bool fromExit=InstalledBotRoute.Itinerary(region,nav,loughExit,floorStart,out string exitTrace);
+                    TestContext.WriteLine($"SHELF_REACH {s} fromLoughExit={fromExit}: {exitTrace} pocket={AutonomousZonePockets.Contains(zone.ID,floorStart.X,floorStart.Y,floorStart.Z)} " +
+                        $"escape={AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav,region,200,s.Item3,out var esc)}:{esc} planning={AutonomousNavigationSurface.TryPlanningFloor(nav,zone,s.Item3,out _)}");
+                    TestContext.WriteLine($"SHELF {s} floor={near} area={ground.Area} main={ground.Main} localExit={near.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav,zone,floorStart)} walk={walk}: {trace}");
                     using var arrivals=db.CreateCommand();
                     arrivals.CommandText=$"SELECT Id,SourceRegion,TargetX,TargetY,TargetZ FROM ZonePoint WHERE TargetRegion=200 AND abs(TargetX-{(int)s.Item3.X})<3000 AND abs(TargetY-{(int)s.Item3.Y})<3000";
                     using var arrival=arrivals.ExecuteReader();
-                    while(arrival.Read()) TestContext.Progress.WriteLine($"SHELF_ARRIVAL edge={arrival.GetInt32(0)} from={arrival.GetInt32(1)} at=({arrival.GetInt32(2)},{arrival.GetInt32(3)},{arrival.GetInt32(4)})");
+                    while(arrival.Read()) TestContext.WriteLine($"SHELF_ARRIVAL edge={arrival.GetInt32(0)} from={arrival.GetInt32(1)} at=({arrival.GetInt32(2)},{arrival.GetInt32(3)},{arrival.GetInt32(4)})");
                 }
                 bool success=AutonomousZonePointApproach.TryResolve(nav,zone,s.Item3,target,112,out var approach);
                 var edge = new DOL.Database.DbZonePoint { Id=(ushort)s.Item2, SourceRegion=(ushort)s.Item1, SourceX=(int)target.X, SourceY=(int)target.Y, SourceZ=(int)target.Z };
                 bool repaired=AutonomousRouteHotspotRepair.TryResolveAuditedCrossingSource(nav,region,edge,s.Item3,out var corrected);
-                TestContext.Progress.WriteLine($"REPAIR {s} repaired={repaired} corrected={corrected}");
+                TestContext.WriteLine($"REPAIR {s} repaired={repaired} corrected={corrected}");
                 if(s.Item1 != 10)
                 {
                     Assert.That(success || repaired,Is.True,$"Captured expedition source {s}");
@@ -76,14 +80,14 @@ public class UT_ExpeditionHubFailures
                         Assert.That(AutonomousZonePointApproach.TryResolve(nav,zone,corrected,target,112,out _),Is.True);
                     }
                 }
-                TestContext.Progress.WriteLine($"SOURCE {s} target={target} approach={success}:{approach} floor={nav.GetClosestPoint(zone,s.Item3,96,96,1024,nav.DefaultFilters)}");
+                TestContext.WriteLine($"SOURCE {s} target={target} approach={success}:{approach} floor={nav.GetClosestPoint(zone,s.Item3,96,96,1024,nav.DefaultFilters)}");
                 foreach (int radius in new[] {0,32,64,128,256,512})
                 for(int a=0;a<(radius==0?1:8);a++)
                 {
                     Vector3 raw=s.Item3+new Vector3(MathF.Cos(a*MathF.PI/4)*radius,MathF.Sin(a*MathF.PI/4)*radius,0);
                     var floor=nav.GetClosestPoint(zone,raw,16,16,1024,nav.DefaultFilters);
                     if(floor.HasValue && AutonomousZonePointApproach.TryResolve(nav,zone,floor.Value,target,112,out _))
-                        TestContext.Progress.WriteLine($"CONNECTED radius={radius} point={floor} delta={floor.Value-s.Item3}");
+                        TestContext.WriteLine($"CONNECTED radius={radius} point={floor} delta={floor.Value-s.Item3}");
                 }
             }
             });

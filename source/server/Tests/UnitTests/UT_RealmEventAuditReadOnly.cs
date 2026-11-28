@@ -33,14 +33,17 @@ public class UT_RealmEventAuditReadOnly
                 foreach(var p in new[]{new Vector3(352160,680000,7224),new Vector3(352160,679872,7315),hub})
                 {
                     var zone=region.GetZone((int)p.X,(int)p.Y);
-                    Vector3 start=InstalledBotRoute.Start(nav,zone,p);
+                    // The hub centre is the muster's own anchor (service NPCs), not a capture: routed from as the muster does.
+                    Vector3 start=p==hub?p:InstalledBotRoute.Start(nav,zone,p);
+                    TestContext.WriteLine($"GROUND {p} pocket={AutonomousZonePockets.Contains(zone.ID,start.X,start.Y,start.Z)} escape={AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav,region,200,start,out var esc)}:{esc} " +
+                        $"wideFloor={nav.GetClosestPoint(zone,p,256,256,1024,nav.DefaultFilters)}");
                     var ground=InstalledBotRoute.Ground(200,zone,start);
                     bool direct=RealmRaidMuster.TryRoute(region,nav,eRealm.Hibernia,start,goal,out var directSteps);
                     bool via=RealmRaidMuster.TryRoute(region,nav,eRealm.Hibernia,start,goal,out var viaSteps,new Vector3(361354,750434,4944));
                     bool walk=InstalledBotRoute.Itinerary(region,nav,start,goal,out string walkTrace);
                     bool toHub=p==hub||InstalledBotRoute.Itinerary(region,nav,start,hub,out _);
                     bool fromHub=p==hub||InstalledBotRoute.Itinerary(region,nav,hub,start,out _);
-                    TestContext.Progress.WriteLine($"Captured {p} zone={zone.ID} start={start} area={ground.Area} main={ground.Main} localExit={AutonomousRendezvousNavigation.HasLocalExit(nav,zone,start)} " +
+                    TestContext.WriteLine($"Captured {p} zone={zone.ID} start={start} area={ground.Area} main={ground.Main} localExit={AutonomousRendezvousNavigation.HasLocalExit(nav,zone,start)} " +
                         $"direct={direct} [{string.Join(";",directSteps)}] validated-via={via} [{string.Join(";",viaSteps)}] walk={walk} toHub={toHub} fromHub={fromHub}: {walkTrace}");
                     Assert.That(direct, Is.True, $"Ordinary Sheeroe travel from {p} must find the road without an expedition-only via hint");
                 }

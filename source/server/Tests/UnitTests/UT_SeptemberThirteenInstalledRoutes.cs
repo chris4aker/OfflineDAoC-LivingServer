@@ -49,6 +49,16 @@ namespace DOL.UnitTests
                     {
                         // The Emain hotspot: unchanged since September. The immediate escape is close and connected.
                         bool escaped = AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, region, 200, sample.From, out var escape);
+                        {
+                            Vector3? f = nav.GetClosestPoint(zone, sample.From, 64, 64, 128, nav.DefaultFilters);
+                            Vector3? e = nav.GetClosestPoint(zone, new(474044, 318952, 5838), 96, 96, 512, nav.DefaultFilters);
+                            Vector3? w = nav.GetClosestPoint(zone, sample.To, 96, 96, 512, nav.DefaultFilters);
+                            TestContext.WriteLine($"EMAIN escaped={escaped} floor={f} planning={AutonomousNavigationSurface.TryPlanningFloor(nav, zone, sample.From, out _)} " +
+                                $"escapeFloor={e} witness={w} escapeExit={e.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav, zone, e.Value)} " +
+                                $"escape->witness={e.HasValue && w.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, e.Value, w.Value)} " +
+                                $"source->escape={e.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, sample.From, e.Value)} " +
+                                $"sourceWalk={InstalledBotRoute.SameZone(nav, zone, f ?? sample.From, sample.To, out string emainWalk)} ({emainWalk})");
+                        }
                         Assert.That(escaped, Is.True, "Emain frontier: immediate escape");
                         if (escaped)
                         {
@@ -71,7 +81,7 @@ namespace DOL.UnitTests
                             TestContext.WriteLine($"AUDIT {sample.Region} {sample.Name} from={start} target={target} approach={approach}:{ap}");
                             continue;
                         }
-                        var walk = InstalledBotRoute.SameZone(nav, zone, start, target, out string detail);
+                        var walk = InstalledBotRoute.SameZone(nav, zone, start, target, out string detail, out Vector3[] legEnds);
                         Assert.That(walk, Is.EqualTo(sample.Walk), $"{sample.Name} {target}: the bot's walk ({detail})");
                         if (sample.Walk == InstalledBotRoute.Walk.Direct)
                         {
@@ -79,8 +89,11 @@ namespace DOL.UnitTests
                             var path = nav.GetPathStraight(zone, start, target, nav.DefaultFilters, nodes);
                             Assert.That(path.Status, Is.EqualTo(PathfindingStatus.PathFound), $"{sample.Name} {target}: direct path");
                         }
-                        bool recovery = AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, target, out var corner);
-                        Assert.That(recovery, Is.True, $"Corner {sample.Name}");
+                        // Corner recovery follows the leg the bot is on: the target itself on a direct walk, the first road
+                        // anchor on a road walk (it needs a direct path to its destination, which the cut denies; see the pin).
+                        Vector3 leg = legEnds.Length > 0 ? legEnds[0] : target;
+                        bool recovery = AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, leg, out var corner);
+                        Assert.That(recovery, Is.True, $"Corner {sample.Name} toward {leg}");
                         TestContext.WriteLine($"AUDIT {sample.Region} {sample.Name} from={start} target={target} walk={walk} ({detail}) " +
                             $"approach={approach}:{ap} corner={recovery}:{corner}");
                     }
@@ -109,6 +122,8 @@ namespace DOL.UnitTests
                     Assert.That(Vector3.Distance(end, FrontierCut), Is.LessThan(64), $"the direct query stops at the cut (ends at {end})");
                     Assert.That(AutonomousZoneItinerary.HasDirectCorridor(nav, zone, FrontierStart, FrontierTarget), Is.False,
                         "no direct corridor across the cut");
+                    Assert.That(AutonomousCorridorRecovery.TryNextCorner(nav, zone, FrontierStart, FrontierTarget, out _), Is.False,
+                        "corner recovery toward the far target needs the direct path the cut denies");
                     var onward = nav.GetPathStraight(zone, end, FrontierTarget, nav.DefaultFilters, nodes);
                     Vector3 onwardEnd = onward.NodeCount > 0 ? nodes[Math.Min(onward.NodeCount, nodes.Length) - 1].Position : end;
                     Assert.That(Vector3.Distance(onwardEnd, FrontierTarget), Is.GreaterThan(Vector3.Distance(end, FrontierTarget) - 64),

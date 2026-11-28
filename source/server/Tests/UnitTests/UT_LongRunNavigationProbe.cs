@@ -284,17 +284,19 @@ namespace DOL.UnitTests
                 }
                 bool walked = InstalledBotRoute.Itinerary(hibernia, nav, magMellTicket, dfPortal, out string walkTrace);
                 TestContext.WriteLine($"DF_WALK {walked}: {walkTrace}");
-                Assert.That(dfTransit, Is.Null,
-                    "The real Connacht capital gate does not lead to the DF portal component");
-                Assert.That(AutonomousZoneItinerary.TryNextStep(hibernia, lough, dfPortalZone,
-                    magMellTicket, dfPortal, nav, out var outbound), Is.True);
-                Assert.That(Vector3.Distance(outbound.Outside, new(385088, 483424, 7262)),
-                    Is.LessThan(3), "The installed route selects the audited Valley seam");
-                Zone valley = hibernia.GetZone(385088, 483424);
-                Assert.That(AutonomousZoneItinerary.TryNextStep(hibernia, valley, dfPortalZone,
-                    outbound.Outside, dfPortal, nav, out var reverse), Is.True);
-                Assert.That(hibernia.GetZone((int)reverse.Outside.X, (int)reverse.Outside.Y),
-                    Is.EqualTo(lough), "The next route step reverses across that seam");
+                // #704: in September the Connacht gate led to a component without the DF portal, and the outdoor itinerary
+                // stepped into the Valley at 385088,483424 and straight back (pinned then as the bot's route). On the 1.2
+                // meshes the bot's route reaches the portal both ways: the capital transit (gates 13 -> 26) and the outdoor
+                // walk (Lough Derg -> Connacht), every leg complete and no zone entered twice.
+                Assert.That(dfTransit, Is.Not.Null, "Cross-capital travel to the DF portal uses the real Connacht gate");
+                if (dfTransit != null)
+                {
+                    Assert.That((dfTransit.Entry.Id, dfTransit.Exit.Id), Is.EqualTo(((ushort)13, (ushort)26)), "the DF transit's gates");
+                    Vector3 landed = new(dfTransit.Exit.TargetX, dfTransit.Exit.TargetY, dfTransit.Exit.TargetZ);
+                    Assert.That(InstalledBotRoute.Itinerary(hibernia, nav, landed, dfPortal, out string onward), Is.True,
+                        $"From the Connacht gate the bot's route reaches the DF portal: {onward}");
+                }
+                Assert.That(walked, Is.True, $"The outdoor route from the Mag Mell ticket reaches the DF portal without turning back: {walkTrace}");
                 foreach (Vector3 landing in new[]
                 {
                     new Vector3(335660, 422602, 5219), // Tir na mBeo ticket
@@ -332,10 +334,28 @@ namespace DOL.UnitTests
                     }
                     Assert.That(cursorZone, Is.EqualTo(to), $"First boarding walk from {startPoint} reaches the horse's zone");
                     Assert.That(snapped, Is.Not.Null, $"Horse origin {horseOrigin} has walkable terrain");
+                    if (snapped.HasValue)
+                    {
+                        Vector3 floorStart = UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav, from, startPoint);
+                        bool boardingWalk = InstalledBotRoute.Itinerary(hibernia, nav, floorStart, snapped.Value, out string boardingTrace);
+                        TestContext.WriteLine($"BOARDING {startPoint} -> {horseOrigin}: cursor={cursor} walk={boardingWalk}: {boardingTrace}");
+                    }
                     Assert.That(snapped.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, to, cursor, snapped.Value),
                         Is.True, $"First boarding walk from {startPoint} reaches horse {horseOrigin}");
                 }
                 Zone blackMountains = regions[1].GetZone(515616, 494274);
+                {
+                    Vector3 prop = new(515616, 494274, 3397);
+                    Vector3? small = nav.GetClosestPoint(blackMountains, prop, 64, 64, 128, nav.DefaultFilters);
+                    Vector3? tall = nav.GetClosestPoint(blackMountains, prop, 64, 64, 4096, nav.DefaultFilters);
+                    bool nearest = AutonomousNavigationSurface.TryNearestWalkableFloor(nav, blackMountains, prop, 300, out Vector3 nf);
+                    TestContext.WriteLine($"PROP_TOP planning={AutonomousNavigationSurface.TryPlanningFloor(nav, blackMountains, prop, out _)} small={small} tall={tall} " +
+                        $"nearest={nearest}:{nf} exit={(small.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav, blackMountains, small.Value))} " +
+                        $"pocket={(small.HasValue && AutonomousZonePockets.Contains(blackMountains.ID, small.Value.X, small.Value.Y, small.Value.Z))} " +
+                        $"escape={AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, regions[1], 1, prop, out var propEscape)}:{propEscape} " +
+                        $"choose(nearest)={nearest && AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, nf, out _)} " +
+                        $"walk(nearest->bombard)={(nearest ? InstalledBotRoute.SameZone(nav, blackMountains, nf, new(515649, 496745, 3352), out _) : InstalledBotRoute.Walk.None)}");
+                }
                 Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains,
                     new(515616, 494274, 3397), out _), Is.True,
                     "The repaired prop-top now has a real short step onto connected ground");

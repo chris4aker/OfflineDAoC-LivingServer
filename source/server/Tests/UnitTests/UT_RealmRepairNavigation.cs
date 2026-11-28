@@ -50,11 +50,11 @@ public class UT_RealmRepairNavigation
                 var small=nav.GetClosestPoint(zone,p,64,64,128,nav.DefaultFilters);
                 var wide=nav.GetClosestPoint(zone,p,768,768,768,nav.DefaultFilters);
                 var tall=nav.GetClosestPoint(zone,p,64,64,4096,nav.DefaultFilters);
-                TestContext.Progress.WriteLine($"CAPTURE region={rid} zone={zone?.Description} position={p} small={small} wide={wide} vertical={tall}");
+                TestContext.WriteLine($"CAPTURE region={rid} zone={zone?.Description} position={p} small={small} wide={wide} vertical={tall}");
             }
             var start=new Vector3(379260,385996,7752);var goal=new Vector3(398621,271246,8575);
             bool success=RealmRaidMuster.TryRoute(regions[151],nav,eRealm.Midgard,start,goal,out var seams);
-            TestContext.Progress.WriteLine($"HAGALL ENTRY {success} [{string.Join(";",seams)}]");
+            TestContext.WriteLine($"HAGALL ENTRY {success} [{string.Join(";",seams)}]");
             Assert.That(success, Is.True);
             var dragonHome = DragonLairPlacement.Home(eRealm.Hibernia);
             var dragonGoal = new Vector3(dragonHome.X,dragonHome.Y,dragonHome.Z);
@@ -63,7 +63,7 @@ public class UT_RealmRepairNavigation
             Vector3 glacierStart=InstalledBotRoute.Start(nav,glacierZone,glacier);
             var glacierGround=InstalledBotRoute.Ground(200,glacierZone,glacierStart);
             bool hib=RealmRaidMuster.TryRoute(regions[200],nav,eRealm.Hibernia,glacierStart,dragonGoal,out var hibSeams,new(361354,750434,4944));
-            TestContext.Progress.WriteLine($"CUULDURACH CAPTURE CORRIDOR {hib} start={glacierStart} area={glacierGround.Area} main={glacierGround.Main} [{string.Join(";",hibSeams)}] {RealmRaidMuster.LastRouteFailure}");
+            TestContext.WriteLine($"CUULDURACH CAPTURE CORRIDOR {hib} start={glacierStart} area={glacierGround.Area} main={glacierGround.Main} [{string.Join(";",hibSeams)}] {RealmRaidMuster.LastRouteFailure}");
             Assert.That(hib, Is.True, "Cuuldurach route from the glacier capture");
             Vector3? surfaceFloor = nav.GetClosestPoint(regions[151].GetZone(382872,333782),
                 new(382872,333782,7709),64,64,128,nav.DefaultFilters);
@@ -79,7 +79,7 @@ public class UT_RealmRepairNavigation
                 var floor = nav.GetClosestPoint(surfaceZone,grounded.Value,2,2,4,nav.DefaultFilters);
                 Assert.That(floor.HasValue, Is.True);
                 if (floor.HasValue) Assert.That(Math.Abs(floor.Value.Z-grounded.Value.Z), Is.LessThan(2));
-                TestContext.Progress.WriteLine($"GLACIER APPROACH GROUND start={surface} legacy={nav.GetMoveAlongSurface(surfaceZone,surface,surface+delta,nav.DefaultFilters)} grounded={grounded}");
+                TestContext.WriteLine($"GLACIER APPROACH GROUND start={surface} legacy={nav.GetMoveAlongSurface(surfaceZone,surface,surface+delta,nav.DefaultFilters)} grounded={grounded}");
             }
             });
         }
