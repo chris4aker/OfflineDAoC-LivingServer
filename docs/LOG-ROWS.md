@@ -656,7 +656,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RUMOUR_KEEP_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `guards`, `hearer`, `keep` | - | - | For in-game checks: how close a keep comes to "wide open" (2026-10-27: |
 | `RUMOUR_NAMED` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `forced`, `realm`, `target`, `zone` | `target` | - | - |
 | `RUMOUR_NAMED_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `caring_player`, `lands`, `level`, `target`, `zone` | `target` | - | For in-game checks (2026-10-27: |
-| `RVR_ASSIST_CALL` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `fight`, `group`, `hold`, `mainAssist`, `realm`, `region`, `rising`, `role`, `score`, `target`, `targetClass`, `targetRealm`, `tier` | `mainAssist`, `target` | - | - |
+| `RVR_ASSIST_CALL` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `fight`, `from`, `group`, `hold`, `mainAssist`, `realm`, `region`, `rising`, `role`, `score`, `target`, `targetClass`, `targetRealm`, `tier` | `mainAssist`, `target` | - | - |
 | `RVR_ASSIST_SWITCH` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `delay`, `fight`, `group`, `member`, `result`, `target`, `tier` | `member`, `target` | - | - |
 | `RVR_BACKLINE` | server.log | **ships** | `bots/BotBrain.RvrPositioning.cs` | `class`, `depth`, `group`, `member`, `moved`, `reason`, `region`, `skill` | `member` | - | - |
 | `RVR_BORDER_STAGING` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `id`, `keep`, `realm` | `bot` | - | - |
