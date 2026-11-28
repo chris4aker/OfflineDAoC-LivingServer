@@ -52,11 +52,13 @@ namespace DOL.UnitTests
                         // target by the zone road route, every leg complete; the escape itself is now refused (pinned in
                         // EmainEscapeRefused). Nothing escapes from 200 units above the capture, as in September.
                         Vector3 start = InstalledBotRoute.Start(nav, zone, sample.From);
-                        var walk = InstalledBotRoute.SameZone(nav, zone, start, sample.To, out string emain, out Vector3[] emainLegs);
+                        Assert.That(start, Is.EqualTo(sample.From), "Emain frontier: the capture itself stands on floor that leads on");
+                        var walk = InstalledBotRoute.SameZone(nav, zone, start, sample.To, out string emain);
                         Assert.That(walk, Is.EqualTo(InstalledBotRoute.Walk.Road), $"Emain frontier: the bot's walk ({emain})");
-                        if (emainLegs.Length > 0)
-                            Assert.That(AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, emainLegs[0], out _), Is.True,
-                                $"Corner Emain frontier toward {emainLegs[0]}");
+                        // The game asks corner recovery toward the bot's failed goal (TryFindLocalRecoveryWaypoint's
+                        // onwardDestination), never a road anchor: toward this target it has no direct path, so it is false.
+                        Assert.That(AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, sample.To, out _), Is.False,
+                            "Emain frontier: corner recovery toward the target needs the direct path the mesh denies");
                         Assert.That(AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, region, 200, sample.From + new Vector3(0, 0, 200), out _),
                             Is.False, "Emain frontier: no escape 200 above");
                         TestContext.WriteLine($"AUDIT 200 frontier from={start} target={sample.To} walk={walk} ({emain})");
@@ -73,7 +75,7 @@ namespace DOL.UnitTests
                             TestContext.WriteLine($"AUDIT {sample.Region} {sample.Name} from={start} target={target} approach={approach}:{ap}");
                             continue;
                         }
-                        var walk = InstalledBotRoute.SameZone(nav, zone, start, target, out string detail, out Vector3[] legEnds);
+                        var walk = InstalledBotRoute.SameZone(nav, zone, start, target, out string detail);
                         Assert.That(walk, Is.EqualTo(sample.Walk), $"{sample.Name} {target}: the bot's walk ({detail})");
                         if (sample.Walk == InstalledBotRoute.Walk.Direct)
                         {
@@ -81,11 +83,12 @@ namespace DOL.UnitTests
                             var path = nav.GetPathStraight(zone, start, target, nav.DefaultFilters, nodes);
                             Assert.That(path.Status, Is.EqualTo(PathfindingStatus.PathFound), $"{sample.Name} {target}: direct path");
                         }
-                        // Corner recovery follows the leg the bot is on: the target itself on a direct walk, the first road
-                        // anchor on a road walk (it needs a direct path to its destination, which the cut denies; see the pin).
-                        Vector3 leg = legEnds.Length > 0 ? legEnds[0] : target;
-                        bool recovery = AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, leg, out var corner);
-                        Assert.That(recovery, Is.True, $"Corner {sample.Name} toward {leg}");
+                        // The game asks corner recovery toward the bot's failed goal (AutonomousWorldBotController
+                        // .TryFindLocalRecoveryWaypoint's onwardDestination), never a road anchor. It needs a direct path to
+                        // that goal: true on a direct walk; on a road walk false, the cut (also pinned in FrontierDirectQueryCut).
+                        bool recovery = AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, target, out var corner);
+                        Assert.That(recovery, Is.EqualTo(sample.Walk == InstalledBotRoute.Walk.Direct),
+                            $"Corner {sample.Name} toward the target ({(sample.Walk == InstalledBotRoute.Walk.Direct ? "direct walk" : "road walk: the cut")})");
                         TestContext.WriteLine($"AUDIT {sample.Region} {sample.Name} from={start} target={target} walk={walk} ({detail}) " +
                             $"approach={approach}:{ap} corner={recovery}:{corner}");
                     }

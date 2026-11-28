@@ -50,17 +50,19 @@ public class UT_ExpeditionHubFailures
                 using var cmd = db.CreateCommand();
                 cmd.CommandText = $"SELECT SourceX,SourceY,SourceZ FROM ZonePoint WHERE Id={s.Item2}";
                 using var r = cmd.ExecuteReader();
-                Assert.That(r.Read(), Is.True);
+                bool edgeRow = r.Read();
+                Assert.That(edgeRow, Is.True, $"ZonePoint {s.Item2} exists");
+                if (!edgeRow) continue;
                 Vector3 target = new(r.GetInt32(0),r.GetInt32(1),r.GetInt32(2));
                 var zone=region.GetZone((int)s.Item3.X,(int)s.Item3.Y);
                 var nav=PathfindingProvider.LocalPathfindingMgr;
                 bool shelf = s.Item1 == 200;
                 if (shelf)
                 {
-                    // #704: the four Lough Derg captures (September) stand on a shelf about 2,100 above the Tir na Nog exit,
-                    // on side ground (not the zone's main ground) with no way to edge 167's source. Nothing walks a bot
-                    // there: the only arrival nearby is the Tir na Nog exit 19 landing, and no route from it reaches the
-                    // shelf. A bot from that arrival reaches the source, every leg complete. The shelf is pinned as a cut.
+                    // #704: the four Lough Derg captures (September) stand about 2,100 above the Tir na Nog exit 19 arrival,
+                    // on side ground (area 69468, not the zone's main ground), with no route from them to edge 167's source.
+                    // What is checked: no route from the exit 19 arrival reaches them. That ground is a listed seam network
+                    // with Connacht and zone 201 (seams.json), so other ways on are not ruled out: #845. Pinned as a cut.
                     Vector3? near=nav.GetClosestPoint(zone,s.Item3,64,64,128,nav.DefaultFilters);
                     Assert.That(near.HasValue, Is.True, $"Shelf {s}: floor under the capture");
                     Vector3 floorStart=near ?? s.Item3;
@@ -71,7 +73,7 @@ public class UT_ExpeditionHubFailures
                     Assert.That(ground.Area.HasValue && ground.Main.HasValue && ground.Area != ground.Main, Is.True,
                         $"Shelf {s}: the cut, side ground (area {ground.Area}, main {ground.Main})");
                     Assert.That(walk, Is.False, $"Shelf {s}: the cut, no route from the shelf to the source ({trace})");
-                    Assert.That(fromExit, Is.False, $"Shelf {s}: no route from the exit 19 arrival onto the shelf ({exitTrace})");
+                    Assert.That(fromExit, Is.False, $"Shelf {s}: no route from the exit 19 arrival onto it ({exitTrace})");
                 }
                 bool success=AutonomousZonePointApproach.TryResolve(nav,zone,s.Item3,target,112,out var approach);
                 var edge = new DOL.Database.DbZonePoint { Id=(ushort)s.Item2, SourceRegion=(ushort)s.Item1, SourceX=(int)target.X, SourceY=(int)target.Y, SourceZ=(int)target.Z };
@@ -101,7 +103,8 @@ public class UT_ExpeditionHubFailures
                 }
             }
             {
-                // The bot's real route to edge 167's source: from the Tir na Nog exit 19 landing, the only arrival near the shelf.
+                // The main-ground route to edge 167's source: from the Tir na Nog exit 19 landing, the zone point arrival nearest
+                // the captures (the only ZonePoint target within 3,000 of them).
                 var region = UT_AuditedDungeonInstalledMesh.BuildRegion(db, 200, loaded);
                 var nav = PathfindingProvider.LocalPathfindingMgr;
                 Vector3 target = new(348198, 492819, 5240);
@@ -109,8 +112,9 @@ public class UT_ExpeditionHubFailures
                 {
                     cmd.CommandText = "SELECT SourceX,SourceY,SourceZ FROM ZonePoint WHERE Id=167";
                     using var r = cmd.ExecuteReader();
-                    Assert.That(r.Read(), Is.True);
-                    target = new(r.GetInt32(0), r.GetInt32(1), r.GetInt32(2));
+                    bool edgeRow = r.Read();
+                    Assert.That(edgeRow, Is.True, "ZonePoint 167 exists");
+                    if (edgeRow) target = new(r.GetInt32(0), r.GetInt32(1), r.GetInt32(2));
                 }
                 Zone zone = region.GetZone((int)LoughDergArrival.X, (int)LoughDergArrival.Y);
                 using (var arrivals = db.CreateCommand())

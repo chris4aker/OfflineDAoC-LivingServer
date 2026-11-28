@@ -40,9 +40,10 @@ public class UT_RealmEventAuditReadOnly
                 Assert.That(direct, Is.True, "Ordinary Sheeroe travel from the hub must find the road without an expedition-only via hint");
                 Assert.That(via, Is.True, "The hub's route with its via hint");
                 Assert.That(walk, Is.True, $"The bot's route from the hub to Cuuldurach, every leg complete: {walkTrace}");
-                // #704: the September captures A (zone 204) and B (zone 202) stand on side ground at the 202/204 seam:
-                // not the zones' main ground, not reachable from the hub, and the itinerary from them only steps back and
-                // forth across that seam. Pinned as a cut, so it stays visible.
+                // #704: the September captures A (zone 204) and B (zone 202) stand on side ground at the 202/204 seam (not
+                // the zones' main ground). What is checked: no muster or bot route from them (the itinerary only steps back
+                // and forth across that seam), and no route from the hub onto them. That ground is a listed seam network
+                // with zones 216, 205 and 201 (seams.json), so other ways on are not ruled out: #845. Pinned as a cut.
                 foreach(var p in new[]{new Vector3(352160,680000,7224),new Vector3(352160,679872,7315)})
                 {
                     var zone=region.GetZone((int)p.X,(int)p.Y);

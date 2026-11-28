@@ -39,10 +39,18 @@ namespace DOL.UnitTests
             }
             // The mover swaps in the road route only for a partial path (Pathfinder.TryRoadPath), never for no path at all.
             var probe = new WrappedPathfindingNode[512];
-            PathfindingStatus status = nav.GetPathStraight(zone, start, end, nav.DefaultFilters, probe).Status;
-            if (status != PathfindingStatus.PartialPathFound)
+            PathfindingResult direct = nav.GetPathStraight(zone, start, end, nav.DefaultFilters, probe);
+            if (direct.Status != PathfindingStatus.PartialPathFound || direct.NodeCount < 1)
             {
-                detail = $"no direct corridor ({status}), so no road route";
+                detail = $"no direct corridor ({direct.Status}), so no road route";
+                return Walk.None;
+            }
+            // A partial path ending near the target is kept, not replaced by roads (AutonomousNearMissDeadEnds.KeepsNearMiss:
+            // always for companions, the first time for gamebots), so such a walk does not count as a road walk here.
+            Vector3 partialEnd = probe[Math.Min(direct.NodeCount, probe.Length) - 1].Position;
+            if (Vector3.Distance(partialEnd, end) <= AutonomousNearMissDeadEnds.NearMissDistance)
+            {
+                detail = $"the direct path is a near miss (ends at {partialEnd}), which the mover keeps";
                 return Walk.None;
             }
             if (!AutonomousZoneRoads.TryRoute(nav, zone, start, end, out Vector3[] via) || via == null)

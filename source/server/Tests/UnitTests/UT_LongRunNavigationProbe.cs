@@ -348,8 +348,8 @@ namespace DOL.UnitTests
                     }
                 }
                 {
-                    // The cut (#704): September's Valley seam point stands on side ground in zone 206 (not its main ground)
-                    // with no route to the Druim Cain horse. The itinerary no longer steps there (the DF walk above).
+                    // The cut (#704): September's Valley seam point (the #421 seam-cycle spot) stands on side ground in zone
+                    // 206 (not its main ground) with no walk to the Druim Cain horse. The DF walk above no longer steps there.
                     Vector3 oldSeam = new(385088, 483424, 7262), horse = new(421892, 488015, 1824);
                     Zone valleyZone = hibernia.GetZone((int)oldSeam.X, (int)oldSeam.Y);
                     var oldGround = InstalledBotRoute.Ground(200, valleyZone, oldSeam);

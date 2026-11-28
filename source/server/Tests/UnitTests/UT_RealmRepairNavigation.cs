@@ -64,8 +64,9 @@ public class UT_RealmRepairNavigation
             var glacierGround=InstalledBotRoute.Ground(200,glacierZone,glacierStart);
             bool hib=RealmRaidMuster.TryRoute(regions[200],nav,eRealm.Hibernia,glacierStart,dragonGoal,out var hibSeams,new(361354,750434,4944));
             TestContext.WriteLine($"CUULDURACH CAPTURE CORRIDOR {hib} start={glacierStart} area={glacierGround.Area} main={glacierGround.Main} [{string.Join(";",hibSeams)}] {RealmRaidMuster.LastRouteFailure}");
-            // #704: the glacier capture is Sheeroe capture A, on side ground at the 202/204 seam (pinned in
-            // UT_RealmEventAuditReadOnly). The muster routes from the Innis Carthaig hub, with its via hint.
+            // #704: the glacier capture is Sheeroe capture A, on side ground at the 202/204 seam, with no route to
+            // Cuuldurach from it (pinned in UT_RealmEventAuditReadOnly; #845). The muster's own route is from the Innis
+            // Carthaig hub, with its via hint.
             Assert.That(hib, Is.False, "the cut: no Cuuldurach route from the glacier capture's side ground");
             Assert.That(glacierGround.Area.HasValue && glacierGround.Main.HasValue && glacierGround.Area != glacierGround.Main, Is.True,
                 $"the glacier capture is side ground (area {glacierGround.Area}, main {glacierGround.Main})");
