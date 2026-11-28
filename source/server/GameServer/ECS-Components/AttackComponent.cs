@@ -72,7 +72,7 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Port of OpenDAoC-Core c707d057f (memory leak): once the component leaves the service, drop the last weapon action
+        /// Memory leak fix: once the component leaves the service, drop the last weapon action
         /// and the start-of-attack target, which otherwise kept a dead or deleted target alive until the next fight.
         /// </summary>
         private void Stop()
@@ -256,6 +256,11 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>The Critical Shot level for the draw time: a bot's comes from its bow spec, as a player's ability would
+        /// (#569 step 8; bots never run OnSkillTrained, so their ability level read 0 and the draw was slower than a player's).</summary>
+        private static int CriticalShotDrawLevel(GameLiving owner) =>
+            owner is GameBot bot ? BotRangedCombat.CriticalShotLevel(bot) : owner.GetAbilityLevel(Abilities.Critical_Shot);
+
         /// <summary>
         /// Gets the current attackspeed of this living in milliseconds
         /// </summary>
@@ -332,7 +337,7 @@ namespace DOL.GS
                         speed -= percent;
 
                         if (owner.rangeAttackComponent.RangedAttackType is eRangedAttackType.Critical)
-                            speed = speed * 2 - (owner.GetAbilityLevel(Abilities.Critical_Shot) - 1) * speed / 10;
+                            speed = speed * 2 - (CriticalShotDrawLevel(owner) - 1) * speed / 10;
                         else if (owner.rangeAttackComponent.RangedAttackType is eRangedAttackType.RapidFire)
                         {
                             speed *= RangeAttackComponent.RAPID_FIRE_ATTACK_SPEED_MODIFIER;
@@ -2158,7 +2163,7 @@ namespace DOL.GS
             if (!string.IsNullOrEmpty(message))
                 Message.SystemToArea(ad.Attacker, message, eChatType.CT_OthersCombat, _broadcastExcludes);
 
-            // Port of OpenDAoC-Core c707d057f: the exclusion list was never cleared after use, so it kept the last fight's
+            // Memory leak fix: the exclusion list was never cleared after use, so it kept the last fight's
             // attacker, target and pet owner alive.
             Array.Clear(_broadcastExcludes);
 
