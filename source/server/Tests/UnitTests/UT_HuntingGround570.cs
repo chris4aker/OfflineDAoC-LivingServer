@@ -49,10 +49,11 @@ namespace DOL.UnitTests
         [Test]
         public void TheSwitchIsOnInTheCodeAndInTheReleaseWorld()
         {
-            FieldInfo field = typeof(AutonomousHuntingGround).GetField(nameof(AutonomousHuntingGround.Enabled));
+            FieldInfo field = typeof(Properties).GetField(nameof(Properties.BOT_HUNTING_GROUNDS));
             var attribute = field.GetCustomAttribute<ServerPropertyAttribute>();
             Assert.That(attribute, Is.Not.Null);
-            Assert.That(attribute.Key, Is.EqualTo("bot_hunting_grounds"));
+            Assert.That(attribute.Key, Is.EqualTo(AutonomousHuntingGround.PropertyKey));
+            Assert.That(AutonomousHuntingGround.PropertyKey, Is.EqualTo("bot_hunting_grounds"));
             Assert.That(attribute.DefaultValue, Is.EqualTo(true));
             Assert.That(Tools("release-server-settings.json"), Does.Contain("\"bot_hunting_grounds\": \"True\""));
         }
@@ -216,6 +217,8 @@ namespace DOL.UnitTests
             Assert.That(AutonomousHuntingGround.ConSortPenalty(ConColor.BLUE, ConColor.BLUE), Is.Zero);
             Assert.That(AutonomousHuntingGround.ConSortPenalty(ConColor.YELLOW, ConColor.BLUE), Is.EqualTo(220));
             Assert.That(AutonomousHuntingGround.ConSortPenalty(ConColor.GREEN, ConColor.BLUE), Is.EqualTo(220));
+            Assert.That(AutonomousHuntingGround.ConSortPenalty(ConColor.UNKNOWN, ConColor.YELLOW),
+                Is.EqualTo(AutonomousHuntingGround.UnknownConPenalty), "an unknown con sorts last and never overflows");
         }
 
         [Test]

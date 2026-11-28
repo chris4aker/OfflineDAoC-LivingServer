@@ -17,8 +17,8 @@ namespace DOL.GS
     /// this, so camp competition still comes first);</item>
     /// <item>at a camp whose own monster is gone the bot hunts the area around it (2,600 units) instead of leaving after
     /// the empty-camp wait: any monster that cons green up to the bot's solo ceiling and passes every other filter;</item>
-    /// <item>a solo bot pulls the monster standing apart from the others first (Prima's Warden: "soloing antisocial mobs
-    /// that don't call for help"), as parties already do;</item>
+    /// <item>a solo bot pulls the monster standing apart from the others first, as parties already do (the 2002 Prima
+    /// guide's monster tables mark which monsters are social and which call for help: a soloer picked the lone ones);</item>
     /// <item>healers, bards and minstrels, and the archers, prefer blue targets to yellow; the con ceiling is unchanged;</item>
     /// <item>once 6 of its last 8 kills at a camp conned green it moves up a spot: the next plan takes a camp of blue or
     /// harder typical con when one exists, which the zone weights keep near.</item>
@@ -29,9 +29,15 @@ namespace DOL.GS
     /// </summary>
     public static class AutonomousHuntingGround
     {
-        [ServerProperty("bots", "bot_hunting_grounds",
-            "Solo gamebots keep a hunting ground (#570): the camp draw prefers the bot's own zone and its neighbours, a bot hunts the area around a camp whose monster is gone, pulls the monster standing apart first, healers, bards and archers prefer blue targets, and a bot moves up a spot when most of its kills con green.", true)]
-        public static bool Enabled = true;
+        /// <summary>The switch (ServerProperties: bot_hunting_grounds, on).</summary>
+        public const string PropertyKey = "bot_hunting_grounds";
+
+        /// <summary>bot_hunting_grounds (settable for tests).</summary>
+        public static bool Enabled
+        {
+            get => Properties.BOT_HUNTING_GROUNDS;
+            set => Properties.BOT_HUNTING_GROUNDS = value;
+        }
 
         // ---------------------------------------------------------------- zone preference
 
@@ -65,7 +71,7 @@ namespace DOL.GS
             if (a == null || b == null || a == b || a.ZoneRegion != b.ZoneRegion)
                 return false;
             (ushort, ushort) key = a.ID < b.ID ? (a.ID, b.ID) : (b.ID, a.ID);
-            return Neighbours.GetOrAdd(key, _ => AutonomousZoneItinerary.TryGetSharedEdge(a, b, out _));
+            return Neighbours.GetOrAdd(key, pair => AutonomousZoneItinerary.TryGetSharedEdge(a, b, out _));
         }
 
         // ---------------------------------------------------------------- per-bot state (memory only)
@@ -314,11 +320,11 @@ namespace DOL.GS
         // ---------------------------------------------------------------- con preference by class
 
         /// <summary>
-        /// Pure rule: the con a solo bot of this class prefers among targets it may pull (Prima's 2002 class sections:
-        /// Healer "stay away from the yellow, orange, red or purple con mobs", Shaman "yellow mobs will often kill you",
-        /// Minstrel "Solo blues", Scout "Hunt mobs that con blue and green", soloing "not really recommended for Bards").
-        /// Druids go with the healers, Hunters and Rangers with the Scout. Everyone else, Clerics and Friars included
-        /// (Cleric: "you can easily solo yellows"), keeps yellow first. The con ceiling itself is unchanged.
+        /// Pure rule: the con a solo bot of this class prefers among targets it may pull. The 2002 Prima guide: "All
+        /// classes are supposed to have an 'ideal' yellow", "for a Rogue (lower STR and DEX), yellow is death", and greens
+        /// kill faster with no rest between. The classes that solo most slowly or most fragile (the support casters Shaman, Healer and
+        /// Druid, the Bard and Minstrel, and the archers Scout, Hunter and Ranger) prefer blue; everyone else, Clerics and
+        /// Friars included, keeps yellow first. The con ceiling itself is unchanged: no class fights anything harder.
         /// </summary>
         public static ConColor PreferredSoloCon(eCharacterClass characterClass) => characterClass switch
         {
@@ -330,6 +336,11 @@ namespace DOL.GS
 
         /// <summary>Pure rule: the con part of the target sort (220 units of walking per con step from the preferred con;
         /// with yellow preferred, exactly the sort solo bots always had).</summary>
-        public static int ConSortPenalty(ConColor con, ConColor preferred) => Math.Abs((int)con - (int)preferred) * 220;
+        public static int ConSortPenalty(ConColor con, ConColor preferred) =>
+            con == ConColor.UNKNOWN || preferred == ConColor.UNKNOWN
+                ? UnknownConPenalty : Math.Abs((int)con - (int)preferred) * 220;
+
+        /// <summary>The sort penalty of an unknown con (behind every known one; never Math.Abs(int.MinValue)).</summary>
+        public const int UnknownConPenalty = 7 * 220;
     }
 }

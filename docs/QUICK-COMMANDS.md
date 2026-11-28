@@ -42,6 +42,9 @@ modifier, create one bot. Start small and increase population for your PC's capa
 | `/defensive` | Helpers and companions stay near you and engage nearby threats, letting you pull mobs back to the group; useful for harder content. |
 
 `/spawn 40` and `/spawn 80` are **not** the raid-size commands. Use `/raid` first.
+
+Helpers you `/spawn` level up with you while they are in your group. After you ding, each one catches up to your level once it is out of combat, with its specializations, spells, styles, equipment and pet brought up to date, so you don't need to respawn them. They never level down.
+
 The aggressive/defensive commands control your /spawn helpers and hired companions, not gamebots.
 The `/raid` command does not implement Darkness Falls raid AI. In the v0.32/
 v0.32b Darkness Falls Beta, Legion, the hardest level-70+ encounters,

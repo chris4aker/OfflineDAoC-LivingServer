@@ -78,6 +78,15 @@ public sealed record SocialExpansionSettings
     /// <summary>The damage dealers of the player's group fight the player's target first (bot_leader_focus, #571 step 1). No
     /// checkbox: kept as read. On by default (1.2.3).</summary>
     public bool LeaderFocus { get; init; } = true;
+    /// <summary>Gamebot parties fight one kill target, the tank's (bot_party_main_assist, #569 step 6). No checkbox: kept as
+    /// read. On by default (1.2.3).</summary>
+    public bool PartyMainAssist { get; init; } = true;
+    /// <summary>Archer bots open with Critical Shot and a Hunter's pet waits for it (bot_critical_shot_opener, #569 step 8).
+    /// No checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool CriticalShotOpener { get; init; } = true;
+    /// <summary>Gamebot party pullers pass over too-far monsters and keep with the party (bot_party_puller_camp_turn, #569
+    /// step 9). No checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool PartyPullerCampTurn { get; init; } = true;
     /// <summary>Gamebots show as bots: [Playerbot] in /who and "gamebot"/"buffbot" in refused invites (bot_show_as_bots, 1.2.3). Off by
     /// default (owner 2026-11-24, #485: bots look like players). A display choice, not a feature: ALL OFF leaves it as it is.</summary>
     public bool ShowBotsAsBots { get; init; }
@@ -110,7 +119,7 @@ public sealed record SocialExpansionSettings
     public bool CraftingEraStart { get; init; } = true;
     /// <summary>Another order's craft stops at 75% or 40% of the primary (crafting_secondary_caps). Off by default.</summary>
     public bool CraftingSecondaryCaps { get; init; }
-    /// <summary>Crafting skill points per gain, 1 (classic) to 10 (crafting_skill_rate, True165's key).</summary>
+    /// <summary>Crafting skill points per gain, 1 (classic) to 10 (crafting_skill_rate).</summary>
     public double CraftingPace { get; init; } = DefaultCraftingPace;
     /// <summary>The smith's repairs: classic, light (the default) or free (player_upkeep).</summary>
     public string PlayerUpkeep { get; init; } = "light";
@@ -239,7 +248,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, HuntingGrounds = true, LeaderFocus = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, HuntingGrounds = true, LeaderFocus = true, PartyMainAssist = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true,
     };
@@ -278,12 +287,15 @@ public sealed record SocialExpansionSettings
         ("bot_living_rumours", "bots", "Server life: bots pass on rumours that are true: a rare named monster that just spawned, or an enemy keep whose guards are down. Go and see."),
         ("bot_living_holidays", "bots", "Server life: around Halloween, Thanksgiving, Christmas, New Year and other holidays on your PC's calendar, bots talk about them like 2003 players did and answer your holiday wishes."),
         ("bot_living_holidays_thanksgiving", "bots", "Server life: which Thanksgiving the holiday chatter marks: us (the fourth Thursday of November, the default), canada (the second Monday of October) or off."),
-        ("hired_companions", "bots", "Hired companions (some code from the True 1.65 project): players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged."),
+        ("hired_companions", "bots", "Hired companions: players hire up to 7 persistent companions (slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first is free) with /hire near a healer of their realm (every capital and large town has one). They level beside their player, keep their gear and coin, and have AI Options. /spawn and /raid are unchanged."),
         ("bot_living_leeroy", "bots", "Server life: one end-game raid in twenty has a bot who charges the final boss before the raid is ready, yelling his name, and the raid has to follow him in."),
         ("living_atmosphere_lines", "bots", "Atmosphere lines: short lines in the middle of the screen when you first enter a dungeon or epic zone that day, step into a boss's lair, a boss changes phase, a dragon wakes, a realm kills a boss for the first time or a raid forms. At most one every 30 seconds, and realm news always comes first."),
         ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
         ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
+        ("bot_party_main_assist", "bots", "Gamebot parties fight one kill target (#569): in a party of autonomous gamebots doing group PvE, the tank's target is the party's kill target and the other members hit it before whoever is hitting them or their own top threat. A member below half health that is being hit fights back, and a member hit by an enemy player fights that player at any health. A monster a groupmate has mesmerized or rooted, an enemy pet and a siege engine are never the kill target. It doesn't apply in realm raids (the raid's own calls win), under the RvR tactics, or with an enemy player in view. Groups with a real player in them keep leader focus (bot_leader_focus), and RvR warbands and companions are unchanged. Log: AUTONOMOUS_PARTY_KILL_TARGET."),
         ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
+        ("bot_critical_shot_opener", "bots", "Archer bots open with Critical Shot (#569): a Hunter, Scout or Ranger gamebot, hired companion or /bot companion draws a Critical Shot as its first shot at a target that isn't fighting, running or mezzed, as players pulled, when it has the endurance, and a Hunter keeps its pet at heel for that shot (at most 7 seconds) instead of sending it in first. The draw time, damage and endurance are the player's. Your own character and pet are unchanged."),
+        ("bot_party_puller_camp_turn", "bots", "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD."),
         ("bot_weapon_set_rules", "bots", "Bots fight with the weapon set a player would (#569): a party's only tank with Guard fights with its trained shield and guards a member within reach, a bot carrying a two-hander and a one-hander uses the line it trained higher, a hired companion keeps the melee set you readied in its window, and archers stop flipping between bow and melee weapon. Only weapons the bot already carries are used. Gamebots, hired companions and /bot companions alike."),
         ("bot_hunting_grounds", "bots", "Solo gamebots keep a hunting ground (#570), as a player levelled through one zone and its neighbours: a solo gamebot's next camp is far more often in the zone it hunts or a neighbouring one, it hunts the area around a camp whose monster is gone instead of leaving, it pulls the monster standing apart first, healers, bards and archers prefer blue targets to yellow, and once most of its kills con green it moves up to a harder spot. Groups, raids, dungeons and Darkness Falls are unchanged; companions are not touched."),
         ("bot_show_as_bots", "bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines."),
@@ -385,6 +397,9 @@ public sealed record SocialExpansionSettings
         ["bot_weapon_set_rules"] = Bool(WeaponSetRules),
         ["bot_hunting_grounds"] = Bool(HuntingGrounds),
         ["bot_leader_focus"] = Bool(LeaderFocus),
+        ["bot_party_main_assist"] = Bool(PartyMainAssist),
+        ["bot_critical_shot_opener"] = Bool(CriticalShotOpener),
+        ["bot_party_puller_camp_turn"] = Bool(PartyPullerCampTurn),
         ["bot_show_as_bots"] = Bool(ShowBotsAsBots),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
@@ -731,6 +746,9 @@ public sealed record SocialExpansionSettings
             WeaponSetRules = ReadBool("bot_weapon_set_rules", d.WeaponSetRules),
             HuntingGrounds = ReadBool("bot_hunting_grounds", d.HuntingGrounds),
             LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
+            PartyMainAssist = ReadBool("bot_party_main_assist", d.PartyMainAssist),
+            CriticalShotOpener = ReadBool("bot_critical_shot_opener", d.CriticalShotOpener),
+            PartyPullerCampTurn = ReadBool("bot_party_puller_camp_turn", d.PartyPullerCampTurn),
             ShowBotsAsBots = ReadBool("bot_show_as_bots", d.ShowBotsAsBots),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,
