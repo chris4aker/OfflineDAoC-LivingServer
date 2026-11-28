@@ -321,6 +321,8 @@ namespace DOL.GS.Tests
                 member.attackComponent?.AttackerTracker?.Clear();
             CompanionPvpEngagement.Reset(scene.Player);
             enemy.X = X + CompanionRvrEngage.Leash(defensive: false) + 150;
+            enemy.movementComponent.ForceUpdatePosition(); // an NPC's position is its movement component's
+            Assert.That(scene.Player.GetDistanceTo(enemy), Is.GreaterThan(CompanionRvrEngage.Leash(defensive: false)), "past the leash");
             Assert.That(CompanionRvrEngage.HittingGroup(scene.Player, enemy), Is.False, "it is hitting nobody now");
             foreach (GameBot bot in scene.Group)
                 Assert.That(CompanionEngagementMode.Allows(bot, enemy), Is.False, $"{bot.Name}: let go");
