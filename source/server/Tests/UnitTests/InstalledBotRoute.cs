@@ -37,6 +37,14 @@ namespace DOL.UnitTests
                 legEnds = [end];
                 return Walk.Direct;
             }
+            // The mover swaps in the road route only for a partial path (Pathfinder.TryRoadPath), never for no path at all.
+            var probe = new WrappedPathfindingNode[512];
+            PathfindingStatus status = nav.GetPathStraight(zone, start, end, nav.DefaultFilters, probe).Status;
+            if (status != PathfindingStatus.PartialPathFound)
+            {
+                detail = $"no direct corridor ({status}), so no road route";
+                return Walk.None;
+            }
             if (!AutonomousZoneRoads.TryRoute(nav, zone, start, end, out Vector3[] via) || via == null)
             {
                 detail = "no direct corridor and no road route";
@@ -106,9 +114,22 @@ namespace DOL.UnitTests
             return last != Walk.None;
         }
 
-        /// <summary>Where a bot at <paramref name="capture"/> plans from (the floor step; see UT_SeptemberThirteenInstalledRoutes.PlanningStart).</summary>
-        internal static Vector3 Start(IPathfindingMgr nav, Zone zone, Vector3 capture) =>
-            UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav, zone, capture);
+        /// <summary>
+        /// Where a bot at <paramref name="capture"/> plans from: off the mesh, the floor step's floor
+        /// (UT_SeptemberThirteenInstalledRoutes.PlanningStart); on a scrap of floor with no way on (no local exit), where the
+        /// floor step's ring search puts it (TryNearestWalkableFloor, 300 units, as AutonomousWorldBotController.TryFloorStep at
+        /// the first failed route); otherwise the capture itself.
+        /// </summary>
+        internal static Vector3 Start(IPathfindingMgr nav, Zone zone, Vector3 capture)
+        {
+            Vector3 start = UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav, zone, capture);
+            if (AutonomousRendezvousNavigation.HasLocalExit(nav, zone, start))
+                return start;
+            Assert.That(AutonomousNavigationSurface.TryNearestWalkableFloor(nav, zone, start, 300, out Vector3 floor), Is.True,
+                $"the floor step finds no floor that leads on from the scrap at {start}");
+            TestContext.WriteLine($"SCRAP_FLOOR_STEP {capture} start={start} floor={floor}");
+            return floor;
+        }
 
         /// <summary>The ground (road/seam area) a point stands on, and its zone's main ground, for the side-ground pins.</summary>
         internal static (int? Area, int? Main) Ground(ushort regionId, Zone zone, Vector3 point) =>

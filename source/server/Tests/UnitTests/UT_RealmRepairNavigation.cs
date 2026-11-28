@@ -64,7 +64,15 @@ public class UT_RealmRepairNavigation
             var glacierGround=InstalledBotRoute.Ground(200,glacierZone,glacierStart);
             bool hib=RealmRaidMuster.TryRoute(regions[200],nav,eRealm.Hibernia,glacierStart,dragonGoal,out var hibSeams,new(361354,750434,4944));
             TestContext.WriteLine($"CUULDURACH CAPTURE CORRIDOR {hib} start={glacierStart} area={glacierGround.Area} main={glacierGround.Main} [{string.Join(";",hibSeams)}] {RealmRaidMuster.LastRouteFailure}");
-            Assert.That(hib, Is.True, "Cuuldurach route from the glacier capture");
+            // #704: the glacier capture is Sheeroe capture A, on side ground at the 202/204 seam (pinned in
+            // UT_RealmEventAuditReadOnly). The muster routes from the Innis Carthaig hub, with its via hint.
+            Assert.That(hib, Is.False, "the cut: no Cuuldurach route from the glacier capture's side ground");
+            Assert.That(glacierGround.Area.HasValue && glacierGround.Main.HasValue && glacierGround.Area != glacierGround.Main, Is.True,
+                $"the glacier capture is side ground (area {glacierGround.Area}, main {glacierGround.Main})");
+            Vector3 hub=new(334820,719979,4296);
+            bool fromHub=RealmRaidMuster.TryRoute(regions[200],nav,eRealm.Hibernia,hub,dragonGoal,out var hubSeams,new(361354,750434,4944));
+            TestContext.WriteLine($"CUULDURACH HUB CORRIDOR {fromHub} [{string.Join(";",hubSeams)}]");
+            Assert.That(fromHub, Is.True, "Cuuldurach route from the Innis Carthaig hub, with its via hint");
             Vector3? surfaceFloor = nav.GetClosestPoint(regions[151].GetZone(382872,333782),
                 new(382872,333782,7709),64,64,128,nav.DefaultFilters);
             Assert.That(surfaceFloor.HasValue, Is.True, "Hagall glacier surface floor");

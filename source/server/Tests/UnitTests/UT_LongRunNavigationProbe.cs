@@ -339,30 +339,34 @@ namespace DOL.UnitTests
                         Vector3 floorStart = UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav, from, startPoint);
                         bool boardingWalk = InstalledBotRoute.Itinerary(hibernia, nav, floorStart, snapped.Value, out string boardingTrace);
                         TestContext.WriteLine($"BOARDING {startPoint} -> {horseOrigin}: cursor={cursor} walk={boardingWalk}: {boardingTrace}");
+                        var boardingGround = InstalledBotRoute.Ground(200, from, floorStart);
+                        TestContext.WriteLine($"BOARDING_GROUND {startPoint} zone={from.ID} area={boardingGround.Area} main={boardingGround.Main} exit={AutonomousRendezvousNavigation.HasLocalExit(nav, from, floorStart)}");
                     }
                     Assert.That(snapped.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, to, cursor, snapped.Value),
                         Is.True, $"First boarding walk from {startPoint} reaches horse {horseOrigin}");
                 }
                 Zone blackMountains = regions[1].GetZone(515616, 494274);
-                {
-                    Vector3 prop = new(515616, 494274, 3397);
-                    Vector3? small = nav.GetClosestPoint(blackMountains, prop, 64, 64, 128, nav.DefaultFilters);
-                    Vector3? tall = nav.GetClosestPoint(blackMountains, prop, 64, 64, 4096, nav.DefaultFilters);
-                    bool nearest = AutonomousNavigationSurface.TryNearestWalkableFloor(nav, blackMountains, prop, 300, out Vector3 nf);
-                    TestContext.WriteLine($"PROP_TOP planning={AutonomousNavigationSurface.TryPlanningFloor(nav, blackMountains, prop, out _)} small={small} tall={tall} " +
-                        $"nearest={nearest}:{nf} exit={(small.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav, blackMountains, small.Value))} " +
-                        $"pocket={(small.HasValue && AutonomousZonePockets.Contains(blackMountains.ID, small.Value.X, small.Value.Y, small.Value.Z))} " +
-                        $"escape={AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, regions[1], 1, prop, out var propEscape)}:{propEscape} " +
-                        $"choose(nearest)={nearest && AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, nf, out _)} " +
-                        $"walk(nearest->bombard)={(nearest ? InstalledBotRoute.SameZone(nav, blackMountains, nf, new(515649, 496745, 3352), out _) : InstalledBotRoute.Walk.None)}");
-                }
-                Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains,
-                    new(515616, 494274, 3397), out _), Is.True,
-                    "The repaired prop-top now has a real short step onto connected ground");
+                // #704: in September the prop-top's floor had a short step onto connected ground. On the 1.2 meshes its scrap
+                // of floor has no way on (pinned below), and a bot there takes the floor step at its first failed route
+                // (TryNearestWalkableFloor, 300, as TryFloorStep): onto connected ground that leads on and reaches the bombard.
+                Vector3 propTop = new(515616, 494274, 3397);
+                Vector3? propFloor = nav.GetClosestPoint(blackMountains, propTop, 48, 48, 96, nav.DefaultFilters);
+                Assert.That(propFloor.HasValue && !AutonomousRendezvousNavigation.HasLocalExit(nav, blackMountains, propFloor.Value), Is.True,
+                    "The cut: the prop-top's floor has no way on");
+                Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, propTop, out _), Is.False,
+                    "The cut: no rendezvous point on the prop-top itself");
+                bool propStep = AutonomousNavigationSurface.TryNearestWalkableFloor(nav, blackMountains, propTop, 300, out Vector3 propStepFloor);
+                Assert.That(propStep, Is.True, "The prop-top's floor step finds connected ground");
+                Assert.That(Vector2.Distance(new(propStepFloor.X, propStepFloor.Y), new(propTop.X, propTop.Y)), Is.LessThanOrEqualTo(100),
+                    $"The prop-top's floor step is short (lands at {propStepFloor})");
+                Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, propStepFloor, out _), Is.True,
+                    "The floor step's ground has a real rendezvous point");
                 Vector3 bombard = new(515649, 496745, 3352);
                 Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, bombard, out Vector3 assembly), Is.True,
                     "A real connected nearby town/stable anchor remains usable");
                 Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, blackMountains, assembly, bombard), Is.True);
+                Assert.That(InstalledBotRoute.SameZone(nav, blackMountains, propStepFloor, bombard, out string propWalk), Is.Not.EqualTo(InstalledBotRoute.Walk.None),
+                    $"From the prop-top's floor step the bot walks to the bombard ({propWalk})");
                 // Optional, offline one-time repair PLAN only. The fixture never
                 // writes the live DB. Only already-stranded non-waiting actors
                 // in the evidenced prop footprint qualify, after native proof.

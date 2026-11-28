@@ -13,6 +13,9 @@ namespace DOL.UnitTests;
 [NonParallelizable, Explicit("Read-only reproduction of captured expedition routes")]
 public class UT_ExpeditionHubFailures
 {
+    /// <summary>Where Tir na Nog's exit 19 puts a bot in Lough Derg (ZonePoint 19's target).</summary>
+    private static readonly Vector3 LoughDergArrival = new(332733, 485215, 5215);
+
     [Test]
     public void CapturedSourceApproaches()
     {
@@ -51,27 +54,34 @@ public class UT_ExpeditionHubFailures
                 Vector3 target = new(r.GetInt32(0),r.GetInt32(1),r.GetInt32(2));
                 var zone=region.GetZone((int)s.Item3.X,(int)s.Item3.Y);
                 var nav=PathfindingProvider.LocalPathfindingMgr;
-                if (s.Item1 == 200)
+                bool shelf = s.Item1 == 200;
+                if (shelf)
                 {
+                    // #704: the four Lough Derg captures (September) stand on a shelf about 2,100 above the Tir na Nog exit,
+                    // on side ground (not the zone's main ground) with no way to edge 167's source. Nothing walks a bot
+                    // there: the only arrival nearby is the Tir na Nog exit 19 landing, and no route from it reaches the
+                    // shelf. A bot from that arrival reaches the source, every leg complete. The shelf is pinned as a cut.
                     Vector3? near=nav.GetClosestPoint(zone,s.Item3,64,64,128,nav.DefaultFilters);
+                    Assert.That(near.HasValue, Is.True, $"Shelf {s}: floor under the capture");
                     Vector3 floorStart=near ?? s.Item3;
                     var ground=InstalledBotRoute.Ground(200,zone,floorStart);
                     bool walk=InstalledBotRoute.Itinerary(region,nav,floorStart,target,out string trace);
-                    Vector3 loughExit=new(332733,485215,5215);
-                    bool fromExit=InstalledBotRoute.Itinerary(region,nav,loughExit,floorStart,out string exitTrace);
-                    TestContext.WriteLine($"SHELF_REACH {s} fromLoughExit={fromExit}: {exitTrace} pocket={AutonomousZonePockets.Contains(zone.ID,floorStart.X,floorStart.Y,floorStart.Z)} " +
-                        $"escape={AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav,region,200,s.Item3,out var esc)}:{esc} planning={AutonomousNavigationSurface.TryPlanningFloor(nav,zone,s.Item3,out _)}");
-                    TestContext.WriteLine($"SHELF {s} floor={near} area={ground.Area} main={ground.Main} localExit={near.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav,zone,floorStart)} walk={walk}: {trace}");
-                    using var arrivals=db.CreateCommand();
-                    arrivals.CommandText=$"SELECT Id,SourceRegion,TargetX,TargetY,TargetZ FROM ZonePoint WHERE TargetRegion=200 AND abs(TargetX-{(int)s.Item3.X})<3000 AND abs(TargetY-{(int)s.Item3.Y})<3000";
-                    using var arrival=arrivals.ExecuteReader();
-                    while(arrival.Read()) TestContext.WriteLine($"SHELF_ARRIVAL edge={arrival.GetInt32(0)} from={arrival.GetInt32(1)} at=({arrival.GetInt32(2)},{arrival.GetInt32(3)},{arrival.GetInt32(4)})");
+                    bool fromExit=InstalledBotRoute.Itinerary(region,nav,LoughDergArrival,floorStart,out string exitTrace);
+                    TestContext.WriteLine($"SHELF {s} floor={near} area={ground.Area} main={ground.Main} walk={walk}: {trace}; fromArrival={fromExit}: {exitTrace}");
+                    Assert.That(ground.Area.HasValue && ground.Main.HasValue && ground.Area != ground.Main, Is.True,
+                        $"Shelf {s}: the cut, side ground (area {ground.Area}, main {ground.Main})");
+                    Assert.That(walk, Is.False, $"Shelf {s}: the cut, no route from the shelf to the source ({trace})");
+                    Assert.That(fromExit, Is.False, $"Shelf {s}: no route from the exit 19 arrival onto the shelf ({exitTrace})");
                 }
                 bool success=AutonomousZonePointApproach.TryResolve(nav,zone,s.Item3,target,112,out var approach);
                 var edge = new DOL.Database.DbZonePoint { Id=(ushort)s.Item2, SourceRegion=(ushort)s.Item1, SourceX=(int)target.X, SourceY=(int)target.Y, SourceZ=(int)target.Z };
                 bool repaired=AutonomousRouteHotspotRepair.TryResolveAuditedCrossingSource(nav,region,edge,s.Item3,out var corrected);
                 TestContext.WriteLine($"REPAIR {s} repaired={repaired} corrected={corrected}");
-                if(s.Item1 != 10)
+                if(shelf)
+                {
+                    Assert.That(success || repaired,Is.False,$"Shelf {s}: the cut, neither an approach nor the audited crossing repair");
+                }
+                else if(s.Item1 != 10)
                 {
                     Assert.That(success || repaired,Is.True,$"Captured expedition source {s}");
                     if(repaired)
@@ -89,6 +99,29 @@ public class UT_ExpeditionHubFailures
                     if(floor.HasValue && AutonomousZonePointApproach.TryResolve(nav,zone,floor.Value,target,112,out _))
                         TestContext.WriteLine($"CONNECTED radius={radius} point={floor} delta={floor.Value-s.Item3}");
                 }
+            }
+            {
+                // The bot's real route to edge 167's source: from the Tir na Nog exit 19 landing, the only arrival near the shelf.
+                var region = UT_AuditedDungeonInstalledMesh.BuildRegion(db, 200, loaded);
+                var nav = PathfindingProvider.LocalPathfindingMgr;
+                Vector3 target = new(348198, 492819, 5240);
+                using (var cmd = db.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT SourceX,SourceY,SourceZ FROM ZonePoint WHERE Id=167";
+                    using var r = cmd.ExecuteReader();
+                    Assert.That(r.Read(), Is.True);
+                    target = new(r.GetInt32(0), r.GetInt32(1), r.GetInt32(2));
+                }
+                Zone zone = region.GetZone((int)LoughDergArrival.X, (int)LoughDergArrival.Y);
+                using (var arrivals = db.CreateCommand())
+                {
+                    arrivals.CommandText = "SELECT count(*) FROM ZonePoint WHERE Id=19 AND TargetRegion=200 AND TargetX=332733 AND TargetY=485215";
+                    Assert.That(Convert.ToInt32(arrivals.ExecuteScalar()), Is.EqualTo(1), "exit 19 lands at the Lough Derg arrival");
+                }
+                Assert.That(AutonomousZonePointApproach.TryResolve(nav, zone, LoughDergArrival, target, 112, out Vector3 approach), Is.True,
+                    "From the exit 19 arrival the bot has an approach to edge 167's source");
+                Assert.That(InstalledBotRoute.Itinerary(region, nav, LoughDergArrival, approach, out string arrivalTrace), Is.True,
+                    $"From the exit 19 arrival the bot's route reaches that approach: {arrivalTrace}");
             }
             });
         }

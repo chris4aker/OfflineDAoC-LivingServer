@@ -30,7 +30,7 @@ namespace DOL.UnitTests
             (1, new(535933, 608077, 2962), new(533198, 611484, 2272), "spider", InstalledBotRoute.Walk.Direct),
             // About 49,800 apart: a bot goes by the zone roads (the direct query stops at the cut, pinned below).
             (1, FrontierStart, FrontierTarget, "frontier", InstalledBotRoute.Walk.Road),
-            (200, new(474010, 318918, 5786), new(476053, 343166, 4105), "frontier", InstalledBotRoute.Walk.None),
+            (200, new(474010, 318918, 5786), new(476053, 343166, 4105), "frontier", InstalledBotRoute.Walk.Road),
             (128, new(31644, 32996, 16015), Vector3.Zero, "cave spider", InstalledBotRoute.Walk.None),
             (222, new(32450, 32804, 14962), Vector3.Zero, "spraggonix", InstalledBotRoute.Walk.None),
             (223, new(27280, 32217, 17271), Vector3.Zero, "pelagian crab", InstalledBotRoute.Walk.None),
@@ -47,27 +47,19 @@ namespace DOL.UnitTests
                     Zone zone = region.GetZone((int)sample.From.X, (int)sample.From.Y);
                     if (sample.Region == 200 && sample.Name == "frontier")
                     {
-                        // The Emain hotspot: unchanged since September. The immediate escape is close and connected.
-                        bool escaped = AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, region, 200, sample.From, out var escape);
-                        {
-                            Vector3? f = nav.GetClosestPoint(zone, sample.From, 64, 64, 128, nav.DefaultFilters);
-                            Vector3? e = nav.GetClosestPoint(zone, new(474044, 318952, 5838), 96, 96, 512, nav.DefaultFilters);
-                            Vector3? w = nav.GetClosestPoint(zone, sample.To, 96, 96, 512, nav.DefaultFilters);
-                            TestContext.WriteLine($"EMAIN escaped={escaped} floor={f} planning={AutonomousNavigationSurface.TryPlanningFloor(nav, zone, sample.From, out _)} " +
-                                $"escapeFloor={e} witness={w} escapeExit={e.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav, zone, e.Value)} " +
-                                $"escape->witness={e.HasValue && w.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, e.Value, w.Value)} " +
-                                $"source->escape={e.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, sample.From, e.Value)} " +
-                                $"sourceWalk={InstalledBotRoute.SameZone(nav, zone, f ?? sample.From, sample.To, out string emainWalk)} ({emainWalk})");
-                        }
-                        Assert.That(escaped, Is.True, "Emain frontier: immediate escape");
-                        if (escaped)
-                        {
-                            Assert.That(Vector3.Distance(escape, sample.From), Is.LessThan(100), "Emain frontier: escape distance");
-                            Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, escape, sample.To), Is.True,
-                                "Emain frontier: corridor from the escape");
-                        }
+                        // The Emain hotspot (474010,318918). In September a bot there needed the terminal pocket's immediate
+                        // escape. On the 1.2 meshes the capture stands on floor that leads on, and the bot walks to the
+                        // target by the zone road route, every leg complete; the escape itself is now refused (pinned in
+                        // EmainEscapeRefused). Nothing escapes from 200 units above the capture, as in September.
+                        Vector3 start = InstalledBotRoute.Start(nav, zone, sample.From);
+                        var walk = InstalledBotRoute.SameZone(nav, zone, start, sample.To, out string emain, out Vector3[] emainLegs);
+                        Assert.That(walk, Is.EqualTo(InstalledBotRoute.Walk.Road), $"Emain frontier: the bot's walk ({emain})");
+                        if (emainLegs.Length > 0)
+                            Assert.That(AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, emainLegs[0], out _), Is.True,
+                                $"Corner Emain frontier toward {emainLegs[0]}");
                         Assert.That(AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, region, 200, sample.From + new Vector3(0, 0, 200), out _),
                             Is.False, "Emain frontier: no escape 200 above");
+                        TestContext.WriteLine($"AUDIT 200 frontier from={start} target={sample.To} walk={walk} ({emain})");
                         continue;
                     }
                     foreach (Vector3 target in Targets(db, sample))
@@ -128,6 +120,37 @@ namespace DOL.UnitTests
                     Vector3 onwardEnd = onward.NodeCount > 0 ? nodes[Math.Min(onward.NodeCount, nodes.Length) - 1].Position : end;
                     Assert.That(Vector3.Distance(onwardEnd, FrontierTarget), Is.GreaterThan(Vector3.Distance(end, FrontierTarget) - 64),
                         $"nothing nearer the target is reachable from the cut (a second query ends at {onwardEnd})");
+                });
+            });
+        }
+
+        /// <summary>
+        /// The Emain pocket's immediate escape (AutonomousRouteHotspotRepair's terminal pocket at 474010,318918) is refused on
+        /// the 1.2 meshes: its escape floor (474044,318952) has a way on but no direct corridor to the pocket's network witness
+        /// (476053,343166), and none to the capture. Bots there walk the road route instead (<see cref="Probe"/>). Pinned so
+        /// the change stays visible: when the escape proves again, this fails and the pin is updated.
+        /// </summary>
+        [Test]
+        public void EmainEscapeRefused()
+        {
+            WithRegions((db, regions, nav) =>
+            {
+                Region region = regions(200);
+                Vector3 capture = new(474010, 318918, 5786), witness = new(476053, 343166, 4105);
+                Zone zone = region.GetZone((int)capture.X, (int)capture.Y);
+                Vector3? escape = nav.GetClosestPoint(zone, new(474044, 318952, 5838), 96, 96, 512, nav.DefaultFilters);
+                Vector3? network = nav.GetClosestPoint(zone, witness, 96, 96, 512, nav.DefaultFilters);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, region, 200, capture, out _), Is.False,
+                        "the immediate escape is refused");
+                    Assert.That(escape.HasValue && network.HasValue, Is.True, "the escape and the witness have floor");
+                    if (escape.HasValue && network.HasValue)
+                    {
+                        Assert.That(AutonomousRendezvousNavigation.HasLocalExit(nav, zone, escape.Value), Is.True, "the escape floor leads on");
+                        Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, escape.Value, network.Value), Is.False,
+                            "the cut: no direct corridor from the escape to the witness");
+                    }
                 });
             });
         }
