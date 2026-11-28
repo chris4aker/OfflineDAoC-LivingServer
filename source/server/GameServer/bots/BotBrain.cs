@@ -1305,7 +1305,8 @@ namespace DOL.AI.Brain
                 _ambientWanderMovement = false;
                 return;
             }
-            if (!ambientWander && CompanionHealerCombatHold.Holds(BotBody, leader))
+            // #665: a caster or healer of the player's group holds its attack-formation place while the group fights in RvR.
+            if (!ambientWander && (CompanionHealerCombatHold.Holds(BotBody, leader) || CompanionFormationHolds()))
             {
                 // Stop a formation walk already under way; other movement is left alone.
                 if (Body.IsMoving && CompanionFollowPolicy.HasFormationOrder(BotBody))
@@ -3288,6 +3289,12 @@ namespace DOL.AI.Brain
                     // If owner is in combat but we don't have a valid target, check recent attackers
                 }
 
+                // #665: in an RvR fight a caster or healer of the player's group (one that isn't on the attack, a healer
+                // above all) walks for its attack-formation place first; heals still come first (it walks only while
+                // nobody needs one) and it never walks out of a cast.
+                if (_brain.TryCompanionFormationSupport())
+                    return;
+
                 // No combat — heal/buff
                 if (_brain.CheckHeals())
                 {
@@ -3623,6 +3630,8 @@ namespace DOL.AI.Brain
                     return;
                 }
                 if (Body.TargetObject is GameLiving rvrFightTarget && TryRvrTacticsMove(rvrFightTarget)) return;
+                // #665: a caster of the player's group walks for its place in the group's RvR attack formation.
+                if (Body.TargetObject is GameLiving formationTarget && TryCompanionFormationMove(formationTarget)) return;
                 if (Body.TargetObject is GameLiving ambushTarget && TryApproachAmbush(ambushTarget))
                     return;
                 // A damage-dealing gamebot steps behind (or beside) a monster fighting someone else, for its back and
@@ -4230,6 +4239,7 @@ namespace DOL.AI.Brain
                 TryCommandCompanionDruidPet(CalculateNextAttackTarget());
             HoldSupportCombat();
             if (TryRvrTacticsSupport()) return;
+            if (TryCompanionFormationSupport()) return; // #665: a healer of the player's group walks for its place
             if (!CheckHeals() && !TryPvpCrowdControl() && !TryPveAddControl() && !TryShedAggroInSupport() &&
                 !TryGroupCelerity())
                 CheckSpells(eCheckSpellType.Defensive);
