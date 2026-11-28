@@ -409,6 +409,8 @@ namespace DOL.GS
                                 previous.PlayerAccount, active.PlayerAccount, previous.LastPressureTick, active.LastPressureTick))) continue;
                         int cap = active.DefenseReaction ? ResponseCap(force.Realm == active.DefenderRealm, active.DefenseScale) : SiegeRealmCap(active, force.Realm);
                         if (!TryJoin(Participants(active, force.Realm), force, cap)) continue;
+                        // #523 (h): a force holding a keep it took that joins this event drops its hold with no release.
+                        JoinedEventDropsClaimHold(force.GroupId);
                         if (previous != null)
                         {
                             Participants(previous, force.Realm).Remove(force.GroupId);

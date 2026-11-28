@@ -50,6 +50,7 @@ namespace DOL.GS
                 ($@"^We have fallen to {B}\.", "raid_wipe"),
                 ($@"^\d+ of the (?<guild>.+?) have arrived at the hub and are marching to join the {R} expedition", "raid_help"),
                 // Sieges (AutonomousRvrEventLayer, its Defense part, RealmEventBanter)
+                ($@"^Warbands are gathering at {H} to assault {K}\. Join them there", "siege_gather"),   // #523 (i): the muster named
                 ($@"^Warbands are gathering to assault {K}\. Join them at the siege camp", "siege_gather"),
                 ($@"^Warbands are marching on {K}\.", "siege_march"),
                 ($@"^The army marches on {K}! Form up at the siege camp", "siege_march"),
@@ -62,7 +63,7 @@ namespace DOL.GS
                 ($@"^Our forces are attacking {K}\.", "keep_ours_attacking"),
                 ($@"^Enemy armies are clashing at {K}\.", "keep_others_fighting"),
                 ($@"^Fighting has broken out at {K}\.", "keep_others_fighting"),
-                ($@"^{K} has fallen! Rally at the outpost", "keep_retake"),
+                ($@"^{K} has fallen! Rally at ", "keep_retake"),
                 ($@"^The defense rally marches to relieve {K}!", "keep_relief"),
                 ($@"^Stand ready at {K}!", "siege_reminder_defend"),
                 ($@"^About twenty minutes remain to muster for {K}\.", "siege_reminder_attack"),
@@ -133,6 +134,7 @@ namespace DOL.GS
             string keep = AutonomousChatFieldTalk.ShortKeep(r.Keep ?? slot("keep"), random);
             string raid = ShortRaid(r.Raid ?? slot("raid"), random);
             string hub = ShortHub(r.Hub, random);
+            string muster = r.Hub != null ? ShortMuster(r.Hub) : null;
             string boss = ShortBoss(r.Boss ?? slot("boss"), random);
             // TEXT-018: a realm in one of two shapes, never drawn: its people ("hibs took nged") or a modifier ("hib zerg").
             string enemySlot = slot("enemy");
@@ -184,6 +186,11 @@ namespace DOL.GS
                     $"ugh, {boss} got us, trying again", $"{boss} wipe, rebuff and back in",
                 ],
                 "raid_help" => [$"more help coming for {raid}, nice", $"reinforcements on the way to {raid}", $"extra grps joining {raid} now"],   // promise: none (others coming)
+                "siege_gather" when muster != null =>
+                [
+                    $"{keep} siege forming at {muster}, come", $"forming up for {keep} at {muster}", $"meet at {muster} for {keep}",
+                    $"hitting {keep} soon, gather at {muster}", $"zerg forming at {muster} for {keep}",
+                ],
                 "siege_gather" =>
                 [
                     $"warband going to {keep}, siege camp", $"forming up for {keep} at the siege camp", $"{keep} siege forming, come",
@@ -348,6 +355,24 @@ namespace DOL.GS
                 if (h.EndsWith(suffix, StringComparison.Ordinal))
                     h = h[..^suffix.Length];
             return h.Trim();
+        }
+
+        /// <summary>
+        /// A siege muster as chat said it (#523 (i)): "the portal outpost in Hadrian's Wall" -> "hadrians wall portal", a border
+        /// keep by its short name ("Svasud Faste" -> "svasud").
+        /// </summary>
+        public static string ShortMuster(string muster)
+        {
+            if (string.IsNullOrWhiteSpace(muster))
+                return "the portal";
+            const string portal = "the portal outpost in ";
+            string m = muster.Trim();
+            if (m.StartsWith(portal, StringComparison.OrdinalIgnoreCase))
+            {
+                string zone = m[portal.Length..].Trim().ToLowerInvariant().Replace("'", string.Empty);
+                return zone is "" or "the frontier" ? "the portal" : zone + " portal";
+            }
+            return ShortHub(m, Random.Shared);
         }
 
         /// <summary>A boss in lowercase, by its first name ("Grand Summoner Govannon" -> "govannon" is the last word).</summary>
