@@ -94,7 +94,7 @@ namespace DOL.UnitTests
         {
             AutonomousPveBossDanger.Record(200, 100_000, 100_000, 30, Utc, "glimmer ardent");
             Assert.That(AutonomousBotGroupCoordinator.CorpseMemoryDanger(200, 90_000, 100_000, 15, 200, 110_000, 100_000, Utc, 0),
-                Is.EqualTo("death spot on the way"));
+                Is.EqualTo("death spot on the straight route"));
             Assert.That(AutonomousBotGroupCoordinator.CorpseMemoryDanger(200, 90_000, 90_000, 15, 200, 110_000, 90_000, Utc, 0),
                 Is.Null, "a way 10,000 to the side is fine");
             Assert.That(AutonomousBotGroupCoordinator.CorpseMemoryDanger(200, 101_000, 100_000, 15, 200, 110_000, 100_000, Utc, 0),

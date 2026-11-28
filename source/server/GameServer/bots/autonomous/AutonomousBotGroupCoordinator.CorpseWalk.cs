@@ -81,7 +81,7 @@ public static partial class AutonomousBotGroupCoordinator
         if (walkerRegion == corpseRegion &&
             !AutonomousPveBossDanger.IsNear(walkerRegion, walkerX, walkerY, walkerLevel, utc) &&
             AutonomousPveBossDanger.RouteCrosses(walkerRegion, walkerX, walkerY, corpseX, corpseY, walkerLevel, utc))
-            return "death spot on the way";
+            return "death spot on the straight route";
         if (AutonomousGroupDangerRetreat.NearSpot(corpseRegion, corpseX, corpseY, walkerLevel, now))
             return "party danger spot at the corpse";
         return null;
