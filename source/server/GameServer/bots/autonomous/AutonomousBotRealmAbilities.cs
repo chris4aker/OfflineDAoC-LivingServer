@@ -348,9 +348,9 @@ public static class AutonomousBotRealmAbilities
         IgnorePain or IgnorePainTank => bot.InCombat && bot.HealthPercent < 30 && !bot.IsMezzed && !bot.IsStunned,
         SecondWind => bot.InCombat && bot.EndurancePercent < 10 && !bot.IsMezzed && !bot.IsStunned,
         FirstAid => !bot.InCombat && bot.HealthPercent < 50 && !bot.IsSitting,
-        // #531 step 2c-1: open-field autonomous gamebots only (RvrRealmActives.Wanted asks BotBrain.RvrTacticsApplyTo)
-        RvrRealmActives.SpeedOfSound or RvrRealmActives.MasteryOfConcentration or RvrRealmActives.BunkerOfFaith =>
-            RvrRealmActives.Wanted(bot, key),
+        // #531 steps 2c-1 and 2c-2: open-field autonomous gamebots only (RvrRealmActives.Wanted asks BotBrain.RvrTacticsApplyTo;
+        // Vanish is never wanted here: it fires when a retreat begins)
+        _ when RvrRealmActives.Handles(key) => RvrRealmActives.Wanted(bot, key),
         _ => false,
     };
 }
