@@ -105,6 +105,7 @@
     "PLAYER_KEEP_DEFENSE_SIZED": "one per player keep attack when its first alarm rallies the bot defense, then one each time the defense grows a tier (#523)",
     "RVR_CLAIM_HOLD": "once per bot siege that captures an ordinary keep (not a relic keep, not a player-attack defense; #523)",
     "BOT_GUILD_CLAIM_SKIPPED": "once per captured keep whose bot-guild claim never came, after the last claim try (#523)",
+    "SIEGE_DEFENSE_BALANCE_REALM": "once per bot siege that ends captured or defended, for its defending realm, and once per realm at start-up when the record is rebuilt (#523)",
     "AUTONOMOUS_PARTY_KILL_TARGET": "once per new kill target per party (#569 step 6)",
     "COMPANION_PATH_DF": "at most one per player-led bot per 30 s, in Darkness Falls (#571 step 3)",
     "COMPANION_LEVEL_SYNC": "one per /spawn helper each time its owner out-levels it, out of combat (#571 step 6)",
