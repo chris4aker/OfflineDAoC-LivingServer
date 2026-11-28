@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **795**; pending (#625, not on main yet): **0**; shipped by the pipeline: **763**.
+- Rows in code: **797**; pending (#625, not on main yet): **0**; shipped by the pipeline: **765**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -44,6 +44,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_CAPITAL_EGRESS_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotCapitalRouting.cs` | `bot`, `edge`, `from`, `goal`, `id`, `realm`, `to` | `bot` | - | - |
 | `AUTONOMOUS_CAPITAL_TRANSIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotCapitalRouting.cs` | `bot`, `entry`, `exit`, `goal`, `id`, `level`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_CAPITAL_TRANSIT_ARRIVE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotCapitalRouting.cs` | `bot`, `exit`, `id`, `level`, `position`, `realm`, `region` | `bot` | - | - |
+| `AUTONOMOUS_CORPSE_WALK_REFUSED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.CorpseWalk.cs` | `at`, `bot`, `corpse`, `distance`, `level`, `reason`, `regrouping`, `walking` | `bot`, `corpse` | - | A gamebot party's resurrector was refused the walk to a corpse that lies by what killed it (#570 step 4). |
+| `AUTONOMOUS_CORPSE_WALK_START` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.CorpseWalk.cs` | `at`, `bot`, `class`, `corpse`, `distance`, `level`, `mana`, `regrouping` | `bot`, `corpse` | - | One resurrector of a gamebot party walks to a distant corpse to raise it (#570 step 4). |
 | `AUTONOMOUS_CROSSING_SOURCE_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `edge`, `from`, `goal`, `id`, `to` | `bot` | - | - |
 | `AUTONOMOUS_DANGER_BYPASS` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RouteThreats.cs` | `at`, `bend`, `bot`, `danger`, `dangerLevel`, `dangers`, `id`, `level`, `radius`, `zone` | `bot`, `danger` | - | - |
 | `AUTONOMOUS_DB_WRITE_DEFERRED` | server.log | **ships** | `bots/autonomous/AutonomousBotStatusPersistence.cs` | `action`, `bot`, `deferredLastMinute`, `holder`, `id`, `waitMs` | `bot` | - | - |
@@ -107,7 +109,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_REGROUP_READY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `remainingSeconds`, `size` | - | - | - |
 | `AUTONOMOUS_GROUP_REGROUP_STARTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `group`, `members`, `objective`, `remainingSeconds`, `rendezvous` | `members` | - | - |
 | `AUTONOMOUS_GROUP_RENDEZVOUS_RESELECTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `bot`, `from`, `group`, `reason`, `to` | `bot` | - | - |
-| `AUTONOMOUS_GROUP_RESURRECTION_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `action`, `bot`, `combatClearSeconds`, `corpse`, `group`, `resurrectors`, `role` | `bot` | - | - |
+| `AUTONOMOUS_GROUP_RESURRECTION_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `action`, `bot`, `combatClearSeconds`, `corpse`, `group`, `regrouping`, `resurrectors`, `role`, `walk` | `bot` | - | - |
 | `AUTONOMOUS_GROUP_RESURRECTION_WAIT` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | `dead`, `group` | `dead` | - | - |
 | `AUTONOMOUS_GROUP_RUN` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.GroupRun.cs` | `camp`, `group`, `home`, `members`, `phase`, `to` | `members` | - | - |
 | `AUTONOMOUS_GROUP_RUN_ENDED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.GroupRun.cs` | `alive`, `group`, `wipePenalty` | - | - | - |
