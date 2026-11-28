@@ -79,7 +79,7 @@ namespace DOL.GS
         [
             ("attack", "attack your selected target now"),
             ("assist", "fight only your fight, and switch when you switch"),
-            ("hold", "only defend themselves (as /hold); healers keep healing"),
+            ("hold", "only defend themselves (as /hold) until the fight ends; healers keep healing"),
             ("regroup", "break off and come back to you"),
         ];
 
@@ -114,12 +114,12 @@ namespace DOL.GS
             inPlayersGroup && commanded && !passiveStance && !suspended && !staying;
 
         /// <summary>
-        /// Whether the order ends now, and why (null: it goes on). Every order ends at the next order (the caller). Attack and
-        /// assist end when the fight ends (<see cref="FightOverQuietMilliseconds"/> of quiet after one), or after
+        /// Whether the order ends now, and why (null: it goes on). Every order ends at the next order (the caller). Attack,
+        /// assist and hold end when the fight ends (<see cref="FightOverQuietMilliseconds"/> of quiet after one), or after
         /// <see cref="NoFightMilliseconds"/> when no fight came; attack also when its target is gone. Regroup ends when every
-        /// bot is back (after at least <see cref="RegroupMinimumMilliseconds"/>) or after
-        /// <see cref="RegroupMilliseconds"/>. Hold is the standing /hold: only the next order, /aggressive
-        /// or /defensive end it, so it lasts through a fight it defends from. Pure.
+        /// bot is back (after at least <see cref="RegroupMinimumMilliseconds"/>) or after <see cref="RegroupMilliseconds"/>.
+        /// Hold ends like the others (owner decision 65A, 2026-11-28: "/order hold ends with the fight"); the standing /hold
+        /// command is unchanged and lasts until /aggressive or /defensive. Pure.
         /// </summary>
         public static string Ends(GroupOrder order, in GroupOrderFacts facts)
         {
@@ -127,6 +127,7 @@ namespace DOL.GS
             {
                 case GroupOrder.Attack:
                 case GroupOrder.Assist:
+                case GroupOrder.Hold:
                     if (order == GroupOrder.Attack && facts.TargetGone) return "target";
                     if (facts.SawFight && !facts.InFight && facts.QuietMilliseconds >= FightOverQuietMilliseconds) return "fight";
                     if (!facts.SawFight && facts.SinceGivenMilliseconds >= NoFightMilliseconds) return "timeout";
@@ -134,8 +135,6 @@ namespace DOL.GS
                 case GroupOrder.Regroup:
                     if (facts.AllBack && facts.SinceGivenMilliseconds >= RegroupMinimumMilliseconds) return "back";
                     return facts.SinceGivenMilliseconds >= RegroupMilliseconds ? "timeout" : null;
-                case GroupOrder.Hold:
-                    return null;
                 default:
                     return "none";
             }

@@ -392,34 +392,55 @@ namespace DOL.GS.Tests
             });
         }
 
+        /// <summary>Ticks the world, the player swinging (his last attack now) or not, and looks at the order each tick.</summary>
+        private static void FightThenQuiet(Scene scene, double seconds, bool fighting)
+        {
+            for (int i = 0; i < (int)(seconds * RvrFightWorld.TicksPerSecond); i++)
+            {
+                scene.World.Tick();
+                if (fighting)
+                    scene.Player.LastAttackTickPvP = GameLoop.GameLoopTime;
+                PlayerGroupOrders.Current(scene.Player);
+            }
+        }
+
         [Test]
-        public void AnOrderEndsFiveSecondsAfterTheFight()
+        public void TheStandingHoldOutlastsTheFight()
+        {
+            // Owner decision 65A: only /order hold ends with the fight; the /hold command is unchanged.
+            using Scene scene = Make(4_000);
+            StopBrains(scene);
+            CompanionEngagementMode.SetHold(scene.Player);
+            FightThenQuiet(scene, 2, fighting: true);
+            FightThenQuiet(scene, (GameLiving.IN_COMBAT_DURATION + PlayerGroupOrders.FightOverQuietMilliseconds) / 1000.0 + 2,
+                fighting: false);
+            Assert.That(scene.Player.InCombat, Is.False, "precondition: the fight is over");
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.True, "/hold still holds");
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None), "it was never an order");
+        }
+
+        [TestCase("assist", GroupOrder.Assist)]
+        [TestCase("hold", GroupOrder.Hold)] // owner decision 65A: /order hold ends with the fight too
+        public void AnOrderEndsFiveSecondsAfterTheFight(string word, GroupOrder given)
         {
             // Review of #824, point 3: the issue's "an order ends 5 s after the fight", through GroupInCombat and Check.
             using Scene scene = Make(4_000);
             StopBrains(scene);
-            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "assist"), Is.True);
-            void Run(double seconds, bool fighting)
-            {
-                for (int i = 0; i < (int)(seconds * RvrFightWorld.TicksPerSecond); i++)
-                {
-                    scene.World.Tick();
-                    if (fighting)
-                        scene.Player.LastAttackTickPvP = GameLoop.GameLoopTime;
-                    PlayerGroupOrders.Current(scene.Player);
-                }
-            }
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, word), Is.True);
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.EqualTo(given == GroupOrder.Hold), "the /hold stance");
+            void Run(double seconds, bool fighting) => FightThenQuiet(scene, seconds, fighting);
             Run(2, fighting: true);
             Assert.That(scene.Player.InCombat, Is.True, "precondition: the player is fighting");
-            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Assist), "in the fight");
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(given), "in the fight");
             long lastSwing = scene.Player.LastAttackTickPvP;
             // In combat until IN_COMBAT_DURATION after the last swing, then 5 s of quiet.
             Run((GameLiving.IN_COMBAT_DURATION + PlayerGroupOrders.FightOverQuietMilliseconds - 1_000) / 1000.0, fighting: false);
             Assert.That(scene.Player.InCombat, Is.False, "precondition: the fight is over");
-            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Assist),
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(given),
                 $"under 5 s of quiet: goes on ({GameLoop.GameLoopTime - lastSwing} ms after the last swing)");
             Run(2, fighting: false);
             Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None), "5 s after the fight: ended");
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.False, "and with it the hold stance");
         }
 
         [Test]

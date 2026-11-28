@@ -16,7 +16,7 @@ namespace DOL.GS.Commands
             if (args.Length < 2)
             {
                 DisplayMessage(client, "Order your group (your helpers, companions and the gamebots in a group you lead). " +
-                    "An order lasts until your next order or the end of the fight. You can also say the word alone in /group.");
+                    "Every order, hold too, lasts until your next order or the end of the fight. You can also say the word alone in /group.");
                 foreach ((string word, string does) in PlayerGroupOrders.Help)
                     DisplayMessage(client, $"  /order {word} - {does}");
                 return;

@@ -9,7 +9,8 @@ section: Bots and companions
     with them. `/defensive`'s range and the RvR leash let it through. Healers keep healing.
   - **assist**: they fight only your fight and switch when you switch. They pick nothing of their own, but each one
     still fights back what hits it, and tanks still protect a groupmate.
-  - **hold**: the same as `/hold`.
+  - **hold**: the same as `/hold`, but it ends with the fight like the other orders. `/hold` itself still lasts until
+    `/aggressive` or `/defensive`.
   - **regroup**: they break off and come back to you. Once beside you they defend you and the group; one that can't get
     back (rooted, or below half health) fights back what is hitting it. Healers keep healing.
   - An order lasts until your next order or the end of the fight. `/aggressive`, `/defensive` and `/hold` end it too.

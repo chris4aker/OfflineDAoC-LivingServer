@@ -134,7 +134,7 @@ namespace DOL.GS
         {
             GroupOrder.Attack => "They go for your target now, until it falls, you give another order or the fight ends.",
             GroupOrder.Assist => "They fight only your fight and switch when you switch, until your next order or the fight ends.",
-            GroupOrder.Hold => "They only defend themselves and healers keep healing, until your next order, /aggressive or /defensive.",
+            GroupOrder.Hold => "They only defend themselves and healers keep healing, until your next order or the fight ends (/hold holds until /aggressive or /defensive).",
             GroupOrder.Regroup => "They break off and come back to you, then defend you and the group; one that can't get back (rooted, or below half health) fights back.",
             _ => string.Empty,
         };

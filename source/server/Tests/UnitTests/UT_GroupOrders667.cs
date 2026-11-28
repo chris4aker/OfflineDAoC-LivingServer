@@ -86,9 +86,10 @@ public class UT_GroupOrders667
         bool back = false) => new(saw, inFight, quiet, since, gone, back);
 
     [Test]
-    public void AttackAndAssistEndWithTheFight()
+    public void AttackAssistAndHoldEndWithTheFight()
     {
-        foreach (GroupOrder order in new[] { GroupOrder.Attack, GroupOrder.Assist })
+        // Owner decision 65A (2026-11-28): /order hold ends with the fight, like the other orders.
+        foreach (GroupOrder order in new[] { GroupOrder.Attack, GroupOrder.Assist, GroupOrder.Hold })
             Assert.Multiple(() =>
             {
                 Assert.That(O.Ends(order, F(since: 60_000)), Is.Null, $"{order}: waits for a fight");
@@ -101,6 +102,7 @@ public class UT_GroupOrders667
             });
         Assert.That(O.Ends(GroupOrder.Attack, F(saw: true, inFight: true, gone: true)), Is.EqualTo("target"), "attack: its target fell");
         Assert.That(O.Ends(GroupOrder.Assist, F(saw: true, inFight: true, gone: true)), Is.Null, "assist has no target of its own");
+        Assert.That(O.Ends(GroupOrder.Hold, F(saw: true, inFight: true, gone: true)), Is.Null, "nor has hold");
     }
 
     [Test]
@@ -114,13 +116,6 @@ public class UT_GroupOrders667
             Assert.That(O.Ends(GroupOrder.Regroup, F(since: O.RegroupMilliseconds)), Is.EqualTo("timeout"));
             Assert.That(O.Ends(GroupOrder.Regroup, F(saw: true, quiet: 60_000, since: 1_000)), Is.Null, "not ended by quiet");
         });
-    }
-
-    [Test]
-    public void HoldIsTheStandingHold()
-    {
-        Assert.That(O.Ends(GroupOrder.Hold, F(saw: true, quiet: 600_000, since: 3_600_000)), Is.Null,
-            "only the next order, /aggressive or /defensive end it");
     }
 
     [Test]
