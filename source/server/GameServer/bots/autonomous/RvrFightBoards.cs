@@ -162,6 +162,22 @@ public static class RvrFightBoards
     /// <summary>The plan on the peeked board, or null (see <see cref="Peek"/>).</summary>
     public static RvrFightPlan PeekPlan(GameLiving asker) => Peek(asker)?.Plan;
 
+    /// <summary>
+    /// #599 step 2: the called target of the battlegroup lead group that <paramref name="asker"/>'s group follows, read
+    /// from the lead's published board for the asker's region when it is at most two seconds old; null when the group
+    /// follows no lead (RealmWarbandSupport.BattlegroupLeadOf), the lead has no fresh board there or calls nothing, or the
+    /// call is dead. Never builds and takes no lock: safe inside a board build and under the coordinator's lock.
+    /// </summary>
+    public static GameLiving BattlegroupCallOf(GameLiving asker, long now)
+    {
+        Group lead = RealmWarbandSupport.BattlegroupLeadOf(asker?.Group);
+        if (lead == null || ReferenceEquals(lead, asker.Group) || !Groups.TryGetValue(lead, out GroupEntry entry) ||
+            !entry.Regions.TryGetValue(asker.CurrentRegionID, out Holder holder))
+            return null;
+        GameLiving call = holder.Peek(now)?.Plan?.CalledTarget;
+        return call is { IsAlive: true } && call.CurrentRegionID == asker.CurrentRegionID ? call : null;
+    }
+
     /// <summary>The stored facts of a group (the Group object) or a solo bot (the bot); Empty when nothing was stored.</summary>
     public static RvrGroupState StateOf(object groupOrSoloBot) =>
         groupOrSoloBot != null && Groups.TryGetValue(groupOrSoloBot, out GroupEntry entry)
@@ -334,7 +350,10 @@ public static class RvrFightBoards
             state = UpdateState(KeyOf(asker), current => current.SkillTier.HasValue ? current : current with { SkillTier = tier });
         }
 
-        RvrFightBoard board = RvrFightBoard.Build(now, asker.CurrentRegionID, asker.Realm, friendly, hostile) with { State = state, MainBody = mainBody };
+        RvrFightBoard board = RvrFightBoard.Build(now, asker.CurrentRegionID, asker.Realm, friendly, hostile) with
+        {
+            State = state, MainBody = mainBody, BattlegroupCall = BattlegroupCallOf(asker, now),
+        };
         return board with { Plan = RvrFightPlanner.Next(previous?.Plan, board, state, RvrTacticsSwitches.Current, now) };
     }
 

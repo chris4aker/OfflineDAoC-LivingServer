@@ -70,6 +70,14 @@ public sealed partial class AutonomousWorldBotController
 
         RvrFightPlan plan = RvrFightBoards.PeekPlan(bot);
         GameLiving called = plan?.CalledTarget;
+        // #599 step 2: a battlegroup's follower group opens on the lead group's call when the scan has it within the call
+        // radius of the group's centre (BattlegroupCallTakes).
+        GameLiving shared = RvrFightBoards.BattlegroupCallOf(bot, now);
+        if (shared != null && pool.Contains(shared) &&
+            BattlegroupCallTakes((float)Math.Sqrt((shared.X - cx) * (shared.X - cx) + (shared.Y - cy) * (shared.Y - cy))))
+            called = shared;
+        else
+            shared = null;
         RvrSkillTier tier = plan != null && !ReferenceEquals(plan, RvrFightPlan.None) ? plan.SkillTier
             : RvrFightBoards.StateOf(RvrFightBoards.KeyOf(bot)).SkillTier ?? RvrFightBoards.DefaultSkillTier(bot);
         GameLiving seedHolder = bot.Group?.LivingLeader ?? bot;
@@ -89,8 +97,16 @@ public sealed partial class AutonomousWorldBotController
                 DistanceFromGroup: (float)Math.Sqrt(dx * dx + dy * dy), MatesOn: on, Called: called != null && called == target);
         }
         int pick = RvrFirstPick.Pick(candidates, tier, seed, out reason);
+        if (pick >= 0 && reason == RvrFirstPickReason.Called && shared != null && pool[pick] == shared)
+            reason = RvrFirstPickReason.Battlegroup;
         return pick < 0 ? null : pool[pick];
     }
+
+    /// <summary>
+    /// #599 step 2: whether the first pick takes the battlegroup lead's call that stands <paramref name="distanceFromGroup"/>
+    /// from the group's centre: within the call radius (as the plan's assist step, RvrAssist.BattlegroupCandidate). Pure.
+    /// </summary>
+    public static bool BattlegroupCallTakes(float distanceFromGroup) => distanceFromGroup <= RvrFirstPick.CallRadius;
 
     /// <summary>An enemy as the first pick scores it (the board's record of it, without the board).</summary>
     private static RvrCombatant FirstPickCombatant(GameLiving living, bool fightsGroup)
