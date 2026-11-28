@@ -6,6 +6,7 @@ Every line here is made up. The filter is read from tools/grafana/alloy/config.a
 these tests fail if the committed config stops dropping what it must.
 """
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -16,7 +17,18 @@ import alloy  # noqa: E402
 import kit  # noqa: E402
 
 REPO = HERE.parents[2]
-CONFIG = REPO / "tools/grafana/alloy/config.alloy"
+# #817: the committed copy lags a pull request's code (main regenerates it after the merge), so the tests read the
+# config the kit builds from this checkout's code, written to a temp file.
+_CONFIG_DIR = None
+
+
+def current_config() -> Path:
+    global _CONFIG_DIR
+    if _CONFIG_DIR is None:
+        import kit  # noqa: E402
+        _CONFIG_DIR = tempfile.TemporaryDirectory()
+        (Path(_CONFIG_DIR.name) / "config.alloy").write_text(kit.Kit(REPO).alloy_config(), encoding="utf-8", newline="\n")
+    return Path(_CONFIG_DIR.name) / "config.alloy"
 
 
 def line(message: str, level: str = "INF", logger: str = "DOL.GS.Test") -> str:
@@ -26,7 +38,7 @@ def line(message: str, level: str = "INF", logger: str = "DOL.GS.Test") -> str:
 class FilterTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.filter = alloy.load_filter(CONFIG)
+        cls.filter = alloy.load_filter(current_config())
         cls.kit = kit.Kit(REPO)
 
     def ship(self, message, **kw):

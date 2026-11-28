@@ -1,0 +1,110 @@
+# Regenerates the two files main generates after each merge (issue #817, owner decision 59A): docs/LOG-ROWS.md and
+# tools/grafana/alloy/config.alloy (tools/grafana/kit.py --write --generated). Pull requests no longer commit them
+# (tools/grafana/generated_guard.py fails one that does), so two pull requests that each add a log row don't conflict.
+#
+# Why a pull request and not a push to main: main's ruleset ("main: green checks") requires the build-and-test checks on
+# every commit that reaches main and has no bypass, so this workflow can't push a new commit there. And a commit made
+# with this workflow's token starts no push run, so main's tip would have no build-and-test push run for
+# publish-release.yml to publish from. Instead:
+#   1. regenerate on main; nothing changed: stop;
+#   2. bring bot/generated-files up to date (merge main into it, never a force-push), regenerate, commit, push;
+#   3. open its pull request if none is open ("Regenerate the log-row catalog and the Alloy allowlist");
+#   4. start build-and-test on the branch by hand (a push or pull request made with this token starts no workflow), so
+#      the checks main requires are on its head commit.
+# The merge train merges that pull request like any other; it touches only the two files, so it never conflicts with
+# another pull request. Its merge is a normal push to main, whose own run of this workflow then finds nothing to do.
+name: generated-files
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One at a time; a run that finds the branch current just stops.
+concurrency:
+  group: generated-files
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    if: github.repository == 'chris4aker/OfflineDAoC-LivingServer'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write        # push bot/generated-files (never main)
+      pull-requests: write   # open its pull request
+      actions: write         # start build-and-test on it
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: bot/generated-files
+      FILES: docs/LOG-ROWS.md tools/grafana/alloy/config.alloy
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Regenerate on main
+        id: main
+        run: |
+          set -euo pipefail
+          python3 tools/grafana/kit.py --write --generated
+          if git diff --quiet -- $FILES; then
+            echo "main's docs/LOG-ROWS.md and config.alloy match the code: nothing to do"
+            echo "stale=false" >> "$GITHUB_OUTPUT"
+          else
+            git diff --stat -- $FILES
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+          fi
+          git checkout -- .
+      - name: Update the bot branch
+        if: steps.main.outputs.stale == 'true'
+        id: branch
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          main=$(git rev-parse --short HEAD)
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            git fetch -q origin "$BRANCH"
+            git checkout -q -B "$BRANCH" "origin/$BRANCH"
+            # Main wins any conflict in the two files; they are rewritten next anyway.
+            git merge -q --no-edit -X theirs origin/main -m "Merge main ($main) into $BRANCH"
+          else
+            git checkout -q -B "$BRANCH" origin/main
+          fi
+          python3 tools/grafana/kit.py --write --generated
+          python3 tools/grafana/kit.py --check --generated
+          git add -- $FILES
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Regenerate docs/LOG-ROWS.md and config.alloy for main $main (#817)" \
+              -m "Written by .github/workflows/generated-files.yml: python3 tools/grafana/kit.py --write --generated."
+          fi
+          # Anything besides the two files differing from main means the merge went wrong: stop rather than propose it.
+          other=$(git diff --name-only origin/main HEAD | grep -vxF -e docs/LOG-ROWS.md -e tools/grafana/alloy/config.alloy || true)
+          [ -z "$other" ] || { echo "::error::$BRANCH differs from main in more than the two generated files: $other"; exit 1; }
+          if git diff --quiet origin/main HEAD; then
+            echo "$BRANCH already matches main"; echo "pushed=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          git push -q origin "HEAD:refs/heads/$BRANCH"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+      - name: Open its pull request and start its checks
+        if: steps.branch.outputs.pushed == 'true'
+        run: |
+          set -euo pipefail
+          repo="${{ github.repository }}"
+          pr=$(gh api "repos/$repo/pulls?state=open&head=${repo%%/*}:$BRANCH" --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            body="Written by the generated-files workflow ([run ${{ github.run_id }}](https://github.com/$repo/actions/runs/${{ github.run_id }})): \`python3 tools/grafana/kit.py --write --generated\` on main (#817). It changes only docs/LOG-ROWS.md and tools/grafana/alloy/config.alloy, so it never conflicts with another pull request; merge it like any other once its checks are green. Each later merge to main updates this branch."
+            if ! pr=$(gh api -X POST "repos/$repo/pulls" -f title="Regenerate the log-row catalog and the Alloy allowlist (#817)" \
+                        -f head="$BRANCH" -f base=main -f body="$body" --jq .number); then
+              # "Allow GitHub Actions to create and approve pull requests" is off in the repository's Actions settings.
+              echo "::warning::could not open the pull request; open one from $BRANCH by hand: https://github.com/$repo/compare/main...$BRANCH"
+              pr=
+            fi
+          fi
+          [ -z "$pr" ] || echo "::notice title=Generated files::pull request #$pr (https://github.com/$repo/pull/$pr)"
+          gh api -X POST "repos/$repo/actions/workflows/build-and-test.yml/dispatches" -f ref="$BRANCH"
+          echo "::notice title=Generated files::build-and-test started on $BRANCH"

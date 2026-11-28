@@ -37,6 +37,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2   # a pull request's merge commit and main before it (the generated-file guard, #817)
       - name: Check the epic encounter catalog is up to date
         run: |
           python3 source/tools/epic_encounter_catalog.py --check
@@ -45,8 +47,12 @@ jobs:
       # must parse (front matter: version, section) and name a version still in development (changelog.d/README.md).
       - name: Check the changelog fragments
         run: python3 source/tools/assemble_changelog.py --check
-      # Issue #628: docs/LOG-ROWS.md, the Alloy allowlist and the Grafana dashboards are what the server code makes them
-      # (tools/grafana/kit.py), and the privacy filter drops what it must on synthetic lines.
+      # Issue #628: the Grafana dashboards are what the server code makes them (tools/grafana/kit.py), every row the kit
+      # reads builds, and the privacy filter drops what it must on synthetic lines. #817: docs/LOG-ROWS.md and the Alloy
+      # allowlist are built here but not compared: main regenerates them after each merge (generated-files.yml).
+      - name: The pull request doesn't commit the files main generates
+        if: github.event_name == 'pull_request' && github.head_ref != 'bot/generated-files'
+        run: python3 tools/grafana/generated_guard.py --base HEAD^1
       - name: Check the Grafana kit
         run: |
           python3 tools/grafana/kit.py --check
@@ -374,11 +380,12 @@ jobs:
   # The 1.2 gate's Install rows as tests (candidate-install.yml): this commit's package installed new the way a player gets
   # it, the class-off (0.37) edition checked on it, and a 1.1.4 game updated to it through Setup with its saves kept.
   # About 30-45 minutes of Windows runners with real downloads, so only for the candidate line (main, integration/1.2,
-  # release/*), for ci/* branches (pull requests that change these checks push one) and by hand.
+  # release/*), for ci/* branches (pull requests that change these checks push one) and by hand; not for the dispatched
+  # runs of bot/generated-files, which changes only two generated docs (#817).
   candidate-install:
     needs: server
     if: >-
-      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_dispatch' && github.ref_name != 'bot/generated-files') ||
       (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'integration/1.2' ||
         startsWith(github.ref_name, 'release/') || startsWith(github.ref_name, 'ci/')))
     concurrency:
