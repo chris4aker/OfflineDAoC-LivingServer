@@ -386,7 +386,7 @@ namespace DOL.AI.Brain
                      $"mainAssist=\"{plan.MainAssist?.Name}\" target=\"{target.Name}\" targetRealm={GlobalConstants.RealmToName(target.Realm)} " +
                      $"targetClass={enemy?.Class} role={RvrTargetPriority.KillRole(enemy)} score={score:0.#} tier={plan.SkillTier} " +
                      $"rising={facts.Rising} hold={RvrAssist.HoldMilliseconds(RvrAssist.GroupSeed(board), plan.CalledAt)} " +
-                     $"fight={RvrFights.Touch(Body, target, "call")}");
+                     $"fight={RvrFights.Touch(Body, target, "call")} from={(plan.CallFromBattlegroup ? "battlegroup" : "group")}");
         }
 
         private void LogRvrSwitch(GameLiving called, long delay, bool followed, RvrSkillTier tier, long now)

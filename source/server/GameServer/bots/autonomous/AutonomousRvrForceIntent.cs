@@ -65,8 +65,11 @@ public static partial class AutonomousRvrEventLayer
     /// </summary>
     public enum ForceRole { Roamer, Hunter, Attacker, Defender, ThirdRealm, Escort, Muster }
 
-    /// <summary>Who proposed an intent.</summary>
-    public enum IntentSource { Plan, Committed, Released, RoamOverride, ChatPromise, Battleground }
+    /// <summary>
+    /// Who proposed an intent. <see cref="IntentSource.Battlegroup"/> (#599 step 1): a battlegroup's follower group takes its
+    /// lead group's intent and objective while it trails the lead.
+    /// </summary>
+    public enum IntentSource { Plan, Committed, Released, RoamOverride, ChatPromise, Battleground, Battlegroup }
 
     /// <summary>A force's intent: its objective, its role there, its slots, since when, and why.</summary>
     public sealed record ForceIntent(string ForceId, Intent Intent, string ObjectiveId, ForceRole Role, string Slot,
