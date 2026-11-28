@@ -374,6 +374,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void HuntingGroundsAreOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #570 step 3: bot_hunting_grounds, a gamebot levelling rule like bot_weapon_set_rules, on by default and in Setup;
+        // no checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.HuntingGrounds && SocialExpansionSettings.Recommended.HuntingGrounds, Is.True);
+        Assert.That(d.AllOff().HuntingGrounds, Is.True);
+        (d with { HuntingGrounds = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_hunting_grounds"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).HuntingGrounds, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void LeaderFocusIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #571 step 1: bot_leader_focus, a bot combat rule like bot_healer_period_rules, on by default and in Setup; no
