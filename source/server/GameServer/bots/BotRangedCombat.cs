@@ -159,6 +159,44 @@ namespace DOL.GS
                    stance == eBotStance.Auto && !targetInMeleeRange;
         }
 
+        /// <summary>How long a Hunter holds its pet back for its Critical Shot draw at most.</summary>
+        public const long CriticalShotPetHoldMilliseconds = 7_000;
+
+        /// <summary>Walking speed: Critical Shot can't be drawn on a target moving faster (RangeAttackComponent's player rule).</summary>
+        public const int CriticalShotMaxTargetSpeed = 90;
+
+        /// <summary>
+        /// A bot's Critical Shot level. Players get the ability in ClassHunter/Scout/Ranger.OnSkillTrained, which bots don't
+        /// run; a bot has the level its bow spec would give a player (BotStealthArcher.CriticalShotLevel: one per 3 spec, at
+        /// most 9). Never below an ability the bot really has.
+        /// </summary>
+        public static int CriticalShotLevel(GameBot bot) => bot == null ? 0 :
+            Math.Max(BotStealthArcher.CriticalShotLevel(BotStealthArcher.BowSpec(bot)), bot.GetAbilityLevel(Abilities.Critical_Shot));
+
+        /// <summary>
+        /// Pure (#569 step 8, class audit 2026-11-05: "no bot ever used Critical Shot"): an archer bot opens
+        /// with Critical Shot, as players pulled before 1.88 ("Your critical shot, which you pull with normally, hits harder",
+        /// Allakhazam Composite Bow, 2002). Only at the start of a draw that has no other type yet, at a target that is not in
+        /// combat, not over walking speed and not mezzed (the player rule in RangeAttackComponent), with endurance for the
+        /// Critical Shot and one normal shot after it. The draw time, damage and cost are the existing player rules.
+        /// </summary>
+        public static bool OpensWithCriticalShot(bool switchOn, bool allowedForBot, int criticalShotLevel, bool drawNotStarted,
+            bool typeIsNormal, bool targetInCombat, int targetSpeed, bool targetMezzed, int endurance) =>
+            switchOn && allowedForBot && criticalShotLevel > 0 && drawNotStarted && typeIsNormal && !targetInCombat &&
+            targetSpeed <= CriticalShotMaxTargetSpeed && !targetMezzed &&
+            endurance >= RangeAttackComponent.CRITICAL_SHOT_ENDURANCE_COST + RangeAttackComponent.DEFAULT_ENDURANCE_COST;
+
+        /// <summary>
+        /// Pure (#569 step 8, Prima's Hunter: "always with a critical shot followed by three or so normal
+        /// shots"): a Hunter's pet waits while its owner, bow in hand and able to Critical Shot, opens on a target that is not
+        /// fighting yet. Sent first, the pet put the monster in combat and the opener never fired. Never longer than the hold,
+        /// and never once the pet is already on the target.
+        /// </summary>
+        public static bool HoldPetForCriticalShot(bool hasCriticalShot, bool bowInHand, bool targetIdle,
+            bool petAlreadyOnTarget, long heldMilliseconds) =>
+            hasCriticalShot && bowInHand && targetIdle && !petAlreadyOnTarget &&
+            heldMilliseconds < CriticalShotPetHoldMilliseconds;
+
         public static bool ShouldCloseToRangedRange(
             bool useRangedWeapon,
             int distanceToTarget,

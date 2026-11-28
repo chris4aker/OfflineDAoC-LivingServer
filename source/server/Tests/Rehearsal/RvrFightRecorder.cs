@@ -20,6 +20,10 @@ namespace DOL.GS.Tests.Rehearsal
         public bool TargetIsPlayer => Target is GamePlayer;
         public bool? Landed { get; set; }
         public bool Refused => Landed == false;
+        /// <summary>The mez spell's radius (0: a single mez).</summary>
+        public int Radius { get; init; }
+        /// <summary>#531 step 2a: an area mez that landed: how many of the caster's enemies were mezzed in its radius then.</summary>
+        public int Caught { get; set; }
     }
 
     /// <summary>
@@ -94,6 +98,7 @@ namespace DOL.GS.Tests.Rehearsal
             _mezzes.Add(new RvrMezAttempt
             {
                 At = _world.Now, Caster = (GameLiving)sender, Target = target, TargetHealthPercent = target.HealthPercent,
+                Radius = handler.Spell.Radius,
             });
         }
 
@@ -103,7 +108,12 @@ namespace DOL.GS.Tests.Rehearsal
             long now = _world.Now;
             foreach (RvrMezAttempt attempt in _mezzes)
                 if (attempt.Landed == null && now > attempt.At)
+                {
                     attempt.Landed = attempt.Target.IsMezzed;
+                    if (attempt.Landed == true && attempt.Radius > 0)
+                        attempt.Caught = _world.Livings.Count(l => l.IsAlive && l.IsMezzed && l.Realm != attempt.Caster.Realm &&
+                                                                   l.IsWithinRadius(attempt.Target, attempt.Radius));
+                }
             foreach (GameLiving living in _world.Livings)
             {
                 bool controlled = living.IsAlive && (living.IsMezzed || living.IsStunned);

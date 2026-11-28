@@ -1606,7 +1606,7 @@ namespace DOL.AI.Brain
                 Body.IsWithinRadius(leaderTarget, GROUP_DEFENSE_ASSIST_RADIUS))
                 AssistPlayerAttack(leaderTarget);
 
-            if (BotBody?.TryApplyEndgameCompanionUpgrade() == true)
+            if (BotBody?.TryMatchOwnerLevel() == true)
                 return;
 
             WakeNearbyNaturalAggroBrains();
@@ -3556,10 +3556,16 @@ namespace DOL.AI.Brain
             // its own attacker or its top threat (BotBrain.LeaderFocus, CompanionLeaderFocus).
             // The top threat is worked out only where the choice before needed it (CalculateNextAttackTarget cleans the list).
             GameLiving leaderFocus = protectionTarget == null ? LeaderFocusTarget() : null;
-            GameLiving threatTarget = protectionTarget == null && directAttacker == null && activePetTarget == null
+            // #569 step 6 (bot_party_main_assist): in a bot-only gamebot PvE party the members fight the tank's kill target
+            // in the same place in the order (BotBrain.MainAssist). Never with leader focus: that needs a real player.
+            GameLiving partyAssist = protectionTarget == null && leaderFocus == null ? PartyMainAssistTarget(directAttacker) : null;
+            GameLiving threatTarget = protectionTarget == null && partyAssist == null && directAttacker == null && activePetTarget == null
                 ? CalculateNextAttackTarget() : null;
-            Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus, directAttacker, activePetTarget, threatTarget);
+            Body.TargetObject = CompanionLeaderFocus.Choose(protectionTarget, leaderFocus ?? partyAssist, directAttacker, activePetTarget, threatTarget);
             NoteLeaderFocus(leaderFocus, directAttacker, activePetTarget, threatTarget);
+            // The tank publishes its target as the kill target; a peel on an add never moves a live one.
+            OfferPartyKillTarget(Body.TargetObject as GameLiving, protectionTarget != null &&
+                Body.TargetObject == protectionTarget && protectionTarget.TargetObject != Body);
             if (RvrTacticsTarget(Body.TargetObject as GameLiving, protectionTarget, directAttacker) is { } rvrCalled) Body.TargetObject = rvrCalled;
             // #505: the brain's target decision, change-only, in a war zone (logging only).
             if (BotBody is { IsAutonomousWorldBot: true } tracedBot && Body.TargetObject is GameLiving tracedTarget &&
@@ -3672,8 +3678,16 @@ namespace DOL.AI.Brain
 
                 if (protectionTarget != null && TryPriorityTaunt(protectionTarget))
                 {
-                    Body.StopAttack();
-                    return;
+                    // An instant taunt (a Paladin's chant taunt) keeps the swing going like any instant; one with a cast
+                    // time still stops it (#571 step 5).
+                    if (!BotHybridMeleePolicy.ContinueMeleeAfterInstant(!rangedCaster, IsMinstrelBot,
+                            BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving), true, Body.IsCasting,
+                            Body.castingComponent?.SpellHandler?.Spell, Body.castingComponent?.HasPendingSkillRequests == true,
+                            PendingSpellOrNull()))
+                    {
+                        Body.StopAttack();
+                        return;
+                    }
                 }
 
                 // A caster steps aside now and then right after a cast ended, never during one (BotBrain.CombatMovement).
@@ -3709,7 +3723,15 @@ namespace DOL.AI.Brain
                 bool continueMinstrelMelee = MinstrelBotCombatPolicy.ContinueAfterInstantDamage(
                     UsesMinstrelHybridCombat, spellAction, Body.IsCasting,
                     Body.castingComponent?.SpellHandler?.Spell, hasPendingSpell, pendingSpell);
-                if (spellAction && !continueSavageMelee && !preserveRangedDraw && !continueMinstrelMelee)
+                // Any other melee bot whose spell this turn was an instant keeps its swing and chase too: the engine stops
+                // melee only for a cast with a cast time (#571 step 5).
+                // The Minstrel keeps its own rule above; crowd control on a player-like enemy stops the swing (review of #777).
+                bool continueHybridMelee = BotHybridMeleePolicy.ContinueMeleeAfterInstant(
+                    !rangedCaster, IsMinstrelBot, BotPvpCrowdControl.PlayerLike(Body.TargetObject as GameLiving), spellAction,
+                    Body.IsCasting,
+                    Body.castingComponent?.SpellHandler?.Spell, hasPendingSpell, pendingSpell);
+                if (spellAction && !continueSavageMelee && !preserveRangedDraw && !continueMinstrelMelee &&
+                    !continueHybridMelee)
                 {
                     Body.StopAttack();
                 }
@@ -4322,6 +4344,16 @@ namespace DOL.AI.Brain
                 .ThenByDescending(candidate => candidate.TargetObject is GameBot bot && bot.Brain is BotBrain { IsHealer: true })
                 .ThenBy(candidate => Body.GetDistanceTo(candidate))
                 .FirstOrDefault();
+        }
+
+        private bool IsMinstrelBot => BotBody?.CharacterClass?.ID == (int)eCharacterClass.Minstrel;
+
+        private Spell PendingSpellOrNull()
+        {
+            Spell pending = null;
+            if (Body.castingComponent?.HasPendingSkillRequests == true)
+                Body.castingComponent.TryPeekPendingSpell(out pending);
+            return pending;
         }
 
         private bool TryPriorityTaunt(GameLiving target)

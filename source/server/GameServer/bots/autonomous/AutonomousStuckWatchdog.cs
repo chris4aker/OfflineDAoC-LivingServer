@@ -206,6 +206,15 @@ public static class AutonomousStuckWatchdog
                nowUtc - lastMovementUtc >= StuckThreshold;
     }
 
+    /// <summary>Tests only: replaces the row and the capital teleport of a stuck rally member (they need a live server) and returns its
+    /// answer from Observe. Null in the server.</summary>
+    public static Func<GameBot, string, bool> StuckRallyRecoveryForTests;
+
+    /// <summary>A rally member off the staging ring after the hub departure (issue #767): the rally exempts it from the
+    /// goal clock, never from the movement clock. Same bound and same exceptions as <see cref="ShouldRecoverMovement"/>.</summary>
+    public static bool ShouldCatchStuckRally(DateTime lastMovementUtc, DateTime nowUtc, bool isAlive, bool inPlayerLedGroup) =>
+        ShouldRecoverMovement(lastMovementUtc, nowUtc, isAlive, inPlayerLedGroup, false);
+
     public static bool ShouldRecoverGoal(
         DateTime lastGoalProgressUtc,
         DateTime nowUtc,
@@ -406,8 +415,11 @@ public static class AutonomousStuckWatchdog
         // the ordinary watchdog; a genuine freeze during that grind is caught.
         // A raid rally has its own deadline (staging limit, at least 45 minutes after leaving the hub). 2026-10-16: the
         // 45-minute clock sent 322 Cuuldurach raiders from their rally to Tir na Nog, so 13 reached the dragon.
+        // Issue #767: that hold now covers the hub only. A member on its way to the staging ring after the departure
+        // keeps the goal clock off but not the movement clock (below); one standing at the ring is protected by Protects.
+        bool travellingInRally = AutonomousRealmRaid.IsTravellingInRally(bot, out string rallyEvent);
         if (GroupProtectsFromWatchdog(bot, now) ||
-            AutonomousRealmRaid.IsInRally(bot) ||
+            !travellingInRally && AutonomousRealmRaid.IsInRally(bot) ||
             IsGroupFormationHold(bot.PersistentRecord.Activity) ||
             AutonomousObjectiveAssignments.IsIntentionalTownIdle(bot.PersistentRecord, now) &&
             AutonomousWorldBotController.IsAtAssignedIdleTown(bot))
@@ -416,6 +428,27 @@ public static class AutonomousStuckWatchdog
             CopyPositionSnapshot(previous, current);
             goalObservation.LastProgressUtc = now;
             return false;
+        }
+
+        // Issue #767 (owner's PC, rc.2): 75 Glacier Giant raiders stood off the staging ring for about 20 minutes, retrying
+        // one route, and no clock saw them because the rally refreshed both. A stuck rally is still stuck: after the usual
+        // fifteen minutes without movement such a member gets the usual 15-minute recovery: a teleport to its capital that
+        // keeps its raid membership, so it walks back as a late member. That is clean-up, not a rescue (the in-dungeon
+        // regroup, TryRecoverInsideRaid, is for started dungeon raids only). The rally's own deadline still owns the goal clock.
+        if (travellingInRally)
+        {
+            goalObservation.LastProgressUtc = now;
+            if (!ShouldCatchStuckRally(previous.LastMovementUtc, now, bot.IsAlive, withHuman))
+                return false;
+            // Tests: a logger made before the test's logging set-up cannot write, and the teleport needs a live world.
+            if (StuckRallyRecoveryForTests != null)
+                return StuckRallyRecoveryForTests(bot, rallyEvent);
+            // An open-world rally member stood still off the staging ring for 15 minutes after the departure, so it is sent to its capital and keeps its raid place (issue #767).
+            Log.Warn($"AUTONOMOUS_RALLY_STUCK bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} event={rallyEvent} " +
+                     $"minutes={(int)(now - previous.LastMovementUtc).TotalMinutes} at={bot.CurrentRegionID}:{bot.X},{bot.Y},{bot.Z} " +
+                     $"activity=\"{ForLog(bot.PersistentRecord.Activity)}\"");
+            return RelocateToSafeCapital(bot, now, $"rally: no movement for fifteen minutes away from the staging ring ({rallyEvent})", true,
+                "AUTONOMOUS_STUCK_15M_RECOVERY");
         }
 
         bool isRvrRoaming = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR);
