@@ -48,6 +48,9 @@ namespace DOL.GS
         public byte RaceId { get; set; }
         public byte GenderId { get; set; }
         public long DatabaseID { get; set; }
+        /// <summary>The melee set a hired companion's player readied last in the companion window (BotWeaponSetPolicy,
+        /// #569 step 7). Not saved: after a relog the companion's trained set decides again.</summary>
+        public eActiveWeaponSlot? PlayerReadiedSlot { get; set; }
         public bool IsAutonomousWorldBot { get; private set; }
         /// <summary>
         /// The NPC Size that draws like a player of that height (1 Short, 2 Average, 3 Tall): 48 / 50 / 52, the new client's
@@ -1027,6 +1030,13 @@ namespace DOL.GS
                         (int)Math.Round(floor.Z), Heading, true))
                     log.Info($"AUTONOMOUS_STABLE_LANDING_CORRECTION bot=\"{Name}\" id={DatabaseID} " +
                              $"region={CurrentRegionID} from={arrival} to={floor}");
+                // #569 step 4: every rider of a route landed on its last point, next to a busy
+                // stable master. A gamebot steps once to its own spot 60-140 units off, away from the master (one
+                // radius query, one floor projection, one corridor check per arrival). Hired companions stay put.
+                if (IsAlive && !IsHiredCompanion && TryStepOffStableLanding(out Vector3 stepFrom, out Vector3 stepTo) &&
+                    log.IsDebugEnabled)
+                    log.Debug($"AUTONOMOUS_STABLE_LANDING_STEP bot=\"{Name}\" id={DatabaseID} " +
+                              $"region={CurrentRegionID} from={stepFrom} to={stepTo}");
                 AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.StableTravel);
                 log.Info($"AUTONOMOUS_STABLE_ROUTE_ARRIVE bot=\"{Name}\" id={DatabaseID} level={Level} " +
                          $"realm={GlobalConstants.RealmToName(Realm)} destination=\"{completedDestination}\" position={X},{Y},{Z}");
@@ -1034,6 +1044,28 @@ namespace DOL.GS
                 if (IsAlive && !IsHiredCompanion)
                     AutonomousStableLandingWatch.Arrived(DatabaseID, CurrentRegionID, completedDestination, GameLoop.GameLoopTime);
             }
+        }
+
+        private bool TryStepOffStableLanding(out Vector3 from, out Vector3 to)
+        {
+            from = new(X, Y, Z);
+            to = from;
+            GameStableMaster master = null;
+            long best = long.MaxValue;
+            foreach (GameNPC npc in GetNPCsInRadius(600))
+            {
+                if (npc is not GameStableMaster stable || npc.ObjectState != eObjectState.Active) continue;
+                long distance = (long)(npc.X - X) * (npc.X - X) + (long)(npc.Y - Y) * (npc.Y - Y);
+                if (distance >= best) continue;
+                best = distance;
+                master = stable;
+            }
+            Vector3? masterAt = master == null ? null : new Vector3(master.X, master.Y, master.Z);
+            if (!AutonomousServiceNpcClearance.TryResolveLandingStepOff(PathfindingProvider.Instance, CurrentZone, from,
+                    masterAt, DatabaseID, out to))
+                return false;
+            return MoveInRegion(CurrentRegionID, (int)Math.Round(to.X), (int)Math.Round(to.Y), (int)Math.Round(to.Z),
+                Heading, true);
         }
 
         /// <summary>

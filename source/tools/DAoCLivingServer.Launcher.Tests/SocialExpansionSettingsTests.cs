@@ -332,6 +332,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void WeaponSetRulesAreOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #569 step 7: bot_weapon_set_rules, a bot combat rule like bot_healer_period_rules, on by default and in Setup;
+        // no checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.WeaponSetRules && SocialExpansionSettings.Recommended.WeaponSetRules, Is.True);
+        Assert.That(d.AllOff().WeaponSetRules, Is.True);
+        (d with { WeaponSetRules = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_weapon_set_rules"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).WeaponSetRules, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void LeaderFocusIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #571 step 1: bot_leader_focus, a bot combat rule like bot_healer_period_rules, on by default and in Setup; no
@@ -343,6 +357,20 @@ public class SocialExpansionSettingsTests
         Assert.That(Rows()["bot_leader_focus"], Is.EqualTo("False"));
         var problems = new List<string>();
         Assert.That(SocialExpansionSettings.Load(_database, problems).LeaderFocus, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
+    [Test] public void PartyPullerCampTurnIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #569 step 9: bot_party_puller_camp_turn, a bot combat rule like bot_leader_focus, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.PartyPullerCampTurn && SocialExpansionSettings.Recommended.PartyPullerCampTurn, Is.True);
+        Assert.That(d.AllOff().PartyPullerCampTurn, Is.True);
+        (d with { PartyPullerCampTurn = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_party_puller_camp_turn"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).PartyPullerCampTurn, Is.False);
         Assert.That(problems, Is.Empty);
     }
 

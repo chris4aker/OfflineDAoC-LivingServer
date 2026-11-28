@@ -1768,15 +1768,21 @@ public static partial class AutonomousBotChatCoordinator
         // The player's line is a turn of the /say conversation first, so their hired companion (CompanionChat165) answers with
         // the conversation in hand: the companion that has the floor takes a line that names nobody (chat audit E7).
         ChatConversations.Live.NotePlayer(player.Name, AutonomousChatThreads.Say(player.CurrentRegionID), message, GameLoop.GameLoopTime);
-        CompanionChat165.OnPlayerSay(player, message);
         BotChatTranscript.Player("say", player, message);
-        // The screen first: a scam draws nothing, not even from a beggar (round 3).
+        // The screen first: a scam draws nothing, not even from a beggar or a companion (round 3; #479: the companion came first).
         if (Screened(player, message, "say"))
             return;
         // Asking for gold or items near a beggar in a capital: the beggar takes it personally (AutonomousBeggars).
         if (AutonomousBeggars.OnPlayerSay(player, message))
         {
             AutonomousChatWhy.Dropped(player.Name, player.Realm, "say", AutonomousChatWhy.Codes.HandledElsewhere, "a beggar nearby took it personally");
+            return;
+        }
+        // Realism 2b (#479): a hired companion that takes the line answers it on the party reply path; the gamebots nearby leave it
+        // to the companion (channels.md finding 1: its "ok" was followed by a gamebot's answer).
+        if (CompanionChat165.OnPlayerSay(player, message))
+        {
+            AutonomousChatWhy.Dropped(player.Name, player.Realm, "say", AutonomousChatWhy.Codes.HandledElsewhere, "the player's hired companion answers it");
             return;
         }
         if (AutonomousChatIntentModel.Predict(message) == eAutonomousChatIntent.IgnoreOutOfWorld)
@@ -1986,7 +1992,7 @@ public static partial class AutonomousBotChatCoordinator
     /// <summary>After this long busy, the bot sends one "sec, fighting" (DESIGN-003: it never reached a tell before).</summary>
     public const int TellBusyAckMs = 4_000;
     /// <summary>The longest a reply to a tell or a line naming the bot takes to type (DESIGN-018: 25 wpm made it 15-35 s).</summary>
-    public const int DirectTypingCapMs = 12_000;
+    public const int DirectTypingCapMs = AutonomousChatArbiter.TypingCapMs;
 
     /// <summary>
     /// When a reply to a player's line is due: as read, thought and typed (<paramref name="due"/>), but no later than
@@ -3001,12 +3007,13 @@ public static partial class AutonomousBotChatCoordinator
             planned++;
             int replyIndex = planned;
             int before = due;
-            // 1.2.2 (F11): the first answer to a question that is a short known fact types faster.
-            int wpm = primary && question && AutonomousChatArbiter.IsQuickFact(choice.Route, response) ? AutonomousChatArbiter.QuickWpm(Wpm(responder)) : Wpm(responder);
-            due = voices ? AutonomousChatArbiter.DelayMs(message, response, wpm, due, Random.Shared) : ReplyDelayMs(response, due, Random.Shared);
-            // 1.2 chat audit (DESIGN-018): a line that names the bot is answered within 12 s, however slowly it types; so is the
-            // first answer to a player's question in /faction (PC check 0730, build 5154cae: 33 s, typing alone).
-            due = PlayerAnswerDueMs(due, before, directed, faction && primary && question);
+            // 1.2.2 (F11): the first answer to a question that is a short known fact types faster. 1.2 chat audit (DESIGN-018): a
+            // line that names the bot is answered within 12 s, however slowly it types; so is the first answer to a player's question
+            // in /faction (PC check 0730, build 5154cae: 33 s, typing alone). Realism 2b (#479): one delay function for every channel.
+            due = voices
+                ? AutonomousChatArbiter.AnswerDelayMs(message, response, Wpm(responder), choice.Route, primary && question,
+                    directed || faction && primary && question, before, Random.Shared)
+                : PlayerAnswerDueMs(ReplyDelayMs(response, due, Random.Shared), before, directed, faction && primary && question);
             if (primary)
                 firstDue = due;
             if (faction)
