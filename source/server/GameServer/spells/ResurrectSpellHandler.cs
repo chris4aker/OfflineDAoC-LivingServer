@@ -127,7 +127,7 @@ namespace DOL.GS.Spells
 						if (IsPerfectRecovery() && Ability != null)
                         {
 							AtlasOF_PerfectRecovery PRAbility = Ability as AtlasOF_PerfectRecovery;
-							PRAbility.OnRezDeclined(Caster as GamePlayer);
+							PRAbility?.OnRezDeclined(Caster);
 						}
 					}
 				}

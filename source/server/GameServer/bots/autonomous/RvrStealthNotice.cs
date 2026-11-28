@@ -16,7 +16,8 @@ public readonly record struct RvrStealthSighting(
     int ObserverStealthBonus = 0,
     bool ObserverInCombatWithOther = false,
     bool LineOfSight = true,
-    bool TargetArcher = false);
+    bool TargetArcher = false,
+    bool ObserverTrueSight = false);
 
 /// <summary>
 /// Minimal stealth detection for bots (owner decision 5, 2026-11-16; docs/RVR-FIELD-1.2.md, layer "Eyes"; work package
@@ -26,7 +27,8 @@ public readonly record struct RvrStealthSighting(
 /// Hidden, never through Vanish), so a bot notices only inside that range, and only by chance. On top of it the bot's
 /// own limit: within 125 units the chance per second rises to about 50% at point blank (veteran 60%, easy 35%), it
 /// falls to 0 at 350 units, a bot fighting someone else never notices, and line of sight is needed. A first cut; the
-/// numbers are ours, not from a source. The same rule for every stealthed enemy, player or bot. Pure.
+/// numbers are ours, not from a source. The same rule for every stealthed enemy, player or bot. A bot on True Sight (#531
+/// step 2c-2, owner answer 71A) sees every stealther in its line of sight at once, as a player on it does. Pure.
 /// </summary>
 public static class RvrStealthNotice
 {
@@ -55,8 +57,23 @@ public static class RvrStealthNotice
         s.ObserverLevel, s.StealthSpec, s.ObserverDetectHidden, s.TargetDetectHidden, s.ObserverSeeHidden, s.TargetAssassin,
         s.Camouflage, s.Vanish, s.ObserverStealthBonus, s.TargetArcher));
 
-    /// <summary>The farthest this bot may notice this stealther: the human's range, never beyond 350. Pure.</summary>
-    public static int Limit(in RvrStealthSighting s) => Math.Min(MaxRange, HumanRange(s));
+    /// <summary>
+    /// How far a bot on True Sight looks for stealthers (#531 step 2c-2, owner answer 71A: "as a player, for its 60 s the
+    /// archer sees every stealthed enemy in its line of sight; the 350-unit bot cap doesn't apply"): past any scan's reach.
+    /// </summary>
+    public const int TrueSightReach = 6_000;
+
+    /// <summary>True Sight sees this stealther: the observer has it and the stealther is not under Vanish. Pure.</summary>
+    public static bool TrueSightSees(in RvrStealthSighting s) => s.ObserverTrueSight && !s.Vanish;
+
+    /// <summary>How close a stealthed enemy must be to be a candidate for this rule at all: 350, or True Sight's reach.</summary>
+    public static int CandidateRange(bool observerTrueSight) => observerTrueSight ? TrueSightReach : MaxRange;
+
+    /// <summary>
+    /// The farthest this bot may notice this stealther: the human's range, never beyond 350; on True Sight, anywhere in its
+    /// sight (<see cref="TrueSightReach"/>). Pure.
+    /// </summary>
+    public static int Limit(in RvrStealthSighting s) => TrueSightSees(s) ? TrueSightReach : Math.Min(MaxRange, HumanRange(s));
 
     /// <summary>
     /// The chance per second of noticing: 0 beyond <see cref="Limit"/>, while fighting someone else or without line of
@@ -64,7 +81,12 @@ public static class RvrStealthNotice
     /// </summary>
     public static double ChancePerSecond(in RvrStealthSighting s, RvrBotAwareness awareness)
     {
-        if (s.ObserverInCombatWithOther || !s.LineOfSight)
+        if (!s.LineOfSight)
+            return 0;
+        // On True Sight every stealther in sight is seen at once, as by a player on it (owner answer 71A); Vanish still hides
+        if (TrueSightSees(s))
+            return s.Distance <= TrueSightReach ? 1 : 0;
+        if (s.ObserverInCombatWithOther)
             return 0;
         int limit = Limit(s);
         double d = Math.Max(0, s.Distance);

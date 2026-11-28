@@ -273,10 +273,10 @@ public sealed partial class AutonomousWorldBotController
         RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.Scans);
         // Away from its objective a bot looks only to where noticing stops (never less than 2,600), not 5,000.
         int searchRadius = AutonomousRvrPerception.ScanRadius(rvr.Profile, rvr.Rules.FieldRadius, TargetSearchRadius);
-        // A stealthed enemy is a candidate only close up, for the stealth rule (RvrStealthNotice); never otherwise.
+        // A stealthed enemy is a candidate only close up (anywhere in sight on True Sight), for the stealth rule (RvrStealthNotice).
         // #522: at an objective too (RvrScanContext.StealthNotice), now that gamebots no longer uncover stealthers like monsters.
         bool StealthOk(GameLiving target) => !target.IsStealthed ||
-            rvr.StealthNotice && bot.IsWithinRadius(target, RvrStealthNotice.MaxRange);
+            rvr.StealthNotice && bot.IsWithinRadius(target, StealthCandidateRange(bot));
         // Cheap rejections first (most nearby livings are friendly bots); the area lookup last
         // (IsSafeArea/GetAreasOfZone were ~64 MB per 40 s of allocations in run 11).
         bool Eligible(GameLiving target) => target != bot && StealthOk(target) && !IsIgnoredPvpTarget(target) &&
