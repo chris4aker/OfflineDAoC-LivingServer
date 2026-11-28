@@ -330,6 +330,10 @@ public static class AutonomousStuckWatchdog
             return false;
 
         DateTime now = nowUtc ?? DateTime.UtcNow;
+        // #572 51B: refresh an out-levelled stay's in-bracket sighting on every think, so a brain hold that keeps the
+        // controller away for minutes does not lose the stay.
+        if (BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID))
+            AutonomousWorldBotController.StaysOutlevelled(bot);
         // The stable route is the authoritative mover. Do not mesh-snap or
         // relocate a rider while the horse is traversing route geometry.
         if (bot.IsProtectedStableMasterTravel(now))
