@@ -469,6 +469,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         WeaponSetRules = _population.WeaponSetRules, // no checkbox: kept as read (#569)
         LeaderFocus = _population.LeaderFocus, // no checkbox: kept as read (#571)
         CompanionRvrEngage = _population.CompanionRvrEngage, // no checkbox: kept as read (#664)
+        PartyPullerCampTurn = _population.PartyPullerCampTurn, // no checkbox: kept as read (#569)
         PopulationNewcomers = _population.PopulationNewcomers,
         NewcomerFloor = _population.NewcomerFloor,
         NewcomerPerHour = _population.NewcomerPerHour,

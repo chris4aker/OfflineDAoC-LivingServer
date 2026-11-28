@@ -670,7 +670,7 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("world", "check_los_during_cast", "Should we perform LoS checks during spell casts (players and gamebots; see check_los_during_npc_cast for other NPCs).", true)]
 		public static bool CHECK_LOS_DURING_CAST;
 
-		// A monster, guard or pet lands what it started unless crowd
+		// As on live: a monster, guard or pet lands what it started unless crowd
 		// controlled. Gamebots keep the player's checks (NpcFinishRules).
 		[ServerProperty("world", "check_los_during_npc_cast", "Should NPCs other than gamebots perform LoS checks during spell casts.", false)]
 		public static bool CHECK_LOS_DURING_NPC_CAST;
@@ -2137,7 +2137,7 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("pve", "pve_exp_loss_level", "Which level should players killed in PvE start losing experience?", (byte)6)]
 		public static byte PVE_EXP_LOSS_LEVEL;
 
-		// After OpenDAoC-Core e10348f31: a saved gravestone (it survives a restart) is removed this many days after it was made.
+		// A saved gravestone (it survives a restart) is removed this many days after it was made.
 		[ServerProperty("world", "gravestone_decay_time", "Minimum time (days) before a gravestone is removed from the world. 0 means no gravestones will be removed.", 7)]
 		public static int GRAVESTONE_DECAY_TIME;
 
@@ -2436,7 +2436,7 @@ namespace DOL.GS.ServerProperties
 		public static int SPELL_INTERRUPT_DURATION;
 
 		/// <summary>The self interrupt a cast starts when it reaches its half-cast point while an attacker's interrupt timer is still
-		/// running (port of OpenDAoC-Core 21eda0f90; the live-like interrupt has no switch back).</summary>
+		/// running (the live-like interrupt has no switch back).</summary>
 		[ServerProperty("spells", "spell_self_interrupt_duration", "How long the self interrupt lasts when a cast reaches its half-cast point while interrupted", 2200)]
 		public static int SPELL_SELF_INTERRUPT_DURATION;
 
@@ -2598,7 +2598,7 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_PERSONALITIES_ENABLED;
 
 		/// <summary>
-		/// Autonomous gamebots react to a player-shaped attacker like a player (stefanrows/OfflineDAoC 0.271).
+		/// Autonomous gamebots react to a player-shaped attacker like a player.
 		/// </summary>
 		[ServerProperty("bots", "bot_incoming_fire_reaction", "Autonomous gamebots hit by a player, bot or pet react like a player: a 0.3-2.5 s reaction delay (healers heal meanwhile; shorter for tanks and bold personalities), an area spell from a distance doesn't make its caster the bot's target, and healers cure a dotted group with the group cure. Companions and bots in your group are not affected. False keeps the immediate reaction.", true)]
 		public static bool BOT_INCOMING_FIRE_REACTION;
@@ -2905,6 +2905,9 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_HEALER_PERIOD_RULES;
 
 		/// <summary>#571 step 1: the damage dealers of a player's group fight the player's target first (CompanionLeaderFocus).</summary>
+		[ServerProperty("bots", "bot_party_puller_camp_turn", "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD.", true)]
+		public static bool BOT_PARTY_PULLER_CAMP_TURN = true;
+
 		[ServerProperty("bots", "bot_leader_focus", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS.", true)]
 		public static bool BOT_LEADER_FOCUS;
 
