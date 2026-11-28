@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using DOL.GS;
 using DOL.GS.Tests.Rehearsal;
 using NUnit.Framework;
@@ -44,6 +45,10 @@ namespace DOL.UnitTests
             RvrFightRehearsal.OpenFieldResult first = RvrFightRehearsal.OpenField(Seed);
             Print(first.Row, first.Detail, clock);
             Assert.That(RvrFightBoards.Builds, Is.GreaterThan(boards), "BuildBoard ran on live GameLivings");
+            // #531 step 2c-1: the realm-ability row (Speed of Sound, MoC, Bunker of Faith per side) is printed
+            string actives = first.Detail.FirstOrDefault(l => l.StartsWith("RVR_REHEARSAL open_field_realm_abilities", System.StringComparison.Ordinal));
+            Assert.That(actives, Is.Not.Null, "the realm-ability row");
+            TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
             Assert.That(first.Errors + again.Errors, Is.Zero, "no service threw");

@@ -13,7 +13,8 @@ namespace DOL.GS;
 /// and only at their class trainer like their spec training. The build is deterministic and only
 /// grows with points, so only the points spent are saved; the abilities are rebuilt from them on load. Passive abilities apply
 /// through the normal ability bonuses; the few actives bots can use (Purge, Ignore Pain, Second
-/// Wind, First Aid) are fired from the brain by <see cref="UseActives"/>.
+/// Wind, First Aid, and for the open-field fight plan Speed of Sound, Mastery of Concentration and Bunker of Faith, #531)
+/// are fired from the brain by <see cref="UseActives"/>.
 /// </summary>
 public static class AutonomousBotRealmAbilities
 {
@@ -53,7 +54,8 @@ public static class AutonomousBotRealmAbilities
     };
 
     /// <summary>The actives a bot knows how to use; every other active is never bought.</summary>
-    public static readonly string[] UsableActives = { Purge, PurgeReduced, IgnorePainTank, IgnorePain, SecondWind, FirstAid };
+    public static readonly string[] UsableActives = { Purge, PurgeReduced, IgnorePainTank, IgnorePain, SecondWind, FirstAid,
+        RvrRealmActives.SpeedOfSound, RvrRealmActives.MasteryOfConcentration, RvrRealmActives.BunkerOfFaith };
 
     // Passives with little use to a bot; bought only after everything else.
     private static readonly HashSet<string> LowValue = new(StringComparer.OrdinalIgnoreCase)
@@ -64,20 +66,21 @@ public static class AutonomousBotRealmAbilities
 
     private static readonly Step[] MeleeBuild = Build(("AugCon", 1), ("AugDex", 2), ("MasteryOfPain", 1), ("AugStr", 1),
         ("MasteryOfBlocking", 1), ("MasteryOfParrying", 1), ("Toughness", 1), ("AugCon", 2), (PurgeReduced, 1), (Purge, 1),
-        ("AugStr", 3), ("MasteryOfArms", 1), ("AugCon", 3), (SecondWind, 1), ("MasteryOfPain", 2), ("Determination", 1),
+        (RvrRealmActives.SpeedOfSound, 1), ("AugStr", 3), ("MasteryOfArms", 1), ("AugCon", 3), (SecondWind, 1), ("MasteryOfPain", 2), ("Determination", 1),
         ("DeterminationHybrid", 1), ("AugDex", 3), (FirstAid, 2), (IgnorePainTank, 1), (IgnorePain, 1),
         ("Toughness", 2), ("MasteryOfBlocking", 2), ("MasteryOfParrying", 2), ("MasteryOfArms", 2), ("MasteryOfPain", 3),
         ("AugQui", 2), ("Dodger", 1), ("DualistsReflexes", 1));
 
     private static readonly Step[] CasterBuild = Build(("AugAcuity", 2), ("MasteryOfMagery", 1), ("AugCon", 1),
         ("WildPower", 1), ("Serenity", 1), ("AugDex", 1), ("MasteryOfTheArcane", 1), (PurgeReduced, 1), (Purge, 1),
-        ("AugAcuity", 3), ("MasteryOfMagery", 2), ("Toughness", 1), ("EtherealBond", 1), ("WildMinion", 1),
+        ("AugAcuity", 3), (RvrRealmActives.MasteryOfConcentration, 1), ("MasteryOfMagery", 2), ("Toughness", 1),
+        ("EtherealBond", 1), ("WildMinion", 1),
         (FirstAid, 1), ("Determination", 1), ("AugCon", 2), ("MasteryOfMagery", 3),
         ("WildPower", 2), ("AugAcuity", 4), ("MasteryOfTheArcane", 2), ("WildArcana", 1));
 
     private static readonly Step[] HealerBuild = Build(("AugAcuity", 2), ("MasteryOfHealing", 1), ("WildHealing", 1),
-        ("AugCon", 1), ("Serenity", 1), (PurgeReduced, 1), (Purge, 1), ("AugDex", 1), ("AugAcuity", 3),
-        ("MasteryOfHealing", 2), ("Toughness", 1), ("EtherealBond", 1), ("WildHealing", 2),
+        ("AugCon", 1), ("Serenity", 1), (PurgeReduced, 1), (Purge, 1), (RvrRealmActives.BunkerOfFaith, 1), ("AugDex", 1),
+        ("AugAcuity", 3), (RvrRealmActives.MasteryOfConcentration, 1), ("MasteryOfHealing", 2), ("Toughness", 1), ("EtherealBond", 1), ("WildHealing", 2),
         ("AugCon", 2), (FirstAid, 1), ("Determination", 1), ("DeterminationHybrid", 1), ("MasteryOfHealing", 3),
         ("AugAcuity", 4), ("WildPower", 1), ("MasteryOfMagery", 1));
 
@@ -288,10 +291,17 @@ public static class AutonomousBotRealmAbilities
         long now = GameLoop.GameLoopTime;
         if (now < state.NextUse) return;
         state.NextUse = now + 1_000;
+        RvrRealmActives.ObserveInterrupts(bot, now);
         foreach (TimedRealmAbility ability in state.Actives)
         {
             if (bot.GetSkillDisabledDuration(ability) > 0 || !Wanted(bot, ability.KeyName)) continue;
-            ability.Execute(bot);
+            // #531 step 2c-1: the fight plan's actives go through the bot-side executor (their handlers are player-only)
+            if (RvrRealmActives.Handles(ability.KeyName))
+            {
+                if (!RvrRealmActives.Execute(bot, ability)) continue;
+            }
+            else
+                ability.Execute(bot);
             // A purge that removed nothing only blocks itself for 5 ms; log real uses (long reuse timers).
             if (bot.GetSkillDisabledDuration(ability) > 1_000 && ability.KeyName != FirstAid)
                 Log.Info($"BOT_REALM_ABILITY_USED bot={bot.Name} ability={ability.KeyName.Replace("AtlasOF_", "")} " +
@@ -330,6 +340,9 @@ public static class AutonomousBotRealmAbilities
         IgnorePain or IgnorePainTank => bot.InCombat && bot.HealthPercent < 30 && !bot.IsMezzed && !bot.IsStunned,
         SecondWind => bot.InCombat && bot.EndurancePercent < 10 && !bot.IsMezzed && !bot.IsStunned,
         FirstAid => !bot.InCombat && bot.HealthPercent < 50 && !bot.IsSitting,
+        // #531 step 2c-1: open-field autonomous gamebots only (RvrRealmActives.Wanted asks BotBrain.RvrTacticsApplyTo)
+        RvrRealmActives.SpeedOfSound or RvrRealmActives.MasteryOfConcentration or RvrRealmActives.BunkerOfFaith =>
+            RvrRealmActives.Wanted(bot, key),
         _ => false,
     };
 }

@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **774**; pending (#625, not on main yet): **0**; shipped by the pipeline: **742**.
+- Rows in code: **777**; pending (#625, not on main yet): **0**; shipped by the pipeline: **745**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -125,6 +125,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `casting`, `class`, `distance`, `level`, `manaPercent`, `moving`, `pendingCast`, `pet`, `region`, `resting`, `target`, `targetLevel`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `AUTONOMOUS_PVP_STALEMATE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `id`, `position`, `realm`, `region`, `seconds`, `target`, `targetRealm` | `bot`, `target` | - | - |
 | `AUTONOMOUS_RAID_STUCK_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `class`, `from`, `id`, `instead`, `level`, `near`, `realm`, `reason`, `snapped`, `to`, `why` | `bot` | - | Inside its raid's dungeon with every regroup point by a resting boss: |
+| `AUTONOMOUS_RALLY_STUCK` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `event`, `id`, `minutes` | `bot` | one per open-world rally member that stood still off the staging ring for 15 minutes after the departure, then sent to its capital (#767) | An open-world rally member stood still off the staging ring for 15 minutes after the departure, so it is sent to its capital and keeps its raid place (issue #767). |
 | `AUTONOMOUS_RESURRECTION_BLOCKED` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `corpse`, `distance`, `inCombat`, `mana`, `reason`, `spell` | `bot`, `corpse` | - | - |
 | `AUTONOMOUS_ROUTE_FLOOR_CORRECTION` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_ROUTE_GOAL_FIX` | server.log | **ships** | `bots/autonomous/AutonomousRouteGoalFix.cs` | `campRepickBlocked`, `crossingFallback`, `crossingSteered`, `floorStepGated`, `floorStepHeld`, `foreignFailureSkipped`, `gatedSkipped`, `pocketEscapeSkipped`, `repickBlocked`, `snapDzRejected`, `snapFailed`, `snapRefailed`, `snapped`, `window_s` | - | - | - |
@@ -210,7 +211,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOND_TALK` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `topic` | `bot`, `other` | - | - |
 | `BOT_ADD_CONTROL` | server.log | **ships** | `bots/BotBrain.PveAddControl.cs` | `add`, `adds`, `bot`, `class`, `companion`, `radius`, `region`, `spell`, `type` | `bot` | - | - |
 | `BOT_AREA_SPELL` | detail.log | **ships** | `bots/BotBrain.AreaSpells.cs` | `at`, `bot`, `class`, `companion`, `hits`, `kind`, `radius`, `region`, `spell` | `bot` | - | - |
-| `BOT_BODY_LANGUAGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBodyLanguage.cs` | `cheers`, `emotes`, `greets`, `looks`, `minutes`, `steps` | - | - | - |
+| `BOT_BODY_LANGUAGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBodyLanguage.cs` | `cheers`, `emotes`, `greets`, `killEmotes`, `looks`, `minutes`, `steps` | - | - | - |
 | `BOT_BUFFBOT_COPIES` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `found`, `mains`, `retired`, `suspected` | - | - | - |
 | `BOT_BUFFBOT_COPY_RETIRED` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `bot`, `class`, `id`, `level`, `main`, `mainId`, `realm` | `bot`, `main` | - | - |
 | `BOT_BUFFBOT_COPY_SUSPECTED` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `bot`, `class`, `id`, `level`, `realm` | `bot` | - | - |
@@ -341,7 +342,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `DRAGON_LANDED` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `home`, `name`, `position` | `name` | - | - |
 | `DRAGON_LANDING_APPROACH` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `home`, `name`, `position` | `name` | - | Finish the airborne leg using 3D flight, not ground navmesh. |
 | `DRAGON_LANDING_FORCED` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `home`, `name`, `position` | `name` | - | - |
-| `DRAGON_RALLY_ROUTE_RETRY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `bot`, `event`, `from`, `goal`, `queries` | `bot` | - | - |
+| `DRAGON_RALLY_FALLBACK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `action`, `attempts`, `bot`, `event`, `from`, `post`, `seconds`, `stage` | `bot` | one per raider per spot after three failed rally plans from it: the walk past a neutral boss, or the keep-safe-route note for an aggressive one (#767) | A raider gives up on the safe route around a neutral boss for a while and walks, or (an aggressive boss) keeps retrying it, after DragonRallyFallback.RouteFailureLimit failed plans from one spot (issue #767). |
+| `DRAGON_RALLY_ROUTE_RETRY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Expedition.cs` | `attempt`, `bot`, `event`, `from`, `goal`, `own`, `queries`, `stage` | `bot` | one per failed plan of a raider's safe route to an open-world boss rally: at most one per raider every 30 seconds while the plans fail (#767) | One failed plan of the safe route around the boss, with the post it aimed at, the try from this spot and the stage that failed. |
 | `DRAGON_RESET` | server.log | **ships** | `scripts/namedmobs/Dragons/DragonDiagnostics.cs` | `health`, `healthPercent`, `name`, `position`, `reason` | `name` | - | - |
 | `DRAGON_TAKEOFF` | server.log | **ships** | `scripts/namedmobs/Dragons/AlbGolestandt.cs`<br>`scripts/namedmobs/Dragons/HibCuuldurach.cs`<br>`scripts/namedmobs/Dragons/MidGjalpinulva.cs` | `name`, `position` | `name` | - | - |
 | `DUTY_LEASE` | detail.log | **ships** | `bots/autonomous/BotDutyLeases.cs` | `bot`, `held`, `heldOwner`, `id`, `kind`, `outcome`, `owner`, `reason` | `bot`, `owner` | - | - |
@@ -710,6 +712,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_PLAYER_SEAT` | server.log | **ships** | `bots/autonomous/RvrRecord.Player.cs` | `deaths`, `defenseEventsCaused`, `groupsJoined`, `groupsOffered`, `kills`, `minutesEnemyWithin3000`, `minutesInWar`, `mostEnemiesWithin3000`, `noticesReceived`, `player`, `t`, `timesAttacked` | `player` | - | - |
 | `RVR_PLAYER_VIEW` | server.log | **ships** | `bots/autonomous/RvrRecord.Player.cs` | `at`, `enemiesFighting`, `enemiesInView`, `enemiesNear`, `fights`, `friendsInView`, `friendsNear`, `inCombat`, `player`, `realm`, `region`, `t` | `player` | - | - |
 | `RVR_RALLY_DELAY` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `force`, `reason`, `target` | - | - | - |
+| `RVR_RANKS` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `bots`, `level50`, `median`, `median50`, `realm`, `rr1`, `rr10`, `rr2`, `rr3`, `rr4`, `rr5`, `rr6`, `rr7`, `rr8`, `rr9`, `t`, `top` | - | once an hour per realm, with RVR_HOUR (#528) | One realm's online autonomous gamebots counted by realm rank, once an hour with RVR_HOUR, to see whether their rank spread is the period's. |
 | `RVR_REGROUP` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `from`, `fromFight`, `group`, `health`, `members`, `minSeconds`, `next`, `phase`, `power`, `rally`, `realm`, `reason`, `region`, `relay`, `relayedTo`, `seconds`, `skill`, `started` | - | - | - |
 | `RVR_REINFORCEMENTS` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `event` | - | - | - |
 | `RVR_RELIC_CAMPAIGN` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `attacker`, `relic`, `sentinels`, `step` | - | - | - |
@@ -728,7 +731,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_ROAM_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `lap`, `preySeen`, `realm`, `region`, `reserve`, `result`, `roamersSeen`, `seconds`, `spot`, `tier`, `type`, `walk` | - | - | - |
 | `RVR_ROAM_CIRCUIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `bestEnemiesNear`, `circuit`, `circuits`, `enemiesNear`, `group`, `realm`, `region`, `reserve`, `sampleAgeSeconds` | - | - | - |
 | `RVR_ROAM_HUNT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `distance`, `group`, `kind`, `prey`, `preyLevel`, `preyRealm`, `realm`, `region`, `seen`, `spot`, `tier`, `walk` | `prey` | - | - |
-| `RVR_ROAM_MOVE_ON` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `limitSeconds`, `realm`, `secondsAfterKill`, `spot`, `tier` | - | - | - |
+| `RVR_ROAM_MOVE_ON` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `limitSeconds`, `playerKills`, `realm`, `secondsAfterKill`, `spot`, `tier` | - | - | - |
 | `RVR_SCAN_BUDGET` | server.log | **ships** | `bots/autonomous/RvrScanRoster.cs` | `capped`, `everyone`, `idle`, `lookers`, `notices`, `rays`, `raysPerSecond`, `realm`, `rolls`, `scans`, `scansPerSecond`, `seconds`, `solo`, `stealthRolls`, `woken` | - | - | - |
 | `RVR_SIEGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs`<br>`bots/autonomous/AutonomousWorldBotController.Siege.cs` | `action`, `bot`, `distance`, `engine`, `id`, `keep`, `realm`, `region`, `target` | `bot`, `target` | - | - |
 | `RVR_SIEGE_BEGIN` | server.log | no: free text, no key=value fields | `bots/autonomous/RvrRecord.World.cs` | - | - | - | - |
