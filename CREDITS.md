@@ -47,6 +47,11 @@ section 5 requires. Third-party notices for dependencies, tools and data sources
 - **[mod-playerbots](https://github.com/mod-playerbots/mod-playerbots)** (AzerothCore): the idea of a per-pair trade
   discount for the bot trade (no code taken).
 - **Krolgosh-web**: the report behind the lag fix for large populations (issue #25).
+- **nindybrew-svg**: the report behind bots that kept following you after a disband (issue #33).
+- **joshuaforehand**: the report behind the launcher staying on STARTING (issue #32).
+- **BeezKneezItem9**: the report behind the raised XP rate in Darkness Falls, battlegrounds and the frontiers.
+- **Zarthol** (r/daoc): the report behind weapon styles for base classes before level 5.
+- **ThatRebelKid** (r/daoc): the report behind quiet song twisting.
 - Everyone on GitHub and r/daoc who reported what they found.
 
 ## Formerly

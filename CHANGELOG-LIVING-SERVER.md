@@ -2307,8 +2307,9 @@ seam's default is today's code, and the new tables are created empty.
   bots only.
 - **The `CRAFT_*` / `ECON_*` log format**, five AI_PROFILE scopes, and the voice registry's new kinds, flags, slots and
   the `crafting` intent (no lines yet; `corpus.json` unchanged).
-- Fixed formats: the crafting-skill storage format, the craft-order table's columns, the coin-flow kinds and the
-  `crafting_skill_rate` key.
+- Adopted formats: the crafting-skill storage format (its gain step now takes a points count and a cap), the craft-order
+  table's columns (with columns of our own added), the coin-flow kinds (with kinds of our own added) and the
+  `crafting_skill_rate` key (which replaces `crafting_player_pace`).
 
 ### WP1 Crafting core and the M0 fixes
 
@@ -2559,9 +2560,9 @@ players keep today's rules. The level 20 and 50 starter gear is unchanged.
   the board's quote (materials plus a quarter, at least 100 copper) within half the purse; the board takes the
   escrow, as its `Place` does, so WP6 moves no coin for an order. One open order a buyer; a refused or
   unaffordable post waits 30 minutes. With no board registered nothing is posted and the hourly line counts it.
-- **ItemValue165 as the price index.** Its value score (floor, fair, ask) is registered as `IPriceIndex` unless a
-  package already registered one; with `bot_crafters` off it answers today's numbers. Listing prices are not changed
-  by WP6 (WP5's price index and listing policy).
+- **ItemValue165 as the price index.** Its value score (floor, fair, ask), without a 1.65 mode, is registered as
+  `IPriceIndex` unless a package already registered one; with `bot_crafters` off it answers today's numbers. Listing
+  prices are not changed by WP6 (WP5's price index and listing policy).
 - **Coin:** WP6 adds no coin move of its own (an Exchange purchase goes through `TryBuy`, an order's escrow through the
   board). The vendor sale and vendor upgrade now name their ledger kind (`VendorSale`, `VendorGear`).
 - **Logs:** hourly `ECON_GEAR_CHECK event="hour"` (checks, gaps, empty, template, below, routed, bought,
@@ -4649,8 +4650,8 @@ keyboard, overnight or in CI:
   server.
 
 **New client (0.37c): skills on the quickbar, Stealth and the merchant's SELL button** (GitHub issue #34). These are
-fixes from the new client's 1.2 scripts, installed as patches to the new client's scripts (only where the script is the released
-0.37c one; ROLLBACK.cmd puts it back).
+fixes taken from the new client's 1.2 scripts, installed as patches over the released 0.37c scripts (only where the
+script is unchanged; ROLLBACK.cmd puts it back).
 - **Skills onto the quickbar.**
   - **Before:** an ability dragged from the skills window (Sprint, Stealth, Safe Fall, a realm ability ...) showed a
     no-entry sign over the quickbar and wouldn't go on it. Spells and styles already did.
@@ -5811,14 +5812,13 @@ realm that feels like a full server at its busiest. How it works and how to tune
   client's Friends Monitor, and the first friend on an empty list gets its status. Tests: `UT_BotFriends`.
 - **`/allrelease`** (also `/grouprelease`) releases every dead bot in your group at once (issue #40).
   `/spawn` companions still wait while you are dead or a fight is near.
-- **On a world with a raised XP rate, Darkness Falls, battlegrounds and the frontiers get it too** (reported by
-  BeezKneezItem9).
+- **On a world with a raised XP rate, Darkness Falls, battlegrounds and the frontiers get it too** (a player report).
   - **The bug:** in RvR regions and zones a player's kill XP used `rvr_zones_xp_rate` (1 by default) in place of
     `xp_rate`, so a 10× world was 1× in DF while gamebots there got 10×. The base game's rule (from OpenDAoC),
     unchanged in 0.37b.
   - **Now:** players get `xp_rate` (or `xp_rate_by_level`) times `rvr_zones_xp_rate`, the rule gamebots already had.
   - **Checked:** two new tests in `UT_LevelRangeXpRates`. Not yet seen in game.
-- **Gamebot fixes from long soak runs** Autonomous
+- **Gamebot fixes from long soak runs.** Autonomous
   gamebots only; `/spawn` companions and players are unchanged.
   - **Zone seams:** a route that steps over a zone seam and straight back three times is treated as a route failure,
     so the bot takes its usual way out instead of standing there (bots stood 10 to 40 minutes in Vindsaul Faste).
@@ -6051,7 +6051,7 @@ the first new-client file Living Server ships. Dragon raids regrouping after a w
 in a bot group, one count per kill, hand-ins above a quest's level, the journal, quest XP by level) come next, once
 they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
 
-- **Bots stop following you when you leave or disband their group** (issue #33, reported by nindybrew-svg).
+- **Bots stop following you when you leave or disband their group** (issue #33).
   - **The bug:** with two or more invited gamebots in the group, `/disband` took you out but left them marked as
     following you. They trailed you without fighting for you, and refused new invites ("already following another
     player-led group") until you logged out. A single bot was already released correctly.
@@ -6061,7 +6061,7 @@ they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
     with none left, leave the group and go back to their own play. `/spawn` companions are left as before.
   - **Checked:** three new tests (released, handed to a remaining player, companions untouched); 4,096 server tests
     pass. Not yet seen in game.
-- **Base classes get their weapon styles before level 5** (reported on r/daoc by Zarthol).
+- **Base classes get their weapon styles before level 5** (a r/daoc report).
   - **The bug:** the style table lists styles only for the classes chosen at level 5, so a Fighter, Viking, Guardian
     or other base class had no styles at all until then. A Fighter with Slash 2 had nothing where a classic one had
     Slash's first style.
@@ -6071,15 +6071,14 @@ they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
     data: Fighter Ruby Slash, Thistle and Daze at 2; Viking Splitter, Thor's Anvil and Whirling Blade; Guardian
     Shining Blade, Contusions and Dragonfly). Chosen classes keep their own lists unchanged.
   - **Checked:** two new tests; the full server suite passes. Not yet seen in game.
-- **Quiet twisting** (from a r/daoc report by ThatRebelKid).
+- **Quiet twisting** (from a r/daoc report).
   - **The problem:** a Minstrel, Bard or Skald bot twists by restarting a song every few seconds. Each restart played
     its 3-second cast music and its start sound to everyone nearby, so a bot performer near you never stopped.
   - **Now:** a bot restarting a song it started within the last 30 seconds does so without the cast animation and
     with the start effect silent. The first start of each song is still heard. Songs, timings and buffs are unchanged,
     and players' own songs and harmful pulses (a flute mez) keep their sounds.
   - **Checked:** three new tests (`UT_BotQuietSongs`); 4,101 server tests pass. Not yet heard in game.
-- **The launcher no longer stays on STARTING when Windows leaves the server out of its listener table** (issue #32,
-  reported by joshuaforehand).
+- **The launcher no longer stays on STARTING when Windows leaves the server out of its listener table** (issue #32).
   - **The bug:** the launcher asked Windows for the list of listening TCP ports and looked for 10300. On the reporter's
     PC that list left a working listener out, so the server was up, `Test-NetConnection` succeeded, and the launcher
     never left STARTING.
@@ -6195,7 +6194,7 @@ New Server life parts, on by default, each with its own switch in the launcher's
 
 ### Lag spikes with a large population (issue #25)
 
-- Reported and diagnosed by Krolgosh-web. A warband walking to a distant frontier medallion merchant searched for a
+- From a player's report and diagnosis: a warband walking to a distant frontier medallion merchant searched for a
   spot beside it from far away, proving up to 18 multi-zone routes every 15 seconds per bot. With many level 50s on
   RvR, the server tick stalled for about a second and killed bots stood at 0 HP before they fell. Stock 0.37 never ran
   this, because its far-off bots gave up on the medallion.
