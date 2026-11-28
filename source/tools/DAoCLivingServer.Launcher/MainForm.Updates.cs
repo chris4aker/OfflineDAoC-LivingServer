@@ -21,6 +21,9 @@ internal sealed partial class MainForm
     private readonly FlowLayoutPanel _updateStrip = new()
     {
         AutoSize = true,
+        // Issue #795: AutoSize alone grows but never shrinks, so the strip kept the panel's default 100 px height. The
+        // status line, laid out from it, ended up below the title panel's visible area (only its tooltip showed).
+        AutoSizeMode = AutoSizeMode.GrowAndShrink,
         WrapContents = false,
         FlowDirection = FlowDirection.LeftToRight,
         BackColor = Color.Transparent,
@@ -82,9 +85,10 @@ internal sealed partial class MainForm
         {
             int gap = UiScale.Px(titlePanel, 14);
             _updateStrip.Location = new Point(versionLabel.Right + gap, versionLabel.Top + Math.Max(0, (versionLabel.Height - _updateStrip.Height) / 2));
-            // Issue #795: the status used to take only the width left of the strip, about 65 px once "Offer test builds"
-            // joined it, so its messages showed only as a hover tooltip. It now has the header's width from the version
-            // label on, on a row of its own (the header row in the constructor is 152 px for it).
+            // Issue #795: the status used to take the strip's height (100 px, see _updateStrip) with its text centred
+            // below the title panel's visible area, and only the width left of the strip, so its messages showed only as
+            // a hover tooltip. It now has a row of its own under the version label, with the header's width from the
+            // label on (the header row in the constructor is 152 px for it).
             int left = versionLabel.Left;
             int top = Math.Max(versionLabel.Bottom, _updateStrip.Bottom);
             _updateStatus.SetBounds(left, top, Math.Max(0, titlePanel.ClientSize.Width - left - UiScale.Px(titlePanel, 4)),
