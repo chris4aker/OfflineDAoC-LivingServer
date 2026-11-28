@@ -565,7 +565,8 @@ namespace DOL.GS.Tests
         {
             Assert.That(AutonomousRvrEventLayer.ResponseCap(true), Is.EqualTo(240));
             Assert.That(AutonomousRvrEventLayer.ResponseCap(false), Is.EqualTo(96));
-            Assert.That(Enumerable.Range(1, 100).Count(id => AutonomousRvrEventLayer.ResponseReserve(id)), Is.EqualTo(30));
+            ulong seed = AutonomousRvrEventLayer.ReserveSeed("keep", 1000);
+            Assert.That(Enumerable.Range(1, 1000).Count(id => AutonomousRvrEventLayer.ResponseReserve(id, seed)), Is.InRange(250, 350));
             Assert.That(AutonomousRvrEventLayer.PlayerInstigator(null), Is.Null);
         }
 

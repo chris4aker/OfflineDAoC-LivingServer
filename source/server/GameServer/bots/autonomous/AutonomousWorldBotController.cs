@@ -23,7 +23,7 @@ namespace DOL.GS
     {
         /// <summary>
         /// The executor seam of the task-break activities (Crafting 2.0 WP0, DOL.GS.CraftingEconomy.IBotBreakActivity). WP4
-        /// implements it in its own partial file with DividedRealms' craft trip (HandleCraftTrip): set
+        /// implements it in its own partial file with the craft trip (HandleCraftTrip): set
         /// <paramref name="handled"/> when the activity used this turn. Unimplemented, every call compiles away.
         /// </summary>
         partial void RunBreakActivities(GameBot bot, ref bool handled);
@@ -415,6 +415,8 @@ namespace DOL.GS
                 VisitPlaces(bot, GameLoop.GameLoopTime);
                 return false;
             }
+            // #572 51B: the in-bracket sighting an out-levelled stay needs (no-op outside the battlegrounds).
+            ObserveBattlegroundStay(bot);
 
             try
             {
@@ -790,7 +792,7 @@ namespace DOL.GS
                             AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                             return true;
                         }
-                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (DividedRealms' craft trip,
+                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (the craft trip,
                         // WP4's partial file). With no implementation the compiler removes the call.
                         bool breakActivityHandled = false;
                         RunBreakActivities(bot, ref breakActivityHandled);
@@ -2262,6 +2264,12 @@ namespace DOL.GS
                 AutonomousBotGroupCoordinator.BattlegroupLeader(battlegroupLead) is { IsAlive: true } battlegroupLeader &&
                 battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
                 return TrailBattlegroupLead(bot, forceId, battlegroupLead, battlegroupLeader);
+
+            // #599 step 3: the realm's zerg. Its lead holds the region's gates in turn; a recruit in another region travels to
+            // the zerg first (once in the lead's region it trails the lead, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                !_rvrSharedEvent && AutonomousRvrEventLayer.ZergOrderOf(forceId) is { } zergOrder && TakeZergTurn(bot, forceId, zergOrder))
+                return true;
 
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {
@@ -3921,9 +3929,14 @@ namespace DOL.GS
             // and add the battleground of the bot's bracket when the whole party fits it (level only).
             HashSet<ushort> reachableRegions = ReachableRegions(bot.Realm,
                 BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ? RealmRaidNeutralEvents.HomeRegion(bot.Realm) : bot.CurrentRegionID);
-            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled ? BattlegroundBrackets.ForLevel(bot.Level) : null;
+            // #572 step 4: no battleground camps for a bot just forced out of one (30 minutes).
+            // #572 51B: a bot staying out-levelled keeps the camps of the battleground it is in (entry keeps the cap).
+            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled &&
+                !AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID) ? WorkingBattleground(bot) : null;
             if (campBattleground != null && (!sharedGroup || bot.Group == null ||
-                    bot.Group.GetMembersInTheGroup().All(member => BattlegroundBrackets.Allows(campBattleground, member.Level))))
+                    bot.Group.GetMembersInTheGroup().All(member => AutonomousBattlegroundExit.MayBeIn(campBattleground,
+                        member.Level, member is GameBot stayer && stayer.CurrentRegionID == campBattleground.RegionId &&
+                        StaysOutlevelled(stayer)))))
                 reachableRegions.Add(campBattleground.RegionId);
             HashSet<string> rejectedDungeons = AutonomousBotGroupCoordinator.RejectedDungeonCamps(bot);
             foreach (string id in _rejectedDungeonCamps.Where(pair => pair.Value <= GameLoop.GameLoopTime).Select(pair => pair.Key).ToArray())

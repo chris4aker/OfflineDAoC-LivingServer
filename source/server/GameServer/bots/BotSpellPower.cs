@@ -6,7 +6,8 @@ namespace DOL.GS
     /// <summary>
     /// Bot affordability mirrors native costs without guessing free-cast procs.
     /// Only native settlement rolls free-cast effects, never AI evaluation.
-    /// Quickcast is never used by a GameBot. Human spell costs are unchanged.
+    /// Quickcast is used by a GameBot only on an open-field key cast (BotQuickCast, #531 step 2d), and its double power is
+    /// checked there. Human spell costs are unchanged.
     /// </summary>
     public static class BotSpellPower
     {

@@ -3561,9 +3561,10 @@ namespace DOL.GS
             else if (IsTemporaryGroupHelper && !BotSongTwistPolicy.IsMobileSong(this, spell))
                 (Brain as BotBrain)?.MarkTemporaryCompanionRestActivity();
 
-            // Quickcast is explicitly disabled for all bot kinds. Clear a
-            // lingering externally applied effect without changing human casts.
-            EffectListService.GetAbilityEffectOnTarget(this, eEffect.QuickCast)?.End();
+            // Quickcast stays off for every bot cast except an open-field gamebot's key cast under interrupt, which
+            // BotQuickCast arms (#531 step 2d). Any other Quickcast effect is cleared, without changing human casts.
+            if (!BotQuickCast.TryArm(this, spell))
+                EffectListService.GetAbilityEffectOnTarget(this, eEffect.QuickCast)?.End();
 
             if (IsRecoveryResting && !IsTemporaryGroupHelper &&
                 !BotSongTwistPolicy.IsMobileSong(this, spell))
@@ -3872,6 +3873,7 @@ namespace DOL.GS
 
         public override void OnAttackedByEnemy(AttackData ad)
         {
+            CompanionRvrEngage.NoteHit(this, ad); // #664: /hold's self-defence sees the attacker before the brain decides
             // Notify BotBrain of the attack so it can add aggro and transition to combat state
             if (Brain is BotBrain botBrain)
                 botBrain.OnAttackedByEnemy(ad);
