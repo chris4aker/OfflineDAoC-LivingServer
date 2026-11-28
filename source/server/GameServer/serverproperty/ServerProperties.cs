@@ -2904,10 +2904,15 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_healer_period_rules", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules.", true)]
 		public static bool BOT_HEALER_PERIOD_RULES;
 
-		/// <summary>#571 step 1: the damage dealers of a player's group fight the player's target first (CompanionLeaderFocus).</summary>
+		/// <summary>#569 step 8: archer bots open with Critical Shot, and a Hunter's pet waits for it (BotRangedCombat).</summary>
+		[ServerProperty("bots", "bot_critical_shot_opener", "Archer bots open with Critical Shot (#569): a Hunter, Scout or Ranger gamebot, hired companion or /bot companion draws a Critical Shot as its first shot at a target that isn't fighting, running or mezzed, as players pulled, when it has the endurance, and a Hunter keeps its pet at heel for that shot (at most 7 seconds) instead of sending it in first. The draw time, damage and endurance are the player's. Your own character and pet are unchanged.", true)]
+		public static bool BOT_CRITICAL_SHOT_OPENER = true;
+
+		/// <summary>#569 step 9: gamebot party pullers pass over monsters too far to shoot and keep with the party.</summary>
 		[ServerProperty("bots", "bot_party_puller_camp_turn", "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD.", true)]
 		public static bool BOT_PARTY_PULLER_CAMP_TURN = true;
 
+		/// <summary>#571 step 1: the damage dealers of a player's group fight the player's target first (CompanionLeaderFocus).</summary>
 		[ServerProperty("bots", "bot_leader_focus", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS.", true)]
 		public static bool BOT_LEADER_FOCUS;
 
