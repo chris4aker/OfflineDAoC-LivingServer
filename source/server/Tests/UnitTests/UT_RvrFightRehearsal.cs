@@ -48,6 +48,8 @@ namespace DOL.UnitTests
             // #531 step 2c-1: the realm-ability row (Speed of Sound, MoC, Bunker of Faith per side) is printed
             string actives = first.Detail.FirstOrDefault(l => l.StartsWith("RVR_REHEARSAL open_field_realm_abilities", System.StringComparison.Ordinal));
             Assert.That(actives, Is.Not.Null, "the realm-ability row");
+            // #531 step 2d: the row also says when each side's casters first quickcast a key cast, and how often
+            Assert.That(actives, Does.Contain(" qc="), "the row has Quickcast");
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);

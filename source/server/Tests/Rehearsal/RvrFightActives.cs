@@ -9,7 +9,7 @@ namespace DOL.GS.Tests.Rehearsal
     /// #531 step 2c-1: the fight plan's realm abilities in the RvR fight rehearsal (#520). CI has no world database, so the
     /// bots would buy nothing at a trainer; each eight is given what its classes' builds buy (Speed of Sound for the
     /// Minstrel, Mastery of Concentration for casters and healers, Bunker of Faith for the Cleric), and the bots' own brains
-    /// use them. The row says, per side, when each first started and on how many of the side.
+    /// use them; casters and healers also get the Quickcast ability (#531 step 2d). The row says, per side, when each first started and on how many of the side.
     /// </summary>
     public sealed class RvrFightActives
     {
@@ -20,17 +20,21 @@ namespace DOL.GS.Tests.Rehearsal
             (RvrRealmActives.SpeedOfSound, eEffect.SpeedOfSound, "sos"),
             (RvrRealmActives.MasteryOfConcentration, eEffect.MasteryOfConcentration, "moc"),
             (RvrRealmActives.BunkerOfFaith, eEffect.BunkerOfFaith, "bof"),
+            // #531 step 2d: Quickcast on a key cast under interrupt (an ability, not a realm ability)
+            (Abilities.Quickcast, eEffect.QuickCast, "qc"),
         };
 
         private readonly Dictionary<(eRealm Realm, string Label), Start> _first = new();
         private readonly List<GameBot> _bots = new();
+        private readonly Dictionary<(eRealm Realm, string Label), int> _uses = new();
+        private readonly HashSet<(GameBot Bot, string Label)> _had = new();
 
         /// <summary>Whether a class's build buys the ability (the class tables: Speed of Sound Minstrel only, Bunker Cleric only).</summary>
         public static bool Buys(eCharacterClass c, string key) => key switch
         {
             RvrRealmActives.SpeedOfSound => c == eCharacterClass.Minstrel,
             RvrRealmActives.BunkerOfFaith => c == eCharacterClass.Cleric,
-            RvrRealmActives.MasteryOfConcentration => c is eCharacterClass.Cleric or eCharacterClass.Friar or eCharacterClass.Sorcerer
+            RvrRealmActives.MasteryOfConcentration or Abilities.Quickcast => c is eCharacterClass.Cleric or eCharacterClass.Friar or eCharacterClass.Sorcerer
                 or eCharacterClass.Theurgist or eCharacterClass.Wizard or eCharacterClass.Cabalist or eCharacterClass.Necromancer
                 or eCharacterClass.Healer or eCharacterClass.Shaman or eCharacterClass.Runemaster or eCharacterClass.Spiritmaster
                 or eCharacterClass.Bonedancer or eCharacterClass.Druid or eCharacterClass.Eldritch or eCharacterClass.Enchanter
@@ -38,11 +42,12 @@ namespace DOL.GS.Tests.Rehearsal
             _ => false,
         };
 
-        private static RealmAbility Make(string key) => key switch
+        private static Ability Make(string key) => key switch
         {
             RvrRealmActives.SpeedOfSound => new AtlasOF_SpeedOfSound(new DbAbility { KeyName = key, Name = "Speed of Sound" }, 1),
             RvrRealmActives.MasteryOfConcentration => new AtlasOF_MasteryofConcentration(new DbAbility { KeyName = key, Name = "Mastery of Concentration" }, 1),
             RvrRealmActives.BunkerOfFaith => new AtlasOF_BunkerOfFaith(new DbAbility { KeyName = key, Name = "Bunker of Faith" }, 1),
+            Abilities.Quickcast => new Ability(new DbAbility { KeyName = key, Name = "Quick Cast" }, 1),
             _ => null,
         };
 
@@ -65,9 +70,18 @@ namespace DOL.GS.Tests.Rehearsal
             ? bot.effectListComponent.GetEffects().Any(e => e is DOL.GS.Effects.BunkerOfFaithECSEffect)
             : bot.effectListComponent.ContainsEffectForEffectType(effect);
 
-        /// <summary>One look per tick: the first start of each ability on each side.</summary>
+        /// <summary>One look per tick: the first start of each ability on each side, and how many times each started.</summary>
         public void Tick(long now)
         {
+            foreach ((_, eEffect effect, string label) in Tracked)
+                foreach (GameBot bot in _bots)
+                {
+                    bool has = bot.IsAlive && Has(bot, effect);
+                    if (has && _had.Add((bot, label)))
+                        _uses[(bot.Realm, label)] = _uses.GetValueOrDefault((bot.Realm, label)) + 1;
+                    else if (!has)
+                        _had.Remove((bot, label));
+                }
             foreach ((_, eEffect effect, string label) in Tracked)
                 foreach (eRealm realm in _bots.Select(b => b.Realm).Distinct())
                 {
@@ -76,11 +90,13 @@ namespace DOL.GS.Tests.Rehearsal
                     var with = _bots.Where(b => b.Realm == realm && b.IsAlive && Has(b, effect)).ToList();
                     if (with.Count == 0)
                         continue;
-                    GameBot by = _bots.FirstOrDefault(b => b.Realm == realm && b.GetAbility(Tracked.First(t => t.Label == label).Key) is TimedRealmAbility a &&
-                                                           b.GetSkillDisabledDuration(a) > 0);
+                    GameBot by = label == "qc" ? with[0] : _bots.FirstOrDefault(b => b.Realm == realm &&
+                        b.GetAbility(Tracked.First(t => t.Label == label).Key) is TimedRealmAbility a && b.GetSkillDisabledDuration(a) > 0);
                     _first[(realm, label)] = new Start(now, by, with.Count);
                 }
         }
+
+        public int Uses(eRealm realm, string label) => _uses.GetValueOrDefault((realm, label));
 
         public Start First(eRealm realm, string label) => _first.TryGetValue((realm, label), out Start s) ? s : null;
 
@@ -100,7 +116,8 @@ namespace DOL.GS.Tests.Rehearsal
                         return $"{t.Label}=none";
                     string when = t.Label == "sos" ? (firstHit == null || s.At <= firstHit.At ? ":before_first_hit" : ":after_first_hit") : "";
                     string by = s.By?.CharacterClass?.ID is int id ? ((eCharacterClass)id).ToString() : "?";
-                    return $"{t.Label}={RvrFightRehearsal.S(s.At)}:{by}x{s.On}{when}";
+                    string uses = t.Label == "qc" ? $":uses{Uses(realm, t.Label)}" : "";
+                    return $"{t.Label}={RvrFightRehearsal.S(s.At)}:{by}x{s.On}{when}{uses}";
                 }));
             }
             return $"RVR_REHEARSAL open_field_realm_abilities seed={seed} Alb: {Side(eRealm.Albion)} Mid: {Side(eRealm.Midgard)}";

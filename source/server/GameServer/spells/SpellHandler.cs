@@ -61,7 +61,8 @@ namespace DOL.GS.Spells
 		private long _calculatedCastTime;
 		private long _puslingSpellLastEndOfCastMessage;
 
-		public bool IsQuickCasting => Caster is not GameBot && _quickcast != null;
+		// A gamebot quickcasts only a cast its open-field plan armed (BotQuickCast, #531 step 2d); _quickcast stays null otherwise.
+		public bool IsQuickCasting => _quickcast != null;
 		public long CastStartTick => _castStartTick;
 		public bool StartReuseTimer => m_startReuseTimer;
 
@@ -330,8 +331,8 @@ namespace DOL.GS.Spells
 
 		/// <summary>
 		/// Called by <see cref="GameLiving.StartInterruptTimer"/> on every attack. Only focus spells are interrupted at once; a
-		/// cast in progress is decided at its half-cast point instead (port of OpenDAoC-Core 21eda0f90 and 46d816439, the only
-		/// behaviour: Living Server ships no switch back to the hard interrupt).
+		/// cast in progress is decided at its half-cast point instead (the only behaviour: Living Server ships no switch back to
+		/// the hard interrupt).
 		/// </summary>
 		public bool PerformOnAttackedInterruptCheck(GameLiving attacker)
 		{
@@ -368,7 +369,7 @@ namespace DOL.GS.Spells
 		/// <summary>Interrupts the cast unless the spell, Mastery of Concentration, Facilitate Painworking or Quickcast prevents it.
 		/// <paramref name="attacker"/> may be null (the last interrupter left the world).</summary>
 		/// <summary>Mastery of Concentration, Quickcast or (for a Necromancer pet) its owner's Mastery of Concentration or its own
-		/// Facilitate Painworking make the cast immune to interrupts (port of OpenDAoC-Core 472dd93e0).</summary>
+		/// Facilitate Painworking make the cast immune to interrupts.</summary>
 		private bool IsInterruptImmune()
 		{
 			if (Caster is NecromancerPet necromancerPet)
@@ -543,7 +544,7 @@ namespace DOL.GS.Spells
 			}
 
 			CancelFocusSpells();
-			_quickcast = m_caster is GameBot ? null :
+			_quickcast = m_caster is GameBot quickBot && !BotQuickCast.IsArmed(quickBot, Spell) ? null :
 				EffectListService.GetAbilityEffectOnTarget(m_caster, eEffect.QuickCast) as QuickCastECSGameEffect;
 
 			if (IsQuickCasting)
@@ -633,7 +634,7 @@ namespace DOL.GS.Spells
 				long interruptRemainingDuration = Caster.InterruptRemainingDuration;
 
 				// Mastery of Concentration and Quickcast (a Necromancer pet: its owner's Mastery of Concentration, or Facilitate
-				// Painworking) let any caster start through the self interrupt, bots included (OpenDAoC-Core 472dd93e0).
+				// Painworking) let any caster start through the self interrupt, bots included.
 				if (interruptRemainingDuration > 0 && !IsInterruptImmune())
 				{
 					interruptRemainingDuration = (interruptRemainingDuration + 999) / 1000; // whole seconds, rounded up ("/= 1000 + 1" divided by 1001: "wait 0 seconds")
@@ -972,7 +973,7 @@ namespace DOL.GS.Spells
 					}
 				}
 
-				// Port of OpenDAoC-Core cbe604ce1 (live): a monster, guard or pet lands the spell it started; gamebots keep the check.
+				// As live: a monster, guard or pet lands the spell it started; gamebots keep the check.
 				if (DOL.GS.ServerRules.NpcFinishRules.ChecksRangeAtCastEnd(m_caster) &&
 					!m_caster.IsWithinRadius(target, Spell.CalculateEffectiveRange(m_caster)))
 				{
@@ -1065,7 +1066,7 @@ namespace DOL.GS.Spells
 					npcOwner.TurnTo(Target);
 			}
 
-			// Port of OpenDAoC-Core cbe604ce1: monsters, guards and pets don't check during the cast (check_los_during_npc_cast).
+			// Monsters, guards and pets don't check during the cast (check_los_during_npc_cast).
 			if (DOL.GS.ServerRules.NpcFinishRules.ChecksLosDuringCast(m_caster) &&
 				GameLoop.GameLoopTime > _lastDuringCastLosCheckTime + Properties.CHECK_LOS_DURING_CAST_MINIMUM_INTERVAL)
 			{
@@ -1157,7 +1158,7 @@ namespace DOL.GS.Spells
 							RaidBossMechanics.CastBegan(Caster, Spell, Target, _calculatedCastTime);
 							CastState = eCastState.Casting;
 							NotifyCompanionsOfHarmfulCast();
-							// The bots fighting this caster react to the cast at once: stun, interrupt (True165 8abbc61a8).
+							// The bots fighting this caster react to the cast at once: stun, interrupt.
 							DOL.AI.Brain.BotBrain.NotifyEnemyCastStarted(Caster, Target, Spell);
 						}
 					}
@@ -1416,7 +1417,7 @@ namespace DOL.GS.Spells
 			GamePlayer playerCaster = Caster as GamePlayer;
 			DbInventoryItem playerWeapon = null;
 
-			// Crafting 2.0 WP7 (from True165): a gamebot's staff wears from its harmful spells like a player's (bot_upkeep).
+			// Crafting 2.0 WP7: a gamebot's staff wears from its harmful spells like a player's (bot_upkeep).
 			if (Caster is GameBot wearingBot && !HasPositiveEffect)
 				GameInventoryItem.OnBotItemUsed(wearingBot, wearingBot.ActiveWeapon);
 
@@ -1506,6 +1507,12 @@ namespace DOL.GS.Spells
 					playerCaster.DisableSkill(SkillBase.GetAbility(Abilities.Quickcast), QuickCastAbilityHandler.DISABLE_DURATION);
 					_quickcast.Cancel(false);
 				}
+			}
+			else if (m_caster is GameBot quickBot && IsQuickCasting)
+			{
+				// #531 step 2d: the gamebot's 30 s Quickcast wait starts, as a player's does
+				BotQuickCast.Spent(quickBot);
+				_quickcast.Cancel(false);
 			}
 
 			if (m_ability != null)
@@ -2019,7 +2026,7 @@ namespace DOL.GS.Spells
 
 		private bool IsTargetAffectedBySpellType(GameLiving target)
 		{
-			// Helpful spells have no effect on siege weapons either (OpenDAoC-Core bf414c248).
+			// Helpful spells have no effect on siege weapons either.
 			if ((target is GameKeepDoor or GameKeepComponent && Spell.SpellType is not eSpellType.SiegeDirectDamage and not eSpellType.SiegeArrow && !IsSummoningSpell) ||
 				(target is GameSiegeWeapon && !Spell.IsHarmful))
 			{
@@ -2284,7 +2291,7 @@ namespace DOL.GS.Spells
 			double effectiveness = CasterEffectiveness;
 
 			// Duration is reduced for AoE spells based on the distance from the center, but only in RvR combat and if the spell doesn't have a damage component.
-			// Realm enemies only (OpenDAoC-Core f815b1253): players and keep guards, not pets. Gamebots keep it, as players.
+			// Realm enemies only: players and keep guards, not pets. Gamebots keep it, as players.
 			if (DistanceFallOff > 0 && Spell.Damage == 0 && target is GamePlayer or Keeps.GameKeepGuard or GameBot)
 				effectiveness *= 1 - DistanceFallOff / 2;
 
@@ -3126,7 +3133,7 @@ namespace DOL.GS.Spells
 				else
 					spec = 0;
 
-				// 23.0: integer 1 / 23 was always 0 (OpenDAoC-Core d0cafbd5e).
+				// 23.0: integer 1 / 23 was always 0.
 				spellDamage = stat * (spellDamage / 124 + 1 / 23.0) * (1 + spec * 0.004);
 				return Math.Max(0, spellDamage);
 			}
