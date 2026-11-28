@@ -12,7 +12,9 @@ namespace DOL.GS
     /// a partial path, and the mover keeps a partial path that ends within <see cref="NearMissDistance"/> of its target
     /// without asking the zone road graph, so bots stood there until their recovery gave up. A gamebot's stall there teaches
     /// the spot: from then on an autonomous gamebot's walk to that target asks the zone roads even after a near miss. No
-    /// navmesh changes; every other target keeps today's shortcut. Tests only until a PC log.
+    /// navmesh changes; every other target keeps today's shortcut. Any target a gamebot stalls on within the near-miss
+    /// distance is learned, not only cliff edges: that is harmless, because the roads replace the path only when the zone
+    /// road graph finds a route, and the memory holds at most <see cref="Capacity"/> targets. Tests only until a PC log.
     /// </summary>
     public static class AutonomousNearMissDeadEnds
     {
