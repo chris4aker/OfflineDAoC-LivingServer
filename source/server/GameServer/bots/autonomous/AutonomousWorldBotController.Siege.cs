@@ -180,7 +180,17 @@ namespace DOL.GS
                     if (!bot.IsWithinRadius(abandoned, Math.Max(32, abandoned.SIEGE_WEAPON_CONTROLE_DISTANCE - 20)))
                     { IssuePath(bot, new(abandoned.X, abandoned.Y, abandoned.Z), preciseArrival:true); SiegeStatus(bot, "Reclaiming abandoned siege equipment", target); return true; }
                     bot.StopMovingOnPath(); bot.StopMoving();
-                    if (abandoned.TryTakeControl(bot)) { owned = _siegeWeapon = abandoned; _siegeLastProgress = now; SiegeLog(bot, "reclaimed", owned, "native control acquired"); }
+                    // #831: the reclaim takes a place at the door: checked against the standing engines and the realm's other
+                    // builds as they are now, under the same lock as a build's admission and an engine's spawn.
+                    lock (AutonomousSiegeOwnership.ChangeGate)
+                    {
+                        if (door != null && DoorCapReachedNow(bot, door, out int standingNow, out int buildingNow))
+                        {
+                            LogDoorCap(bot, door, standingNow, buildingNow, battleground, now, force: true);
+                            ReleaseSiegeJob(bot); _siegeNextAttempt = now + 15_000; return false;
+                        }
+                        if (abandoned.TryTakeControl(bot)) { owned = _siegeWeapon = abandoned; _siegeLastProgress = now; SiegeLog(bot, "reclaimed", owned, "native control acquired"); }
+                    }
                 }
             }
             if (owned != null && !InSiegeRange(owned, target))
@@ -255,21 +265,20 @@ namespace DOL.GS
                 // #525 (owner 2026-11-24): a synthetic engine is built in sight at the spot before it appears.
                 if (synthetic)
                 {
-                    int step = SyntheticBuildStep(bot, target, now);
+                    int step = SyntheticBuildStep(bot, target, door, battleground, now);
                     if (step == 0) return true;
                     if (step < 0) return false;
                 }
                 lock (AutonomousSiegeOwnership.ChangeGate)
+                try
                 {
-                    // #612: the door cap again, from the world as it is now, before the engine appears.
-                    if (door != null)
+                    // #612: the door cap again, from the world as it is now, before the engine appears. #831: the realm's
+                    // other builds hold their places too (a builder's own place is still marked until here, so the builds
+                    // admitted after it counted it).
+                    if (door != null && DoorCapReachedNow(bot, door, out int standingNow, out int buildingNow))
                     {
-                        int standingNow = StandingAtDoor(bot.Realm, door.GetNPCsInRadius(DoorCapRadius).OfType<GameSiegeWeapon>());
-                        if (AutonomousSiegeJobs.DoorCapReached(standingNow, 0))
-                        {
-                            LogDoorCap(bot, door, standingNow, 0, battleground, now, force: true);
-                            ResetSiegeBuild(bot); ReleaseSiegeJob(bot); _siegeNextAttempt = now + 15_000; return false;
-                        }
+                        LogDoorCap(bot, door, standingNow, buildingNow, battleground, now, force: true);
+                        ResetSiegeBuild(bot); ReleaseSiegeJob(bot); _siegeNextAttempt = now + 15_000; return false;
                     }
                     // Recheck the shared cap immediately before consuming any kit.
                     if (target.GetNPCsInRadius(_siegeKind == BotSiegeKind.Ram ? (ushort)650 : (ushort)6000)
@@ -293,6 +302,11 @@ namespace DOL.GS
                     { owned.Delete(); SiegeLog(bot, "spawn_failed", null, "operator could not take control"); return false; }
                     if (synthetic && !AutonomousSiegeBuild.TryTake(bot.CurrentRegionID, _siegeJobKeep, bot.Realm, present, now))
                     { owned.ReleaseControl(); owned.Delete(); SiegeLog(bot, "stock_spent", null, $"stock={_siegeStock}"); ReleaseSiegeJob(bot); _siegeNextAttempt = now + 60_000; return false; }
+                }
+                finally
+                {
+                    // #831: the build's place passes to the engine (standing now) or is freed, inside the same lock.
+                    AutonomousSiegeJobs.MarkBuilding(bot, false);
                 }
                 _siegeWeapon = owned; _siegeLastProgress = now; _siegeObservedHits = 0;
                 if (synthetic) _siegeStockLeft = Math.Max(0, _siegeStockLeft - 1);
@@ -355,6 +369,15 @@ namespace DOL.GS
             return true;
         }
 
+        /// <summary>#831: the door cap from the world as it is now: the realm's standing engines at the door plus its other
+        /// bots mid-build there. Callers hold <see cref="AutonomousSiegeOwnership.ChangeGate"/>.</summary>
+        private bool DoorCapReachedNow(GameBot bot, GameKeepDoor door, out int standing, out int building)
+        {
+            standing = StandingAtDoor(bot.Realm, door.GetNPCsInRadius(DoorCapRadius).OfType<GameSiegeWeapon>());
+            building = AutonomousSiegeJobs.OthersBuilding(bot, bot.CurrentRegionID, _siegeJobKeep);
+            return AutonomousSiegeJobs.DoorCapReached(standing, building);
+        }
+
         private void LogDoorCap(GameBot bot, GameKeepDoor door, int standing, int building, bool battleground, long now, bool force = false)
         {
             if (!force && now < _siegeNextCapLog) return;
@@ -372,7 +395,7 @@ namespace DOL.GS
         /// interrupted and starts again next attempt). A build interrupted by an attack, death or leaving starts again from
         /// nothing (AutonomousSiegeBuild.Interruption).
         /// </summary>
-        private int SyntheticBuildStep(GameBot bot, GameLiving target, long now)
+        private int SyntheticBuildStep(GameBot bot, GameLiving target, GameKeepDoor door, bool battleground, long now)
         {
             string interrupted = AutonomousSiegeBuild.Interruption(_siegeBuildStarted, _siegeBuildLastWorked, now,
                 bot.LastAttackedByEnemyTick, bot.IsAlive, _siegeBuildSpot == _siegePosition, _siegeBuildKind == _siegeKind);
@@ -391,15 +414,30 @@ namespace DOL.GS
                     { SiegeLog(bot, "stock_spent", null, $"kind={_siegeKind} stock={_siegeStock}"); _siegeNextStockLog = now + 60_000; }
                     ReleaseSiegeJob(bot); _siegeNextAttempt = now + 60_000; return -1;
                 }
+                // #831: the door cap's admission and the building mark in one step, against the world as it is now (two
+                // bots that passed the turn's check while walking to their spots can't both take the last place).
+                if (door != null)
+                {
+                    lock (AutonomousSiegeOwnership.ChangeGate)
+                    {
+                        int standing = StandingAtDoor(bot.Realm, door.GetNPCsInRadius(DoorCapRadius).OfType<GameSiegeWeapon>());
+                        if (!AutonomousSiegeJobs.TryStartBuilding(bot, bot.CurrentRegionID, _siegeJobKeep, standing, out int building))
+                        {
+                            LogDoorCap(bot, door, standing, building, battleground, now, force: true);
+                            ReleaseSiegeJob(bot); _siegeNextAttempt = now + 15_000; return -1;
+                        }
+                    }
+                }
+                else AutonomousSiegeJobs.MarkBuilding(bot, true);
                 _siegeBuildStarted = now; _siegeBuildKind = _siegeKind; _siegeBuildSpot = _siegePosition; _siegeBuildNextEmote = 0;
-                AutonomousSiegeJobs.MarkBuilding(bot, true);
                 SiegeLog(bot, "build_started", null, $"kind={_siegeKind} seconds={AutonomousSiegeBuild.BuildMilliseconds(_siegeKind) / 1000} " +
                     $"target={target.Name} at={(int)_siegePosition.Value.X},{(int)_siegePosition.Value.Y},{(int)_siegePosition.Value.Z} stockLeft={_siegeStockLeft}/{_siegeStock}");
                 Message.SystemToArea(bot, $"{bot.Name} begins to build a siege {_siegeKind.ToString().ToLowerInvariant()}.", eChatType.CT_Emote, bot);
             }
             _siegeBuildLastWorked = now;
+            // #831: a finished build keeps its place (the building mark) until its engine stands; the spawn clears it.
             if (AutonomousSiegeBuild.Complete(_siegeBuildKind, _siegeBuildStarted, now))
-            { ResetSiegeBuild(bot); return 1; }
+            { _siegeBuildStarted = 0; _siegeBuildLastWorked = 0; _siegeBuildSpot = null; return 1; }
             if (now >= _siegeBuildNextEmote) { bot.Emote(eEmote.PlayerPrepare); _siegeBuildNextEmote = now + AutonomousSiegeBuild.BuildEmoteMilliseconds; }
             AutonomousSiegeJobs.Refresh(bot);
             AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.SiegeParticipation);
