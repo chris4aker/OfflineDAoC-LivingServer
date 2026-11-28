@@ -214,7 +214,8 @@ internal sealed partial class MainForm : Form
             Padding = new Padding(5),
             BackColor = Color.Transparent,
         };
-        rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 132));
+        // 152, not 132: the update status has its own row under the version label (issue #795, MainForm.Updates.cs).
+        rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 152));
         rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 116));
         rootLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 31));
@@ -425,7 +426,8 @@ internal sealed partial class MainForm : Form
             Text = VersionLabel(),
             Font = new Font("Georgia", 12f, FontStyle.Bold),
             ForeColor = DaocTheme.GoldLight,
-            Location = new Point(97, 79),
+            // 77, not 79: the update status row under it (issue #795) then fits the 120 px title panel.
+            Location = new Point(97, 77),
         };
         titlePanel.Controls.Add(versionLabel);
         // Living Server: its build, "Check for updates" and update news (MainForm.Updates.cs).

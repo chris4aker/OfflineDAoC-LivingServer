@@ -21,6 +21,9 @@ internal sealed partial class MainForm
     private readonly FlowLayoutPanel _updateStrip = new()
     {
         AutoSize = true,
+        // Issue #795: AutoSize alone grows but never shrinks, so the strip kept the panel's default 100 px height. The
+        // status line, laid out from it, ended up below the title panel's visible area (only its tooltip showed).
+        AutoSizeMode = AutoSizeMode.GrowAndShrink,
         WrapContents = false,
         FlowDirection = FlowDirection.LeftToRight,
         BackColor = Color.Transparent,
@@ -67,7 +70,8 @@ internal sealed partial class MainForm
     private LauncherUpdater Updater => _updater ??= new LauncherUpdater(LauncherUpdater.GameFolderFor(_root),
         _releaseWeb = new HttpReleaseWeb(LauncherUpdater.UserAgent));
 
-    /// <summary>Puts the update line beside the version label (it follows the label when the window scales).</summary>
+    /// <summary>Puts the update controls beside the version label and the update status on its own row under them (both
+    /// follow the label when the window scales).</summary>
     private void AddUpdateStrip(Panel titlePanel, Label versionLabel)
     {
         if (LauncherBuild.Version == null)
@@ -81,8 +85,18 @@ internal sealed partial class MainForm
         {
             int gap = UiScale.Px(titlePanel, 14);
             _updateStrip.Location = new Point(versionLabel.Right + gap, versionLabel.Top + Math.Max(0, (versionLabel.Height - _updateStrip.Height) / 2));
-            int left = _updateStrip.Right;
-            _updateStatus.SetBounds(left, _updateStrip.Top, Math.Max(0, titlePanel.ClientSize.Width - left - UiScale.Px(titlePanel, 4)), _updateStrip.Height);
+            // Issue #795: the status used to take the strip's height (100 px, see _updateStrip) with its text centred
+            // below the title panel's visible area, and only the width left of the strip, so its messages showed only as
+            // a hover tooltip. It now has a row of its own under the version label, with the header's width from the
+            // label on (the header row in the constructor is 152 px for it; the version label sits at y=77 so the row
+            // fits the 120 px title panel). It never ends below the title panel: if a font measures taller, the status
+            // moves up over the empty bottom edge of the label and strip rather than being cut off (both stay in front
+            // of it, so the strip's controls still take clicks).
+            int left = versionLabel.Left;
+            int below = Math.Max(versionLabel.Bottom, _updateStrip.Bottom);
+            int top = Math.Max(0, Math.Min(below, titlePanel.ClientSize.Height - _updateStatus.PreferredHeight));
+            _updateStatus.SetBounds(left, top, Math.Max(0, titlePanel.ClientSize.Width - left - UiScale.Px(titlePanel, 4)),
+                _updateStatus.PreferredHeight);
         };
         _checkUpdatesLink.LinkClicked += async (_, _) => await CheckForUpdatesAsync(asked: true);
         _autoUpdateCheck.Checked = Updater.Settings.CheckAutomatically;
@@ -157,21 +171,33 @@ internal sealed partial class MainForm
             }
             else if (asked)
             {
-                SetUpdateStatus(problem != null
-                    ? "Couldn't reach GitHub (" + problem + "). Try again later."
-                    : $"You have the newest Living Server ({installed.DisplayName}).", problem != null ? DaocTheme.Danger : DaocTheme.Muted);
+                ShowNothingOffered(UpdateCheckNotice.NothingOffered(installed, problem, Updater.Settings.OfferTestBuilds));
             }
         }
         catch (Exception e)
         {
             Updater.Log.Write("Update check failed: " + e.Message);
             if (asked)
-                SetUpdateStatus("Couldn't check for updates: " + e.Message, DaocTheme.Danger);
+                ShowNothingOffered(UpdateCheckNotice.CheckFailed(installed, e.Message));
         }
         finally
         {
             _checkUpdatesLink.Enabled = true;
         }
+    }
+
+    /// <summary>
+    /// An asked check found nothing to offer (issue #795): the status line, plus a message box, so the click visibly
+    /// answers. A plain MessageBox, as it renders the same on Windows and under Wine.
+    /// </summary>
+    private void ShowNothingOffered(UpdateCheckNotice notice)
+    {
+        SetUpdateStatus(notice.StatusLine, notice.IsProblem ? DaocTheme.Danger : DaocTheme.Muted);
+        Updater.Log.Write("Told the player: " + notice.Text.Replace(Environment.NewLine, " "));
+        if (IsDisposed || !IsHandleCreated)
+            return;
+        MessageBox.Show(this, notice.Text, notice.Caption, MessageBoxButtons.OK,
+            notice.IsProblem ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
     }
 
     private void OfferUpdate(ReleaseInfo release)

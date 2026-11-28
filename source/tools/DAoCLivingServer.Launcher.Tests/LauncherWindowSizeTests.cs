@@ -39,7 +39,30 @@ public sealed class LauncherWindowSizeTests
         });
     }
 
-    /// <summary>The check above is not empty: a transparent panel laid over the buttons (the kind of overlay looked for) is found.</summary>
+    /// <summary>
+    /// Issue #795: the update status line had only the width left of the update controls (about 65 px), so its messages
+    /// showed only as a hover tooltip. At every size it is now wide and tall enough for its longest usual message, and
+    /// no control that holds it cuts it off.
+    /// </summary>
+    [TestCase(1100, 700)]
+    [TestCase(960, 620)]
+    [TestCase(1920, 1040)]
+    public void TheUpdateStatusLineHasRoomForItsMessages(int width, int height)
+    {
+        if (DAoCLivingServer.Updates.LauncherBuild.Version == null)
+            Assert.Ignore("This build has no Living Server name, so the launcher has no update strip.");
+        WithLauncher(width, height, (root, form, type) =>
+        {
+            var status = (Label)type.GetField("_updateStatus", HiddenInstance)!.GetValue(form)!;
+            const string message = "The update to 1.2.3 didn't install, and the game is as it was.";
+            Size needed = TextRenderer.MeasureText(message, status.Font);
+            Assert.That(status.Width, Is.GreaterThanOrEqualTo(needed.Width), $"status line width at {width}x{height}");
+            Assert.That(status.Height, Is.GreaterThanOrEqualTo(needed.Height), $"status line height at {width}x{height}");
+            AssertInsideEveryParent(root, status, $"{width}x{height}");
+        });
+    }
+
+    /// <summary>The header-button check is not empty: a transparent panel laid over the buttons (the kind of overlay looked for) is found.</summary>
     [Test]
     public void TheHitTestFindsAnOverlayOverTheButtons()
     {
