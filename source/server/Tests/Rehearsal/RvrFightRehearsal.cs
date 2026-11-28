@@ -92,7 +92,7 @@ namespace DOL.GS.Tests.Rehearsal
 
         public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors, RvrOpening Albion = null,
             RvrOpening Midgard = null, IReadOnlyList<RvrBombCast> Bombs = null,
-            IReadOnlyList<(long At, GameLiving Bomber)> BombHolds = null);
+            IReadOnlyList<(long At, GameLiving Bomber)> BombHolds = null, RvrFightDepth Depth = null);
 
         /// <summary>How long after a side's first engage its members' first engages count as its opening.</summary>
         public const long OpeningMilliseconds = 10_000;
@@ -136,6 +136,8 @@ namespace DOL.GS.Tests.Rehearsal
                     .Take(albionBombers);
             foreach (GameBot bot in bombers.ToList())
                 RvrFightKits.AddBomb(bot);
+            // #531 step 2e: how deep each side's casters and healers stand behind their tanks
+            var depth = new RvrFightDepth();
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
@@ -143,6 +145,7 @@ namespace DOL.GS.Tests.Rehearsal
             {
                 scan.Tick(w.Now);
                 actives.Tick(w.Now);
+                depth.Tick(w.Now, new[] { albion, midgard });
                 firstAlbionBoard ??= ContactBoard(albion);
                 firstMidgardBoard ??= ContactBoard(midgard);
             });
@@ -161,9 +164,9 @@ namespace DOL.GS.Tests.Rehearsal
             detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
             detail.Add(actives.Row(world.Seed, world.Recorder));
-            string row = OpenFieldRow(world, scan, albion, midgard);
+            string row = OpenFieldRow(world, scan, albion, midgard, depth);
             return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard),
-                world.Recorder.Bombs.ToList(), world.Recorder.BombHolds.ToList());
+                world.Recorder.Bombs.ToList(), world.Recorder.BombHolds.ToList(), depth);
         }
 
         private static string Shadow(eRealm realm)
@@ -185,7 +188,8 @@ namespace DOL.GS.Tests.Rehearsal
         private static string Describe(RvrRoster roster) =>
             $"{roster.Template} filled={string.Join(",", roster.Filled.Select(f => $"{f.Role}:{f.Class}"))} missing={string.Join(",", roster.Missing)} cc={roster.CrowdControlLabel}";
 
-        private static string OpenFieldRow(RvrFightWorld world, RvrFightScan scan, List<GameBot> albion, List<GameBot> midgard)
+        private static string OpenFieldRow(RvrFightWorld world, RvrFightScan scan, List<GameBot> albion, List<GameBot> midgard,
+            RvrFightDepth depth)
         {
             RvrFightRecorder r = world.Recorder;
             string Notice(List<GameBot> side)
@@ -239,6 +243,7 @@ namespace DOL.GS.Tests.Rehearsal
                    $"first_cc={cc} opener=Alb:{Opener(albion)} Mid:{Opener(midgard)} mez_refused={refused} (bot<75%={refusedHurtBot}) " +
                    $"first_deaths={deaths} first_pick=Alb:{OpeningText(Opening(scan, albion))} Mid:{OpeningText(Opening(scan, midgard))} " +
                    $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} bomb=Alb:[{Bomb(albion)}] Mid:[{Bomb(midgard)}] " +
+                   $"depth=Alb:{depth.Text(eRealm.Albion)} Mid:{depth.Text(eRealm.Midgard)} " +
                    $"held={held} duration={duration}";
         }
 

@@ -52,6 +52,16 @@ namespace DOL.UnitTests
             Assert.That(first.Row, Does.Contain(" bomb=Alb:["), "the row has the bombers");
             // (seed 520's eights hold no Wizard, Runemaster or Spiritmaster: the bomb cases below give Albion its bombers)
             Assert.That(BombOf(first.Row, "Alb").Bombers, Is.Zero, "no period bomber in Albion's eight: " + first.Row);
+            // #531 step 2e: the row says how deep each side's casters and healers stood behind their tanks
+            Assert.That(first.Row, Does.Contain(" depth=Alb:casters="), "the row has the back line's depth");
+            // ... and the layout placed Albion's casters (the Sorcerer and the Theurgist) by their spell reach, deeper than the old
+            // flat back-line depth (the reach fill is wired). Their sampled depth is not asserted: a caster walks in to cast
+            // (seed 520: mean 151, deepest 1311), kites and peels.
+            System.Collections.Generic.IReadOnlyList<float> casterReach = first.Depth.Reaches(eRealm.Albion, false);
+            Assert.That(casterReach, Is.Not.Empty, "Albion's casters were sampled: " + first.Row);
+            Assert.That(casterReach.Min(), Is.GreaterThan(0), "every sample had a reach: " + first.Row);
+            Assert.That(RvrPositioning.DepthFor(false, casterReach.Average(), 0, RvrPositioning.MezSpread),
+                Is.GreaterThan(RvrPositioning.MaxBackDepth), "at that reach a caster stands deeper than the old 700: " + first.Row);
             // #531 step 2d: the row also says when each side's casters first quickcast a key cast, and how often
             Assert.That(actives, Does.Contain(" qc="), "the row has Quickcast");
             TestContext.Progress.WriteLine(actives);
