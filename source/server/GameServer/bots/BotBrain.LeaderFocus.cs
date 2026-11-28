@@ -4,8 +4,7 @@ using DOL.GS;
 namespace DOL.AI.Brain
 {
     /// <summary>
-    /// #571 step 1, leader focus (port of rambodolphin13/DividedRealms <c>ad8e087c</c>, bots/BotBrain.LeaderFocus.cs,
-    /// GPL-3.0; rules in <see cref="CompanionLeaderFocus"/>). Before it, the target choice in AttackMostWanted was
+    /// #571 step 1, leader focus (rules in <see cref="CompanionLeaderFocus"/>). Before it, the target choice in AttackMostWanted was
     /// "protection, else whoever hit me in the last 5 s, else my pet's fight, else my top threat": the player's attack put
     /// its target on every companion's aggro list (AssistPlayerAttack), but whatever hit a companion took it straight back,
     /// so a group's damage spread over a pack or an enemy group instead of landing on the player's target.
@@ -21,16 +20,22 @@ namespace DOL.AI.Brain
         internal GameLiving LeaderFocusTarget()
         {
             GameBot bot = BotBody;
-            if (bot == null || !CompanionLeaderFocus.AppliesTo(CompanionLeaderFocus.On, bot.IsPlayerLedGroup,
+            if (bot == null)
+                return null;
+            // #667: an attack or assist order sets the target of every fighter of the group, tanks included, whatever
+            // bot_leader_focus says (the player asked for it).
+            GameLiving ordered = PlayerGroupOrders.FocusFor(bot, out bool byOrder);
+            if (!byOrder && !CompanionLeaderFocus.AppliesTo(CompanionLeaderFocus.On, bot.IsPlayerLedGroup,
                     BotPartyRoles.IsTank(bot), BotPartyRoles.IsSupport(bot)))
                 return null;
             // PvE and RvR alike (CompanionLeaderFocus.InPve, owner 2026-11-27, #571).
-            if (!CompanionLeaderFocus.InPlace(AutonomousWorldBotController.IsBattleground(bot)))
+            if (!byOrder && !CompanionLeaderFocus.InPlace(AutonomousWorldBotController.IsBattleground(bot)))
                 return null;
-            if (bot.PlayerGroupLeader is not GamePlayer leader || !PlayerLedPullCoordinator.Available(bot, leader))
+            GamePlayer leader = bot.PlayerGroupLeader ?? (byOrder ? CompanionRvrEngage.GroupLeader(bot) : null);
+            if (leader == null || !PlayerLedPullCoordinator.Available(bot, leader))
                 return null;
 
-            GameLiving focus = PlayerLedPullCoordinator.FindLeaderTarget(leader);
+            GameLiving focus = byOrder ? ordered : PlayerLedPullCoordinator.FindLeaderTarget(leader);
             bool live = focus != null && focus != Body && focus.IsAlive &&
                 focus.ObjectState == GameObject.eObjectState.Active && focus.CurrentRegion == Body.CurrentRegion;
             if (!CompanionLeaderFocus.Takes(live, live && CanAggroTarget(focus), live && IsBreakablyControlled(focus),

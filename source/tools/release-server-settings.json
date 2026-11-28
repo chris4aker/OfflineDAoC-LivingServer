@@ -27,6 +27,7 @@
   "bot_group_invite_player": "True",
   "bot_group_meetup_reachable_town": "True",
   "bot_group_meetup_window_by_travel": "True",
+  "bot_group_orders": "True",
   "bot_group_player_loot_weight": "2",
   "bot_guild_alliances": "True",
   "bot_guild_claims_keeps": "True",

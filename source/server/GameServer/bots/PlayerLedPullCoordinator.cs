@@ -101,6 +101,40 @@ namespace DOL.GS
             return $"{tank.Name} leads the pull. Attackers wait for tank contact; healers and buffers support.";
         }
 
+        /// <summary>A target the player may order his group onto (alive, near him, one he may attack).</summary>
+        public static bool ValidTarget(GamePlayer player, GameLiving target) => ValidEnemy(player, target);
+
+        /// <summary>
+        /// #667's attack order: the bots that obey the player engage <paramref name="target"/> now, the /pull path without
+        /// the tank-first wait (a tank-gated pull of his own still waiting is cancelled), and his pet with them, as /pull
+        /// orders it. A resting bot stands up for it.
+        /// </summary>
+        public static void OrderAttack(GamePlayer player, GameLiving target, System.Collections.Generic.IEnumerable<GameBot> bots)
+        {
+            if (player?.Group == null || !ValidEnemy(player, target)) return;
+            CancelPull(player);
+            if (CompanionPvpEngagement.Enemy(player, target))
+                CompanionPvpEngagement.Order(player, target);
+            CompanionEngagementMode.RememberPull(player, target);
+            foreach (GameBot bot in bots)
+            {
+                if (!Available(bot, player) || !bot.IsWithinRadius(target, BotBrain.GROUP_DEFENSE_ASSIST_RADIUS) ||
+                    bot.Brain is not BotBrain brain)
+                    continue;
+                if (bot.IsTemporaryCompanionRestLocked) bot.WakeTemporaryCompanionRest();
+                brain.AssistPlayerAttack(target);
+            }
+            player.ControlledBrain?.Attack(target);
+        }
+
+        /// <summary>The player's own tank-gated pull, if one is still waiting, is cancelled (#667: attack and regroup).</summary>
+        public static void CancelPull(GamePlayer player)
+        {
+            if (player?.Group == null || !States.TryGetValue(player.Group, out GroupState state)) return;
+            Order pending = Volatile.Read(ref state.Pending);
+            if (pending != null && pending.Leader == player) Cancel(pending, false);
+        }
+
         public static bool IsWaiting(GameBot bot)
         {
             if (bot?.Group == null || !States.TryGetValue(bot.Group, out GroupState state)) return false;

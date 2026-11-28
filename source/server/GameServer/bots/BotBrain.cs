@@ -1602,7 +1602,9 @@ namespace DOL.AI.Brain
             }
 
             // The player's mesmerize, stun or root joins the fight on another monster of the pack (owner 2026-10-29).
-            GameLiving leaderTarget = PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) ??
+            // #667: an attack order's target (or under assist the player's fight) comes first.
+            GameLiving leaderTarget = PlayerGroupOrders.FocusFor(BotBody, out _) ??
+                PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) ??
                 PlayerLedPullCoordinator.FindLeaderControlFight(AssistedPlayer, BotBody);
             if (leaderTarget != null && PlayerLedPullCoordinator.Available(BotBody, AssistedPlayer) &&
                 Body.IsWithinRadius(leaderTarget, GROUP_DEFENSE_ASSIST_RADIUS))
