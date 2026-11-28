@@ -221,4 +221,24 @@ public class UT_CompanionRvrEngage664
                 "the player's own target and the group's attackers come first");
         });
     }
+
+    [Test]
+    public void TheGroupsOwnPickPassesOpeningWhenItHasNoPickYet()
+    {
+        // Review of 64c0cfc9: TheGroupNeverOpensOnAHeldEnemy sets the flag by hand, so this pins the call site that sets it
+        // in the game. With "opening: false" here the group would open on a mezzed enemy again.
+        string root = TestContext.CurrentContext.TestDirectory;
+        while (root != null && !Directory.Exists(Path.Combine(root, "source", "server", "GameServer", "bots")))
+            root = Path.GetDirectoryName(root);
+        Assume.That(root, Is.Not.Null, "the repository's server source");
+        string world = File.ReadAllText(Path.Combine(root, "source", "server", "GameServer", "bots", "CompanionRvrEngage.World.cs"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(world, Does.Contain("int chosen = Pick(candidates, bound, current, opening: party.Pick == null);"),
+                "no pick yet means the group is opening a fight");
+            Assert.That(world.Split("opening:").Length - 1, Is.EqualTo(1), "one call passes the flag");
+            Assert.That(world, Does.Contain("new CompanionRvrCandidate(Rank(role), ready, BotBrain.IsBreakablyControlled(target),"),
+                "a candidate is held when a breakable mez or root is on it");
+        });
+    }
 }
