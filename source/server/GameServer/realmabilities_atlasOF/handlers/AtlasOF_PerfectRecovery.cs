@@ -69,9 +69,10 @@ namespace DOL.GS.RealmAbilities
             // The spell casting code will disable this ability in SpellHandler's FinishSpellcast().
         }
 
-        public void OnRezDeclined(GamePlayer rezzer)
+        // #531 step 2c-2: a gamebot healer may be the rezzer, so any living
+        public void OnRezDeclined(GameLiving rezzer)
         {
-            rezzer.DisableSkill(this, 0); // Re-enable PR;
+            rezzer?.DisableSkill(this, 0); // Re-enable PR;
         }
     }
 }

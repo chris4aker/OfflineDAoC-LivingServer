@@ -17,7 +17,11 @@ namespace DOL.GS.Effects
 
         public override void OnStartEffect()
         {
-            OwnerPlayer.Stealth(true);
+            // #531 step 2c-2: a gamebot hides by its own rule (GameBot.VanishHide); OwnerPlayer is null for it
+            if (Owner is GameBot bot)
+                bot.VanishHide();
+            else
+                OwnerPlayer.Stealth(true);
             base.OnStartEffect();
         }
     }

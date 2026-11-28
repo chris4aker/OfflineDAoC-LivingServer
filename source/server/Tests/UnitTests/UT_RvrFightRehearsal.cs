@@ -64,6 +64,8 @@ namespace DOL.UnitTests
                 Is.GreaterThan(RvrPositioning.MaxBackDepth), "at that reach a caster stands deeper than the old 700: " + first.Row);
             // #531 step 2d: the row also says when each side's casters first quickcast a key cast, and how often
             Assert.That(actives, Does.Contain(" qc="), "the row has Quickcast");
+            // #531 step 2c-2: and Perfect Recovery and Vanish
+            Assert.That(actives, Does.Contain(" pr=").And.Contain(" vanish=").And.Contain(" ts="), "the row has Perfect Recovery, Vanish and True Sight");
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
@@ -172,6 +174,43 @@ namespace DOL.UnitTests
                 // and the server's own rolls make the fights differ run to run. Most piles, and at least one.
                 Assert.That(together, Is.GreaterThan(0).And.GreaterThanOrEqualTo((piles + 1) / 2),
                     "the first bomb on a mezzed pile came with the other bomber's, or after a hold for it, on most piles: " + why);
+            });
+        }
+
+        [Test]
+        public void Scenario7_PerfectRecoveryAndVanishWorkOnLiveGamebots()
+        {
+            // #531 step 2c-2: the bot-side executors on live GameBots, through the server's own spell, effect and stealth code
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.EscapeAndRezResult result = RvrFightRehearsal.EscapeAndRez(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Raised, Is.True, $"Perfect Recovery raised the fallen Warrior: {result.Row}");
+                Assert.That(result.RaisedHealthPercent, Is.GreaterThanOrEqualTo(99), "at full health");
+                Assert.That(result.PrTimerMs, Is.GreaterThan(29 * 60_000L), "and went on its 30-minute timer");
+                Assert.That(result.SecondRaisedByPr, Is.False, "once a fight: the second death waits for an ordinary rez");
+                Assert.That(result.Vanished, Is.True, $"the Infiltrator vanished beside two enemies: {result.Row}");
+                Assert.That(result.EnemySeeRange, Is.Zero, "no enemy's stealth rule sees it");
+                Assert.That(result.HiddenAfterHit, Is.True, "a hit leaves it hidden");
+                Assert.That(result.VanishEndedOnUnhide, Is.True, "its own unhide ends Vanish");
+                // the brain's wiring (fails if BeginRetreat stops calling TryVanishOnRetreat, or the idle unhide forgets Vanish)
+                Assert.That(result.RetreatVanished, Is.True, "a retreat's start fires Vanish (BotBrain.BeginRetreat)");
+                Assert.That(result.IdleUnhidesWithoutVanish, Is.True, "control: the idle unhide unhides a bot without Vanish");
+                Assert.That(result.IdleKeptVanishHidden, Is.True, "the idle unhide leaves a vanished bot hidden");
+                // the uncover rule: autonomous gamebots by the player's rule (GameLiving.OnAttackedByEnemy), companions as before (#521)
+                Assert.That(result.GamebotHiddenAfterZeroDamageSpell, Is.True, "a zero-damage spell leaves a stealthed autonomous gamebot hidden");
+                Assert.That(result.GamebotUncoveredByMiss, Is.True, "a melee swing uncovers it, a miss included, as it does the player");
+                Assert.That(result.GamebotUncoveredByHit, Is.True, "a hit uncovers it");
+                Assert.That(result.CompanionIsCompanion, Is.True, "the companion case is a companion");
+                Assert.That(result.CompanionUncoveredByZeroDamageSpell, Is.True, "any attack still uncovers a stealthed companion");
+                // True Sight (owner answer 71A)
+                Assert.That(result.TrueSightOn, Is.True, $"the Hunter put True Sight on once an assassin struck its mate: {result.Row}");
+                Assert.That(result.TrueSightTimerMs, Is.GreaterThan(29 * 60_000L), "and went on its 30-minute timer");
+                Assert.That(result.TrueSightChanceAt1200, Is.EqualTo(1), "on True Sight it sees the hidden Infiltrator at 1,200 at once");
+                Assert.That(result.NoTrueSightChanceAt1200, Is.Zero, "its mate without True Sight doesn't (the 350 cap)");
+                Assert.That(result.TrueSightCandidateRange, Is.EqualTo(RvrStealthNotice.TrueSightReach), "the scan looks past 350 on True Sight");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
             });
         }
 

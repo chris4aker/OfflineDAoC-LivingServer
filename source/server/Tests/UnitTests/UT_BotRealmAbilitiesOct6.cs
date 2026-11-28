@@ -101,6 +101,7 @@ namespace DOL.UnitTests
         [Test]
         public void OnlyActivesBotsCanUseAreBought() =>
             Assert.That(UsableActives, Is.EquivalentTo(new[] { Purge, PurgeReduced, IgnorePainTank, IgnorePain, SecondWind, FirstAid,
-                RvrRealmActives.SpeedOfSound, RvrRealmActives.MasteryOfConcentration, RvrRealmActives.BunkerOfFaith }));
+                RvrRealmActives.SpeedOfSound, RvrRealmActives.MasteryOfConcentration, RvrRealmActives.BunkerOfFaith,
+                RvrRealmActives.PerfectRecovery, RvrRealmActives.Vanish, RvrRealmActives.TrueSight }));
     }
 }

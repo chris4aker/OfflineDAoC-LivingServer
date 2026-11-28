@@ -960,6 +960,208 @@ namespace DOL.GS.Tests.Rehearsal
             return new BoardCaseResult(row, detail, world.ServiceErrors, listed, scan.Refreshes, scan.RefreshRays, scan.MaxRaysPerRefresh, 0);
         }
 
+        // ---------------------------------------------------------------------------------------------------------
+        // #531 step 2c-2: Perfect Recovery and Vanish through the server's own spell, effect and stealth code. Every brain is
+        // stopped, so only the abilities act: the rows show the bot-side executors work on live GameBots (the handlers are
+        // written for players only).
+
+        /// <summary>What the escape-and-rez case saw (each a yes/no the test asserts) and its row.</summary>
+        public sealed record EscapeAndRezResult(string Row, IReadOnlyList<string> Detail, int Errors,
+            bool Raised, int RaisedHealthPercent, long PrTimerMs, bool SecondRaisedByPr,
+            bool Vanished, int EnemySeeRange, bool HiddenAfterHit, bool VanishEndedOnUnhide,
+            bool RetreatVanished, bool IdleKeptVanishHidden, bool IdleUnhidesWithoutVanish,
+            bool GamebotHiddenAfterZeroDamageSpell, bool GamebotUncoveredByMiss, bool GamebotUncoveredByHit, bool CompanionIsCompanion,
+            bool CompanionUncoveredByZeroDamageSpell,
+            bool TrueSightOn, long TrueSightTimerMs, double TrueSightChanceAt1200, double NoTrueSightChanceAt1200, int TrueSightCandidateRange);
+
+        private static void Miss(GameLiving attacker, GameLiving victim) => victim.OnAttackedByEnemy(new AttackData
+        {
+            Attacker = attacker, Target = victim, AttackType = AttackData.eAttackType.MeleeOneHand,
+            AttackResult = eAttackResult.Missed, Damage = 0, Interval = 3_000,
+        });
+
+        /// <summary>A spell that lands for no damage (a debuff, a resisted nuke's zero): the player's rule does not uncover on it.</summary>
+        private static void ZeroDamageSpell(GameLiving attacker, GameLiving victim) => victim.OnAttackedByEnemy(new AttackData
+        {
+            Attacker = attacker, Target = victim, AttackType = AttackData.eAttackType.Spell,
+            AttackResult = eAttackResult.HitUnstyled, Damage = 0, Interval = 3_000,
+        });
+
+        private static readonly System.Reflection.BindingFlags Private =
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+
+        private static void Hit(GameLiving attacker, GameLiving victim, int damage) => victim.OnAttackedByEnemy(new AttackData
+        {
+            Attacker = attacker, Target = victim, AttackType = AttackData.eAttackType.MeleeOneHand,
+            AttackResult = eAttackResult.HitUnstyled, Damage = damage, Interval = 3_000,
+        });
+
+        /// <summary>
+        /// Scenario 7: (a) a Midgard Healer, Warrior and Savage in a fight with an Albion Armsman; the Warrior falls, and the
+        /// Healer's Perfect Recovery (through its own realm-ability turn) raises it at once at full health and goes on its
+        /// 30-minute timer; then the Savage falls, and the timer keeps it down. (b) An Albion Infiltrator hit by two Midgard
+        /// bots starts a run: its Vanish hides it beside them, no enemy's stealth rule sees it, a hit leaves it hidden, and
+        /// its own unhide ends Vanish.
+        /// </summary>
+        public static EscapeAndRezResult EscapeAndRez(int seed)
+        {
+            using var world = new RvrFightWorld(seed);
+            Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+            var detail = new List<string>();
+
+            // (a) Perfect Recovery
+            GameBot healer = world.NewBot(eRealm.Midgard, eCharacterClass.Healer, 50, "RHealer");
+            GameBot warrior = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "RWarrior");
+            GameBot savage = world.NewBot(eRealm.Midgard, eCharacterClass.Savage, 50, "RSavage");
+            GameBot armsman = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "RArmsman");
+            world.Place(healer, region, 40_000, 40_000, 0, 1024);
+            world.Place(warrior, region, 40_400, 40_000, 0, 1024);
+            world.Place(savage, region, 40_400, 40_200, 0, 1024);
+            world.Place(armsman, region, 40_550, 40_100, 0, 3072);
+            world.Form(new List<GameLiving> { healer, warrior, savage });
+            foreach (GameBot bot in new[] { healer, warrior, savage, armsman })
+                bot.Brain?.Stop();
+            new RvrFightActives().Grant(new[] { healer });
+            var pr = healer.GetAbility(RvrRealmActives.PerfectRecovery) as DOL.GS.RealmAbilities.TimedRealmAbility;
+            Hit(armsman, healer, 1);
+            warrior.TakeDamage(armsman, eDamageType.Slash, warrior.Health + 10, 0);
+            // past the realm-ability turn's once-a-second pace (a hit can wake the healer's turn)
+            world.Run(1.1);
+            bool warriorDown = !warrior.IsAlive;
+            detail.Add($"pr before: tactics={BotBrain.RvrTacticsApplyTo(healer)} wanted={RvrRealmActives.Wanted(healer, RvrRealmActives.PerfectRecovery)} " +
+                       $"target={RvrRealmActives.PerfectRecoveryTarget(healer)?.Name ?? "-"} warriorState={warrior.ObjectState} " +
+                       $"warriorInGroup={healer.Group?.IsInTheGroup(warrior)} healerInCombat={healer.InCombat} casting={healer.IsCasting} " +
+                       $"scope={RvrTacticsScope.Refusal(RvrTacticsScope.FactsOf(healer))}");
+            AutonomousBotRealmAbilities.UseActives(healer);
+            bool queued = healer.castingComponent.HasPendingSkillRequests;
+            world.Run(0.05);
+            string handlerSeen = $"{healer.castingComponent.SpellHandler?.Spell?.Name ?? "-"}/{healer.castingComponent.SpellHandler?.CastState}";
+            world.Run(1.5);
+            bool raised = warriorDown && warrior.IsAlive;
+            detail.Add($"pr after: queued={queued} handler={handlerSeen} casting={healer.IsCasting} warriorAlive={warrior.IsAlive} " +
+                       $"warriorState={warrior.ObjectState} disabled={(pr != null ? healer.GetSkillDisabledDuration(pr) : -1)}");
+            long timer = pr != null ? healer.GetSkillDisabledDuration(pr) : 0;
+            detail.Add($"pr: healer has it={pr != null} warrior down={warriorDown} raised={raised} health={warrior.HealthPercent}% timer={timer / 1000}s");
+            savage.TakeDamage(armsman, eDamageType.Slash, savage.Health + 10, 0);
+            world.Run(1.2);
+            Hit(armsman, healer, 1);
+            AutonomousBotRealmAbilities.UseActives(healer);
+            world.Run(1.5);
+            bool secondRaised = savage.IsAlive;
+            detail.Add($"pr: savage down, raised by Perfect Recovery again={secondRaised}");
+
+            // (b) Vanish
+            GameBot infiltrator = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, 50, "VInfiltrator");
+            GameBot hunterA = world.NewBot(eRealm.Midgard, eCharacterClass.Berserker, 50, "VBerserker");
+            GameBot hunterB = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "VWarrior");
+            world.Place(infiltrator, region, 50_000, 50_000, 0, 1024);
+            world.Place(hunterA, region, 50_100, 50_000, 0, 3072);
+            world.Place(hunterB, region, 50_000, 50_100, 0, 0);
+            foreach (GameBot bot in new[] { infiltrator, hunterA, hunterB })
+                bot.Brain?.Stop();
+            new RvrFightActives().Grant(new[] { infiltrator });
+            Hit(hunterA, infiltrator, 100);
+            Hit(hunterB, infiltrator, 100);
+            bool fired = RvrRealmActives.TryVanishOnRetreat(infiltrator);
+            world.Run(0.5);
+            bool vanished = fired && RvrRealmActives.Vanished(infiltrator);
+            int seeRange = DOL.GS.ServerRules.StealthRules.SeeRange(DOL.GS.ServerRules.StealthRules.LookOf(hunterA, infiltrator));
+            Hit(hunterA, infiltrator, 100);
+            world.Run(0.2);
+            bool hiddenAfterHit = infiltrator.IsStealthed;
+            infiltrator.Stealth(false);
+            world.Run(0.5);
+            bool endedOnUnhide = !infiltrator.effectListComponent.ContainsEffectForEffectType(eEffect.Vanish);
+            detail.Add($"vanish: fired={fired} hidden={vanished} enemy see range={seeRange} hidden after a hit={hiddenAfterHit} " +
+                       $"ended on unhide={endedOnUnhide}");
+
+            // (c) the brain's own wiring: a retreat's start fires Vanish (BotBrain.BeginRetreat), and the idle unhide leaves a
+            // vanished bot hidden while it unhides one without Vanish (BotBrain.TryEnterStealthWhileIdle)
+            GameBot runner = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, 50, "WInfiltrator");
+            world.Place(runner, region, 52_000, 52_000, 0, 1024);
+            runner.Brain?.Stop();
+            new RvrFightActives().Grant(new[] { runner });
+            Hit(hunterA, runner, 100);
+            var runnerBrain = (BotBrain)runner.Brain;
+            typeof(BotBrain).GetMethod("BeginRetreat", Private)!.Invoke(runnerBrain,
+                new object[] { runner, 777L, new System.Numerics.Vector3(54_000, 52_000, 0), "solo" });
+            world.Run(0.5);
+            bool retreatVanished = RvrRealmActives.Vanished(runner);
+            System.Reflection.MethodInfo idle = typeof(BotBrain).GetMethod("TryEnterStealthWhileIdle", Private)!;
+            idle.Invoke(runnerBrain, null);
+            bool idleKept = runner.IsStealthed;
+            GameBot plain = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, 50, "UInfiltrator");
+            world.Place(plain, region, 56_000, 56_000, 0, 1024);
+            plain.Brain?.Stop();
+            plain.Flags |= GameNPC.eFlags.STEALTH;
+            idle.Invoke((BotBrain)plain.Brain, null);
+            bool idleUnhides = !plain.IsStealthed;
+            detail.Add($"wiring: retreat vanished={retreatVanished} idle kept the vanished bot hidden={idleKept} " +
+                       $"idle unhid one without Vanish={idleUnhides}");
+
+            // (d) the uncover rule: an autonomous gamebot by the player's rule (GameLiving: a melee swing uncovers, a miss
+            // included, and so does a spell that does damage; a zero-damage spell doesn't); a companion as before (any attack
+            // uncovers it; #521)
+            plain.Flags |= GameNPC.eFlags.STEALTH;
+            GameBot enemy = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "UWarrior");
+            world.Place(enemy, region, 56_100, 56_000, 0, 3072);
+            enemy.Brain?.Stop();
+            ZeroDamageSpell(enemy, plain);
+            bool hiddenAfterSpell = plain.IsStealthed;
+            Miss(enemy, plain);
+            bool uncoveredByMiss = !plain.IsStealthed;
+            plain.Flags |= GameNPC.eFlags.STEALTH;
+            Hit(enemy, plain, 50);
+            bool uncoveredByHit = !plain.IsStealthed;
+            GameBot companion = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, 50, "UCompanion");
+            world.Place(companion, region, 56_000, 56_200, 0, 1024);
+            companion.Brain?.Stop();
+            typeof(GameBot).GetProperty(nameof(GameBot.IsTemporaryGroupHelper))!.SetValue(companion, true);
+            bool isCompanion = DOL.GS.ServerRules.PvpRules.KindOf(companion) == DOL.GS.ServerRules.PvpCharacterKind.Companion;
+            companion.Flags |= GameNPC.eFlags.STEALTH;
+            ZeroDamageSpell(enemy, companion);
+            bool companionUncovered = !companion.IsStealthed;
+            detail.Add($"uncover: gamebot hidden after a zero-damage spell={hiddenAfterSpell} uncovered by a melee miss={uncoveredByMiss} " +
+                       $"by a hit={uncoveredByHit} companion kind ok={isCompanion} companion uncovered by a zero-damage spell={companionUncovered}");
+
+            // (e) True Sight: an enemy Infiltrator strikes a Hunter's group mate; the Hunter's turn puts True Sight on, and while it
+            // runs the Hunter's stealth rule sees the hidden Infiltrator at 1,200 at once (owner answer 71A), its mate's doesn't
+            GameBot hunter = world.NewBot(eRealm.Midgard, eCharacterClass.Hunter, 50, "THunter");
+            GameBot mate = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "TWarrior");
+            GameBot assassin = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, 50, "TInfiltrator");
+            world.Place(hunter, region, 60_000, 60_000, 0, 1024);
+            world.Place(mate, region, 60_300, 60_000, 0, 1024);
+            world.Place(assassin, region, 60_400, 60_000, 0, 3072);
+            world.Form(new List<GameLiving> { hunter, mate });
+            foreach (GameBot bot in new[] { hunter, mate, assassin })
+                bot.Brain?.Stop();
+            new RvrFightActives().Grant(new[] { hunter });
+            var ts = hunter.GetAbility(RvrRealmActives.TrueSight) as DOL.GS.RealmAbilities.TimedRealmAbility;
+            Hit(assassin, mate, 200);
+            world.Run(1.1);
+            AutonomousBotRealmAbilities.UseActives(hunter);
+            world.Run(0.3);
+            bool tsOn = hunter.effectListComponent.ContainsEffectForEffectType(eEffect.TrueSight);
+            long tsTimer = ts != null ? hunter.GetSkillDisabledDuration(ts) : 0;
+            assassin.MoveTo(region.ID, 61_200, 60_000, 0, 3072);
+            assassin.Flags |= GameNPC.eFlags.STEALTH;
+            world.Run(0.1);
+            double tsChance = RvrStealthNotice.ChancePerSecond(AutonomousWorldBotController.StealthSighting(hunter, assassin, true), RvrBotAwareness.Normal);
+            double mateChance = RvrStealthNotice.ChancePerSecond(AutonomousWorldBotController.StealthSighting(mate, assassin, true), RvrBotAwareness.Normal);
+            int candidate = AutonomousWorldBotController.StealthCandidateRange(hunter);
+            detail.Add($"true sight: has it={ts != null} on={tsOn} timer={tsTimer / 1000}s hunter chance at {(int)hunter.GetDistanceTo(assassin)}={tsChance} " +
+                       $"mate chance={mateChance} candidate range={candidate}");
+            detail.AddRange(world.Errors.Take(5).Select(e => "error: " + e));
+            string row = $"RVR_REHEARSAL realm_abilities_escape_rez seed={seed} pr_raised={raised}:{warrior.HealthPercent}% " +
+                         $"pr_timer={timer / 60_000}min pr_second={secondRaised} vanish={vanished} see={seeRange} " +
+                         $"hidden_after_hit={hiddenAfterHit} vanish_ends_on_unhide={endedOnUnhide} retreat_vanish={retreatVanished} " +
+                         $"idle_keeps={idleKept} zero_spell_keeps_gamebot={hiddenAfterSpell} miss_uncovers_gamebot={uncoveredByMiss} " +
+                         $"hit_uncovers_gamebot={uncoveredByHit} zero_spell_uncovers_companion={companionUncovered} ts={tsOn}:{tsTimer / 60_000}min ts_sees_1200={tsChance}";
+            return new EscapeAndRezResult(row, detail, world.ServiceErrors, raised, warrior.HealthPercent, timer, secondRaised,
+                vanished, seeRange, hiddenAfterHit, endedOnUnhide, retreatVanished, idleKept, idleUnhides,
+                hiddenAfterSpell, uncoveredByMiss, uncoveredByHit, isCompanion, companionUncovered, tsOn, tsTimer, tsChance, mateChance, candidate);
+        }
+
         private static string Outcome(RvrMezAttempt attempt) => attempt?.Landed switch { true => "landed", false => "refused", _ => "no-cast" };
 
         /// <summary>The mezzer casts its mez on the target at 70% health through the bot's own CastSpell; null if no cast finished.</summary>

@@ -6,7 +6,7 @@ using DOL.GS;
 namespace DOL.AI.Brain
 {
     /// <summary>
-    /// From Offline DAoC True 1.65 (shadowofze; its veteran review M6, 2026-11-11): the brain side of knowing when to leave (BotGroupRetreat has the rules).
+    /// The brain side of knowing when to leave (BotGroupRetreat has the rules; veteran review M6, 2026-11-11).
     /// A party member under its party's RUN order, a solo gamebot bailing out of a fight it is losing badly, and a hired
     /// healer whose player died in a lost fight all stop fighting, drop their targets, put their pets on follow, sprint,
     /// use an escape realm ability and run to the plan's point. Routes: one request when the run starts (a party member
@@ -68,9 +68,9 @@ namespace DOL.AI.Brain
                 _soloBailUsedThisFight = false;
             }
             // The party RUN reads the group's fight board (AutonomousBotGroupCoordinator.CheckGroupRun only peeks at it,
-            // under the coordinator lock). In True 1.65 add control, roots and pets rebuild it every think; 1.2 keeps its
-            // own versions of those, so a fighting gamebot party member keeps it fresh here (one rebuild and one area
-            // search per group per second at most, outside any lock).
+            // under the coordinator lock). Add control, roots and pets don't rebuild it every think here (1.2 keeps its own
+            // versions of those), so a fighting gamebot party member keeps it fresh here (one rebuild and one area search
+            // per group per second at most, outside any lock).
             if (bot.Group != null && (bot.InCombat || bot.IsAttacking) && bot.IsAutonomousWorldBot &&
                 !bot.IsPlayerLedGroup && !bot.IsTemporaryGroupHelper)
                 FightBoard();
@@ -254,7 +254,10 @@ namespace DOL.AI.Brain
                         petAggro.ClearAggroList();
                     petBrain.SetAggressionState(eAggressionState.Passive);   // disengage and follow the owner
                 }
-            // (True 1.65 also fires Vanish or Speed of Sound here; Living Server's gamebots don't use those actives)
+            // #531 step 2c-2: an open-field gamebot that bought Vanish (the Infiltrator) hides as it runs from a fight it is
+            // losing to an enemy realm (RvrRealmActives.TryVanishOnRetreat)
+            if (kind != "survive")
+                RvrRealmActives.TryVanishOnRetreat(bot);
             // one route request when the run starts; a party member may ask once more if it stops short
             _retreatRoutesLeft = kind == "party" ? 1 : 0;
             _nextRetreatMoveTick = GameLoop.GameLoopTime + 3_000;
