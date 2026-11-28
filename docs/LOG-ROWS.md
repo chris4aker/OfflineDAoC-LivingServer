@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **767**; pending (#625, not on main yet): **0**; shipped by the pipeline: **735**.
+- Rows in code: **771**; pending (#625, not on main yet): **0**; shipped by the pipeline: **739**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -67,6 +67,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `from`, `group`, `leader`, `levels`, `minutes`, `realm`, `size` | `leader`, `levels` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_ENDED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `group`, `members`, `reason`, `size` | `members` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `group`, `leader`, `was` | `leader`, `was` | - | - |
+| `AUTONOMOUS_GROUP_CAMP_ADVANCED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.PartyPull.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_BUDGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TravelBudget.cs` | `budgetMin`, `candidates`, `farthestKeptMin`, `group`, `kept`, `nearestMin`, `phase`, `region`, `remainingMin`, `tier` | - | one per PvE party camp pick whose candidate list the travel budget cut (none when every camp fit; #569) | A PvE party camp pick whose candidates were cut to the leader's travel budget, with the tier that was kept. |
 | `AUTONOMOUS_GROUP_CAMP_DRY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.CampBonus.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_REJECTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
@@ -116,6 +117,9 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_LOOT_APPRAISAL_FAILED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `item`, `retainedInInventory` | `bot` | - | - |
 | `AUTONOMOUS_LOOT_REJECTED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `dropRetained`, `id`, `item`, `level`, `reason` | `bot` | - | - |
 | `AUTONOMOUS_NECRO_PET_RELEASE` | server.log | **ships** | `spells/Necromancer/SummonNecromancerPet.cs` | `bot`, `distance`, `hp`, `id`, `level`, `pet`, `petLevel`, `petObjectId`, `reason`, `region`, `spellId` | `bot` | - | - |
+| `AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `campDistance`, `leader`, `leaderCampDistance`, `toLeader` | `bot`, `leader` | - | - |
+| `AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `region`, `target`, `x`, `y`, `z` | `bot` | - | - |
+| `AUTONOMOUS_PARTY_PULL_TOO_FAR` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `distance`, `skips`, `skipsSinceLastLog`, `target`, `tooFarSeconds` | `bot`, `target` | - | - |
 | `AUTONOMOUS_POCKET_NUDGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `casting`, `class`, `distance`, `level`, `manaPercent`, `moving`, `pendingCast`, `pet`, `region`, `resting`, `target`, `targetLevel`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `AUTONOMOUS_PVP_STALEMATE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `id`, `position`, `realm`, `region`, `seconds`, `target`, `targetRealm` | `bot`, `target` | - | - |
