@@ -146,6 +146,13 @@ namespace DOL.GS
         private long _nextSiegeCombatAttendanceTick;
         public const int SiegeCombatAttendanceRadius = 9_500;
 
+        /// <summary>#572 step 2: a ram crew member (frontier or battleground) at its seat stays there through wall arrows,
+        /// spells and the aggro they bring; only an enemy striking it at melee reach sends it to the ordinary fight.</summary>
+        public static bool HoldsRamSeat(GameBot bot) => bot != null && !bot.IsCasting &&
+            (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) ||
+             AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground)) &&
+            AutonomousRamCrews.AtSeat(bot) && !BotSiegeRuntime.StruckInMeleeReach(bot);
+
         /// <summary>
         /// A siege participant fighting at the keep (inside the rally-post ring) is physically there.
         /// Presence was only reported at a bot's own rally post outside combat: run 12's Albion army
@@ -553,7 +560,7 @@ namespace DOL.GS
                     return true;
 
                 // Relic audit 2026-10-31 (L4): a relic carrier runs home. It used to stand and fight (the combat block below
-                // ran first), and it must not walk to loot bags either. Only a crowd-controlled or cornered carrier fights back.
+                // ran first) and walk to loot bags. Only a crowd-controlled or cornered carrier fights back.
                 if (RelicCarrierRuns(brain, bot, nowTick))
                     return ExecuteRvr(brain, bot);
 
@@ -570,6 +577,11 @@ namespace DOL.GS
                 if (!brain.HasAggro && !bot.IsAttacking && !bot.IsCasting &&
                     AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.RvR) && BotSiegeRuntime.HoldingPosition(bot))
                     return ExecuteRvr(brain,bot);
+                // #572 step 2: a ram crew member holds its seat against arrows and spells from the walls too, in the
+                // frontier and in a battleground; only a blow at melee reach sends it to the ordinary fight.
+                if (HoldsRamSeat(bot))
+                    return AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.Battleground)
+                        ? ExecuteBattleground(brain,bot) : ExecuteRvr(brain,bot);
 
                 bool postCombatRecovery = BotRestRecovery.NeedsOrContinuesRest(bot) && !BotRestRecovery.BlocksRest(bot);
                 if (brain.HasAggro || (bot.InCombat && !postCombatRecovery) || bot.IsAttacking)
@@ -577,8 +589,7 @@ namespace DOL.GS
                     // Defense owns movement; do not resume an old dragon-ring
                     // waypoint from a different position after the fight.
                     _dragonRallyPlanning = null;
-                    _dragonRallyRoute = null;
-                    _dragonRallyRetry = 0;
+                    _dragonRally.Interrupt();
                     if (_camp != null && _groupDirective?.IsDynamic != true)
                         _recoverBeforeNextCampTarget = true;
 
@@ -1982,8 +1993,7 @@ namespace DOL.GS
                 return true;
 
             bool tight = leader.CurrentRegion?.IsDungeon == true || leader.CurrentZone?.IsDungeon == true;
-            // Aim around where the leader is about to be, not where it was
-            // (smooth group travel).
+            // Aim around where the leader is about to be, not where it was (smooth group travel).
             Vector3 formationCenter = leader.IsMoving && !tight ? AutonomousGroupMotion.PredictLeader(leader) : new(leader.X, leader.Y, leader.Z);
             Vector3 formation = AutonomousBotGroupCoordinator.FormationPoint(bot, formationCenter, tight);
             // Close the gap on the move so the party travels as one unit instead of the
@@ -2084,11 +2094,11 @@ namespace DOL.GS
         /// Outside a turn the proposal is written at once. Null: refused, nothing changed.
         /// </summary>
         private AutonomousRvrEventLayer.ForceIntent ProposeRvrIntent(GameBot bot, AutonomousRvrEventLayer.IntentProposal proposal,
-            bool mirrorIntent, bool mirrorKeep, string forceId = null)
+            bool mirrorIntent, bool mirrorKeep, string forceId = null, bool? writer = null)
         {
             bool outside = !_forceTurn.Open;
             if (outside)
-                _forceTurn.Begin(forceId ?? RvrForceId(bot), IsRvrForceWriter(bot));
+                _forceTurn.Begin(forceId ?? RvrForceId(bot), writer ?? IsRvrForceWriter(bot));
             AutonomousRvrEventLayer.ForceIntent decided =
                 _forceTurn.Propose(new(_rvrIntent, _rvrSharedEvent), proposal, GameLoop.GameLoopTime);
             if (decided != null)
@@ -2244,6 +2254,14 @@ namespace DOL.GS
                 }
                 return FollowDynamicGroupLeader(bot, _groupDirective);
             }
+
+            // #599 step 1: a battlegroup's follower group trails its lead group outside any event; its leader goes where
+            // the lead's leader goes instead of choosing its own destination (its members follow it, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                AutonomousRvrEventLayer.BattlegroupLeadOf(forceId) is { } battlegroupLead &&
+                AutonomousBotGroupCoordinator.BattlegroupLeader(battlegroupLead) is { IsAlive: true } battlegroupLeader &&
+                battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
+                return TrailBattlegroupLead(bot, forceId, battlegroupLead, battlegroupLeader);
 
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {
@@ -2417,8 +2435,9 @@ namespace DOL.GS
                 .Where(guard => !closedDoor || guard is not GuardLord)
                 // Holding at a battleground rally: what comes at the rally (the gatherers' rule), never the lord (the rally goes
                 // up together). Was any guard within 1,500 of the rally point, which stood inside the keep on build 3b808b4.
+                // The one gather-hold rule (#530 step 5a), as in the threat scan and the combat drop.
                 .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
-                    guard is not GuardLord && GathererMayEngage(bot, guard, rally))
+                    MusterAllowsFight(bot, AutonomousRvrEventLayer.MusterHold.Rally, rally, guard, picking: true))
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))
@@ -2472,12 +2491,19 @@ namespace DOL.GS
             long actorKey = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
             // Some attackers focus the objective carrier; the others fight its
             // screen. A human is not preferred merely because it is human.
-            if (unchecked((ulong)actorKey) % 3 == 0)
-            {
-                GameLiving carrier = candidates.FirstOrDefault(GameRelic.IsPlayerCarryingRelic);
-                if (carrier != null) return carrier;
-            }
+            GameLiving carrier = CarrierFocus(bot, candidates);
+            if (carrier != null) return carrier;
             return candidates[AutonomousRvrStaging.TargetIndex(actorKey, candidates.Length, warbandSize)];
+        }
+
+        /// <summary>A relic carrier among <paramref name="candidates"/> for the third of the bots (by id) that focus the
+        /// objective carrier, or null.</summary>
+        private static GameLiving CarrierFocus(GameBot bot, GameLiving[] candidates)
+        {
+            if (candidates == null || candidates.Length == 0)
+                return null;
+            long actorKey = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
+            return unchecked((ulong)actorKey) % 3 == 0 ? candidates.FirstOrDefault(GameRelic.IsPlayerCarryingRelic) : null;
         }
 
         private bool TryEngageSharedDungeonOpponent(BotBrain brain, GameBot bot)
@@ -4126,7 +4152,7 @@ namespace DOL.GS
                 Dictionary<string, int> campsPerMonster = legalCells
                     .GroupBy(camp => AutonomousCampCompetition.NormalizeName(camp.MonsterName))
                     .ToDictionary(group => group.Key, group => group.Count());
-                // Camp traits from the background builder weigh the draw (AutonomousCampKnowledge)
+                // Veteran review M11: camp traits from the background builder weigh the draw (AutonomousCampKnowledge)
                 bool knowledge = AutonomousCampKnowledge.Enabled;
                 bool partyHasCrowdControl = knowledge && sharedGroup && bot.Group != null &&
                     bot.Group.GetMembersInTheGroup().Any(member => member is GameBot mate && KnowsMesmerize(mate));
@@ -4478,9 +4504,8 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Capnbry-source-empty camps could be dropped, because the uncovered-live-camps pass (#544, 1.2.3)
-        /// turns their monsters into live camps instead. Living Server keeps these
-        /// camps on: they also hold clusters of one or two spawns, and turning them off is a separate call. With it off, a source-empty camp is still published when its
+        /// The uncovered live camps (#544, 1.2.3) also turn the monsters of capnbry-source-empty camps into live camps. Living
+        /// Server still keeps these camps on: they also hold clusters of one or two spawns, and turning them off is a separate call. With it off, a source-empty camp is still published when its
         /// realm and level band would otherwise have no camp at all (FinishCatalogDraft).
         /// </summary>
         private static readonly bool AssignSourceEmptyCamps = true;
@@ -4575,7 +4600,7 @@ namespace DOL.GS
                 return AutonomousFlyerCampPolicy.IsFlyerCamp(flying, total);
             }
 
-            // The camp's monsters (its name, within the pool radius) as AutonomousCampKnowledge sees them
+            // Veteran review M11: the camp's monsters (its name, within the pool radius) as AutonomousCampKnowledge sees them
             AutonomousCampKnowledge.Traits TraitsNear(CampCatalogCell cell)
             {
                 string name = AutonomousCampCompetition.NormalizeName(cell.MonsterName);
@@ -6116,7 +6141,7 @@ namespace DOL.GS
             _terminalRouteFailuresInPocket = 0;
         }
 
-        // ---- Route goal fixes (AutonomousRouteGoalFix.cs) ----
+        // ---- Route goal fixes ----
 
         private Vector3 ApplyGoalSnap(Vector3 point) =>
             Vector3.DistanceSquared(point, _goalSnapFrom) <= 16 * 16 ? _goalSnapTo : point;
@@ -6629,7 +6654,8 @@ namespace DOL.GS
         private static bool IsInFrontier(GamePlayer player) =>
             player?.CurrentZone != null && IsFrontierZone(player.CurrentRegionID, player.CurrentZone.ID);
 
-        private static bool IsSafeArea(GameObject obj)
+        /// <summary>The object stands in a safe or bind area (also read by the player's group pick, CompanionRvrEngage).</summary>
+        public static bool IsSafeArea(GameObject obj)
         {
             List<IArea> areas = obj?.CurrentZone?.GetAreasOfSpot(obj);
             if (areas == null) return false;
@@ -6960,7 +6986,7 @@ namespace DOL.GS
                 campsOfThisMonster, empty);
         }
 
-        /// <summary>The spread weight times the camp-trait factor for this bot or party.</summary>
+        /// <summary>Veteran review M11: the spread weight times the camp-trait factor for this bot or party.</summary>
         private static int KnowledgeWeight(int weight, bool enabled, bool party, bool partyHasCrowdControl,
             eCharacterClass soloClass, eDamageType soloDamage, AutonomousCampKnowledge.Traits traits)
         {
