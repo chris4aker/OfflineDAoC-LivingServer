@@ -345,6 +345,8 @@ class Force:
     end: dt.datetime | None = None
     end_why: str | None = None
     formed_seen: bool = True          # False when the log starts after it formed (its first row is not what=formed)
+    closed_by_restart: bool = False   # the server stopped with it open: the log closed it at the run's last line,
+                                      # not the force; it is left out of the ended counts, end reasons and lifetimes
     peak_heads: int = 0
     peak_groups: int = 0
     joins: int = 0
@@ -357,10 +359,18 @@ class Force:
 
 
 def forces(lines: list[Line]) -> list[Force]:
-    """Every force in the log. An id is a new force after its 'ended' (battleground ids repeat per realm and keep)."""
+    """Every force in the log. An id is a new force after its 'ended' (battleground ids repeat per realm and keep).
+    A FORK_BUILD line starts a new server run: every force still open is closed at the run's last line before it."""
     out: list[Force] = []
     live: dict[str, Force] = {}
+    previous: Line | None = None
     for line in lines:
+        if line.tag == "FORK_BUILD":
+            for force in live.values():
+                force.end = previous.t if previous else line.t
+                force.closed_by_restart = True
+            live.clear()
+        previous = line
         kind = FORCE_TAGS.get(line.tag)
         if kind is None:
             continue
@@ -404,7 +414,7 @@ def force_hour(all_forces: list[Force], hl: list[Line], hour: dt.datetime, any_r
             rr = [l.f for l in rows if l.f.get("realm") == realm]
             if not alive and not rr:
                 continue
-            ended = [fo for fo in alive if fo.end and hour_of(fo.end) == hour]
+            ended = [fo for fo in alive if fo.end and not fo.closed_by_restart and hour_of(fo.end) == hour]
             # a force that carries over from the hour before counts at its size then, until a row of this hour changes it
             carried = [(int(num(before[-1].f.get("heads"), 0) or 0), int(num(before[-1].f.get("groups"), 0) or 0))
                        for fo in alive if (before := [l for l in fo.events if l.t < hour])]
@@ -444,7 +454,7 @@ def board_hour(hl: list[Line], any_rows: set) -> dict | str:
     """RVR_FIGHT_BOARD in contact: how many enemies the groups saw, by the side buckets."""
     if "RVR_FIGHT_BOARD" not in any_rows:
         return "needs RVR_FIGHT_BOARD"
-    boards = [l.f for l in hl if l.tag == "RVR_FIGHT_BOARD" and l.f.get("contact") == "true"]
+    boards = [l.f for l in hl if l.tag == "RVR_FIGHT_BOARD" and str(l.f.get("contact", "")).lower() == "true"]
     seen = [int(num(f.get("enemies"), 0) or 0) for f in boards]
     return {"in_contact": len(boards),
             "enemies_seen": {name: sum(1 for n in seen if low <= n <= high) for low, high, name in SIDE_BUCKETS
@@ -854,7 +864,8 @@ def force_summary(force: Force) -> str:
     return (f"{force.start:%m/%d %H:%M}-{(force.end.strftime('%H:%M') if force.end else 'end')} {force.kind} {force.id} "
             f"{force.realm} region {force.region}{'' if force.formed_seen else ' (formed before the log)'}: peak "
             f"{force.peak_heads} heads in {force.peak_groups} groups, joins {force.joins}, leaves "
-            f"{fmt(dict(force.leaves)) if force.leaves else 0}, ended {force.end_why or 'no'}")
+            f"{fmt(dict(force.leaves)) if force.leaves else 0}, "
+            f"{'open at the restart' if force.closed_by_restart else 'ended ' + (force.end_why or 'no')}")
 
 
 def force_timeline(force: Force) -> str:
@@ -882,7 +893,7 @@ def as_json(result: dict) -> dict:
                     "matchup": f.matchup, "groups": {r: len(g) for r, g in f.groups.items()}} for f in result["fights"]],
         "forces": [{"id": fo.id, "kind": fo.kind, "build": fo.build, "realm": fo.realm, "region": fo.region,
                     "start": fo.start.isoformat(), "end": fo.end.isoformat() if fo.end else None, "end_why": fo.end_why,
-                    "formed_seen": fo.formed_seen, "peak_heads": fo.peak_heads, "peak_groups": fo.peak_groups,
+                    "formed_seen": fo.formed_seen, "closed_by_restart": fo.closed_by_restart, "peak_heads": fo.peak_heads, "peak_groups": fo.peak_groups,
                     "joins": fo.joins, "leaves": dict(fo.leaves), "minutes": fo.minutes} for fo in result["forces"]],
         "sieges": [{"key": s.key, "keep": s.keep, "kind": s.kind, "attacker": s.attacker, "start": s.start.isoformat(),
                     "end": s.end.isoformat() if s.end else None, "result": s.result, "ram_hits": s.ram_hits,

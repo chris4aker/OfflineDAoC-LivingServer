@@ -9,5 +9,6 @@ section: Tools
   ended, with their joins, leave reasons, peak heads and groups, and lifetimes (from `RVR_FORCE_BATTLEGROUP`,
   `RVR_FORCE_ZERG` and `RVR_FORCE_BG_BATTLEGROUP`). It adds the 3,000-unit force clusters (`RVR_FORCE_CLUSTER`: the
   biggest, the samples at 9-15 and 16+, and those over 24) and the enemies the fight boards saw in contact. `--forces`
-  prints each force's timeline. On an older log, each new figure names the row it needs. The total-size buckets are
+  prints each force's timeline. A force still open when the server restarts closes at that run's last line and is
+  left out of the ended counts and lifetimes. On an older log, each new figure names the row it needs. The total-size buckets are
   unchanged.

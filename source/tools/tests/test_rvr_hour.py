@@ -4,6 +4,7 @@ fights by their biggest side and the multi-group force rows (#599 step 5).
 
     python -m unittest discover -s source/tools/tests -v
 """
+import datetime as dt
 import io
 import sys
 import tempfile
@@ -246,7 +247,7 @@ def cluster(t, realm, biggest, over24=0):
             f"clusters=2 biggest={biggest} over24={over24}")
 
 
-def board(t, enemies, contact="true"):
+def board(t, enemies, contact="True"):   # a C# bool: the server writes True / False
     return (f"11/24 {t} | INF | DOL.GS.RvrFightBoards | RVR_FIGHT_BOARD group=10 leader=\"L\" realm=Albion region=163 "
             f"main=True members=8 enemies={enemies} enemyPets=0 contact={contact} stance=Engage")
 
@@ -286,7 +287,7 @@ FORCE_LOG = [
     cluster("20:20:00", "Midgard", 30, over24=1),
     board("20:10:05", 8),
     board("20:10:06", 24),
-    board("20:10:07", 3, contact="false"),
+    board("20:10:07", 3, contact="False"),
     "11/24 21:20:00 | INF | DOL.GS.RvrRecordPulse | RVR_HOUR t=12 minutes=60 realm=Albion botsInWar=40 solo=10 small=14 "
     "eight=16 fights=0 kills=0 deaths=0 captures=0 keepsHeld=4 stalls=0 dropped=0 topRules=a:1",
 ]
@@ -399,6 +400,48 @@ class OlderLogsSayWhatTheyNeed(unittest.TestCase):
         (fo,) = rvr_hour.forces(list(rvr_hour.read(write(lines), 2026)))
         self.assertFalse(fo.formed_seen)
         self.assertEqual(dict(fo.leaves), {"late": 1})
+
+
+class TwoServerRuns(unittest.TestCase):
+    """A server stop writes no 'ended': a force open at the restart closes at the run's last line, not by itself."""
+
+    LINES = [
+        BUILD.replace("10:57:12", "20:00:00"),
+        force("20:05:00", "RVR_FORCE_ZERG", "formed", "z1", "Albion", 3, 24, extra=ZG),
+        cluster("20:30:00", "Albion", 24),
+        BUILD.replace("10:57:12", "22:00:00"),
+        force("22:05:00", "RVR_FORCE_ZERG", "formed", "z1", "Albion", 1, 8, extra=ZG),
+        cluster("22:10:00", "Albion", 8),
+    ]
+
+    def setUp(self):
+        self.path = write(self.LINES)
+        self.result = rvr_hour.report(list(rvr_hour.read(self.path, 2026)))
+
+    def test_the_open_force_closes_at_the_restart(self):
+        first, second = [fo for fo in self.result["forces"] if fo.kind == "zerg"]
+        self.assertTrue(first.closed_by_restart)
+        self.assertEqual(first.end, dt.datetime(2026, 11, 24, 20, 30))
+        self.assertIsNone(first.end_why)
+        self.assertIsNone(first.minutes)
+        self.assertFalse(second.closed_by_restart)
+        self.assertIsNone(second.end)
+
+    def test_it_is_left_out_of_the_ended_figures(self):
+        hours = {h["hour"][-5:]: h for h in self.result["hours"]}
+        run1 = hours["20:00"]["forces"]["zerg"]["Albion"]
+        self.assertEqual((run1["formed"], run1["ended"], run1["alive"]), (1, 0, 1))
+        self.assertIsNone(run1["median_minutes_ended"])
+        run2 = hours["22:00"]["forces"]["zerg"]["Albion"]
+        self.assertEqual((run2["formed"], run2["ended"], run2["alive"]), (1, 0, 1))
+        self.assertEqual((run2["peak_heads"], run2["peak_groups"]), (8, 1))
+
+    def test_text_and_json_say_open_at_the_restart(self):
+        code, timeline = run([str(self.path), "--year", "2026", "--forces"])
+        self.assertEqual(code, 0)
+        self.assertIn("open at the restart", timeline)
+        code, js = run([str(self.path), "--year", "2026", "--json"])
+        self.assertIn('"closed_by_restart": true', js)
 
 
 if __name__ == "__main__":
