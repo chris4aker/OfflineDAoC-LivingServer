@@ -223,7 +223,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOND_GRUDGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `score` | `bot`, `other` | - | - |
 | `BOND_TALK` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `topic` | `bot`, `other` | - | - |
 | `BOT_ADD_CONTROL` | server.log | **ships** | `bots/BotBrain.PveAddControl.cs` | `add`, `adds`, `bot`, `class`, `companion`, `radius`, `region`, `spell`, `type` | `bot` | - | - |
-| `BOT_AREA_SPELL` | detail.log | **ships** | `bots/BotBrain.AreaSpells.cs` | `at`, `bot`, `class`, `companion`, `hits`, `kind`, `radius`, `region`, `spell` | `bot` | - | - |
+| `BOT_AREA_SPELL` | detail.log | **ships** | `bots/BotBrain.AreaSpells.cs`<br>`bots/BotBrain.RvrBomb.cs` | `at`, `bot`, `class`, `companion`, `hits`, `kind`, `radius`, `region`, `spell` | `bot` | - | - |
 | `BOT_BODY_LANGUAGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBodyLanguage.cs` | `cheers`, `emotes`, `greets`, `killEmotes`, `looks`, `minutes`, `steps` | - | - | - |
 | `BOT_BUFFBOT_COPIES` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `found`, `mains`, `retired`, `suspected` | - | - | - |
 | `BOT_BUFFBOT_COPY_RETIRED` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `bot`, `class`, `id`, `level`, `main`, `mainId`, `realm` | `bot`, `main` | - | - |
