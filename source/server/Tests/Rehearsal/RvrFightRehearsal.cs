@@ -120,12 +120,16 @@ namespace DOL.GS.Tests.Rehearsal
             var scan = new RvrFightScan(seed);
             scan.Add(albion);
             scan.Add(midgard);
+            // #531 step 2c-1: the realm abilities the eights' builds buy
+            var actives = new RvrFightActives();
+            actives.Grant(albion.Concat(midgard));
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
             world.Run(seconds, w =>
             {
                 scan.Tick(w.Now);
+                actives.Tick(w.Now);
                 firstAlbionBoard ??= ContactBoard(albion);
                 firstMidgardBoard ??= ContactBoard(midgard);
             });
@@ -143,6 +147,7 @@ namespace DOL.GS.Tests.Rehearsal
             detail.AddRange(world.Recorder.Mezzes.Select(m => $"mez {S(m.At)} {m.Caster.Name} -> {m.Target.Name} at {m.TargetHealthPercent}% : {(m.Landed == true ? "landed" : m.Landed == false ? "refused" : "?")}"));
             detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+            detail.Add(actives.Row(world.Seed, world.Recorder));
             string row = OpenFieldRow(world, scan, albion, midgard);
             return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard));
         }
@@ -322,6 +327,77 @@ namespace DOL.GS.Tests.Rehearsal
                 Component = null;
                 base.Die(killer);
             }
+        }
+
+        // ---------------------------------------------------------------------------------------------------------
+        // Scenario 4 (#530 step 5b): solo gamebots at a battleground muster form groups
+
+        public sealed record MusterResult(string Row, IReadOnlyList<string> Detail, int Errors, int[] PartySizes,
+            int BoardMembersBefore, int[] BoardMembersAfter, int Placed, int OutsidersTaken, int Solos);
+
+        /// <summary>
+        /// Fourteen solo Albion gamebots (level 35, Caledonia's bracket, on battleground tours) stand at their wave's staging
+        /// point, with a Midgard eight 2,200 away. Beside them stand four that must not be taken: a Midgard bot, two Albions
+        /// already in a group, a level-25 Albion (another bracket) and one whose tour ends in two minutes. The coordinator's
+        /// muster pass (AutonomousBotGroupCoordinator.FormMusterParties) runs once; the row shows the parties and each party's
+        /// fight board against the eight, before (one solo bot) and after (the party).
+        /// </summary>
+        public static MusterResult MusterGroups(int seed)
+        {
+            using var world = new RvrFightWorld(seed, Repeatable);
+            Region region = world.AddRegion(BattlegroundRegion, BattlegroundZone, "Caledonia flat stand-in (rehearsal)");
+            const int sx = 40_000, sy = 40_000;
+            var staging = new System.Numerics.Vector3(sx, sy, 0);
+            string tour = DateTime.UtcNow.AddMinutes(40).ToString("O");
+            GameBot Solo(eRealm realm, eCharacterClass c, byte level, string name, int x, int y, string expires)
+            {
+                GameBot bot = world.NewBot(realm, c, level, name, "Battleground");
+                bot.PersistentRecord.ObjectiveExpiresUtc = expires;
+                world.Place(bot, region, x, y, 0, 3072);
+                return bot;
+            }
+            var solos = new List<GameBot>();
+            for (int i = 0; i < 14; i++)
+            {
+                eCharacterClass c = AlbionPool[i % AlbionPool.Length];
+                solos.Add(Solo(eRealm.Albion, c, 35, $"M{i + 1:00}{c}", sx - 300 + i % 5 * 150, sy - 300 + i / 5 * 200, tour));
+            }
+            var outsiders = new List<GameBot>
+            {
+                Solo(eRealm.Midgard, eCharacterClass.Warrior, 35, "XMidgard", sx + 100, sy + 100, tour),
+                Solo(eRealm.Albion, eCharacterClass.Armsman, 25, "XLevel25", sx + 150, sy - 150, tour),
+                Solo(eRealm.Albion, eCharacterClass.Cleric, 35, "XLeaving", sx - 150, sy + 150, DateTime.UtcNow.AddMinutes(2).ToString("O")),
+            };
+            List<GameBot> pair = [Solo(eRealm.Albion, eCharacterClass.Paladin, 35, "XPairA", sx + 50, sy - 50, tour),
+                Solo(eRealm.Albion, eCharacterClass.Friar, 35, "XPairB", sx + 60, sy - 60, tour)];
+            world.Form(pair.Cast<GameLiving>().ToList());
+            outsiders.AddRange(pair);
+            Eight(world, region, eRealm.Midgard, sx + 2_200, sy, 1024, 35, "E", out _);
+
+            int before = RvrFightBoards.Get(solos[0])?.Members.Length ?? 0;
+            int placed = AutonomousBotGroupCoordinator.FormMusterParties(
+                AutonomousRvrEventLayer.BattlegroundObjectiveId(250_001), eRealm.Albion, staging, solos.Concat(outsiders).ToList(), world.Now, DateTime.UtcNow);
+            Group[] parties = solos.Select(bot => bot.Group).Where(group => group != null).Distinct().ToArray();
+            int[] sizes = parties.Select(group => group.GetMembersInTheGroup().Count).OrderByDescending(n => n).ToArray();
+            int[] boards = parties.Select(group => RvrFightBoards.Get(group.GetMembersInTheGroup().OfType<GameBot>().First())?.Members.Length ?? 0)
+                .OrderByDescending(n => n).ToArray();
+            int taken = outsiders.Count(bot => bot.Group != null && parties.Contains(bot.Group));
+            int solo = solos.Count(bot => bot.Group == null);
+            string row = $"RVR_REHEARSAL bg_muster seed={seed} solos=14 Alb L35 placed={placed} parties={parties.Length} " +
+                         $"sizes={string.Join("+", sizes)} board_members_before={before} board_members_after={string.Join("+", boards)} " +
+                         $"outsiders_taken={taken} left_solo={solo}";
+            var detail = new List<string>();
+            foreach (Group group in parties)
+                detail.Add($"party {AutonomousBotGroupCoordinator.MusterPartyOf(group.GetMembersInTheGroup().OfType<GameBot>().First())}: " +
+                           string.Join(", ", group.GetMembersInTheGroup().Select(member => member.Name)));
+            detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+            int errors = world.ServiceErrors;
+            foreach (Group group in parties)
+            {
+                RvrFightBoards.Forget(group);
+                group.DisbandGroup();
+            }
+            return new MusterResult(row, detail, errors, sizes, before, boards, placed, taken, solo);
         }
 
         // ---------------------------------------------------------------------------------------------------------

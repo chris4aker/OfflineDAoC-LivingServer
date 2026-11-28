@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using DOL.GS;
 using DOL.GS.Tests.Rehearsal;
 using NUnit.Framework;
@@ -44,6 +45,10 @@ namespace DOL.UnitTests
             RvrFightRehearsal.OpenFieldResult first = RvrFightRehearsal.OpenField(Seed);
             Print(first.Row, first.Detail, clock);
             Assert.That(RvrFightBoards.Builds, Is.GreaterThan(boards), "BuildBoard ran on live GameLivings");
+            // #531 step 2c-1: the realm-ability row (Speed of Sound, MoC, Bunker of Faith per side) is printed
+            string actives = first.Detail.FirstOrDefault(l => l.StartsWith("RVR_REHEARSAL open_field_realm_abilities", System.StringComparison.Ordinal));
+            Assert.That(actives, Is.Not.Null, "the realm-ability row");
+            TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
             Assert.That(first.Errors + again.Errors, Is.Zero, "no service threw");
@@ -77,6 +82,25 @@ namespace DOL.UnitTests
             RvrFightRehearsal.StormResult again = RvrFightRehearsal.Storm(Seed);
             Repeat(first.Row, again.Row);
             Assert.That(first.Errors + again.Errors, Is.Zero, "no service threw");
+        }
+
+        [Test]
+        public void Scenario4_SoloBotsAtABattlegroundMusterFormGroups()
+        {
+            // #530 step 5b: the muster's solo gamebots are put into parties, and each party's fight board lists the party.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.MusterResult result = RvrFightRehearsal.MusterGroups(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Placed, Is.EqualTo(14), "every free solo at the muster placed");
+                Assert.That(result.PartySizes, Is.EqualTo(new[] { 7, 7 }), "fourteen: two parties of seven, never over eight");
+                Assert.That(result.OutsidersTaken, Is.Zero, "no other realm, no grouped bot, no other bracket, no tour about to end");
+                Assert.That(result.Solos, Is.Zero);
+                Assert.That(result.BoardMembersBefore, Is.LessThanOrEqualTo(1), "before: a solo bot's board");
+                Assert.That(result.BoardMembersAfter, Is.EqualTo(new[] { 7, 7 }), "after: the party's board");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
         }
 
         [Test]

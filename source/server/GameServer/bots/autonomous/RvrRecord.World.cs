@@ -484,8 +484,49 @@ public static class RvrRecordPulse
                       $"fights={opened[r]} kills={kills[r]} deaths={deaths[r]} captures={captures[r]} " +
                       $"keepsHeld={keeps.Count(keep => keep.Realm == realm && !keep.IsPortalKeep)} stalls={stalls} dropped={dropped} " +
                       $"topRules={(topRules.Length == 0 ? "none" : topRules)}");
+            // #528 step 4: the realm rank spread of the realm's online gamebots, measured before any brake is decided.
+            GameBot[] roster = bots.Where(bot => bot is { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false } && bot.Realm == realm).ToArray();
+            lines.Add(RanksLine(now, realm, roster.Select(bot => bot.RealmLevel).ToArray(),
+                roster.Where(bot => bot.Level >= 50).Select(bot => bot.RealmLevel).ToArray()));
         }
         return lines;
+    }
+
+    /// <summary>The realm rank a realm level is (RR1L0 is level 0, RR2L0 level 10), capped at <see cref="TopRank"/>. Pure.</summary>
+    public static int RankOf(int realmLevel) => Math.Clamp(realmLevel / 10 + 1, 1, TopRank);
+
+    /// <summary>The highest rank the histogram keeps apart; anything above counts as it.</summary>
+    public const int TopRank = 10;
+
+    /// <summary>A realm level as players write it: 14 is "2L4". Pure.</summary>
+    public static string RankText(int realmLevel) => $"{RankOf(realmLevel)}L{Math.Max(0, realmLevel) % 10}";
+
+    /// <summary>The middle realm level (the lower middle for an even count), or -1 for none. Pure.</summary>
+    public static int MedianLevel(IReadOnlyList<int> realmLevels)
+    {
+        if (realmLevels == null || realmLevels.Count == 0)
+            return -1;
+        int[] sorted = realmLevels.OrderBy(level => level).ToArray();
+        return sorted[(sorted.Length - 1) / 2];
+    }
+
+    /// <summary>
+    /// RVR_RANKS (#528 step 4; war.md finding 5): one realm's online autonomous gamebots by realm rank, every hour, with
+    /// <c>rr1</c>..<c>rr10</c> counts, the median realm level of all of them and of the level 50s, and the highest. Companions
+    /// and players are not in it. It measures only: whether bots out-rank the period (most RvR regulars RR2-RR4) is the
+    /// owner's call once a played world prints it. Pure.
+    /// </summary>
+    public static string RanksLine(long now, eRealm realm, IReadOnlyList<int> realmLevels, IReadOnlyList<int> level50RealmLevels)
+    {
+        var counts = new int[TopRank + 1];
+        foreach (int level in realmLevels)
+            counts[RankOf(level)]++;
+        int median = MedianLevel(realmLevels), median50 = MedianLevel(level50RealmLevels);
+        // One realm's online autonomous gamebots counted by realm rank, once an hour with RVR_HOUR, to see whether their rank spread is the period's.
+        return $"RVR_RANKS t={now} realm={RvrRecordText.Realm(realm)} bots={realmLevels.Count} rr1={counts[1]} rr2={counts[2]} " +
+               $"rr3={counts[3]} rr4={counts[4]} rr5={counts[5]} rr6={counts[6]} rr7={counts[7]} rr8={counts[8]} rr9={counts[9]} " +
+               $"rr10={counts[10]} median={(median < 0 ? "-" : RankText(median))} level50={level50RealmLevels.Count} " +
+               $"median50={(median50 < 0 ? "-" : RankText(median50))} top={(realmLevels.Count == 0 ? "-" : RankText(realmLevels.Max()))}";
     }
 
     /// <summary>

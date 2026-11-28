@@ -42,6 +42,8 @@ public partial class UT_ChatBudgetSimulation
             public int Level;
             public bool Solo, NearPlayer, InGuild, InGroup, InRvr, InDungeon;
             public long NextCheck, LastSpoke = -10 * 60_000;
+            /// <summary>#740 (#622's split finished): a bot near the player checks /say on its own clock, with its own last line.</summary>
+            public long NextSayCheck, LastSaid = -10 * 60_000;
             public BotPersonalityType Type => (BotPersonalityType)(Id % 6);
             public double Rate;
         }
@@ -206,7 +208,12 @@ public partial class UT_ChatBudgetSimulation
         /// the stream's name (FNV-1a, stable across runs and machines); "setup" is the evening's own seed, so the roster is the one the
         /// single stream drew. The evening switches <c>random</c> to a subsystem's stream where that subsystem's code starts; its
         /// local functions capture the variable, so every helper it calls (Pick, Styled, Generated, Near, ...) draws from it.
-        /// Streams isolate the draws only: shared state (the recent-line memory, the channel meter, the field memory) still links them.
+        /// Streams isolate the draws only; #740 (owner, 2026-11-27, "24A") isolates the state too: /say keeps its own recent-line
+        /// memory, field memory, stance, exchange numbers and check clock (<see cref="SideOf"/>), and its check reads only its own
+        /// meter, so nothing the realm's channels say can move a /say line. A model choice, not the live server's: live, a bot near
+        /// the player picks ONE channel a check (/faction, /lfg, /trade or /say, furthest under its target first) and the realm's
+        /// memories serve every channel, which is right for a player who reads them all; here a near bot's /say check runs beside
+        /// its realm check. /faction, /lfg and /trade still share one choice (and the realm's memory and stance), as live.
         /// </summary>
         internal sealed class Streams
         {
@@ -245,7 +252,27 @@ public partial class UT_ChatBudgetSimulation
                 "faction" or "say" or "lfg" or "trade" or "guild" or "group" or "tell" => channel,
                 _ => "ambient",
             };
+
+            /// <summary>
+            /// #740: whose recent-line memory a stream's corpus picks use: the realm's channels (and the scenes, stories and the
+            /// player's turn, all in /faction) share the realm's, as live; /say (the solo events' lines are /say), the party
+            /// (/group: its banter and its fights), /guild and tells keep their own.
+            /// </summary>
+            internal static string SideOf(string stream) => stream switch
+            {
+                "say" or "solo" => "say",
+                "group" or "fights" => "group",
+                "guild" => "guild",
+                "tell" => "tell",
+                _ => "realm",
+            };
+
+            /// <summary>Every stream with the recent-line side it picks under.</summary>
+            internal IEnumerable<(Random Stream, string Side)> Sides() => Names.Select(name => (_byName[name], SideOf(name)));
         }
+
+        /// <summary>#740: /say's exchange numbers start here, so the realm's exchanges can't renumber /say's (a 2-hour evening has far fewer).</summary>
+        internal const long SayExchangeBase = 50_000_000;
 
         private static List<Row> Evening(Scenario s, int seed, bool speaks, int minutes = 120, string skew = null)
         {
@@ -253,11 +280,19 @@ public partial class UT_ChatBudgetSimulation
             string realmName = GlobalConstants.RealmToName(realm);
             var streams = new Streams(seed, skew);
             Random random = streams["setup"];
-            var recent = new VC.RecentLines();
+            // #740: one recent-line memory a side (Streams.SideOf); a corpus pick uses the one of the stream it draws from.
+            var recents = new Dictionary<string, VC.RecentLines>(StringComparer.Ordinal);
+            var recentOf = new Dictionary<Random, VC.RecentLines>(ReferenceEqualityComparer.Instance);
+            foreach ((Random sideStream, string sideName) in streams.Sides())
+                recentOf[sideStream] = recents.TryGetValue(sideName, out VC.RecentLines sideLines) ? sideLines : recents[sideName] = new VC.RecentLines();
             var meter = new Budget.ChannelMeter();
             Budget.Settings settings = Budget.Current;
             var fresh = new AutonomousChatFiller.RecentTexts();
             var field = new Field.Memory();
+            // #740: /say's own field memory and stance (live, the realm's serve /say too).
+            var sayField = new Field.Memory();
+            var sayStance = new AutonomousChatStance();
+            long sayExchanges = SayExchangeBase;
             var guildField = new Field.Memory();
             var rows = new List<Row>();
             string capital = AutonomousBotVoices.CapitalOf(realm);
@@ -288,6 +323,8 @@ public partial class UT_ChatBudgetSimulation
                 bot.Zone = playerZone;
                 bot.InDungeon = s.Where == "dungeon";
                 bot.InRvr = s.Where == "frontier";
+                // #740: its /say clock, on the /say stream (the setup stream's draws, and so the roster, are as before).
+                bot.NextSayCheck = streams["say"].Next(35_000);
             }
             // The bot-led party the player joins: the last five bots, the first of them leads.
             Bot[] party = [];
@@ -444,7 +481,7 @@ public partial class UT_ChatBudgetSimulation
                 if (extra != null)
                     foreach (var pair in extra)
                         slots[pair.Key] = pair.Value;
-                return Corpus.TryPick(new VC.Request(kind, SpeakerOf(bot, flags ?? []), slots, repeat ? null : recent, ClockAt(now), random)
+                return Corpus.TryPick(new VC.Request(kind, SpeakerOf(bot, flags ?? []), slots, repeat ? null : recentOf[random], ClockAt(now), random)
                 {
                     Answers = answers, Filter = filter, Topic = topic, LocalHour = 20, RelaxTo = VC.RecentLines.Relaxed,
                 }, out picked);
@@ -575,8 +612,8 @@ public partial class UT_ChatBudgetSimulation
                 }
             }
 
-            Func<VC.Line, bool> CorpusFilter(bool faction, long now) =>
-                AutonomousBotChatCoordinator.WrittenFits(AutonomousChatFiller.AmbientFilter(faction, random), field, now);
+            Func<VC.Line, bool> CorpusFilter(bool faction, long now, Field.Memory memory) =>
+                AutonomousBotChatCoordinator.WrittenFits(AutonomousChatFiller.AmbientFilter(faction, random), memory, now);
 
             string AmbientKind(Bot bot)
             {
@@ -611,8 +648,7 @@ public partial class UT_ChatBudgetSimulation
                     Add(Budget.Channel.Faction, "faction", Bots);
                 Add(Budget.Channel.Lfg, "lfg", Bots);
                 Add(Budget.Channel.Trade, "trade", Bots);
-                if (bot.NearPlayer)
-                    Add(Budget.Channel.Say, "say", Bots);
+                // #740: /say is not among them: a bot near the player checks it on its own (SayCheck).
                 bool regularFirst = Regular(bot, now) && options.Count > 0 && options[0].Name == "faction";
                 while (options.Count > 0)
                 {
@@ -635,58 +671,86 @@ public partial class UT_ChatBudgetSimulation
                     var choice = options[pick];
                     options.RemoveAt(pick);
                     random = streams[choice.Name];
-                    // AutonomousChatExchange.SinkHold "hog" (1.2.3): a bot that said one of /faction's last four lines starts nothing new.
-                    if (choice.Name == "faction" && lastFactionSpeakers.Contains(bot.Id) && now - lastFactionLine < AutonomousChatExchange.SpeakerShareQuietMs)
-                        continue;
-                    if (meter.TryStart(choice.Channel, 1, now, choice.Band, random) is Budget.Verdict.HoldCeiling or Budget.Verdict.HoldGap)
-                        continue;
-                    if (random.NextDouble() < Field.Share(choice.Name) && Field.Line(choice.Name, FactsOf(bot, now), field, random, now, stance) is { } said)
-                    {
-                        string text = Generated(bot, said.Text);
-                        if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
-                            continue;
-                        long ex = ++exchanges;
-                        Say(now, choice.Name, text, bot.Id, false, "field:" + said.Kind, ex, 0);
-                        if (choice.Name is "faction" or "say")
-                            FieldThread(now, bot, choice.Name, said, field, choice.Name == "faction" ? _ => true : mate => mate.NearPlayer, ex);
-                        else
-                            Market(now, bot, said, choice.Name, ex);
+                    if (SpeakIn(bot, now, choice.Channel, choice.Name, choice.Band))
                         return true;
-                    }
-                    string kind = choice.Name switch
-                    {
-                        "lfg" => "lfg", "trade" => "trade",
-                        _ => AmbientKind(bot) is var k && k is "lfg" or "trade" && random.NextDouble() < 0.7 ? "ambient" : k,
-                    };
-                    // The ambient channel lines never say a join hello (AutonomousBotChatCoordinator.IsAmbientChannelLine).
-                    Func<VC.Line, bool> basic = CorpusFilter(choice.Name == "faction", now);
-                    Func<VC.Line, bool> filter = line => AutonomousBotChatCoordinator.IsAmbientChannelLine(line) && basic(line);
-                    if (!Pick(now, kind, bot, out VC.Picked picked, filter: filter) &&
-                        (choice.Name is "lfg" or "trade" || !Pick(now, "ambient", bot, out picked, filter: filter)))
-                    {
-                        if (choice.Name is "faction" or "say" && Field.Line(choice.Name, FactsOf(bot, now), field, random, now, stance) is { } fallback)
-                        {
-                            string text = Generated(bot, fallback.Text);
-                            if (!fresh.TryAdd(choice.Name.GetHashCode(), text, now))
-                                continue;
-                            long ex = ++exchanges;
-                            Say(now, choice.Name, text, bot.Id, false, "field:" + fallback.Kind, ex, 0);
-                            FieldThread(now, bot, choice.Name, fallback, field, choice.Name == "faction" ? _ => true : mate => mate.NearPlayer, ex);
-                            return true;
-                        }
-                        continue;
-                    }
-                    if (!fresh.TryAdd(choice.Name.GetHashCode(), picked.Text, now))
-                        continue;
-                    if (picked.Line?.Kind is "ambient" or "rvr" or "camp" or "group")
-                        AutonomousBotChatCoordinator.NoteWritten(field, picked.Line, now);
-                    long written = ++exchanges;
-                    Say(now, choice.Name, picked.Text, bot.Id, false, "written:" + picked.Line?.Kind + "/" + picked.Line?.Topic, written, 0);
-                    if (choice.Name is "faction" or "say")
-                        WrittenReplies(now, bot, choice.Name, picked, written);
-                    return true;
                 }
                 return false;
+            }
+
+            // AutonomousBotChatCoordinator.SpeakIn: a bot's unprompted line in the channel chosen (false: held, or nothing fitting).
+            // #740: /say's line uses /say's own field memory, stance and exchange numbers.
+            bool SpeakIn(Bot bot, long now, Budget.Channel channel, string name, (double, double, double) band)
+            {
+                Field.Memory memory = name == "say" ? sayField : field;
+                AutonomousChatStance stanceHere = name == "say" ? sayStance : stance;
+                long NextEx() => name == "say" ? ++sayExchanges : ++exchanges;
+                // AutonomousChatExchange.SinkHold "hog" (1.2.3): a bot that said one of /faction's last four lines starts nothing new.
+                if (name == "faction" && lastFactionSpeakers.Contains(bot.Id) && now - lastFactionLine < AutonomousChatExchange.SpeakerShareQuietMs)
+                    return false;
+                if (meter.TryStart(channel, 1, now, band, random) is Budget.Verdict.HoldCeiling or Budget.Verdict.HoldGap)
+                    return false;
+                if (random.NextDouble() < Field.Share(name) && Field.Line(name, FactsOf(bot, now), memory, random, now, stanceHere) is { } said)
+                {
+                    string text = Generated(bot, said.Text);
+                    if (!fresh.TryAdd(name.GetHashCode(), text, now))
+                        return false;
+                    long ex = NextEx();
+                    Say(now, name, text, bot.Id, false, "field:" + said.Kind, ex, 0);
+                    if (name is "faction" or "say")
+                        FieldThread(now, bot, name, said, memory, name == "faction" ? _ => true : mate => mate.NearPlayer, ex);
+                    else
+                        Market(now, bot, said, name, ex);
+                    return true;
+                }
+                string kind = name switch
+                {
+                    "lfg" => "lfg", "trade" => "trade",
+                    _ => AmbientKind(bot) is var k && k is "lfg" or "trade" && random.NextDouble() < 0.7 ? "ambient" : k,
+                };
+                // The ambient channel lines never say a join hello (AutonomousBotChatCoordinator.IsAmbientChannelLine).
+                Func<VC.Line, bool> basic = CorpusFilter(name == "faction", now, memory);
+                Func<VC.Line, bool> filter = line => AutonomousBotChatCoordinator.IsAmbientChannelLine(line) && basic(line);
+                if (!Pick(now, kind, bot, out VC.Picked picked, filter: filter) &&
+                    (name is "lfg" or "trade" || !Pick(now, "ambient", bot, out picked, filter: filter)))
+                {
+                    if (name is "faction" or "say" && Field.Line(name, FactsOf(bot, now), memory, random, now, stanceHere) is { } fallback)
+                    {
+                        string text = Generated(bot, fallback.Text);
+                        if (!fresh.TryAdd(name.GetHashCode(), text, now))
+                            return false;
+                        long ex = NextEx();
+                        Say(now, name, text, bot.Id, false, "field:" + fallback.Kind, ex, 0);
+                        FieldThread(now, bot, name, fallback, memory, name == "faction" ? _ => true : mate => mate.NearPlayer, ex);
+                        return true;
+                    }
+                    return false;
+                }
+                if (!fresh.TryAdd(name.GetHashCode(), picked.Text, now))
+                    return false;
+                if (picked.Line?.Kind is "ambient" or "rvr" or "camp" or "group")
+                    AutonomousBotChatCoordinator.NoteWritten(memory, picked.Line, now);
+                long written = NextEx();
+                Say(now, name, picked.Text, bot.Id, false, "written:" + picked.Line?.Kind + "/" + picked.Line?.Topic, written, 0);
+                if (name is "faction" or "say")
+                    WrittenReplies(now, bot, name, picked, written);
+                return true;
+            }
+
+            // #740: a bot near the player checks /say on its own clock, on the /say stream, against /say's meter only (live, /say is
+            // one of the channels its single check chooses from: see Streams).
+            void SayCheck(Bot bot, long now, double sayPressure)
+            {
+                random = streams["say"];
+                if (bot.NextSayCheck > now)
+                    return;
+                bot.NextSayCheck = now + 15_000 + random.Next(20_001) + bot.Id % 4_000;
+                if (random.NextDouble() >= 0.55 || bot.InGroup)
+                    return;   // fighting, casting or riding
+                DateTime clock = ClockAt(now);
+                if (!AutonomousBotChat.ShouldSpeak(clock, clock.AddMilliseconds(bot.LastSaid - now), false, random, bot.Rate, sayPressure, Regular(bot, now)))
+                    return;
+                if (SpeakIn(bot, now, Budget.Channel.Say, "say", Budget.Band(settings, Budget.Channel.Say, Bots, 20, false, Rate)))
+                    bot.LastSaid = now;
             }
 
             // ---- the realm's /faction scenes: real debate scenes (their beats as written), the gold spammer's ads and the reactions.
@@ -1352,13 +1416,15 @@ public partial class UT_ChatBudgetSimulation
                     sayPressure = Pressure(Budget.Channel.Say, Bots), guildPressure = Pressure(Budget.Channel.Guild, guildSize);
                 foreach (Bot bot in all)
                 {
+                    if (bot.NearPlayer)
+                        SayCheck(bot, now, sayPressure);
                     random = streams["ambient"];
                     if (bot.NextCheck > now)
                         continue;
                     bot.NextCheck = now + 15_000 + random.Next(20_001) + bot.Id % 4_000;
                     if (random.NextDouble() >= 0.55 || bot.InGroup)
                         continue;   // fighting, casting or riding; the party's talk is GroupTick
-                    double pressure = Math.Max(Math.Max(factionPressure, bot.NearPlayer ? sayPressure : 1), bot.InGuild ? guildPressure : 1);
+                    double pressure = Math.Max(Math.Max(factionPressure, 1), bot.InGuild ? guildPressure : 1);   // #740: /say's pressure is SayCheck's
                     bool regular = Regular(bot, now);
                     DateTime clock = ClockAt(now);
                     if (!AutonomousBotChat.ShouldSpeak(clock, clock.AddMilliseconds(bot.LastSpoke - now), false, random, bot.Rate, pressure, regular))
@@ -1406,6 +1472,14 @@ public partial class UT_ChatBudgetSimulation
         /// <summary>#622 test hook: the Albion bot-led dungeon evening (the player grouped and speaking), with one stream skewed.</summary>
         internal static List<Row> DungeonEvening(int seed, string skew, int minutes = 60) =>
             Evening(new Scenario("L24-dungeon-alb", eRealm.Albion, 24, "dungeon", true, true), seed, true, minutes, skew);
+
+        /// <summary>#740 test hook: an Albion evening of <paramref name="where"/> (hills, dungeon or frontier, the player speaking), one stream skewed.</summary>
+        internal static List<Row> EveningAt(string where, int seed, string skew, int minutes = 60) => where switch
+        {
+            "hills" => Evening(new Scenario("L5-hills-alb", eRealm.Albion, 5, "hills", false, false), seed, true, minutes, skew),
+            "frontier" => Evening(new Scenario("L50-frontier-alb", eRealm.Albion, 50, "frontier", false, true), seed, true, minutes, skew),
+            _ => DungeonEvening(seed, skew, minutes),
+        };
 
         private static string Clean(string text) => (text ?? string.Empty).Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
 
@@ -1490,6 +1564,36 @@ public partial class UT_ChatBudgetSimulation
         static bool Call(PlayerEvenings.Row row) => row.Src.StartsWith("combat:", StringComparison.Ordinal);
         Assert.That(after.Where(Call).Select(row => (row.At, row.Src)), Is.EqualTo(before.Where(Call).Select(row => (row.At, row.Src))),
             "the fight calls come at the same moments");
+    }
+
+    // #740 (owner, 2026-11-27, "24A"): /say keeps its own state, so nothing the realm's channels say can move a /say line: their
+    // draws (a /faction text change, as #528's inc calls made), the channel they pick or the scenes. Each skew must change
+    // /faction (else the test proves nothing) and leave every /say row (time, speaker, source, exchange, text) as it was.
+    [TestCase("frontier", "faction")]
+    [TestCase("hills", "faction")]
+    [TestCase("hills", "ambient")]
+    [TestCase("frontier", "scenes")]
+    public void ARealmChannelChangeLeavesSayAlone(string where, string skew)
+    {
+        List<PlayerEvenings.Row> before = PlayerEvenings.EveningAt(where, 1101, null);
+        List<PlayerEvenings.Row> after = PlayerEvenings.EveningAt(where, 1101, skew);
+        static bool Faction(PlayerEvenings.Row row) => row.Channel == "faction";
+        Assert.That(after.Where(Faction).Select(row => (row.At, row.Text)), Is.Not.EqualTo(before.Where(Faction).Select(row => (row.At, row.Text))),
+            $"the {skew} skew changed /faction (else this test proves nothing)");
+        static bool Say(PlayerEvenings.Row row) => row.Channel == "say";
+        List<PlayerEvenings.Row> said = before.Where(Say).ToList();
+        Assert.That(said.Count(row => row.Src != "player"), Is.GreaterThan(5), "the evening has bot /say lines to compare");
+        Assert.That(after.Where(Say), Is.EqualTo(said), $"/say unchanged by the {skew} skew");
+    }
+
+    [Test]
+    public void ASayChangeStillChangesSay()
+    {
+        // The control: the /say stream does move /say (the isolation is not /say gone quiet or fixed).
+        List<PlayerEvenings.Row> before = PlayerEvenings.EveningAt("hills", 1101, null);
+        List<PlayerEvenings.Row> after = PlayerEvenings.EveningAt("hills", 1101, "say");
+        static bool Say(PlayerEvenings.Row row) => row.Channel == "say" && row.Src != "player";
+        Assert.That(after.Where(Say), Is.Not.EqualTo(before.Where(Say)));
     }
 
     [Test]
