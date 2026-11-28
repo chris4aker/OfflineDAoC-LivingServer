@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **770**; pending (#625, not on main yet): **0**; shipped by the pipeline: **738**.
+- Rows in code: **771**; pending (#625, not on main yet): **0**; shipped by the pipeline: **739**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -307,6 +307,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANION_LEADER_FOCUS` | server.log | **ships** | `bots/BotBrain.LeaderFocus.cs` | `bot`, `class`, `fromBot`, `kind`, `leader`, `over`, `region`, `target`, `why` | `bot`, `leader`, `over`, `target` | change-only: one per bot of a player's group each time it turns onto a new player's target over another choice, in the frontier, battlegrounds and Darkness Falls | A bot in the player's group turned onto the player's target over its own attacker, its pet's fight or its threat (#571). |
 | `COMPANION_LEVEL_SYNC` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `class`, `from`, `owner`, `to` | `bot`, `owner` | one per /spawn helper each time its owner out-levels it, out of combat (#571 step 6) | A /spawn helper caught up to its owner's level (#571 step 6). |
 | `COMPANION_OPTION_165` | server.log | **ships** | `mode165/CompanionOptions165.cs` | `bot`, `id` | `bot` | - | - |
+| `COMPANION_PATH_DF` | server.log | **ships** | `bots/autonomous/CompanionDarknessFallsPaths.cs` | `bot`, `from`, `id`, `kind`, `nodes`, `old_gate`, `region`, `status`, `to` | `bot` | at most one per player-led bot per 30 s, in Darkness Falls (#571 step 3) | COMPANION_PATH_DF: a player-led bot's Darkness Falls path that the gamebot gate would have refused (it now takes the ordinary path). |
 | `COMPANION_REPAIR_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `companions`, `paid`, `pieces`, `player` | `player` | - | - |
 | `COMPANION_RIDE_BACK` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
 | `COMPANION_RIDE_STOWED` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
