@@ -16,9 +16,10 @@ namespace DOL.GS.Tests
     ///    tell (bench-followups.json);
     ///  * 40 lines of the moment (meeting up, pulling, resting) in eight channels (bench-moments.json);
     ///  * the two-line bench: a bot's line, then the player's follow-up (bench-twoline.json).
-    /// /faction, /say, /group and a tell are the bench's own paths (AnswerOne). The other handlers need live bots, so each is read
+    /// /faction, /say, /group and a tell are the bench's own paths (AnswerOne); /group named and a hired companion's /say take the
+    /// party reply path the live handlers run (AutonomousChatReplyPath.Party, #479). The other handlers need live bots, so each is read
     /// off its code onto the stub world, as channels.md says: /gu is AutonomousBotGuildSocial.OnPlayerGuildChat, /advice
-    /// OnPlayerAdvice, /b and /cg OnPlayerOpenChannel, a hired companion in /say CompanionChat165.ReplyTo, /trade OnPlayerTradePost's
+    /// OnPlayerAdvice, /b and /cg OnPlayerOpenChannel, /trade OnPlayerTradePost's
     /// gate. A mirror can drift from its handler: when a handler moves onto AutonomousChatReplyPath, its case here should call that.
     /// The expectations are in context_lines.json and player_questions.json; score_bench.py scores the rows and the ratchet holds
     /// each channel. Tests only: no world, no live bots.
@@ -56,12 +57,9 @@ namespace DOL.GS.Tests
             switch (channel)
             {
                 case "group_named":
-                {
-                    string known = Knowledge(run, message);
-                    choice = known != null ? new AutonomousBotChatCoordinator.ReplyChoice(Style(run, known), "knowledge")
-                        : AutonomousChatReplyPath.Budget(ports, VoicedOf(run, ports, message, true, "group"), message, true, "group");
+                    // OnPlayerGroupChat with the groupmate named (#479: the party reply path, addressed).
+                    choice = PartyOf(run, ports, message, true, "group");
                     break;
-                }
                 case "guild":
                 case "guild_named":
                 {
@@ -116,9 +114,12 @@ namespace DOL.GS.Tests
                     break;
                 }
                 case "companion_say":
-                    // A hired companion named in /say (or holding the floor): CompanionChat165.Reply's last step, by intent alone.
-                    choice = new AutonomousBotChatCoordinator.ReplyChoice(Style(run, CompanionChat165.ReplyTo(intent, "Wynn", run.Rng, false)),
-                        "companion intent " + AutonomousBotVoices.IntentName(intent));
+                    // A hired companion named in /say (or holding the floor), CompanionChat165.Answer after its commands (#479): the party
+                    // reply path its groupmates take, addressed, in /say; for a plain statement nothing there answers, its own line where
+                    // it says something true of a companion.
+                    // CompanionChat165.Answer's own order (AnswerWith), with no command and a non-formal companion.
+                    choice = CompanionChat165.AnswerWith(message, "Wynn", false, () => null, _ => PartyOf(run, ports, message, true, "say"),
+                        text => Style(run, text), run.Rng);
                     break;
                 case "trade":
                 {
@@ -247,8 +248,8 @@ namespace DOL.GS.Tests
 
         /// <summary>
         /// The 40 lines of the moment (bench-moments.json) in the channels they are typed in. A tell is taken as inside an exchange
-        /// (the bot told the player something a moment ago), so the meet-up answer is in reach; /group's own branches before the
-        /// reply path (a warning, "come here") are as AutonomousBotGroupChatter.OnPlayerGroupChat has them.
+        /// (the bot told the player something a moment ago), so the meet-up answer is in reach; /group and a companion's /say take the
+        /// party reply path the live handlers run (AutonomousChatReplyPath.Party, #479).
         /// </summary>
         [Test]
         public void AnswersTheLinesOfTheMomentInEveryChannel()
@@ -269,11 +270,8 @@ namespace DOL.GS.Tests
                     now = now.AddMinutes(3);
                     eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(said);
                     Answer a;
-                    if (channel is "group" or "group_named" && AutonomousChatReplyBudget.IsAlarm(said, intent))
-                        a = ChannelDone(Stubbing(run), "group alarm", "[world: the group's warning reply]");
-                    else if (channel is "group" or "group_named" && AutonomousBotGroupChatter.AsksToCome(said))
-                        a = ChannelDone(run, "group come", Style(run, AutonomousBotGroupChatter.ComeReply(true, 2_000, run.Me.Zone, run.Rng)));
-                    else if (channel == "tell")
+                    // /group's own steps (a warning, "come here", the meet-up, a pause) are AutonomousChatReplyPath.Party's (#479), in AnswerAs.
+                    if (channel == "tell")
                     {
                         AutonomousChatReplyPath.Ports ports = PortsOf(run);
                         using AutonomousChatFiller.ReplyScope scope = AutonomousChatFiller.Replying(said, "tell:" + run.Realm, (long)(run.Now - Epoch).TotalMilliseconds);
@@ -295,12 +293,6 @@ namespace DOL.GS.Tests
             }
             Assert.That(rows, Has.Count.EqualTo(40 * MomentChannels.Length), "the audit's 40 lines of the moment in eight channels");
             WriteRows("CHAT_BENCH_MOMENTS_OUT", "bench-moments.json", rows);
-        }
-
-        private static Run Stubbing(Run run)
-        {
-            run.Stub = true;
-            return run;
         }
 
         // ------------------------------------------------------------------------------------------- the two-line bench
