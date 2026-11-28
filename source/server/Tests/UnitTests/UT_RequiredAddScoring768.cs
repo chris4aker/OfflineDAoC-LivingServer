@@ -168,6 +168,12 @@ namespace DOL.UnitTests
                 Assert.That(Regex.Matches(route, @"Judge\(engaged, fallen, ").Count, Is.EqualTo(1), "one verdict");
                 Assert.That(route, Does.Contain("_attemptLowestPercent = _target.HealthPercent; _orderedAdds.Begin(LiveOrderedAdds().Length); NoteOrderedAdds();"),
                     "the pull starts tracking the adds alive at it");
+                Assert.That(Regex.Matches(route,
+                        @"_attemptLowestPercent = Math\.Min\(_attemptLowestPercent, _target\.HealthPercent\);\s+NoteOrderedAdds\(\);").Count,
+                    Is.EqualTo(2), "the fight tick and the skirmish hold look at the adds every tick, so a head worn down and healed counts");
+                Assert.That(route, Does.Match(
+                        @"NoteOrderedAdds\(\);\s+RaidOrderedAddProgress\.Scored judged = _orderedAdds\.Score\("),
+                    "the end looks at the adds once more before scoring, so a head killed since the last tick counts");
                 Assert.That(Regex.Matches(route, @"addsHealth=\{addsHealth\} addsLowest=\{addsLowest\}").Count, Is.EqualTo(4),
                     "the four end rows carry the adds' fields, literally");
             });
