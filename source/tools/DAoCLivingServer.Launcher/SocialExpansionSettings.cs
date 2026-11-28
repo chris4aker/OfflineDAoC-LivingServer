@@ -75,6 +75,9 @@ public sealed record SocialExpansionSettings
     /// <summary>Bots fight with the weapon set a player would (bot_weapon_set_rules, #569 step 7). No checkbox: kept as
     /// read. On by default (1.2.3).</summary>
     public bool WeaponSetRules { get; init; } = true;
+    /// <summary>Solo gamebots keep a hunting ground (bot_hunting_grounds, #570 step 3). No checkbox: kept as read. On by
+    /// default (1.2.3).</summary>
+    public bool HuntingGrounds { get; init; } = true;
     /// <summary>The damage dealers of the player's group fight the player's target first (bot_leader_focus, #571 step 1). No
     /// checkbox: kept as read. On by default (1.2.3).</summary>
     public bool LeaderFocus { get; init; } = true;
@@ -254,7 +257,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, CompanionRvrEngage = true, CompanionRvrFormation = true, PartyMainAssist = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, HuntingGrounds = true, LeaderFocus = true, CompanionRvrEngage = true, CompanionRvrFormation = true, PartyMainAssist = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true, BoardFromContacts = true,
     };
@@ -306,6 +309,7 @@ public sealed record SocialExpansionSettings
         ("bot_critical_shot_opener", "bots", "Archer bots open with Critical Shot (#569): a Hunter, Scout or Ranger gamebot, hired companion or /bot companion draws a Critical Shot as its first shot at a target that isn't fighting, running or mezzed, as players pulled, when it has the endurance, and a Hunter keeps its pet at heel for that shot (at most 7 seconds) instead of sending it in first. The draw time, damage and endurance are the player's. Your own character and pet are unchanged."),
         ("bot_party_puller_camp_turn", "bots", "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD."),
         ("bot_weapon_set_rules", "bots", "Bots fight with the weapon set a player would (#569): a party's only tank with Guard fights with its trained shield and guards a member within reach, a bot carrying a two-hander and a one-hander uses the line it trained higher, a hired companion keeps the melee set you readied in its window, and archers stop flipping between bow and melee weapon. Only weapons the bot already carries are used. Gamebots, hired companions and /bot companions alike."),
+        ("bot_hunting_grounds", "bots", "Solo gamebots keep a hunting ground (#570), as a player levelled through one zone and its neighbours: a solo gamebot's next camp is far more often in the zone it hunts or a neighbouring one, it hunts the area around a camp whose monster is gone instead of leaving, it pulls the monster standing apart first, the stealth assassins, healers, bards and archers prefer blue targets to yellow, and once most of its kills con green it moves up to a harder spot. Groups, raids, dungeons and Darkness Falls are unchanged; companions are not touched."),
         ("bot_show_as_bots", "bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
         ("bot_group_player_loot_weight", "bots", "In a group with you and gamebots, whoever leads: you count as this many members in the coin split and the item rotation (2: with seven bots nearby you get 2 of every 9 items and 2/9 of the coin), and an item your class can use that beats what you wear comes to you first. 1 to 8."),
@@ -404,6 +408,7 @@ public sealed record SocialExpansionSettings
         ["bot_death_animation"] = Bool(DeathFall),
         ["bot_healer_period_rules"] = Bool(HealerPeriodRules),
         ["bot_weapon_set_rules"] = Bool(WeaponSetRules),
+        ["bot_hunting_grounds"] = Bool(HuntingGrounds),
         ["bot_leader_focus"] = Bool(LeaderFocus),
         ["bot_companion_rvr_engage"] = Bool(CompanionRvrEngage),
         ["bot_companion_rvr_formation"] = Bool(CompanionRvrFormation),
@@ -755,6 +760,7 @@ public sealed record SocialExpansionSettings
             DeathFall = ReadBool("bot_death_animation", d.DeathFall),
             HealerPeriodRules = ReadBool("bot_healer_period_rules", d.HealerPeriodRules),
             WeaponSetRules = ReadBool("bot_weapon_set_rules", d.WeaponSetRules),
+            HuntingGrounds = ReadBool("bot_hunting_grounds", d.HuntingGrounds),
             LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
             CompanionRvrEngage = ReadBool("bot_companion_rvr_engage", d.CompanionRvrEngage),
             CompanionRvrFormation = ReadBool("bot_companion_rvr_formation", d.CompanionRvrFormation),

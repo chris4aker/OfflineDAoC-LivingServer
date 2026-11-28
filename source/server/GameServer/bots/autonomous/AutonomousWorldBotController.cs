@@ -23,7 +23,7 @@ namespace DOL.GS
     {
         /// <summary>
         /// The executor seam of the task-break activities (Crafting 2.0 WP0, DOL.GS.CraftingEconomy.IBotBreakActivity). WP4
-        /// implements it in its own partial file with DividedRealms' craft trip (HandleCraftTrip): set
+        /// implements it in its own partial file with the craft trip (HandleCraftTrip): set
         /// <paramref name="handled"/> when the activity used this turn. Unimplemented, every call compiles away.
         /// </summary>
         partial void RunBreakActivities(GameBot bot, ref bool handled);
@@ -415,6 +415,8 @@ namespace DOL.GS
                 VisitPlaces(bot, GameLoop.GameLoopTime);
                 return false;
             }
+            // #572 51B: the in-bracket sighting an out-levelled stay needs (no-op outside the battlegrounds).
+            ObserveBattlegroundStay(bot);
 
             try
             {
@@ -790,7 +792,7 @@ namespace DOL.GS
                             AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                             return true;
                         }
-                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (DividedRealms' craft trip,
+                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (the craft trip,
                         // WP4's partial file). With no implementation the compiler removes the call.
                         bool breakActivityHandled = false;
                         RunBreakActivities(bot, ref breakActivityHandled);
@@ -1363,8 +1365,9 @@ namespace DOL.GS
         {
             HashSet<ushort> reachable = ReachableRegions(bot.Realm, bot.CurrentRegionID);
             bool exchange = kind == eWorldServiceKind.RealmExchange;
-            GameNPC best = null;
-            double bestMinutes = double.MaxValue;
+            // #570 step 2: the nearest service whose trip passes no learned danger spot, else the nearest one
+            var choice = new AutonomousLearnedDangerTrips.SafestNearest<GameNPC>();
+            DateTime dangerUtc = DateTime.UtcNow;
             if (kind == eWorldServiceKind.SealMerchant)
             {
                 // Only the bot's own realm's seal merchants in Darkness Falls that have something it can pay for.
@@ -1372,7 +1375,7 @@ namespace DOL.GS
                     if (merchant is GameDarknessFallsSealsMerchant seals && IsServiceCandidate(bot, seals) &&
                         AutonomousBotEconomy.FindSealPurchase(bot, seals) != null)
                         ConsiderService(seals);
-                return best;
+                return Chosen();
             }
             // Same candidates and ordering as before (first candidate wins a tie,
             // like OrderBy + FirstOrDefault), but merchants come from each
@@ -1405,18 +1408,25 @@ namespace DOL.GS
                     }
                 }
             }
-            return best;
+            return Chosen();
 
             void ConsiderService(GameNPC npc)
             {
                 if (AutonomousServiceReachability.IsSkipped(AutonomousServiceReachability.Key(npc), bot.DatabaseID, GameLoop.GameLoopTime))
                     return;
                 double minutes = EstimateTravelMinutes(bot, npc.CurrentRegionID, npc.X, npc.Y);
-                if (minutes < bestMinutes)
-                {
-                    bestMinutes = minutes;
-                    best = npc;
-                }
+                choice.Consider(npc, minutes, AutonomousLearnedDangerTrips.ServiceDangerous(npc is RealmExchangeBroker,
+                    bot.CurrentRegionID, bot.X, bot.Y, bot.Level, npc.CurrentRegionID, npc.X, npc.Y, dangerUtc));
+            }
+
+            GameNPC Chosen()
+            {
+                // #570 step 2: one line when a learned danger spot changed the service the bot walks to
+                if (choice.Skipped)
+                    Log.Info($"AUTONOMOUS_SERVICE_DANGER_SKIP bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                             $"kind={kind} region={bot.CurrentRegionID} skipped=\"{choice.Nearest.Name}\" " +
+                             $"chosen=\"{choice.NearestSafe.Name}\" dangerous={choice.Dangerous}");
+                return choice.Choice;
             }
         }
 
@@ -1560,6 +1570,7 @@ namespace DOL.GS
                 _failedTrainerAnchors.Remove(expired);
             HashSet<ushort> reachable = ReachableRegions(bot.Realm, bot.CurrentRegionID);
             eCharacterClass characterClass = (eCharacterClass)bot.CharacterClass.ID;
+            DateTime dangerUtc = DateTime.UtcNow;
             GameTrainer[] candidates = WorldMgr.GetAllRegions()
                 .Where(region => region != null &&
                                  AutonomousCapnBryGoalCatalog.IsClassicOrShroudedIslesExpansion(region.Expansion) &&
@@ -1571,6 +1582,9 @@ namespace DOL.GS
                 .Where(trainer => trainer.TrainedClass == characterClass || trainer.TrainedClass == eCharacterClass.Unknown)
                 .Where(trainer => trainer.CurrentZone == null || IsZoneAccessible(bot.Realm, trainer.CurrentZone))
                 .OrderBy(trainer => trainer.TrainedClass == characterClass ? 0 : 1)
+                // #570 step 2: a trainer whose trip passes no learned danger spot first, a dangerous one only when no other
+                .ThenBy(trainer => AutonomousLearnedDangerTrips.ServiceDangerous(false, bot.CurrentRegionID, bot.X, bot.Y,
+                    bot.Level, trainer.CurrentRegionID, trainer.X, trainer.Y, dangerUtc) ? 1 : 0)
                 .ThenBy(trainer => EstimateTravelMinutes(bot, trainer.CurrentRegionID, trainer.X, trainer.Y))
                 .ToArray();
             foreach (GameTrainer trainer in candidates)
@@ -2250,6 +2264,12 @@ namespace DOL.GS
                 AutonomousBotGroupCoordinator.BattlegroupLeader(battlegroupLead) is { IsAlive: true } battlegroupLeader &&
                 battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
                 return TrailBattlegroupLead(bot, forceId, battlegroupLead, battlegroupLeader);
+
+            // #599 step 3: the realm's zerg. Its lead holds the region's gates in turn; a recruit in another region travels to
+            // the zerg first (once in the lead's region it trails the lead, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                !_rvrSharedEvent && AutonomousRvrEventLayer.ZergOrderOf(forceId) is { } zergOrder && TakeZergTurn(bot, forceId, zergOrder))
+                return true;
 
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {
@@ -3275,6 +3295,9 @@ namespace DOL.GS
                 return true;
             }
 
+            // #570 step 3: most of the last kills here conned green, so a solo bot moves up a spot
+            if (TryMoveUpSpot(brain, bot))
+                return true;
             GameNPC target = FindCampTarget(bot);
             // A level-up can turn a whole low-level camp grey. Those kills give no
             // experience, so a solo bot fought on in place until the stuck watchdog
@@ -3668,7 +3691,12 @@ namespace DOL.GS
             eCharacterClass searchClass = (eCharacterClass)(bot.CharacterClass?.ID ?? 0);
             bool canPullFromRange = BotSpellPower.IsOffensiveCaster(bot) ||
                 searchClass is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger;
-            GameNPC FindWithin(ushort radius) => bot.GetNPCsInRadius(radius)
+            // #570 step 3 (AutonomousHuntingGround): a solo bot pulls the monster standing apart first, an assassin,
+            // healer, bard or archer prefers blue to yellow, and with the camp's own monster gone it hunts the area around the camp
+            bool huntingRules = AutonomousHuntingGround.Enabled && IsSoloHunter(bot);
+            ConColor preferredCon = huntingRules
+                ? AutonomousHuntingGround.PreferredSoloCon(searchClass) : ConColor.YELLOW;
+            GameNPC FindAmong(List<GameNPC> nearby, bool area) => PreferIsolatedWhenSolo(nearby
                 .Where(npc => IsExperienceMonster(npc) && npc.IsAlive && npc.CurrentRegionID == _camp.RegionId &&
                     !AutonomousAuditedCampPolicy.IsBotExcludedNpc(npc) &&
                     !AutonomousPveTargetPolicy.IsUnreachableFlyer(npc.Flags, npc.Z, bot.Z) &&
@@ -3680,7 +3708,8 @@ namespace DOL.GS
                         new(_camp.X, _camp.Y, _camp.Z), new(npc.X, npc.Y, npc.Z)))
                 // Planning owns level selection. Once assigned, neither solo
                 // nor group execution may reject that named monster by level.
-                .Where(npc => AutonomousPveTargetPolicy.IsAssignedTarget(
+                // (area: the camp's own monster is gone, any monster around the camp that cons right, #570 step 3)
+                .Where(npc => area ? IsAreaHuntTarget(bot, npc, nowTick) : AutonomousPveTargetPolicy.IsAssignedTarget(
                     _camp.MonsterName, npc.Name, npc.EffectiveLevel))
                 // Level 50 solo bots never pull below the solo camp floor (no waiting on a
                 // rare green among greys: with none left the empty-camp timeout moves on).
@@ -3705,7 +3734,8 @@ namespace DOL.GS
                 .OrderForPull(_groupDirective?.IsDynamic == true, bot)
                 // 1.2.3 (#535): a solo bot takes a grey only when nothing else is near, so a grey pick really means outleveled
                 .ThenBy(npc => _groupDirective?.IsDynamic != true && AutonomousSoloCampFloor.IsGrey(bot.EffectiveLevel, npc.EffectiveLevel) ? 1 : 0)
-                .ThenBy(npc => bot.GetDistanceTo(npc) + Math.Abs((int)ConLevels.GetConColor(bot.GetConLevel(npc))) * 220)
+                .ThenBy(npc => bot.GetDistanceTo(npc) +
+                    AutonomousHuntingGround.ConSortPenalty(ConLevels.GetConColor(bot.GetConLevel(npc)), preferredCon)), nearby)
                 // Run native checks only after cheap filters and sorting, and
                 // stop at the first reachable target. Self-defense is handled
                 // separately and must never be suppressed by this pull gate.
@@ -3766,8 +3796,26 @@ namespace DOL.GS
 
             // Preserve the old cheap local lookup for ordinary pulls. Only an
             // empty local ring pays for the requested 5,000-unit expansion.
-            return FindWithin(ImmediateTargetSearchRadius) ??
-                   (GameLoop.GameLoopTime >= _wideTargetSearchAfterTick ? FindWithin(TargetSearchRadius) : null);
+            List<GameNPC> wide = null;
+            List<GameNPC> immediate = bot.GetNPCsInRadius(ImmediateTargetSearchRadius);
+            bool wideAllowed = GameLoop.GameLoopTime >= _wideTargetSearchAfterTick;
+            GameNPC found = FindAmong(immediate, area: false) ??
+                   (wideAllowed ? FindAmong(wide = bot.GetNPCsInRadius(TargetSearchRadius), area: false) : null);
+            // #570 step 3: the camp's own monster is gone, so a solo bot hunts the area around the camp before the
+            // empty-camp wait sends it elsewhere. A grey pick of the camp's own monster still means "outleveled".
+            // The wide scan above is reused when it ran (one scan per search). While the wide-search pause after a far
+            // pull give-up is in force, the area hunt looks only at the near scan, so it never sends the bot back out far.
+            if (found == null && AreaHuntingApplies(bot))
+            {
+                found = FindAmong(wide ?? (wideAllowed ? bot.GetNPCsInRadius(TargetSearchRadius) : immediate), area: true);
+                LogAreaHunt(bot, found);
+            }
+            return found;
+
+            IEnumerable<GameNPC> PreferIsolatedWhenSolo(IEnumerable<GameNPC> sorted, List<GameNPC> nearby) => huntingRules
+                ? AutonomousHuntingGround.PreferIsolated(sorted, nearby,
+                    npc => AutonomousSoloCampFloor.IsGrey(bot.EffectiveLevel, npc.EffectiveLevel) ? 1 : 0)
+                : sorted;
         }
 
         private void PatrolCamp(GameBot bot)
@@ -3881,9 +3929,14 @@ namespace DOL.GS
             // and add the battleground of the bot's bracket when the whole party fits it (level only).
             HashSet<ushort> reachableRegions = ReachableRegions(bot.Realm,
                 BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ? RealmRaidNeutralEvents.HomeRegion(bot.Realm) : bot.CurrentRegionID);
-            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled ? BattlegroundBrackets.ForLevel(bot.Level) : null;
+            // #572 step 4: no battleground camps for a bot just forced out of one (30 minutes).
+            // #572 51B: a bot staying out-levelled keeps the camps of the battleground it is in (entry keeps the cap).
+            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled &&
+                !AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID) ? WorkingBattleground(bot) : null;
             if (campBattleground != null && (!sharedGroup || bot.Group == null ||
-                    bot.Group.GetMembersInTheGroup().All(member => BattlegroundBrackets.Allows(campBattleground, member.Level))))
+                    bot.Group.GetMembersInTheGroup().All(member => AutonomousBattlegroundExit.MayBeIn(campBattleground,
+                        member.Level, member is GameBot stayer && stayer.CurrentRegionID == campBattleground.RegionId &&
+                        StaysOutlevelled(stayer)))))
                 reachableRegions.Add(campBattleground.RegionId);
             HashSet<string> rejectedDungeons = AutonomousBotGroupCoordinator.RejectedDungeonCamps(bot);
             foreach (string id in _rejectedDungeonCamps.Where(pair => pair.Value <= GameLoop.GameLoopTime).Select(pair => pair.Key).ToArray())
@@ -4090,6 +4143,8 @@ namespace DOL.GS
             else
             {
                 legal = legal.Where(camp => camp.LowestCon >= minimumTargetCon && camp.TypicalCon <= maximumTargetCon);
+                // #570 step 3: most kills at the last camp conned green, so blue or harder when one exists
+                legal = ApplyMoveUp(legal);
                 // A bot grinding while it waits for group matchmaking stays
                 // outdoors: recruitment needs it in an overworld region, and a
                 // dungeon camp would only be abandoned when the party forms.
@@ -4158,6 +4213,10 @@ namespace DOL.GS
                         destinations.TryGetValue(camp.Id, out CampDestination known) ? known.Traits : default)
                 }).ToArray();
             }
+            // #570 step 3: a solo bot keeps its hunting ground (its zone x8, neighbouring zones x3, the rest of the region
+            // x1, other regions x0.25), among the quiet camps left above (AutonomousHuntingGround)
+            if (!sharedGroup)
+                legalCells = WeighHuntingGround(bot, legalCells, destinations);
             // This is the deployed selection point. Each distinct verified
             // location has one entry; outdoor draws are weighted by live spawns
             // (capped) with no distance or name preference.
@@ -4208,6 +4267,7 @@ namespace DOL.GS
             _pendingStableChoice = null;
             bot.PersistentRecord.CurrentCampId = selected.Id;
             AutonomousCampCompetition.NoteAssigned(selected.Id, sharedGroup ? groupSize : 1);
+            NoteHuntingGround(bot, selected, sharedGroup);   // #570 step 3
             AutonomousBotPersonality.RememberZone(bot, selected.ZoneName);
             SetStatus(bot, $"Planning route to {selected.MonsterName}", GoalText(), decision.Reason,
                 selected.MonsterName, selected.ZoneName, true);

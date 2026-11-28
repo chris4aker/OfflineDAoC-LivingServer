@@ -37,6 +37,7 @@
   "bot_guild_social": "True",
   "bot_guilds_enabled": "True",
   "bot_healer_period_rules": "True",
+  "bot_hunting_grounds": "True",
   "bot_incoming_fire_reaction": "True",
   "bot_leader_focus": "True",
   "bot_led_group_join_mode": "follow",

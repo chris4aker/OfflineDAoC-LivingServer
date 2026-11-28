@@ -1861,6 +1861,7 @@ namespace DOL.GS.ServerRules
             if (recordKillCredit)
             {
                 AutonomousObjectiveAssignments.RecordPveKill(botToAward);
+                AutonomousHuntingGround.RecordKill(botToAward, killedNpc);   // #570 step 3: the move-up window
                 AutonomousGoalDiagnostics.Reward(botToAward, killedNpc, botToAward.Experience - diagnosticXpBefore);
             }
 

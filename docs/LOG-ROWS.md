@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **782**; pending (#625, not on main yet): **0**; shipped by the pipeline: **750**.
+- Rows in code: **785**; pending (#625, not on main yet): **0**; shipped by the pipeline: **753**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -144,6 +144,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_ROUTE_THREAT_UNREACHABLE` | detail.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RouteThreats.cs` | `at`, `bot`, `id`, `target`, `zone` | `bot`, `target` | - | - |
 | `AUTONOMOUS_SEAL_PURCHASE` | server.log | **ships** | `bots/autonomous/AutonomousBotEconomy.cs` | `bot`, `id`, `item`, `merchant`, `seal`, `seals`, `use` | `bot` | - | - |
 | `AUTONOMOUS_SERVICE_BLOCKED` | server.log | **ships** | `bots/BotBrain.cs` | `alive`, `attacking`, `bot`, `capital`, `casting`, `combat`, `cooldown`, `expired`, `grouped`, `id`, `inventoryPhase`, `moving`, `service` | `bot` | - | - |
+| `AUTONOMOUS_SERVICE_DANGER_SKIP` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `chosen`, `dangerous`, `id`, `kind`, `level`, `region`, `skipped` | `bot`, `chosen`, `skipped` | one per gamebot service search whose nearest merchant, broker or seal merchant lay beside or past a learned danger spot while a safe one was left (#570) | #570 step 2: one line when a learned danger spot changed the service the bot walks to |
 | `AUTONOMOUS_SERVICE_SURFACE_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `id`, `service`, `to` | `bot` | - | - |
 | `AUTONOMOUS_SERVICE_UNREACHABLE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `at`, `bot`, `from`, `id`, `region`, `service`, `skippedByAll` | `bot` | - | - |
 | `AUTONOMOUS_SIEGE_RAISE_CHECKS` | server.log | **ships** | `bots/autonomous/AutonomousSiegeResurrection.cs` | `cannotCast`, `corpseClaimed`, `enemyAboveOrBelow`, `enemyBots`, `enemyByCorpse`, `enemyFighting`, `enemyOther`, `noCorpse`, `notAttackerWithDeadNear`, `underAttack` | - | - | - |
@@ -152,6 +153,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_SPEC_REFUND` | server.log | **ships** | `bots/GameBot.cs` | `bots`, `classes`, `points`, `shown` | - | - | - |
 | `AUTONOMOUS_STABLE_APPROACH_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `group`, `id`, `level`, `master`, `position`, `realm`, `reason`, `region`, `retryAfterSeconds`, `ticket` | `bot` | - | - |
 | `AUTONOMOUS_STABLE_LANDING_CORRECTION` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
+| `AUTONOMOUS_STABLE_LANDING_DEADLY` | server.log | **ships** | `bots/GameBot.cs` | `band`, `bots`, `destination`, `killer`, `killerLevel`, `minutes`, `region` | `killer` | one when a horse landing turns deadly for a 5-level band (6 different gamebots dead within 5 minutes of landing in an hour; #570) | - |
+| `AUTONOMOUS_STABLE_LANDING_SKIP` | server.log | **ships** | `bots/autonomous/AutonomousStableRoutePlanner.cs` | `bot`, `id`, `level`, `now`, `region`, `seconds`, `skipped`, `wouldBoard` | `bot`, `now`, `wouldBoard` | sampled: at most one per gamebot per 5 minutes, only when the learned danger rules changed its horse plan (#570) | - |
 | `AUTONOMOUS_STABLE_LANDING_STEP` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `from`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_STABLE_ROUTE_ARRIVE` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `id`, `level`, `position`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_STABLE_ROUTE_BOARD` | detail.log | **ships** | `bots/GameBot.cs` | `bot`, `destination`, `endpoint`, `id`, `level`, `realm`, `ticket` | `bot` | - | - |
@@ -492,7 +495,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `PLAYER_CLICK_TARGET` | server.log | **ships** | `packets/Client/168/PlayerTargetHandler.cs` | `examine`, `id`, `inView`, `kind`, `name`, `player`, `result` | `name`, `player` | - | - |
 | `PLAYER_DEED` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `forced`, `kind`, `player`, `target`, `witness` | `player`, `target`, `witness` | - | - |
 | `PLAYER_DEED_SKIP` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `con`, `enemies`, `killer`, `kind`, `player`, `reason` | `killer`, `player` | - | Why a death was no deed, for in-game checks (2026-10-27: |
-| `PLAYER_KEEP_DEFENSE_SIZED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `defenders`, `event`, `first`, `force`, `helpers`, `keep`, `scale` | - | - | - |
+| `PLAYER_KEEP_DEFENSE_SIZED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `defenders`, `event`, `first`, `force`, `helpers`, `keep`, `roster`, `scale` | - | one per player keep attack when its first alarm rallies the bot defense, then one each time the defense grows a tier (#523) | The size of the bot defense against a player's keep attack, where force= counts the player's group and the attacking realm's gamebots at the keep (not this defense's own recruits) and roster= the whole group. |
 | `PLAYER_LINE_OUTCOME` | server.log | **ships** | `bots/autonomous/LivingRows.PlayerLines.cs` | `answered`, `bots`, `ch`, `intent`, `kind`, `latencyMs`, `realm`, `replies`, `seq`, `t`, `window` | - | - | PLAYER_LINE_OUTCOME (#625 row 5): |
 | `PLAYER_NICKNAME` | server.log | no: the player's chosen nickname | `bots/autonomous/AutonomousPlayerDeeds.cs` | `nickname`, `player` | - | - | - |
 | `PLAYER_TAXI_DISMOUNT_REQUEST` | server.log | **ships** | `gameutils/PlayerTaxiSynchronization.cs` | `correctionRecently`, `horse`, `player`, `position` | `player` | - | One entry per actual detachment; |
