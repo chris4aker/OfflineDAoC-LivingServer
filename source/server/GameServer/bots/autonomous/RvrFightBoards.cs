@@ -118,6 +118,18 @@ public static class RvrFightBoards
     /// <summary>How many boards were built since start (a load counter for the logs and tests).</summary>
     public static long Builds => Interlocked.Read(ref _builds);
 
+    /// <summary>
+    /// The board holders (one per group and region) across the live groups, for SERVER_COLLECTION_CENSUS (#731). Walks
+    /// the weak table, so it's for the census's pool thread, never the game loop.
+    /// </summary>
+    internal static long HolderCount()
+    {
+        long count = 0;
+        foreach (var pair in Groups)
+            count += pair.Value.Regions.Count;
+        return count;
+    }
+
     /// <summary>What a living's boards and stored facts are keyed by: its group, or itself when it has none.</summary>
     public static object KeyOf(GameLiving living) => (object)living?.Group ?? living;
 

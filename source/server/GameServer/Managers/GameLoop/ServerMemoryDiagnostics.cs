@@ -17,6 +17,8 @@ namespace DOL.GS
     /// <item>SERVER_GC_PAUSE: one line per pause of PauseLogMilliseconds or more (generation, reason, kind, heap).</item>
     /// <item>SERVER_MEMORY: every five minutes, heap by generation, fragmentation, allocation rate, collections,
     /// pauses, memory load, the largest allocating types (sampled) and the sizes of known bot caches.</item>
+    /// <item>SERVER_COLLECTION_CENSUS: every 30 minutes (every sixth report), the sizes of the long-lived static
+    /// collections, the thread and timer counts and the GC generation sizes (ServerCollectionCensus, issue #731).</item>
     /// <item>SERVER_HEAP_SNAPSHOT: a dotnet-gcdump heap snapshot into logs/ when the heap first passes
     /// SnapshotThresholdsMegabytes (needs the dotnet-gcdump tool; each snapshot pauses the server a few seconds). Its "done",
     /// "overran" or "failed" row carries the tool's exit code and the start and end of its stdout and stderr (issue #731).</item>
@@ -177,6 +179,8 @@ namespace DOL.GS
             _lastGen0 = gen0; _lastGen1 = gen1; _lastGen2 = gen2;
             // Handles by type (issue #540), every ten minutes on a background thread: a small row in every session.
             try { ServerHandleCensus.MaybeRun(); } catch (Exception exception) { Log.Warn("SERVER_HANDLE_CENSUS failed", exception); }
+            // The long-lived collections, threads, timers and GC generations (issue #731): every 30 minutes, in every session.
+            try { ServerCollectionCensus.OnMemoryReport(info); } catch (Exception exception) { Log.Warn("SERVER_COLLECTION_CENSUS failed", exception); }
             // Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: test runs, never a release.
             if (!File.Exists(Path.Combine(AppContext.BaseDirectory, CensusEnableFileName))) return;
             try { LogNpcCensus(); } catch (Exception exception) { Log.Warn("SERVER_NPC_CENSUS failed", exception); }

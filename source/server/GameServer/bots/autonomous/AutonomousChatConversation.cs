@@ -49,6 +49,9 @@ public sealed class ChatConversations
     /// <summary>The store the server uses.</summary>
     public static readonly ChatConversations Live = new();
 
+    /// <summary>How many conversations the store holds, expired ones included until swept (SERVER_COLLECTION_CENSUS, #731).</summary>
+    public int Count => _byKey.Count;
+
     private static string BotKey(string player, long botId) => "bot:" + player + "|" + botId;
     private static string ChannelKey(string player, string channel) => "ch:" + player + "|" + channel;
 
