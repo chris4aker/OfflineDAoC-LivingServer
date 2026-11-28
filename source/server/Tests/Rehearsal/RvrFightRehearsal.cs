@@ -120,12 +120,16 @@ namespace DOL.GS.Tests.Rehearsal
             var scan = new RvrFightScan(seed);
             scan.Add(albion);
             scan.Add(midgard);
+            // #531 step 2c-1: the realm abilities the eights' builds buy
+            var actives = new RvrFightActives();
+            actives.Grant(albion.Concat(midgard));
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
             world.Run(seconds, w =>
             {
                 scan.Tick(w.Now);
+                actives.Tick(w.Now);
                 firstAlbionBoard ??= ContactBoard(albion);
                 firstMidgardBoard ??= ContactBoard(midgard);
             });
@@ -143,6 +147,7 @@ namespace DOL.GS.Tests.Rehearsal
             detail.AddRange(world.Recorder.Mezzes.Select(m => $"mez {S(m.At)} {m.Caster.Name} -> {m.Target.Name} at {m.TargetHealthPercent}% : {(m.Landed == true ? "landed" : m.Landed == false ? "refused" : "?")}"));
             detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+            detail.Add(actives.Row(world.Seed, world.Recorder));
             string row = OpenFieldRow(world, scan, albion, midgard);
             return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard));
         }

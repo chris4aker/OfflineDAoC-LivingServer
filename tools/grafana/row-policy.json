@@ -84,6 +84,7 @@
     "text"
   ],
   "frequency": {
+    "COMPANION_RVR_ENGAGE": "change-only: one per player's group each time its own pick in the frontier, battlegrounds or Darkness Falls changes call (engage or hold) or target",
     "DRAGON_RALLY_ROUTE_RETRY": "one per failed plan of a raider's safe route to an open-world boss rally: at most one per raider every 30 seconds while the plans fail (#767)",
     "DRAGON_RALLY_FALLBACK": "one per raider per spot after three failed rally plans from it: the walk past a neutral boss, or the keep-safe-route note for an aggressive one (#767)",
     "AUTONOMOUS_RALLY_STUCK": "one per open-world rally member that stood still off the staging ring for 15 minutes after the departure, then sent to its capital (#767)",
@@ -99,6 +100,7 @@
     "AUTONOMOUS_GOAL_ATTEMPT": "one per finished gamebot goal attempt (detail.log)",
     "SERVER_STALL": "once a minute when a game-loop tick ran slow",
     "AUTONOMOUS_ZONE_SEAM_CYCLE": "one per seam reversal caught (#570: a gamebot's zone steps turned back twice over one border for one goal); rare, 2 on the owner's 11/23 log",
+    "RVR_RANKS": "once an hour per realm, with RVR_HOUR (#528)",
     "RVR_DECIDE": "one per change of an RvR decision, within the RvR record's minute budget",
     "RVR_CONTACT_SHADOW": "once a minute per realm, when a fight board of that realm listed an enemy in the minute (#529)",
     "RVR_CONTACT_UNKNOWN": "at most 20 a minute per realm: the first listed-but-unknown listing of a group-enemy pair in the shadow's minute (#529)",

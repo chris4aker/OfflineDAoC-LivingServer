@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **776**; pending (#625, not on main yet): **0**; shipped by the pipeline: **744**.
+- Rows in code: **778**; pending (#625, not on main yet): **0**; shipped by the pipeline: **746**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -212,7 +212,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOND_TALK` | server.log | **ships** | `bots/autonomous/AutonomousBotBonds.cs` | `bot`, `other`, `realm`, `topic` | `bot`, `other` | - | - |
 | `BOT_ADD_CONTROL` | server.log | **ships** | `bots/BotBrain.PveAddControl.cs` | `add`, `adds`, `bot`, `class`, `companion`, `radius`, `region`, `spell`, `type` | `bot` | - | - |
 | `BOT_AREA_SPELL` | detail.log | **ships** | `bots/BotBrain.AreaSpells.cs` | `at`, `bot`, `class`, `companion`, `hits`, `kind`, `radius`, `region`, `spell` | `bot` | - | - |
-| `BOT_BODY_LANGUAGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBodyLanguage.cs` | `cheers`, `emotes`, `greets`, `looks`, `minutes`, `steps` | - | - | - |
+| `BOT_BODY_LANGUAGE` | server.log | **ships** | `bots/autonomous/AutonomousBotBodyLanguage.cs` | `cheers`, `emotes`, `greets`, `killEmotes`, `looks`, `minutes`, `steps` | - | - | - |
 | `BOT_BUFFBOT_COPIES` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `found`, `mains`, `retired`, `suspected` | - | - | - |
 | `BOT_BUFFBOT_COPY_RETIRED` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `bot`, `class`, `id`, `level`, `main`, `mainId`, `realm` | `bot`, `main` | - | - |
 | `BOT_BUFFBOT_COPY_SUSPECTED` | server.log | **ships** | `bots/autonomous/BuffBotCopyRetirement.cs` | `bot`, `class`, `id`, `level`, `realm` | `bot` | - | - |
@@ -315,6 +315,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANION_REPAIR_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `companions`, `paid`, `pieces`, `player` | `player` | - | - |
 | `COMPANION_RIDE_BACK` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
 | `COMPANION_RIDE_STOWED` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
+| `COMPANION_RVR_ENGAGE` | server.log | **ships** | `bots/CompanionRvrEngage.World.cs` | `bar`, `call`, `fromPlayer`, `kind`, `known`, `leader`, `odds`, `rank`, `region`, `size`, `stance`, `target`, `why` | `leader`, `target` | change-only: one per player's group each time its own pick in the frontier, battlegrounds or Darkness Falls changes call (engage or hold) or target | The player's group engaged an enemy on its own in RvR, or held off a fight it would clearly lose (#664). |
 | `COMPANION_SKILLS_165` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `specs`, `spells`, `styles` | `bot` | - | - |
 | `COMPANION_STALE_COPY_165` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `grouped`, `id`, `player`, `state` | `bot`, `player` | - | - |
 | `COMPANION_STATS_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `player`, `row`, `slot40`, `summoned` | `player` | - | diagnostics for the original client's STATS button (2026-10-30): |
@@ -712,6 +713,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_PLAYER_SEAT` | server.log | **ships** | `bots/autonomous/RvrRecord.Player.cs` | `deaths`, `defenseEventsCaused`, `groupsJoined`, `groupsOffered`, `kills`, `minutesEnemyWithin3000`, `minutesInWar`, `mostEnemiesWithin3000`, `noticesReceived`, `player`, `t`, `timesAttacked` | `player` | - | - |
 | `RVR_PLAYER_VIEW` | server.log | **ships** | `bots/autonomous/RvrRecord.Player.cs` | `at`, `enemiesFighting`, `enemiesInView`, `enemiesNear`, `fights`, `friendsInView`, `friendsNear`, `inCombat`, `player`, `realm`, `region`, `t` | `player` | - | - |
 | `RVR_RALLY_DELAY` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `force`, `reason`, `target` | - | - | - |
+| `RVR_RANKS` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `bots`, `level50`, `median`, `median50`, `realm`, `rr1`, `rr10`, `rr2`, `rr3`, `rr4`, `rr5`, `rr6`, `rr7`, `rr8`, `rr9`, `t`, `top` | - | once an hour per realm, with RVR_HOUR (#528) | One realm's online autonomous gamebots counted by realm rank, once an hour with RVR_HOUR, to see whether their rank spread is the period's. |
 | `RVR_REGROUP` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `from`, `fromFight`, `group`, `health`, `members`, `minSeconds`, `next`, `phase`, `power`, `rally`, `realm`, `reason`, `region`, `relay`, `relayedTo`, `seconds`, `skill`, `started` | - | - | - |
 | `RVR_REINFORCEMENTS` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `event` | - | - | - |
 | `RVR_RELIC_CAMPAIGN` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.cs` | `attacker`, `relic`, `sentinels`, `step` | - | - | - |
@@ -730,7 +732,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_ROAM_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `lap`, `preySeen`, `realm`, `region`, `reserve`, `result`, `roamersSeen`, `seconds`, `spot`, `tier`, `type`, `walk` | - | - | - |
 | `RVR_ROAM_CIRCUIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `bestEnemiesNear`, `circuit`, `circuits`, `enemiesNear`, `group`, `realm`, `region`, `reserve`, `sampleAgeSeconds` | - | - | - |
 | `RVR_ROAM_HUNT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `distance`, `group`, `kind`, `prey`, `preyLevel`, `preyRealm`, `realm`, `region`, `seen`, `spot`, `tier`, `walk` | `prey` | - | - |
-| `RVR_ROAM_MOVE_ON` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `limitSeconds`, `realm`, `secondsAfterKill`, `spot`, `tier` | - | - | - |
+| `RVR_ROAM_MOVE_ON` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RvrTactics.cs` | `group`, `kills`, `kind`, `limitSeconds`, `playerKills`, `realm`, `secondsAfterKill`, `spot`, `tier` | - | - | - |
 | `RVR_SCAN_BUDGET` | server.log | **ships** | `bots/autonomous/RvrScanRoster.cs` | `capped`, `everyone`, `idle`, `lookers`, `notices`, `rays`, `raysPerSecond`, `realm`, `rolls`, `scans`, `scansPerSecond`, `seconds`, `solo`, `stealthRolls`, `woken` | - | - | - |
 | `RVR_SIEGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs`<br>`bots/autonomous/AutonomousWorldBotController.Siege.cs` | `action`, `bot`, `distance`, `engine`, `id`, `keep`, `realm`, `region`, `target` | `bot`, `target` | - | - |
 | `RVR_SIEGE_BEGIN` | server.log | no: free text, no key=value fields | `bots/autonomous/RvrRecord.World.cs` | - | - | - | - |

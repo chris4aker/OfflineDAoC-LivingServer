@@ -324,7 +324,7 @@ public sealed partial class AutonomousWorldBotController
     }
 
     /// <summary>The stealth rule's facts for this bot looking at this stealthed enemy (reads the game).</summary>
-    private static RvrStealthSighting StealthSighting(GameBot bot, GameLiving target, bool lineOfSight) => new(
+    internal static RvrStealthSighting StealthSighting(GameBot bot, GameLiving target, bool lineOfSight) => new(
         bot.GetDistanceTo(target), bot.Level, target.GetModifiedSpecLevel(Specs.Stealth),
         ObserverDetectHidden: bot.HasAbility(Abilities.DetectHidden),
         TargetDetectHidden: target.HasAbility(Abilities.DetectHidden),
