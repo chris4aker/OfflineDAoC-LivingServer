@@ -10,7 +10,8 @@ namespace DOL.UnitTests
     /// <summary>
     /// #531 step 2f: PBAoE bombers on a mezzed pile (RvrBombPlan; owner answer 53A: groups with 2 or more bombers bomb at
     /// once, a group with one bomber walks in and waits). Pure, with world-less gamebots as the living objects. The wiring
-    /// (BotBrain.RvrBomb) is shown by the #520 rehearsal row (bomb=). Tests only.
+    /// (BotBrain.RvrBomb) is pinned by the #520 rehearsal (UT_RvrFightRehearsal: the bomb= values of Scenario1 and its
+    /// two-bomber case). Tests only.
     /// </summary>
     [TestFixture, NonParallelizable]
     public class UT_RvrBombPlan531 : DutyLeaseFixture
@@ -41,6 +42,28 @@ namespace DOL.UnitTests
             Assert.That(RvrBombPlan.Decide(2, 0, 4, long.MaxValue), Is.EqualTo(RvrBombAction.None), "no mez landed: no walk in");
             Assert.That(RvrBombPlan.Decide(0, 3, 0, Long), Is.EqualTo(RvrBombAction.None), "no bomber");
             Assert.That(RvrBombPlan.Decide(1, 0, 0, long.MaxValue), Is.EqualTo(RvrBombAction.None));
+        });
+
+        [Test]
+        public void A_lone_bomber_waits_out_the_mez_it_finds() => Assert.Multiple(() =>
+        {
+            Assert.That(RvrBombPlan.WaitFor(60_000), Is.EqualTo(59_000), "a 60 s mez: until 2 s are left, plus the 1 s margin");
+            Assert.That(RvrBombPlan.WaitFor(30_000), Is.EqualTo(29_000));
+            Assert.That(RvrBombPlan.WaitFor(2_500), Is.EqualTo(1_500));
+            Assert.That(RvrBombPlan.WaitFor(1_000), Is.EqualTo(RvrBombPlan.WaitMarginMilliseconds), "at least the margin");
+            Assert.That(RvrBombPlan.WaitFor(600_000), Is.EqualTo(RvrBombPlan.MaxWaitMilliseconds), "capped");
+            Assert.That(RvrBombPlan.WaitFor(long.MaxValue), Is.EqualTo(RvrBombPlan.MaxWaitMilliseconds));
+            Assert.That(RvrBombPlan.MaxWaitMilliseconds, Is.GreaterThan(60_000 - RvrBombPlan.WakeWindowMilliseconds), "a 60 s mez is waited out");
+        });
+
+        [Test]
+        public void Two_bombers_bomb_together_the_first_holds_a_moment_for_the_other() => Assert.Multiple(() =>
+        {
+            Assert.That(RvrBombPlan.Hold(1, 0), Is.True, "just arrived, a mate still walking in: hold");
+            Assert.That(RvrBombPlan.Hold(2, RvrBombPlan.SyncHoldMilliseconds - 1), Is.True);
+            Assert.That(RvrBombPlan.Hold(1, RvrBombPlan.SyncHoldMilliseconds), Is.False, "the hold ran out: bomb");
+            Assert.That(RvrBombPlan.Hold(0, 0), Is.False, "everyone in place: bomb");
+            Assert.That(RvrBombPlan.SyncHoldMilliseconds, Is.InRange(2_000L, 4_000L), "about one bomb's cast time");
         });
 
         private static RvrCombatant Enemy(int x, int y, bool mezzed, bool pet = false) =>

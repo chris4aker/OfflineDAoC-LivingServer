@@ -9,8 +9,9 @@ namespace DOL.AI.Brain
 {
     /// <summary>
     /// #531 step 2f: an open-field gamebot bomber walks in on its group's mezzed pile (RvrBombPlan; owner answer 53A). With
-    /// two or more bombers in the group it bombs the pile at once; alone it waits beside the pile and bombs as the first
-    /// mez there is about to wear off. Autonomous gamebots in the open field only (RvrTacticsActive), under the crowd-control
+    /// two or more bombers in the group it bombs the pile at once (the first to arrive holds up to
+    /// RvrBombPlan.SyncHoldMilliseconds for the others still walking in); alone it waits beside the pile and bombs as the
+    /// first mez there is about to wear off. Autonomous gamebots in the open field only (RvrTacticsActive), under the crowd-control
     /// plan switch (rvr_bot_cc_plan, on). Companions, bots in a player's group, keeps and raids keep today's rule: never a
     /// walk in among enemy players, and never a bomb that would wake a mezzed enemy.
     /// </summary>
@@ -21,6 +22,8 @@ namespace DOL.AI.Brain
         private RvrBombAction _rvrBombAction;
         private long _rvrBombWalkUntil;
         private long _rvrBombWaitUntil;
+        /// <summary>When this bomber arrived at the pile and began holding for its group's other bombers (0: not yet).</summary>
+        private long _rvrBombHeldSince;
         private long _nextRvrBombLook;
         /// <summary>While set, a mezzed enemy player or bot does not veto this bot's blast (the plan's bomb on the pile).</summary>
         private bool _rvrBombLiftsMez;
@@ -42,6 +45,7 @@ namespace DOL.AI.Brain
             _rvrBombSpell = null;
             _rvrBombCentre = null;
             _rvrBombAction = RvrBombAction.None;
+            _rvrBombHeldSince = 0;
             Body.StopMovingOnPath();
             Body.StopMoving();
             if (backoff > 0)
@@ -54,6 +58,23 @@ namespace DOL.AI.Brain
             int count = 0;
             foreach (RvrCombatant member in board.Members)
                 if (!member.IsPet && member.Living is GameBot { Brain: BotBrain brain } && brain.IsRvrBomber())
+                    count++;
+            return count;
+        }
+
+        /// <summary>This bomber is still walking in on a pile centred within <paramref name="radius"/> of <paramref name="centre"/>
+        /// (not yet arrived: neither holding nor waiting).</summary>
+        private bool RvrBombWalkingInOn(GameLiving centre, int radius) =>
+            _rvrBombSpell != null && _rvrBombHeldSince == 0 && _rvrBombWaitUntil == 0 && _rvrBombCentre is { IsAlive: true } mine &&
+            mine.IsWithinRadius(centre, radius);
+
+        /// <summary>The group's other bombers still walking in on the same pile.</summary>
+        private int RvrBombMatesWalkingIn(RvrFightBoard board, GameLiving centre, int radius)
+        {
+            int count = 0;
+            foreach (RvrCombatant member in board.Members)
+                if (!member.IsPet && !ReferenceEquals(member.Living, Body) && member.Living is GameBot { Brain: BotBrain brain } &&
+                    brain.RvrBombWalkingInOn(centre, radius))
                     count++;
             return count;
         }
@@ -105,6 +126,7 @@ namespace DOL.AI.Brain
             _rvrBombAction = action;
             _rvrBombWalkUntil = now + RvrBombPlan.WalkMilliseconds;
             _rvrBombWaitUntil = 0;
+            _rvrBombHeldSince = 0;
             BotBody.WakeRecoveryRest();
             Body.StopAttack();
             Body.StopFollowing();
@@ -145,12 +167,15 @@ namespace DOL.AI.Brain
             }
 
             (int mezzed, int free) = RvrBombPlan.Reach(board.Enemies, self, spell.Radius);
-            RvrBombAction action = RvrBombPlan.Decide(RvrBombers(board), mezzed, free, RvrShortestMezLeft(board, self, spell.Radius));
+            int bombers = RvrBombers(board);
+            long mezLeft = RvrShortestMezLeft(board, self, spell.Radius);
+            RvrBombAction action = RvrBombPlan.Decide(bombers, mezzed, free, mezLeft);
             if (action == RvrBombAction.Wait)
             {
                 if (_rvrBombWaitUntil == 0)
                 {
-                    _rvrBombWaitUntil = now + RvrBombPlan.WaitMilliseconds;
+                    // until the shortest mez here is about to wear off (a 60 s mez is waited out), not a flat time
+                    _rvrBombWaitUntil = now + RvrBombPlan.WaitFor(mezLeft);
                     ReportRvrBomb("RVR_BOMB_WAIT", spell, mezzed + free);
                 }
                 if (now >= _rvrBombWaitUntil)
@@ -168,6 +193,20 @@ namespace DOL.AI.Brain
                 // the pile woke or went: today's rules again (a blast in place that wakes nobody)
                 EndRvrBomb(0);
                 return false;
+            }
+            // 53A "bomb at once": the first of two or more bombers to arrive holds for the others still walking in, a moment
+            // at most, so the first bomb does not wake the pile before the second is there
+            if (bombers >= RvrBombPlan.MinimumBombers)
+            {
+                if (_rvrBombHeldSince == 0)
+                    _rvrBombHeldSince = now;
+                if (RvrBombPlan.Hold(RvrBombMatesWalkingIn(board, centre, spell.Radius), now - _rvrBombHeldSince))
+                {
+                    Body.StopMoving();
+                    if (Body.attackComponent?.AttackState == true)
+                        Body.StopAttack();
+                    return true; // holding beside the pile for the other bombers
+                }
             }
 
             _rvrBombLiftsMez = true;

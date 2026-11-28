@@ -91,7 +91,7 @@ namespace DOL.GS.Tests.Rehearsal
         public sealed record RvrOpening(GameLiving FirstTarget, string FirstRule, int Members, int OpenedOn, int SpreadOpenedOn);
 
         public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors, RvrOpening Albion = null,
-            RvrOpening Midgard = null);
+            RvrOpening Midgard = null, IReadOnlyList<RvrBombCast> Bombs = null);
 
         /// <summary>How long after a side's first engage its members' first engages count as its opening.</summary>
         public const long OpeningMilliseconds = 10_000;
@@ -111,7 +111,9 @@ namespace DOL.GS.Tests.Rehearsal
             $"{RvrRoles.For(ClassOf(opening.FirstTarget))}:{Short(opening.FirstTarget)} rule={opening.FirstRule} " +
             $"opened_on={opening.OpenedOn}/{opening.Members} (spread {opening.SpreadOpenedOn})";
 
-        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600)
+        /// <param name="pairBombers">#531 step 2f: Albion's first other nuker (not the Wizard or the area mezzer) gets the
+        /// stand-in bomb too, so Albion fights with two bombers beside its area mez.</param>
+        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600, bool pairBombers = false)
         {
             using var world = new RvrFightWorld(seed, Repeatable);
             Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
@@ -126,6 +128,9 @@ namespace DOL.GS.Tests.Rehearsal
             // #531 step 2f: the eights' bombers get a stand-in point blank bomb
             foreach (GameBot bot in albion.Concat(midgard).Where(b => RvrFightKits.Bombs((eCharacterClass)b.CharacterClass.ID)))
                 RvrFightKits.AddBomb(bot);
+            if (pairBombers && albion.FirstOrDefault(b => RvrFightKits.Nukes(ClassOf(b)) && !RvrFightKits.Bombs(ClassOf(b)) &&
+                    !RvrFightKits.AreaMezzes(ClassOf(b))) is { } second)
+                RvrFightKits.AddBomb(second);
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
@@ -152,7 +157,8 @@ namespace DOL.GS.Tests.Rehearsal
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
             detail.Add(actives.Row(world.Seed, world.Recorder));
             string row = OpenFieldRow(world, scan, albion, midgard);
-            return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard));
+            return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard),
+                world.Recorder.Bombs.ToList());
         }
 
         private static string Shadow(eRealm realm)
@@ -210,7 +216,7 @@ namespace DOL.GS.Tests.Rehearsal
             // lone bomber first waited by a pile, and how many bombs it cast
             string Bomb(List<GameBot> side)
             {
-                int bombers = side.Count(b => RvrFightKits.Bombs((eCharacterClass)b.CharacterClass.ID));
+                int bombers = side.Count(b => b.Spells?.Any(s => s.ID == RvrFightKits.BombId) == true);
                 if (bombers == 0)
                     return "bombers=0";
                 var bombs = r.Bombs.Where(b => side.Contains(b.Caster as GameBot)).ToList();

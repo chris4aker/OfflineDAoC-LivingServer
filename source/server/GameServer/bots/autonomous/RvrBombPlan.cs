@@ -20,9 +20,9 @@ public enum RvrBombAction : byte
 /// once; a group with one bomber walks in and waits"). Period: Hibernia ran "2 PBAoE casters (Eldritch/Enchanter/
 /// Mentalist)" and caster groups mezzed, then bombed (reference.md 3.6); but "any damage breaks [a mez], so AE damage on a
 /// mezzed group is the classic mistake" (3.3). So: once the group's area mez has landed (two or more enemies mezzed in one
-/// bomb's reach), a group with two or more bombers walks them in and bombs the pile at once, the whole pile taking every
-/// bomb; a group with one bomber walks it in and waits beside the pile, and bombs when the first mez there is about to wear
-/// off. Without a mezzed pile nothing changes. Pure. Our design values (no source measured them): the 2 s wake window,
+/// bomb's reach), a group with two or more bombers walks them in and bombs the pile at once (the first to arrive holds
+/// a moment for the others), the whole pile taking every bomb; a group with one bomber walks it in and waits beside the
+/// pile, and bombs when the first mez there is about to wear off. Without a mezzed pile nothing changes. Pure. Our design values (no source measured them): the 2 s wake window,
 /// the 1,500 walk (a caster now stands about that far back, step 2e) and the timers.
 /// </summary>
 public static class RvrBombPlan
@@ -37,8 +37,28 @@ public static class RvrBombPlan
     public const float WalkLimit = 1_500f;
     /// <summary>A walk in that has not arrived by then is given up.</summary>
     public const long WalkMilliseconds = 9_000;
-    /// <summary>The longest a lone bomber waits beside the pile.</summary>
-    public const long WaitMilliseconds = 30_000;
+    /// <summary>A lone bomber waits this much past the moment it should have bombed before it gives up.</summary>
+    public const long WaitMarginMilliseconds = 1_000;
+    /// <summary>The longest a lone bomber waits beside the pile (past a 60 s mez on an unresisted target).</summary>
+    public const long MaxWaitMilliseconds = 65_000;
+    /// <summary>Two or more bombers: the first to arrive holds this long at most for the others still walking in (about
+    /// one bomb's cast time), so the bombs land together.</summary>
+    public const long SyncHoldMilliseconds = 3_000;
+
+    /// <summary>
+    /// How long a lone bomber waits beside the pile, from the shortest mez left in its reach when it starts waiting: until
+    /// that mez is inside the wake window, plus <see cref="WaitMarginMilliseconds"/>, at least the margin and at most
+    /// <see cref="MaxWaitMilliseconds"/>. Pure.
+    /// </summary>
+    public static long WaitFor(long shortestMezLeftMs) =>
+        Math.Clamp(shortestMezLeftMs - WakeWindowMilliseconds + WaitMarginMilliseconds, WaitMarginMilliseconds, MaxWaitMilliseconds);
+
+    /// <summary>
+    /// Two or more bombers bomb at once (53A): one that has arrived holds while <paramref name="matesWalkingIn"/> of the
+    /// group's other bombers are still walking in on the same pile, for at most <see cref="SyncHoldMilliseconds"/> since it
+    /// arrived (<paramref name="heldMs"/>). Pure.
+    /// </summary>
+    public static bool Hold(int matesWalkingIn, long heldMs) => matesWalkingIn > 0 && heldMs < SyncHoldMilliseconds;
 
     /// <summary>A pile: the mezzed enemy it is centred on, and how many mezzed and free enemies a bomb there reaches.</summary>
     public readonly record struct Pile(RvrCombatant Centre, int Mezzed, int Free);
