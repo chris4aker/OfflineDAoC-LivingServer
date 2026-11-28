@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using DOL.Database;
 using DOL.GS.Movement;
+using DOL.Logging;
 
 namespace DOL.GS;
 
@@ -80,6 +81,7 @@ public sealed class AutonomousStableBoardingFailureCache
 /// </summary>
 public static class AutonomousStableRoutePlanner
 {
+    private static readonly Logger Log = LoggerManager.Create(typeof(AutonomousStableRoutePlanner));
     public const short StableSpeed = 1500;
     public const int BoardingArrivalRadius = 45;
     private const int MaximumPathPoints = 5000;
@@ -142,12 +144,21 @@ public static class AutonomousStableRoutePlanner
         double walkSpeed,
         long availableMoney,
         IReadOnlyList<LegMetric> legs,
-        IReadOnlySet<int> excludedBoardingLegs = null)
+        IReadOnlySet<int> excludedBoardingLegs = null,
+        IReadOnlySet<int> unusableLegs = null,
+        IReadOnlySet<int> unsafeFinishLegs = null,
+        bool directWalkUnsafe = false,
+        double unsafeFinishPenaltySeconds = AutonomousLearnedDangerTrips.UnsafeFinishPenaltySeconds)
     {
         walkSpeed = Math.Max(1d, walkSpeed);
         double direct = Distance(startX, startY, goalX, goalY) / walkSpeed;
         if (legs == null || legs.Count == 0)
             return null;
+        // #570 step 2: an unusable leg (a
+        // landing beside a learned danger spot) is never ridden, first or later; finishing on foot through a spot (from a
+        // landing, or the whole way) is not forbidden, it only costs more, so a safer finish wins when it is at most the
+        // penalty slower. The reported estimate stays the real travel time.
+        double penalty = Math.Max(0d, unsafeFinishPenaltySeconds);
 
         int count = legs.Count;
         double[] best = Enumerable.Repeat(double.PositiveInfinity, count).ToArray();
@@ -159,7 +170,7 @@ public static class AutonomousStableRoutePlanner
         for (int index = 0; index < count; index++)
         {
             LegMetric leg = legs[index];
-            if (excludedBoardingLegs?.Contains(index) == true)
+            if (excludedBoardingLegs?.Contains(index) == true || unusableLegs?.Contains(index) == true)
                 continue;
             if (leg.Price < 0 || leg.Price > availableMoney || leg.RideSeconds <= 0)
                 continue;
@@ -170,6 +181,7 @@ public static class AutonomousStableRoutePlanner
         }
 
         double bestTrip = direct;
+        double bestScore = direct + (directWalkUnsafe ? penalty : 0d);
         int bestFirst = -1;
         int bestHops = 0;
         long bestPrice = 0;
@@ -193,8 +205,10 @@ public static class AutonomousStableRoutePlanner
             LegMetric current = legs[currentIndex];
 
             double completed = currentCost + Distance(current.EndX, current.EndY, goalX, goalY) / walkSpeed;
-            if (completed + 0.25 < bestTrip)
+            double score = completed + (unsafeFinishLegs?.Contains(currentIndex) == true ? penalty : 0d);
+            if (score + 0.25 < bestScore)
             {
+                bestScore = score;
                 bestTrip = completed;
                 bestFirst = first[currentIndex];
                 bestHops = hops[currentIndex];
@@ -203,7 +217,7 @@ public static class AutonomousStableRoutePlanner
 
             for (int nextIndex = 0; nextIndex < count; nextIndex++)
             {
-                if (visited[nextIndex])
+                if (visited[nextIndex] || unusableLegs?.Contains(nextIndex) == true)
                     continue;
                 LegMetric next = legs[nextIndex];
                 if (next.Price < 0 || spent[currentIndex] > availableMoney - next.Price || next.RideSeconds <= 0)
@@ -278,11 +292,31 @@ public static class AutonomousStableRoutePlanner
             if (FirstBoardingFailures.WasRecentlyUnreachable(ProbeFor(candidates[index]), nowUtc))
                 (excluded ??= []).Add(index);
 
+        // #570 step 2: a solo gamebot (not a meetup) rides to no landing beside a learned danger spot or where bots of its
+        // level band keep dying soon after landing, unless it is going there; finishing on foot straight through a spot
+        // costs more; and it walks to no stable master straight through one.
+        HashSet<int> unusable = null, finishUnsafe = null;
+        bool directUnsafe = false;
+        string skipped = null;
+        long nowTick = GameLoop.GameLoopTime;
+        // The skip row's "wouldBoard" is the plan without any learned danger rule, the stable master walk exclusions included.
+        HashSet<int> excludedBefore = excluded == null ? null : new HashSet<int>(excluded);
+        if (bot.Group == null && !boundedMeetupApproach && !bot.IsHiredCompanion)
+            MarkLearnedDangers(bot, goal, candidates, nowUtc, nowTick, ref excluded, ref unusable, ref finishUnsafe,
+                ref directUnsafe, ref skipped);
+        bool sampled = skipped != null && AutonomousLearnedDangerTrips.TryTakeSkipSample(bot.ObjectID, nowTick);
+        RouteDecision? unrestricted = sampled
+            ? ChooseFirstLeg(bot.X, bot.Y, goal.X, goal.Y, Math.Max(1, (int)bot.MaxSpeed), money, metrics, excludedBefore)
+            : null;
+
         for (int attempt = 0; attempt < Math.Min(AutonomousStableBoardingFailureCache.MaximumNewProbesPerSearch,
                  candidates.Count); attempt++)
         {
             RouteDecision? decision = ChooseFirstLeg(
-                bot.X, bot.Y, goal.X, goal.Y, Math.Max(1, (int)bot.MaxSpeed), money, metrics, excluded);
+                bot.X, bot.Y, goal.X, goal.Y, Math.Max(1, (int)bot.MaxSpeed), money, metrics, excluded, unusable,
+                finishUnsafe, directUnsafe);
+            if (attempt == 0 && sampled)
+                LogLandingSkip(bot, candidates, skipped, unrestricted, decision);
             if (!decision.HasValue)
                 return null;
 
@@ -307,6 +341,56 @@ public static class AutonomousStableRoutePlanner
                 selected.InteractionPoint);
         }
         return null;
+    }
+
+    private static void MarkLearnedDangers(GameBot bot, Vector3 goal, List<Candidate> candidates, DateTime nowUtc,
+        long nowTick, ref HashSet<int> excluded, ref HashSet<int> unusable, ref HashSet<int> finishUnsafe,
+        ref bool directUnsafe, ref string skipped)
+    {
+        ushort region = bot.CurrentRegionID;
+        int level = bot.Level;
+        directUnsafe = AutonomousLearnedDangerTrips.FinishWalkDangerous(region, bot.X, bot.Y, (int)goal.X, (int)goal.Y,
+            level, nowUtc);
+        if (directUnsafe)
+            skipped = "walk(danger spot)";
+        for (int i = 0; i < candidates.Count; i++)
+        {
+            Candidate candidate = candidates[i];
+            int endX = candidate.End.X, endY = candidate.End.Y;
+            double landingToGoal = Distance(endX, endY, goal.X, goal.Y);
+            string reason = null;
+            if (AutonomousLearnedDangerTrips.LandingDangerous(region, endX, endY, landingToGoal, level, nowUtc))
+                reason = "danger spot";
+            else if (AutonomousLearnedDangerTrips.PassesThrough(landingToGoal) &&
+                     AutonomousStableLandingWatch.IsDeadlyLanding(region, TicketDestination(candidate.Ticket), level, nowTick))
+                reason = "landing deaths";
+            if (reason != null)
+                (unusable ??= []).Add(i);
+            else if (AutonomousLearnedDangerTrips.FinishWalkDangerous(region, endX, endY, (int)goal.X, (int)goal.Y, level, nowUtc))
+            {
+                (finishUnsafe ??= []).Add(i);
+                reason = "walk danger spot";
+            }
+            if (reason != null)
+                skipped = (skipped == null ? string.Empty : skipped + ",") + candidate.Ticket.Id_nb + "(" + reason + ")";
+            if (AutonomousPveBossDanger.WalkPasses(region, bot.X, bot.Y, (int)candidate.BoardingPoint.X,
+                    (int)candidate.BoardingPoint.Y, level, nowUtc))
+                (excluded ??= []).Add(i);
+        }
+    }
+
+    // #570 step 2: one line (sampled per bot) when the learned danger rules changed the horse plan
+    private static void LogLandingSkip(GameBot bot, List<Candidate> candidates, string skipped, RouteDecision? before,
+        RouteDecision? after)
+    {
+        if (before.HasValue == after.HasValue && (!after.HasValue || before.Value.FirstLegIndex == after.Value.FirstLegIndex &&
+                Math.Abs(before.Value.EstimatedSeconds - after.Value.EstimatedSeconds) < 0.5))
+            return;
+        string Name(RouteDecision? d) => d.HasValue ? candidates[d.Value.FirstLegIndex].Ticket.Id_nb : "walk";
+        string Seconds(RouteDecision? d) => d.HasValue ? d.Value.EstimatedSeconds.ToString("0") : "-";
+        Log.Info($"AUTONOMOUS_STABLE_LANDING_SKIP bot=\"{bot.Name}\" id={bot.DatabaseID} level={bot.Level} " +
+                 $"region={bot.CurrentRegionID} skipped=\"{skipped}\" wouldBoard=\"{Name(before)}\" now=\"{Name(after)}\" " +
+                 $"seconds={Seconds(before)}->{Seconds(after)}");
     }
 
     /// <summary>

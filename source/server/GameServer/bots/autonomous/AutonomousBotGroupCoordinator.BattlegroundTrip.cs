@@ -147,8 +147,10 @@ public static partial class AutonomousBotGroupCoordinator
             EndBattlegroundTrip(group, trip, members, "A player joined the battleground party", newGoals: false, disband: false);
             return false;
         }
-        // A member who outgrew the bracket leaves the party and ends its own tour.
-        foreach (GameBot outgrown in members.Where(member => BattlegroundBrackets.ForLevel(member.Level)?.RegionId != trip.BracketRegion).ToArray())
+        // A member who outgrew the bracket leaves the party and ends its own tour; #572 51B: unless it is inside that
+        // battleground, where it stays with the party until it dies.
+        foreach (GameBot outgrown in members.Where(member => BattlegroundBrackets.ForLevel(member.Level)?.RegionId != trip.BracketRegion &&
+                     !(member.CurrentRegionID == trip.BracketRegion && AutonomousWorldBotController.StaysOutlevelled(member))).ToArray())
         {
             group.RemoveMember(outgrown);
             AutonomousObjectiveAssignments.EndBattlegroundTour(outgrown, $"Outgrew {trip.BracketName} at level {outgrown.Level}");

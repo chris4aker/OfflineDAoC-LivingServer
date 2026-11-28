@@ -1,7 +1,7 @@
 namespace DOL.GS
 {
     /// <summary>
-    /// How a bot reads the live-like interrupt (1.2.3, port of OpenDAoC-Core 21eda0f90; owner, 2026-11-24: "Interrupts
+    /// How a bot reads the live-like interrupt (1.2.3; owner, 2026-11-24: "Interrupts
     /// should be port it in and not with a switch - it's foundation of the game"). A hit no longer stops a cast at once: it
     /// starts an interrupt timer, and a cast is lost only if that timer is still running at its half-cast point. So a bot
     /// begins a cast when the timer, as it stands, runs out by the half-cast point, and holds it otherwise; it no longer
@@ -30,7 +30,10 @@ namespace DOL.GS
             if (includeSelfInterrupt && caster.IsBeingSelfInterrupted)
                 return true;
 
-            return caster.InterruptWouldStopCast(EstimatedCastTime(caster, spell));
+            if (!caster.InterruptWouldStopCast(EstimatedCastTime(caster, spell)))
+                return false;
+            // #531 step 2d: an open-field gamebot's key cast (a mez or its big heal) goes through on Quickcast when it may
+            return !(caster is GameBot bot && BotQuickCast.WouldCarry(bot, spell));
         }
 
         /// <summary>The cast time the caster would get (instrument songs keep their delve time).</summary>
