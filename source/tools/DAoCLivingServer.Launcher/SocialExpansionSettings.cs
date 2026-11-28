@@ -75,6 +75,9 @@ public sealed record SocialExpansionSettings
     /// <summary>The damage dealers of the player's group fight the player's target first (bot_leader_focus, #571 step 1). No
     /// checkbox: kept as read. On by default (1.2.3).</summary>
     public bool LeaderFocus { get; init; } = true;
+    /// <summary>Gamebot party pullers pass over too-far monsters and keep with the party (bot_party_puller_camp_turn, #569
+    /// step 9). No checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool PartyPullerCampTurn { get; init; } = true;
     /// <summary>Gamebots show as bots: [Playerbot] in /who and "gamebot"/"buffbot" in refused invites (bot_show_as_bots, 1.2.3). Off by
     /// default (owner 2026-11-24, #485: bots look like players). A display choice, not a feature: ALL OFF leaves it as it is.</summary>
     public bool ShowBotsAsBots { get; init; }
@@ -107,7 +110,7 @@ public sealed record SocialExpansionSettings
     public bool CraftingEraStart { get; init; } = true;
     /// <summary>Another order's craft stops at 75% or 40% of the primary (crafting_secondary_caps). Off by default.</summary>
     public bool CraftingSecondaryCaps { get; init; }
-    /// <summary>Crafting skill points per gain, 1 (classic) to 10 (crafting_skill_rate, True165's key).</summary>
+    /// <summary>Crafting skill points per gain, 1 (classic) to 10 (crafting_skill_rate).</summary>
     public double CraftingPace { get; init; } = DefaultCraftingPace;
     /// <summary>The smith's repairs: classic, light (the default) or free (player_upkeep).</summary>
     public string PlayerUpkeep { get; init; } = "light";
@@ -236,7 +239,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true,
     };
@@ -281,6 +284,7 @@ public sealed record SocialExpansionSettings
         ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
         ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
         ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
+        ("bot_party_puller_camp_turn", "bots", "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD."),
         ("bot_weapon_set_rules", "bots", "Bots fight with the weapon set a player would (#569): a party's only tank with Guard fights with its trained shield and guards a member within reach, a bot carrying a two-hander and a one-hander uses the line it trained higher, a hired companion keeps the melee set you readied in its window, and archers stop flipping between bow and melee weapon. Only weapons the bot already carries are used. Gamebots, hired companions and /bot companions alike."),
         ("bot_show_as_bots", "bots", "Mark gamebots as bots: /who adds [Playerbot] to every gamebot, and a refused group invite says \"gamebot\" or \"buffbot\". Off by default (owner, 2026-11-24): bots look like players in /who and in system lines."),
         ("bot_group_invite_player", "bots", "Bot-led groups: the leader of a gamebot party of your realm and level hunting where you can walk or ride may send you a tell and the group invite box, at most once every 45 minutes unasked (never while you fight, ride, trade, are grouped, have /spawn helpers out, are /afk or in the frontier). Say yes and you follow: the leader picks the camp (at most 6 levels above you), the meeting spot and the pulls, and waits for you. False stops unasked invites; /lfg still gets you one."),
@@ -380,6 +384,7 @@ public sealed record SocialExpansionSettings
         ["bot_healer_period_rules"] = Bool(HealerPeriodRules),
         ["bot_weapon_set_rules"] = Bool(WeaponSetRules),
         ["bot_leader_focus"] = Bool(LeaderFocus),
+        ["bot_party_puller_camp_turn"] = Bool(PartyPullerCampTurn),
         ["bot_show_as_bots"] = Bool(ShowBotsAsBots),
         ["bot_group_invite_player"] = Bool(BotGroupInvites),
         ["bot_group_player_loot_weight"] = PlayerLootWeight.ToString(CultureInfo.InvariantCulture),
@@ -725,6 +730,7 @@ public sealed record SocialExpansionSettings
             HealerPeriodRules = ReadBool("bot_healer_period_rules", d.HealerPeriodRules),
             WeaponSetRules = ReadBool("bot_weapon_set_rules", d.WeaponSetRules),
             LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
+            PartyPullerCampTurn = ReadBool("bot_party_puller_camp_turn", d.PartyPullerCampTurn),
             ShowBotsAsBots = ReadBool("bot_show_as_bots", d.ShowBotsAsBots),
             BotGroupInvites = ReadBool("bot_group_invite_player", d.BotGroupInvites),
             PlayerLootWeight = lootWeight,

@@ -95,6 +95,9 @@ public static partial class AutonomousRvrEventLayer
         public DefenseScale DefenseScale;
         public long LastPressureTick;
         public string PlayerAccount;
+        /// <summary>The player whose attack raised this defense (DefenseReaction); while they or their group are at the
+        /// keep, the attackers have not left (PlayerAttackLastSeen).</summary>
+        public GamePlayer AttackingPlayer;
         // Staged assault, first stage: the attacking warbands gather at their own border keep and
         // march together once enough are there (or at the muster deadline).
         public bool Marching = true;
@@ -1744,6 +1747,14 @@ public static partial class AutonomousRvrEventLayer
             if (Attendance(active, active.AttackerRealm, nowTick) > 0) { active.AttackersLastSeenTick = nowTick; continue; }
             if (active.AttackersLastSeenTick > 0 && nowTick - active.AttackersLastSeenTick >= RepelMilliseconds)
                 EndEvent(active, nowTick, $"Siege defended: no attacker reached the keep for {RepelMilliseconds / 60_000} minutes", active.DefenderRealm);
+        }
+        // #523 step 1 (a), owner 2026-11-24: a defense against a player's attack ends about ten minutes after the
+        // attackers leave, like a bot siege. Before, it held the realm's defenders at the keep for four hours.
+        foreach (var active in Events.Values.Where(entry => entry.DefenseReaction).ToArray())
+        {
+            long seen = PlayerAttackLastSeen(active, nowTick);
+            if (PlayerAttackRepelled(nowTick, seen))
+                EndEvent(active, nowTick, $"Siege defended: the attackers left the keep {RepelMilliseconds / 60_000} minutes ago", active.DefenderRealm);
         }
         foreach (var active in Events.Values.Where(entry => entry.ExpiresTick <= nowTick).ToArray())
         {
