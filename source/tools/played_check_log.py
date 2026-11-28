@@ -1548,7 +1548,11 @@ def _rvr_notice(sec, t, message, level, near):
         sec.ev["notice.enemybot"].add(t, message)
         if f.get("delayMs") is not None and len(sec.lists["notice_delay"]) < 200000:
             sec.lists["notice_delay"].append(num(f["delayMs"]))
-        if f.get("time_since_first_los_ms") is not None and len(sec.lists["notice_time"]) < 200000:
+        # #529 step 3: the in-combat refresh (look=combat) looks every 2 s, not at the scan's cadence, so only the scan's
+        # notices (look=scan, or no look= on builds before it) go into the notice-time table; the rest are counted.
+        if f.get("look", "scan") != "scan":
+            sec.n["notice.combat_look"] += 1
+        elif f.get("time_since_first_los_ms") is not None and len(sec.lists["notice_time"]) < 200000:
             # (distance, seconds to notice, the table's median for this notice or None when not rolled on the table)
             distance = num(f.get("distance"), -1)
             sec.lists["notice_time"].append((distance, num(f["time_since_first_los_ms"]) / 1000,
@@ -2618,7 +2622,8 @@ def rvr(j: Judge, sec: Section, c):
     judged = [b for b in bands if b["judged"]]
     not_rolled = sum(1 for _, _, m in notices if m is None)
     notice_detail = (f"{c('notice.enemybot')} EnemyBot notices, {len(notices)} with time_since_first_los_ms "
-                     f"({not_rolled} not rolled on the table: party mate, call, stealth or past the outer range); by "
+                     f"({not_rolled} not rolled on the table: party mate, call, stealth or past the outer range; "
+                     f"{sec.n['notice.combat_look']} more from the in-combat look, look=combat, not in the table); by "
                      f"band, notices, median time from first sight (the measure plus half a scan) against the table's: "
                      f"{notice_text(bands)}; scans {cadence:.2f} s apart "
                      f"({'measured in the log' if measured else 'nominal: too few repeat scans to measure'}; designed "

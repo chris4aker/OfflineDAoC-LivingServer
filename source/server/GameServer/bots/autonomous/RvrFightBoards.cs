@@ -162,6 +162,22 @@ public static class RvrFightBoards
     /// <summary>The plan on the peeked board, or null (see <see cref="Peek"/>).</summary>
     public static RvrFightPlan PeekPlan(GameLiving asker) => Peek(asker)?.Plan;
 
+    /// <summary>
+    /// #599 step 2: the called target of the battlegroup lead group that <paramref name="asker"/>'s group follows, read
+    /// from the lead's published board for the asker's region when it is at most two seconds old; null when the group
+    /// follows no lead (RealmWarbandSupport.BattlegroupLeadOf), the lead has no fresh board there or calls nothing, or the
+    /// call is dead. Never builds and takes no lock: safe inside a board build and under the coordinator's lock.
+    /// </summary>
+    public static GameLiving BattlegroupCallOf(GameLiving asker, long now)
+    {
+        Group lead = RealmWarbandSupport.BattlegroupLeadOf(asker?.Group);
+        if (lead == null || ReferenceEquals(lead, asker.Group) || !Groups.TryGetValue(lead, out GroupEntry entry) ||
+            !entry.Regions.TryGetValue(asker.CurrentRegionID, out Holder holder))
+            return null;
+        GameLiving call = holder.Peek(now)?.Plan?.CalledTarget;
+        return call is { IsAlive: true } && call.CurrentRegionID == asker.CurrentRegionID ? call : null;
+    }
+
     /// <summary>The stored facts of a group (the Group object) or a solo bot (the bot); Empty when nothing was stored.</summary>
     public static RvrGroupState StateOf(object groupOrSoloBot) =>
         groupOrSoloBot != null && Groups.TryGetValue(groupOrSoloBot, out GroupEntry entry)
@@ -302,24 +318,34 @@ public static class RvrFightBoards
                     sideTargets.Add(petTarget);
             }
 
-        // The one area search per group and second, from the asker: enemy players, bots and their pets.
+        // #529 step 3: a group of autonomous gamebots lists what its members know of (their contacts); a group with a player
+        // in it, or with the switch off, lists everyone within the scan radius (the one area search per group and second).
+        List<long> owners = ContactOwners(members);
+        bool fromContacts = UsesContacts(Properties.RVR_BOARD_FROM_CONTACTS, owners);
         var hostile = new List<RvrCombatant>();
+        List<GameLiving> area = null;
         if (members.Count > 0)
         {
-            eRealm realm = asker.Realm;
-            foreach (GamePlayer player in asker.GetPlayersInRadius(RvrFightBoard.ScanRadius))
-                if (ListsEnemy(realm, player))
-                    hostile.Add(Snapshot(player, side, sideTargets));
-            foreach (GameNPC npc in asker.GetNPCsInRadius(RvrFightBoard.ScanRadius))
-                if (ListsEnemy(realm, npc))
-                    hostile.Add(Snapshot(npc, side, sideTargets));
+            if (fromContacts)
+            {
+                foreach (GameLiving enemy in ContactEnemies(asker, owners, now))
+                    hostile.Add(Snapshot(enemy, side, sideTargets));
+            }
+            else
+            {
+                area = AreaEnemies(asker);
+                foreach (GameLiving enemy in area)
+                    hostile.Add(Snapshot(enemy, side, sideTargets));
+            }
         }
 
-        // #529 step 2: the shadow. Which of these did any member actually know of? Logs only; the board is unchanged, and
-        // nothing the shadow does may stop the board being built (review of #741).
+        // #529 step 2: the shadow. Which enemies within the scan radius did any member actually know of? From step 3 on it
+        // still searches the area (once per build, as the board did before), so a PC log compares what the board now leaves
+        // out. Logs only, and nothing the shadow does may stop the board being built (review of #741).
         try
         {
-            ShadowContacts(asker, members, hostile, now);
+            if (owners != null)
+                ShadowContacts(asker, owners, area ?? AreaEnemies(asker), now, fromContacts);
         }
         catch (Exception exception)
         {
@@ -334,7 +360,10 @@ public static class RvrFightBoards
             state = UpdateState(KeyOf(asker), current => current.SkillTier.HasValue ? current : current with { SkillTier = tier });
         }
 
-        RvrFightBoard board = RvrFightBoard.Build(now, asker.CurrentRegionID, asker.Realm, friendly, hostile) with { State = state, MainBody = mainBody };
+        RvrFightBoard board = RvrFightBoard.Build(now, asker.CurrentRegionID, asker.Realm, friendly, hostile) with
+        {
+            State = state, MainBody = mainBody, BattlegroupCall = BattlegroupCallOf(asker, now), FromContacts = fromContacts,
+        };
         return board with { Plan = RvrFightPlanner.Next(previous?.Plan, board, state, RvrTacticsSwitches.Current, now) };
     }
 
@@ -342,7 +371,8 @@ public static class RvrFightBoards
     /// #529 step 2 (piece B in shadow): checks each enemy the area search listed against the contacts of the group's
     /// autonomous gamebots (RvrContacts) and tallies it in RvrContactShadow: RVR_CONTACT_SHADOW once a minute per realm,
     /// RVR_CONTACT_UNKNOWN for a few "listed but unknown" pairs. A group with a player in it is left out (its player has
-    /// his own eyes; its bots are his companions or helpers, which keep no contacts). Nothing on the board changes.
+    /// his own eyes; its bots are his companions or helpers, which keep no contacts). The shadow changes nothing on the
+    /// board; from step 3 on (board=contacts) its unknown enemies are the ones the board left out.
     /// </summary>
     private static long _shadowFailures;
 
@@ -357,32 +387,75 @@ public static class RvrFightBoards
             Log.Warn($"RVR_CONTACT_SHADOW_FAILED failures={failures}", exception);
     }
 
-    private static void ShadowContacts(GameLiving asker, List<GameLiving> members, List<RvrCombatant> hostile, long now)
+    /// <summary>
+    /// The database ids of the group's members whose contacts count (autonomous gamebots, not companions or helpers), or
+    /// null when a player is among them (his group keeps the area search: he has his own eyes) or none keeps contacts.
+    /// </summary>
+    private static List<long> ContactOwners(List<GameLiving> members)
     {
-        if (asker == null || members.Count == 0)
-            return;
+        if (members == null || members.Count == 0)
+            return null;
         var owners = new List<long>(members.Count);
         foreach (GameLiving member in members)
         {
             if (member is GamePlayer)
-                return;
+                return null;
             if (member is GameBot { IsAutonomousWorldBot: true, IsTemporaryGroupHelper: false, IsPlayerLedGroup: false, IsHiredCompanion: false } bot &&
                 bot.DatabaseID > 0)
                 owners.Add(bot.DatabaseID);
         }
-        if (owners.Count == 0)
+        return owners.Count > 0 ? owners : null;
+    }
+
+    /// <summary>#529 step 3: whether a board lists its group's contacts: the switch is on and the group keeps contacts. Pure.</summary>
+    public static bool UsesContacts(bool boardFromContacts, IReadOnlyList<long> owners) =>
+        boardFromContacts && owners is { Count: > 0 };
+
+    /// <summary>The area search (before 1.2.3 the board's list; now the switch-off path and the shadow's): every enemy within the scan radius.</summary>
+    private static List<GameLiving> AreaEnemies(GameLiving asker)
+    {
+        var enemies = new List<GameLiving>();
+        eRealm realm = asker.Realm;
+        foreach (GamePlayer player in asker.GetPlayersInRadius(RvrFightBoard.ScanRadius))
+            if (ListsEnemy(realm, player))
+                enemies.Add(player);
+        foreach (GameNPC npc in asker.GetNPCsInRadius(RvrFightBoard.ScanRadius))
+            if (ListsEnemy(realm, npc))
+                enemies.Add(npc);
+        return enemies;
+    }
+
+    /// <summary>
+    /// #529 step 3: the enemies the group knows of (RvrContacts.Group: any member's contact at most 15 s old), as they
+    /// are now: still listable (alive, in the world, not stealthed), in the asker's region and within the scan radius.
+    /// </summary>
+    private static List<GameLiving> ContactEnemies(GameLiving asker, IReadOnlyList<long> owners, long now)
+    {
+        var enemies = new List<GameLiving>();
+        eRealm realm = asker.Realm;
+        foreach (RvrContact contact in AutonomousWorldBotController.RvrContactTable.Group(owners, now))
+            if (contact.Subject is GameLiving enemy && ListsEnemy(realm, enemy) && enemy.CurrentRegionID == asker.CurrentRegionID &&
+                asker.IsWithinRadius(enemy, RvrFightBoard.ScanRadius))
+                enemies.Add(enemy);
+        return enemies;
+    }
+
+    private static void ShadowContacts(GameLiving asker, List<long> owners, List<GameLiving> area, long now, bool fromContacts)
+    {
+        if (asker == null || owners == null || owners.Count == 0)
             return;
         RvrContacts contacts = AutonomousWorldBotController.RvrContactTable;
-        var listed = new List<RvrShadowListing>(hostile.Count);
-        foreach (RvrCombatant enemy in hostile)
+        var listed = new List<RvrShadowListing>(area.Count);
+        foreach (GameLiving enemy in area)
         {
-            bool known = contacts.KnownByAny(owners, enemy.Key, now, out RvrContact freshest);
-            listed.Add(new RvrShadowListing(enemy.Key, known, known && freshest.AgeMilliseconds(now) > RvrContactShadow.StaleAfterMilliseconds,
-                enemy.IsPlayer, enemy.Living != null ? (int)asker.GetDistanceTo(enemy.Living) : -1));
+            bool known = contacts.KnownByAny(owners, CombatantKey(enemy), now, out RvrContact freshest);
+            listed.Add(new RvrShadowListing(CombatantKey(enemy), known, known && freshest.AgeMilliseconds(now) > RvrContactShadow.StaleAfterMilliseconds,
+                enemy is GamePlayer, (int)asker.GetDistanceTo(enemy)));
         }
         // The shadow's pairs and the sampled rows use the same group key: the party key (RvrPartyKey.Of), which stays
         // with the group when its leader changes.
         long partyKey = RvrPartyKey.Of(asker);
+        AutonomousWorldBotController.RvrContactShadowTally.BoardSource = fromContacts ? RvrContactShadow.FromContacts : RvrContactShadow.FromArea;
         List<RvrShadowListing> samples = AutonomousWorldBotController.RvrContactShadowTally.Board((int)asker.Realm, partyKey, now,
             listed, out List<string> lines);
         if (!Log.IsInfoEnabled)
@@ -395,21 +468,23 @@ public static class RvrFightBoards
         // boardGroup= is RVR_FIGHT_BOARD's group= (the leader's id), to join the two rows.
         GameLiving leader = asker.Group?.LivingLeader ?? asker;
         long boardGroup = leader is GameBot leaderBot ? leaderBot.DatabaseID : leader.ObjectID;
+        string board = fromContacts ? RvrContactShadow.FromContacts : RvrContactShadow.FromArea;
         foreach (RvrShadowListing sample in samples)
         {
             GameLiving enemy = null;
-            foreach (RvrCombatant listedEnemy in hostile)
-                if (listedEnemy.Key == sample.Target)
+            foreach (GameLiving listedEnemy in area)
+                if (CombatantKey(listedEnemy) == sample.Target)
                 {
-                    enemy = listedEnemy.Living;
+                    enemy = listedEnemy;
                     break;
                 }
             if (enemy == null)
                 continue;
-            // One enemy the board's area search listed that no member of the group noticed, was told of or was hit by.
+            // One enemy within the board's scan radius that no member of the group noticed, was told of or was hit by (from
+            // step 3 on, with board=contacts, one the board left out).
             Log.Info($"RVR_CONTACT_UNKNOWN group={partyKey} boardGroup={boardGroup} realm={GlobalConstants.RealmToName(asker.Realm)} target=\"{enemy.Name}\" " +
                      $"kind={AutonomousWorldBotController.PerceivedKind(enemy)} party={RvrPartyKey.Label(RvrPartyKey.Of(enemy))} " +
-                     $"distance={sample.Distance} members={owners.Count} region={asker.CurrentRegionID}");
+                     $"distance={sample.Distance} members={owners.Count} board={board} region={asker.CurrentRegionID}");
         }
     }
 
@@ -425,6 +500,6 @@ public static class RvrFightBoards
                $"enemyHealers={board.Enemy.Healers} enemyLevel={board.Enemy.AverageLevel} enemyHealth={board.Enemy.HealthPercent} " +
                $"enemyPower={board.Enemy.PowerPercent} contact={board.InContact} thirdParty={board.ThirdPartyFight} " +
                $"stance={board.Plan.Stance} skill={board.Plan.SkillTier} wipes={board.State.WipesWithin(board.BuiltAt)} " +
-               $"builds={holderBuilds}";
+               $"from={(board.FromContacts ? RvrContactShadow.FromContacts : RvrContactShadow.FromArea)} builds={holderBuilds}";
     }
 }

@@ -164,6 +164,12 @@ namespace DOL.GS
 
                 case RouteThreatAction.Retarget:
                     _lastRouteThreatRetargetTick = now;
+                    // #570 step 2b: solo give-ups are shared; 3 bots at one spot make it a block for 30 minutes
+                    if (!grouped && bot.Group == null &&
+                        AutonomousRouteBlockMemory.RecordGiveUp(blocker.CurrentRegionID, blocker.X, blocker.Y, bot.DatabaseID,
+                            bot.Level, now, out bool newBlock, out int blockBots) is { } block && newBlock)
+                        Log.Info($"AUTONOMOUS_ROUTE_BLOCK region={block.Region} at={block.X},{block.Y} maxBotLevel={block.MaxBotLevel} " +
+                                 $"bots={blockBots} target=\"{blocker.Name}\" by={bot.Name} zone=\"{zone.Description}\"");
                     AbandonCamp(bot, $"Route blocked by {blocker.Name} (level {blocker.Level}, {pack} together) with no way around");
                     return true;
 
