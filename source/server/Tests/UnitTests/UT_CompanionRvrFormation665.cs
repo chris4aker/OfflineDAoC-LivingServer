@@ -131,6 +131,18 @@ namespace DOL.GS.Tests
                 Assert.That(brain, Does.Contain("CompanionHealerCombatHold.Holds(BotBody, leader) || CompanionFormationHolds()"),
                     "the travel formation doesn't pull a placed member back mid-fight");
             });
+            string formation = File.ReadAllText(Path.Combine(root, "source", "server", "GameServer", "bots", "BotBrain.CompanionFormation.cs"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(formation, Does.Contain(": StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now);"), "the game's walk");
+                Assert.That(formation, Does.Contain("if (bot.IsCasting || bot.IsIncapacitated || bot.IsCrowdControlled"),
+                    "no walk starts out of a cast");
+                Assert.That(formation, Does.Contain("&& !RvrTacticsActive() ? leader : null;"),
+                    "the autonomous gamebots' own RvR tactics keep their groups");
+                Assert.That(formation.IndexOf("CompanionFormationHealDue(bot))", StringComparison.Ordinal),
+                    Is.LessThan(formation.IndexOf("if (ContinueRvrPlaceWalk(bot, now))", StringComparison.Ordinal)),
+                    "heals come before a walk under way");
+            });
         }
 
         // ---- the fight harness ------------------------------------------------------------------------------------------
@@ -297,6 +309,53 @@ namespace DOL.GS.Tests
                     Assert.That(bot.GetDistanceTo(scene.Player), Is.LessThanOrEqualTo(F.PlayerBound + (int)RvrPositioning.SlotTolerance),
                         $"{bot.Name} stays near the player\n" + picture);
             });
+        }
+
+        [Test]
+        public void AHealerStopsWalkingForItsPlaceOnceAGroupmateNeedsAHeal()
+        {
+            // Review of #815: heals win at every hook. A healer already walking stops as soon as a groupmate drops below 70%,
+            // and while one is hurt no healer sets off.
+            using Scene scene = Make(Thidranki);
+            FlatProof();
+            foreach (GameBot bot in scene.Group)
+                bot.Brain?.Stop();
+            List<GameBot> healers = Healers(scene);
+            GameBot hurt = scene.Group.First(b => !healers.Contains(b));
+            GameBot walker = null;
+            int ticks = 15 * RvrFightWorld.TicksPerSecond;
+            for (int i = 0; i < ticks && walker == null; i++)
+            {
+                scene.World.Tick();
+                foreach (GameBot bot in scene.Group)
+                {
+                    CompanionPvpEngagement.Observe(bot);
+                    if ((bot.Brain as BotBrain)?.TryCompanionFormationSupport() == true && healers.Contains(bot) && walker == null)
+                        walker = bot;
+                }
+            }
+            Assert.That(walker, Is.Not.Null, "a healer set off for its place\n" + Picture(scene));
+            Assert.That(walker.IsMoving, Is.True, "it is walking");
+            hurt.Health = hurt.MaxHealth / 2;
+            Assert.That(hurt.HealthPercent, Is.LessThan(RvrPositioning.HealFirstPercent), "a groupmate needs a heal");
+            var brain = (BotBrain)walker.Brain;
+            Assert.Multiple(() =>
+            {
+                Assert.That(brain.TryCompanionFormationSupport(), Is.False, "the turn goes to the heal, not the walk");
+                Assert.That(walker.IsMoving, Is.False, "the healer stopped walking\n" + Picture(scene));
+            });
+            // While the groupmate stays hurt, no healer sets off again.
+            for (int i = 0; i < 5 * RvrFightWorld.TicksPerSecond; i++)
+            {
+                scene.World.Tick();
+                hurt.Health = hurt.MaxHealth / 2;
+                foreach (GameBot healer in healers)
+                {
+                    CompanionPvpEngagement.Observe(healer);
+                    Assert.That((healer.Brain as BotBrain)?.TryCompanionFormationSupport(), Is.False,
+                        $"{healer.Name} stays to heal");
+                }
+            }
         }
 
         [Test]

@@ -16,6 +16,17 @@ namespace DOL.AI.Brain
 
         private long _companionFormationNextCheck;
         private long _companionFormationDueAt;
+        private bool _companionFormationHealerWalk;
+
+        /// <summary>Someone of the bot's group is alive and below <see cref="RvrPositioning.HealFirstPercent"/>.</summary>
+        private static bool CompanionFormationHealDue(GameBot bot)
+        {
+            if (bot.Group == null) return false;
+            foreach (GameLiving member in bot.Group.GetMembersInTheGroup())
+                if (member != null && member.IsAlive && member.HealthPercent < RvrPositioning.HealFirstPercent)
+                    return true;
+            return false;
+        }
 
         private sealed class CompanionFormationLog
         {
@@ -60,8 +71,23 @@ namespace DOL.AI.Brain
             if (leader == null || !bot.IsAlive || bot.CurrentRegion == null || leader.CurrentRegionID != bot.CurrentRegionID)
                 return false;
             long now = GameLoop.GameLoopTime;
+            // Heals first (review of #815): a healer walks for its place only while nobody of the group needs a heal, so a
+            // walk under way ends at once when someone drops below 70%, and the turn goes on to the heal.
+            if ((IsHealer || _companionFormationHealerWalk) && CompanionFormationHealDue(bot))
+            {
+                if (_rvrPlaceWalk != RvrPlaceWalk.None)
+                {
+                    if (bot.IsMoving)
+                        bot.StopMoving();
+                    _rvrPlaceWalk = RvrPlaceWalk.None;
+                }
+                _companionFormationHealerWalk = false;
+                _companionFormationDueAt = 0;
+                return false;
+            }
             if (ContinueRvrPlaceWalk(bot, now))
                 return true;
+            _companionFormationHealerWalk = false;
             if (bot.IsCasting || bot.IsIncapacitated || bot.IsCrowdControlled || bot.MaxSpeed <= 0 || bot.IsStealthed ||
                 bot.IsUnderwater || bot.IsTurningDisabled)
                 return false;
@@ -78,11 +104,9 @@ namespace DOL.AI.Brain
             RvrSlot mine = fight.SlotOf(Body);
             if (!CompanionRvrFormation.Places(mine.Stand))
                 return false;
-            // Heals first: a healer walks for its place only while nobody of the group needs a heal.
-            if (IsHealer || mine.Healer)
-                foreach (GameLiving member in bot.Group.GetMembersInTheGroup())
-                    if (member != null && member.IsAlive && member.HealthPercent < RvrPositioning.HealFirstPercent)
-                        return false;
+            // Heals first: a healer slot (a Shaman or Bard too) sets off only while nobody of the group needs a heal.
+            if (mine.Healer && CompanionFormationHealDue(bot))
+                return false;
 
             Vector2 self = Flat(bot);
             var others = new List<(Vector2, bool)>(fight.Backs.Count);
@@ -112,6 +136,7 @@ namespace DOL.AI.Brain
                 : StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now);
             if (!setOff)
                 return false;
+            _companionFormationHealerWalk = IsHealer || mine.Healer;
             _companionFormationDueAt = 0;
             float depth = fight.Line is Vector2 anchor ? -RvrPositioning.Ahead(spot, anchor, fight.Front) : 0;
             LogCompanionFormation(leader, reason, depth, (int)Vector2.Distance(spot, fight.Player), fight, now);
