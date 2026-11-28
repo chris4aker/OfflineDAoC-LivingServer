@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **791**; pending (#625, not on main yet): **0**; shipped by the pipeline: **759**.
+- Rows in code: **792**; pending (#625, not on main yet): **0**; shipped by the pipeline: **760**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -791,6 +791,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `SHROUDED_ISLES_PORTAL` | server.log | **ships** | `world/ShroudedIslesPortals.cs` | `id`, `pad`, `radius`, `region` | - | - | - |
 | `SHROUDED_ISLES_PORTAL_SKIPPED` | server.log | **ships** | `world/ShroudedIslesPortals.cs` | `id`, `region`, `target` | - | - | - |
 | `SIEGE_DEFENSE_BALANCE` | server.log | **ships** | `bots/autonomous/SiegeDefenseBalance.cs` | `attackerCap`, `event`, `share`, `shift`, `window` | - | - | - |
+| `SIEGE_DEFENSE_BALANCE_REALM` | server.log | **ships** | `bots/autonomous/SiegeDefenseBalance.cs` | `applied`, `attackerCap`, `event`, `realm`, `share`, `shift`, `window` | - | once per bot siege that ends captured or defended, for its defending realm, and once per realm at start-up when the record is rebuilt (#523) | A defending realm's own six-siege record moved; |
 | `STORYLINE_ABANDONED` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `reason`, `story` | - | - | - |
 | `STORYLINE_EPISODE` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `finished`, `scene`, `story` | - | - | - |
 | `STORYLINE_SIDE` | server.log | **ships** | `bots/autonomous/AutonomousBotStorylines.cs` | `player`, `side`, `story` | `player` | - | - |
