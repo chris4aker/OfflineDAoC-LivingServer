@@ -82,7 +82,7 @@ namespace DOL.GS
         /// <summary>
         /// A player's own companion (a /spawn helper, or a hired companion; never a world bot with goals): the companion
         /// follow, buff, song, stealth and PvP rules apply to it. Hired companions (HiredCompanions165)
-        /// are persistent bots, but their player's (owner 2026-10-31: hired Shamans and Bards buffed instead of
+        /// are persistent bots, but their player's (hired Shamans and Bards buffed instead of
         /// following a walking player).
         /// </summary>
         public bool IsPlayerCompanion => IsTemporaryGroupHelper && !IsAutonomousWorldBot || IsHiredCompanion;
@@ -1042,6 +1042,9 @@ namespace DOL.GS
                 AutonomousStuckWatchdog.MarkProgress(this, eAutonomousProgressKind.StableTravel);
                 log.Info($"AUTONOMOUS_STABLE_ROUTE_ARRIVE bot=\"{Name}\" id={DatabaseID} level={Level} " +
                          $"realm={GlobalConstants.RealmToName(Realm)} destination=\"{completedDestination}\" position={X},{Y},{Z}");
+                // #570 step 2: the landing death watch (AutonomousStableLandingWatch)
+                if (IsAlive && !IsHiredCompanion)
+                    AutonomousStableLandingWatch.Arrived(DatabaseID, CurrentRegionID, completedDestination, GameLoop.GameLoopTime);
             }
         }
 
@@ -1275,6 +1278,13 @@ namespace DOL.GS
             else if (IsAutonomousWorldBot && PersistentRecord != null)
             {
                 AutonomousDeathDiagnostics.Record(this, killer, PersistentRecord.Activity);
+                // #570 step 2: a death to a monster soon after a horse landing counts for that landing
+                if (string.Equals(AutonomousDeathDiagnostics.KillerKind(killer), "monster", StringComparison.Ordinal) &&
+                    AutonomousStableLandingWatch.Died(DatabaseID, Level, GameLoop.GameLoopTime) is { } deadlyLanding)
+                    log.Info($"AUTONOMOUS_STABLE_LANDING_DEADLY region={CurrentRegionID} destination=\"{deadlyLanding}\" " +
+                             $"band={AutonomousStableLandingWatch.LevelBand(Level) * 5}-{AutonomousStableLandingWatch.LevelBand(Level) * 5 + 4} " +
+                             $"bots={AutonomousStableLandingWatch.DeadlyLandingBots} minutes={AutonomousStableLandingWatch.DeadlyLandingWindowMilliseconds / 60_000} " +
+                             $"killer=\"{killer?.Name}\" killerLevel={(killer as GameLiving)?.Level ?? 0}");
                 PersistentRecord.DeathCount++;
                 GoalDiagnosticAttempt?.Died();
                 PersistentRecord.TargetName = (TargetObject as GameLiving)?.Name ?? killer?.Name ?? string.Empty;
@@ -1300,7 +1310,7 @@ namespace DOL.GS
                 AutonomousLivingServer.OnBotDied(this, killer);
             }
             StartDeathRecoveryTimer();
-            // a hired companion's player sees it DEAD in the roster at once (2026-11-01)
+            // a hired companion's player sees it DEAD in the roster at once
             if (IsHiredCompanion && HiredCompanions165.OwnerOf(this) is { } hirer)
                 Hire165.SendRosterNumbers(hirer);
         }
@@ -1792,7 +1802,7 @@ namespace DOL.GS
         // Play test 2026-10-27: an autonomous gamebot in the player's group said "I have caught up. Returning to formation." —
         // the companion bots' formal voice. A gamebot talks like a player.
         // A hired companion talks as any gamebot (owner 2026-11-18 09:14); with its Speech option on Formal it keeps the
-        // formal companion return lines.
+        // companion's return lines.
         private string ReturnDialogue(string stage) => IsAutonomousWorldBot && !(IsHiredCompanion && CompanionChat165.IsFormal(this))
             ? GamebotReturnLine(stage, Random.Shared, StableRouteDestination, CurrentZone?.Description)
             : CompanionReturnDialogue(stage);
@@ -2195,7 +2205,7 @@ namespace DOL.GS
 
             long experienceGained = arguments.ExpTotal;
             long baseExperience = arguments.ExpBase;
-            // A hired companion earns at its player's XP rate, other bots at the gamebot rate (owner 2026-11-10).
+            // A hired companion earns at its player's XP rate, other bots at the gamebot rate.
             bool hiredCompanion = IsHiredCompanion;
             if (arguments.AllowMultiply)
             {
@@ -2218,7 +2228,7 @@ namespace DOL.GS
                 experienceGained += baseExperience;
             }
 
-            // A hired companion never passes its player's level (owner 2026-10-31): at the player's level it fills
+            // A hired companion never passes its player's level: at the player's level it fills
             // its bar and waits; once the player levels, its next experience levels it too.
             byte? hiredCap = hiredCompanion ? HiredCompanionLevelCap() : null;
             experienceGained = HiredCompanions165.CappedExperience(experienceGained, Experience, Level, hiredCap);
@@ -3446,7 +3456,7 @@ namespace DOL.GS
 
         public void WakeTemporaryCompanionRest()
         {
-            // hired companions too (audit 2026-11-03): /pull or an attack order left them seated and frozen
+            // hired companions too: /pull or an attack order left them seated and frozen
             if (IsTemporaryGroupHelper || IsHiredCompanion)
                 WakeRecoveryRest();
         }
@@ -4120,7 +4130,7 @@ namespace DOL.GS
             return 0;
         }
 
-        // ---- hired companions: their player trains their specs (owner 2026-10-30)
+        // ---- hired companions: their player trains their specs
 
         /// <summary>
         /// Spec points the companion can spend now, counted as a player's are (GamePlayer.VerifySpecPoints): every point a
@@ -4302,8 +4312,7 @@ namespace DOL.GS
             LogCompanionSkills("trained");
         }
 
-        /// <summary>COMPANION_SKILLS_165: what a hired companion can use after training or a level (owner
-        /// 2026-10-30: a level 5 Hunter trained Beastcraft 5 and seemed to use none of it).</summary>
+        /// <summary>COMPANION_SKILLS_165: what a hired companion can use after training or a level (a level 5 Hunter trained Beastcraft 5 and seemed to use none of it).</summary>
         internal void LogCompanionSkills(string why)
         {
             if (!IsHiredCompanion || !log.IsInfoEnabled)
@@ -4459,7 +4468,7 @@ namespace DOL.GS
         /// Pure: the alive flag a status save writes. GameLiving.IsAlive is false for anything out of the world, and the
         /// status queue can save a bot after it left the world (a hired companion parked by /hire dismiss or its player's
         /// logout, owner's PC 2026-11-17 on 5ddd003: IsAlive=0 with Health=116, so summon and login said "dead"). Out of
-        /// the world, health decides, whatever IsAlive says.
+        /// the world, health decides; #287 missed this rule.
         /// </summary>
         public static bool SavedAlive(bool inWorld, bool aliveInWorld, int health) => inWorld ? aliveInWorld : health > 0;
 
@@ -5287,8 +5296,7 @@ namespace DOL.GS
         private bool AreSpellsEqual(Spell spellOne, Spell spellTwo)
         {
             // Ranks of one proc line may differ in proc chance (Valewalker
-            // Witherstrike 20 vs 15); they still replace one another
-            // (the newer rank takes the older one's place).
+            // Witherstrike 20 vs 15); they still replace one another.
             bool sameProcLine = spellOne.SpellType is eSpellType.OffensiveProc or eSpellType.DefensiveProc &&
                                 spellOne.Group != 0;
             return spellOne.DamageType == spellTwo.DamageType &&
