@@ -4,7 +4,7 @@ checklist line, PASS / FAIL / NOT SEEN (IN GAME for a line no log row can settle
 and the first matching line as evidence, with a summary at the top.
 
     python3 source/tools/rc_checklist.py runtime/server/logs/server.log
-    python3 source/tools/rc_checklist.py server.log detail.log --build 1a2b3c4
+    python3 source/tools/rc_checklist.py server.log --build 1a2b3c4
     python3 source/tools/rc_checklist.py server.log --json
     python3 source/tools/rc_checklist.py server.log --brief      # the summary and one line per check
 
@@ -22,8 +22,8 @@ What a result means:
 Logs are split by server process and FORK_BUILD as played_check_log.py splits them, reusing its line parsing and its
 masking of player names. Each build (name and commit) is judged on its own and never mixed with another; by default
 the builds named as the checklist's build (1.2.3), or the ones --build picks by name or commit prefix. Give several
-files in time order (server.log, then detail.log for Debug rows such as AUTONOMOUS_AREA_HUNT): each file is split on
-its own. Logs stay out of git (AGENTS.md).
+server.log files in time order (every checklist row, Debug ones such as AUTONOMOUS_AREA_HUNT included, is written to
+server.log): each file is split on its own. Logs stay out of git (AGENTS.md).
 
 Exit code: 0 a report was made, 2 nothing to judge (no FORK_BUILD for the build asked).
 """
@@ -44,6 +44,8 @@ CHECKLIST = Path(__file__).resolve().parent / "rc3-checklist.json"
 PASS, FAIL, NOT_SEEN, IN_GAME = "PASS", "FAIL", "NOT SEEN", "IN GAME"
 ORDER = (FAIL, NOT_SEEN, IN_GAME, PASS)
 CHAT_NAME_RE = re.compile(r'\b(from|to|speaker)=("[^"]*"|\S+)')
+LEADER_RE = re.compile(r'\b(leader)=("[^"]*"|\S+)')        # COMPANION_* rows: the group leader is the player
+ADDR_RE = re.compile(r'\b(addr)=("[^"]*"|\S+)')            # CLIENT_HANDSHAKE: the client's address
 
 
 # ---- Matching ---------------------------------------------------------------------------------------------------
@@ -96,6 +98,10 @@ def quote(message: str) -> str:
     text = pcl.quote(message)
     if text.startswith("CHAT_"):
         text = CHAT_NAME_RE.sub(lambda m: f"{m.group(1)}=<name>", text)
+    elif text.startswith("COMPANION_"):
+        text = LEADER_RE.sub(lambda m: f"{m.group(1)}=<name>", text)
+    elif text.startswith("CLIENT_HANDSHAKE"):
+        text = ADDR_RE.sub(lambda m: f"{m.group(1)}=<addr>", text)
     return text
 
 
@@ -154,13 +160,15 @@ class Check:
     def judge(self, hours: float) -> dict:
         status, why = PASS, []
         bad = [m for m in self.never if m.count] + [n.hits for n in self.near if n.hits.count]
-        over = [(m, bar) for m, bar in self.rates if hours > 0 and m.count / hours >= bar]
+        short = self.spec.get("min_hours") and hours < float(self.spec["min_hours"])
+        # A rate is projected from the run's length, so it is judged only once the run is as long as the line needs;
+        # a short run is NOT SEEN (the rate is still shown). A never row FAILs at any length.
+        over = [(m, bar) for m, bar in self.rates if hours > 0 and not short and m.count / hours >= bar]
         if bad or over:
             status = FAIL
             why += [f"must not show: {m.label} ({m.count})" for m in bad]
             why += [f"{m.label}: {m.count / hours:.1f}/h, bar {bar:g}/h" for m, bar in over]
         missing = [g for g in self.rows if not any(m.count >= 1 for m in g)]
-        short = self.spec.get("min_hours") and hours < float(self.spec["min_hours"])
         if status != FAIL:
             if not self.rows and not self.near and not self.never and not self.rates:
                 status = IN_GAME
@@ -322,7 +330,7 @@ def print_report(data, blocks, unjudged, out=None, brief=False):
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("logs", nargs="+", type=Path, help="server.log (and detail.log), in time order")
+    ap.add_argument("logs", nargs="+", type=Path, help="server.log files, in time order")
     ap.add_argument("--build", help="a FORK_BUILD name or commit prefix (default: the checklist's build)")
     ap.add_argument("--checklist", type=Path, default=CHECKLIST)
     ap.add_argument("--year", type=int, default=dt.date.today().year, help="the year of the log's first line")

@@ -166,6 +166,23 @@ class Conditions(unittest.TestCase):
         self.assertEqual(c["status"], "NOT SEEN")
         self.assertIn("needs 6 h", " ".join(c["why"]))
 
+    def test_one_stall_in_a_short_run_is_not_seen_not_fail(self):
+        log = Log().start()
+        log.add(1, 'SERVER_HANDLE_CENSUS total=900 byType="File=10"')
+        log.add(1, "SERVER_MEMORY memoryLoadPct=40 highLoadPct=90 lastBlockingGen2=none topAllocations=\"x 1MB/min\"")
+        log.add(2, "SERVER_GC_PAUSE ms=30 last=none")
+        log.add(3, "SERVER_STALL worstTickMs=1500 stage=none")
+        log.add(5, "SERVER_GC_PAUSE ms=30 last=none")
+        c = check(run(log)[1], "540-memory")
+        self.assertEqual(c["status"], "NOT SEEN", c["why"])
+        self.assertIn("needs 6 h", " ".join(c["why"]))
+        self.assertGreater(c["rate"][0]["per_hour"], 9.8)   # the projected rate is still shown
+
+    def test_never_row_fails_a_short_run(self):
+        log = Log().start().add(1, "SERVER_MEMORY memoryLoadPct=40 topAllocations="
+                                   '"System.ValueTuple`2[System.Int32,System.Int32][] 90MB/min 60%"')
+        self.assertEqual(check(run(log)[1], "540-memory")["status"], "FAIL")
+
     def test_value_tuple_at_top_of_allocations_fails(self):
         log = Log().start().add(1, "SERVER_MEMORY memoryLoadPct=40 topAllocations="
                                    '"System.ValueTuple`2[System.Int32,System.Int32][] 90MB/min 60%; System.String 1MB/min"')
@@ -231,6 +248,25 @@ class Builds(unittest.TestCase):
         line = check(run(log)[1], "480-followups")["rows"][0]["line"]
         self.assertNotIn("Somebody", line)
         self.assertIn("from=<name>", line)
+
+    def test_companion_leader_and_client_address_are_masked(self):
+        log = Log().start()
+        log.add(1, 'COMPANION_RVR_ENGAGE leader="Somebody" call=assist target="Foe" kind=player why=leader')
+        log.add(2, 'COMPANION_RVR_ENGAGE leader="Somebody" call=drop target="Foe" kind=player why=leash')
+        log.add(3, 'COMPANION_LEADER_FOCUS bot="Helper" class="Cleric" kind=companion leader="Somebody" why=attacker')
+        log.add(4, "CLIENT_HANDSHAKE addr=192.168.1.20 version=1127 type=2 client=original")
+        result = run(log)[1]
+        lines = [r["line"] for r in check(result, "664-engage")["rows"]]
+        lines.append(check(result, "571-focus")["rows"][0]["line"])
+        lines.append(check(result, "425-handshake")["rows"][0]["line"])
+        for line in lines:
+            self.assertIsNotNone(line)
+            self.assertNotIn("Somebody", line)
+            self.assertNotIn("192.168", line)
+        self.assertIn("leader=<name>", lines[0])
+        self.assertIn("leader=<name>", lines[2])
+        self.assertIn("addr=<addr>", lines[3])
+        self.assertIn('bot="Helper"', lines[2])   # a bot's name is not the player's: kept
 
     def test_text_report_has_summary_first(self):
         log = Log().start().add(1, "RVR_FORCE_ZERG what=formed id=1")

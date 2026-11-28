@@ -5,7 +5,7 @@
     "503": "https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/503#issuecomment-7239425350",
     "476": "https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/476#issuecomment-7239425514"
   },
-  "format": "rows: each must be seen (min, default 1) for PASS; {\"any\": [...]} passes on any one. count: shown, never judged. never: one line FAILs. rate: FAILs above max_per_hour. near: FAILs when a b line's point is within `within` of an earlier a line's point for the same join field. in_game: what only the screen can settle (no rows at all: IN GAME). also: the rest of the pass rule, for a reader. Field conditions: exact text, re:<regex> (searched), >n >=n <n <=n, a..b (inclusive).",
+  "format": "rows: each must be seen at least once for PASS; {\"any\": [...]} passes on any one. count: shown, never judged. never: one line FAILs. rate: FAILs at or above max_per_hour, judged only once the run reaches min_hours (a shorter run is NOT SEEN). near: FAILs when a b line's point is within `within` of an earlier a line's point for the same join field. in_game: what only the screen can settle (no rows at all: IN GAME). also: the rest of the pass rule, for a reader. Field conditions: exact text, re:<regex> (searched), >n >=n <n <=n, a..b (inclusive).",
   "issues": [
     {
       "issue": 766, "list": 503, "steps": "part 1 (#770)", "open": "Part 2 is not built.",
@@ -339,7 +339,7 @@
         },
         {
           "id": "570-hunt",
-          "look": "AUTONOMOUS_AREA_HUNT (a Debug row: give detail.log too) and AUTONOMOUS_CAMP_MOVE_UP",
+          "look": "AUTONOMOUS_AREA_HUNT (a Debug row in server.log) and AUTONOMOUS_CAMP_MOVE_UP",
           "rows": [{"tag": "AUTONOMOUS_AREA_HUNT"}, {"tag": "AUTONOMOUS_CAMP_MOVE_UP"}],
           "also": "Solo gamebots stay in their zone or the next one between camps."
         }
