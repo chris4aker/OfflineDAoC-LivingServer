@@ -187,14 +187,25 @@ namespace DOL.GS.Tests.Rehearsal
                 int total = hits.Sum(h => h.Amount);
                 return total == 0 ? "-" : $"{100.0 * hits.Where(h => h.OnCalledTarget).Sum(h => h.Amount) / total:0}%";
             }
+            // #531 step 2a: each side's first area mez that landed, how many it caught, and whether it came before the
+            // side's first hit (the opener on the charge)
+            string Opener(List<GameBot> side)
+            {
+                RvrMezAttempt first = r.Mezzes.FirstOrDefault(m => m.Landed == true && m.Radius > 0 && side.Contains(m.Caster as GameBot));
+                if (first == null)
+                    return "none";
+                RvrHit firstHit = r.Hits.FirstOrDefault(h => side.Contains(h.Attacker as GameBot));
+                string when = firstHit == null || first.At <= firstHit.At ? "before_first_hit" : "after_first_hit";
+                return $"{S(first.At)}:{Short(first.Caster)}x{first.Caught}:{when}";
+            }
             int albAlive = albion.Count(b => b.IsAlive), midAlive = midgard.Count(b => b.IsAlive);
             string held = albAlive == midAlive ? $"none ({albAlive}-{midAlive})" : albAlive > midAlive ? $"Albion ({albAlive}-{midAlive})" : $"Midgard ({midAlive}-{albAlive})";
             long firstHit = r.Hits.Count > 0 ? r.Hits[0].At : 0;
             long end = r.Deaths.Count > 0 && (albAlive == 0 || midAlive == 0) ? r.Deaths[^1].At : world.Now;
             string duration = r.Hits.Count == 0 ? "no fight" : $"{(end - firstHit) / 1000.0:0}s";
             return $"RVR_REHEARSAL open_field seed={world.Seed} sides=Alb8 vs Mid8 noticed=Alb:{Notice(albion)} Mid:{Notice(midgard)} " +
-                   $"first_cc={cc} mez_refused={refused} (bot<75%={refusedHurtBot}) first_deaths={deaths} " +
-                   $"first_pick=Alb:{OpeningText(Opening(scan, albion))} Mid:{OpeningText(Opening(scan, midgard))} " +
+                   $"first_cc={cc} opener=Alb:{Opener(albion)} Mid:{Opener(midgard)} mez_refused={refused} (bot<75%={refusedHurtBot}) " +
+                   $"first_deaths={deaths} first_pick=Alb:{OpeningText(Opening(scan, albion))} Mid:{OpeningText(Opening(scan, midgard))} " +
                    $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} held={held} duration={duration}";
         }
 
