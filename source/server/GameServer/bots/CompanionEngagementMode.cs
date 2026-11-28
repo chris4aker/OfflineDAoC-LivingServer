@@ -14,6 +14,7 @@ namespace DOL.GS
             mode.Defensive = defensive;
             mode.Pull = null;
             CompanionPvpEngagement.Reset(player);
+            CompanionRvrEngage.Reset(player);
         }
         public static GamePlayer DefensiveLeader(GameLiving actor)
         {
@@ -45,8 +46,12 @@ namespace DOL.GS
             GamePlayer leader = DefensiveLeader(actor);
             return leader == null || target != null && target.CurrentRegionID == leader.CurrentRegionID &&
                 (leader.IsWithinRadius(target, DefensiveRadius) || CompanionPvpEngagement.Defending(actor, target) ||
-                 CompanionPvpEngagement.FrontierRoamerInRange(leader, target, true));
+                 CompanionPvpEngagement.FrontierRoamerInRange(leader, target, true) ||
+                 CompanionRvrEngage.Engaged(leader, target));
         }
+        /// <summary>The player chose /defensive (his party's standing stance; a hired companion's own Stance row aside).</summary>
+        public static bool PlayerDefensive(GamePlayer player) =>
+            player != null && Modes.TryGetValue(player, out Mode mode) && mode.Defensive;
         public static void RememberPull(GamePlayer player, GameLiving target)
         {
             if (player != null && Modes.TryGetValue(player, out Mode mode) && mode.Defensive) mode.Pull = target;
