@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **767**; pending (#625, not on main yet): **0**; shipped by the pipeline: **735**.
+- Rows in code: **771**; pending (#625, not on main yet): **0**; shipped by the pipeline: **739**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -67,6 +67,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `from`, `group`, `leader`, `levels`, `minutes`, `realm`, `size` | `leader`, `levels` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_ENDED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `battleground`, `group`, `members`, `reason`, `size` | `members` | - | - |
 | `AUTONOMOUS_GROUP_BATTLEGROUND_TRIP_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.BattlegroundTrip.cs` | `group`, `leader`, `was` | `leader`, `was` | - | - |
+| `AUTONOMOUS_GROUP_CAMP_ADVANCED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.PartyPull.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_BUDGET` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.TravelBudget.cs` | `budgetMin`, `candidates`, `farthestKeptMin`, `group`, `kept`, `nearestMin`, `phase`, `region`, `remainingMin`, `tier` | - | one per PvE party camp pick whose candidate list the travel budget cut (none when every camp fit; #569) | A PvE party camp pick whose candidates were cut to the leader's travel budget, with the tier that was kept. |
 | `AUTONOMOUS_GROUP_CAMP_DRY` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.CampBonus.cs` | JSON | - | - | - |
 | `AUTONOMOUS_GROUP_CAMP_REJECTED` | server.log | **ships** | `bots/autonomous/AutonomousBotGroupCoordinator.cs` | JSON | - | - | - |
@@ -116,6 +117,9 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_LOOT_APPRAISAL_FAILED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `item`, `retainedInInventory` | `bot` | - | - |
 | `AUTONOMOUS_LOOT_REJECTED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `dropRetained`, `id`, `item`, `level`, `reason` | `bot` | - | - |
 | `AUTONOMOUS_NECRO_PET_RELEASE` | server.log | **ships** | `spells/Necromancer/SummonNecromancerPet.cs` | `bot`, `distance`, `hp`, `id`, `level`, `pet`, `petLevel`, `petObjectId`, `reason`, `region`, `spellId` | `bot` | - | - |
+| `AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `campDistance`, `leader`, `leaderCampDistance`, `toLeader` | `bot`, `leader` | - | - |
+| `AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `region`, `target`, `x`, `y`, `z` | `bot` | - | - |
+| `AUTONOMOUS_PARTY_PULL_TOO_FAR` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `distance`, `skips`, `skipsSinceLastLog`, `target`, `tooFarSeconds` | `bot`, `target` | - | - |
 | `AUTONOMOUS_POCKET_NUDGE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `casting`, `class`, `distance`, `level`, `manaPercent`, `moving`, `pendingCast`, `pet`, `region`, `resting`, `target`, `targetLevel`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `AUTONOMOUS_PVP_STALEMATE` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.FrontierThreat.cs` | `bot`, `id`, `position`, `realm`, `region`, `seconds`, `target`, `targetRealm` | `bot`, `target` | - | - |
@@ -226,7 +230,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_GUILDS` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs`<br>`bots/autonomous/AutonomousBotRealmGuilds.cs` | `members`, `removedStale` | - | - | - |
 | `BOT_GUILD_BUFF` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildEconomy.cs` | `buff`, `guild`, `leader` | `guild`, `leader` | - | - |
 | `BOT_GUILD_CLAIM` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildKeeps.cs` | `guild`, `keep`, `present`, `realm` | `guild` | - | - |
-| `BOT_GUILD_CLAIM_SKIPPED` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildKeeps.cs` | `attempts`, `keep`, `needed`, `present`, `realm`, `reason` | - | - | - |
+| `BOT_GUILD_CLAIM_SKIPPED` | server.log | **ships** | `bots/autonomous/AutonomousBotGuildKeeps.cs` | `attempts`, `keep`, `needed`, `present`, `realm`, `reason` | - | once per captured keep whose bot-guild claim never came, after the last claim try (#523) | A captured keep the bot guilds never claimed, written once after the last claim try, with the first rule that failed. |
 | `BOT_GUILD_JOIN` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `guild`, `id`, `invitedBy` | `bot`, `guild`, `invitedBy` | - | - |
 | `BOT_GUILD_JOIN_DECLINED` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `id`, `invitedBy`, `reason` | `bot`, `invitedBy` | - | - |
 | `BOT_GUILD_REMOVE` | server.log | **ships** | `bots/autonomous/AutonomousBotGuilds.cs` | `bot`, `by`, `guild`, `id` | `bot`, `guild` | - | - |
@@ -478,7 +482,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `PLAYER_CLICK_TARGET` | server.log | **ships** | `packets/Client/168/PlayerTargetHandler.cs` | `examine`, `id`, `inView`, `kind`, `name`, `player`, `result` | `name`, `player` | - | - |
 | `PLAYER_DEED` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `forced`, `kind`, `player`, `target`, `witness` | `player`, `target`, `witness` | - | - |
 | `PLAYER_DEED_SKIP` | server.log | **ships** | `bots/autonomous/AutonomousPlayerDeeds.cs` | `con`, `enemies`, `killer`, `kind`, `player`, `reason` | `killer`, `player` | - | Why a death was no deed, for in-game checks (2026-10-27: |
-| `PLAYER_KEEP_DEFENSE_SIZED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `defenders`, `event`, `first`, `force`, `helpers`, `keep`, `roster`, `scale` | - | - | - |
+| `PLAYER_KEEP_DEFENSE_SIZED` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.Defense.cs` | `defenders`, `event`, `first`, `force`, `helpers`, `keep`, `roster`, `scale` | - | one per player keep attack when its first alarm rallies the bot defense, then one each time the defense grows a tier (#523) | The size of the bot defense against a player's keep attack, where force= counts the player's group and the attacking realm's gamebots at the keep (not this defense's own recruits) and roster= the whole group. |
 | `PLAYER_LINE_OUTCOME` | server.log | **ships** | `bots/autonomous/LivingRows.PlayerLines.cs` | `answered`, `bots`, `ch`, `intent`, `kind`, `latencyMs`, `realm`, `replies`, `seq`, `t`, `window` | - | - | PLAYER_LINE_OUTCOME (#625 row 5): |
 | `PLAYER_NICKNAME` | server.log | no: the player's chosen nickname | `bots/autonomous/AutonomousPlayerDeeds.cs` | `nickname`, `player` | - | - | - |
 | `PLAYER_TAXI_DISMOUNT_REQUEST` | server.log | **ships** | `gameutils/PlayerTaxiSynchronization.cs` | `correctionRecently`, `horse`, `player`, `position` | `player` | - | One entry per actual detachment; |
@@ -652,7 +656,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_CHECKSPOT_LOADED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `circuits`, `frontiers`, `ok`, `parseRejected`, `proof`, `reason`, `reserve`, `spots`, `version` | - | - | - |
 | `RVR_CHECKSPOT_REJECTED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `check`, `id`, `kind`, `off`, `realm`, `reason`, `region` | - | - | - |
 | `RVR_CHECKSPOT_VALIDATED` | server.log | **ships** | `bots/autonomous/RvrFrontierPoi.cs` | `failed`, `off`, `ok`, `reason`, `seconds`, `usableCircuits`, `usableSpots`, `walked` | - | - | - |
-| `RVR_CLAIM_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.ClaimHold.cs` | `bots`, `forces`, `minutes`, `realm`, `target` | - | - | - |
+| `RVR_CLAIM_HOLD` | server.log | **ships** | `bots/autonomous/AutonomousRvrEventLayer.ClaimHold.cs` | `bots`, `forces`, `minutes`, `realm`, `target` | - | once per bot siege that captures an ordinary keep (not a relic keep, not a player-attack defense; #523) | The army that captured an ordinary keep stays to hold it for the bot-guild claim, then is released. |
 | `RVR_CONTACT_SHADOW` | server.log | **ships** | `bots/autonomous/RvrContactShadow.cs` | `known`, `listed`, `pairs`, `pairsUnknown`, `pairsUnknownPlayers`, `pairsUnknownShare`, `realm`, `stale`, `unknown`, `unknownPlayers`, `unknownShare`, `windowS` | - | once a minute per realm, when a fight board of that realm listed an enemy in the minute (#529) | One minute of one realm's fight-board shadow, counting board-listed enemies and group-enemy pairs no member knew of. |
 | `RVR_CONTACT_SHADOW_FAILED` | server.log | **ships** | `bots/autonomous/RvrFightBoards.cs` | `failures` | - | the shadow's first failure, then every 1,000th (warn; the board is still built) (#529) | The shadow threw and was dropped, and the board was built without it. |
 | `RVR_CONTACT_UNKNOWN` | server.log | **ships** | `bots/autonomous/RvrFightBoards.cs` | `boardGroup`, `distance`, `group`, `kind`, `members`, `party`, `realm`, `region`, `target` | `target` | at most 20 a minute per realm: the first listed-but-unknown listing of a group-enemy pair in the shadow's minute (#529) | One enemy the board's area search listed that no member of the group noticed, was told of or was hit by. |
