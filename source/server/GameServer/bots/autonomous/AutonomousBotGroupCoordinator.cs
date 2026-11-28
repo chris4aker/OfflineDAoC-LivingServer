@@ -240,7 +240,11 @@ public static partial class AutonomousBotGroupCoordinator
             using (AiProfile.Scope(AiSystem.PulseRvrDefense))
                 AutonomousRvrEventLayer.PulseDefense(now);
             using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
+            {
+                // #599 step 1: nearby frontier warbands link into battlegroups first, so the rosters below include them.
+                PulseBattlegroups(now);
                 RealmWarbandSupport.Pulse(now);
+            }
             using (AiProfile.Scope(AiSystem.PulseObjectiveAssignments))
                 AutonomousObjectiveAssignments.ReconcileIfDue();
             using (AiProfile.Lock(Sync, AiSystem.LockCoordinator))
@@ -258,7 +262,11 @@ public static partial class AutonomousBotGroupCoordinator
                         if (RemoveBrokenSessions()) _nextBrokenSessionSweep = now + 1;
                 }
                 using (AiProfile.Scope(AiSystem.PulseFormSiegeParties))
+                {
                     FormSiegeParties();
+                    // #530 step 5b: the battleground muster's solo bots form parties too.
+                    FormBattlegroundMusterParties();
+                }
                 using (AiProfile.Scope(AiSystem.PulseTryFormGroups))
                     TryFormGroups();
             }

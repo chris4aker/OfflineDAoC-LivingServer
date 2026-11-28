@@ -1265,8 +1265,10 @@ public static class AutonomousChatKnowledge
         if (string.IsNullOrWhiteSpace(text))
             return false;
         string t = " " + new string(text.ToLowerInvariant().Select(c => char.IsLetterOrDigit(c) ? c : ' ').ToArray()) + " ";
-        bool asks = HasAnyPhrase(t, " where ", " who sells ", " anyone sell ", " how do i get ", " where can i get ", " where to get ") &&
-                    HasAnyPhrase(t, " buy ", " get ", " find ", " sells ", " sell ", " better ", " new ", " upgrade ");
+        // Realism 2c (#480): "who makes those?" after "wtb a studded helm" is completed to "who makes studded helm".
+        bool asks = HasAnyPhrase(t, " where ", " who sells ", " anyone sell ", " how do i get ", " where can i get ", " where to get ", " who makes ",
+                        " who can make ", " who crafts ") &&
+                    HasAnyPhrase(t, " buy ", " get ", " find ", " sells ", " sell ", " better ", " new ", " upgrade ", " makes ", " make ", " crafts ");
         if (!asks)
             return false;
         string crafter =

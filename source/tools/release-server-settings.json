@@ -150,6 +150,7 @@
   "realm_raid_return_waves": "True",
   "realm_raid_route_gates": "True",
   "realm_raid_tale_first": "True",
+  "rvr_board_from_contacts": "True",
   "rvr_bot_assist": "True",
   "rvr_bot_cc_plan": "True",
   "rvr_bot_disengage": "True",

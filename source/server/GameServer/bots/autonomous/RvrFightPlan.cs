@@ -39,6 +39,11 @@ public sealed record RvrFightPlan
     public GameLiving CalledTarget { get; init; }
     /// <summary>When <see cref="CalledTarget"/> was called (game-loop tick).</summary>
     public long CalledAt { get; init; }
+    /// <summary>
+    /// #599 step 2: <see cref="CalledTarget"/> is the battlegroup lead group's call, taken by this follower group's main
+    /// assist (RvrAssist.Plan); false for the group's own call.
+    /// </summary>
+    public bool CallFromBattlegroup { get; init; }
     /// <summary>Member: the crowd controller; Subject: the enemy it holds.</summary>
     public ImmutableArray<RvrAssignment> CrowdControl { get; init; } = ImmutableArray<RvrAssignment>.Empty;
     /// <summary>Member: the interrupter; Subject: the enemy caster or healer it keeps from casting.</summary>
