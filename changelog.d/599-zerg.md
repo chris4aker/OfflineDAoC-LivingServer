@@ -15,8 +15,10 @@ section: RvR
     about fifteen minutes, then moves on (in Emain, AMG and MMG and back). A lead that can't reach its gate moves on to
     the next. Groups from other frontiers travel to it.
   - **How it fights:** the zerg shares calls, the size-up, cross-group support and one target call, as a battlegroup
-    does. When its lead group decides to attack or defend a keep or relic in the zerg's frontier, the whole zerg goes,
-    the other groups following the lead in.
+    does. When its lead group decides to attack or defend a keep or relic keep in the zerg's frontier, the whole zerg
+    goes. Every group signs up for the siege like any warband: it musters, marches and counts toward the siege's limits.
+    The keep's defence is sized for the whole zerg, not just its lead group. A group that doesn't fit under the siege's
+    limit leaves the zerg and carries on as a warband for a while.
   - **Leaving:** a recruit that hasn't arrived after 15 minutes leaves. A zerg lasts 45 to 60 minutes, then breaks up
     (after its current attack). When the lead group is called away to another siege or defence, the zerg ends. In both
     cases its groups carry on as warbands for a while (and answer the call) before a new zerg forms.

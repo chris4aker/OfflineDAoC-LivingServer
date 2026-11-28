@@ -227,11 +227,12 @@ namespace DOL.GS.Tests
         }
 
         [Test]
-        public void Only_a_stay_a_stuck_trail_or_a_late_zerg_recruit_rests_and_a_resting_group_is_never_planned()
+        public void Only_a_stay_a_stuck_trail_a_late_or_capped_zerg_recruit_rests_and_a_resting_group_is_never_planned()
         {
             foreach (L.BattlegroupLeave reason in Enum.GetValues<L.BattlegroupLeave>())
                 Assert.That(L.BattlegroupLeaveRests(reason),
-                    Is.EqualTo(reason is L.BattlegroupLeave.Stay or L.BattlegroupLeave.Stuck or L.BattlegroupLeave.Late), reason.ToString());
+                    Is.EqualTo(reason is L.BattlegroupLeave.Stay or L.BattlegroupLeave.Stuck or L.BattlegroupLeave.Late or L.BattlegroupLeave.Cap),
+                    reason.ToString());
             Assert.That(L.PlanBattlegroups(new[] { C("a", 0), C("b", 1_000) }, null, new[] { "b" }), Is.Empty);
             Assert.That(L.PlanBattlegroups(new[] { C("a", 0), C("b", 1_000) }, null, new[] { "a" }), Is.Empty, "nor lead one");
             L.BattlegroupCandidate a = C("a", 0), b = C("b", 1_000);

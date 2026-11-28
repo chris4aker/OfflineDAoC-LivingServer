@@ -33,20 +33,25 @@ namespace DOL.GS
         /// <summary>
         /// The zerg lead's warband review (ChooseRvrDestination, the only path that opens or joins an attack). When it takes a
         /// keep or relic event (<see cref="AutonomousRvrEventLayer.ZergReviewJoins"/>), the destination is the event's, the
-        /// event layer is told (the zerg is not ended by its lead being in it), and the warband's own turn goes on with it:
-        /// true. Anything else (a roam, a hunt) leaves the zerg at its gates: false.
+        /// event layer is told (the zerg is not ended by its lead being in it; the next pulse puts the followers on the
+        /// event's roster under its cap, AutonomousRvrEventLayer.EnrolZergFollowers), and the warband's own turn goes on with
+        /// it: true. Another shared event the review joined (a relic carrier's escort, another frontier's siege) is the lead's
+        /// own: the destination is set and the turn goes on with it (true), and the next pulse ends the zerg (why=event).
+        /// Anything else (a roam, a hunt) leaves the zerg at its gates: false.
         /// </summary>
         private bool ZergLeadReview(GameBot bot, string forceId, ushort zergRegion, long now)
         {
             _nextRvrPlanReview = now + 45_000 + bot.ObjectID % 15_000;
             CampDestination reviewed = ChooseRvrDestination(bot);
-            if (reviewed == null || !AutonomousRvrEventLayer.ZergReviewJoins(_rvrIntent, _rvrSharedEvent, reviewed.RegionId, zergRegion))
+            if (reviewed == null || !_rvrSharedEvent)
                 return false;
             _rvrDestination = reviewed;
             _rvrApproachDestination = null;
             _patrolDestination = null;
             _campStartedTick = now;
-            AutonomousRvrEventLayer.ReportZergAttack(forceId, reviewed.Id, now);
+            if (AutonomousRvrEventLayer.ZergReviewJoins(_rvrIntent, _rvrSharedEvent, reviewed.RegionId, zergRegion) &&
+                AutonomousRvrEventLayer.IsSiegeEvent(reviewed.Id, now))
+                AutonomousRvrEventLayer.ReportZergAttack(forceId, reviewed.Id, now);
             return true;
         }
 

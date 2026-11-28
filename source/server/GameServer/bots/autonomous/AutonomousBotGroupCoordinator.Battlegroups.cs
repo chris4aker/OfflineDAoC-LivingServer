@@ -34,6 +34,12 @@ public static partial class AutonomousBotGroupCoordinator
                 if (session.ObjectiveKind == eAutonomousObjectiveKind.RvR && !session.Ending && session.Leader != null &&
                     session.Group != null && !string.IsNullOrEmpty(session.Id))
                     warbands.Add((session.Id, session.Group, session.Leader, session.HostedPlayer != null));
+        // #599 step 3 review: the zerg's followers go on the roster of the event its lead took it to, under the cap, before
+        // the candidates are read (a follower that did not fit leaves the zerg in this pulse, why=cap).
+        var warbandGroups = new Dictionary<string, Group>(warbands.Count);
+        foreach (var warband in warbands)
+            warbandGroups.TryAdd(warband.Id, warband.Group);
+        AutonomousRvrEventLayer.EnrolZergFollowers(id => warbandGroups.TryGetValue(id, out Group group) ? ZergFollowerForce(id, group) : null, now);
         var candidates = new List<AutonomousRvrEventLayer.BattlegroupCandidate>(warbands.Count);
         var groups = new Dictionary<string, Group>(warbands.Count);
         var warbandBots = new Dictionary<string, int>(warbands.Count);
@@ -93,6 +99,20 @@ public static partial class AutonomousBotGroupCoordinator
                 free[bot.Realm] = free.GetValueOrDefault(bot.Realm) + 1;
         }
         return (online, free);
+    }
+
+    /// <summary>
+    /// A zerg follower's force for the event's roster, counted as the warband's own review counts it (its RvR gamebots,
+    /// ForceStrength.Of), so the roster holds the same heads either way.
+    /// </summary>
+    private static AutonomousRvrEventLayer.Force ZergFollowerForce(string forceId, Group group)
+    {
+        GameBot[] bots = group.GetMembersInTheGroup().OfType<GameBot>()
+            .Where(member => member.IsAutonomousWorldBot && AutonomousObjectiveAssignments.Is(member, eAutonomousObjectiveKind.RvR)).ToArray();
+        if (bots.Length == 0) return null;
+        ForceStrength strength = ForceStrength.Of(bots);
+        return new AutonomousRvrEventLayer.Force(forceId, bots[0].Realm, strength.Members, strength.AverageLevel, strength.Healers,
+            MemberIds: bots.Select(member => member.DatabaseID).ToArray(), MinimumMemberLevel: strength.MinimumLevel);
     }
 
     /// <summary>The group behind a warband's force id, as of the last battlegroup pulse (null when it was not a warband).</summary>

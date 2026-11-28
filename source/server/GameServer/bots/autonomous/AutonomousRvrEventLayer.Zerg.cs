@@ -102,8 +102,9 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>
     /// Why a zerg ends by its lead, or None. Its lead in an event ends it (why=event: the lead was called), except the attack
     /// the lead's own review took the zerg to (<paramref name="attack"/>): the zerg goes in whole, its followers trailing the
-    /// lead. When <paramref name="endsTick"/> has passed it dissolves (why=stay), but not in the middle of its own attack.
-    /// Pure.
+    /// lead. When <paramref name="endsTick"/> has passed it dissolves (why=stay), but not in the middle of its own attack,
+    /// nor in the grace before the event lists the lead (the caller drops an attack that no longer holds first,
+    /// <see cref="ZergAttackHolds"/>). Pure.
     /// </summary>
     public static BattlegroupLeave ZergLeadLeaveReason(BattlegroupCandidate? lead, string attack, long endsTick, long now)
     {
@@ -116,7 +117,8 @@ public static partial class AutonomousRvrEventLayer
             return BattlegroupLeave.Player;
         if (self.Heads < 2)
             return BattlegroupLeave.TooSmall;
-        if (now >= endsTick && !ownAttack)
+        bool attackHolds = attack != null && (!self.InEvent || ownAttack);
+        if (now >= endsTick && !attackHolds)
             return BattlegroupLeave.Stay;
         return BattlegroupLeave.None;
     }
@@ -435,6 +437,109 @@ public static partial class AutonomousRvrEventLayer
                  $"target={record.Target} online={record.Online} free={record.Free} schedule={(record.ScheduleOn ? "on" : "off")} " +
                  $"attack={record.Attack ?? "-"} " +
                  $"anchor={record.Anchor?.SpotId ?? "-"} force={force ?? "-"} why={why} minutes={Math.Max(0, (now - record.FormedTick) / 60_000)}");
+    }
+
+    // ---- the zerg's followers on the event's roster (#599 step 3 review) ---------------------------------------------
+
+    /// <summary>One zerg follower put on the roster of the zerg's event, or left out of it (<see cref="Joined"/> false).</summary>
+    public readonly record struct ZergEnrolment(string ZergId, string Attack, string ForceId, bool Joined);
+
+    /// <summary>
+    /// Puts each follower group of a zerg in an attack (or a defence its lead's review took up) on that event's roster, on
+    /// the lead's side, through the event's own join under that side's cap (<see cref="TryJoin"/>: AttackerCapFor,
+    /// DefenderCapFor, the third realm's cap). The followers then count toward the attacker cap and toward the defence
+    /// the keep gets (DefenderCapFor sizes it from the attackers on the roster), and go through the muster, the march, the
+    /// siege jobs and the regrouping like any warband in the event. A follower that does not fit leaves the zerg at the next
+    /// pulse (why=cap) and rests. <paramref name="forceOf"/> gives a follower's force (null: it is gone; the leave rules
+    /// handle it). Runs from the coordinator's pulse before the candidates are read, with neither lock held around the
+    /// callback; the battlegroup lock and the event lock are never held together.
+    /// </summary>
+    public static List<ZergEnrolment> EnrolZergFollowers(Func<string, Force> forceOf, long now)
+    {
+        var pending = new List<(string ZergId, string Attack, string Lead, string[] Followers)>();
+        lock (BattlegroupSync)
+            foreach (BattlegroupRecord record in Battlegroups.Values.Where(r => r.Zerg && r.Attack != null && r.Members.Count > 1)
+                         .OrderBy(r => r.Id, StringComparer.Ordinal))
+                pending.Add((record.Id, record.Attack, record.Lead, record.Members.Skip(1).Select(member => member.ForceId).ToArray()));
+        var result = new List<ZergEnrolment>();
+        foreach (var zerg in pending)
+        {
+            Force[] forces = zerg.Followers.Select(id => forceOf?.Invoke(id)).Where(force => force is { MemberCount: > 0 }).ToArray();
+            foreach ((string forceId, bool joined) in JoinZergAttack(zerg.Attack, zerg.Lead, forces, now))
+                result.Add(new ZergEnrolment(zerg.ZergId, zerg.Attack, forceId, joined));
+        }
+        lock (BattlegroupSync)
+            foreach (ZergEnrolment enrolment in result.Where(enrolment => !enrolment.Joined))
+                if (BattlegroupOfForce.TryGetValue(enrolment.ForceId, out BattlegroupRecord record) && record.Zerg &&
+                    record.Id == enrolment.ZergId && record.Lead != enrolment.ForceId)
+                    ZergCapReports.Add(enrolment.ForceId);
+        return result;
+    }
+
+    /// <summary>
+    /// The event part of <see cref="EnrolZergFollowers"/>: the lead's side of <paramref name="targetId"/> and its cap, then
+    /// each follower in order. Nothing is done while the event does not list the lead (the grace after the review). A
+    /// player-attack defence response (its calls are sized per warband) takes no follower.
+    /// </summary>
+    private static List<(string ForceId, bool Joined)> JoinZergAttack(string targetId, string leadForceId, IReadOnlyList<Force> followers,
+        long now)
+    {
+        var result = new List<(string ForceId, bool Joined)>();
+        if (targetId == null || leadForceId == null || followers.Count == 0) return result;
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
+        {
+            if (!Events.TryGetValue(targetId, out ActiveEvent active) || active.ExpiresTick <= now) return result;
+            Dictionary<string, int> side = active.Attackers.ContainsKey(leadForceId) ? active.Attackers
+                : active.Defenders.ContainsKey(leadForceId) ? active.Defenders
+                : active.ThirdRealm.ContainsKey(leadForceId) ? active.ThirdRealm : null;
+            if (side == null) return result;
+            foreach (Force force in followers)
+            {
+                int cap = side == active.Attackers ? AttackerCapFor(active) : side == active.Defenders ? DefenderCapFor(active)
+                    : SiegeRealmCap(active, OtherRealm(active));
+                bool joined = !active.DefenseReaction && (TryJoin(side, force, cap) || side.ContainsKey(force.GroupId));
+                if (joined)
+                {
+                    // A warband holds one event reservation (as ChooseOrJoin keeps it), and its bots are on their way.
+                    foreach (ActiveEvent other in Events.Values.Where(other => other != active))
+                    {
+                        other.Attackers.Remove(force.GroupId);
+                        other.Defenders.Remove(force.GroupId);
+                        other.ThirdRealm.Remove(force.GroupId);
+                        other.Slots.Remove(force.GroupId);
+                    }
+                    foreach (var carrier in CarrierEvents.Values)
+                        foreach (var realm in carrier.Participants.Values) realm.Remove(force.GroupId);
+                    foreach (long id in force.MemberIds ?? Array.Empty<long>())
+                        active.Travel.TryAdd(id, (force.GroupId, now, double.PositiveInfinity, default, 0));
+                }
+                result.Add((force.GroupId, joined));
+            }
+        }
+        return result;
+    }
+
+    /// <summary>Whether <paramref name="targetId"/> is a live keep or relic-keep event (not a relic carrier's escort).</summary>
+    public static bool IsSiegeEvent(string targetId, long now)
+    {
+        if (targetId == null) return false;
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
+            return Events.TryGetValue(targetId, out ActiveEvent active) && active.ExpiresTick > now;
+    }
+
+    /// <summary>An event's roster and caps as they stand: heads on each side, and the attacker and defender caps (tests).</summary>
+    public readonly record struct EventRoster(int Attackers, int Defenders, int ThirdRealm, int AttackerCap, int DefenderCap,
+        IReadOnlyCollection<string> AttackerForces, IReadOnlyCollection<string> DefenderForces);
+
+    /// <summary>The roster of <paramref name="targetId"/>, or null when there is no such event (tests).</summary>
+    public static EventRoster? RosterOf(string targetId)
+    {
+        if (targetId == null) return null;
+        using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
+            return Events.TryGetValue(targetId, out ActiveEvent active)
+                ? new EventRoster(active.Attackers.Values.Sum(), active.Defenders.Values.Sum(), active.ThirdRealm.Values.Sum(),
+                    AttackerCapFor(active), DefenderCapFor(active), active.Attackers.Keys.ToArray(), active.Defenders.Keys.ToArray())
+                : null;
     }
 
     // ---- reads ------------------------------------------------------------------------------------------------------
