@@ -20,6 +20,12 @@ public sealed partial class AutonomousWorldBotController
     private RvrSightCall? _sightLastCall;
     private long _sightLastLogTick = long.MinValue / 2;
     private int _sightRepaths;
+    // #766 part 2: the last contact backed off from (its enemies' centre, how many, when), so a repeat on it is quiet; and
+    // the running hold's start and kind, for the resume row.
+    private Vector2? _sightContactCentre;
+    private int _sightContactEnemies, _sightRepeats;
+    private long _sightContactTick, _sightHoldStarted;
+    private bool _sightHoldQuiet;
     private string _sightRollKey;
 
     /// <summary>Whether this bot sizes up a fight on sight: an autonomous gamebot (never a companion) in the frontier or a
@@ -139,6 +145,27 @@ public sealed partial class AutonomousWorldBotController
             return;
         _sightRepaths = 0;
         _sightBackOffOrder = null;
+        _sightHoldStarted = now;
+        Vector2 centre = EnemyCentre(enemies);
+        // #766 part 2: the same contact again within the cooldown (its route walked it back to them): no new walk, call or
+        // row. The bot stops and keeps its distance where it stands; it still doesn't open on them. The memory slides with
+        // each repeat, but keeps the first call's place and count, so the contact can't creep or grow into a repeat.
+        if (RvrSightSizeUp.IsRepeat(_sightContactCentre, _sightContactEnemies, _sightContactTick, now, centre, enemies.Length))
+        {
+            _sightContactTick = now;
+            _sightRepeats++;
+            _sightHoldQuiet = true;
+            _sightBackOffPoint = null;
+            bot.StopAttack();
+            bot.StopMovingOnPath();
+            bot.StopMoving();
+            return;
+        }
+        _sightContactCentre = centre;
+        _sightContactEnemies = enemies.Length;
+        _sightContactTick = now;
+        _sightRepeats = 0;
+        _sightHoldQuiet = false;
         _sightBackOffPoint = SightBackOffPoint(bot, enemies, nearest);
         int called = CallSightFriends(bot, enemies, now);
         if (_sightBackOffPoint is Vector3 point)
@@ -154,6 +181,14 @@ public sealed partial class AutonomousWorldBotController
                      $"waitSeconds={RvrSightSizeUp.WaitMilliseconds / 1000} called={called}");
     }
 
+    private static Vector2 EnemyCentre(GameLiving[] enemies)
+    {
+        Vector2 centre = Vector2.Zero;
+        foreach (GameLiving enemy in enemies)
+            centre += new Vector2(enemy.X, enemy.Y);
+        return enemies.Length == 0 ? centre : centre / enemies.Length;
+    }
+
     /// <summary>A walkable point straight away from the enemies, past <see cref="RvrSightSizeUp.BackOffDistance"/> from the
     /// nearest; null when the mesh has none (the bot then just holds where it is).</summary>
     private static Vector3? SightBackOffPoint(GameBot bot, GameLiving[] enemies, GameLiving nearest)
@@ -161,10 +196,7 @@ public sealed partial class AutonomousWorldBotController
         var nav = PathfindingProvider.Instance;
         if (nav?.IsAvailable != true || !nav.HasNavmesh(bot.CurrentZone))
             return null;
-        Vector2 centre = Vector2.Zero;
-        foreach (GameLiving enemy in enemies)
-            centre += new Vector2(enemy.X, enemy.Y);
-        centre /= enemies.Length;
+        Vector2 centre = EnemyCentre(enemies);
         Vector2 away = new Vector2(bot.X, bot.Y) - centre;
         away = away.LengthSquared() < 1 ? new Vector2(1, 0) : Vector2.Normalize(away);
         float step = Math.Max(500, RvrSightSizeUp.BackOffDistance - bot.GetDistanceTo(nearest) + 200);
@@ -273,6 +305,9 @@ public sealed partial class AutonomousWorldBotController
         _sightBackOffOrder = null;
         if (Log.IsInfoEnabled && bot != null)
             Log.Info($"RVR_SIGHT_RESUME bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} " +
-                     $"region={bot.CurrentRegionID} why={why}");
+                     $"region={bot.CurrentRegionID} why={why} repeat={(_sightHoldQuiet ? "true" : "false")} repeats={_sightRepeats} " +
+                     $"heldSeconds={(_sightHoldStarted == 0 ? 0 : Math.Max(0, now - _sightHoldStarted) / 1000)}");
+        _sightHoldStarted = 0;
+        _sightHoldQuiet = false;
     }
 }
