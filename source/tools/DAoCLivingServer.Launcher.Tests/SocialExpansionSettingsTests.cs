@@ -374,6 +374,34 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void CriticalShotOpenerIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #569 step 8: bot_critical_shot_opener, a bot combat rule like bot_leader_focus, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.CriticalShotOpener && SocialExpansionSettings.Recommended.CriticalShotOpener, Is.True);
+        Assert.That(d.AllOff().CriticalShotOpener, Is.True);
+        (d with { CriticalShotOpener = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_critical_shot_opener"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).CriticalShotOpener, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
+    [Test] public void PartyPullerCampTurnIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #569 step 9: bot_party_puller_camp_turn, a bot combat rule like bot_leader_focus, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.PartyPullerCampTurn && SocialExpansionSettings.Recommended.PartyPullerCampTurn, Is.True);
+        Assert.That(d.AllOff().PartyPullerCampTurn, Is.True);
+        (d with { PartyPullerCampTurn = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_party_puller_camp_turn"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).PartyPullerCampTurn, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void MorganaQuestHelpIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #611 (owner decision 2026-11-25): bot_morgana_quest_help, bots in the player's group fight Morgana's demons when the
