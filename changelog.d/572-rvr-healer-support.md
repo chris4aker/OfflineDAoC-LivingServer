@@ -2,8 +2,8 @@
 version: 1.2.3
 section: RvR
 ---
-- **RvR healers find the keep guard or relic carrier they should heal without stalling the server** (#572, port of
-  zomboden/OfflineDAoC-True165 `16284ba`). This covers autonomous gamebot healers on an RvR objective. Before, every
+- **RvR healers find the keep guard or relic carrier they should heal without stalling the server** (#572).
+  This covers autonomous gamebot healers on an RvR objective. Before, every
   heal check searched 2,000 units around the healer, cast a line-of-sight ray at every keep guard in it and sorted
   them, many times a second at a keep fight. Now a healer keeps its support target, or "nobody needs it", for 2
   seconds. When it looks again it ranks the candidates first (relic carrier, keep lord, other guards, then the lowest

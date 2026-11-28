@@ -91,7 +91,8 @@ namespace DOL.GS.Tests.Rehearsal
         public sealed record RvrOpening(GameLiving FirstTarget, string FirstRule, int Members, int OpenedOn, int SpreadOpenedOn);
 
         public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors, RvrOpening Albion = null,
-            RvrOpening Midgard = null);
+            RvrOpening Midgard = null, IReadOnlyList<RvrBombCast> Bombs = null,
+            IReadOnlyList<(long At, GameLiving Bomber)> BombHolds = null, RvrFightDepth Depth = null);
 
         /// <summary>How long after a side's first engage its members' first engages count as its opening.</summary>
         public const long OpeningMilliseconds = 10_000;
@@ -111,7 +112,11 @@ namespace DOL.GS.Tests.Rehearsal
             $"{RvrRoles.For(ClassOf(opening.FirstTarget))}:{Short(opening.FirstTarget)} rule={opening.FirstRule} " +
             $"opened_on={opening.OpenedOn}/{opening.Members} (spread {opening.SpreadOpenedOn})";
 
-        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600)
+        /// <param name="albionBombers">#531 step 2f: -1 (the default): the period bombers in the eights (RvrFightKits.Bombs)
+        /// get the stand-in bomb. 1 or more: that many of Albion's back line get it instead (a Wizard first, then the other
+        /// nukers, then the rest, the area mezzer last), so Albion fights beside its Sorcerer's area mez with a lone bomber or
+        /// with two. The roster built for seed 520 has no Wizard, Runemaster or Spiritmaster.</param>
+        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600, int albionBombers = -1)
         {
             using var world = new RvrFightWorld(seed, Repeatable);
             Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
@@ -123,6 +128,16 @@ namespace DOL.GS.Tests.Rehearsal
             // #531 step 2c-1: the realm abilities the eights' builds buy
             var actives = new RvrFightActives();
             actives.Grant(albion.Concat(midgard));
+            // #531 step 2f: the eights' bombers get a stand-in point blank bomb
+            IEnumerable<GameBot> bombers = albionBombers < 0
+                ? albion.Concat(midgard).Where(b => RvrFightKits.Bombs(ClassOf(b)))
+                : albion.Where(b => RvrPositioning.StandFor(RvrRoles.For(ClassOf(b)), ClassOf(b)) == RvrStand.Back && !RvrFightKits.Heals(ClassOf(b)))
+                    .OrderBy(b => RvrFightKits.Bombs(ClassOf(b)) ? 0 : RvrFightKits.AreaMezzes(ClassOf(b)) ? 3 : RvrFightKits.Nukes(ClassOf(b)) ? 1 : 2)
+                    .Take(albionBombers);
+            foreach (GameBot bot in bombers.ToList())
+                RvrFightKits.AddBomb(bot);
+            // #531 step 2e: how deep each side's casters and healers stand behind their tanks
+            var depth = new RvrFightDepth();
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
@@ -130,6 +145,7 @@ namespace DOL.GS.Tests.Rehearsal
             {
                 scan.Tick(w.Now);
                 actives.Tick(w.Now);
+                depth.Tick(w.Now, new[] { albion, midgard });
                 firstAlbionBoard ??= ContactBoard(albion);
                 firstMidgardBoard ??= ContactBoard(midgard);
             });
@@ -148,8 +164,9 @@ namespace DOL.GS.Tests.Rehearsal
             detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
             detail.Add(actives.Row(world.Seed, world.Recorder));
-            string row = OpenFieldRow(world, scan, albion, midgard);
-            return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard));
+            string row = OpenFieldRow(world, scan, albion, midgard, depth);
+            return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard),
+                world.Recorder.Bombs.ToList(), world.Recorder.BombHolds.ToList(), depth);
         }
 
         private static string Shadow(eRealm realm)
@@ -171,7 +188,8 @@ namespace DOL.GS.Tests.Rehearsal
         private static string Describe(RvrRoster roster) =>
             $"{roster.Template} filled={string.Join(",", roster.Filled.Select(f => $"{f.Role}:{f.Class}"))} missing={string.Join(",", roster.Missing)} cc={roster.CrowdControlLabel}";
 
-        private static string OpenFieldRow(RvrFightWorld world, RvrFightScan scan, List<GameBot> albion, List<GameBot> midgard)
+        private static string OpenFieldRow(RvrFightWorld world, RvrFightScan scan, List<GameBot> albion, List<GameBot> midgard,
+            RvrFightDepth depth)
         {
             RvrFightRecorder r = world.Recorder;
             string Notice(List<GameBot> side)
@@ -203,6 +221,19 @@ namespace DOL.GS.Tests.Rehearsal
                 string when = firstHit == null || first.At <= firstHit.At ? "before_first_hit" : "after_first_hit";
                 return $"{S(first.At)}:{Short(first.Caster)}x{first.Caught}:{when}";
             }
+            // #531 step 2f: each side's bombers, its first bomb (when, who, the mezzed and free enemies in reach), when a
+            // lone bomber first waited by a pile, and how many bombs it cast
+            string Bomb(List<GameBot> side)
+            {
+                int bombers = side.Count(b => b.Spells?.Any(s => s.ID == RvrFightKits.BombId) == true);
+                if (bombers == 0)
+                    return "bombers=0";
+                var bombs = r.Bombs.Where(b => side.Contains(b.Caster as GameBot)).ToList();
+                var wait = r.BombWaits.FirstOrDefault(w => side.Contains(w.Bomber as GameBot));
+                string first = bombs.Count == 0 ? "none" : $"{S(bombs[0].At)}:{Short(bombs[0].Caster)}x{bombs[0].Mezzed}m{bombs[0].Free}f";
+                return $"bombers={bombers} first={first} waited={(wait.Bomber == null ? "no" : S(wait.At))} bombs={bombs.Count} " +
+                       $"on_mezzed={bombs.Count(b => b.Mezzed >= RvrBombPlan.MinimumMezzed)}";
+            }
             int albAlive = albion.Count(b => b.IsAlive), midAlive = midgard.Count(b => b.IsAlive);
             string held = albAlive == midAlive ? $"none ({albAlive}-{midAlive})" : albAlive > midAlive ? $"Albion ({albAlive}-{midAlive})" : $"Midgard ({midAlive}-{albAlive})";
             long firstHit = r.Hits.Count > 0 ? r.Hits[0].At : 0;
@@ -211,7 +242,9 @@ namespace DOL.GS.Tests.Rehearsal
             return $"RVR_REHEARSAL open_field seed={world.Seed} sides=Alb8 vs Mid8 noticed=Alb:{Notice(albion)} Mid:{Notice(midgard)} " +
                    $"first_cc={cc} opener=Alb:{Opener(albion)} Mid:{Opener(midgard)} mez_refused={refused} (bot<75%={refusedHurtBot}) " +
                    $"first_deaths={deaths} first_pick=Alb:{OpeningText(Opening(scan, albion))} Mid:{OpeningText(Opening(scan, midgard))} " +
-                   $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} held={held} duration={duration}";
+                   $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} bomb=Alb:[{Bomb(albion)}] Mid:[{Bomb(midgard)}] " +
+                   $"depth=Alb:{depth.Text(eRealm.Albion)} Mid:{depth.Text(eRealm.Midgard)} " +
+                   $"held={held} duration={duration}";
         }
 
         // ---------------------------------------------------------------------------------------------------------
