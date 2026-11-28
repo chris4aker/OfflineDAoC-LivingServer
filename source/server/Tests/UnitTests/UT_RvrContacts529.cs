@@ -363,7 +363,7 @@ namespace DOL.GS.Tests
                 .Where(f => Regex.IsMatch(File.ReadAllText(f), @"\bRvrContact(Table|ShadowTally)\b"))
                 .Select(Path.GetFileName).OrderBy(n => n, StringComparer.Ordinal).ToArray();
             Assert.That(readers, Is.EqualTo(new[] { "AutonomousChatFieldTalk.cs", "AutonomousWorldBotController.RvrFirstPick.cs",
-                    "AutonomousWorldBotController.RvrPerception.cs", "RvrFightBoards.cs", "ServerMemoryDiagnostics.cs" }),
+                    "AutonomousWorldBotController.RvrPerception.cs", "RvrFightBoards.cs", "ServerCollectionCensus.cs", "ServerMemoryDiagnostics.cs" }),
                 "a new reader of the contact table is a new decision from it: add it here with its step (#529)");
             // #528 (#740 review): an inc call counts only the attackers its speaker knows of, from its own contacts.
             string field = Code("bots", "autonomous", "AutonomousChatFieldTalk.cs");
@@ -384,6 +384,9 @@ namespace DOL.GS.Tests
                 Is.EqualTo(new[] { "RvrContactTable.Group(" }), "the board lists the group's contacts (#529 step 3)");
             Assert.That(Code("Managers", "GameLoop", "ServerMemoryDiagnostics.cs"),
                 Does.Contain("RegisterCache(\"rvrContacts\", () => AutonomousWorldBotController.RvrContactTable.Count);"));
+            // #731: the collection census reads two counts only, never a contact (nor the per-bot walk of Count).
+            Assert.That(Regex.Matches(Code("Managers", "GameLoop", "ServerCollectionCensus.cs"), @"RvrContactTable\.[A-Z]\w*").Cast<Match>().Select(m => m.Value),
+                Is.EqualTo(new[] { "RvrContactTable.Owners", "RvrContactTable.RealmRows" }), "the census counts, it doesn't read contacts (#731)");
         }
 
         [Test]
