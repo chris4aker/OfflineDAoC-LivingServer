@@ -84,6 +84,79 @@ namespace DOL.UnitTests
                 }
         }
 
+        // ---- #531 step 2e: caster depth from spell reach, and the healer's cover pick ----------------------------------
+
+        [Test]
+        public void Depth_follows_the_spell_reach() => Assert.Multiple(() =>
+        {
+            const float radius = 400;
+            Assert.That(RvrPositioning.DepthFor(false, 0, 0, radius), Is.EqualTo(radius), "no reach: the layout's depth, as before");
+            Assert.That(RvrPositioning.DepthFor(false, 1_500, 0, radius), Is.EqualTo(1_350), "a nuker in contact: 1,500 less the margin");
+            Assert.That(RvrPositioning.DepthFor(false, 1_000, 0, radius), Is.EqualTo(850), "a shorter reach stands closer");
+            Assert.That(RvrPositioning.DepthFor(false, 1_875, 0, radius), Is.EqualTo(RvrPositioning.MaxCasterDepth), "a bolt reach is capped");
+            Assert.That(RvrPositioning.DepthFor(false, 1_500, 600, radius), Is.EqualTo(750), "the enemy 600 ahead of the line: 600 less deep");
+            Assert.That(RvrPositioning.DepthFor(false, 1_500, 1_400, radius), Is.EqualTo(radius), "enemy far ahead: never less than the spread depth");
+            Assert.That(RvrPositioning.DepthFor(false, 1_500, -300, radius), Is.EqualTo(1_350), "an enemy behind the line counts as in contact");
+            Assert.That(RvrPositioning.DepthFor(true, 2_000, 0, radius), Is.EqualTo(RvrPositioning.HealerStandOff), "a healer 900 from the enemy");
+            Assert.That(RvrPositioning.DepthFor(true, 700, 0, radius), Is.EqualTo(550), "a healer stays within its heal's reach of the line");
+            Assert.That(RvrPositioning.DepthFor(true, 2_000, 700, radius), Is.EqualTo(radius), "a healer near a far line keeps the spread depth");
+        });
+
+        [Test]
+        public void Layout_puts_a_caster_at_its_reach_behind_the_line_and_keeps_the_spread()
+        {
+            foreach (double bearing in Bearings)
+            {
+                (List<RvrPositioning.Placed> members, Vector2 enemy) =
+                    Group(bearing, eCharacterClass.Cleric, eCharacterClass.Cleric, eCharacterClass.Sorcerer, eCharacterClass.Theurgist);
+                Vector2 line = LineOf(members)!.Value;
+                double front = RvrPositioning.Bearing(line, enemy);
+                // the enemy in contact: just ahead of the tanks
+                Vector2 contact = line + RvrPositioning.Direction(front) * 100;
+                List<RvrPositioning.Placed> reached = members.Select(m => m.Stand != RvrStand.Back ? m
+                    : m with { Reach = RvrPositioning.CountsAsHealer(m.Member.Role, m.Member.Class) ? 2_000 : 1_500 }).ToList();
+                ImmutableArray<RvrSlot> before = RvrPositioning.Layout(members, contact, RvrSkillTier.Veteran, false, 50_000, errors: false);
+                ImmutableArray<RvrSlot> after = RvrPositioning.Layout(reached, contact, RvrSkillTier.Veteran, false, 50_000, errors: false);
+                float Depth(RvrSlot slot) => -RvrPositioning.Ahead(slot.Spot, line, front);
+                Assert.That(before.Where(s => s.Stand == RvrStand.Back).Max(Depth), Is.LessThanOrEqualTo(RvrPositioning.MaxBackDepth + 1),
+                    "without reach: 250-700, as before");
+                foreach (RvrSlot slot in after.Where(s => s.Stand == RvrStand.Back))
+                {
+                    if (slot.Healer)
+                        Assert.That(Vector2.Distance(slot.Spot, contact), Is.InRange(RvrPositioning.HealerStandOff - 200, RvrPositioning.HealerStandOff + 120),
+                            $"bearing {bearing:F2}: a healer about 900 from the enemy");
+                    else
+                        Assert.That(Vector2.Distance(slot.Spot, contact), Is.InRange(1_100, 1_500),
+                            $"bearing {bearing:F2}: a caster 1,200-1,500 from the enemy, within its reach");
+                    Assert.That(RvrPositioning.Ahead(slot.Spot, line, front), Is.LessThan(-RvrPositioning.MinLineDepth), "still behind the line");
+                }
+                RvrSlot[] all = after.Where(s => s.Stand == RvrStand.Back).ToArray();
+                for (int i = 0; i < all.Length; i++)
+                    for (int j = i + 1; j < all.Length; j++)
+                        Assert.That(Vector2.Distance(all[i].Spot, all[j].Spot), Is.GreaterThan(RvrPositioning.MezSpread), "still spread");
+            }
+        }
+
+        [Test]
+        public void Cover_tries_its_own_place_first_then_beside_it_at_the_same_depth()
+        {
+            Vector2 line = new(100, 100), spot = new(100, -800);
+            Vector2[] candidates = RvrPositioning.CoverCandidates(spot, line);
+            Assert.Multiple(() =>
+            {
+                Assert.That(candidates, Has.Length.EqualTo(5));
+                Assert.That(candidates[0], Is.EqualTo(spot), "its own place first");
+                foreach (Vector2 c in candidates)
+                    Assert.That(Vector2.Distance(c, line), Is.EqualTo(900).Within(0.5), "the same depth");
+                Assert.That(Vector2.Distance(candidates[1], spot), Is.LessThan(Vector2.Distance(candidates[3], spot)), "nearest first");
+                Assert.That(RvrPositioning.PickCover([(true, true), (true, false), (true, false)]), Is.EqualTo(1), "the first hidden one");
+                Assert.That(RvrPositioning.PickCover([(true, true), (false, false), (true, true)]), Is.EqualTo(0),
+                    "a place that can't see the line is no cover; none hides: its own place");
+                Assert.That(RvrPositioning.PickCover([(true, false)]), Is.EqualTo(0), "already hidden");
+                Assert.That(RvrPositioning.PickCover(null), Is.EqualTo(0));
+            });
+        }
+
         private static void AssertHealersApart(ImmutableArray<RvrSlot> slots, float spread, string why)
         {
             RvrSlot[] healers = slots.Where(s => s.Stand == RvrStand.Back && s.Healer && s.Error == RvrSlotError.None).ToArray();
