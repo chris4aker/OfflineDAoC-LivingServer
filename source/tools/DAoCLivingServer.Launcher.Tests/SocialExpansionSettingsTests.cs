@@ -388,6 +388,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void CompanionRvrFormationIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #665: bot_companion_rvr_formation, a bot combat rule like bot_companion_rvr_engage, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.CompanionRvrFormation && SocialExpansionSettings.Recommended.CompanionRvrFormation, Is.True);
+        Assert.That(d.AllOff().CompanionRvrFormation, Is.True);
+        (d with { CompanionRvrFormation = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_companion_rvr_formation"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).CompanionRvrFormation, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void CriticalShotOpenerIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #569 step 8: bot_critical_shot_opener, a bot combat rule like bot_leader_focus, on by default and in Setup; no

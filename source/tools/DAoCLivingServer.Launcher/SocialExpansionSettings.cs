@@ -78,6 +78,9 @@ public sealed record SocialExpansionSettings
     /// <summary>The player's group engages enemies on its own in RvR (bot_companion_rvr_engage, #664 step 1). No checkbox:
     /// kept as read. On by default (1.2.3).</summary>
     public bool CompanionRvrEngage { get; init; } = true;
+    /// <summary>The player's group spreads into the period backline in an RvR fight (bot_companion_rvr_formation, #665). No
+    /// checkbox: kept as read. On by default (1.2.3).</summary>
+    public bool CompanionRvrFormation { get; init; } = true;
     /// <summary>Gamebot parties fight one kill target, the tank's (bot_party_main_assist, #569 step 6). No checkbox: kept as
     /// read. On by default (1.2.3).</summary>
     public bool PartyMainAssist { get; init; } = true;
@@ -248,7 +251,7 @@ public sealed record SocialExpansionSettings
         BotGroupInvites = true, PlayerLootWeight = DefaultPlayerLootWeight, JoinMode = "follow", BotRaidInvites = true,
         BotCrafters = true, BotCraftOrders = true, BotEraClassShares = true, BotEraBuilds = true,
         BotSkillProfiles = true, BotPlaceKnowledge = true, BotMovementHabits = true, LivingMilestones = true,
-        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, CompanionRvrEngage = true, PartyMainAssist = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
+        RaidLearnsFromRaiders = true, BardFillsHealerSlot = true, MorganaQuestHelp = true, DeathFall = true, HealerPeriodRules = true, WeaponSetRules = true, LeaderFocus = true, CompanionRvrEngage = true, CompanionRvrFormation = true, PartyMainAssist = true, CriticalShotOpener = true, PartyPullerCampTurn = true, ShowBotsAsBots = false,
         PopulationNewcomers = true, NewcomerFloor = DefaultNewcomerFloor, NewcomerPerHour = DefaultNewcomerPerHour, PopulationRetire = true,
         SightSizeUp = true,
     };
@@ -293,6 +296,7 @@ public sealed record SocialExpansionSettings
         ("bot_death_animation", "bots", "Bots fall when they die, in the original game client: a companion, hired companion or gamebot that dies plays the death fall and lies there as a monster's corpse does, until the client fades it. Raised, it stands up again; released, it appears at its bind. You can still rez it with nothing selected. The new client already shows the fall and gets nothing new."),
         ("bot_leader_focus", "bots", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS."),
         ("bot_companion_rvr_engage", "bots", "Your group engages enemies on its own in RvR (#664): in the frontier, the battlegrounds and Darkness Falls, the bots in your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) notice enemy bots the way gamebots do (line of sight, sooner when the enemy fights, casts or is close, one of them seeing it is all of them seeing it, a stealther only close up) and attack them without waiting for you: within 2,000 of you on /aggressive and 1,000 on /defensive, healers and casters first. They size the fight up first and don't open on an enemy force they would clearly lose to, but always defend. Keep guards and lords are left alone unless you attack them, and so is an enemy standing under its tower or keep guards or in a safe area. They never open a fight on an enemy you or a groupmate holds with a mez or root. A bot set to passive, /bot stay or /bot hold stays out, and your own target still comes first. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_ENGAGE."),
+        ("bot_companion_rvr_formation", "bots", "Your group spreads into an attack formation in RvR (#665): in the frontier, the battlegrounds and Darkness Falls, once your group is fighting enemy bots, the casters and healers of your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) stand behind the tanks relative to the enemy, more than 350 apart so one mez can't catch two of them, wider while the enemy is still coming in, and never more than 1,000 from you. Tanks and melee fight as before. Every step is a normal walk on solid ground. A healer moves only while nobody needs a heal, and nobody walks out of a cast. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_FORMATION."),
         ("bot_party_main_assist", "bots", "Gamebot parties fight one kill target (#569): in a party of autonomous gamebots doing group PvE, the tank's target is the party's kill target and the other members hit it before whoever is hitting them or their own top threat. A member below half health that is being hit fights back, and a member hit by an enemy player fights that player at any health. A monster a groupmate has mesmerized or rooted, an enemy pet and a siege engine are never the kill target. It doesn't apply in realm raids (the raid's own calls win), under the RvR tactics, or with an enemy player in view. Groups with a real player in them keep leader focus (bot_leader_focus), and RvR warbands and companions are unchanged. Log: AUTONOMOUS_PARTY_KILL_TARGET."),
         ("bot_healer_period_rules", "bots", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules."),
         ("bot_critical_shot_opener", "bots", "Archer bots open with Critical Shot (#569): a Hunter, Scout or Ranger gamebot, hired companion or /bot companion draws a Critical Shot as its first shot at a target that isn't fighting, running or mezzed, as players pulled, when it has the endurance, and a Hunter keeps its pet at heel for that shot (at most 7 seconds) instead of sending it in first. The draw time, damage and endurance are the player's. Your own character and pet are unchanged."),
@@ -397,6 +401,7 @@ public sealed record SocialExpansionSettings
         ["bot_weapon_set_rules"] = Bool(WeaponSetRules),
         ["bot_leader_focus"] = Bool(LeaderFocus),
         ["bot_companion_rvr_engage"] = Bool(CompanionRvrEngage),
+        ["bot_companion_rvr_formation"] = Bool(CompanionRvrFormation),
         ["bot_party_main_assist"] = Bool(PartyMainAssist),
         ["bot_critical_shot_opener"] = Bool(CriticalShotOpener),
         ["bot_party_puller_camp_turn"] = Bool(PartyPullerCampTurn),
@@ -746,6 +751,7 @@ public sealed record SocialExpansionSettings
             WeaponSetRules = ReadBool("bot_weapon_set_rules", d.WeaponSetRules),
             LeaderFocus = ReadBool("bot_leader_focus", d.LeaderFocus),
             CompanionRvrEngage = ReadBool("bot_companion_rvr_engage", d.CompanionRvrEngage),
+            CompanionRvrFormation = ReadBool("bot_companion_rvr_formation", d.CompanionRvrFormation),
             PartyMainAssist = ReadBool("bot_party_main_assist", d.PartyMainAssist),
             CriticalShotOpener = ReadBool("bot_critical_shot_opener", d.CriticalShotOpener),
             PartyPullerCampTurn = ReadBool("bot_party_puller_camp_turn", d.PartyPullerCampTurn),
