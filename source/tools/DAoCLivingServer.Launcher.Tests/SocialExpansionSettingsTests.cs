@@ -282,6 +282,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void BoardFromContactsIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #529 step 3: rvr_board_from_contacts, a bot perception rule rather than a Living Server life feature, on by default
+        // and in Setup; no checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.BoardFromContacts && SocialExpansionSettings.Recommended.BoardFromContacts, Is.True);
+        Assert.That(d.AllOff().BoardFromContacts, Is.True);
+        (d with { BoardFromContacts = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["rvr_board_from_contacts"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).BoardFromContacts, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void BotsAsPeopleSwitchesAreOnSavedReadAndTurnedOffWithAllOff()
     {
         // Bots as people (docs/BOTS-AS-PEOPLE-1.2.md, "Settings"): the card's four master switches, on by default and in Setup.
@@ -332,6 +346,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void PartyMainAssistIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #569 step 6: bot_party_main_assist, a bot combat rule like bot_leader_focus, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.PartyMainAssist && SocialExpansionSettings.Recommended.PartyMainAssist, Is.True);
+        Assert.That(d.AllOff().PartyMainAssist, Is.True);
+        (d with { PartyMainAssist = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_party_main_assist"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).PartyMainAssist, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void WeaponSetRulesAreOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #569 step 7: bot_weapon_set_rules, a bot combat rule like bot_healer_period_rules, on by default and in Setup;
@@ -357,6 +385,20 @@ public class SocialExpansionSettingsTests
         Assert.That(Rows()["bot_leader_focus"], Is.EqualTo("False"));
         var problems = new List<string>();
         Assert.That(SocialExpansionSettings.Load(_database, problems).LeaderFocus, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
+    [Test] public void CompanionRvrEngageIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #664 step 1: bot_companion_rvr_engage, a bot combat rule like bot_leader_focus, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.CompanionRvrEngage && SocialExpansionSettings.Recommended.CompanionRvrEngage, Is.True);
+        Assert.That(d.AllOff().CompanionRvrEngage, Is.True);
+        (d with { CompanionRvrEngage = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_companion_rvr_engage"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).CompanionRvrEngage, Is.False);
         Assert.That(problems, Is.Empty);
     }
 
