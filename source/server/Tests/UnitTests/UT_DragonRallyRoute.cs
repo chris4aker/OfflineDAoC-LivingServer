@@ -482,6 +482,55 @@ namespace DOL.UnitTests
         }
 
         [Test,NonParallelizable]
+        public void TheWatchdogRunsTheBattlegroundBackstopAndTheStuckRallyBlockEachForItsOwnBot()
+        {
+            // #800 x #767: both early returns sit at the same spot in Observe. The battleground backstop runs first; a rally
+            // traveller outside every battleground still gets the stuck-rally recovery, a battleground bot still gets the exit,
+            // and a rally member that somehow stands in a battleground is the battleground's (the rally block would hide it).
+            using var server=new EpicTestServerScope();
+            Vector3 inside=new(30000,30000,0);
+            using var world=new RallyWorld("openworld-midgard-glaciergiant",GgFrom,inside,inside);
+            Attendee traveller=world.Members[0], bgSolo=world.Members[1], bgInRally=world.Members[2];
+            bgSolo.RegionId=252; bgInRally.RegionId=252;
+            bgSolo.Group=null;
+            var rallied=new List<long>();
+            var exited=new List<(long Id,eBattlegroundForcedExit Why)>();
+            AutonomousBattlegroundExit.Clear();
+            AutonomousStuckWatchdog.StuckRallyRecoveryForTests=(bot,id)=>{ rallied.Add(bot.DatabaseID); return true; };
+            AutonomousStuckWatchdog.BattlegroundExitRecoveryForTests=(bot,why)=>{ exited.Add((bot.DatabaseID,why)); return true; };
+            try
+            {
+                world.Set("HubDeparted",true);
+                Assert.That(AutonomousRealmRaid.IsTravellingInRally(traveller,out _),Is.True);
+                Assert.That(AutonomousRealmRaid.IsTravellingInRally(bgInRally,out _),Is.True,"the overlap case, kept for the order");
+                DateTime t1=new(2026,11,28,0,0,0,DateTimeKind.Utc);
+                for(int minute=0;minute<=15;minute+=5)
+                {
+                    // The battleground bots keep moving (so no movement clock fires) but gain nothing.
+                    bgSolo.Position=inside+new Vector3(500*minute,0,0);
+                    bgInRally.Position=inside+new Vector3(0,500*minute,0);
+                    bool tick=minute==15;
+                    Assert.That(AutonomousStuckWatchdog.Observe(traveller,t1.AddMinutes(minute)),Is.EqualTo(tick),$"traveller at {minute} min");
+                    Assert.That(AutonomousStuckWatchdog.Observe(bgSolo,t1.AddMinutes(minute)),Is.False,$"battleground bot at {minute} min");
+                    Assert.That(AutonomousStuckWatchdog.Observe(bgInRally,t1.AddMinutes(minute)),Is.False,$"rally member inside at {minute} min");
+                }
+                Assert.That(rallied,Is.EqualTo(new[]{traveller.DatabaseID}),"a stuck rally is still stuck");
+                Assert.That(exited,Is.Empty);
+                bgSolo.Position+=new Vector3(500,0,0);
+                bgInRally.Position+=new Vector3(0,500,0);
+                Assert.That(AutonomousStuckWatchdog.Observe(bgSolo,t1.AddMinutes(20)),Is.True);
+                Assert.That(AutonomousStuckWatchdog.Observe(bgInRally,t1.AddMinutes(20)),Is.True,"the backstop runs before the rally block");
+                Assert.That(exited,Is.EqualTo(new[]{(bgSolo.DatabaseID,eBattlegroundForcedExit.NoProgress),(bgInRally.DatabaseID,eBattlegroundForcedExit.NoProgress)}));
+                Assert.That(rallied,Is.EqualTo(new[]{traveller.DatabaseID}),"neither battleground bot took the rally path");
+            }
+            finally
+            {
+                AutonomousStuckWatchdog.BattlegroundExitRecoveryForTests=null;
+                AutonomousBattlegroundExit.Clear();
+            }
+        }
+
+        [Test,NonParallelizable]
         public void ARaiderPushedOffThePostWalksBackAndTheWatchdogLeavesItThere()
         {
             using var server=new EpicTestServerScope();
