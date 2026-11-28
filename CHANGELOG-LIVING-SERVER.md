@@ -509,7 +509,7 @@ audit's tells 11 and 12; seen on 1.2.2 `868a82d`, the owner's game of 2026-11-23
   2026-11-24): bots look like players. On, /who tags every gamebot "[Playerbot]" and a refused invite says "gamebot" or
   "buffbot". A new key, so worlds from earlier builds take the hidden default without an upgrade line.
 - Not here: "brb"/"afk" said in chat with no break behind it (#486). `UT_InvitesLogouts485`. **Tests only.**
-**From the Offline DAoC forks** (fork package P5; sources and SHAs in each commit and the PR). **Tests only.**
+**Spell, combat, guild and bot fixes** (tests only)
 - **Two singers on one song no longer leave the group at 0 endurance.** A pulsing song or chant renewed by a second Bard,
   Minstrel, Skald or Paladin replaces the old copy in place; when the first singer's pulse later ended that stale copy, it
   took the bonus away a second time, so endurance regeneration (or any stat song) sat at 0 with the song up. A stale copy
@@ -5828,7 +5828,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - **Checked:** unit tests for bot and player parity, the halving on and off, the rate, and the settings upgrade. Not
   yet played.
 
-**From other forks of Offline DAoC** (chosen by the fork survey of 2026-11-03; each entry credits its author)
+**Battleground returns, /friend and /allrelease, RvR XP, long-run bot fixes and water breathing**
 - **Gamebots in your group who die in a battleground come back to you** (issue #39; from Cancain's fork, by Cancain).
   - **The bug:** battlegrounds have no bind points, so a gamebot in a player's group released to its capital and stood
     there for good: its way back did nothing while it and its leader were in different regions.
@@ -6262,7 +6262,7 @@ shadowofze.
 - **Not included:** the new-client changes, the patch tools and the world-data parts (Campacorentin patrols,
   helmets already stored in a world). Those come with shadowofze's own 0.38 patch.
 
-### Fixes from other forks
+### Effect leak, siege timers, healer cures and bot upkeep
 
 - **The effect leak.** An effect that ended before it had started was put back in the effect service and ticked
   forever, so the server slowed the longer it ran. Such effects are no longer added, and any ended effect still there
