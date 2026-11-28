@@ -218,8 +218,26 @@ namespace DOL.GS
             w.Owner == bot && !bot.InCombat && !w.InCombat && !w.IsMoving && !bot.IsMoving && !bot.IsCasting && !bot.IsIncapacitated && w.TimesRepaired <= 3 &&
             bot.IsWithinRadius(w, WorldMgr.INTERACT_DISTANCE) && Item(bot, RepairKit) != null;
 
+        /// <summary>The bot holds a siege post: it operates an engine, or (#572 step 2) it stands at its ram crew seat. The
+        /// army then defends it first (FrontierThreat), and it is busy for group invites and for rezzing strangers.</summary>
         public static bool HoldingPosition(GameBot bot) => AutonomousSiegeOwnership.All(bot).Any(w =>
-            bot.IsWithinRadius(w, w.SIEGE_WEAPON_CONTROLE_DISTANCE));
+            bot.IsWithinRadius(w, w.SIEGE_WEAPON_CONTROLE_DISTANCE)) || AutonomousRamCrews.AtSeat(bot);
+        /// <summary>#572 step 2: an enemy at melee reach is striking this bot
+        /// (AutonomousWorldBotController.IsSiegeOperatorThreat): the one thing that takes a ram crew member off its seat.
+        /// Wall archers and casters above do not.</summary>
+        public static bool StruckInMeleeReach(GameBot bot)
+        {
+            if (bot == null) return false;
+            foreach (GameNPC npc in bot.GetNPCsInRadius(350))
+                if (npc.IsAlive && npc.TargetObject == bot && npc.IsAttacking && npc.Realm != bot.Realm &&
+                    AutonomousWorldBotController.IsSiegeOperatorThreat(System.Numerics.Vector2.Distance(new(bot.X, bot.Y), new(npc.X, npc.Y)), npc.Z - bot.Z))
+                    return true;
+            foreach (GamePlayer player in bot.GetPlayersInRadius(350))
+                if (player.IsAlive && player.TargetObject == bot && player.IsAttacking && player.Realm != bot.Realm &&
+                    AutonomousWorldBotController.IsSiegeOperatorThreat(System.Numerics.Vector2.Distance(new(bot.X, bot.Y), new(player.X, player.Y)), player.Z - bot.Z))
+                    return true;
+            return false;
+        }
         public static bool Assigned(GameBot bot) => bot?.TempProperties.GetProperty<long>("SiegeJobUntil",0) > GameLoop.GameLoopTime;
     }
 }

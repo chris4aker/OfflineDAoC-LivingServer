@@ -80,6 +80,13 @@ namespace DOL.GS
         private bool TryRunSiegeJob(GameBot bot)
         {
             long now = GameLoop.GameLoopTime;
+            if (TryRunSiegeJobCore(bot, now)) return true;
+            // #572 step 2: a melee gamebot with no siege job crews the force's ram on purpose (AutonomousRamCrews).
+            return TryCrewRam(bot, now);
+        }
+
+        private bool TryRunSiegeJobCore(GameBot bot, long now)
+        {
             if (_rvrIntent is not (AutonomousRvrEventLayer.Intent.AssaultKeep or AutonomousRvrEventLayer.Intent.AssaultRelicKeep or AutonomousRvrEventLayer.Intent.DefendEvent))
             { if (_siegeJobKeep!=null) ReleaseSiegeJob(bot); return false; }
             if (_siegeSupplyItem != null)
@@ -291,9 +298,20 @@ namespace DOL.GS
                 if (synthetic) _siegeStockLeft = Math.Max(0, _siegeStockLeft - 1);
                 SiegeLog(bot, "deployed", owned, synthetic ? $"synthetic=true built={AutonomousSiegeBuild.BuildMilliseconds(_siegeKind) / 1000}s stockLeft={_siegeStockLeft}/{_siegeStock}" : $"kit={kitId}");
             }
+            return OperateEngine(bot, owned, target, attacking, now);
+        }
+
+        /// <summary>The operator's turn at its engine: walk to it, aim it at the target and work it. An attacking gamebot's
+        /// working ram at a keep door is registered for the force's crew here (#572 step 2): only this turn registers a ram,
+        /// so a player's ram never takes one.</summary>
+        private bool OperateEngine(GameBot bot, GameSiegeWeapon owned, GameLiving target, bool attacking, long now)
+        {
             if (!bot.IsWithinRadius(owned, Math.Max(32, owned.SIEGE_WEAPON_CONTROLE_DISTANCE - 20)))
             { IssuePath(bot, new(owned.X, owned.Y, owned.Z), preciseArrival:true); return true; }
             bot.StopMovingOnPath(); bot.StopMoving(); bot.TargetObject = target;
+            // #572 step 2: an attacking gamebot's working ram at a door takes a crew (the player's ram is never registered).
+            if (attacking && owned is GameSiegeRam crewedRam && target is GameKeepDoor && _siegeJobKeep != null)
+                AutonomousRamCrews.Register(_siegeJobKeep, crewedRam);
             if (owned.TargetObject != target && !owned.SiegeWeaponTimer.IsAlive)
             { owned.TargetObject = target; owned.CurrentState &= ~GameSiegeWeapon.eState.Aimed; }
             if (!owned.SiegeWeaponTimer.IsAlive)
@@ -605,6 +623,108 @@ namespace DOL.GS
             }
             _siegeRepairUntil=0; return true;
         }
+        // ---- ram crews (#572 step 2, AutonomousRamCrews)
+        private Vector3? _crewSpot;
+        private GameSiegeRam _crewSpotRam;
+        private int _crewSpotSeat = -1;
+        private long _crewNextLook;
+
+        /// <summary>
+        /// A melee gamebot of a force attacking a keep, with no siege job, takes a seat at the force's ram with the most empty
+        /// places, walks to its own spot behind the ram and stays there: its presence is what drives the ram
+        /// (GameSiegeRam.Crew). It leaves the seat only to strike back at an enemy in melee reach, as the operator does;
+        /// healers, casters and archers keep their jobs. Nothing here when the force has no working ram at a closed door.
+        /// No woodworking repair (owner, 2026-11-27).
+        /// </summary>
+        private bool TryCrewRam(GameBot bot, long now)
+        {
+            if (_rvrIntent is not (AutonomousRvrEventLayer.Intent.AssaultKeep or AutonomousRvrEventLayer.Intent.AssaultRelicKeep) ||
+                _rvrDestination?.Id?.StartsWith("rvr-keep-", StringComparison.Ordinal) != true ||
+                bot.CurrentRegionID != _rvrDestination.RegionId || BotSiegeRuntime.Assigned(bot) || _siegeJobKeep != null &&
+                AutonomousSiegeOwnership.All(bot).Any() || !bot.IsAutonomousWorldBot || BotDutyLeases.IsSpokenForByPlayer(bot) ||
+                GameRelic.IsPlayerCarryingRelic(bot) || !IsRamCrewCandidate(bot))
+            {
+                LeaveRamCrew(bot);
+                return false;
+            }
+            if (RamCrewWaitsForArmy(bot, now))
+            {
+                if (AutonomousRamCrews.KeepSeat(bot, out _) is { } held) CrewLog(bot, "crew_left", held, "reason=army_holds");
+                LeaveRamCrew(bot);
+                return false;
+            }
+            GameSiegeRam ram = AutonomousRamCrews.KeepSeat(bot, out int seat);
+            if (ram != null && (!AutonomousRamCrews.Working(ram, bot.Realm) || !AutonomousRamCrews.AimedAtClosedDoor(ram)))
+            {
+                CrewLog(bot, "crew_left", ram, "reason=" + (AutonomousRamCrews.Working(ram, bot.Realm) ? "door_open" : "ram_down"));
+                LeaveRamCrew(bot);
+                ram = null;
+            }
+            if (ram == null)
+            {
+                if (now < _crewNextLook ||
+                    Distance(bot.X, bot.Y, _rvrDestination.X, _rvrDestination.Y) > AutonomousRamCrews.LookRadius) return false;
+                _crewNextLook = now + AutonomousRamCrews.LookMilliseconds;
+                if (!AutonomousRamCrews.TryTakeSeat(bot, _rvrDestination.Id, out ram, out seat)) return false;
+                CrewLog(bot, "crew_seat", ram, $"seat={seat} seats={AutonomousRamCrews.SeatsTaken(ram)}/{ram.MAX_PASSENGERS} crew={ram.Crew}");
+            }
+            // Only a blow at melee reach takes a crew member off the ram (the ordinary combat turn answers it).
+            if (BotSiegeRuntime.StruckInMeleeReach(bot)) return false;
+            if (bot.IsAttacking) bot.StopAttack();
+            if (_crewSpotRam != ram || _crewSpotSeat != seat || !_crewSpot.HasValue)
+            {
+                _crewSpotRam = ram; _crewSpotSeat = seat;
+                GameObject door = ram.TargetObject ?? ram;
+                Vector2 spot = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), new(door.X, door.Y), seat);
+                var nav = PathfindingProvider.Instance;
+                Vector3 raw = new(spot.X, spot.Y, ram.Z);
+                Vector3? floor = nav.IsAvailable && nav.HasNavmesh(ram.CurrentZone)
+                    ? nav.GetClosestPoint(ram.CurrentZone, raw, 48, 48, 128, nav.DefaultFilters) : raw;
+                _crewSpot = floor.HasValue && Vector2.Distance(new(floor.Value.X, floor.Value.Y), new(ram.X, ram.Y)) <= AutonomousRamCrews.SpotReach
+                    ? floor.Value : new Vector3(ram.X, ram.Y, ram.Z);
+            }
+            float off = Vector3.Distance(new(bot.X, bot.Y, bot.Z), _crewSpot.Value);
+            if (off > 60 && !(bot.IsWithinRadius(ram, AutonomousRamCrews.SpotReach) && !bot.IsMoving && off <= 160))
+            {
+                IssuePath(bot, _crewSpot.Value, preciseArrival: true);
+                SiegeStatus(bot, "Joining the ram crew", ram);
+                return true;
+            }
+            bot.StopMovingOnPath(); bot.StopMoving();
+            if (ram.TargetObject != null) bot.TurnTo(ram.TargetObject);
+            AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.SiegeParticipation);
+            SiegeStatus(bot, $"Crewing the ram: {ram.Crew} of {ram.MAX_PASSENGERS} places", ram);
+            return true;
+        }
+
+        /// <summary>Whether the crew waits for the army (AutonomousRamCrews.WaitsForArmy): a battleground gamebot while its
+        /// realm's wave gathers, a frontier attacker while its force's siege rally holds. The crew then goes on with the
+        /// wave's or the rally's turn, and takes its seat once the army goes in.</summary>
+        private bool RamCrewWaitsForArmy(GameBot bot, long now)
+        {
+            bool battleground = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground);
+            return AutonomousRamCrews.WaitsForArmy(battleground,
+                battleground && AutonomousBattlegroundWave.IsGathering(bot.CurrentRegionID, bot.Realm, out _),
+                !battleground && AutonomousRvrEventLayer.GetRallyOrder(RvrForceId(bot), bot.Realm, now) is { } rally &&
+                bot.Realm == rally.Attacker);
+        }
+
+        /// <summary>Who crews a ram: melee fighters (AutonomousRamCrews.IsCrewCandidate).</summary>
+        public static bool IsRamCrewCandidate(GameBot bot) => bot?.CharacterClass != null &&
+            AutonomousRamCrews.IsCrewCandidate(AutonomousRvrDefense.IsRangedDefender(bot),
+                BotPartyRoles.For((eCharacterClass)bot.CharacterClass.ID) == BotPartyRole.Support ||
+                (eCharacterClass)bot.CharacterClass.ID == eCharacterClass.Shaman);
+
+        /// <summary>A crew row names the keep the force attacks: a crew member holds no siege job, so its job keep is blank.</summary>
+        private void CrewLog(GameBot bot, string action, GameSiegeWeapon ram, string detail)
+        { if (Log.IsInfoEnabled) Log.Info($"RVR_SIEGE action={action} bot={bot.Name} keep={_rvrDestination?.Id} engine={ram?.ObjectID} {detail}"); }
+
+        private void LeaveRamCrew(GameBot bot)
+        {
+            AutonomousRamCrews.Leave(bot);
+            _crewSpot = null; _crewSpotRam = null; _crewSpotSeat = -1;
+        }
+
         private void ReleaseSiegeJob(GameBot bot)
         {
             AutonomousSiegeJobs.Release(bot);

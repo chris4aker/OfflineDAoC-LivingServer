@@ -241,9 +241,14 @@ public sealed partial class AutonomousWorldBotController
             ? (GameSiegeWeapon)bot.TargetObject : null;
         if (bot?.IsAutonomousWorldBot != true || bot.IsTemporaryGroupHelper || bot.IsPlayerLedGroup ||
             !bot.IsAlive || bot.ObjectState != GameObject.eObjectState.Active || bot.IsReturningAfterRelease ||
-            bot.IsOnStableMasterRoute || !IsBattleground(bot) ||
-            (brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null && engineInHand == null ||
-            brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE ||
+            bot.IsOnStableMasterRoute || !IsBattleground(bot)) return false;
+        if ((brain.HasAggro || bot.InCombat || bot.IsAttacking) && previousEngine == null && engineInHand == null)
+        {
+            // #529 step 3: a fighting bot does not scan for a new fight, but it keeps looking (its contacts feed the board).
+            RefreshRvrContactsInCombat(brain, bot);
+            return false;
+        }
+        if (brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE ||
             !_frontierThreat.Due(GameLoop.GameLoopTime, bot.DatabaseID) || IsSafeArea(bot)) return false;
         // AI_PROFILE: only the scan itself is timed, not the cheap checks above that skip it.
         using var aiProfile = AiProfile.Scope(AiSystem.FrontierThreatScan);
@@ -308,8 +313,7 @@ public sealed partial class AutonomousWorldBotController
             return seen;
         }
         bool Visible(GameLiving target) => FiringOnRealm(bot, target) && !target.IsStealthed ||
-            !RvrSkipsLineOfSight(bot, target, rvr, scanNow) && Ray(nav.HasLineOfSight(bot.CurrentZone,
-            new(bot.X, bot.Y, bot.Z + 48), new(target.X, target.Y, target.Z + 48), nav.BlockingDoorAvoidanceFilters));
+            !RvrSkipsLineOfSight(bot, target, rvr, scanNow) && Ray(RvrSightRay(nav, bot, target));
         var visible = siegeFighter
             ? _frontierThreat.VisiblePriority(nearby.Where(AutonomousRvrDefense.IsCombatant).ToArray(),
                 nearby.OfType<GameSiegeWeapon>().Cast<GameLiving>().ToArray(), Visible)
@@ -341,18 +345,14 @@ public sealed partial class AutonomousWorldBotController
             visibleTargets = rallyContacts;
         if (!defending && !siegeFighter && visibleTargets.Length > 0)
         {
-            GameLiving[] allowed = null;
-            bool atRally;
-            if (BattlegroundGatherHold(bot, out Vector3 gatherStaging, out atRally))
-                allowed = visibleTargets.Where(target => GathererMayEngage(bot, target, gatherStaging))
+            // The one gather-hold rule (#530 step 5a, AutonomousRvrEventLayer.MusterAllowsFight), as in the combat drop and
+            // the keep's guard pick.
+            AutonomousRvrEventLayer.MusterHold hold = BattlegroundMusterHold(bot, out Vector3 gatherStaging);
+            bool atRally = hold != AutonomousRvrEventLayer.MusterHold.Gather;
+            if (hold != AutonomousRvrEventLayer.MusterHold.None)
+            {
+                GameLiving[] allowed = visibleTargets.Where(target => MusterAllowsFight(bot, hold, gatherStaging, target))
                     .Concat(rallyContacts).Distinct().ToArray();
-            else if (BattlegroundStormHold(bot))
-            {
-                atRally = true;
-                allowed = visibleTargets.Where(target => StormerMayEngage(bot, target)).ToArray();
-            }
-            if (allowed != null)
-            {
                 if (allowed.Length == 0)
                 {
                     NoteBattlegroundHeldBack(bot, atRally, dropped: false);
@@ -377,7 +377,28 @@ public sealed partial class AutonomousWorldBotController
             target => HeldByCrowdControl(bot, target));
         var operatorThreats=visibleTargets.Where(target=>target.IsAttacking && target.TargetObject is GameBot friendly &&
             friendly.Realm==bot.Realm && bot.IsWithinRadius(friendly,1000) && BotSiegeRuntime.HoldingPosition(friendly)).ToArray();
-        GameLiving enemy = SelectDistributedRvrTarget(bot, operatorThreats.Length>0 ? operatorThreats : visibleTargets);
+        GameLiving[] pickFrom = operatorThreats.Length > 0 ? operatorThreats : visibleTargets;
+        // #531 step 1: in the field the group's plan picks the first target (one opener for the whole group, by the call,
+        // the mates' target or the kill order); a third of the bots still go for a relic carrier first. Everyone else, and
+        // the field with rvr_bot_assist off, keeps the spread pick.
+        string pickRule = "spread";
+        GameLiving enemy = null;
+        if (!defending && !siegeFighter && FirstPickApplies(bot))
+        {
+            enemy = CarrierFocus(bot, pickFrom);
+            pickRule = "carrier";
+            if (enemy == null)
+            {
+                enemy = PlanFirstPick(bot, pickFrom, target => FiringOnRealm(bot, target) || AttackingGroup(bot, target), scanNow,
+                    out RvrFirstPickReason firstPick);
+                pickRule = RvrFirstPick.Label(firstPick);
+            }
+        }
+        if (enemy == null)
+        {
+            enemy = SelectDistributedRvrTarget(bot, pickFrom);
+            pickRule = "spread";
+        }
         if (enemy == null || !Eligible(enemy)) return false;
         if (previousEngine != null && enemy is GameSiegeWeapon) return false;
         // #617: on an engine already, the bot stays on it unless the pick is a person; then it leaves the engine for him.
@@ -429,7 +450,7 @@ public sealed partial class AutonomousWorldBotController
             FiringOnRealm(bot, enemy) ? "firing" : rvr.AtObjective ? "objective" : "noticed";
         long fight = RvrFights.Touch(bot, enemy, "engage");
         RvrRecordRows.Engage(bot, enemy, list, visibleTargets.Length, fight);
-        RvrDecide.Event(bot, "scan", "engage", RvrRecordText.Who(enemy), "scan." + list, $"visible={visibleTargets.Length}",
+        RvrDecide.Event(bot, "scan", "engage", RvrRecordText.Who(enemy), "scan." + list, $"visible={visibleTargets.Length} pick={pickRule}",
             enemy is GamePlayer engagedPlayer ? engagedPlayer.Name : null);
         // #625: BG_TARGET_PICK (sampled) and BG_RALLY_RESPONSE (a rallied bot's first engage of a posted contact); logs only.
         if (battleground)
