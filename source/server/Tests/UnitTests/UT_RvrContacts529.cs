@@ -362,8 +362,17 @@ namespace DOL.GS.Tests
                 .Where(f => !f.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
                 .Where(f => Regex.IsMatch(File.ReadAllText(f), @"\bRvrContact(Table|ShadowTally)\b"))
                 .Select(Path.GetFileName).OrderBy(n => n, StringComparer.Ordinal).ToArray();
-            Assert.That(readers, Is.EqualTo(new[] { "AutonomousWorldBotController.RvrPerception.cs", "RvrFightBoards.cs", "ServerMemoryDiagnostics.cs" }),
+            Assert.That(readers, Is.EqualTo(new[] { "AutonomousChatFieldTalk.cs", "AutonomousWorldBotController.RvrFirstPick.cs",
+                    "AutonomousWorldBotController.RvrPerception.cs", "RvrFightBoards.cs", "ServerMemoryDiagnostics.cs" }),
                 "a new reader of the contact table is a new decision from it: add it here with its step (#529)");
+            // #528 (#740 review): an inc call counts only the attackers its speaker knows of, from its own contacts.
+            string field = Code("bots", "autonomous", "AutonomousChatFieldTalk.cs");
+            Assert.That(Regex.Matches(field, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows)\(").Cast<Match>().Select(m => m.Value),
+                Is.EqualTo(new[] { "RvrContactTable.Of(" }), "the inc call reads only the speaker's own contacts");
+            // #531 step 1: the plan's first pick reads the bot's own proposals, nothing else
+            string firstPick = Code("bots", "autonomous", "AutonomousWorldBotController.RvrFirstPick.cs");
+            Assert.That(Regex.Matches(firstPick, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows|Group)\(").Cast<Match>().Select(m => m.Value),
+                Is.EqualTo(new[] { "RvrContactTable.Proposals(" }), "the first pick picks from the scan's proposals (#531)");
             string perception = Code("bots", "autonomous", "AutonomousWorldBotController.RvrPerception.cs");
             Assert.That(Regex.Matches(perception, @"RvrContactTable\.(Of|KnownByAny|Realm|Near|Proposals|TryGet|Knows)\(").Cast<Match>().Select(m => m.Value),
                 Is.EqualTo(new[] { "RvrContactTable.Of(" }), "the alarm is the scan's only reader in steps 1-2");
