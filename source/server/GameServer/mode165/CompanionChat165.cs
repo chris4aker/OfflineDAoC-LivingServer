@@ -237,7 +237,7 @@ namespace DOL.GS
             if (!(AutonomousBotChatCoordinator.NeedsAnswer(message) || named != null) && NextReply.TryGetValue(speaker.DatabaseID, out long next) && now < next)
                 return false;
             string unnamed = named != null && AutonomousChatThreads.WithoutName(message, named.Name) is { Length: > 0 } without ? without : message;
-            string resolved = ChatConversations.Resolve(unnamed, ChatConversations.Live.In(player.Name, room, now));
+            string resolved = ChatConversations.Resolve(unnamed, ChatConversations.Live.In(player.Name, room, now), player.Level);
             AutonomousBotChatCoordinator.ReplyChoice choice = Answer(speaker, player, resolved, Random.Shared);
             if (string.IsNullOrWhiteSpace(choice.Text))
             {

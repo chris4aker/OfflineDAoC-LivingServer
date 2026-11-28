@@ -2121,7 +2121,7 @@ public static partial class AutonomousBotChatCoordinator
         long now = GameLoop.GameLoopTime;
         string channel = AutonomousChatThreads.Tell(player.Name, bot.Name);
         // Conversation memory (DESIGN-040): "how do i get there", "how much for it" completed from what the tell holds.
-        if (voices && ChatConversations.Resolve(message, ChatConversations.Live.For(player.Name, bot.DatabaseID, channel, now)) is { } resolved &&
+        if (voices && ChatConversations.Resolve(message, ChatConversations.Live.For(player.Name, bot.DatabaseID, channel, now), player.Level) is { } resolved &&
             resolved != message)
         {
             message = resolved;
@@ -2779,7 +2779,7 @@ public static partial class AutonomousBotChatCoordinator
         string room = faction ? AutonomousChatThreads.Faction(player.Realm) : AutonomousChatThreads.Say(player.CurrentRegionID);
         // Conversation memory (DESIGN-040): the bot that has the floor with this player, and "how do i get there" completed.
         long floor = voices ? ChatConversations.Live.FloorHolder(player.Name, room, nowMs) : 0;
-        if (voices && ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, room, nowMs)) is { } resolved)
+        if (voices && ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, room, nowMs), player.Level) is { } resolved)
             message = resolved;
         eAutonomousChatIntent intent = AutonomousChatIntentModel.Predict(message);
         bool shortTalk = voices && AutonomousChatReplyPath.IsShortTalk(message, intent);
@@ -3853,7 +3853,7 @@ public static partial class AutonomousBotChatCoordinator
             long now = GameLoop.GameLoopTime;
             if (ChatConversations.Live.In(player.Name, key, now)?.Turns.LastOrDefault() is not { ByPlayer: true } last || last.Text != message.Trim())
                 ChatConversations.Live.NotePlayer(player.Name, key, message, now);
-            message = ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, key, now));
+            message = ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, key, now), player.Level);
         }
         return Budgeted(VoicedChoice(responder, message, () => null, player, addressed: true, channel: channel), responder, message, named, channel, player);
     }

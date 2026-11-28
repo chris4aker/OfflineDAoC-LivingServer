@@ -230,7 +230,7 @@ namespace DOL.GS.Tests
                     var conversations = new ChatConversations();
                     conversations.NotePlayer("Wynn", key, setup, 1_000);
                     ChatConversations.Conversation held = conversations.In("Wynn", key, 2_000);
-                    string resolved = ChatConversations.Resolve(said, held);
+                    string resolved = ChatConversations.Resolve(said, held, 24);
                     var q = new Question(id, resolved, channel, eRealm.Albion, "Armsman", 24, "followup", null);
                     Run run = RunOf(bench, q, recent, now);
                     now = now.AddMinutes(3);
@@ -379,7 +379,7 @@ namespace DOL.GS.Tests
             }
             // No thread step took it: the channel's own path, on the line the conversation memory completes.
             ChatConversations.Conversation held = conversations.In(player, key, heard);
-            string completed = ChatConversations.Resolve(message, held);
+            string completed = ChatConversations.Resolve(message, held, 24);
             if (completed != message)
                 resolved = completed;
             run.Q = run.Q with { Text = completed };
