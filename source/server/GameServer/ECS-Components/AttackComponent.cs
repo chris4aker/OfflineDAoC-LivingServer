@@ -256,15 +256,15 @@ namespace DOL.GS
             }
         }
 
-        /// <summary>
-        /// Gets the current attackspeed of this living in milliseconds
-        /// </summary>
-        /// <returns>effective speed of the attack. average if more than one weapon.</returns>
         /// <summary>The Critical Shot level for the draw time: a bot's comes from its bow spec, as a player's ability would
         /// (#569 step 8; bots never run OnSkillTrained, so their ability level read 0 and the draw was slower than a player's).</summary>
         private static int CriticalShotDrawLevel(GameLiving owner) =>
             owner is GameBot bot ? BotRangedCombat.CriticalShotLevel(bot) : owner.GetAbilityLevel(Abilities.Critical_Shot);
 
+        /// <summary>
+        /// Gets the current attackspeed of this living in milliseconds
+        /// </summary>
+        /// <returns>effective speed of the attack. average if more than one weapon.</returns>
         public int AttackSpeed(DbInventoryItem mainWeapon, DbInventoryItem leftWeapon = null)
         {
             int minimum;
