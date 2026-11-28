@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using DOL.GS.Keeps;
 using NUnit.Framework;
 using L = DOL.GS.AutonomousRvrEventLayer;
@@ -251,6 +253,42 @@ namespace DOL.GS.Tests
             // A later hit does not move it.
             L.BeginDefenseResponse(target, eRealm.Albion, "offline", now + 60_000);
             Assert.That((long)active.GetType().GetField("BattleStartedTick").GetValue(active), Is.EqualTo(now));
+        }
+
+        // The three wiring sites the rules above don't reach (review of #802): the tests call ObserveKeepAttack with an
+        // explicit kind and ThirdRealmJoinsDefense directly, so the call sites are pinned in the source text. Reverting any
+        // of them fails here.
+        private static string Source(string relative)
+        {
+            string root = TestContext.CurrentContext.TestDirectory;
+            for (int i = 0; i < 10 && root != null && !File.Exists(Path.Combine(root, relative)); i++)
+                root = Path.GetDirectoryName(root);
+            if (root == null || !File.Exists(Path.Combine(root, relative)))
+                Assert.Fail($"{relative} not found above the test folder.");
+            return Regex.Replace(File.ReadAllText(Path.Combine(root, relative)), @"\s+", " ");
+        }
+
+        [Test]
+        public void TheDoorTheGuardDeathAndTheThirdRealmFilterAreWired()
+        {
+            string door = Source("source/server/GameServer/keeps/Gameobjects/GameKeepDoor.cs");
+            string guard = Source("source/server/GameServer/keeps/Gameobjects/Guards/GameKeepGuard.cs");
+            string defense = Source("source/server/GameServer/bots/autonomous/AutonomousRvrEventLayer.Defense.cs");
+            Assert.Multiple(() =>
+            {
+                // (b) A door hit raises the alarm for a lone attacker.
+                Assert.That(door, Does.Contain(
+                    "AutonomousRvrEventLayer.ObserveKeepAttack(Component.Keep, source, AutonomousRvrEventLayer.KeepAttackKind.DoorHit);"));
+                // (b) A guard's death raises it too, in Die, before the base death.
+                int die = guard.IndexOf("public override void Die(GameObject killer)", StringComparison.Ordinal);
+                Assert.That(die, Is.GreaterThanOrEqualTo(0), "GameKeepGuard.Die");
+                string dieBody = guard.Substring(die, guard.IndexOf("base.Die(killer);", die, StringComparison.Ordinal) - die);
+                Assert.That(dieBody, Does.Contain(
+                    "if (killer != this) AutonomousRvrEventLayer.ObserveKeepAttack(Component?.Keep, killer, AutonomousRvrEventLayer.KeepAttackKind.GuardKilled);"));
+                // (e) The recruit pass skips the third realm of a player's siege until its roll and delay allow it.
+                Assert.That(defense, Does.Contain(
+                    "if (active.DefenseReaction && force.Realm == OtherRealm(active) && !ThirdRealmJoinsDefense(active.ThirdRealmIntervenes, now - active.BattleStartedTick)) continue;"));
+            });
         }
     }
 }
