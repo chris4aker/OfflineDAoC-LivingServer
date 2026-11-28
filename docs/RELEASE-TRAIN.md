@@ -53,6 +53,9 @@ or the wizard with another folder), or with the launcher's **Install into a new 
    the threshold, the update log (`runtime\logs\launcher-updates.log`) shows the install, saves load after a restart.
 7. Note the result on the release's issue: build, commit, what ran, what was seen. A failure gets an issue and the next
    rc; an rc is never edited or moved.
+8. Read the rc's log against the PC checklists (rc.3: #503 and #476, as data in `source/tools/rc3-checklist.json`):
+   `python source/tools/rc_checklist.py server.log` prints PASS / FAIL / NOT SEEN / IN GAME per issue and
+   line, with the row counts and the first matching line (`--brief`, `--json`, `--build <commit>`; #826).
 
 ### The release checklist (tier 3)
 
