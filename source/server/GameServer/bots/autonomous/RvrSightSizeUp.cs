@@ -87,6 +87,26 @@ public static class RvrSightSizeUp
     /// fresh one walks away and calls friends; a repeat while waiting just extends the wait). Pure.</summary>
     public static (long Until, bool Fresh) Rearm(long now, long holdUntil) => (now + WaitMilliseconds, holdUntil <= now);
 
+    /// <summary>#766 part 2 (owner decision 64A): a back-off call on the same contact within this long of the last one is a
+    /// repeat. rc.2's 25.4 h run: 88,287 back-offs from 2,314 bots, mostly in the battlegrounds; the busiest bot backed
+    /// off 425 times, about one every 3.6 min (walk away, wait, its route walks it back, the same enemies again). A design
+    /// choice longer than that cycle, not a sourced timing.</summary>
+    public const long RepeatCooldownMilliseconds = 300_000;
+    /// <summary>#766 part 2: enemies centred this close to the remembered contact are the same contact (the back-off
+    /// distance plus a margin for a group that moves about).</summary>
+    public const int RepeatRadius = 2_500;
+
+    /// <summary>
+    /// #766 part 2: whether a back-off call repeats the last one: the remembered contact is within
+    /// <see cref="RepeatCooldownMilliseconds"/>, its enemies were centred within <see cref="RepeatRadius"/> of these, and
+    /// these are no more of them. A repeat doesn't walk away again, call friends again or log another back-off: the bot
+    /// keeps its distance where it stands. New sight (more enemies, another place, or the cooldown run out) is a fresh
+    /// back-off. Null: no contact remembered. Pure.
+    /// </summary>
+    public static bool IsRepeat(Vector2? lastCentre, int lastEnemies, long lastTick, long now, Vector2 centre, int enemies) =>
+        lastCentre is Vector2 last && now - lastTick < RepeatCooldownMilliseconds && enemies <= lastEnemies &&
+        Vector2.DistanceSquared(last, centre) <= (float)RepeatRadius * RepeatRadius;
+
     /// <summary>#766: a failed order whose destination lies this close to the back-off point is the back-off's own (as
     /// AutonomousForeignRouteFailure.RouteRadius: the mover may move the point onto its floor).</summary>
     public const float BackOffOrderRadius = 96f;

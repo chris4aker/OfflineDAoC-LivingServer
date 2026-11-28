@@ -107,7 +107,7 @@ public static class AutonomousObjectiveAssignments
         // TargetName is the camp's monster while the bot works a camp (a kill elsewhere has no camp and no effect).
         if (!string.IsNullOrWhiteSpace(record.CurrentCampId))
             AutonomousCampDangerBench.RecordKill(AutonomousCampDangerBench.SpeciesKey(bot.CurrentRegionID, record.TargetName));
-        // True 1.65: kills offset empty hunts in the camp memory
+        // Kills offset empty hunts in the camp memory
         if (AutonomousCampCompetition.TryGetSpot(record.CurrentCampId, out AutonomousCampCompetition.CampSpot spot) && !spot.Dungeon)
             AutonomousCampEmptyMemory.RecordKill(AutonomousCampEmptyMemory.Key(spot.Region, spot.Name, spot.X, spot.Y),
                 GameLoop.GameLoopTime);
@@ -229,8 +229,11 @@ public static class AutonomousObjectiveAssignments
             Battlegrounds = target.Battlegrounds - surplus };
     }
 
+    /// <summary>A battleground slot fits the bot's level, and the bot was not just forced out of a battleground (#572 step 4:
+    /// 30 minutes, so a stuck bot does not loop between the entry and the exit).</summary>
     public static bool CanTakeBattleground(GameBot bot) =>
-        bot != null && AutonomousBotGoalPolicy.Allows(bot.Level, eAutonomousObjectiveKind.Battleground);
+        bot != null && AutonomousBotGoalPolicy.Allows(bot.Level, eAutonomousObjectiveKind.Battleground) &&
+        !AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID);
 
     private static Allocation Allocate(int count, double soloWeight, double groupWeight, double rvrWeight, double battlegroundWeight = 0)
     {
@@ -744,7 +747,7 @@ public static class AutonomousObjectiveAssignments
         bool trainingComplete = !WantsBetweenTaskTraining(bot) ||
             (!bot.HasSpendableAutonomousTrainingPoints && !bot.HasPendingAutonomousTraining);
         bool inventoryComplete = !WantsBetweenTaskInventory(bot) || AutonomousBotEconomy.GetNeededService(bot) == null;
-        // A seam (Crafting 2.0 WP0): every registered break activity flagged in this break (DividedRealms' craft trip,
+        // A seam (Crafting 2.0 WP0): every registered break activity flagged in this break (the craft trip,
         // 'C') must be over too. True with none registered.
         bool activitiesComplete = DOL.GS.CraftingEconomy.BotServiceSeams.BreakActivitiesDone(bot);
         if (!trainingComplete || !inventoryComplete || !activitiesComplete)
@@ -791,7 +794,7 @@ public static class AutonomousObjectiveAssignments
     {
         if (bot?.PersistentRecord == null)
             return false;
-        // A seam (Crafting 2.0 WP0): work done at every natural task break, grouped or not (DividedRealms: deliver
+        // A seam (Crafting 2.0 WP0): work done at every natural task break, grouped or not (for example: deliver
         // and commission craft orders). Nothing is registered by default.
         DOL.GS.CraftingEconomy.BotServiceSeams.AtTaskBreak(bot, DOL.GS.CraftingEconomy.TaskBreakPoint.Begin);
         if (bot.Group != null)
@@ -837,7 +840,7 @@ public static class AutonomousObjectiveAssignments
     public static void CompleteBetweenTaskServices(GameBot bot)
     {
         if (!IsBetweenPveTasks(bot)) return;
-        // A seam (Crafting 2.0 WP0): the break is closing (DividedRealms: hand over what this break's craft trip made).
+        // A seam (Crafting 2.0 WP0): the break is closing (for example: hand over what this break's craft trip made).
         DOL.GS.CraftingEconomy.BotServiceSeams.AtTaskBreak(bot, DOL.GS.CraftingEconomy.TaskBreakPoint.End);
         if (BetweenTaskServiceExpired(bot))
             DOL.Logging.LoggerManager.Create(typeof(AutonomousObjectiveAssignments)).Warn(

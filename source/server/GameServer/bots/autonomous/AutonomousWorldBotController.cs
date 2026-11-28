@@ -23,7 +23,7 @@ namespace DOL.GS
     {
         /// <summary>
         /// The executor seam of the task-break activities (Crafting 2.0 WP0, DOL.GS.CraftingEconomy.IBotBreakActivity). WP4
-        /// implements it in its own partial file with DividedRealms' craft trip (HandleCraftTrip): set
+        /// implements it in its own partial file with the craft trip (HandleCraftTrip): set
         /// <paramref name="handled"/> when the activity used this turn. Unimplemented, every call compiles away.
         /// </summary>
         partial void RunBreakActivities(GameBot bot, ref bool handled);
@@ -146,6 +146,13 @@ namespace DOL.GS
         private long _nextSiegeCombatAttendanceTick;
         public const int SiegeCombatAttendanceRadius = 9_500;
 
+        /// <summary>#572 step 2: a ram crew member (frontier or battleground) at its seat stays there through wall arrows,
+        /// spells and the aggro they bring; only an enemy striking it at melee reach sends it to the ordinary fight.</summary>
+        public static bool HoldsRamSeat(GameBot bot) => bot != null && !bot.IsCasting &&
+            (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) ||
+             AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground)) &&
+            AutonomousRamCrews.AtSeat(bot) && !BotSiegeRuntime.StruckInMeleeReach(bot);
+
         /// <summary>
         /// A siege participant fighting at the keep (inside the rally-post ring) is physically there.
         /// Presence was only reported at a bot's own rally post outside combat: run 12's Albion army
@@ -189,7 +196,7 @@ namespace DOL.GS
         private int _terminalRouteFailuresInPocket;
         // 1.2.1 (#420, #421): identical pocket escapes for one goal (AutonomousRouteRecoveryPolicy.PocketEscapeRun)
         private readonly AutonomousRouteRecoveryPolicy.PocketEscapeRun _pocketEscapeRun = new();
-        // Route goal fixes (stefanrows): the latest IssuePath was a precise arrival; an off-mesh goal walked to its
+        // Route goal fixes: the latest IssuePath was a precise arrival; an off-mesh goal walked to its
         // floor; a goal with no usable floor (not tried again); a snapped goal that failed again; another mover's
         // failure set aside once; the floor step's budget and its miss memo.
         private bool _issuedPreciseArrival;
@@ -215,7 +222,7 @@ namespace DOL.GS
         private long _lfgPauseUntilTick;
         private long _lfgNextRollTick;
         private ConColor? _lastEngagedCon;
-        // True 1.65: the con it last died to, and camps it just left as crowded (AutonomousCampCrowdWidening)
+        // The con it last died to, and camps it just left as crowded (AutonomousCampCrowdWidening)
         private ConColor? _lastDeathCon;
         private long _lastDeathConTick;
         private readonly List<(string CampId, long Until)> _busyCamps = new();
@@ -262,7 +269,7 @@ namespace DOL.GS
             bool IsFrontier,
             ConColor? FallbackMaximumCon = null,
             int TargetLevel = 0,
-            // True 1.65: what the background builder worked out about the camp (AutonomousCampKnowledge)
+            // What the background builder worked out about the camp (AutonomousCampKnowledge)
             AutonomousCampKnowledge.Traits Traits = default);
 
         private sealed record CampCatalogCell(
@@ -290,14 +297,14 @@ namespace DOL.GS
             int PoolMobs = -1,
             // owner 2026-11-08: a merged camp's other anchors (x, y, z triples) tried in turn when its own fails projection
             int[] FallbackAnchors = null,
-            // True 1.65 (its owner 2026-11-10): most live monsters of its name around it fly (AutonomousFlyerCampPolicy)
+            // Most live monsters of its name around it fly (AutonomousFlyerCampPolicy)
             bool FlyerCamp = false,
-            // True 1.65: pack factor, casters, creature type and weaknesses (AutonomousCampKnowledge)
+            // Pack factor, casters, creature type and weaknesses (AutonomousCampKnowledge)
             AutonomousCampKnowledge.Traits Traits = default);
 
         private static CampCatalogCell[] _campCatalog = [];
 
-        /// <summary>True 1.65 (M11 / M6): each published outdoor camp's safe spot by camp id (built with each catalog generation).</summary>
+        /// <summary>Each published outdoor camp's safe spot by camp id (built with each catalog generation).</summary>
         private static Dictionary<string, (ushort Region, Vector3 Safe)> _campSafeSpots = new(StringComparer.OrdinalIgnoreCase);
 
         private static void PublishCampSafeSpots(IEnumerable<CampCatalogCell> cells)
@@ -408,6 +415,8 @@ namespace DOL.GS
                 VisitPlaces(bot, GameLoop.GameLoopTime);
                 return false;
             }
+            // #572 51B: the in-bracket sighting an out-levelled stay needs (no-op outside the battlegrounds).
+            ObserveBattlegroundStay(bot);
 
             try
             {
@@ -553,7 +562,7 @@ namespace DOL.GS
                     return true;
 
                 // Relic audit 2026-10-31 (L4): a relic carrier runs home. It used to stand and fight (the combat block below
-                // ran first) and, in True 1.65, walk to loot bags. Only a crowd-controlled or cornered carrier fights back.
+                // ran first) and walk to loot bags. Only a crowd-controlled or cornered carrier fights back.
                 if (RelicCarrierRuns(brain, bot, nowTick))
                     return ExecuteRvr(brain, bot);
 
@@ -570,6 +579,11 @@ namespace DOL.GS
                 if (!brain.HasAggro && !bot.IsAttacking && !bot.IsCasting &&
                     AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.RvR) && BotSiegeRuntime.HoldingPosition(bot))
                     return ExecuteRvr(brain,bot);
+                // #572 step 2: a ram crew member holds its seat against arrows and spells from the walls too, in the
+                // frontier and in a battleground; only a blow at melee reach sends it to the ordinary fight.
+                if (HoldsRamSeat(bot))
+                    return AutonomousObjectiveAssignments.Is(bot,eAutonomousObjectiveKind.Battleground)
+                        ? ExecuteBattleground(brain,bot) : ExecuteRvr(brain,bot);
 
                 bool postCombatRecovery = BotRestRecovery.NeedsOrContinuesRest(bot) && !BotRestRecovery.BlocksRest(bot);
                 if (brain.HasAggro || (bot.InCombat && !postCombatRecovery) || bot.IsAttacking)
@@ -577,8 +591,7 @@ namespace DOL.GS
                     // Defense owns movement; do not resume an old dragon-ring
                     // waypoint from a different position after the fight.
                     _dragonRallyPlanning = null;
-                    _dragonRallyRoute = null;
-                    _dragonRallyRetry = 0;
+                    _dragonRally.Interrupt();
                     if (_camp != null && _groupDirective?.IsDynamic != true)
                         _recoverBeforeNextCampTarget = true;
 
@@ -779,7 +792,7 @@ namespace DOL.GS
                             AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                             return true;
                         }
-                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (DividedRealms' craft trip,
+                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (the craft trip,
                         // WP4's partial file). With no implementation the compiler removes the call.
                         bool breakActivityHandled = false;
                         RunBreakActivities(bot, ref breakActivityHandled);
@@ -969,7 +982,12 @@ namespace DOL.GS
                 // authored monster coordinate may be farther away or above
                 // that floor; never replace the ordered chain with a generic
                 // direct PathTo merely because raw spawn distance is large.
-                if (!certifiedDarknessFallsCamp && (campDistance > CampArrivalRadius || dungeonApproach))
+                // #569 step 9: a non-leader puller beside an arrived leader is at the camp (outdoors
+                // only), so its formation slot outside the ring no longer keeps it from its camp turn.
+                bool pullerArrivedWithLeader = PartyPullerArrivedWithLeader(bot, campDistance, dungeonApproach,
+                    certifiedDarknessFallsCamp);
+                if (!certifiedDarknessFallsCamp && !pullerArrivedWithLeader &&
+                    (campDistance > CampArrivalRadius || dungeonApproach))
                 {
                     _emptyCampSinceTick = 0;
                     _patrolDestination = null;
@@ -1347,8 +1365,9 @@ namespace DOL.GS
         {
             HashSet<ushort> reachable = ReachableRegions(bot.Realm, bot.CurrentRegionID);
             bool exchange = kind == eWorldServiceKind.RealmExchange;
-            GameNPC best = null;
-            double bestMinutes = double.MaxValue;
+            // #570 step 2: the nearest service whose trip passes no learned danger spot, else the nearest one
+            var choice = new AutonomousLearnedDangerTrips.SafestNearest<GameNPC>();
+            DateTime dangerUtc = DateTime.UtcNow;
             if (kind == eWorldServiceKind.SealMerchant)
             {
                 // Only the bot's own realm's seal merchants in Darkness Falls that have something it can pay for.
@@ -1356,7 +1375,7 @@ namespace DOL.GS
                     if (merchant is GameDarknessFallsSealsMerchant seals && IsServiceCandidate(bot, seals) &&
                         AutonomousBotEconomy.FindSealPurchase(bot, seals) != null)
                         ConsiderService(seals);
-                return best;
+                return Chosen();
             }
             // Same candidates and ordering as before (first candidate wins a tie,
             // like OrderBy + FirstOrDefault), but merchants come from each
@@ -1389,18 +1408,25 @@ namespace DOL.GS
                     }
                 }
             }
-            return best;
+            return Chosen();
 
             void ConsiderService(GameNPC npc)
             {
                 if (AutonomousServiceReachability.IsSkipped(AutonomousServiceReachability.Key(npc), bot.DatabaseID, GameLoop.GameLoopTime))
                     return;
                 double minutes = EstimateTravelMinutes(bot, npc.CurrentRegionID, npc.X, npc.Y);
-                if (minutes < bestMinutes)
-                {
-                    bestMinutes = minutes;
-                    best = npc;
-                }
+                choice.Consider(npc, minutes, AutonomousLearnedDangerTrips.ServiceDangerous(npc is RealmExchangeBroker,
+                    bot.CurrentRegionID, bot.X, bot.Y, bot.Level, npc.CurrentRegionID, npc.X, npc.Y, dangerUtc));
+            }
+
+            GameNPC Chosen()
+            {
+                // #570 step 2: one line when a learned danger spot changed the service the bot walks to
+                if (choice.Skipped)
+                    Log.Info($"AUTONOMOUS_SERVICE_DANGER_SKIP bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                             $"kind={kind} region={bot.CurrentRegionID} skipped=\"{choice.Nearest.Name}\" " +
+                             $"chosen=\"{choice.NearestSafe.Name}\" dangerous={choice.Dangerous}");
+                return choice.Choice;
             }
         }
 
@@ -1544,6 +1570,7 @@ namespace DOL.GS
                 _failedTrainerAnchors.Remove(expired);
             HashSet<ushort> reachable = ReachableRegions(bot.Realm, bot.CurrentRegionID);
             eCharacterClass characterClass = (eCharacterClass)bot.CharacterClass.ID;
+            DateTime dangerUtc = DateTime.UtcNow;
             GameTrainer[] candidates = WorldMgr.GetAllRegions()
                 .Where(region => region != null &&
                                  AutonomousCapnBryGoalCatalog.IsClassicOrShroudedIslesExpansion(region.Expansion) &&
@@ -1555,6 +1582,9 @@ namespace DOL.GS
                 .Where(trainer => trainer.TrainedClass == characterClass || trainer.TrainedClass == eCharacterClass.Unknown)
                 .Where(trainer => trainer.CurrentZone == null || IsZoneAccessible(bot.Realm, trainer.CurrentZone))
                 .OrderBy(trainer => trainer.TrainedClass == characterClass ? 0 : 1)
+                // #570 step 2: a trainer whose trip passes no learned danger spot first, a dangerous one only when no other
+                .ThenBy(trainer => AutonomousLearnedDangerTrips.ServiceDangerous(false, bot.CurrentRegionID, bot.X, bot.Y,
+                    bot.Level, trainer.CurrentRegionID, trainer.X, trainer.Y, dangerUtc) ? 1 : 0)
                 .ThenBy(trainer => EstimateTravelMinutes(bot, trainer.CurrentRegionID, trainer.X, trainer.Y))
                 .ToArray();
             foreach (GameTrainer trainer in candidates)
@@ -1884,7 +1914,7 @@ namespace DOL.GS
         public const int FormationFollowReach = 2_500;
 
         /// <summary>
-        /// Pure rule for the follow step (Nikse77 b0fcd555, via rambodolphin13/DividedRealms 0996fff6ea): a faster
+        /// Pure rule for the follow step: a faster
         /// independent route (a stablemaster horse or town teleporter) is only for the leader, and never for a formed PvE
         /// party. A follower that took one every turn dropped and re-took its formation follow: a one-second stutter.
         /// </summary>
@@ -1956,7 +1986,7 @@ namespace DOL.GS
             Vector3 strategicDestination = directive.Camp == null
                 ? new Vector3(leader.X, leader.Y, leader.Z)
                 : new Vector3(directive.Camp.X, directive.Camp.Y, directive.Camp.Z);
-            // Nikse77 2026-11-01 (via rambodolphin13): only the leader may take an independent route (a town teleporter, a
+            // Only the leader may take an independent route (a town teleporter, a
             // plotted leg). A member that took one every turn released its formation follow, the next turn re-issued it,
             // and the party visibly jerked once per second instead of walking behind its leader.
             if (MayTakeIndependentRouteWhileFollowing(directive.ObjectiveKind, bot == leader) &&
@@ -1965,8 +1995,7 @@ namespace DOL.GS
                 return true;
 
             bool tight = leader.CurrentRegion?.IsDungeon == true || leader.CurrentZone?.IsDungeon == true;
-            // Aim around where the leader is about to be, not where it was
-            // (smooth group travel from the stefanrows/OfflineDAoC fork).
+            // Aim around where the leader is about to be, not where it was (smooth group travel).
             Vector3 formationCenter = leader.IsMoving && !tight ? AutonomousGroupMotion.PredictLeader(leader) : new(leader.X, leader.Y, leader.Z);
             Vector3 formation = AutonomousBotGroupCoordinator.FormationPoint(bot, formationCenter, tight);
             // Close the gap on the move so the party travels as one unit instead of the
@@ -2067,11 +2096,11 @@ namespace DOL.GS
         /// Outside a turn the proposal is written at once. Null: refused, nothing changed.
         /// </summary>
         private AutonomousRvrEventLayer.ForceIntent ProposeRvrIntent(GameBot bot, AutonomousRvrEventLayer.IntentProposal proposal,
-            bool mirrorIntent, bool mirrorKeep, string forceId = null)
+            bool mirrorIntent, bool mirrorKeep, string forceId = null, bool? writer = null)
         {
             bool outside = !_forceTurn.Open;
             if (outside)
-                _forceTurn.Begin(forceId ?? RvrForceId(bot), IsRvrForceWriter(bot));
+                _forceTurn.Begin(forceId ?? RvrForceId(bot), writer ?? IsRvrForceWriter(bot));
             AutonomousRvrEventLayer.ForceIntent decided =
                 _forceTurn.Propose(new(_rvrIntent, _rvrSharedEvent), proposal, GameLoop.GameLoopTime);
             if (decided != null)
@@ -2227,6 +2256,20 @@ namespace DOL.GS
                 }
                 return FollowDynamicGroupLeader(bot, _groupDirective);
             }
+
+            // #599 step 1: a battlegroup's follower group trails its lead group outside any event; its leader goes where
+            // the lead's leader goes instead of choosing its own destination (its members follow it, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                AutonomousRvrEventLayer.BattlegroupLeadOf(forceId) is { } battlegroupLead &&
+                AutonomousBotGroupCoordinator.BattlegroupLeader(battlegroupLead) is { IsAlive: true } battlegroupLeader &&
+                battlegroupLeader != bot && battlegroupLeader.CurrentRegionID == bot.CurrentRegionID)
+                return TrailBattlegroupLead(bot, forceId, battlegroupLead, battlegroupLeader);
+
+            // #599 step 3: the realm's zerg. Its lead holds the region's gates in turn; a recruit in another region travels to
+            // the zerg first (once in the lead's region it trails the lead, above).
+            if (!battleActive && committedPlan == null && !carrying && dynamicWarband && _groupDirective.Leader == bot &&
+                !_rvrSharedEvent && AutonomousRvrEventLayer.ZergOrderOf(forceId) is { } zergOrder && TakeZergTurn(bot, forceId, zergOrder))
+                return true;
 
             if (_rvrDestination?.Id.StartsWith("rvr-relic-carrier-", StringComparison.Ordinal) == true)
             {
@@ -2400,8 +2443,9 @@ namespace DOL.GS
                 .Where(guard => !closedDoor || guard is not GuardLord)
                 // Holding at a battleground rally: what comes at the rally (the gatherers' rule), never the lord (the rally goes
                 // up together). Was any guard within 1,500 of the rally point, which stood inside the keep on build 3b808b4.
+                // The one gather-hold rule (#530 step 5a), as in the threat scan and the combat drop.
                 .Where(guard => _battlegroundRallyHold is not { } rally || !BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ||
-                    guard is not GuardLord && GathererMayEngage(bot, guard, rally))
+                    MusterAllowsFight(bot, AutonomousRvrEventLayer.MusterHold.Rally, rally, guard, picking: true))
                 .Where(guard => GameServer.ServerRules.IsAllowedToAttack(bot, guard, true))
                 .Where(guard => PathfindingProvider.Instance.HasLineOfSight(bot.CurrentZone, new(bot.X, bot.Y, bot.Z),
                     new(guard.X, guard.Y, guard.Z), PathfindingProvider.Instance.BlockingDoorAvoidanceFilters))
@@ -2455,12 +2499,19 @@ namespace DOL.GS
             long actorKey = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
             // Some attackers focus the objective carrier; the others fight its
             // screen. A human is not preferred merely because it is human.
-            if (unchecked((ulong)actorKey) % 3 == 0)
-            {
-                GameLiving carrier = candidates.FirstOrDefault(GameRelic.IsPlayerCarryingRelic);
-                if (carrier != null) return carrier;
-            }
+            GameLiving carrier = CarrierFocus(bot, candidates);
+            if (carrier != null) return carrier;
             return candidates[AutonomousRvrStaging.TargetIndex(actorKey, candidates.Length, warbandSize)];
+        }
+
+        /// <summary>A relic carrier among <paramref name="candidates"/> for the third of the bots (by id) that focus the
+        /// objective carrier, or null.</summary>
+        private static GameLiving CarrierFocus(GameBot bot, GameLiving[] candidates)
+        {
+            if (candidates == null || candidates.Length == 0)
+                return null;
+            long actorKey = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
+            return unchecked((ulong)actorKey) % 3 == 0 ? candidates.FirstOrDefault(GameRelic.IsPlayerCarryingRelic) : null;
         }
 
         private bool TryEngageSharedDungeonOpponent(BotBrain brain, GameBot bot)
@@ -3244,6 +3295,9 @@ namespace DOL.GS
                 return true;
             }
 
+            // #570 step 3: most of the last kills here conned green, so a solo bot moves up a spot
+            if (TryMoveUpSpot(brain, bot))
+                return true;
             GameNPC target = FindCampTarget(bot);
             // A level-up can turn a whole low-level camp grey. Those kills give no
             // experience, so a solo bot fought on in place until the stuck watchdog
@@ -3271,6 +3325,8 @@ namespace DOL.GS
                 }
                 if (GuardDungeonTravel(bot, new(target.X, target.Y, target.Z)))
                     return !brain.HasAggro;
+                long emptySinceBefore = _emptyCampSinceTick;
+                string reportedEmptyBefore = _reportedEmptySharedCampId;
                 _emptyCampSinceTick = 0;
                 _reportedEmptySharedCampId = string.Empty;
                 _patrolDestination = null;
@@ -3286,8 +3342,19 @@ namespace DOL.GS
                     AbandonCamp(bot, $"{benchedPulls} {_camp.MonsterName} had no ranged firing point");
                     return true;
                 }
-                if (!SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
-                    AutonomousDefensivePull.TryBegin(bot, target))
+                PartyPullStart partyPullWhy = PartyPullStart.NotApplicable;
+                bool partyPullHandled = !SavageBotCombatPolicy.MustMeleePull((eCharacterClass)bot.CharacterClass.ID) &&
+                    AutonomousDefensivePull.TryBegin(bot, target, out partyPullWhy);
+                // #569 step 9: too far = look for a nearer target, never the ordinary pull's walk into the
+                // pack; the ordinary pull only in the designed cases (contact, no ranged pull, benched, not a pull party).
+                // Outdoors only: dungeon and Darkness Falls camps keep today's pull.
+                PartyPullFallback partyPullNext = AutonomousPartyPullCamp.AfterPartyPull(partyPullHandled, partyPullWhy,
+                    AutonomousPartyPullCamp.CampTurn && !_camp.IsDungeon &&
+                    _camp.RegionId != AutonomousDarknessFallsPolicy.RegionId);
+                NotePartyPullOutcome(partyPullNext);
+                if (partyPullNext == PartyPullFallback.SkipTooFar)
+                    return SkipTooFarPartyTarget(bot, target, emptySinceBefore, reportedEmptyBefore);
+                if (partyPullNext == PartyPullFallback.Handled)
                 {
                     // Claimed only once the shot is under way, not while the party waits out a retry.
                     if (AutonomousDefensivePull.IsPulling(bot.Group, target))
@@ -3315,6 +3382,7 @@ namespace DOL.GS
             }
 
             _emptyCampSinceTick = _emptyCampSinceTick == 0 ? GameLoop.GameLoopTime : _emptyCampSinceTick;
+            NotePartyEmptyCampTurn();   // #569 step 9: a truly empty camp ends the too-far episode
             // A crowded camp that others keep empty is left after 15 s, not 75 s (owner 2026-11-05, reset-day S36): the
             // extra bots spread to other camps instead of queueing for each respawn.
             bool crowdedCamp = (bot.Group?.MemberCount ?? 1) <= 1 && AutonomousCampCompetition.Occupancy(_camp.Id) > 4;
@@ -3373,13 +3441,16 @@ namespace DOL.GS
                         return true;
                     }
                 }
-                // True 1.65: a solo bot leaving a crowded camp skips it and its same-spawn copies for 10 minutes
+                // A solo bot leaving a crowded camp skips it and its same-spawn copies for 10 minutes
                 if (crowdedCamp && AutonomousCampCrowdWidening.BusySiblingMemory)
                     AutonomousCampCrowdWidening.RememberBusy(_busyCamps, _camp.Id, GameLoop.GameLoopTime);
                 AbandonCamp(bot, $"No live {_camp.MonsterName} remained at the camp");
                 return true;
             }
 
+            // #569 step 9: a party puller that is not the leader waits with the party (patrolling broke formation)
+            if (HoldPartyPullerAtEmptyCamp(bot))
+                return true;
             PatrolCamp(bot);
             if (_camp == null) return true;
             SetStatus(bot, $"Searching the {_camp.MonsterName} camp", GoalText(),
@@ -3620,7 +3691,12 @@ namespace DOL.GS
             eCharacterClass searchClass = (eCharacterClass)(bot.CharacterClass?.ID ?? 0);
             bool canPullFromRange = BotSpellPower.IsOffensiveCaster(bot) ||
                 searchClass is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger;
-            GameNPC FindWithin(ushort radius) => bot.GetNPCsInRadius(radius)
+            // #570 step 3 (AutonomousHuntingGround): a solo bot pulls the monster standing apart first, an assassin,
+            // healer, bard or archer prefers blue to yellow, and with the camp's own monster gone it hunts the area around the camp
+            bool huntingRules = AutonomousHuntingGround.Enabled && IsSoloHunter(bot);
+            ConColor preferredCon = huntingRules
+                ? AutonomousHuntingGround.PreferredSoloCon(searchClass) : ConColor.YELLOW;
+            GameNPC FindAmong(List<GameNPC> nearby, bool area) => PreferIsolatedWhenSolo(nearby
                 .Where(npc => IsExperienceMonster(npc) && npc.IsAlive && npc.CurrentRegionID == _camp.RegionId &&
                     !AutonomousAuditedCampPolicy.IsBotExcludedNpc(npc) &&
                     !AutonomousPveTargetPolicy.IsUnreachableFlyer(npc.Flags, npc.Z, bot.Z) &&
@@ -3632,7 +3708,8 @@ namespace DOL.GS
                         new(_camp.X, _camp.Y, _camp.Z), new(npc.X, npc.Y, npc.Z)))
                 // Planning owns level selection. Once assigned, neither solo
                 // nor group execution may reject that named monster by level.
-                .Where(npc => AutonomousPveTargetPolicy.IsAssignedTarget(
+                // (area: the camp's own monster is gone, any monster around the camp that cons right, #570 step 3)
+                .Where(npc => area ? IsAreaHuntTarget(bot, npc, nowTick) : AutonomousPveTargetPolicy.IsAssignedTarget(
                     _camp.MonsterName, npc.Name, npc.EffectiveLevel))
                 // Level 50 solo bots never pull below the solo camp floor (no waiting on a
                 // rare green among greys: with none left the empty-camp timeout moves on).
@@ -3647,7 +3724,7 @@ namespace DOL.GS
                 .Where(npc => GameServer.ServerRules.IsAllowedToAttack(bot, npc, true))
                 // A monster already fighting someone outside the bot's side (its group, or its realm raid) is theirs,
                 // as players left it; and one another bot or player outside it has pulled or hit, even before it turns on
-                // them. No "sry ks" and no shared XP (port of True165 e4d2498ca). Self-defense is handled elsewhere.
+                // them. No "sry ks" and no shared XP. Self-defense is handled elsewhere.
                 .Where(npc => !npc.InCombat || npc.TargetObject == bot ||
                               npc.TargetObject is GameLiving fighting && AutonomousMobClaims.SameFight(bot, fighting) ||
                               npc.TargetObject is not GameLiving)
@@ -3657,7 +3734,8 @@ namespace DOL.GS
                 .OrderForPull(_groupDirective?.IsDynamic == true, bot)
                 // 1.2.3 (#535): a solo bot takes a grey only when nothing else is near, so a grey pick really means outleveled
                 .ThenBy(npc => _groupDirective?.IsDynamic != true && AutonomousSoloCampFloor.IsGrey(bot.EffectiveLevel, npc.EffectiveLevel) ? 1 : 0)
-                .ThenBy(npc => bot.GetDistanceTo(npc) + Math.Abs((int)ConLevels.GetConColor(bot.GetConLevel(npc))) * 220)
+                .ThenBy(npc => bot.GetDistanceTo(npc) +
+                    AutonomousHuntingGround.ConSortPenalty(ConLevels.GetConColor(bot.GetConLevel(npc)), preferredCon)), nearby)
                 // Run native checks only after cheap filters and sorting, and
                 // stop at the first reachable target. Self-defense is handled
                 // separately and must never be suppressed by this pull gate.
@@ -3718,8 +3796,26 @@ namespace DOL.GS
 
             // Preserve the old cheap local lookup for ordinary pulls. Only an
             // empty local ring pays for the requested 5,000-unit expansion.
-            return FindWithin(ImmediateTargetSearchRadius) ??
-                   (GameLoop.GameLoopTime >= _wideTargetSearchAfterTick ? FindWithin(TargetSearchRadius) : null);
+            List<GameNPC> wide = null;
+            List<GameNPC> immediate = bot.GetNPCsInRadius(ImmediateTargetSearchRadius);
+            bool wideAllowed = GameLoop.GameLoopTime >= _wideTargetSearchAfterTick;
+            GameNPC found = FindAmong(immediate, area: false) ??
+                   (wideAllowed ? FindAmong(wide = bot.GetNPCsInRadius(TargetSearchRadius), area: false) : null);
+            // #570 step 3: the camp's own monster is gone, so a solo bot hunts the area around the camp before the
+            // empty-camp wait sends it elsewhere. A grey pick of the camp's own monster still means "outleveled".
+            // The wide scan above is reused when it ran (one scan per search). While the wide-search pause after a far
+            // pull give-up is in force, the area hunt looks only at the near scan, so it never sends the bot back out far.
+            if (found == null && AreaHuntingApplies(bot))
+            {
+                found = FindAmong(wide ?? (wideAllowed ? bot.GetNPCsInRadius(TargetSearchRadius) : immediate), area: true);
+                LogAreaHunt(bot, found);
+            }
+            return found;
+
+            IEnumerable<GameNPC> PreferIsolatedWhenSolo(IEnumerable<GameNPC> sorted, List<GameNPC> nearby) => huntingRules
+                ? AutonomousHuntingGround.PreferIsolated(sorted, nearby,
+                    npc => AutonomousSoloCampFloor.IsGrey(bot.EffectiveLevel, npc.EffectiveLevel) ? 1 : 0)
+                : sorted;
         }
 
         private void PatrolCamp(GameBot bot)
@@ -3833,9 +3929,14 @@ namespace DOL.GS
             // and add the battleground of the bot's bracket when the whole party fits it (level only).
             HashSet<ushort> reachableRegions = ReachableRegions(bot.Realm,
                 BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ? RealmRaidNeutralEvents.HomeRegion(bot.Realm) : bot.CurrentRegionID);
-            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled ? BattlegroundBrackets.ForLevel(bot.Level) : null;
+            // #572 step 4: no battleground camps for a bot just forced out of one (30 minutes).
+            // #572 51B: a bot staying out-levelled keeps the camps of the battleground it is in (entry keeps the cap).
+            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled &&
+                !AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID) ? WorkingBattleground(bot) : null;
             if (campBattleground != null && (!sharedGroup || bot.Group == null ||
-                    bot.Group.GetMembersInTheGroup().All(member => BattlegroundBrackets.Allows(campBattleground, member.Level))))
+                    bot.Group.GetMembersInTheGroup().All(member => AutonomousBattlegroundExit.MayBeIn(campBattleground,
+                        member.Level, member is GameBot stayer && stayer.CurrentRegionID == campBattleground.RegionId &&
+                        StaysOutlevelled(stayer)))))
                 reachableRegions.Add(campBattleground.RegionId);
             HashSet<string> rejectedDungeons = AutonomousBotGroupCoordinator.RejectedDungeonCamps(bot);
             foreach (string id in _rejectedDungeonCamps.Where(pair => pair.Value <= GameLoop.GameLoopTime).Select(pair => pair.Key).ToArray())
@@ -3848,7 +3949,7 @@ namespace DOL.GS
             Dictionary<string, CampDestination> destinations = new(StringComparer.OrdinalIgnoreCase);
             Dictionary<string, (eRealm Wing, float Distance)> darknessFallsRoutes = new(StringComparer.OrdinalIgnoreCase);
             List<AutonomousBotDecisionEngine.Camp> camps = new();
-            // True 1.65: a solo bot with no ranged attack is not sent to a flyer camp (mygga); groups keep them
+            // A solo bot with no ranged attack is not sent to a flyer camp (mygga); groups keep them
             eCharacterClass planClass = (eCharacterClass)(bot.CharacterClass?.ID ?? 0);
             bool skipFlyerCamps = AutonomousFlyerCampPolicy.SkipsCamp(true, !sharedGroup && bot.Group == null,
                 AutonomousFlyerCampPolicy.HasRangedAttack(BotSpellPower.IsOffensiveCaster(bot),
@@ -3903,7 +4004,7 @@ namespace DOL.GS
                 if (validCount == 0 ||
                     !sharedGroup && !AutonomousSoloCampFloor.CampQualifies(bot.Level, validCount, cell.Levels.Length))
                     continue;
-                // No camp beside a spot where a monster far above this bot killed one recently (stefanrows' boss danger).
+                // No camp beside a spot where a monster far above this bot killed one recently (boss danger).
                 if (AutonomousPveBossDanger.IsNear(cell.RegionId, cell.X, cell.Y, sharedGroup ? lowestMemberLevel : planningLevel, dangerUtc))
                     continue;
                 // Nor beside a place where this bot itself died again and again (AutonomousRepeatDeathSpots).
@@ -3991,6 +4092,10 @@ namespace DOL.GS
             }
             if (campGiveUpSkipped)
                 AutonomousRouteGoalFixMetrics.CampRepickBlocked();
+            // #570 step 2b: a solo bot plans no camp at or straight past a spot where 3 solo bots of its level gave a camp
+            // up for a route blocker in the last 30 minutes, while another camp is left
+            if (!sharedGroup && bot.Group == null && camps.Count > 1 && AutonomousRouteBlockMemory.AnyActive(GameLoop.GameLoopTime))
+                camps = AvoidRouteBlocks(bot, camps, destinations);
 
             // Once realm/accessibility/level/con filters have been applied, each
             // distinct location is drawn in proportion to its live spawns (capped).
@@ -4038,6 +4143,8 @@ namespace DOL.GS
             else
             {
                 legal = legal.Where(camp => camp.LowestCon >= minimumTargetCon && camp.TypicalCon <= maximumTargetCon);
+                // #570 step 3: most kills at the last camp conned green, so blue or harder when one exists
+                legal = ApplyMoveUp(legal);
                 // A bot grinding while it waits for group matchmaking stays
                 // outdoors: recruitment needs it in an overworld region, and a
                 // dungeon camp would only be abandoned when the party forms.
@@ -4068,16 +4175,16 @@ namespace DOL.GS
                 legalCells = legalCells.Where(camp => camp.RegionId != AutonomousDarknessFallsPolicy.RegionId)
                     .Concat(df).ToArray();
             }
-            // spots that keep coming up empty are left out while other camps remain (AutonomousCampEmptyMemory, True 1.65)
+            // spots that keep coming up empty are left out while other camps remain (AutonomousCampEmptyMemory)
             legalCells = AvoidEmptySpots(legalCells, destinations);
-            // True 1.65: busy siblings, then one con step up when every allowed camp is crowded (solo bots only)
+            // Busy siblings, then one con step up when every allowed camp is crowded (solo bots only)
             if (!sharedGroup && bot.Group == null)
                 legalCells = ApplySoloCrowdRules(bot, legalCells, camps, destinations, environment, minimumTargetCon,
                     maximumTargetCon, naturalMaximumTargetCon);
             // Less competition first: crowded camps only when every camp is crowded (AutonomousCampCompetition).
             legalCells = AutonomousCampCompetition.PreferQuiet(legalCells, camp => camp.Id, camp => camp.LiveMobCount,
                 bot.PersistentRecord?.CurrentCampId, sharedGroup ? groupSize : 1);
-            // #569 step 3 (True165 14dcaa5): a PvE party picks camps it can reach within its task time (after the quiet filter)
+            // #569 step 3: a PvE party picks camps it can reach within its task time (after the quiet filter)
             if (sharedGroup && AutonomousGroupTravelBudget.Enabled &&
                 _groupDirective?.ObjectiveKind == eAutonomousObjectiveKind.GroupPve)
                 legalCells = BudgetGroupCamps(bot, legalCells, destinations);
@@ -4092,7 +4199,7 @@ namespace DOL.GS
                 Dictionary<string, int> campsPerMonster = legalCells
                     .GroupBy(camp => AutonomousCampCompetition.NormalizeName(camp.MonsterName))
                     .ToDictionary(group => group.Key, group => group.Count());
-                // True 1.65 (veteran review M11): camp traits from the background builder weigh the draw (AutonomousCampKnowledge)
+                // Veteran review M11: camp traits from the background builder weigh the draw (AutonomousCampKnowledge)
                 bool knowledge = AutonomousCampKnowledge.Enabled;
                 bool partyHasCrowdControl = knowledge && sharedGroup && bot.Group != null &&
                     bot.Group.GetMembersInTheGroup().Any(member => member is GameBot mate && KnowsMesmerize(mate));
@@ -4106,6 +4213,10 @@ namespace DOL.GS
                         destinations.TryGetValue(camp.Id, out CampDestination known) ? known.Traits : default)
                 }).ToArray();
             }
+            // #570 step 3: a solo bot keeps its hunting ground (its zone x8, neighbouring zones x3, the rest of the region
+            // x1, other regions x0.25), among the quiet camps left above (AutonomousHuntingGround)
+            if (!sharedGroup)
+                legalCells = WeighHuntingGround(bot, legalCells, destinations);
             // This is the deployed selection point. Each distinct verified
             // location has one entry; outdoor draws are weighted by live spawns
             // (capped) with no distance or name preference.
@@ -4156,6 +4267,7 @@ namespace DOL.GS
             _pendingStableChoice = null;
             bot.PersistentRecord.CurrentCampId = selected.Id;
             AutonomousCampCompetition.NoteAssigned(selected.Id, sharedGroup ? groupSize : 1);
+            NoteHuntingGround(bot, selected, sharedGroup);   // #570 step 3
             AutonomousBotPersonality.RememberZone(bot, selected.ZoneName);
             SetStatus(bot, $"Planning route to {selected.MonsterName}", GoalText(), decision.Reason,
                 selected.MonsterName, selected.ZoneName, true);
@@ -4407,7 +4519,7 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// GitHub #544 (ported from True 1.65's AddUncoveredLiveCamps): live outdoor spawn clusters that no camp of their
+        /// GitHub #544: live outdoor spawn clusters that no camp of their
         /// name covers become <c>live-uncovered:</c> camps, in every realm alike (AutonomousUncoveredLiveCamps). Without it
         /// a CapnBry-covered zone offered camps only at its sightings, while the mostly Hibernian source-empty zones offered
         /// every cluster. Starter creatures (level 0-1) stay with AddStarterCamps and its route check from the zone hub.
@@ -4444,9 +4556,8 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// True 1.65 (its owner 2026-11-08) stopped publishing capnbry-source-empty camps, because its AddUncoveredLiveCamps
-        /// turns their monsters into live camps instead. Living Server ported that pass in 1.2.3 (#544) but keeps these
-        /// camps on: they also hold clusters of one or two spawns, and turning them off is a separate call. With it off, a source-empty camp is still published when its
+        /// The uncovered live camps (#544, 1.2.3) also turn the monsters of capnbry-source-empty camps into live camps. Living
+        /// Server still keeps these camps on: they also hold clusters of one or two spawns, and turning them off is a separate call. With it off, a source-empty camp is still published when its
         /// realm and level band would otherwise have no camp at all (FinishCatalogDraft).
         /// </summary>
         private static readonly bool AssignSourceEmptyCamps = true;
@@ -4519,7 +4630,7 @@ namespace DOL.GS
                 return Math.Max(count, cell.LiveMobCount);
             }
 
-            // True 1.65: most live monsters of the camp's name within the pool radius fly (AutonomousFlyerCampPolicy)
+            // Most live monsters of the camp's name within the pool radius fly (AutonomousFlyerCampPolicy)
             bool FlyerNear(CampCatalogCell cell)
             {
                 if (cell.IsDungeon)
@@ -4541,7 +4652,7 @@ namespace DOL.GS
                 return AutonomousFlyerCampPolicy.IsFlyerCamp(flying, total);
             }
 
-            // True 1.65 (veteran review M11): the camp's monsters (its name, within the pool radius) as AutonomousCampKnowledge sees them
+            // Veteran review M11: the camp's monsters (its name, within the pool radius) as AutonomousCampKnowledge sees them
             AutonomousCampKnowledge.Traits TraitsNear(CampCatalogCell cell)
             {
                 string name = AutonomousCampCompetition.NormalizeName(cell.MonsterName);
@@ -5762,6 +5873,9 @@ namespace DOL.GS
                     new(current.X, current.Y), new(destination.X, destination.Y));
             }
             _routeStallReplans++;
+            // #570 step 2b: the first stall at a near miss teaches the spot and walks the zone roads there
+            if (_routeStallReplans == 1 && TryNearMissRoadRecovery(bot, current, failureStatus, failedDestination))
+                return true;
             // A PathTo order aimed at a short recovery corner can report a
             // partial path even while the actor still has a complete native
             // corridor to the real camp goal. Do not make the failed corner
@@ -5841,6 +5955,69 @@ namespace DOL.GS
         }
 
         private float _routeRecoveryArrivalRadius = 70;
+
+        /// <summary>The camps not at or straight past a shared route block for this bot's level (all of them when every
+        /// one is); see <see cref="AutonomousRouteBlockMemory"/>.</summary>
+        private static List<AutonomousBotDecisionEngine.Camp> AvoidRouteBlocks(GameBot bot,
+            List<AutonomousBotDecisionEngine.Camp> camps, Dictionary<string, CampDestination> destinations)
+        {
+            long now = GameLoop.GameLoopTime;
+            // the blocks of each destination region, read once per region in this pass
+            Dictionary<ushort, AutonomousRouteBlockMemory.Block[]> blocks = new();
+            List<AutonomousBotDecisionEngine.Camp> kept = AutonomousRouteBlockMemory.KeepUnblocked(camps, camp =>
+            {
+                if (!destinations.TryGetValue(camp.Id, out CampDestination d))
+                    return false;
+                if (!blocks.TryGetValue(d.RegionId, out AutonomousRouteBlockMemory.Block[] inRegion))
+                    blocks[d.RegionId] = inRegion = AutonomousRouteBlockMemory.ActiveFor(bot.Level, d.RegionId, now);
+                return inRegion.Length > 0 && AutonomousRouteBlockMemory.Blocks(inRegion, bot.CurrentRegionID, bot.X, bot.Y,
+                    d.RegionId, d.X, d.Y);
+            }, out int skipped);
+            if (skipped > 0)
+                Log.Info($"AUTONOMOUS_ROUTE_BLOCK_AVOID bot={bot.Name} id={bot.DatabaseID} level={bot.Level} " +
+                         $"region={bot.CurrentRegionID} skipped={skipped} kept={kept.Count}");
+            return kept;
+        }
+
+        /// <summary>
+        /// #570 step 2b: a path that stopped within 256 of its target in the bot's own zone (Detour's nearest point on
+        /// other ground, such as a cliff edge just above a zone crossing) is remembered, so every later gamebot walk to that
+        /// target asks the zone road graph (<see cref="AutonomousNearMissDeadEnds"/>); this bot walks the road there now
+        /// when the graph has one. True when that walk was ordered.
+        /// </summary>
+        private bool TryNearMissRoadRecovery(GameBot bot, Vector3 current, PathfindingStatus failureStatus, Vector3 failedDestination)
+        {
+            Zone zone = bot.CurrentZone;
+            if (!bot.IsAutonomousWorldBot || bot.IsHiredCompanion || zone == null ||
+                !AutonomousNearMissDeadEnds.IsNearMissStall(failureStatus, current, failedDestination,
+                    bot.CurrentRegion?.GetZone((int)failedDestination.X, (int)failedDestination.Y) == zone))
+                return false;
+            long now = GameLoop.GameLoopTime;
+            if (AutonomousNearMissDeadEnds.Remember(zone.ID, failedDestination, now))
+                Log.Info($"AUTONOMOUS_NEAR_MISS_DEAD_END bot={bot.Name} id={bot.DatabaseID} region={bot.CurrentRegionID} " +
+                         $"zone={zone.ID} position={(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                         $"target={(int)failedDestination.X},{(int)failedDestination.Y},{(int)failedDestination.Z} " +
+                         $"gap={Vector3.Distance(current, failedDestination):0}");
+            if (!PathfindingProvider.Instance.IsAvailable ||
+                !AutonomousZoneRoads.TryRoute(PathfindingProvider.Instance, zone, current, failedDestination, out Vector3[] via, 0f))
+                return false;
+            Log.Info($"AUTONOMOUS_NEAR_MISS_ROAD_RECOVERY bot={bot.Name} id={bot.DatabaseID} region={bot.CurrentRegionID} " +
+                     $"position={(int)current.X},{(int)current.Y},{(int)current.Z} " +
+                     $"target={(int)failedDestination.X},{(int)failedDestination.Y},{(int)failedDestination.Z} anchors={via.Length}");
+            bot.StopMoving();
+            bot.ForcePathReplot();
+            _routeRecoveryWaypoint = failedDestination;
+            _routeRecoveryArrivalRadius = 48;
+            _nextMoveOrderTick = GameLoop.GameLoopTime + 1_500;
+            _lastRoutePosition = current;
+            _lastRouteProgressTick = GameLoop.GameLoopTime;
+            _pathSegmentOrigin = current;
+            bot.PathTo(failedDestination, bot.MaxSpeed);
+            SetStatus(bot, "Recovering around blocked terrain", GoalText(),
+                "Taking the zone road around a cliff edge before resuming the same route",
+                _camp?.MonsterName ?? string.Empty, _camp?.ZoneName ?? string.Empty);
+            return true;
+        }
         private static bool TryFindLocalRecoveryWaypoint(
             GameBot bot,
             Vector3 current,
@@ -6082,7 +6259,7 @@ namespace DOL.GS
             _terminalRouteFailuresInPocket = 0;
         }
 
-        // ---- Route goal fixes, ported from stefanrows/OfflineDAoC (AutonomousRouteGoalFix.cs) ----
+        // ---- Route goal fixes ----
 
         private Vector3 ApplyGoalSnap(Vector3 point) =>
             Vector3.DistanceSquared(point, _goalSnapFrom) <= 16 * 16 ? _goalSnapTo : point;
@@ -6595,7 +6772,8 @@ namespace DOL.GS
         private static bool IsInFrontier(GamePlayer player) =>
             player?.CurrentZone != null && IsFrontierZone(player.CurrentRegionID, player.CurrentZone.ID);
 
-        private static bool IsSafeArea(GameObject obj)
+        /// <summary>The object stands in a safe or bind area (also read by the player's group pick, CompanionRvrEngage).</summary>
+        public static bool IsSafeArea(GameObject obj)
         {
             List<IArea> areas = obj?.CurrentZone?.GetAreasOfSpot(obj);
             if (areas == null) return false;
@@ -6906,7 +7084,7 @@ namespace DOL.GS
             (int)Math.Sqrt(DistanceSquared(ax, ay, bx, by));
 
         /// <summary>
-        /// The camp draw weight (True 1.65, owner of that edition 2026-11-05 and 11-08: bots clumped in a few camps while
+        /// The camp draw weight (bots clumped in a few camps while
         /// others stood untouched, and one monster with many camps took most draws): the camp's capped spawns x nearness (4
         /// within 15,000 in the bot's region, 3 within 25,000, 2 within 40,000, 1 beyond or elsewhere), divided by one plus
         /// the bots already there and by the square root of its monster's camps, and scaled down for a spot that keeps
@@ -6926,7 +7104,7 @@ namespace DOL.GS
                 campsOfThisMonster, empty);
         }
 
-        /// <summary>True 1.65 (veteran review M11): the spread weight times the camp-trait factor for this bot or party.</summary>
+        /// <summary>Veteran review M11: the spread weight times the camp-trait factor for this bot or party.</summary>
         private static int KnowledgeWeight(int weight, bool enabled, bool party, bool partyHasCrowdControl,
             eCharacterClass soloClass, eDamageType soloDamage, AutonomousCampKnowledge.Traits traits)
         {
@@ -6937,7 +7115,7 @@ namespace DOL.GS
             return Math.Max(1, (int)Math.Round(weight * factor));
         }
 
-        /// <summary>The bot knows a single-target mesmerize at its level (crowd control for the party; from True 1.65).</summary>
+        /// <summary>The bot knows a single-target mesmerize at its level (crowd control for the party).</summary>
         private static bool KnowsMesmerize(GameBot bot)
         {
             if (bot?.Spells is not { } spells)
@@ -6960,7 +7138,7 @@ namespace DOL.GS
                 : AutonomousCampEmptyMemory.Key(destination.RegionId, destination.MonsterName, destination.X, destination.Y);
 
         /// <summary>
-        /// True 1.65 (AutonomousCampCrowdWidening): a solo bot skips camps sharing spawns with ones it just left as crowded
+        /// AutonomousCampCrowdWidening: a solo bot skips camps sharing spawns with ones it just left as crowded
         /// (never all of them), and, held below its natural con after deaths, takes an uncrowded camp one con step harder
         /// when every camp it may take is crowded (never the con it died to). The harder list is built only then; the
         /// at-camp target filter is unchanged.
@@ -7025,7 +7203,7 @@ namespace DOL.GS
             return picked;
         }
 
-        /// <summary>The camps whose spot has not kept coming up empty (all of them when every one has; True 1.65).</summary>
+        /// <summary>The camps whose spot has not kept coming up empty (all of them when every one has).</summary>
         private static AutonomousBotDecisionEngine.Camp[] AvoidEmptySpots(AutonomousBotDecisionEngine.Camp[] camps,
             Dictionary<string, CampDestination> destinations)
         {

@@ -83,9 +83,40 @@ namespace DOL.GS.Tests.Rehearsal
         // ---------------------------------------------------------------------------------------------------------
         // Scenario 1: two bot-only eights meet in the open
 
-        public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors);
+        /// <summary>
+        /// #531: one side's opening, from its members' first engages within <see cref="OpeningMilliseconds"/> of the side's
+        /// first: the first pick (its target and rule), how many distinct enemies the members opened on, and how many the
+        /// spread pick of before 1.2.3 would have opened on from the same scans. Null when the side never engaged by scan.
+        /// </summary>
+        public sealed record RvrOpening(GameLiving FirstTarget, string FirstRule, int Members, int OpenedOn, int SpreadOpenedOn);
 
-        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600)
+        public sealed record OpenFieldResult(string Row, IReadOnlyList<string> Detail, int Errors, RvrOpening Albion = null,
+            RvrOpening Midgard = null, IReadOnlyList<RvrBombCast> Bombs = null,
+            IReadOnlyList<(long At, GameLiving Bomber)> BombHolds = null, RvrFightDepth Depth = null);
+
+        /// <summary>How long after a side's first engage its members' first engages count as its opening.</summary>
+        public const long OpeningMilliseconds = 10_000;
+
+        public static RvrOpening Opening(RvrFightScan scan, List<GameBot> side)
+        {
+            var picks = scan.Picks.Where(p => side.Contains(p.Bot)).ToList();
+            if (picks.Count == 0)
+                return null;
+            long start = picks[0].At;
+            var opening = picks.Where(p => p.At - start <= OpeningMilliseconds).GroupBy(p => p.Bot).Select(g => g.First()).ToList();
+            return new RvrOpening(picks[0].Target, picks[0].Rule, opening.Count, opening.Select(p => p.Target).Distinct().Count(),
+                opening.Select(p => p.SpreadTarget).Distinct().Count());
+        }
+
+        private static string OpeningText(RvrOpening opening) => opening == null ? "none" :
+            $"{RvrRoles.For(ClassOf(opening.FirstTarget))}:{Short(opening.FirstTarget)} rule={opening.FirstRule} " +
+            $"opened_on={opening.OpenedOn}/{opening.Members} (spread {opening.SpreadOpenedOn})";
+
+        /// <param name="albionBombers">#531 step 2f: -1 (the default): the period bombers in the eights (RvrFightKits.Bombs)
+        /// get the stand-in bomb. 1 or more: that many of Albion's back line get it instead (a Wizard first, then the other
+        /// nukers, then the rest, the area mezzer last), so Albion fights beside its Sorcerer's area mez with a lone bomber or
+        /// with two. The roster built for seed 520 has no Wizard, Runemaster or Spiritmaster.</param>
+        public static OpenFieldResult OpenField(int seed, double seconds = FightSeconds, int gap = 2_600, int albionBombers = -1)
         {
             using var world = new RvrFightWorld(seed, Repeatable);
             Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
@@ -94,12 +125,27 @@ namespace DOL.GS.Tests.Rehearsal
             var scan = new RvrFightScan(seed);
             scan.Add(albion);
             scan.Add(midgard);
+            // #531 step 2c-1: the realm abilities the eights' builds buy
+            var actives = new RvrFightActives();
+            actives.Grant(albion.Concat(midgard));
+            // #531 step 2f: the eights' bombers get a stand-in point blank bomb
+            IEnumerable<GameBot> bombers = albionBombers < 0
+                ? albion.Concat(midgard).Where(b => RvrFightKits.Bombs(ClassOf(b)))
+                : albion.Where(b => RvrPositioning.StandFor(RvrRoles.For(ClassOf(b)), ClassOf(b)) == RvrStand.Back && !RvrFightKits.Heals(ClassOf(b)))
+                    .OrderBy(b => RvrFightKits.Bombs(ClassOf(b)) ? 0 : RvrFightKits.AreaMezzes(ClassOf(b)) ? 3 : RvrFightKits.Nukes(ClassOf(b)) ? 1 : 2)
+                    .Take(albionBombers);
+            foreach (GameBot bot in bombers.ToList())
+                RvrFightKits.AddBomb(bot);
+            // #531 step 2e: how deep each side's casters and healers stand behind their tanks
+            var depth = new RvrFightDepth();
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
             world.Run(seconds, w =>
             {
                 scan.Tick(w.Now);
+                actives.Tick(w.Now);
+                depth.Tick(w.Now, new[] { albion, midgard });
                 firstAlbionBoard ??= ContactBoard(albion);
                 firstMidgardBoard ??= ContactBoard(midgard);
             });
@@ -112,11 +158,15 @@ namespace DOL.GS.Tests.Rehearsal
                 $"contact shadow (#529, board-listed enemies no member knew of): albion {Shadow(eRealm.Albion)}; midgard {Shadow(eRealm.Midgard)}",
             };
             detail.AddRange(albion.Concat(midgard).Select(State));
+            // #531: each engage the scan made, by which rule, and what the spread pick of before would have taken
+            detail.AddRange(scan.Picks.Take(24).Select(p => $"pick {S(p.At)} {p.Bot.Name} -> {Short(p.Target)} rule={p.Rule} spread_would={Short(p.SpreadTarget)}"));
             detail.AddRange(world.Recorder.Mezzes.Select(m => $"mez {S(m.At)} {m.Caster.Name} -> {m.Target.Name} at {m.TargetHealthPercent}% : {(m.Landed == true ? "landed" : m.Landed == false ? "refused" : "?")}"));
             detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
             detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
-            string row = OpenFieldRow(world, scan, albion, midgard);
-            return new OpenFieldResult(row, detail, world.ServiceErrors);
+            detail.Add(actives.Row(world.Seed, world.Recorder));
+            string row = OpenFieldRow(world, scan, albion, midgard, depth);
+            return new OpenFieldResult(row, detail, world.ServiceErrors, Opening(scan, albion), Opening(scan, midgard),
+                world.Recorder.Bombs.ToList(), world.Recorder.BombHolds.ToList(), depth);
         }
 
         private static string Shadow(eRealm realm)
@@ -138,7 +188,8 @@ namespace DOL.GS.Tests.Rehearsal
         private static string Describe(RvrRoster roster) =>
             $"{roster.Template} filled={string.Join(",", roster.Filled.Select(f => $"{f.Role}:{f.Class}"))} missing={string.Join(",", roster.Missing)} cc={roster.CrowdControlLabel}";
 
-        private static string OpenFieldRow(RvrFightWorld world, RvrFightScan scan, List<GameBot> albion, List<GameBot> midgard)
+        private static string OpenFieldRow(RvrFightWorld world, RvrFightScan scan, List<GameBot> albion, List<GameBot> midgard,
+            RvrFightDepth depth)
         {
             RvrFightRecorder r = world.Recorder;
             string Notice(List<GameBot> side)
@@ -159,14 +210,41 @@ namespace DOL.GS.Tests.Rehearsal
                 int total = hits.Sum(h => h.Amount);
                 return total == 0 ? "-" : $"{100.0 * hits.Where(h => h.OnCalledTarget).Sum(h => h.Amount) / total:0}%";
             }
+            // #531 step 2a: each side's first area mez that landed, how many it caught, and whether it came before the
+            // side's first hit (the opener on the charge)
+            string Opener(List<GameBot> side)
+            {
+                RvrMezAttempt first = r.Mezzes.FirstOrDefault(m => m.Landed == true && m.Radius > 0 && side.Contains(m.Caster as GameBot));
+                if (first == null)
+                    return "none";
+                RvrHit firstHit = r.Hits.FirstOrDefault(h => side.Contains(h.Attacker as GameBot));
+                string when = firstHit == null || first.At <= firstHit.At ? "before_first_hit" : "after_first_hit";
+                return $"{S(first.At)}:{Short(first.Caster)}x{first.Caught}:{when}";
+            }
+            // #531 step 2f: each side's bombers, its first bomb (when, who, the mezzed and free enemies in reach), when a
+            // lone bomber first waited by a pile, and how many bombs it cast
+            string Bomb(List<GameBot> side)
+            {
+                int bombers = side.Count(b => b.Spells?.Any(s => s.ID == RvrFightKits.BombId) == true);
+                if (bombers == 0)
+                    return "bombers=0";
+                var bombs = r.Bombs.Where(b => side.Contains(b.Caster as GameBot)).ToList();
+                var wait = r.BombWaits.FirstOrDefault(w => side.Contains(w.Bomber as GameBot));
+                string first = bombs.Count == 0 ? "none" : $"{S(bombs[0].At)}:{Short(bombs[0].Caster)}x{bombs[0].Mezzed}m{bombs[0].Free}f";
+                return $"bombers={bombers} first={first} waited={(wait.Bomber == null ? "no" : S(wait.At))} bombs={bombs.Count} " +
+                       $"on_mezzed={bombs.Count(b => b.Mezzed >= RvrBombPlan.MinimumMezzed)}";
+            }
             int albAlive = albion.Count(b => b.IsAlive), midAlive = midgard.Count(b => b.IsAlive);
             string held = albAlive == midAlive ? $"none ({albAlive}-{midAlive})" : albAlive > midAlive ? $"Albion ({albAlive}-{midAlive})" : $"Midgard ({midAlive}-{albAlive})";
             long firstHit = r.Hits.Count > 0 ? r.Hits[0].At : 0;
             long end = r.Deaths.Count > 0 && (albAlive == 0 || midAlive == 0) ? r.Deaths[^1].At : world.Now;
             string duration = r.Hits.Count == 0 ? "no fight" : $"{(end - firstHit) / 1000.0:0}s";
             return $"RVR_REHEARSAL open_field seed={world.Seed} sides=Alb8 vs Mid8 noticed=Alb:{Notice(albion)} Mid:{Notice(midgard)} " +
-                   $"first_cc={cc} mez_refused={refused} (bot<75%={refusedHurtBot}) first_deaths={deaths} " +
-                   $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} held={held} duration={duration}";
+                   $"first_cc={cc} opener=Alb:{Opener(albion)} Mid:{Opener(midgard)} mez_refused={refused} (bot<75%={refusedHurtBot}) " +
+                   $"first_deaths={deaths} first_pick=Alb:{OpeningText(Opening(scan, albion))} Mid:{OpeningText(Opening(scan, midgard))} " +
+                   $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} bomb=Alb:[{Bomb(albion)}] Mid:[{Bomb(midgard)}] " +
+                   $"depth=Alb:{depth.Text(eRealm.Albion)} Mid:{depth.Text(eRealm.Midgard)} " +
+                   $"held={held} duration={duration}";
         }
 
         // ---------------------------------------------------------------------------------------------------------
@@ -285,6 +363,397 @@ namespace DOL.GS.Tests.Rehearsal
         }
 
         // ---------------------------------------------------------------------------------------------------------
+        // Scenario 4 (#530 step 5b): solo gamebots at a battleground muster form groups
+
+        public sealed record MusterResult(string Row, IReadOnlyList<string> Detail, int Errors, int[] PartySizes,
+            int BoardMembersBefore, int[] BoardMembersAfter, int Placed, int OutsidersTaken, int Solos);
+
+        /// <summary>
+        /// Fourteen solo Albion gamebots (level 35, Caledonia's bracket, on battleground tours) stand at their wave's staging
+        /// point, with a Midgard eight 2,200 away. Beside them stand four that must not be taken: a Midgard bot, two Albions
+        /// already in a group, a level-25 Albion (another bracket) and one whose tour ends in two minutes. The coordinator's
+        /// muster pass (AutonomousBotGroupCoordinator.FormMusterParties) runs once; the row shows the parties and each party's
+        /// fight board against the eight, before (one solo bot) and after (the party).
+        /// </summary>
+        public static MusterResult MusterGroups(int seed)
+        {
+            using var world = new RvrFightWorld(seed, Repeatable);
+            Region region = world.AddRegion(BattlegroundRegion, BattlegroundZone, "Caledonia flat stand-in (rehearsal)");
+            const int sx = 40_000, sy = 40_000;
+            var staging = new System.Numerics.Vector3(sx, sy, 0);
+            string tour = DateTime.UtcNow.AddMinutes(40).ToString("O");
+            GameBot Solo(eRealm realm, eCharacterClass c, byte level, string name, int x, int y, string expires)
+            {
+                GameBot bot = world.NewBot(realm, c, level, name, "Battleground");
+                bot.PersistentRecord.ObjectiveExpiresUtc = expires;
+                world.Place(bot, region, x, y, 0, 3072);
+                return bot;
+            }
+            var solos = new List<GameBot>();
+            for (int i = 0; i < 14; i++)
+            {
+                eCharacterClass c = AlbionPool[i % AlbionPool.Length];
+                solos.Add(Solo(eRealm.Albion, c, 35, $"M{i + 1:00}{c}", sx - 300 + i % 5 * 150, sy - 300 + i / 5 * 200, tour));
+            }
+            var outsiders = new List<GameBot>
+            {
+                Solo(eRealm.Midgard, eCharacterClass.Warrior, 35, "XMidgard", sx + 100, sy + 100, tour),
+                Solo(eRealm.Albion, eCharacterClass.Armsman, 25, "XLevel25", sx + 150, sy - 150, tour),
+                Solo(eRealm.Albion, eCharacterClass.Cleric, 35, "XLeaving", sx - 150, sy + 150, DateTime.UtcNow.AddMinutes(2).ToString("O")),
+            };
+            List<GameBot> pair = [Solo(eRealm.Albion, eCharacterClass.Paladin, 35, "XPairA", sx + 50, sy - 50, tour),
+                Solo(eRealm.Albion, eCharacterClass.Friar, 35, "XPairB", sx + 60, sy - 60, tour)];
+            world.Form(pair.Cast<GameLiving>().ToList());
+            outsiders.AddRange(pair);
+            Eight(world, region, eRealm.Midgard, sx + 2_200, sy, 1024, 35, "E", out _);
+
+            int before = RvrFightBoards.Get(solos[0])?.Members.Length ?? 0;
+            int placed = AutonomousBotGroupCoordinator.FormMusterParties(
+                AutonomousRvrEventLayer.BattlegroundObjectiveId(250_001), eRealm.Albion, staging, solos.Concat(outsiders).ToList(), world.Now, DateTime.UtcNow);
+            Group[] parties = solos.Select(bot => bot.Group).Where(group => group != null).Distinct().ToArray();
+            int[] sizes = parties.Select(group => group.GetMembersInTheGroup().Count).OrderByDescending(n => n).ToArray();
+            int[] boards = parties.Select(group => RvrFightBoards.Get(group.GetMembersInTheGroup().OfType<GameBot>().First())?.Members.Length ?? 0)
+                .OrderByDescending(n => n).ToArray();
+            int taken = outsiders.Count(bot => bot.Group != null && parties.Contains(bot.Group));
+            int solo = solos.Count(bot => bot.Group == null);
+            string row = $"RVR_REHEARSAL bg_muster seed={seed} solos=14 Alb L35 placed={placed} parties={parties.Length} " +
+                         $"sizes={string.Join("+", sizes)} board_members_before={before} board_members_after={string.Join("+", boards)} " +
+                         $"outsiders_taken={taken} left_solo={solo}";
+            var detail = new List<string>();
+            foreach (Group group in parties)
+                detail.Add($"party {AutonomousBotGroupCoordinator.MusterPartyOf(group.GetMembersInTheGroup().OfType<GameBot>().First())}: " +
+                           string.Join(", ", group.GetMembersInTheGroup().Select(member => member.Name)));
+            detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+            int errors = world.ServiceErrors;
+            foreach (Group group in parties)
+            {
+                RvrFightBoards.Forget(group);
+                group.DisbandGroup();
+            }
+            return new MusterResult(row, detail, errors, sizes, before, boards, placed, taken, solo);
+        }
+
+        // ---------------------------------------------------------------------------------------------------------
+        // Scenario 7 (#599 step 4): a realm's muster parties at one battleground keep act as one battlegroup
+
+        public sealed record BattlegroundBattlegroupResult(string Row, IReadOnlyList<string> Detail, int Errors, string BattlegroupId,
+            int Parties, int[] PartySizes, int[] RosterSizes, int MidgardInRosters, bool MidgardPartyLinked, int ChangesWhenTheWaveWent,
+            int BothCalledSeconds, int SharedCallSeconds, int BattlegroupCallSeconds, int AlbionAlive, int MidgardAlive);
+
+        /// <summary>
+        /// Scenario 4's fourteen Albion solos at a Caledonia muster form their two parties of seven; four Midgard solos at
+        /// Midgard's own muster form one party; a Midgard eight stands 2,200 east of the Albions. Each party's leader writes
+        /// its battleground order as the controller does (AutonomousRvrEventLayer.DecideBattleground: the muster), then the
+        /// coordinator's battleground battlegroup pulse and the support rosters run once. The wave then goes (the order is
+        /// the attack, the battlegroup holds) and the Albion parties fight the eight in the open; once a second the row
+        /// samples both parties' published plans, as scenario 5 does. The outcome is reported, not judged.
+        /// </summary>
+        public static BattlegroundBattlegroupResult BattlegroundBattlegroup(int seed, double seconds = 90)
+        {
+            using var world = new RvrFightWorld(seed, Repeatable);
+            AutonomousBotGroupCoordinator.ResetBattlegroundBattlegroups();
+            var parties = new List<Group>();
+            try
+            {
+                Region region = world.AddRegion(BattlegroundRegion, BattlegroundZone, "Caledonia flat stand-in (rehearsal)");
+                const int sx = 40_000, sy = 40_000, my = 20_000;
+                const int keepId = 250_001;
+                string objective = AutonomousRvrEventLayer.BattlegroundObjectiveId(keepId);
+                string tour = DateTime.UtcNow.AddMinutes(40).ToString("O");
+                GameBot Solo(eRealm realm, eCharacterClass c, string name, int x, int y)
+                {
+                    GameBot bot = world.NewBot(realm, c, 35, name, "Battleground");
+                    bot.PersistentRecord.ObjectiveExpiresUtc = tour;
+                    world.Place(bot, region, x, y, 0, 3072);
+                    return bot;
+                }
+                var albion = new List<GameBot>();
+                for (int i = 0; i < 14; i++)
+                {
+                    eCharacterClass c = AlbionPool[i % AlbionPool.Length];
+                    albion.Add(Solo(eRealm.Albion, c, $"G{i + 1:00}{c}", sx - 300 + i % 5 * 150, sy - 300 + i / 5 * 200));
+                }
+                var midgardSolos = new List<GameBot>();
+                for (int i = 0; i < 4; i++)
+                {
+                    eCharacterClass c = MidgardPool[i];
+                    midgardSolos.Add(Solo(eRealm.Midgard, c, $"H{i + 1:00}{c}", sx + i * 150, my));
+                }
+                List<GameBot> midgard = Eight(world, region, eRealm.Midgard, sx + 2_200, sy, 1024, 35, "E", out _);
+                AutonomousBotGroupCoordinator.FormMusterParties(objective, eRealm.Albion, new System.Numerics.Vector3(sx, sy, 0), albion,
+                    world.Now, DateTime.UtcNow);
+                AutonomousBotGroupCoordinator.FormMusterParties(objective, eRealm.Midgard, new System.Numerics.Vector3(sx, my, 0), midgardSolos,
+                    world.Now, DateTime.UtcNow);
+                parties.AddRange(albion.Concat(midgardSolos).Select(bot => bot.Group).Where(group => group != null).Distinct());
+
+                // Each party's leader proposes its order, as ProposeBattlegroundOrder does (one force, bg:<party id>).
+                void Order(bool mustering)
+                {
+                    foreach (Group group in parties)
+                    {
+                        GameBot leader = group.GetMembersInTheGroup().OfType<GameBot>().First();
+                        string force = "bg:" + AutonomousBotGroupCoordinator.BattlegroundPartyOf(leader);
+                        AutonomousRvrEventLayer.ForceIntent decided = AutonomousRvrEventLayer.Decide(force, new(AutonomousRvrEventLayer.Intent.Roam, false),
+                            AutonomousRvrEventLayer.IntentOf(force), AutonomousRvrEventLayer.DecideBattleground(keepId, false, false, mustering, leader.DatabaseID).Proposal,
+                            world.Now);
+                        AutonomousRvrEventLayer.WriteForceIntent(force, leader, decided, null, world.Now);
+                    }
+                }
+                Order(mustering: true);
+                List<AutonomousRvrEventLayer.BattlegroupChange> changes =
+                    AutonomousBotGroupCoordinator.PulseBattlegroundBattlegroups(world.Now, force: true) ?? new();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+                Order(mustering: false);
+                List<AutonomousRvrEventLayer.BattlegroupChange> went =
+                    AutonomousBotGroupCoordinator.PulseBattlegroundBattlegroups(world.Now, force: true) ?? new();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+
+                AutonomousRvrEventLayer.BattlegroundBattlegroupView battlegroup =
+                    AutonomousRvrEventLayer.BattlegroundBattlegroupOf(AutonomousBotGroupCoordinator.BattlegroundPartyOf(albion[0]));
+                Group[] albionParties = albion.Select(bot => bot.Group).Where(group => group != null).Distinct().ToArray();
+                int[] sizes = albionParties.Select(group => group.GetMembersInTheGroup().Count).OrderByDescending(n => n).ToArray();
+                int[] rosters = albion.Select(bot => RealmWarbandSupport.Get(bot)?.Members.Length ?? 0).Distinct().OrderBy(n => n).ToArray();
+                int midgardInRosters = albion.SelectMany(bot => RealmWarbandSupport.Get(bot)?.Members ?? Array.Empty<GameLiving>())
+                    .Distinct().Count(member => member.Realm == eRealm.Midgard);
+                bool midgardLinked = midgardSolos.Any(bot =>
+                    AutonomousRvrEventLayer.BattlegroundBattlegroupOf(AutonomousBotGroupCoordinator.BattlegroundPartyOf(bot)) != null);
+
+                Group leadGroup = AutonomousBotGroupCoordinator.BattlegroundBattlegroupGroup(battlegroup?.LeadPartyId);
+                List<GameBot> lead = albion.Where(bot => leadGroup != null && bot.Group == leadGroup).ToList();
+                List<GameBot> follower = albion.Where(bot => bot.Group != null && bot.Group != leadGroup).ToList();
+                var scan = new RvrFightScan(seed);
+                scan.Add(albion);
+                scan.Add(midgard);
+                int bothCalled = 0, sharedCall = 0, battlegroupCall = 0;
+                long nextSample = 0;
+                var callLines = new List<string>();
+                world.Run(seconds, w =>
+                {
+                    scan.Tick(w.Now);
+                    if (w.Now < nextSample)
+                        return;
+                    nextSample = w.Now + 1_000;
+                    RvrFightPlan leadPlan = PlanOf(lead), followerPlan = PlanOf(follower);
+                    if (leadPlan?.CalledTarget == null || followerPlan?.CalledTarget == null)
+                        return;
+                    bothCalled++;
+                    bool same = leadPlan.CalledTarget == followerPlan.CalledTarget;
+                    if (same)
+                        sharedCall++;
+                    if (same && followerPlan.CallFromBattlegroup)
+                        battlegroupCall++;
+                    if (callLines.Count < 12)
+                        callLines.Add($"call {S(w.Now)} lead={Short(leadPlan.CalledTarget)} follower={Short(followerPlan.CalledTarget)} " +
+                                      $"from_battlegroup={followerPlan.CallFromBattlegroup} same={same}");
+                });
+                int albionAlive = albion.Count(bot => bot.IsAlive), midgardAlive = midgard.Count(bot => bot.IsAlive);
+                string row = $"RVR_REHEARSAL bg_battlegroup seed={seed} sides=Alb7+Alb7 vs Mid8 battlegroup={battlegroup?.Id ?? "none"} " +
+                             $"parties={battlegroup?.Members.Count ?? 0} sizes={string.Join("+", sizes)} roster={string.Join("/", rosters)} " +
+                             $"midgard_in_roster={midgardInRosters} midgard_party_linked={midgardLinked} changes_when_wave_went={went.Count} " +
+                             $"shared_call={sharedCall}/{bothCalled}s battlegroup_call={battlegroupCall}s " +
+                             $"standing=Alb:{albionAlive}/14 Mid:{midgardAlive}/8 after={seconds:0}s";
+                var detail = new List<string>();
+                detail.AddRange(callLines);
+                detail.AddRange(changes.Concat(went).Select(change => $"{change.What} {change.Id} force={change.ForceId} why={change.Why}"));
+                detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
+                detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+                return new BattlegroundBattlegroupResult(row, detail, world.ServiceErrors, battlegroup?.Id, battlegroup?.Members.Count ?? 0,
+                    sizes, rosters, midgardInRosters, midgardLinked, went.Count, bothCalled, sharedCall, battlegroupCall, albionAlive, midgardAlive);
+            }
+            finally
+            {
+                foreach (Group group in parties)
+                {
+                    RvrFightBoards.Forget(group);
+                    group.DisbandGroup();
+                }
+                AutonomousBotGroupCoordinator.ResetBattlegroundBattlegroups();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+            }
+        }
+
+        // ---------------------------------------------------------------------------------------------------------
+        // Scenario 5 (#599 step 1): two Albion eights link into a battlegroup and meet a Midgard eight (16v8)
+
+        public sealed record BattlegroupResult(string Row, IReadOnlyList<string> Detail, int Errors, string BattlegroupId,
+            string LeadForce, IReadOnlyList<string> Linked, bool PairLinked, bool FarLinked, bool MidgardLinked, int[] RosterSizes,
+            int MidgardInRosters, int AlbionAlive, int MidgardAlive, int BothCalledSeconds = 0, int SharedCallSeconds = 0,
+            int FollowerBattlegroupPicks = 0, int FollowerPicks = 0, int BattlegroupCallSeconds = 0);
+
+        /// <summary>
+        /// Two Albion eights stand 1,800 apart on the Hadrian's Wall stand-in with a Midgard eight 2,600 east of the first. An
+        /// Albion pair stands 1,500 from the first eight and a third Albion eight 9,000 west of it. The coordinator's
+        /// battlegroup pulse and the support rosters run once (AutonomousBotGroupCoordinator.PulseBattlegroups,
+        /// RealmWarbandSupport.Pulse); then the fight runs. The row shows who linked, each Albion bot's support roster and the
+        /// bots standing at the end. The outcome is reported, not judged.
+        /// </summary>
+        public static BattlegroupResult Battlegroup(int seed, double seconds = 60)
+        {
+            using var world = new RvrFightWorld(seed, Repeatable);
+            AutonomousBotGroupCoordinator.ResetBattlegroups();
+            try
+            {
+                Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+                List<GameBot> first = Eight(world, region, eRealm.Albion, 30_000, 30_000, 3072, 50, "A", out _);
+                List<GameBot> second = Eight(world, region, eRealm.Albion, 28_200, 30_000, 3072, 50, "B", out _);
+                List<GameBot> far = Eight(world, region, eRealm.Albion, 21_000, 30_000, 3072, 50, "F", out _);
+                List<GameBot> pair = [world.NewBot(eRealm.Albion, eCharacterClass.Paladin, 50, "PPaladin"),
+                    world.NewBot(eRealm.Albion, eCharacterClass.Friar, 50, "PFriar")];
+                world.Place(pair[0], region, 30_000, 31_500, 0, 3072);
+                world.Place(pair[1], region, 30_060, 31_500, 0, 3072);
+                world.Form(pair.Cast<GameLiving>().ToList());
+                List<GameBot> midgard = Eight(world, region, eRealm.Midgard, 32_600, 30_000, 1024, 50, "M", out _);
+
+                List<AutonomousRvrEventLayer.BattlegroupChange> changes =
+                    AutonomousBotGroupCoordinator.PulseBattlegroups(world.Now, force: true) ??
+                    new List<AutonomousRvrEventLayer.BattlegroupChange>();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+                string ForceOf(GameBot bot) => AutonomousBotGroupCoordinator.RvrForceId(bot);
+                AutonomousRvrEventLayer.BattlegroupView battlegroup = AutonomousRvrEventLayer.BattlegroupOf(ForceOf(first[0]));
+                IReadOnlyList<string> linked = battlegroup?.Members ?? Array.Empty<string>();
+                bool In(GameBot bot) => linked.Contains(ForceOf(bot));
+                List<GameBot> albion = first.Concat(second).ToList();
+                int[] rosters = albion.Select(bot => RealmWarbandSupport.Get(bot)?.Members.Length ?? 0).Distinct().OrderBy(n => n).ToArray();
+                int midgardInRosters = albion.SelectMany(bot => RealmWarbandSupport.Get(bot)?.Members ?? Array.Empty<GameLiving>())
+                    .Distinct().Count(member => member.Realm == eRealm.Midgard);
+
+                var scan = new RvrFightScan(seed);
+                scan.Add(albion);
+                scan.Add(midgard);
+                // #599 step 2: once a second, each group's published plan; the seconds both groups held a call, and those
+                // they held the same one, and those the follower held it because it took the lead's call (CallFromBattlegroup: 0
+                // by construction without the shared call, so a revert fails scenario 5).
+                List<GameBot> lead = battlegroup != null && battlegroup.LeadForceId == ForceOf(second[0]) ? second : first;
+                List<GameBot> follower = ReferenceEquals(lead, first) ? second : first;
+                int bothCalled = 0, sharedCall = 0, battlegroupCall = 0;
+                long nextSample = 0;
+                var callLines = new List<string>();
+                world.Run(seconds, w =>
+                {
+                    scan.Tick(w.Now);
+                    if (w.Now < nextSample)
+                        return;
+                    nextSample = w.Now + 1_000;
+                    RvrFightPlan leadPlan = PlanOf(lead), followerPlan = PlanOf(follower);
+                    if (leadPlan?.CalledTarget == null || followerPlan?.CalledTarget == null)
+                        return;
+                    bothCalled++;
+                    bool same = leadPlan.CalledTarget == followerPlan.CalledTarget;
+                    if (same)
+                        sharedCall++;
+                    if (same && followerPlan.CallFromBattlegroup)
+                        battlegroupCall++;
+                    if (callLines.Count < 12)
+                        callLines.Add($"call {S(w.Now)} lead={Short(leadPlan.CalledTarget)} follower={Short(followerPlan.CalledTarget)} " +
+                                      $"from_battlegroup={followerPlan.CallFromBattlegroup} same={same}");
+                });
+                var followerPicks = scan.Picks.Where(p => follower.Contains(p.Bot)).ToList();
+                int battlegroupPicks = followerPicks.Count(p => p.Rule == "battlegroup");
+
+                int albionAlive = albion.Count(bot => bot.IsAlive), midgardAlive = midgard.Count(bot => bot.IsAlive);
+                string row = $"RVR_REHEARSAL battlegroup seed={seed} sides=Alb8+Alb8 vs Mid8 battlegroup={battlegroup?.Id ?? "none"} " +
+                             $"groups={linked.Count} heads={linked.Count * 8} pair_linked={In(pair[0])} far_linked={In(far[0])} " +
+                             $"roster={string.Join("/", rosters)} midgard_in_roster={midgardInRosters} " +
+                             $"shared_call={sharedCall}/{bothCalled}s battlegroup_call={battlegroupCall}s follower_first_pick=battlegroup:{battlegroupPicks}/{followerPicks.Count} " +
+                             $"standing=Alb:{albionAlive}/16 Mid:{midgardAlive}/8 after={seconds:0}s";
+                var detail = new List<string>();
+                detail.AddRange(callLines);
+                detail.AddRange(followerPicks.Take(8).Select(p => $"follower pick {S(p.At)} {p.Bot.Name} -> {Short(p.Target)} rule={p.Rule}"));
+                detail.AddRange(changes.Select(change => $"{change.What} {change.Id} force={change.ForceId} why={change.Why}"));
+                detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
+                detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+                return new BattlegroupResult(row, detail, world.ServiceErrors, battlegroup?.Id, battlegroup?.LeadForceId, linked,
+                    In(pair[0]), In(far[0]), AutonomousRvrEventLayer.BattlegroupOf(ForceOf(midgard[0])) != null, rosters, midgardInRosters,
+                    albionAlive, midgardAlive, bothCalled, sharedCall, battlegroupPicks, followerPicks.Count, battlegroupCall);
+            }
+            finally
+            {
+                AutonomousBotGroupCoordinator.ResetBattlegroups();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+            }
+        }
+
+        // ---------------------------------------------------------------------------------------------------------
+        // Scenario 6 (#599 step 3): three Albion eights, one far beyond the battlegroup link, form the realm's zerg (24v8)
+
+        public sealed record ZergResult(string Row, IReadOnlyList<string> Detail, int Errors, string ZergId, string LeadForce,
+            IReadOnlyList<string> Members, bool FarJoined, bool MidgardJoined, int[] RosterSizes, int MidgardInRosters,
+            int AlbionAlive, int MidgardAlive, string FewerId);
+
+        /// <summary>
+        /// Three Albion eights on the Hadrian's Wall stand-in: two 1,800 apart and a third 12,000 west, beyond the battlegroup's
+        /// 3,000 link. A Midgard eight stands 2,600 east of the first. The realm's online and free frontier gamebots are stood in at 72 (the
+        /// rehearsal places no full roster), so the zerg's target is 24. The coordinator's battlegroup pulse and the support
+        /// rosters run once (AutonomousBotGroupCoordinator.PulseBattlegroups, RealmWarbandSupport.Pulse); then the fight runs.
+        /// A second pulse from scratch with the stand-in at 26 (a third is 8, under the floor of 16, the schedule off) shows
+        /// what forms instead (FewerId). The row shows who joined, each Albion bot's support roster and the bots standing at the
+        /// end. The outcome is reported, not judged.
+        /// </summary>
+        public static ZergResult Zerg(int seed, double seconds = 60)
+        {
+            using var world = new RvrFightWorld(seed, Repeatable);
+            AutonomousBotGroupCoordinator.ResetBattlegroups();
+            try
+            {
+                Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+                List<GameBot> first = Eight(world, region, eRealm.Albion, 30_000, 30_000, 3072, 50, "A", out _);
+                List<GameBot> second = Eight(world, region, eRealm.Albion, 28_200, 30_000, 3072, 50, "B", out _);
+                List<GameBot> far = Eight(world, region, eRealm.Albion, 18_000, 30_000, 3072, 50, "F", out _);
+                List<GameBot> midgard = Eight(world, region, eRealm.Midgard, 32_600, 30_000, 1024, 50, "M", out _);
+                string ForceOf(GameBot bot) => AutonomousBotGroupCoordinator.RvrForceId(bot);
+
+                var fewer = AutonomousBotGroupCoordinator.PulseBattlegroups(world.Now, force: true,
+                    new Dictionary<eRealm, int> { [eRealm.Albion] = 26, [eRealm.Midgard] = 8 });
+                string fewerId = AutonomousRvrEventLayer.BattlegroupOf(ForceOf(first[0]))?.Id ?? "none";
+                AutonomousBotGroupCoordinator.ResetBattlegroups();
+
+                List<AutonomousRvrEventLayer.BattlegroupChange> changes =
+                    AutonomousBotGroupCoordinator.PulseBattlegroups(world.Now, force: true,
+                        new Dictionary<eRealm, int> { [eRealm.Albion] = 72, [eRealm.Midgard] = 8 }) ??
+                    new List<AutonomousRvrEventLayer.BattlegroupChange>();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+                AutonomousRvrEventLayer.BattlegroupView zerg = AutonomousRvrEventLayer.BattlegroupOf(ForceOf(first[0]));
+                IReadOnlyList<string> members = zerg?.Members ?? Array.Empty<string>();
+                List<GameBot> albion = first.Concat(second).Concat(far).ToList();
+                int[] rosters = albion.Select(bot => RealmWarbandSupport.Get(bot)?.Members.Length ?? 0).Distinct().OrderBy(n => n).ToArray();
+                int midgardInRosters = albion.SelectMany(bot => RealmWarbandSupport.Get(bot)?.Members ?? Array.Empty<GameLiving>())
+                    .Distinct().Count(member => member.Realm == eRealm.Midgard);
+                AutonomousRvrEventLayer.ZergOrder order = AutonomousRvrEventLayer.ZergOrderOf(ForceOf(first[0]));
+
+                var scan = new RvrFightScan(seed);
+                scan.Add(albion);
+                scan.Add(midgard);
+                world.Run(seconds, w => scan.Tick(w.Now));
+
+                int albionAlive = albion.Count(bot => bot.IsAlive), midgardAlive = midgard.Count(bot => bot.IsAlive);
+                string row = $"RVR_REHEARSAL zerg seed={seed} sides=Alb8+Alb8+Alb8 vs Mid8 free=72 zerg={zerg?.Id ?? "none"} " +
+                             $"groups={members.Count} heads={members.Count * 8} far_joined={members.Contains(ForceOf(far[0]))} " +
+                             $"gate={order?.Anchor?.SpotId ?? "-"} roster={string.Join("/", rosters)} midgard_in_roster={midgardInRosters} " +
+                             $"free26={fewerId} standing=Alb:{albionAlive}/24 Mid:{midgardAlive}/8 after={seconds:0}s";
+                var detail = new List<string>();
+                detail.AddRange((fewer ?? new List<AutonomousRvrEventLayer.BattlegroupChange>())
+                    .Select(change => $"free=26: {change.What} {change.Id} force={change.ForceId} why={change.Why}"));
+                detail.AddRange(changes.Select(change => $"free=72: {change.What} {change.Id} force={change.ForceId} why={change.Why}"));
+                detail.AddRange(world.Recorder.Deaths.Select(d => $"death {S(d.At)} {d.Victim.Name} ({RvrRoles.For(ClassOf(d.Victim))}) by {d.Killer?.Name}"));
+                detail.AddRange(world.Errors.Take(10).Select(e => "error: " + e));
+                return new ZergResult(row, detail, world.ServiceErrors, zerg?.IsZerg == true ? zerg.Id : null, zerg?.LeadForceId, members,
+                    members.Contains(ForceOf(far[0])), AutonomousRvrEventLayer.BattlegroupOf(ForceOf(midgard[0])) != null, rosters,
+                    midgardInRosters, albionAlive, midgardAlive, fewerId);
+            }
+            finally
+            {
+                AutonomousBotGroupCoordinator.ResetBattlegroups();
+                RealmWarbandSupport.Pulse(world.Now, immediately: true);
+            }
+        }
+
+        private static RvrFightPlan PlanOf(List<GameBot> side)
+        {
+            GameBot asker = side.FirstOrDefault(b => b.IsAlive);
+            return asker == null ? null : RvrFightBoards.PeekPlan(asker);
+        }
+
+        // ---------------------------------------------------------------------------------------------------------
         // Scenario 3: a stand-in player in range of a bot group, the lookers' cap on
 
         public sealed record NoticeResult(string Row, IReadOnlyList<string> Detail, int Errors, bool MezRefusedOnHurtBot, bool MezLandedOnHurtPlayer);
@@ -389,6 +858,106 @@ namespace DOL.GS.Tests.Rehearsal
             detail?.AddRange(world.Recorder.Mezzes.Select(m => $"parity mez {S(m.At)} {m.Caster.Name} -> {m.Target.Name} at {m.TargetHealthPercent}%: {Outcome(m)}"));
             detail?.AddRange(world.Errors.Take(5).Select(e => "parity error: " + e));
             return (onBot, onPlayer, world.ServiceErrors);
+        }
+
+        // ---------------------------------------------------------------------------------------------------------
+        // #529 step 3: the fight board from contacts. Every brain is stopped, so only the rehearsal's scan (seeded) looks
+        // and what the board lists is the contacts' doing alone.
+
+        /// <summary>One board case: whether the board listed each named enemy, the refresh's cost, the row and its detail.</summary>
+        public sealed record BoardCaseResult(string Row, IReadOnlyList<string> Detail, int Errors, IReadOnlyDictionary<string, bool> Listed,
+            int Refreshes, int RefreshRays, int MaxRaysPerRefresh, int HitsBy);
+
+        private static List<GameBot> AlbionTrio(RvrFightWorld world, Region region, string tag)
+        {
+            eCharacterClass[] classes = [eCharacterClass.Armsman, eCharacterClass.Cleric, eCharacterClass.Wizard];
+            var trio = new List<GameBot>();
+            for (int i = 0; i < classes.Length; i++)
+            {
+                GameBot bot = world.NewBot(eRealm.Albion, classes[i], 50, $"{tag}{i + 1:00}{classes[i]}");
+                world.Place(bot, region, 30_000, 30_000 + i * 100, 0, 3072);
+                trio.Add(bot);
+            }
+            world.Form(trio.Cast<GameLiving>().ToList());
+            return trio;
+        }
+
+        private static bool Lists(RvrFightBoard board, GameLiving enemy) => board != null && board.Enemies.Any(e => e.Living == enemy);
+
+        private static string BoardEnemies(RvrFightBoard board) => board == null ? "none" :
+            $"from={(board.FromContacts ? "contacts" : "area")} enemies=[{string.Join(",", board.Enemies.Select(e => e.Living?.Name ?? "?"))}]";
+
+        /// <summary>
+        /// Scenario 4: an Albion trio is fighting a Midgard warrior (each holds it on its aggro list, so no member scans),
+        /// and a Midgard healer walks up 800 away mid-fight and never hits anyone. With the in-combat refresh
+        /// (<paramref name="combatRefresh"/>) the trio notices both and its board lists them; without it neither is anyone's
+        /// contact (no hit, no call), so a board from contacts would refuse both: the step-3 caveat of #529.
+        /// </summary>
+        public static BoardCaseResult MidFightWatcher(int seed, bool combatRefresh, double seconds = 5)
+        {
+            using var world = new RvrFightWorld(seed);
+            Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+            List<GameBot> trio = AlbionTrio(world, region, "W");
+            GameBot fighter = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "WFighterWarrior");
+            world.Place(fighter, region, 30_150, 30_100, 0, 1024);
+            foreach (GameBot bot in trio.Append(fighter))
+                bot.Brain?.Stop();
+            foreach (GameBot bot in trio)
+                ((BotBrain)bot.Brain).AddToAggroList(fighter, 100);
+            var scan = new RvrFightScan(seed) { CombatRefresh = combatRefresh };
+            scan.Add(trio);
+            world.Run(1, w => scan.Tick(w.Now));
+            GameBot watcher = world.NewBot(eRealm.Midgard, eCharacterClass.Healer, 50, "WWatcherHealer");
+            world.Place(watcher, region, 30_800, 30_100, 0, 1024);
+            watcher.Brain?.Stop();
+            world.Run(seconds, w => scan.Tick(w.Now));
+            RvrFightBoard board = RvrFightBoards.Get(trio[0]);
+            bool fighting = trio.All(b => ((BotBrain)b.Brain).HasAggro);
+            int hitsBy = world.Recorder.Hits.Count(h => h.Attacker == watcher);
+            var listed = new Dictionary<string, bool> { ["watcher"] = Lists(board, watcher), ["fighter"] = Lists(board, fighter) };
+            var detail = new List<string>
+            {
+                $"board: {BoardEnemies(board)}; trio still fighting (no member scanned): {fighting}",
+                $"in-combat refresh {(combatRefresh ? "on" : "off")}: looks {scan.Refreshes}, rays {scan.RefreshRays}, most rays in one look {scan.MaxRaysPerRefresh}",
+            };
+            detail.AddRange(world.Errors.Take(5).Select(e => "error: " + e));
+            string row = $"RVR_REHEARSAL board_mid_fight seed={seed} refresh={(combatRefresh ? "on" : "off")} watcher_listed={listed["watcher"]} " +
+                         $"fighter_listed={listed["fighter"]} watcher_hits={hitsBy} looks={scan.Refreshes} rays={scan.RefreshRays}";
+            return new BoardCaseResult(row, detail, world.ServiceErrors, listed, scan.Refreshes, scan.RefreshRays, scan.MaxRaysPerRefresh, hitsBy);
+        }
+
+        /// <summary>
+        /// Scenario 5: an Albion trio stands in the open; a Midgard warrior stands 1,200 east behind a wall nobody can see
+        /// through, and a Midgard savage 800 west in the open. With the board from contacts
+        /// (<paramref name="boardFromContacts"/>) the board lists the savage (noticed) and not the warrior (never seen);
+        /// with the switch off the area search lists both, as before 1.2.3.
+        /// </summary>
+        public static BoardCaseResult BehindAWall(int seed, bool boardFromContacts, double seconds = 6)
+        {
+            using var world = new RvrFightWorld(seed, new Dictionary<string, object> { ["rvr_board_from_contacts"] = boardFromContacts });
+            Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+            world.Nav.Walls.Add(new FlatNavmesh.Wall(30_600, 28_000, 30_600, 32_000));
+            List<GameBot> trio = AlbionTrio(world, region, "B");
+            GameBot hidden = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "BHiddenWarrior");
+            world.Place(hidden, region, 31_200, 30_100, 0, 1024);
+            GameBot open = world.NewBot(eRealm.Midgard, eCharacterClass.Savage, 50, "BOpenSavage");
+            world.Place(open, region, 29_200, 30_100, 0, 3072);
+            foreach (GameBot bot in trio.Append(hidden).Append(open))
+                bot.Brain?.Stop();
+            var scan = new RvrFightScan(seed) { Engage = false };
+            scan.Add(trio);
+            world.Run(seconds, w => scan.Tick(w.Now));
+            RvrFightBoard board = RvrFightBoards.Get(trio[0]);
+            var listed = new Dictionary<string, bool> { ["hidden"] = Lists(board, hidden), ["open"] = Lists(board, open) };
+            bool hiddenKnown = trio.Any(b => AutonomousWorldBotController.RvrContactTable.Knows(b.DatabaseID, RvrPartyKey.TargetKey(hidden), world.Now));
+            var detail = new List<string>
+            {
+                $"board: {BoardEnemies(board)}; behind the wall a contact of anyone: {hiddenKnown}; notices {scan.Notices.Count}",
+            };
+            detail.AddRange(world.Errors.Take(5).Select(e => "error: " + e));
+            string row = $"RVR_REHEARSAL board_behind_wall seed={seed} from={(boardFromContacts ? "contacts" : "area")} " +
+                         $"hidden_listed={listed["hidden"]} open_listed={listed["open"]}";
+            return new BoardCaseResult(row, detail, world.ServiceErrors, listed, scan.Refreshes, scan.RefreshRays, scan.MaxRaysPerRefresh, 0);
         }
 
         private static string Outcome(RvrMezAttempt attempt) => attempt?.Landed switch { true => "landed", false => "refused", _ => "no-cast" };

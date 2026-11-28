@@ -70,7 +70,7 @@ namespace DOL.GS
         private static readonly DOL.Logging.Logger Log = DOL.Logging.LoggerManager.Create(typeof(AutonomousBotBodyLanguage));
         // What was done, written to the server log every 5 minutes it is non-zero (BOT_BODY_LANGUAGE), so a play
         // session can be checked from the log.
-        private static long _looks, _emotes, _steps, _greets, _cheers, _nextReportTick;
+        private static long _looks, _emotes, _steps, _greets, _cheers, _killEmotes, _nextReportTick;
         public const long ReportIntervalMs = 5 * 60_000;
 
         private static void Count(ref long counter)
@@ -84,9 +84,9 @@ namespace DOL.GS
                 return;   // the first call only starts the clock
             long looks = Interlocked.Exchange(ref _looks, 0), emotes = Interlocked.Exchange(ref _emotes, 0),
                 steps = Interlocked.Exchange(ref _steps, 0), greets = Interlocked.Exchange(ref _greets, 0),
-                cheers = Interlocked.Exchange(ref _cheers, 0);
+                cheers = Interlocked.Exchange(ref _cheers, 0), killEmotes = Interlocked.Exchange(ref _killEmotes, 0);
             if (Log.IsInfoEnabled)
-                Log.Info($"BOT_BODY_LANGUAGE minutes={ReportIntervalMs / 60_000} looks={looks} emotes={emotes} steps={steps} greets={greets} cheers={cheers}");
+                Log.Info($"BOT_BODY_LANGUAGE minutes={ReportIntervalMs / 60_000} looks={looks} emotes={emotes} steps={steps} greets={greets} cheers={cheers} killEmotes={killEmotes}");
         }
 
         /// <summary>Milliseconds until a bot's next idle action; <paramref name="roll"/> is in [0, 1).</summary>
@@ -302,6 +302,9 @@ namespace DOL.GS
             {
             }
         }
+
+        /// <summary>#528: an emote over an RvR corpse (RvrAfterTheKill), for the BOT_BODY_LANGUAGE counts.</summary>
+        internal static void CountKillEmote() => Count(ref _killEmotes);
 
         /// <summary>Whether a real player is within sight of <paramref name="who"/> (the idle-life gate, #487).</summary>
         internal static bool IsWatched(GameObject who) => who?.CurrentRegion != null && NearestWatcher(who, out _) != null;

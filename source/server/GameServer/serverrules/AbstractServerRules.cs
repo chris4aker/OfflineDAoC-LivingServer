@@ -1861,6 +1861,7 @@ namespace DOL.GS.ServerRules
             if (recordKillCredit)
             {
                 AutonomousObjectiveAssignments.RecordPveKill(botToAward);
+                AutonomousHuntingGround.RecordKill(botToAward, killedNpc);   // #570 step 3: the move-up window
                 AutonomousGoalDiagnostics.Reward(botToAward, killedNpc, botToAward.Experience - diagnosticXpBefore);
             }
 
@@ -1954,6 +1955,9 @@ namespace DOL.GS.ServerRules
                 return;
 
             bool isWorthAnything = false;
+            // #571 step 2 ("only add"): the same groups with their hired companions and befriended gamebots counted.
+            Dictionary<Group, EntityCountTotalDamagePair> mixedGroupCountAndDamage =
+                AutonomousBotRealmPointRewards.MixedGroupContributions(killedPlayer.XPGainers, killedPlayer);
 
             // Let `AwardExperience` fetch players that are in a group but didn't attack the target, and decide how things should be shared.
             foreach (var pair in playerCountAndDamage)
@@ -1962,7 +1966,7 @@ namespace DOL.GS.ServerRules
 
                 lock (player.AwardLock)
                 {
-                    AwardPlayerOnPlayerKill(pair.Key, killer, totalDamage, killedPlayer, playerCountAndDamage, groupCountAndDamage, out isWorthAnything);
+                    AwardPlayerOnPlayerKill(pair.Key, killer, totalDamage, killedPlayer, playerCountAndDamage, groupCountAndDamage, mixedGroupCountAndDamage, out isWorthAnything);
                 }
             }
 
@@ -2040,6 +2044,7 @@ namespace DOL.GS.ServerRules
             GamePlayer killedPlayer,
             Dictionary<GamePlayer, EntityCountTotalDamagePair> playerCountAndDamage,
             Dictionary<Group, EntityCountTotalDamagePair> groupCountAndDamage,
+            Dictionary<Group, EntityCountTotalDamagePair> mixedGroupCountAndDamage,
             out bool isWorthAnything)
         {
             // Modify rewards (base XP, RP, BP) based on damage percent inflicted by the battlegroup, group, or player.
@@ -2057,6 +2062,7 @@ namespace DOL.GS.ServerRules
             }
 
             isWorthAnything = killedPlayer.DeathTime + Properties.RP_WORTH_SECONDS <= killedPlayer.PlayedTime;
+            bool mixedShare = isWorthAnything && UseMixedShare();
             double damagePercent = CalculateDamagePercent();
             int baseRpReward;
             int baseBpReward;
@@ -2083,6 +2089,32 @@ namespace DOL.GS.ServerRules
                 SendNotWorthRewardMessage();
 
             ProcessPlayerToAwardStats(realmPointsEarned);
+
+            // #571 step 2. Owner, 2026-11-27: "only add. A hired companion or befriended gamebot in your group may raise your share
+            // of XP, bounty points, coins and RP, but never lower it below what you'd get without it." The group's share with
+            // its gamebots counted replaces the players-only share only when every reward of this player is at least as high.
+            bool UseMixedShare()
+            {
+                if (playerToAward.Group == null || mixedGroupCountAndDamage == null ||
+                    !mixedGroupCountAndDamage.TryGetValue(playerToAward.Group, out EntityCountTotalDamagePair mixed))
+                    return false;
+                DbBattleground battleground = GameServer.KeepManager.GetBattleground(playerToAward.CurrentRegionID);
+                var values = new AutonomousBotRealmPointRewards.PvpKillValues(killedPlayer.RealmPointsValue, killedPlayer.RealmLevel,
+                    playerToAward.RealmPointsValue, playerToAward.RealmLevel,
+                    battleground == null || playerToAward.RealmLevel < battleground.MaxRealmLevel,
+                    killedPlayer.ExperienceValue, playerToAward.ExperienceValue, Properties.XP_PVP_CAP_PERCENT,
+                    killedPlayer.BountyPointsValue, playerToAward.BountyPointsValue,
+                    !Properties.ALLOW_BPS_IN_BGS && killedPlayer.CurrentZone?.IsBG == true,
+                    killedPlayer.MoneyValue, playerToAward.MoneyValue);
+                long Bonus(long b) => CalculateOutpostExperienceBonus(playerToAward, b);
+                AutonomousBotRealmPointRewards.ShareChoice choice = AutonomousBotRealmPointRewards.ChooseShare(values,
+                    entityCountTotalDamagePair.Count, entityCountTotalDamagePair.Damage, mixed.Count, mixed.Damage,
+                    playerTotalDamageReceived, battleground != null || AutonomousBotRealmPointRewards.InBattleground(killedPlayer), Bonus);
+                if (!choice.Mixed)
+                    return false;
+                entityCountTotalDamagePair = mixed;
+                return true;
+            }
 
             double CalculateDamagePercent()
             {
@@ -2138,6 +2170,12 @@ namespace DOL.GS.ServerRules
                     realmPoints = (int) (realmPoints * (1.0 + 2.0 * (killedPlayer.RealmLevel - playerToAward.RealmLevel) / 900.0));
 
                 realmPoints += CalculateGroupBonus();
+                // #571 step 2: a battleground share split with the group's gamebots doesn't round to 0 (only inside the mixed
+                // share, which is used only when it adds).
+                if (mixedShare)
+                    realmPoints = AutonomousBotRealmPointRewards.KeepBattlegroundShare(realmPoints, true,
+                        battleground != null || AutonomousBotRealmPointRewards.InBattleground(killedPlayer), damagePercent,
+                        killedPlayer.RealmPointsValue);
 
                 if (realmPoints > 0)
                     playerToAward.GainRealmPoints(realmPoints, true);
@@ -2149,6 +2187,10 @@ namespace DOL.GS.ServerRules
                     if (playerToAward.Group == null || !groupCountAndDamage.TryGetValue(playerToAward.Group, out EntityCountTotalDamagePair value))
                         return 0;
 
+                    // #571 step 2: the share in use (the mixed one counts the group's gamebots); for a players-only share it is
+                    // the same entry.
+                    if (mixedShare)
+                        value = entityCountTotalDamagePair;
                     return (int) (realmPoints * (value.Count - 1) * 0.125);
                 }
             }

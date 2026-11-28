@@ -192,6 +192,27 @@ public static class AutonomousBattlegroundWave
         }
     }
 
+    /// <summary>
+    /// Every gate of the keep is down: no live, attackable door stands closed. Then <see cref="ShouldGather"/> sends everyone
+    /// in (the keep rally takes over), however long the wave record stays "not going".
+    /// </summary>
+    public static bool GatesDown(AbstractGameKeep central) =>
+        central != null && !central.Doors.Values.Any(door => door.IsAlive && door.IsAttackableDoor && door.State == eDoorState.Closed);
+
+    /// <summary>
+    /// Whether the realm's muster stands, read the way <see cref="ShouldGather"/> answers it: the wave is gathering at a
+    /// staging point and a gate still stands. While the gates are down <see cref="IsGathering"/> stays true (the wave
+    /// gathers afresh in case the doors are rebuilt), but no bot gathers. Pure.
+    /// </summary>
+    public static bool MusterStands(bool waveGathering, bool hasKeep, bool gatesDown) => waveGathering && hasKeep && !gatesDown;
+
+    /// <summary>
+    /// The muster a bot's battleground order records before the wave's own turn (#530 step 5a): <see cref="MusterStands"/>
+    /// on the wave as it stands. A read: it changes nothing.
+    /// </summary>
+    public static bool IsMustering(ushort regionId, eRealm realm, AbstractGameKeep central) =>
+        MusterStands(IsGathering(regionId, realm, out _), central != null, GatesDown(central));
+
     /// <summary>Counts a fight a gatherer left alone, for BG_WAVE_STATUS.</summary>
     public static void NoteHeldBack(ushort regionId, eRealm realm, bool dropped)
     {
@@ -218,7 +239,7 @@ public static class AutonomousBattlegroundWave
         {
             // Gates down: everyone goes for the lord. In the owner's 2026-10-14 session both gates of Dun Abermenai stood
             // broken for over an hour at a time while the realms kept gathering for waves, and the lord was never touched.
-            bool gatesDown = !central.Doors.Values.Any(door => door.IsAlive && door.IsAttackableDoor && door.State == eDoorState.Closed);
+            bool gatesDown = GatesDown(central);
             wave.Staging ??= StagingPoint(bot, bracket, central);
             if (now >= wave.NextCount)
             {

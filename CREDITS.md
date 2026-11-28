@@ -1,7 +1,8 @@
 # Credits
 
 **DAoC - Living Server** is a free, non-commercial, single-player server for Dark Age of Camelot. It is maintained by
-[chris4aker](https://github.com/chris4aker) and built on the open-source work below. The launcher's **About** shows the
+[chris4aker](https://github.com/chris4aker) and built first of all on **OpenDAoC** and **Dawn of Light (DOL)**, whose
+open-source server code it runs on, and on the other work below. The launcher's **About** shows the
 same list.
 
 > Dark Age of Camelot is the intellectual property of Electronic Arts and Broadsword Online Games. DAoC - Living Server
@@ -43,6 +44,8 @@ section 5 requires. Third-party notices for dependencies, tools and data sources
   for fixes.
 - **Cancain**: bots returning from battlegrounds, `/friend` with gamebots and `/allrelease`.
 - **Nikse77, Rmarcoux86 and MoomoocowPlus**: fixes and ideas.
+- **[mod-playerbots](https://github.com/mod-playerbots/mod-playerbots)** (AzerothCore): the idea of a per-pair trade
+  discount for the bot trade (no code taken).
 - **Krolgosh-web**: the report behind the lag fix for large populations (issue #25).
 - Everyone on GitHub and r/daoc who reported what they found.
 

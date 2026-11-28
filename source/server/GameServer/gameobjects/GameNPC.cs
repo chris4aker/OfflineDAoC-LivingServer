@@ -2819,8 +2819,10 @@ namespace DOL.GS
 				// primary weapon before starting the swing cycle.
 				bool standardUsable = BotWeaponStats.CanUseMelee(bot, rightHand);
 				bool twoHandUsable = BotWeaponStats.CanUseMelee(bot, twoHand);
-				bool preferTwoHand = twoHandUsable &&
-				                    (!standardUsable || bot.BotSpec?.Is2H == true);
+				// #569 step 7: the same rule as the brain (BotWeaponSetPolicy), so the two never switch a bot back and forth.
+				bool preferTwoHand = BotWeaponSetPolicy.On
+					? BotWeaponSetPolicy.PreferTwoHanded(bot, twoHandUsable, standardUsable, BotWeaponSetPolicy.TwoHandedBuild(bot))
+					: BotWeaponSetPolicy.OldRule(twoHandUsable, standardUsable, bot.BotSpec?.Is2H == true);
 
 				if (!standardUsable && !twoHandUsable)
 				{
@@ -2829,8 +2831,9 @@ namespace DOL.GS
 					twoHand = Inventory?.GetItem(eInventorySlot.TwoHandWeapon);
 					standardUsable = BotWeaponStats.CanUseMelee(bot, rightHand);
 					twoHandUsable = BotWeaponStats.CanUseMelee(bot, twoHand);
-					preferTwoHand = twoHandUsable &&
-					                    (!standardUsable || bot.BotSpec?.Is2H == true);
+					preferTwoHand = BotWeaponSetPolicy.On
+						? BotWeaponSetPolicy.PreferTwoHanded(bot, twoHandUsable, standardUsable, BotWeaponSetPolicy.TwoHandedBuild(bot))
+						: BotWeaponSetPolicy.OldRule(twoHandUsable, standardUsable, bot.BotSpec?.Is2H == true);
 				}
 
 				if (!standardUsable && !twoHandUsable)
@@ -3299,6 +3302,8 @@ namespace DOL.GS
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
 			Flags &= ~eFlags.STEALTH;
+			if (this is not GameBot && Brain is IControlledBrain)
+				CompanionRvrEngage.NoteHit(this, ad); // #664: a bot's pet under /hold answers the first spell hit
 
 			if (this is not GameBot && Brain is ControlledMobBrain)
 				BotBrain.NotifyNearbyGroupBots(this, ad);

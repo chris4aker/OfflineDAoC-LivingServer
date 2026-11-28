@@ -39,6 +39,11 @@ public sealed record RvrFightPlan
     public GameLiving CalledTarget { get; init; }
     /// <summary>When <see cref="CalledTarget"/> was called (game-loop tick).</summary>
     public long CalledAt { get; init; }
+    /// <summary>
+    /// #599 step 2: <see cref="CalledTarget"/> is the battlegroup lead group's call, taken by this follower group's main
+    /// assist (RvrAssist.Plan); false for the group's own call.
+    /// </summary>
+    public bool CallFromBattlegroup { get; init; }
     /// <summary>Member: the crowd controller; Subject: the enemy it holds.</summary>
     public ImmutableArray<RvrAssignment> CrowdControl { get; init; } = ImmutableArray<RvrAssignment>.Empty;
     /// <summary>Member: the interrupter; Subject: the enemy caster or healer it keeps from casting.</summary>
@@ -55,13 +60,26 @@ public sealed record RvrFightPlan
     public Vector3? RallyPoint { get; init; }
     public ushort RallyRegion { get; init; }
     public RvrSkillTier SkillTier { get; init; } = RvrSkillTier.Average;
+    /// <summary>#531 step 2a: when the group's present fight began (its first board in contact after a 20 s gap); 0: none yet.</summary>
+    public long FightSince { get; init; }
+    /// <summary>#531 step 2a: the last board in contact (game-loop tick); 0: none yet.</summary>
+    public long LastContactAt { get; init; }
+    /// <summary>#531 step 2a: when the opener window opened (the fight's first board the plan ran on); 0: not yet.</summary>
+    public long OpenerSince { get; init; }
+    /// <summary>#531 step 2a: the opener of this fight is spent (an area mez landed, or the window ran out).</summary>
+    public bool OpenerDone { get; init; }
+    /// <summary>#531 step 2a: the area mezzer who opens the fight (<see cref="RvrOpener"/>); null: no opener job.</summary>
+    public GameLiving OpenerMember { get; init; }
+    /// <summary>#531 step 2a: the enemy the opener's area mez is cast on.</summary>
+    public GameLiving OpenerCentre { get; init; }
 
     /// <summary>No plan at all: what a board has before its first plan.</summary>
     public static RvrFightPlan None { get; } = new();
 
     /// <summary>The plan holds no decision: no assist, no call, no assignment, stance Engage. Bots under it fight as before.</summary>
     public bool IsNeutral => MainAssist == null && CalledTarget == null && CrowdControl.IsEmpty && Interrupts.IsEmpty &&
-                             Protect.IsEmpty && Stance == RvrStance.Engage;
+                             Protect.IsEmpty && Stance == RvrStance.Engage &&
+                             OpenerMember == null;
 
     /// <summary>The neutral plan for a group with these stored facts. Pure.</summary>
     public static RvrFightPlan Neutral(long now, RvrGroupState state) => new()
@@ -94,6 +112,7 @@ public sealed record RvrFightPlan
 /// (rvr_bot_assist, rvr_bot_cc_plan, rvr_bot_interrupts). Their rules are pure; the steps hand them the board's
 /// <see cref="RvrFieldFacts"/>, which <see cref="RvrFieldReader"/> reads once per board from its live objects
 /// (reachability reports, Mastery of Concentration, resurrection, crowd-control immunity, members' spells).</item>
+/// <item><see cref="PlanOpener"/>: #531 step 2a, the AE mez opener (rvr_bot_cc_plan)</item>
 /// <item><see cref="PlanProtect"/>: work package 3 (rvr_bot_peel)</item>
 /// </list>
 /// In work package 0 every step returns the plan unchanged, so the result is the neutral plan.
@@ -109,6 +128,7 @@ public static class RvrFightPlanner
         RvrFightPlan plan = Carry(previous, state, now);
         plan = PlanStance(plan, board, state, switches, now);
         plan = PlanAssist(plan, board, state, switches, now);
+        plan = PlanOpener(plan, board, state, switches, now);
         plan = PlanCrowdControl(plan, board, state, switches, now);
         plan = PlanInterrupts(plan, board, state, switches, now);
         plan = PlanProtect(plan, board, state, switches, now);
@@ -140,6 +160,10 @@ public static class RvrFightPlanner
     /// <summary>Work package 2: the main assist and the called target (<see cref="RvrAssist.Plan"/>, on the board's facts).</summary>
     public static RvrFightPlan PlanAssist(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
         RvrTacticsSwitches switches, long now) => RvrAssist.Plan(plan, board, switches, now, RvrFieldReader.Of(board, plan?.CalledTarget));
+
+    /// <summary>#531 step 2a: the area mez that opens the fight (<see cref="RvrOpener.Plan"/>).</summary>
+    public static RvrFightPlan PlanOpener(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,
+        RvrTacticsSwitches switches, long now) => RvrOpener.Plan(plan, board, switches, now, RvrFieldReader.Of(board));
 
     /// <summary>Work package 2: who holds which enemy (<see cref="RvrCrowdControlPlan.Plan"/>).</summary>
     public static RvrFightPlan PlanCrowdControl(RvrFightPlan plan, RvrFightBoard board, RvrGroupState state,

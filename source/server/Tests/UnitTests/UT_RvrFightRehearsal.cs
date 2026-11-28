@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using DOL.GS;
 using DOL.GS.Tests.Rehearsal;
 using NUnit.Framework;
@@ -44,9 +45,134 @@ namespace DOL.UnitTests
             RvrFightRehearsal.OpenFieldResult first = RvrFightRehearsal.OpenField(Seed);
             Print(first.Row, first.Detail, clock);
             Assert.That(RvrFightBoards.Builds, Is.GreaterThan(boards), "BuildBoard ran on live GameLivings");
+            // #531 step 2c-1: the realm-ability row (Speed of Sound, MoC, Bunker of Faith per side) is printed
+            string actives = first.Detail.FirstOrDefault(l => l.StartsWith("RVR_REHEARSAL open_field_realm_abilities", System.StringComparison.Ordinal));
+            Assert.That(actives, Is.Not.Null, "the realm-ability row");
+            // #531 step 2f: the row says what each side's bombers did with a mezzed pile
+            Assert.That(first.Row, Does.Contain(" bomb=Alb:["), "the row has the bombers");
+            // (seed 520's eights hold no Wizard, Runemaster or Spiritmaster: the bomb cases below give Albion its bombers)
+            Assert.That(BombOf(first.Row, "Alb").Bombers, Is.Zero, "no period bomber in Albion's eight: " + first.Row);
+            // #531 step 2e: the row says how deep each side's casters and healers stood behind their tanks
+            Assert.That(first.Row, Does.Contain(" depth=Alb:casters="), "the row has the back line's depth");
+            // ... and the layout placed Albion's casters (the Sorcerer and the Theurgist) by their spell reach, deeper than the old
+            // flat back-line depth (the reach fill is wired). Their sampled depth is not asserted: a caster walks in to cast
+            // (seed 520: mean 151, deepest 1311), kites and peels.
+            System.Collections.Generic.IReadOnlyList<float> casterReach = first.Depth.Reaches(eRealm.Albion, false);
+            Assert.That(casterReach, Is.Not.Empty, "Albion's casters were sampled: " + first.Row);
+            Assert.That(casterReach.Min(), Is.GreaterThan(0), "every sample had a reach: " + first.Row);
+            Assert.That(RvrPositioning.DepthFor(false, casterReach.Average(), 0, RvrPositioning.MezSpread),
+                Is.GreaterThan(RvrPositioning.MaxBackDepth), "at that reach a caster stands deeper than the old 700: " + first.Row);
+            // #531 step 2d: the row also says when each side's casters first quickcast a key cast, and how often
+            Assert.That(actives, Does.Contain(" qc="), "the row has Quickcast");
+            TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
             Assert.That(first.Errors + again.Errors, Is.Zero, "no service threw");
+            // #531 step 1: each eight's opening came from the plan's first pick (not the spread), and the plan opened on no more
+            // enemies than the spread pick would have from the same scans.
+            Assert.Multiple(() =>
+            {
+                foreach ((string side, RvrFightRehearsal.RvrOpening opening) in new[] { ("Albion", first.Albion), ("Midgard", first.Midgard) })
+                {
+                    Assert.That(opening, Is.Not.Null, $"{side} engaged by scan: {first.Row}");
+                    if (opening == null)
+                        continue;
+                    Assert.That(opening.FirstRule, Is.AnyOf("order", "mates", "called"), $"{side}'s first pick is the plan's: {first.Row}");
+                    Assert.That(opening.OpenedOn, Is.LessThanOrEqualTo(opening.SpreadOpenedOn), $"{side} opened on fewer: {first.Row}");
+                    // Only the kill order rules a tank out: a called pick can be a tank by design (WrongCallShare), and so can
+                    // a pick where only a tank was seen.
+                    if (opening.FirstRule == "order")
+                        Assert.That(RvrRoles.For(RvrFightRehearsal.ClassOf(opening.FirstTarget)), Is.Not.EqualTo(RvrRole.Tank),
+                            $"{side} opened on the kill order, not a tank: {first.Row}");
+                }
+            });
+            TestContext.Progress.WriteLine($"  #531 opening: Albion {first.Albion} / Midgard {first.Midgard}");
+        }
+
+        /// <summary>One side's bomb= part of the open_field row.</summary>
+        private sealed record BombText(int Bombers, string Waited, int Bombs, int OnMezzed);
+
+        private static BombText BombOf(string row, string side)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(row,
+                $@"\b{side}:\[bombers=(\d+)(?: first=\S+ waited=(\S+) bombs=(\d+) on_mezzed=(\d+))?\]");
+            Assert.That(m.Success, Is.True, $"{side}'s bomb= part: {row}");
+            return new BombText(int.Parse(m.Groups[1].Value), m.Groups[2].Success ? m.Groups[2].Value : "no",
+                m.Groups[3].Success ? int.Parse(m.Groups[3].Value) : 0, m.Groups[4].Success ? int.Parse(m.Groups[4].Value) : 0);
+        }
+
+        /// <summary>The seeds the bomb cases run (a fight takes well under a second; whether an area mez lands on two or more
+        /// enemies together differs by seed, so each case asserts over the set).</summary>
+        private static readonly int[] BombSeeds = [520, 521, 522, 523, 524, 525, 526, 527, 528, 529];
+
+        private static string BombRows(System.Collections.Generic.IEnumerable<RvrFightRehearsal.OpenFieldResult> results) =>
+            string.Join(" | ", results.Select(r => System.Text.RegularExpressions.Regex.Match(r.Row, @"seed=\d+").Value + " " +
+                System.Text.RegularExpressions.Regex.Match(r.Row, @"bomb=Alb:\[[^\]]*\]").Value));
+
+        [Test]
+        public void Scenario1_ALoneBomberWaitsOutTheMezThenBombsThePile()
+        {
+            // #531 step 2f, owner answer 53A: a group with one bomber walks in and waits beside the mezzed pile, and bombs as
+            // the first mez there is about to wear off. Albion fights with one bomber beside its Sorcerer's area mez. This pins
+            // the plan's walk-in (BotBrain.TryRvrBomb) and its lift of the mez veto.
+            var clock = Stopwatch.StartNew();
+            var results = BombSeeds.Select(seed => RvrFightRehearsal.OpenField(seed, albionBombers: 1)).ToList();
+            string rows = BombRows(results);
+            TestContext.Out.WriteLine(rows);
+            TestContext.Out.WriteLine($"  (wall time {clock.Elapsed.TotalSeconds:0.0}s)");
+            TestContext.Progress.WriteLine(rows);
+            var albs = results.Select(r => BombOf(r.Row, "Alb")).ToList();
+            Assert.Multiple(() =>
+            {
+                Assert.That(results.Sum(r => r.Errors), Is.Zero, "no service threw");
+                Assert.That(albs.Select(a => a.Bombers), Is.All.EqualTo(1), "Albion has one bomber: " + rows);
+                Assert.That(albs.Any(a => a.Waited != "no" && a.OnMezzed >= 1), Is.True,
+                    "in some fight the lone bomber waited beside a mezzed pile and bombed it: " + rows);
+            });
+        }
+
+        [Test]
+        public void Scenario1_TwoBombersBombAMezzedPileTogether()
+        {
+            // #531 step 2f, owner answer 53A: a group with two or more bombers bombs the mezzed pile at once: the first to
+            // arrive holds a moment for the other. Albion fights with two bombers beside its Sorcerer's area mez.
+            var clock = Stopwatch.StartNew();
+            var results = BombSeeds.Select(seed => RvrFightRehearsal.OpenField(seed, albionBombers: 2)).ToList();
+            string rows = BombRows(results);
+            TestContext.Out.WriteLine(rows);
+            TestContext.Out.WriteLine($"  (wall time {clock.Elapsed.TotalSeconds:0.0}s)");
+            TestContext.Progress.WriteLine(rows);
+            long window = RvrBombPlan.SyncHoldMilliseconds + 1_000;
+            int piles = 0, together = 0;
+            var lines = new System.Collections.Generic.List<string>();
+            foreach (RvrFightRehearsal.OpenFieldResult r in results)
+            {
+                var albion = r.Bombs.Where(b => b.Caster.Realm == eRealm.Albion).ToList();
+                RvrBombCast pile = albion.FirstOrDefault(b => b.Mezzed >= RvrBombPlan.MinimumMezzed);
+                if (pile == null)
+                    continue;
+                piles++;
+                bool partner = albion.Any(b => b.Caster != pile.Caster && System.Math.Abs(b.At - pile.At) <= window);
+                bool held = r.BombHolds.Any(h => h.Bomber.Realm == eRealm.Albion && h.At <= pile.At && pile.At - h.At <= window);
+                if (partner || held)
+                    together++;
+                string seedText = System.Text.RegularExpressions.Regex.Match(r.Row, @"seed=\d+").Value;
+                string casts = string.Join(",", albion.Select(b => (b.At - pile.At) + ":" + b.Caster.Name + "x" + b.Mezzed + "m" + b.Free + "f"));
+                lines.Add(seedText + ": partner=" + partner + " held=" + held + " " + casts);
+            }
+            TestContext.Out.WriteLine(string.Join("\n", lines));
+            string why = string.Join("; ", lines) + " " + rows;
+            Assert.Multiple(() =>
+            {
+                Assert.That(results.Sum(r => r.Errors), Is.Zero, "no service threw");
+                Assert.That(results.Select(r => BombOf(r.Row, "Alb").Bombers), Is.All.EqualTo(2), "Albion has two bombers: " + rows);
+                // (no "never waits" assert: once one of the two has died the other is a lone bomber and waits, as seed 525 did)
+                Assert.That(piles, Is.GreaterThan(0), "Albion bombed a mezzed pile: " + why);
+                // Not every pile: the other bomber may have died or stand beyond the walk limit (seeds 521 and 522 once),
+                // and the server's own rolls make the fights differ run to run. Most piles, and at least one.
+                Assert.That(together, Is.GreaterThan(0).And.GreaterThanOrEqualTo((piles + 1) / 2),
+                    "the first bomb on a mezzed pile came with the other bomber's, or after a hold for it, on most piles: " + why);
+            });
         }
 
         [Test]
@@ -58,6 +184,96 @@ namespace DOL.UnitTests
             RvrFightRehearsal.StormResult again = RvrFightRehearsal.Storm(Seed);
             Repeat(first.Row, again.Row);
             Assert.That(first.Errors + again.Errors, Is.Zero, "no service threw");
+        }
+
+        [Test]
+        public void Scenario4_SoloBotsAtABattlegroundMusterFormGroups()
+        {
+            // #530 step 5b: the muster's solo gamebots are put into parties, and each party's fight board lists the party.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.MusterResult result = RvrFightRehearsal.MusterGroups(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Placed, Is.EqualTo(14), "every free solo at the muster placed");
+                Assert.That(result.PartySizes, Is.EqualTo(new[] { 7, 7 }), "fourteen: two parties of seven, never over eight");
+                Assert.That(result.OutsidersTaken, Is.Zero, "no other realm, no grouped bot, no other bracket, no tour about to end");
+                Assert.That(result.Solos, Is.Zero);
+                Assert.That(result.BoardMembersBefore, Is.LessThanOrEqualTo(1), "before: a solo bot's board");
+                Assert.That(result.BoardMembersAfter, Is.EqualTo(new[] { 7, 7 }), "after: the party's board");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
+        }
+
+        [Test]
+        public void Scenario7_MusterPartiesAtABattlegroundKeepActAsOneBattlegroup()
+        {
+            // #599 step 4: the realm's two muster parties at one keep share one roster (14) and one lead's call; the other
+            // realm's lone party is not linked. The fight's outcome is printed, not asserted.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.BattlegroundBattlegroupResult result = RvrFightRehearsal.BattlegroundBattlegroup(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.PartySizes, Is.EqualTo(new[] { 7, 7 }), "scenario 4's parties");
+                Assert.That(result.BattlegroupId, Is.EqualTo("bgbg-albion-250001"), "one battlegroup for the realm at the keep");
+                Assert.That(result.Parties, Is.EqualTo(2));
+                Assert.That(result.RosterSizes, Is.EqualTo(new[] { 14 }), "every Albion party bot shares one roster of 14");
+                Assert.That(result.MidgardInRosters, Is.Zero);
+                Assert.That(result.MidgardPartyLinked, Is.False, "a realm's lone party has no battlegroup");
+                Assert.That(result.ChangesWhenTheWaveWent, Is.Zero, "muster to attack: the same battlegroup");
+                Assert.That(result.BattlegroupCallSeconds, Is.GreaterThan(0), $"the follower party took the lead party's call: {result.Row}");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
+        }
+
+        [Test]
+        public void Scenario5_TwoEightsLinkIntoABattlegroupAndMeetAnEight()
+        {
+            // #599 step 1: two nearby Albion eights link (16 heads, one support roster); a pair, a far eight and the other
+            // realm do not. The fight's outcome is printed, not asserted.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.BattlegroupResult result = RvrFightRehearsal.Battlegroup(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.BattlegroupId, Does.StartWith("bgrp-albion-"), "the two eights linked");
+                Assert.That(result.Linked, Has.Count.EqualTo(2), "two groups");
+                Assert.That(result.LeadForce, Is.EqualTo(result.Linked[0]));
+                Assert.That(result.PairLinked, Is.False, "a duo stays a duo");
+                Assert.That(result.FarLinked, Is.False, "an eight 9,000 away is not linked");
+                Assert.That(result.MidgardLinked, Is.False, "the lone Midgard eight has no battlegroup");
+                Assert.That(result.RosterSizes, Is.EqualTo(new[] { 16 }), "every Albion bot of the two eights shares one roster of 16");
+                Assert.That(result.MidgardInRosters, Is.Zero);
+                // #599 step 2: the follower group's main assist took the lead group's call (one shared target). The same target alone
+                // could match by kill order; CallFromBattlegroup says the follower held it because the lead called it.
+                Assert.That(result.SharedCallSeconds, Is.GreaterThan(0), $"the two groups held one shared call: {result.Row}");
+                Assert.That(result.BattlegroupCallSeconds, Is.GreaterThan(0), $"the follower took the lead's call: {result.Row}");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
+        }
+
+        [Test]
+        public void Scenario6_ThreeEightsFormTheRealmsZergAndMeetAnEight()
+        {
+            // #599 step 3: with 72 free Albion gamebots (a third is 24), three eights form one zerg, the far one (12,000 off,
+            // beyond the battlegroup's link) included, with one support roster of 24; the Midgard eight does not join. With 26
+            // free (a third is 8, under the floor) a battlegroup forms instead. The fight's outcome is printed, not asserted.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.ZergResult result = RvrFightRehearsal.Zerg(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ZergId, Does.StartWith("zerg-albion-"), result.Row);
+                Assert.That(result.Members, Has.Count.EqualTo(3), "three groups");
+                Assert.That(result.LeadForce, Is.EqualTo(result.Members[0]));
+                Assert.That(result.FarJoined, Is.True, "recruited beyond the battlegroup's 3,000 link");
+                Assert.That(result.MidgardJoined, Is.False, "the lone Midgard eight (8 free) has no zerg and no battlegroup");
+                Assert.That(result.RosterSizes, Is.EqualTo(new[] { 24 }), "every Albion bot of the three eights shares one roster of 24");
+                Assert.That(result.MidgardInRosters, Is.Zero);
+                Assert.That(result.FewerId, Does.StartWith("bgrp-albion-"), "26 free: no zerg, the two near eights make a battlegroup");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
         }
 
         [Test]

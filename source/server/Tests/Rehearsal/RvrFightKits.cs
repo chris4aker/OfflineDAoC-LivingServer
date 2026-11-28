@@ -12,7 +12,7 @@ namespace DOL.GS.Tests.Rehearsal
     /// </summary>
     public static class RvrFightKits
     {
-        public const int HealId = 952_001, MezId = 952_002, BoltId = 952_003;
+        public const int HealId = 952_001, MezId = 952_002, BoltId = 952_003, AreaMezId = 952_004, BombId = 952_005;
 
         public static eRace Race(eRealm realm, eCharacterClass characterClass) => realm switch
         {
@@ -31,6 +31,25 @@ namespace DOL.GS.Tests.Rehearsal
             or eCharacterClass.Cabalist or eCharacterClass.Runemaster or eCharacterClass.Spiritmaster or eCharacterClass.Shaman
             or eCharacterClass.Eldritch or eCharacterClass.Mentalist or eCharacterClass.Enchanter or eCharacterClass.Druid;
 
+        /// <summary>#531 step 2a: classes whose stand-in kit has an area mez (the Sorcerer opens the Albion eight's fights).</summary>
+        public static bool AreaMezzes(eCharacterClass c) => c is eCharacterClass.Sorcerer;
+
+        /// <summary>#531 step 2f: classes given a stand-in point blank bomb in the open-field scenario (the Albion Wizard, the
+        /// Midgard Runemaster and Spiritmaster; Hibernia's Eldritch, Enchanter and Mentalist are not in the rehearsal's realms).</summary>
+        public static bool Bombs(eCharacterClass c) => c is eCharacterClass.Wizard or eCharacterClass.Runemaster or eCharacterClass.Spiritmaster;
+
+        /// <summary>#531 step 2f: the stand-in point blank bomb (radius 350, reference.md 3.2's area radius), added to a bot's kit.</summary>
+        public static void AddBomb(GameBot bot)
+        {
+            double scale = bot.Level / 50.0;
+            var spells = new List<Spell>(bot.Spells ?? new List<Spell>())
+            {
+                Make(BombId, "Stand-in Point Blank Blast", "DirectDamage", "Enemy", range: 0, power: 30, cast: 2.5, damage: 180 * scale,
+                    level: bot.Level, damageType: eDamageType.Heat, radius: 350),
+            };
+            bot.Spells = spells;
+        }
+
         /// <summary>The class's stand-in kit at <paramref name="level"/> (the values scale with level from the level-50 shape).</summary>
         public static List<Spell> For(eCharacterClass c, byte level)
         {
@@ -41,6 +60,11 @@ namespace DOL.GS.Tests.Rehearsal
             if (Mezzes(c) && c is not eCharacterClass.Skald)
                 kit.Add(Make(MezId, "Stand-in Mesmerize", "Mesmerize", "Enemy", range: 1500, power: 25, cast: 2.6, duration: 60, level: level,
                     damageType: eDamageType.Spirit));
+            // #531 step 2a: the Sorcerer's area mez (Domination; reference.md 3.2: radius about 350, range 1,500), after the
+            // single mez so MezParity's First(Mesmerize) still takes the single one
+            if (AreaMezzes(c))
+                kit.Add(Make(AreaMezId, "Stand-in Area Mesmerize", "Mesmerize", "Enemy", range: 1500, power: 40, cast: 3.0, duration: 60,
+                    level: level, damageType: eDamageType.Spirit, radius: 350));
             if (Nukes(c))
                 kit.Add(Make(BoltId, "Stand-in Bolt", "DirectDamage", "Enemy", range: 1500, power: 20, cast: 2.8, damage: 210 * scale, level: level,
                     damageType: c is eCharacterClass.Runemaster or eCharacterClass.Theurgist ? eDamageType.Energy : eDamageType.Heat));
@@ -48,11 +72,11 @@ namespace DOL.GS.Tests.Rehearsal
         }
 
         private static Spell Make(int id, string name, string type, string target, int range, int power, double cast, int duration = 0,
-            double value = 0, double damage = 0, byte level = 50, eDamageType damageType = eDamageType.Natural) =>
+            double value = 0, double damage = 0, byte level = 50, eDamageType damageType = eDamageType.Natural, int radius = 0) =>
             new(new DbSpell
             {
                 SpellID = id, Name = name, Description = name, Type = type, Target = target, Range = range, Power = power,
-                CastTime = cast, Duration = duration, Value = value, Damage = damage, DamageType = (int)damageType,
+                CastTime = cast, Duration = duration, Value = value, Damage = damage, DamageType = (int)damageType, Radius = radius,
             }, level);
     }
 }

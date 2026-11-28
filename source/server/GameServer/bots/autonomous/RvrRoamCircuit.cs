@@ -293,6 +293,21 @@ public static class RvrRoamCircuits
         walk with { KillAt = walk.KillAt > 0 ? walk.KillAt : now, KillsHere = walk.KillsHere + 1, Kills = walk.Kills + 1 };
 
     /// <summary>
+    /// #528: how far past a spot's radius a death the walker took part in still counts as a kill at the spot (the prey
+    /// reach is radius + 500, and a hunt chases a little past it).
+    /// </summary>
+    public const float KillReach = 1_500;
+
+    /// <summary>
+    /// #528: whether an enemy death the walker took part in (the player's included, from the kill event) is a kill at its
+    /// current spot, for the move-on rule: the walker had arrived there before the death, and the body fell in the same
+    /// region within <see cref="KillReach"/> past the spot's radius. A kill on the way there, or far from the spot, is
+    /// not "camping this corpse". <paramref name="distance"/> is from the spot's centre; null for another region. Pure.
+    /// </summary>
+    public static bool CountsAsSpotKill(long killAt, long arrivedAt, float? distance, float spotRadius) =>
+        arrivedAt > 0 && killAt >= arrivedAt && distance is { } d && d <= spotRadius + KillReach;
+
+    /// <summary>
     /// One turn of the walk. <paramref name="inArea"/>: the walker is at the current spot (at its standing point or
     /// hunting inside its radius); <paramref name="preyInView"/>: enemy levelling bots the group noticed there.
     /// Order: travel until there; the move-on rule first (a kill and its time is up: leave, whatever else is about);

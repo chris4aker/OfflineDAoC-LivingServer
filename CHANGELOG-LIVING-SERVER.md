@@ -1,7 +1,7 @@
 # Living Server changelog
 
-What Living Server adds to Offline DAoC. The base game's own changes (up to 0.37, the releases made by Offline DAoC's
-creator, shadowofze) are in [CHANGELOG.md](CHANGELOG.md). The newest version is first.
+What Living Server adds to Offline DAoC. The base game's own changes (up to 0.37, the original Offline DAoC
+releases) are in [CHANGELOG.md](CHANGELOG.md). The newest version is first.
 
 Up to 0.37-se.2 the fork was called the **Social Expansion**, and "Living Server" was the name of one
 of its feature groups (bots remember you, grats, rezzes, alarms, nemeses, schedules, breaks, body
@@ -509,41 +509,41 @@ audit's tells 11 and 12; seen on 1.2.2 `868a82d`, the owner's game of 2026-11-23
   2026-11-24): bots look like players. On, /who tags every gamebot "[Playerbot]" and a refused invite says "gamebot" or
   "buffbot". A new key, so worlds from earlier builds take the hidden default without an upgrade line.
 - Not here: "brb"/"afk" said in chat with no break behind it (#486). `UT_InvitesLogouts485`. **Tests only.**
-**From the Offline DAoC forks** (fork package P5; sources and SHAs in each commit and the PR). **Tests only.**
+**Spell, combat, guild and bot fixes** (tests only)
 - **Two singers on one song no longer leave the group at 0 endurance.** A pulsing song or chant renewed by a second Bard,
   Minstrel, Skald or Paladin replaces the old copy in place; when the first singer's pulse later ended that stale copy, it
   took the bonus away a second time, so endurance regeneration (or any stat song) sat at 0 with the song up. A stale copy
   is now retired without touching the bonus (`EffectListComponent.RetireStaleCopies`, `EFFECT_STALE_COPY_RETIRED`, first
   20 logged). This is a second cause of the r/daoc "no endurance regeneration" report, beside the server-property cause
-  fixed above (#465). FelixGagnonB 471b04186 (True165 3615e416d found the same). `UT_BotMobileSongs`.
+  fixed above (#465). `UT_BotMobileSongs`.
 - **Heals cast their sub-spells** (a heal-over-time, cleanse or damage reduction carried in `SubSpellID`); the shared
-  sub-spell path skipped any spell that has one. Every caster, players and bots. DividedRealms 8fda4493, cfad6c50.
+  sub-spell path skipped any spell that has one. Every caster, players and bots.
 - **Bots fire only their class's style proc**, as players do, not both it and the shared one; Doom Hammer damages its
-  target instead of the Thane. DividedRealms bebdbb71.
+  target instead of the Thane.
 - **Bots don't freeze after a keep door or any move.** `MoveTo` stops and restarts the brain and left a bot brain with no
-  state; every bot (not only hired companions) now resumes following, idling or passive. DetShaft a303aefaf.
+  state; every bot (not only hired companions) now resumes following, idling or passive.
 - **Performers keep their song and Paladins and Wardens their chant when hit in melee.** The speed song still stops. A
   grouped performer whose song needs its instrument keeps it in hand (it still heals and controls); a solo one draws its
-  weapon as before. True165 48b20439 and its v0.7 `KeepsChantInMelee`.
+  weapon as before (`KeepsChantInMelee`).
 - **Jailer Vifil's tunnel guardians no longer stack** after kills, missed resets and respawns: his brain owns its two and
   clears them when he resets out of combat or leaves the world. The encounter keeps its two guardians a pull; nothing
-  about Vifil or the guardians is weaker. True165 78526630, with its test.
-- **`/gc edit <rank> dues|withdraw`** sets that permission, not Release. True165 bc2440ca.
+  about Vifil or the guardians is weaker. A test covers it.
+- **`/gc edit <rank> dues|withdraw`** sets that permission, not Release.
 - **A party gives up a ranged pull the monster ignores:** a pull that times out with the target alive and never at the
   party counts toward the #539 bench like a pull with no firing point; the second benches it and the party pulls it the
-  ordinary way (`AUTONOMOUS_DEFENSIVE_PULL_IGNORED`). DividedRealms 1d18f864 (our #539 already had its 7e736ca8 half).
+  ordinary way (`AUTONOMOUS_DEFENSIVE_PULL_IGNORED`); #539 already had the other half of this fix.
 - **Gamebots leave a monster another side is fighting or has just pulled** (no "sry ks", no shared XP): a pull claims
   the monster for the bot's group, realm raid or warband for 30 s, and the camp search skips a monster that is claimed,
-  hit by, or fighting a bot, player or pet of another side. Self-defense is unchanged. True165 e4d2498ca, 927018e.
+  hit by, or fighting a bot, player or pet of another side. Self-defense is unchanged.
 - **Bots react at once**: an add wakes the group's mezzers and rooters, a groupmate about to drop under 75% wakes its
   healers, and an enemy starting a cast wakes the bots fighting it, instead of waiting for their next think (at most one
-  wake per 250 ms per brain; the walk is the victim's group only). True165 8abbc61a8.
+  wake per 250 ms per brain; the walk is the victim's group only).
 - **Party roles follow spec**: real healers (Rejuvenation Cleric, Mending Healer, Regrowth Druid...) are offered first
   and take the Healer slots over a Smite Cleric or a Paladin, a shield tank is main tank and puller over a two-hander,
-  and the ranged puller order is shield tank, two-hander tank, the crowd-control slot, the rest, healers last. True165
-  d2fc3fe3d (ranking only; its kill-target and peel sheet needs code we don't have). `UT_VeteranGroupRoles`.
+  and the ranged puller order is shield tank, two-hander tank, the crowd-control slot, the rest, healers last
+  (ranking only; a kill-target and peel sheet needs code we don't have). `UT_VeteranGroupRoles`.
 - **A damaged navmesh file is refused** with a log line instead of crashing the native loader when a path reaches it.
-  DividedRealms a5f19f5c. `UT_NavMeshFileCheck`.
+  `UT_NavMeshFileCheck`.
 
 **Movement** (realism plan step 4a, #487; the movement audit's tells 2, 4, 6, 7 and 8; visual and idle only)
 - **A follower's look around is no longer snapped back.** An arrived member of a standing bot party faced its leader again
@@ -1685,7 +1685,7 @@ below has been seen on the owner's PC yet: **tests only**.
   calls, the "X went ld" line) and gains the rest: its death lines, rez asks and rez thanks, nemesis, the gamebot return
   lines, and tells (`/send` to your companion reaches it). Its own lines (`CompanionChat165`: follow, rest, power, health,
   level, quiet) are rewritten as a 2003 player types them and sent in its own writing style. **Assumption to confirm with
-  the owner:** that voice is a normal per-bot chat voice; True 1.65's formal register is the companion's new **Speech**
+  the owner:** that voice is a normal per-bot chat voice; the formal register is the companion's new **Speech**
   AI option ("Formal"), and a formal companion then says only its own formal lines (no gamebot chat), so it too has one
   voice. Never a roleplayer or a beggar (world characters). Server firsts: a companion counts, as any character (it never
   outlevels its player, so it can only tie them). /personality shows its personality and voice. The launcher's Living
@@ -2224,14 +2224,13 @@ the top-most control at its centre.
 
 ## Hired companions (1.2, owner 2026-11-17; tests only until seen on the owner's PC)
 
-Ported from shadowofze's Offline DAoC True 1.65 (v0.7, `f68cc75`; github.com/zomboden/OfflineDAoC-True165), GPL-3.0, via
-True165. **Tests only: nothing here has been played on the owner's PC.** Setting: `bots / hired_companions`, **on** by
+**Tests only: nothing here has been played on the owner's PC.** Setting: `bots / hired_companions`, **on** by
 default (owner 2026-11-16: Living Server features default on for installer users); off, nobody can hire and no hired
 companion is summoned, and the rows stay.
 
 - **Hire up to seven companions of your own** beside a healer of your realm (every capital and major town has one): talk
   to the healer and click **[companions]**, or type `/hire`. Slots open at levels 5, 10, 15, 20, 30, 40 and 45; the first
-  companion is free, the others cost 20 s, 60 s, 2 g, 6 g, 15 g and 30 g (True 1.65's prices). You pick its race, class,
+  companion is free, the others cost 20 s, 60 s, 2 g, 6 g, 15 g and 30 g. You pick its race, class,
   sex, classic look, hair colour, height and name; a figure only you see shows the look. It joins your group at level 5
   with a training weapon and nothing else.
 - **It is yours.** It levels only beside you, at your XP rate, and never passes your level. Its gear, bag (10 slots),
@@ -2239,7 +2238,7 @@ companion is summoned, and the rows stay.
   with you when you log out and comes back when you log in; dismiss it, summon it again beside a healer, or release it for
   good (it leaves with everything it carries). Dead, its body waits five minutes for a raise, then fades; any healer of
   your realm brings it back free.
-- **The original client's own windows**, all server side (True 1.65's original-client overlay was never published): the
+- **The original client's own windows**, all server side: the
   healer's and the companion's dialog links, the stock text window for the roster, stats, specs, realm abilities and AI
   options, the house-vault window to hand it gear (drag from your backpack, or off it to take items back), and the
   champion trainer window for its specs. Right-click your companion for its links; `/hire help` lists the typed words.
@@ -2247,9 +2246,9 @@ companion is summoned, and the rows stay.
   and Save power Strict (casters and hybrids), Bolts "Nukes only", Debuff before nuking "Never" and each debuff Use or
   Skip, Life transfer, Amnesia, the Hunter's pet, charming, Crowd control Off, and a Stance of its own (or your
   /aggressive and /defensive). Read where the companion casts and where its stance is decided; every other bot reads
-  Automatic. True 1.65's other rows steer AI that 1.2 does not have and are not offered.
-- **Repairs:** a smith repairs the gear of the companions with you in one go, at the smith's price under `player_upkeep`
-  (True 1.65: free). **The economy ledger names both new coin moves:** the hire cost (`companionhire`, a sink; the
+  Automatic. Rows that would steer AI 1.2 does not have are not offered.
+- **Repairs:** a smith repairs the gear of the companions with you in one go, at the smith's price under `player_upkeep`.
+  **The economy ledger names both new coin moves:** the hire cost (`companionhire`, a sink; the
   launcher's economy page calls it "Companion hires") and a companion's repairs (`repair`), so the residual stays 0.
 - **Kept apart from the world's bots.** A hired companion is never in the gamebot population count, the planners'
   roster, raids, guild groups or world chat; the population never logs one in or out; the stuck watchdog never moves
@@ -2258,8 +2257,8 @@ companion is summoned, and the rows stay.
   hire and the smith's repair move its coin). `/spawn` and `/raid` are unchanged. The launcher's DELETE never deletes a player's companion (DELETE ALL keeps
   them and deletes only orphans whose character is gone); a release build empties `offline_hired_companions`
   (progress-policy.json, checked by build_release_037.py); the Passport keeps them in their world.
-- Not yet: True 1.65's traveler's inns and innkeepers (they need a base-game world update), the courier, the Horn of
-  Rallying, its 1.65 mode rules. The hire window's DebugMode 'H' protocol is kept byte for byte, but sent only to a
+- Not yet: traveler's inns and innkeepers (they need a base-game world update), the courier, the Horn of
+  Rallying, 1.65 mode rules. The hire window's DebugMode 'H' protocol is kept byte for byte, but sent only to a
   client that asks for it (`/companionui protocol`); no client does yet, so nobody gets 'H' packets.
 - **Fix: a companion joins its player's fight on a grey monster** (seen on the owner's PC, build `b1b6846`, 2026-11-18
   07:23-07:33, Isle of Glass; the fix is tests only). Hired Armsman Pannax (level 5) stood idle while his player
@@ -2293,8 +2292,8 @@ seam's default is today's code, and the new tables are created empty.
   crafting time, quality, secondary-skill rules) and `SpellcraftRules` (imbue points, gem points, overcharge, preserve)
   are copied line for line from `AbstractCraftingSkill` and `SpellCrafting`, so a gamebot will roll exactly as a player
   does. Nothing calls them yet (WP1 does). Tests compare them with the originals over grids of skills and levels,
-  including the quality roll's distribution and the 32/28/18 imbue points of a level-51 piece. The same split as
-  rambodolphin13's DividedRealms refactor (93c25b69), as static functions.
+  including the quality roll's distribution and the 32/28/18 imbue points of a level-51 piece. Both are
+  static functions.
 - **Contracts and seams for the later packages**, so they register code instead of editing the shared files: listing
   caps and item rules for the bot economy, expired-listing reclaim, seller proceeds (the tax), a sale-committed event,
   town-visit needs, merchant and Exchange steps, task-break activities and hooks, store lifecycle, drag-and-drop onto
@@ -2308,9 +2307,8 @@ seam's default is today's code, and the new tables are created empty.
   bots only.
 - **The `CRAFT_*` / `ECON_*` log format**, five AI_PROFILE scopes, and the voice registry's new kinds, flags, slots and
   the `crafting` intent (no lines yet; `corpus.json` unchanged).
-- Ported contracts: the crafting-skill storage format and the craft-order table's columns from rambodolphin13
-  (93c25b69, ceac061a), via DividedRealms, GPL-3.0; the coin-flow kinds and the `crafting_skill_rate` key from
-  shadowofze (a8c793e, 00f9fbf), via True165, GPL-3.0.
+- Fixed formats: the crafting-skill storage format, the craft-order table's columns, the coin-flow kinds and the
+  `crafting_skill_rate` key.
 
 ### WP1 Crafting core and the M0 fixes
 
@@ -2320,12 +2318,12 @@ crafted with this build in game.
 - **One set of crafting rules.** Every number of a craft (con, chance to make, chance to gain with the capital bonus,
   crafting time, quality, secondary skills and their required levels, salvage yield, repair chance) now comes from `CraftRules` and
   `SpellcraftRules`, which WP0 copied from the old code; the old methods are one-line delegations, so a gamebot crafter
-  will roll exactly as a player does. DividedRealms' `ChanceToMakeAt`, `BaseChanceToGainAt`, `QualityAt` and
-  `CraftingTimeAt` stay as delegations, so its bot crafting ports unchanged.
+  will roll exactly as a player does. `ChanceToMakeAt`, `BaseChanceToGainAt`, `QualityAt` and
+  `CraftingTimeAt` stay as delegations for bot crafting.
 - **Player crafting pace** (`crafting_skill_rate`, default 1 = classic): a won skill gain gives that many points to the
   trade and its secondary skills, never past a cap (secondaries stop at 1,300); the gain chance and the grey rule are
   unchanged, and a gain of several points no longer steps over a crafting title (announced from the crafts' gain code,
-  not `GamePlayer`, which is WP3's). From shadowofze (00f9fbf), via True165, GPL-3.0.
+  not `GamePlayer`, which is WP3's).
 - **Classic options, both off by default.** `crafting_classic_quality`: 94-99% with a 1% masterpiece chance at any skill
   (2% at 1000 or on a grey recipe), the pre-1.87 roll; the odds are from memory of the live game, not a dated source.
   `crafting_classic_losses`: a failed craft uses up its materials, and a spellcraft explosion destroys the item as well
@@ -2335,22 +2333,21 @@ crafted with this build in game.
   default a player can notice**: with the default, repairs stop spending durability. `player_upkeep classic` keeps the
   old rule. The smith's price is WP3's.
 - **Spellcraft fixes from upstream OpenDAoC.** An item can no longer take a fifth bonus (the count check let one through),
-  and focus gems go on staves only. From Baptiste Marie (b62885a86, aa8b5232b), via rambodolphin13's DividedRealms
-  (a3f3e4b8, 60d3a4fb), GPL-3.0. The combine check is now `SpellcraftRules.CheckImbue`, the same for players and bots.
+  and focus gems go on staves only. From Baptiste Marie (b62885a86, aa8b5232b), GPL-3.0.
+  The combine check is now `SpellcraftRules.CheckImbue`, the same for players and bots.
 - **Salvage fixes from upstream OpenDAoC.** Null checks in the salvage timer, siege weapon salvage on a 10-second timer
   that the weapon must survive, materials topped up into partial stacks; merged by hand with our own fix that a magical
   item counts as cloth only for the calculation (c7ee233d0). Ours on top: a salvage whose materials do not fit in the
   backpack drops the rest on the ground (the item is already gone), and an item with no craft level no longer divides
   by zero. From Baptiste Marie (5302c79e9), via OpenDAoC, GPL-3.0.
-- **Crafting answers instead of failing silently.** Another realm's recipe says why it cannot be made (rambodolphin13,
-  abe7b327, via DividedRealms, GPL-3.0); an unknown recipe says so (fc6d2a95 via DividedRealms, from shadowofze's
-  4bf3b8f3e via True165, GPL-3.0; M0 had already made the lookup safe).
+- **Crafting answers instead of failing silently.** Another realm's recipe says why it cannot be made;
+  an unknown recipe says so (M0 had already made the lookup safe).
 - **The recipe catalog.** At start-up every recipe is loaded once in the background, ids matched without case as the
   server matches them, each hidden by the server's own rule (M0's `RecipeDB.FindProblem`), then indexed with the
   masters, forges, lathes, alchemy tables and the merchants of each material. The log gets one `CRAFT_RECIPE_AUDIT` line
   per craft plus a total, a `CRAFT_RECIPE_BROKEN` line per hidden recipe and `CRAFT_WORLD_AUDIT` lines per realm
-  (DividedRealms' `AUTONOMOUS_CRAFT_CATALOG` line is still written). Nothing reads the catalog yet; WP4's bot crafters
-  will. From rambodolphin13 (93c25b69), via DividedRealms, GPL-3.0.
+  (the `AUTONOMOUS_CRAFT_CATALOG` line is still written). Nothing reads the catalog yet; WP4's bot crafters
+  will.
 
 ### WP4 Bot crafters (M2)
 
@@ -2372,13 +2369,13 @@ gamebots only: companions (`/bot`), Epic Special Force visitors, beggars and rea
   limit and the spellcrafter's skill (no overcharge, nothing explodes), with real tinctures.
 - **Orders by realm weights.** A new crafter joins the order furthest below its share of the realm's crafters
   (armorcraft 24%, tailoring 22%, weaponcraft 18%, spellcraft 14%, alchemy 12%, fletching 8%, siegecraft 2%); within
-  half a crafter, DividedRealms' class rule decides (archers fletch, list casters tailor). An order with no master in
+  half a crafter, a class rule decides (archers fletch, list casters tailor). An order with no master in
   the realm is skipped and logged once (siegecraft has none in our world); one whose master stands only in another
   town (Albion alchemy, Midgard spellcraft, Hibernian tailoring, M0 findings §2) is joined there.
-- **A pace that keeps up.** DividedRealms' night of 2026-11-04 left the median crafter at skill 8. A Crafter now makes
+- **A pace that keeps up.** A night of bot crafting on the earlier rules (2026-11-04) left the median crafter at skill 8. A Crafter now makes
   a trip at half its task breaks, and a trip works up to 3 sessions of up to 10 pieces in its first 15 minutes, cut to
   the bag's room and the time left; with `bot_crafting_pace` `xp` (the default) a gain gives as many points as the bot
-  XP multiplier of the crafter's level band (whole points; `classic` gives one). On the pure rules DR's night comes out
+  XP multiplier of the crafter's level band (whole points; `classic` gives one). On the pure rules that night comes out
   at a median of 6, ours at about 60 at `bot_xp_rate` 1 and about 300 at 5 (tests only: a night is assumed to hold
   three trips).
 - **Stored types; 7% for new bots.** The first start with `bot_crafters` on stores every bot's personality type as it
@@ -2396,12 +2393,7 @@ gamebots only: companions (`/bot`), Epic Special Force visitors, beggars and rea
 - **Logs:** `CRAFT_ENROLL` (joined, skipped, typed, types_began), `CRAFT_SESSION_START`, `CRAFT_SESSION_END` (attempts,
   made, masterpieces, best, seconds, enchant), `CRAFT_TITLE`, `CRAFT_FIRST`, `CRAFT_MADE` (only with
   `craft_made_lines`); `AUTONOMOUS_TOWN_HANGOUT` counts `stations=`.
-- Ported: the crafting and the craft trip from rambodolphin13 (93c25b69, ceac061a, e37f8810), via DividedRealms,
-  GPL-3.0; "list only the best of a session", the siege kit tiers and the points per gain from shadowofze (b097caf,
-  75267dd, 00f9fbf), via True165, GPL-3.0; the enchanting from shadowofze (5f31c2b, a8c793e), via True165, GPL-3.0,
-  on our `SpellcraftRules`. Ours: the Crafter-only gate, stored types and the 7% share, realm weights, the pace and
-  sessions per trip, titles and the first, the adverts, station hangouts, the tick budgets. DividedRealms' quest runner
-  is not taken. Tests only: nothing here has been seen in game.
+- Tests only: nothing here has been seen in game.
 ### WP2 Economy ledger
 
 Instrumentation only: **no amount changes**; tests only so far. Until now no log line recorded a gamebot's coin
@@ -2417,15 +2409,13 @@ coming in or going out (M0); this makes coin per hour measurable. Guide: [docs/E
 - **An hourly snapshot of the money supply per realm** (bot purses, player wallets, unclaimed Exchange proceeds, guild
   banks, plus the Exchange's listed value), read on a background task, with a residual = change in supply − the flows
   seen, and the bots' own residual. Bots that appear or go bring or take their purse.
-- **Lines**: `ECON_SUPPLY` and `ECON_FLOWS` each UTC hour for each realm and All (True165's `in_<kind>=copper/count`
-  keys kept, and True165's own `BOT_MONEY_LEDGER_165` line once an hour as an alias), a baseline at start, a partial
+- **Lines**: `ECON_SUPPLY` and `ECON_FLOWS` each UTC hour for each realm and All (with `in_<kind>=copper/count`
+  keys, and a `BOT_MONEY_LEDGER_165` line once an hour as an alias), a baseline at start, a partial
   hour at shutdown; one `offline_economy_ledger` row per realm and hour.
 - Setting `economy_ledger_enabled` (on; logs and one row an hour per realm only).
-- Ported: the money ledger from shadowofze (a8c793e, df86f9f), via True165, GPL-3.0; its test adapted. Ours: the
-  classifier, per-realm and per-band sums, the supply snapshot, the residual, the Exchange counters, the table rows.
 ### WP10 Economy rehearsal and diagnostics
 
-Test and GM tooling only: **nothing a player or a bot does changes**. Written new (no fork code).
+Test and GM tooling only: **nothing a player or a bot does changes**.
 
 - **The economy rehearsal** (`source/server/Tests/Rehearsal`): plays 1–3 realms of gamebots (1,000 a realm by
   default) in one-minute steps, a week in 10,080, on the server's own pure code: today's equipment value, listing
@@ -2525,7 +2515,7 @@ Exchange. Everything happens at a natural task break.
 - **Logs:** `ECON_ORDER` (placed, made, delivered, refunded, expired, set; source bot, milestone or quartermaster),
   `ECON_COMMISSION` (hourly per realm: posted, delivered, expired, paid; one line per commission with
   `econ_trade_lines`), `ECON_INDEX` (hourly per realm: bands, stock, demand, sales, flooded, starved), `ECON_RECLAIM`,
-  `ECON_LIST` (with `econ_trade_lines`), and DividedRealms' `AUTONOMOUS_EXCHANGE_SOLD ... crafted=1|0 tax=` per sale
+  `ECON_LIST` (with `econ_trade_lines`), and `AUTONOMOUS_EXCHANGE_SOLD ... crafted=1|0 tax=` per sale
   while `bot_crafters` or `econ_trade_lines` is on. `EconomyLog` now writes realms by name (`realm=Albion`; it wrote
   `realm=_FirstPlayerRealm`).
 - **/lscraft and the rehearsal.** `/lscraft commission` shows the mode, the governor, the tax, each realm's open orders
@@ -2534,12 +2524,8 @@ Exchange. Everything happens at a natural task break.
   (`Tests/Rehearsal/Adapters/WP5Market.cs`): an aged realm of 300 bots for a day at doubled commissions posted 808,
   delivered 674 (56 lapsed), paid crafters 395 gold for 132 gold of materials; every gate passed (tests only: a
   rehearsal, not a game).
-- Ported: the craft orders with escrow from rambodolphin13 (ceac061a, e37f8810, 24f8a2e7), via DividedRealms, GPL-3.0;
-  the Exchange flood cap from rambodolphin13 (702ef108), via DividedRealms, GPL-3.0; the crafters' extra posts for their
-  own work and the crafted sale line from rambodolphin13 (ceac061a), via DividedRealms, GPL-3.0; the milestone crafted
-  sets from shadowofze (f6dbe48), via True165, GPL-3.0, as a second source on DividedRealms' board at its price. Ours:
-  the price index, the quartermaster commissions, the Exchange tax, the reclaim of unsold work. Tests only: nothing here
-  has been seen in game.
+- Milestone crafted sets are a second source on the order board, at its price. Tests only: nothing here has been seen
+  in game.
 
 ### WP6 Demand and the gear pipeline (M3)
 
@@ -2549,7 +2535,7 @@ runs at a task break, nothing is posted and no random number is drawn. Want-to-b
 players keep today's rules. The level 20 and 50 starter gear is unchanged.
 
 - **Template-aware valuation.** With `bot_crafters` on, a gamebot scores what it wears as one set: each bonus at its
-  class's weight (True165's: primary stat and acuity 4, secondary and Constitution 3, resists 3, trained skills 6,
+  class's weight (primary stat and acuity 4, secondary and Constitution 3, resists 3, trained skills 6,
   unused stats 1) and only up to the set's item cap (stats 1.5 x level, hit points 4 x level, resists level/2 + 1,
   skills level/5 + 1); a piece's level counts up to the bot's, its DPS or AF up to the bot's cap. At level 50 the six
   armour slots also count their quality above 94% (6 a point): a capped spellcrafted set of 99-100% crafted pieces is
@@ -2570,10 +2556,10 @@ players keep today's rules. The level 20 and 50 starter gear is unchanged.
 - **Want-to-buy orders.** With no such piece on the Exchange, the bot posts a want-to-buy order for a crafted piece on
   the order board (WP0's `ICraftOrderBoard`, which WP5 implements): its class's armour type at its level, the recipe
   nearest its level that it could wear and that raises its set, 99% minimum for a template gap. The price is
-  DividedRealms' quote (materials plus a quarter, at least 100 copper) within half the purse; the board takes the
-  escrow, as DividedRealms' `Place` does, so WP6 moves no coin for an order. One open order a buyer; a refused or
+  the board's quote (materials plus a quarter, at least 100 copper) within half the purse; the board takes the
+  escrow, as its `Place` does, so WP6 moves no coin for an order. One open order a buyer; a refused or
   unaffordable post waits 30 minutes. With no board registered nothing is posted and the hourly line counts it.
-- **ItemValue165 as the price index.** True165's value score (floor, fair, ask) is registered as `IPriceIndex` unless a
+- **ItemValue165 as the price index.** Its value score (floor, fair, ask) is registered as `IPriceIndex` unless a
   package already registered one; with `bot_crafters` off it answers today's numbers. Listing prices are not changed
   by WP6 (WP5's price index and listing policy).
 - **Coin:** WP6 adds no coin move of its own (an Exchange purchase goes through `TryBuy`, an order's escrow through the
@@ -2582,11 +2568,6 @@ players keep today's rules. The level 20 and 50 starter gear is unchanged.
   template_bought, copper, wtb_posted, wtb_refused, wtb_open, wtb_unaffordable, wtb_no_recipe, wtb_no_board) and
   `ECON_UNDRESS_GUARD event="hour"` (checked, blocked, blocked_since_start); `ECON_TEMPLATE_BUY` for each template
   piece a level 50 buys; `ECON_GEAR_CHECK event="wtb"` for each order posted only with `econ_trade_lines`.
-- Ported: `ItemValue165` from shadowofze (32a88e0, 145bdee), via True165, GPL-3.0, with the two `Exchange165` factors
-  it reads copied in and without True165's 1.65 mode; `BotGearValue165` and `FitValue` from shadowofze (1edbcf5), via
-  True165, GPL-3.0 (its `UT_BotGearValue165` too), without the `WeaponSpecBonus`/`WastedFocus` terms of earlier True165
-  work. Ours: the set score and the template term, the no-undress guard, the gear check, the Exchange route and step,
-  the want-to-buy orders, the hourly lines.
 - **`/lscraft wtb`** now answers from WP6 (switches, board, this hour's counts, the guard), and the economy rehearsal
   runs WP6's adapter (`WP6.Demand`, with `bot_crafters` on): the set score as the upgrade rule, the gear check and gap
   purchases, want-to-buy demand counted (no board in the rehearsal yet), and `wp6.setScoreDrops`, which must be 0. A
@@ -2694,7 +2675,7 @@ Buying and repairing happen only at a natural task break, at the merchant the br
   multiplier (halved). Off: the multiplier goes back to 1.
 - **Every coin move names its kind** (Repair, Potion, Poison, Siege, RepairKit, Luxury), so the ledger stays balanced.
 - **Logs** (hourly per realm unless noted): `ECON_WEAR` (wear rolls, condition lost, pieces gone below 88%, pieces
-  repaired, repair copper, paid to crafters), `ECON_REPAIR` (one per errand, with True165's BOT_REPAIRED_165 keys
+  repaired, repair copper, paid to crafters), `ECON_REPAIR` (one per errand, with the BOT_REPAIRED_165 keys
   own_skill, paid, copper, by), `ECON_CONSUMABLE` (draughts bought and drunk, vials bought, coats, coat checks without a
   vial), `ECON_LUXURY`, `ECON_SIEGE_SUPPLY`, `ECON_GOVERNOR` (one per realm and hour: ratio, smoothed, luxury,
   commissions). Per-purchase lines with `econ_trade_lines`.
@@ -2707,11 +2688,8 @@ Buying and repairing happen only at a natural task break, at the merchant the br
   (83.7% against 83.9% a week; gate 400%), so the governor, aiming at half the gates' wide band, kept the luxury at
   about 0; with a tight band (2% a week) a day's growth fell from 64.6% to 3.9% a week. Every gate passed but WP6's
   no-undress gate, which failed with the sinks off too (41 off, 47 on). Tests only: a rehearsal, not a game.
-- Ported: the gear wear and the repair from shadowofze (ItemWear165, 36358de and 2e4212e), via True165, GPL-3.0; the
-  repair errand at 88% from shadowofze (TownErrands165, 36358de), via True165, GPL-3.0; the potions from shadowofze
-  (BotPotions165, e7f6f8d and 2e4212e), via True165, GPL-3.0, with its unit tests (UT_BotPotions165, UT_RepairErrand165).
-  Ours: autonomous gamebots only behind `bot_upkeep`, the seams, the player's upkeep price for bots, the paid poisons,
-  the siege supply, the luxury sink and the governor. Tests only: nothing here has been seen in game.
+- Autonomous gamebots only, behind `bot_upkeep` (unit tests include `UT_BotPotions165` and `UT_RepairErrand165`).
+  Tests only: nothing here has been seen in game.
 
 ### WP8 Commerce and social (M4, M6)
 
@@ -2774,8 +2752,7 @@ sells or hands over moves during its task: only at its natural task break.
 - Not built in WP8 itself, all built since in "WP8 The full bot trade" below: drag-to-sell to a WTB bot, spellcraft and
   repair jobs, Crafting-charter guilds taking crafter bots first, a bot guild's bank buying materials and raid potions,
   bot-to-bot guild orders.
-- Ported: nothing (the forks had no player commerce; the per-pair discount is an idea from mod-playerbots, no code
-  taken). Tests only: nothing here has been seen in game.
+- Tests only: nothing here has been seen in game.
 
 ### WP8 The full bot trade (owner 2026-11-16: "It should be built out fully, look pretty and have functionality to the fullest")
 
@@ -2861,34 +2838,32 @@ here has been seen in game.
 - **Tests:** `UT_BotTrade` (32: the terms, buy, sell, purse share, swap, refusals, the busy rule and the hold, a companion,
   the switch, repairs, spellcraft, a bot's own order filled, a commission through the window, the command, the corpus, the
   want-to-buy text, stock mid-task, a scripted session end to end, the guild placement, guild orders and banks), plus
-  `UT_CommerceRehearsal`'s new metrics. Ported: nothing. Tests only.
+  `UT_CommerceRehearsal`'s new metrics. Tests only.
 
-## Movement, style choice, flanking and the True 1.65 boss and camp fixes (planned as 1.2.1, in 1.2; tests only)
+## Movement, style choice, flanking, and boss and camp fixes (planned as 1.2.1, in 1.2; tests only)
 
 This work was first planned as 1.2.1. It is on integration/1.2 and ships in 1.2 (owner 2026-11-08: "Pull all the
 1.2.1 into 1.2"), so its heading was folded into 1.2 on 2026-11-19.
 
-Movement that doesn't look scripted, first slice. Three ports from other forks (fork survey, 2026-11-08), for autonomous
+Movement that doesn't look scripted, first slice, for autonomous
 gamebots only. They pass automated tests; nobody has played them in game yet.
 
 - **A moving party no longer jerks once a second.** A group follower stopped taking its own faster route (a horse or a
   town teleporter) from the follow step every turn, which released and re-took its formation follow each second; only the
-  leader picks such a route now. From Nikse77 (b0fcd555), via rambodolphin13's DividedRealms (0996fff6ea), GPL-3.0.
+  leader picks such a route now.
 - **Melee bots chain their styles and stop spamming taunts.** Each usable style is scored: a chain follow-up after its
   opener landed first, then a back or side style when the bot is there, then reactive styles after an evade, block, parry
   or miss, then the opener of a chain the bot knows, then the rest by growth. Taunt styles count for little unless the bot
-  is a grouped tank, and two near-equal plain styles take turns. From rambodolphin13's DividedRealms (0146664a), GPL-3.0,
-  merged with 1.2's side, back and front styles (#123).
+  is a grouped tank, and two near-equal plain styles take turns. This works with
+  1.2's side, back and front styles (#123).
 - **Melee bots take the flank or the back (positional styles, step 2).** A gamebot that is not a tank and knows a back or
   side style for its weapon steps behind (or beside) a monster that is fighting someone else, then swings that style. It
   tries for at most 4 seconds, and again when the monster turns more than 45 degrees or moves more than 100 units (at most
   every 3 seconds). It only walks to a spot the navigation mesh says it can reach on its own floor; otherwise it stays put.
   Never for tanks, companions, bots in a player-led group, raid parties, raid dungeons or epic encounters (their own
-  tactics place the raiders). Hand port from the True 1.65 project (zomboden/OfflineDAoC-True165: `BotBrain.Flank.cs`, d2187a498, by shadowofze), GPL-3.0,
-  without its 1.65-mode switch and its companion "Positioning" option.
+  tactics place the raiders). There is no 1.65-mode switch and no companion "Positioning" option.
 
-**Boss fixes and raid play from True 1.65.** Ported from the True 1.65 project (zomboden/OfflineDAoC-True165, v0.7, `f68cc75`; GPL-3.0),
-each commit credited to its author. They pass automated tests; nobody has played them in game yet.
+**Boss fixes and raid play.** They pass automated tests; nobody has played them in game yet.
 
 - Boss scripts: Suttung's berserker stance can't be lost for good; Legion's blast lock-out can't stick; Govannon summons a
   Shade of Aelfgar every time his adds reach the centre, his reset restores his strength, size and model, and the
@@ -2905,8 +2880,8 @@ each commit credited to its author. They pass automated tests; nobody has played
 - Camps: a chosen camp counts at once; a solo bot leaves a crowded, emptied camp after 15 s; a party counts as all its
   members; camps of the same monster within 5,000 share their bots and monsters; the camp draw favours empty and near
   camps; a party's puller takes the monster standing apart first (Prima); a party moves on after five kills in a row
-  with under a quarter of the camp bonus left; spots that keep coming up empty draw less and then rest (capnbry source-empty camps stay on: True 1.65 replaces them
-  with a live-camp pass 1.2 doesn't have yet); overlapping camps
+  with under a quarter of the camp bonus left; spots that keep coming up empty draw less and then rest (capnbry source-empty camps stay on until
+  1.2 has a live-camp pass); overlapping camps
   of one monster merge, and a monster with many camps no longer takes most draws; a camp among aggressive monsters 10+
   levels above it is skipped by bots they would outlevel; a solo bot with no ranged attack skips flyer camps; a solo bot
   that left a crowded camp skips its copies for 10 minutes, and one held to easier camps after a death may take an
@@ -2928,17 +2903,17 @@ each commit credited to its author. They pass automated tests; nobody has played
   for most, a holder among the tied keeps it, otherwise nobody does (a capture with no holder used to hand it to the
   taker).
 
-- Prima content (prepared, not in a world yet): the scripts of True 1.65's 16 Prima scripted encounters (Cuinn,
+- Prima content (prepared, not in a world yet): the scripts of 16 Prima scripted encounters (Cuinn,
   Talvor's Spirit, Brungar, Zargin, the Unseelie Envoy's convoy, Thergus's ogre war and more) are in the server; they
   start only on world rows that name them, which only a base-game world update can add. `source/tools/
   true165_prima_content.py` adds those rows, and the Prima monsters, items, quests and drops a world lacks, to a
-  release's reference world; see docs/TRUE165-CONTENT.md. True 1.65's keep-guard restore is not needed in 1.2's world.
+  release's reference world; see docs/TRUE165-CONTENT.md. A keep-guard restore is not needed in 1.2's world.
 
 Not taken, because 1.2 already does it its own way: the route-proof cap, Sanguis's last 5%, Govannon's raid calls and
 area spells, the dragon lair circle, the Spectral Provisioner (raid bots already wake it) and the Cunovinda and Shade
 teleports (already behind 1.2's displacement switch). Not taken: the party-pull camp turn (it fixes a
-stall 1.2's pull code doesn't have), level-1 blue-only targeting, the full-backpack fallback (built for True 1.65's
-brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and its keep-guard restore (not needed in
+stall 1.2's pull code doesn't have), level-1 blue-only targeting, the full-backpack fallback (built for
+brokers at inns), escape actives (1.2's gamebots don't use them) and a keep-guard restore (not needed in
 1.2's world).
 
 ## 1.2 — 2026-11-19
@@ -2946,12 +2921,10 @@ brokers at inns), True 1.65's escape actives (1.2's gamebots don't use them) and
 - **The 1.2 release docs, and how the project names itself (owner 2026-11-19; text only).** The release notes,
   docs/KNOWN-ISSUES.md and README.md's Living Server part now describe all of Living Server as it is in 1.2, call the
   release "1.2" (not "Beta 1.2"), say epic raids are still being tuned and mark everything not seen on the owner's PC
-  "tests only". Following the owner ("we own Offline DAoC now and our living server, true 1.65 is just a different
-  version now we borrow some code or ideas from"), Setup's pages and its download step no longer present Offline DAoC as
-  "by shadowofze" or his "official update(r)", the launcher's and the server's Hired companions text reads "some code from
-  the True 1.65 project", docs/PLAY.md's downloads point at `chris4aker/OfflineDAoC-base-files`, and the True 1.65
-  address is `zomboden/OfflineDAoC-True165` (BotBrain.Flank.cs and UT_BotFlank.cs headers too). shadowofze stays credited
-  as Offline DAoC's creator and as the author of every ported file (THIRD_PARTY.md and the code headers are unchanged).
+  "tests only". Following the owner, Setup's pages and its download step present Offline DAoC as the base game Living
+  Server installs on, not as an "official update(r)", the launcher's and the server's Hired companions text was
+  reworded, docs/PLAY.md's downloads point at `chris4aker/OfflineDAoC-base-files`, and a project address was corrected
+  (in the BotBrain.Flank.cs and UT_BotFlank.cs headers too). THIRD_PARTY.md and the code headers are unchanged.
   The launcher label is **How much bots talk** in every current doc. No behaviour changed; the server suite passes.
 
 - **Ten more storylines (owner 2026-11-18 09:14: "10 new arcs added to 1.2"; tests only until heard on the owner's PC).**
@@ -3934,8 +3907,7 @@ who have been inside. A bot-led group's let-go logs its real reason.
 **A bot the launcher makes at level 50 arrives trained in its build** (owner's PC, 2026-11-11: of 2,700 new level-50
 bots, 792 had trained after 80 minutes). A level-50 gamebot that never trained spends its build's points when it loads.
 
-**Character passport: take your character to a friend's world and back** (built by rambodolphin13 for DividedRealms,
-`da78651` and `da92848`, cherry-picked with his authorship; thank you, rambodolphin13). In the launcher, **CHARACTER
+**Character passport: take your character to a friend's world and back.** In the launcher, **CHARACTER
 PASSPORT…** takes one of your characters to a friend's hosted world with its gear, quests and the coin you choose, and
 **COME HOME** brings it back with everything it earned. While it is away it is locked at home: it can't enter the world,
 be deleted or be moved. See [docs/CHARACTER-PASSPORT.md](docs/CHARACTER-PASSPORT.md).
@@ -3953,9 +3925,7 @@ be deleted or be moved. See [docs/CHARACTER-PASSPORT.md](docs/CHARACTER-PASSPORT
 
 **Play with friends (experimental).** About one to four friends can play in your bot world: HOST FOR FRIENDS and JOIN
 FRIEND in the launcher, an invite code, and a password. Home network and Tailscale by default; internet hosting is a box
-you tick. See [docs/PLAY-WITH-FRIENDS.md](docs/PLAY-WITH-FRIENDS.md). Hand port from rambodolphin13's DividedRealms
-(3c6cc9d, 6f22a7a, ec0e456, af1fcf8, b0744a2; Join Friend first came from stefanrows/OfflineDAoC), GPL-3.0. Thank you,
-rambodolphin13. The Character passport (da78651f) is not part of it. It passes automated tests; nobody has played it
+you tick. See [docs/PLAY-WITH-FRIENDS.md](docs/PLAY-WITH-FRIENDS.md). It passes automated tests; nobody has played it
 between two real PCs yet.
 - **The host password is the gate** (owner's decision, 2026-11-08). While you host, a new account from another PC needs
   your password, and without one set no other PC can make an account. Your own PC never needs it, so single-player
@@ -4104,10 +4074,10 @@ its reply budget: a thread or a burst is still allowed or held once, as a whole,
   three); late reactions 28 before, 0 after; repeated reactions 72 before, 0 after; 5.72 lines a minute before, 5.06
   after; busiest two minutes 9.5 before, 8.5 after against a ceiling of 7.1.
 
-**Two Darkness Falls exits work** (found and fixed by rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
+**Two Darkness Falls exits work.** The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
 destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
-is written to your world: the server supplies the two missing destinations itself. Thank you, rambodolphin13.
+is written to your world: the server supplies the two missing destinations itself.
 
 **Dungeons and bosses have their lore.** Living Server 1.2 gives every dungeon, epic dungeon, dragon and named
 boss its own lore (written in `data/lore`, one file per place and per boss; see [docs/LORE.md](docs/LORE.md)), and this is
@@ -4675,11 +4645,11 @@ keyboard, overnight or in CI:
   are flagged.
 - It refuses any database that `make_test_world.py` did not make, and runs the server from a copy of its folder, so a
   test run leaves nothing in your install.
-- Its protocol code comes from the new client's network client (`source/new-client`); lometur's HearthDAoC headless
-  client was the model for the idea (it runs inside the server, so it was not ported).
+- Its protocol code comes from the new client's network client (`source/new-client`), and it runs inside the
+  server.
 
 **New client (0.37c): skills on the quickbar, Stealth and the merchant's SELL button** (GitHub issue #34). These are
-shadowofze's own 1.2 fixes, installed as patches to the new client's scripts (only where the script is the released
+fixes from the new client's 1.2 scripts, installed as patches to the new client's scripts (only where the script is the released
 0.37c one; ROLLBACK.cmd puts it back).
 - **Skills onto the quickbar.**
   - **Before:** an ability dragged from the skills window (Sprint, Stealth, Safe Fall, a realm ability ...) showed a
@@ -4698,7 +4668,7 @@ shadowofze's own 1.2 fixes, installed as patches to the new client's scripts (on
     The window also gets a quantity for BUY (arrows, KEEP), a scroll bar for long pages and the pack size of arrows,
     bolts and poisons.
   - **APPRAISE** stays hidden in this version of the new client: the server's appraise needs the 1.2 network client
-    (its MMOEngine.dll), which this update doesn't install. In shadowofze's 1.2 scripts the button was there but a
+    (its MMOEngine.dll), which this update doesn't install. In the 1.2 scripts the button was there but a
     click did nothing.
 - The account vault window keeps its title (with the 1.2 scripts alone it would have said HOUSE VAULT).
 
@@ -4757,8 +4727,6 @@ tactics.
   - **Setting:** `ai_profile` (on). One timed call costs about 65 ns (a CI test fails it above about 100 ns).
   - **Honest settings:** `ai_budget_ms` was described as a budget that defers work, but nothing reads it. Its
     description now says it is not enforced yet; the deferral queue is decided after the L300/L600 baselines.
-  - **Credit:** built on lometur's HearthDAoC bot CPU meter (per-thread counters, brain time by bot kind) and
-    stefanrows's `BotThinkProfiler` (the timed scope, the measured lock, the minute line), both GPL-3.0.
   - **Checked:** 33 new unit tests (percentiles, merging, self time, locks, output, the scope's cost) and 12 for the
     report tool; the full server suite passes (4,123). Not yet run on a live server: the first L300 run is the owner's.
 
@@ -4845,7 +4813,6 @@ Built and checked by tools; nobody has seen it in the game client yet.
 "Pull all the 1.2.1 into 1.2"). For gamebots only: your companions and the bots in your own group behave as before, and
 raids and epic encounters keep their own positions (their tactics, stations and blast dodges stay in charge). Each of
 these is a habit players had, not a random wobble. They pass automated tests; nobody has played them in game yet.
-Nobody else's fork has bot strafing (fork survey, 2026-11-08), so this is our own.
 - **Melee bots circle in a fight instead of standing frozen.** A melee gamebot hitting a monster that fights someone else
   takes a short arc around it now and then (every 7-15 seconds, 28-60 units, never more than 45 degrees), at the distance
   it already stands. It steps away from a party member it is standing in (checked every 2.5 seconds), out of the monster's
@@ -5280,11 +5247,10 @@ as one fight; reading the lines showed the rest.
   tests only).
 
 **Two Darkness Falls exits work** (tested against the world data, and clicked in game on the owner's PC with the second
-release candidate, 6a83c03: both took an Albion character to Camelot Hills; found and fixed by
-rambodolphin13, DividedRealms 428ccd7d). The exit by Legion's hall
+release candidate, 6a83c03: both took an Albion character to Camelot Hills). The exit by Legion's hall
 and the one near the Midgard boss did nothing when clicked: the game client has them, the released world had no
 destination for them. Each now takes you to your realm's usual Darkness Falls exit spot, like every other exit. Nothing
-is written to your world: the server supplies the two missing destinations itself. Thank you, rambodolphin13.
+is written to your world: the server supplies the two missing destinations itself.
 
 **The raid gets out of Xanxicar's stomp** (owner's PC test, 2026-11-07). At the 80% stomp 110 of 185 Albion raiders died
 in one second. The order to get clear came only 3% above the threshold, it reached only the raiders whose target was
@@ -5466,8 +5432,8 @@ The other server-side ways all break something:
 Chat: a much busier realm, and bots that answer what you actually said. Raids the size they were in the era, sized
 by their own wins and losses, that no longer stand for hours at an encounter they can't reach, and their first boss tactics. Playing with your bot
 group: dragon raids that regroup after a wipe and call the Epic Special Forces, quest credit and hand-ins, and quest XP that follows your
-XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, fixes from other forks of
-Offline DAoC, updates from the launcher, and a world database that opens in a crash-safe mode and is backed up every
+XP-by-level rate. Gamebots in your guild earn merit and pay dues, power comes back faster, long-run bot fixes and
+water breathing, updates from the launcher, and a world database that opens in a crash-safe mode and is backed up every
 day.
 How it was tested, and what hasn't been played yet, is in the release notes
 ([docs/RELEASE-NOTES-1.1.2.md](docs/RELEASE-NOTES-1.1.2.md)).
@@ -5828,32 +5794,31 @@ realm that feels like a full server at its busiest. How it works and how to tune
 - **Checked:** unit tests for bot and player parity, the halving on and off, the rate, and the settings upgrade. Not
   yet played.
 
-**From other forks of Offline DAoC** (chosen by the fork survey of 2026-11-03; each entry credits its author)
-- **Gamebots in your group who die in a battleground come back to you** (issue #39; from Cancain's fork, by Cancain).
+**Battleground returns, /friend and /allrelease, RvR XP, long-run bot fixes and water breathing**
+- **Gamebots in your group who die in a battleground come back to you** (issue #39).
   - **The bug:** battlegrounds have no bind points, so a gamebot in a player's group released to its capital and stood
     there for good: its way back did nothing while it and its leader were in different regions.
   - **Now:** it releases to its realm's portal keep (under the battleground's level cap), walks back on a planned route,
     waits while you are dead, and rejoins the group on arrival. Solo gamebots and bot-only groups release as before.
   - **Adapted for Living Server:** the way back keeps our detours around hostile monsters and our stablemaster routes.
     A gamebot that makes no headway first plans its way back again, and only when that stalls too is it moved to you;
-    never during a stablemaster ride. From another region (no route to try) it joins you after 20 seconds, as in
-    Cancain's version. His battleground keep claims (also offered in #40) are not taken: grouped bots don't count for
-    keep claims.
-  - **Checked:** Cancain's tests plus nine new ones (`UT_BotGroupRelease`). Not yet seen in game here.
-- **`/friend` works with gamebots, and two stock friends-list bugs are fixed** (issues #40 and #38; by Cancain).
+    never during a stablemaster ride. From another region (no route to try) it joins you after 20 seconds.
+    Battleground keep claims (#40) are not added: grouped bots don't count for keep claims.
+  - **Checked:** unit tests, nine of them new (`UT_BotGroupRelease`). Not yet seen in game here.
+- **`/friend` works with gamebots, and two stock friends-list bugs are fixed** (issues #40 and #38).
   Online and parked gamebots of your realm join your friends list by exact name; a real character of the same name wins. Their
   logins and logouts show as "just entered / left the game" in both clients. Adding a friend no longer wipes the old
   client's Friends Monitor, and the first friend on an empty list gets its status. Tests: `UT_BotFriends`.
-- **`/allrelease`** (also `/grouprelease`) releases every dead bot in your group at once (issue #40; by Cancain).
+- **`/allrelease`** (also `/grouprelease`) releases every dead bot in your group at once (issue #40).
   `/spawn` companions still wait while you are dead or a fight is near.
-- **On a world with a raised XP rate, Darkness Falls, battlegrounds and the frontiers get it too** (by rambodolphin13;
-  BeezKneezItem9 found the same bug).
+- **On a world with a raised XP rate, Darkness Falls, battlegrounds and the frontiers get it too** (reported by
+  BeezKneezItem9).
   - **The bug:** in RvR regions and zones a player's kill XP used `rvr_zones_xp_rate` (1 by default) in place of
     `xp_rate`, so a 10× world was 1× in DF while gamebots there got 10×. The base game's rule (from OpenDAoC),
     unchanged in 0.37b.
   - **Now:** players get `xp_rate` (or `xp_rate_by_level`) times `rvr_zones_xp_rate`, the rule gamebots already had.
   - **Checked:** two new tests in `UT_LevelRangeXpRates`. Not yet seen in game.
-- **Gamebot fixes from long soak runs** (by Nikse77, via rambodolphin13; the keep doors by rambodolphin13). Autonomous
+- **Gamebot fixes from long soak runs** Autonomous
   gamebots only; `/spawn` companions and players are unchanged.
   - **Zone seams:** a route that steps over a zone seam and straight back three times is treated as a route failure,
     so the bot takes its usual way out instead of standing there (bots stood 10 to 40 minutes in Vindsaul Faste).
@@ -5869,16 +5834,16 @@ realm that feels like a full server at its busiest. How it works and how to tune
     dungeon, not in a pack. DF stays open to solo bots.
   - **Keep doors:** an army inside a keep it just took can leave through the doors (four captured keeps held their
     armies: 661 route give-ups, then 213 teleports home).
-  - **Checked:** their tests (`UT_AutonomousZoneSeamCycle`, `UT_SupportReachAndGroupStall`,
+  - **Checked:** tests (`UT_AutonomousZoneSeamCycle`, `UT_SupportReachAndGroupStall`,
     `UT_DarknessFallsLoginEntrance`, `UT_FrontierTravelContracts`) and a new `UT_DarknessFallsExitHold`. Not yet seen
-    in game here. Not taken: the travelling-Minstrel song change (it conflicts with our bot brain) and the forks'
-    route-threat and zone-crossing changes, where our route code has diverged.
-- **Water breathing potions work again** (by Rmarcoux86). Nereid potions and other water-breathing spells did
+    in game here. Not taken: the travelling-Minstrel song change (it conflicts with our bot brain) and other
+    route-threat and zone-crossing changes, where our route code works differently.
+- **Water breathing potions work again.** Nereid potions and other water-breathing spells did
   nothing: their handler still used the old effect system, which the server no longer runs. They now let you breathe
   under water and swim faster for their duration, as before. Base game code; players only, as in the original handler.
-  Not taken: the fork's default swim speed for everyone and its Nereid's Blessing buff. Checked: two new tests
+  Not changed: the default swim speed for everyone, and no Nereid's Blessing buff is added. Checked: two new tests
   (`UT_WaterBreathingEffect`). Not yet tried in game.
-- **The gamebots' camp list no longer breaks on a monster with no zone** (by MoomoocowPlus). One such monster stopped
+- **The gamebots' camp list no longer breaks on a monster with no zone**. One such monster stopped
   the whole list from being built, so every gamebot kept "Searching for a valid XP camp". It is now left out.
 
 **Fixes**
@@ -6000,7 +5965,7 @@ realm that feels like a full server at its busiest. How it works and how to tune
   a player's PC: see [docs/KNOWN-ISSUES.md](docs/KNOWN-ISSUES.md).
 
 **Save safety and network defaults** (technical audit of 2026-11-03, §2 and the co-op bind defaults). Nothing
-here changes gameplay. The WAL settings and the backup design are ported from lometur's HearthDAoC fork.
+here changes gameplay.
 - **The world database always opens in a crash-safe mode.**
   - **The problem:** the server's code default opened the database with the journal off and syncing off
     (`Journal Mode=Off;Synchronous=Off`, unpooled). If the server crashed or the PC lost power during a save, the
@@ -6090,7 +6055,7 @@ they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
   - **The bug:** with two or more invited gamebots in the group, `/disband` took you out but left them marked as
     following you. They trailed you without fighting for you, and refused new invites ("already following another
     player-led group") until you logged out. A single bot was already released correctly.
-  - **Whose code:** the cause is in shadowofze's group code (`Group.RemoveMember`), unchanged in his 0.38 branch.
+  - **Whose code:** the cause is in the base game's group code (`Group.RemoveMember`), unchanged in 0.38.
     It isn't a 1.1 regression, but 1.1's pathing to a far-off player made the stuck bots follow more reliably.
   - **Now:** when a player leaves, the gamebots that followed them follow another player still in the group, or,
     with none left, leave the group and go back to their own play. `/spawn` companions are left as before.
@@ -6100,7 +6065,7 @@ they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
   - **The bug:** the style table lists styles only for the classes chosen at level 5, so a Fighter, Viking, Guardian
     or other base class had no styles at all until then. A Fighter with Slash 2 had nothing where a classic one had
     Slash's first style.
-  - **Whose code:** shadowofze's data and style lookup, the same in 0.36c and 0.37b. Bots aren't affected: they start
+  - **Whose code:** the base game's data and style lookup, the same in 0.36c and 0.37b. Bots aren't affected: they start
     in their chosen class.
   - **Now:** a base class gets the styles its classes have in the weapon line it trains, each once (from the game's
     data: Fighter Ruby Slash, Thistle and Daze at 2; Viking Splitter, Thor's Anvil and Whirling Blade; Guardian
@@ -6138,7 +6103,7 @@ they are played. The plan is [docs/RELEASE-TRAIN.md](docs/RELEASE-TRAIN.md).
 Beta 1.1 is several pieces of work together: the talking update and the living world (beggars, deeds, storylines,
 spammers, roleplayers, rumours, holiday chatter, Leeroy), 2003-style bot names, a first half hour paced for signature
 moments, a GM command to check it all in game, Offline DAoC 0.38's server fixes ahead of their
-release, fixes taken from other forks of Offline DAoC, bots that react to attacks like players, quests that can be
+release, fixes for an effect leak, siege timers, routes and quests, bots that react to attacks like players, quests that can be
 finished with their markers and epic chains, and the all-in-one Setup. The plan and its checklist are in
 [docs/RELEASE-1.1.md](docs/RELEASE-1.1.md).
 
@@ -6239,8 +6204,7 @@ New Server life parts, on by default, each with its own switch in the launcher's
 
 ### Offline DAoC 0.38's server fixes, ahead of their release
 
-From shadowofze's 0.38 work, which isn't published yet (his `main` at `9da9091`, server code only). Thanks to
-shadowofze.
+Server code from 0.38, which isn't published yet (`main` at `9da9091`).
 
 - **Bot raids:**
   - A bot raid can start Caer Sidi's four horsemen and kill Apocalypse: the hidden controller that starts their
@@ -6260,30 +6224,28 @@ shadowofze.
   - Random helmets never roll a model the client draws nothing for.
   - A door the server has no record of opens again (and is logged as DOOR_NOT_IN_DATABASE).
 - **Not included:** the new-client changes, the patch tools and the world-data parts (Campacorentin patrols,
-  helmets already stored in a world). Those come with shadowofze's own 0.38 patch.
+  helmets already stored in a world). Those come with the 0.38 patch itself.
 
-### Fixes from other forks
+### Effect leak, siege timers, healer cures and bot upkeep
 
 - **The effect leak.** An effect that ended before it had started was put back in the effect service and ticked
   forever, so the server slowed the longer it ran. Such effects are no longer added, and any ended effect still there
-  is removed. From rambodolphin13's fork, which measured 30 million such effects and 326 ms per tick on a 3,000-bot
-  run.
+  is removed. A 3,000-bot run had measured 30 million such effects and 326 ms per tick.
 - **Siege timers.** Muster deadlines, the march after them, repels and the four-hour cap now run on the live clock.
-  A throttle that started at the lowest possible time overflowed and skipped every pass (found by stefanrows' fork;
-  the same code is in Offline DAoC 0.37). This had been off on every live server since the throttle was added, so
+  A throttle that started at the lowest possible time overflowed and skipped every pass (the same
+  code is in Offline DAoC 0.37). This had been off on every live server since the throttle was added, so
   sieges will now end, march and repel on their timers where earlier builds did not. It is the biggest change here to
   watch in play.
-- **Healers** let a cure they are already casting on the same member finish instead of restarting it every turn
-  (stefanrows, via rambodolphin13).
+- **Healers** let a cure they are already casting on the same member finish instead of restarting it every turn.
 - **Animists** below half power keep one damage shroom on the fight and skip vents and spores, so they regenerate
-  between pulls (rambodolphin13, from a tester report).
+  between pulls (from a tester report).
 - **A full bag at the medallion merchant.** A bot with a full bag and nothing to sell no longer waits at the merchant
-  until the watchdog sends it home. It stays away for five minutes (rambodolphin13).
-- **Siege weapons** no longer throw an error when a bot lets go of one on another thread (rambodolphin13).
+  until the watchdog sends it home. It stays away for five minutes.
+- **Siege weapons** no longer throw an error when a bot lets go of one on another thread.
 
 ### Fewer failed routes
 
-From stefanrows' fork (their 0.314 to 0.328), for autonomous gamebots only.
+For autonomous gamebots only.
 
 - A goal that failed because it lies just off the walkable ground moves onto its floor (dungeons and precise
   arrivals are left alone; a big height change must still be walkable).
@@ -6293,12 +6255,12 @@ From stefanrows' fork (their 0.314 to 0.328), for autonomous gamebots only.
   stop picking it again.
 - A bot standing on connected ground is no longer sent to its capital because its goal was off the walkable ground.
 - The existing floor search is budgeted: fewer repeated failed searches.
-- stefanrows measured route give-ups falling from 364 to 122 per game-hour in their world (not checked here). Their
+- Route give-ups were measured falling from 364 to 122 per game-hour in another world (not checked here). The
   evidence is in [docs/NAVMESH_HOTSPOTS.md](docs/NAVMESH_HOTSPOTS.md).
 
 ### Bots react to attacks like players
 
-From stefanrows' fork (their 0.271). An autonomous gamebot hit by a player, a bot or their pet reacts like a person:
+An autonomous gamebot hit by a player, a bot or their pet reacts like a person:
 
 - It answers after a moment: 0.3-0.8 s for melee, up to 1.2 s for a spell or arrow at it, up to 2.2 s for an area
   splash, plus up to a second for an attacker it wasn't facing, never more than 2.5 s. Tanks turn first and pure
@@ -6311,8 +6273,6 @@ From stefanrows' fork (their 0.271). An autonomous gamebot hit by a player, a bo
 - Switch: `bot_incoming_fire_reaction` (on).
 
 ### Quests
-
-From lometur's HearthDAoC fork.
 
 - **Quests you can now finish:**
   - Quest targets and givers match a spawn's name whatever its capitals. Kills of "arawnite messenger" for "Path of
@@ -6474,7 +6434,7 @@ Found by playing the Beta 1.1 test build on a fresh 0.37b install made by the ne
 - A build can now fit several releases (`BaseRelease`, e.g. `0.37,0.38`). The installer accepts a game updated to any
   of them and refuses anything newer. It stays `0.37` until 0.38 is published and merged. Setup reads the same list:
   a game on any listed release takes Living Server as it is, and new installs and updates go to the newest.
-- Beta 1.1 targets shadowofze's latest release, **0.37** (`v0.37`, `ab4df02`), and carries 0.38's server fixes from his
+- Beta 1.1 targets shadowofze's latest release, **0.37** (`v0.37`, `ab4df02`), and carries 0.38's server fixes from its
   `main` (`9da9091`); 0.38 itself is not published yet (checked 2026-10-28).
 - [docs/UPSTREAM-RELEASES.md](docs/UPSTREAM-RELEASES.md) is the checklist for that day.
 
@@ -6732,14 +6692,14 @@ evening's earlier 0.37-se.1 session; see "Checked" below).
 - Not yet known: whether 40-110 bots can beat encounters tuned for 200. Darkness Falls and Summoner's Hall bosses
   are level 64-80 and were barely scratched by 32 bots in an earlier test; their raid AI is not finished.
 
-**Bots remember where a monster far above them killed one** (from stefanrows/OfflineDAoC)
+**Bots remember where a monster far above them killed one**
 - When a monster 10 or more levels above a bot kills it, the spot is remembered for 6 hours: bots that monster is
   still far above pick no camp within 3,000 units of it, and a levelling bot counts a straight walk past it as a
   long trip, so it usually picks another camp. In one hour a merucha camp (levels 30-33) on the Connacht road
   killed 18 bots of levels 10-17 on their way to other camps, and 126 of the 159 bots under level 20 that died to
   red or purple monsters hadn't reached their camp yet. Kept in memory only; a restart forgets.
 
-**Levelling bots walk around monsters far above them** (route bends from stefanrows/OfflineDAoC)
+**Levelling bots walk around monsters far above them** (route bends)
 - The remembered spots above didn't stop road deaths in the live test: the Connacht meruchas still killed 30 bots
   of levels 10-17 in two hours, some three times running from the same bind point, because roads to camps all
   over Hibernia pass them. 22 of the 30 had seen the pack and chosen the old one-monster sidestep or a new camp.

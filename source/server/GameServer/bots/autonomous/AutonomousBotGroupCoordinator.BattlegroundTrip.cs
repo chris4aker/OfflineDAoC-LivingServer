@@ -36,7 +36,14 @@ public static partial class AutonomousBotGroupCoordinator
         public required GameBot Leader { get; set; }
         public required ushort BracketRegion { get; init; }
         public required string BracketName { get; init; }
-        public required long ExpiresTick { get; init; }
+        public required long ExpiresTick { get; set; }
+        /// <summary>
+        /// #530 step 5b: a party formed at a battleground muster from solo bots (AutonomousBotGroupCoordinator.MusterParties):
+        /// each member keeps its own battleground tour, and the party ends with no new goals.
+        /// </summary>
+        public bool FromMuster { get; init; }
+        /// <summary>The battleground keep objective a muster party formed at (<c>bg-keep-&lt;id&gt;</c>), else null.</summary>
+        public string ObjectiveId { get; init; }
     }
 
     private static readonly Dictionary<Group, BattlegroundTrip> Trips = new();
@@ -140,8 +147,10 @@ public static partial class AutonomousBotGroupCoordinator
             EndBattlegroundTrip(group, trip, members, "A player joined the battleground party", newGoals: false, disband: false);
             return false;
         }
-        // A member who outgrew the bracket leaves the party and ends its own tour.
-        foreach (GameBot outgrown in members.Where(member => BattlegroundBrackets.ForLevel(member.Level)?.RegionId != trip.BracketRegion).ToArray())
+        // A member who outgrew the bracket leaves the party and ends its own tour; #572 51B: unless it is inside that
+        // battleground, where it stays with the party until it dies.
+        foreach (GameBot outgrown in members.Where(member => BattlegroundBrackets.ForLevel(member.Level)?.RegionId != trip.BracketRegion &&
+                     !(member.CurrentRegionID == trip.BracketRegion && AutonomousWorldBotController.StaysOutlevelled(member))).ToArray())
         {
             group.RemoveMember(outgrown);
             AutonomousObjectiveAssignments.EndBattlegroundTour(outgrown, $"Outgrew {trip.BracketName} at level {outgrown.Level}");
@@ -157,7 +166,9 @@ public static partial class AutonomousBotGroupCoordinator
         if (now >= trip.ExpiresTick &&
             (now - trip.ExpiresTick >= BattlegroundTripEndGraceMilliseconds || !members.Any(member => member.InCombat || member.IsAttacking)))
         {
-            EndBattlegroundTrip(group, trip, members, "Battleground trip ended", newGoals: true, disband: true);
+            // A muster party's members go on with their own battleground tours (the first of which has ended).
+            EndBattlegroundTrip(group, trip, members, trip.FromMuster ? "Muster party ended" : "Battleground trip ended",
+                newGoals: !trip.FromMuster, disband: true);
             return true;
         }
         if (trip.Leader == null || !trip.Leader.IsAlive || trip.Leader.Group != group)

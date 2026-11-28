@@ -670,7 +670,7 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("world", "check_los_during_cast", "Should we perform LoS checks during spell casts (players and gamebots; see check_los_during_npc_cast for other NPCs).", true)]
 		public static bool CHECK_LOS_DURING_CAST;
 
-		// Port of OpenDAoC-Core cbe604ce1 and 978b991fc (live): a monster, guard or pet lands what it started unless crowd
+		// As on live: a monster, guard or pet lands what it started unless crowd
 		// controlled. Gamebots keep the player's checks (NpcFinishRules).
 		[ServerProperty("world", "check_los_during_npc_cast", "Should NPCs other than gamebots perform LoS checks during spell casts.", false)]
 		public static bool CHECK_LOS_DURING_NPC_CAST;
@@ -2137,7 +2137,7 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("pve", "pve_exp_loss_level", "Which level should players killed in PvE start losing experience?", (byte)6)]
 		public static byte PVE_EXP_LOSS_LEVEL;
 
-		// After OpenDAoC-Core e10348f31: a saved gravestone (it survives a restart) is removed this many days after it was made.
+		// A saved gravestone (it survives a restart) is removed this many days after it was made.
 		[ServerProperty("world", "gravestone_decay_time", "Minimum time (days) before a gravestone is removed from the world. 0 means no gravestones will be removed.", 7)]
 		public static int GRAVESTONE_DECAY_TIME;
 
@@ -2436,7 +2436,7 @@ namespace DOL.GS.ServerProperties
 		public static int SPELL_INTERRUPT_DURATION;
 
 		/// <summary>The self interrupt a cast starts when it reaches its half-cast point while an attacker's interrupt timer is still
-		/// running (port of OpenDAoC-Core 21eda0f90; the live-like interrupt has no switch back).</summary>
+		/// running (the live-like interrupt has no switch back).</summary>
 		[ServerProperty("spells", "spell_self_interrupt_duration", "How long the self interrupt lasts when a cast reaches its half-cast point while interrupted", 2200)]
 		public static int SPELL_SELF_INTERRUPT_DURATION;
 
@@ -2598,7 +2598,7 @@ namespace DOL.GS.ServerProperties
 		public static bool BOT_PERSONALITIES_ENABLED;
 
 		/// <summary>
-		/// Autonomous gamebots react to a player-shaped attacker like a player (stefanrows/OfflineDAoC 0.271).
+		/// Autonomous gamebots react to a player-shaped attacker like a player.
 		/// </summary>
 		[ServerProperty("bots", "bot_incoming_fire_reaction", "Autonomous gamebots hit by a player, bot or pet react like a player: a 0.3-2.5 s reaction delay (healers heal meanwhile; shorter for tanks and bold personalities), an area spell from a distance doesn't make its caster the bot's target, and healers cure a dotted group with the group cure. Companions and bots in your group are not affected. False keeps the immediate reaction.", true)]
 		public static bool BOT_INCOMING_FIRE_REACTION;
@@ -2640,9 +2640,15 @@ namespace DOL.GS.ServerProperties
 		public static bool RVR_BOT_GROUP_LOOKERS;
 
 		/// <summary>
+		/// #529 step 3 (piece B): the fight board lists what the group knows of, not everyone within 3,500; fighting bots keep looking.
+		/// </summary>
+		[ServerProperty("bots", "rvr_board_from_contacts", "RvR (1.2.3, #529): a gamebot group's fight board, which its called target, crowd control, size-up and retreat read, lists only the enemies one of its members noticed, was told of by a mate or was hit by in the last 15 s, instead of every enemy within 3,500 units whether anyone saw them or not (behind a hill, behind a wall, out of view). A gamebot in a fight looks around every 2 s (enemies within 2,500, a few line-of-sight checks, the usual notice rule) so a new enemy joining the fight is seen without hitting first. Groups with you in them, and companions, are unchanged. Log: RVR_FIGHT_BOARD (from), RVR_CONTACT_SHADOW (board), RVR_SCAN_BUDGET (combatRefreshes, combatRays). False: the board searches the area as before 1.2.3, and fighting bots don't look around.", true)]
+		public static bool RVR_BOARD_FROM_CONTACTS;
+
+		/// <summary>
 		/// 1.2 work package 2 (assist): a main assist and a called target.
 		/// </summary>
-		[ServerProperty("bots", "rvr_bot_assist", "Open-field RvR (1.2): in a bot-only group outside raids, battleground assaults and keep fights, one fighter (a tank first) is the main assist and the group's target is called by the 2003 kill order (casters, healers, bladeturn casters, crowd controllers, tanks last; versus Midgard the Shaman first, versus Hibernia the Bard, the Eldritch, then the Druids). A call is held 4-8 s; an enemy using Mastery of Concentration or just resurrected becomes the call; one the group cannot reach is never called. Members follow after their own delay by the group's skill tier, and some tunnel. Log: RVR_ASSIST_CALL, RVR_ASSIST_SWITCH. Needs rvr_bot_field_tactics.", true)]
+		[ServerProperty("bots", "rvr_bot_assist", "Open-field RvR (1.2): in a bot-only group outside raids, battleground assaults and keep fights, one fighter (a tank first) is the main assist and the group's target is called by the 2003 kill order (casters, healers, bladeturn casters, crowd controllers, tanks last; versus Midgard the Shaman first, versus Hibernia the Bard, the Eldritch, then the Druids). A call is held 4-8 s; an enemy using Mastery of Concentration or just resurrected becomes the call; one the group cannot reach is never called. The first target is the plan's too (1.2.3, #531): the group opens on one enemy (the call, else the one mates already fight, else the kill order), people before pets and siege engines, free enemies before crowd-controlled ones, instead of spreading over two or three. Members follow after their own delay by the group's skill tier, and some tunnel. Log: RVR_ASSIST_CALL, RVR_ASSIST_SWITCH, RVR_DECIDE (pick). Needs rvr_bot_field_tactics.", true)]
 		public static bool RVR_BOT_ASSIST;
 
 		/// <summary>
@@ -2815,6 +2821,12 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_move_sit_and_walls", "Bots as people (1.2): gamebots sit while they wait for their group, at a rendezvous or at the bank, and bots waiting at a keep their realm holds, with no siege there and no enemy noticed, sit on its walls and stand when an enemy comes (owner decision 11, 2026-11-17). Sitting is only how it looks: resting is unchanged. Needs bot_movement_habits. Log: BOT_MOVE_SIT, BOT_MOVE_WALL.", true)]
 		public static bool BOT_MOVE_SIT_AND_WALLS = true;
 
+		[ServerProperty("bots", "bot_weapon_set_rules", "Bots fight with the weapon set a player would (#569): a party's only tank with Guard fights with its trained shield and guards a member within reach, a bot carrying a two-hander and a one-hander uses the line it trained higher, a hired companion keeps the melee set you readied in its window, and archers stop flipping between bow and melee weapon. Only weapons the bot already carries are used. Gamebots, hired companions and /bot companions alike.", true)]
+		public static bool BOT_WEAPON_SET_RULES;
+
+		[ServerProperty("bots", "bot_hunting_grounds", "Solo gamebots keep a hunting ground (#570), as a player levelled through one zone and its neighbours: a solo gamebot's next camp is far more often in the zone it hunts or a neighbouring one, it hunts the area around a camp whose monster is gone instead of leaving, it pulls the monster standing apart first, the stealth assassins, healers, bards and archers prefer blue targets to yellow, and once most of its kills con green it moves up to a harder spot. Groups, raids, dungeons and Darkness Falls are unchanged; companions are not touched.", true)]
+		public static bool BOT_HUNTING_GROUNDS = true;
+
 		/// <summary>
 		/// Bots as people, item 6 (work package 6).
 		/// </summary>
@@ -2901,9 +2913,27 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("bots", "bot_healer_period_rules", "Bot and companion healers heal like a 1.65 healer (#567): gamebots, your own companion healers and /spawn helpers. A dedicated healer starts at two-thirds health (65%, not 80%), heals the tank first, uses the small heal before the big one outside an emergency, puts a heal over time on the tank as a fight wears it down, and casts a group heal only with three or more hurt and not on the pull. Realm raids, warbands and boss fights keep their own healer rules.", true)]
 		public static bool BOT_HEALER_PERIOD_RULES;
 
+		/// <summary>#569 step 8: archer bots open with Critical Shot, and a Hunter's pet waits for it (BotRangedCombat).</summary>
+		[ServerProperty("bots", "bot_critical_shot_opener", "Archer bots open with Critical Shot (#569): a Hunter, Scout or Ranger gamebot, hired companion or /bot companion draws a Critical Shot as its first shot at a target that isn't fighting, running or mezzed, as players pulled, when it has the endurance, and a Hunter keeps its pet at heel for that shot (at most 7 seconds) instead of sending it in first. The draw time, damage and endurance are the player's. Your own character and pet are unchanged.", true)]
+		public static bool BOT_CRITICAL_SHOT_OPENER = true;
+
+		/// <summary>#569 step 9: gamebot party pullers pass over monsters too far to shoot and keep with the party.</summary>
+		[ServerProperty("bots", "bot_party_puller_camp_turn", "Gamebot party pullers (#569): a monster too far from any spot to shoot it from is passed over for a nearer one instead of the tank walking into its pack, and after 45 seconds of only such monsters the party walks in together toward one (at most twice per camp in 10 minutes); a puller standing beside its leader at the camp starts pulling, and waits with the party while the camp is empty instead of wandering off. Outdoor gamebot parties only; your own group is unchanged. Log: AUTONOMOUS_PARTY_PULL_TOO_FAR, AUTONOMOUS_GROUP_CAMP_ADVANCED, AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD.", true)]
+		public static bool BOT_PARTY_PULLER_CAMP_TURN = true;
+
 		/// <summary>#571 step 1: the damage dealers of a player's group fight the player's target first (CompanionLeaderFocus).</summary>
 		[ServerProperty("bots", "bot_leader_focus", "Bots in your group fight your fight (#571): in PvE and RvR alike, when you attack a target (or cast harmful magic at it, or your pet fights it), the damage dealers among your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you fight that target before whoever is hitting them or their own top threat, as a group assists its main assist. Tanks keep guarding and peeling, healers keep healing, a target a groupmate has mesmerized or rooted is left alone, a boss rule that forbids hitting a target still holds, and /defensive keeps its range. Autonomous gamebots outside your group are unchanged. Log: COMPANION_LEADER_FOCUS.", true)]
 		public static bool BOT_LEADER_FOCUS;
+
+		/// <summary>#664 step 1: the player's group picks and engages enemies on its own in RvR (CompanionRvrEngage).</summary>
+		[ServerProperty("bots", "bot_companion_rvr_engage", "Your group engages enemies on its own in RvR (#664): in the frontier, the battlegrounds and Darkness Falls, the bots in your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) notice enemy bots the way gamebots do (line of sight, sooner when the enemy fights, casts or is close, one of them seeing it is all of them seeing it, a stealther only close up) and attack them without waiting for you: within 2,000 of you on /aggressive and 1,000 on /defensive, healers and casters first. They size the fight up first and don't open on an enemy force they would clearly lose to, but always defend. Keep guards and lords are left alone unless you attack them, and so is an enemy standing under its tower or keep guards or in a safe area. They never open a fight on an enemy you or a groupmate holds with a mez or root. A bot set to passive, /bot stay or /bot hold stays out, and your own target still comes first. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_ENGAGE.", true)]
+		public static bool BOT_COMPANION_RVR_ENGAGE;
+
+		/// <summary>#665: the player's group spreads into the period backline in an RvR fight (CompanionRvrFormation).</summary>
+		[ServerProperty("bots", "bot_companion_rvr_formation", "Your group spreads into an attack formation in RvR (#665): in the frontier, the battlegrounds and Darkness Falls, once your group is fighting enemy bots, the casters and healers of your group (your /spawn and /raid helpers, hired companions, /bot companions and the gamebots grouped with you) stand behind the tanks relative to the enemy, more than 350 apart so one mez can't catch two of them, wider while the enemy is still coming in, and never more than 1,000 from you. Tanks and melee fight as before. Every step is a normal walk on solid ground. A healer moves only while nobody needs a heal, and nobody walks out of a cast. PvE and autonomous gamebots outside your group are unchanged. Log: COMPANION_RVR_FORMATION.", true)]
+		public static bool BOT_COMPANION_RVR_FORMATION;
+		[ServerProperty("bots", "bot_party_main_assist", "Gamebot parties fight one kill target (#569): in a party of autonomous gamebots doing group PvE, the tank's target is the party's kill target and the other members hit it before whoever is hitting them or their own top threat. A member below half health that is being hit fights back, and a member hit by an enemy player fights that player at any health. A monster a groupmate has mesmerized or rooted, an enemy pet and a siege engine are never the kill target. It doesn't apply in realm raids (the raid's own calls win), under the RvR tactics, or with an enemy player in view. Groups with a real player in them keep leader focus (bot_leader_focus), and RvR warbands and companions are unchanged. Log: AUTONOMOUS_PARTY_KILL_TARGET.", true)]
+		public static bool BOT_PARTY_MAIN_ASSIST;
 
 		/// <summary>About 4% of Crafter bots are beggars who live in their capital (AutonomousBeggars).</summary>
 		[ServerProperty("bots", "bot_living_beggars", "Server life: about 4% of the Crafter bots are beggars. They live in their capital, beg you and passing bots for coin and loot (drag coin or an item onto one to give it), sell what they are given and hoard every copper. Ask anyone for gold or items and the beggars follow you around the city insulting you and defending their corners until you leave. Beggars never group or fight.", true)]

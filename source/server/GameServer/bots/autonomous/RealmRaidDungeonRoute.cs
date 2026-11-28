@@ -413,6 +413,8 @@ namespace DOL.GS
         // Everyone in the attempt seen fallen during it (dead, released or gone), though rezzed or sent back in since.
         private readonly HashSet<GameLiving> _fellInAttempt = new();
         private int _attemptLowestPercent = 100;
+        // #768: the open attempt's progress on its boss's ordered adds (Myrddraxis's heads), judged with the boss's own.
+        private readonly RaidOrderedAddProgress _orderedAdds = new();
         private bool _regrouping;
         private long _regroupSince;
         private readonly Queue<(string Name, int Failures, int Engaged, int Fallen)> _wipes = new();
@@ -507,7 +509,8 @@ namespace DOL.GS
             attemptOpen && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent && (outOfTether || returningHome || aggroEmpty);
 
         /// <summary>The open attempt's encounter has reset (<see cref="AttemptEndsOnReset"/>): the attempt is ended and judged.
-        /// Null when it has not; else whether it was a wipe (as <see cref="EndAttempt"/>).</summary>
+        /// Null when it has not; else whether it was a wipe (as <see cref="EndAttempt"/>). This check looks at the boss's own
+        /// health only (#768): a boss's ordered adds count when the attempt is judged, not in deciding that it has ended.</summary>
         private bool? EndAttemptIfReset(long now)
         {
             if (_target == null) return null;
@@ -522,6 +525,25 @@ namespace DOL.GS
         public static bool IsResetWithRaidStanding(int engaged, int fallen, int healthPercent, int lowestPercent) =>
             engaged >= MinimumRaidersAtTarget && fallen * 4 < engaged && healthPercent >= 95 && lowestPercent <= ResetWipeLowestPercent;
         public const int FreeEncounterResets = 2;
+
+        /// <summary>How <see cref="EndAttempt"/> scores an attempt that ended without a kill.</summary>
+        public enum AttemptVerdict { NoWipe, FreeReset, Skirmish, Wipe }
+
+        /// <summary>
+        /// The verdict on an ended attempt (pure), in EndAttempt's order: no wipe (<see cref="IsWipe(int, int, int, int)"/>),
+        /// a free reset (<see cref="IsResetWithRaidStanding"/>, while the encounter has free resets left), a lost skirmish (not
+        /// the raid's: <see cref="IsWipe(int, int, int, int, int)"/>), else a wipe: one of the raid's tries, which calls the
+        /// Special Forces. <paramref name="healthPercent"/> and <paramref name="lowestPercent"/> are the encounter's as judged
+        /// (RaidOrderedAddProgress.Judged: the boss's, and its ordered adds' since #768).
+        /// </summary>
+        public static AttemptVerdict Judge(int engaged, int fallen, int healthPercent, int lowestPercent, int raidAtStart, int freeResetsUsed)
+        {
+            if (!IsWipe(engaged, fallen, healthPercent, lowestPercent)) return AttemptVerdict.NoWipe;
+            if (IsResetWithRaidStanding(engaged, fallen, healthPercent, lowestPercent) && freeResetsUsed < FreeEncounterResets)
+                return AttemptVerdict.FreeReset;
+            if (!IsWipe(engaged, fallen, healthPercent, lowestPercent, raidAtStart)) return AttemptVerdict.Skirmish;
+            return AttemptVerdict.Wipe;
+        }
 
         /// <summary>
         /// The attempt's encounter was killed and has come back since the attempt's pull (pure): its SpawnTick, set by every
@@ -782,6 +804,30 @@ namespace DOL.GS
                 dead ? 0 : _attemptLowestPercent, now);
         }
 
+        /// <summary>The boss's ordered adds (the catalog's AddsInOrder) alive now; none for any other boss (#768).</summary>
+        private GameNPC[] LiveOrderedAdds() =>
+            _target != null && EpicEncounterTactics.For(_target) is { AddsInOrder: true }
+                ? EpicEncounterTactics.LiveRequiredAdds(_target, _live) : [];
+
+        /// <summary>One look at the open attempt's ordered adds (#768): the live ones' health, and 0 for any seen that died.</summary>
+        private void NoteOrderedAdds()
+        {
+            if (!_orderedAdds.Tracking) return;
+            try
+            {
+                foreach (GameNPC add in LiveOrderedAdds()) _orderedAdds.Note(add, SafeAlive(add), SafeHealth(add));
+                foreach (object seen in _orderedAdds.Tracked)
+                    if (seen is GameNPC add && !SafeAlive(add)) _orderedAdds.Note(add, false, 0);
+            }
+            catch
+            {
+                // A look that fails leaves the attempt judged on what was seen before.
+            }
+        }
+
+        /// <summary>The live ordered adds' health, for RaidOrderedAddProgress.Score (none looked up when none is tracked).</summary>
+        private int[] OrderedAddHealths() => _orderedAdds.Tracking ? LiveOrderedAdds().Select(SafeHealth).ToArray() : [];
+
         private static bool SafeAlive(GameNPC npc)
         {
             try { return npc.IsAlive; } catch { return false; }
@@ -808,6 +854,8 @@ namespace DOL.GS
             _attemptRaidSize = AttemptRaidSize(_attemptParticipants?.Count(p => p.IsAlive && p.CurrentRegionID == _region) ?? 0,
                 _attemptParticipants?.Count(p => p.IsAlive) ?? 0);
             _attemptLowestPercent = _target.HealthPercent;
+            _orderedAdds.Begin(LiveOrderedAdds().Length);
+            NoteOrderedAdds();
             _pulls.Begin();
             // A pull is progress: the next muster for this encounter starts its own count.
             _musterProgress.Remove(_target);
@@ -833,35 +881,44 @@ namespace DOL.GS
             var (died, left) = DiedAndLeft();
             _engaged.Clear();
             _fellInAttempt.Clear();
-            if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent))
+            // #768: a boss whose adds die first in order is judged on the adds too (owner: the same 70%/95% rule), so a lost
+            // head fight with the boss untouched is a try. The rows keep the boss's own health and lowest, plus the adds'.
+            NoteOrderedAdds();
+            RaidOrderedAddProgress.Scored judged = _orderedAdds.Score(_target.HealthPercent, _attemptLowestPercent, OrderedAddHealths());
+            string addsHealth = RaidOrderedAddProgress.Text(judged.Tracking, judged.AddsNow);
+            string addsLowest = RaidOrderedAddProgress.Text(judged.Tracking, judged.AddsLowest);
+            _orderedAdds.Begin(0);
+            string encounterName = WipeEncounter(_target, _live).Name;
+            AttemptVerdict verdict = Judge(engaged, fallen, judged.Now, judged.Lowest, _attemptRaidSize,
+                _freeResets.GetValueOrDefault(encounterName));
+            if (verdict == AttemptVerdict.NoWipe)
             {
                 // Not a wipe: said so, with the counts (2026-11-15: Kvasir's attempt ended with no line at all).
                 log.Info($"REALM_EXPEDITION_ATTEMPT_ENDED region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
-                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False attempt={attempt}");
+                         $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" wipe=False attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
                 EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, false, false, how), engaged, fallen, died, left, now);
                 return false;
             }
             // Counted per encounter: the boss that owns the adds (WipeEncounter), so one linked fight is one encounter's.
-            string encounter = WipeEncounter(_target, _live).Name;
-            if (IsResetWithRaidStanding(engaged, fallen, _target.HealthPercent, _attemptLowestPercent) &&
-                _freeResets.GetValueOrDefault(encounter) < FreeEncounterResets)
+            string encounter = encounterName;
+            if (verdict == AttemptVerdict.FreeReset)
             {
                 int resets = _freeResets[encounter] = _freeResets.GetValueOrDefault(encounter) + 1;
                 log.Warn($"REALM_EXPEDITION_ENCOUNTER_RESET region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
                          $"health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" resets={resets} of={FreeEncounterResets} " +
-                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\" attempt={attempt}");
+                         $"reason=\"the encounter reset while the raid still stood; the raid musters again and no attempt is used\" attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
                 EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, true, false, how), engaged, fallen, died, left, now);
                 _regrouping = true;
                 _regroupSince = _musterSince = now;
                 _targetProgressTick = now;
                 return false;
             }
-            if (!IsWipe(engaged, fallen, _target.HealthPercent, _attemptLowestPercent, _attemptRaidSize))
+            if (verdict == AttemptVerdict.Skirmish)
             {
                 // Lost skirmish: rest and muster again, but it was not the raid's attempt.
                 log.Warn($"REALM_EXPEDITION_SKIRMISH_LOST region={_region} target=\"{_target.Name}\" engaged={engaged} fallen={fallen} " +
                          $"raid={_attemptRaidSize} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\" " +
-                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\" attempt={attempt}");
+                         $"reason=\"less than half the raid was in it and less than half fell; no attempt used\" attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
                 EndAttemptRow(RaidAttemptRows.DungeonOutcome(false, false, true, how), engaged, fallen, died, left, now);
                 _regrouping = true;
                 _regroupSince = _musterSince = now;
@@ -872,7 +929,7 @@ namespace DOL.GS
             _wipes.Enqueue((encounter, failures, engaged, fallen));
             log.Warn($"REALM_EXPEDITION_WIPE region={_region} target=\"{encounter}\" level={_target.Level} failures={failures} " +
                      $"of={MaximumFailedAttempts} engaged={engaged} fallen={fallen} health={_target.HealthPercent} lowest={_attemptLowestPercent} how=\"{how}\"" +
-                     (encounter != _target.Name ? $" fought=\"{_target.Name}\"" : "") + $" attempt={attempt}");
+                     (encounter != _target.Name ? $" fought=\"{_target.Name}\"" : "") + $" attempt={attempt} addsHealth={addsHealth} addsLowest={addsLowest}");
             EndAttemptRow(RaidAttemptRows.DungeonOutcome(true, false, false, how), engaged, fallen, died, left, now);
             if (failures >= MaximumFailedAttempts)
             {
@@ -1615,6 +1672,7 @@ namespace DOL.GS
                     if (_skirmishHeld)
                     {
                         _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
+                        NoteOrderedAdds();
                         if (choice != EpicEncounterTactics.EarlyPull.Commit)
                         {
                             // Still too few: whoever it reaches fights it, the rest keep gathering at the muster.
@@ -1684,6 +1742,7 @@ namespace DOL.GS
                 NoteFallen();
                 _pulls.SawCombat();
                 _attemptLowestPercent = Math.Min(_attemptLowestPercent, _target.HealthPercent);
+                NoteOrderedAdds();
                 return false;
             }
             // The raid needs time to cross from the muster point to the boss (run 5: the engage repeated every ten

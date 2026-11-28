@@ -9,6 +9,8 @@ namespace DOL.GS.Tests.Rehearsal
 {
     public sealed record RvrHit(long At, GameLiving Attacker, GameLiving Target, int Amount, AttackData.eAttackType Kind, bool OnCalledTarget);
     public sealed record RvrDeath(long At, GameLiving Victim, GameObject Killer);
+    /// <summary>#531 step 2f: a point blank bomb's cast start, and how many enemies in its radius were mezzed and free then.</summary>
+    public sealed record RvrBombCast(long At, GameLiving Caster, int Mezzed, int Free);
 
     /// <summary>A mez cast that finished on a target: whether the target was mezzed after it, and the target's state then.</summary>
     public sealed class RvrMezAttempt
@@ -20,6 +22,10 @@ namespace DOL.GS.Tests.Rehearsal
         public bool TargetIsPlayer => Target is GamePlayer;
         public bool? Landed { get; set; }
         public bool Refused => Landed == false;
+        /// <summary>The mez spell's radius (0: a single mez).</summary>
+        public int Radius { get; init; }
+        /// <summary>#531 step 2a: an area mez that landed: how many of the caster's enemies were mezzed in its radius then.</summary>
+        public int Caught { get; set; }
     }
 
     /// <summary>
@@ -37,12 +43,23 @@ namespace DOL.GS.Tests.Rehearsal
         private readonly Dictionary<object, List<(long At, GameLiving Target)>> _calls = new();
         private readonly DOLEventHandler _onAttacked, _onDying, _onCastFinished, _onCastStarting;
         private int _castsStarted, _castsFinished;
+        private readonly List<RvrBombCast> _bombs = new();
+        private readonly HashSet<GameLiving> _bombing = new();
+        private readonly List<(long At, GameLiving Bomber)> _bombWaits = new();
+        private readonly HashSet<GameLiving> _waiting = new();
+        private readonly List<(long At, GameLiving Bomber)> _bombHolds = new();
+        private readonly HashSet<GameLiving> _holding = new();
 
         public IReadOnlyList<RvrHit> Hits => _hits;
         public IReadOnlyList<RvrDeath> Deaths => _deaths;
         public IReadOnlyList<RvrMezAttempt> Mezzes => _mezzes;
         public IReadOnlyList<(long At, GameLiving Target)> ControlStarts => _firstControl;
         public int CastsStarted => _castsStarted;
+        /// <summary>#531 step 2f: each point blank bomb started, and each time a lone bomber began waiting beside a pile.</summary>
+        public IReadOnlyList<RvrBombCast> Bombs => _bombs;
+        public IReadOnlyList<(long At, GameLiving Bomber)> BombWaits => _bombWaits;
+        /// <summary>Each time a bomber of two or more began holding at a pile for the others.</summary>
+        public IReadOnlyList<(long At, GameLiving Bomber)> BombHolds => _bombHolds;
         public int CastsFinished => _castsFinished;
         /// <summary>Each group's called targets in order, as its published plan named them.</summary>
         public IReadOnlyDictionary<object, List<(long At, GameLiving Target)>> Calls => _calls;
@@ -94,6 +111,7 @@ namespace DOL.GS.Tests.Rehearsal
             _mezzes.Add(new RvrMezAttempt
             {
                 At = _world.Now, Caster = (GameLiving)sender, Target = target, TargetHealthPercent = target.HealthPercent,
+                Radius = handler.Spell.Radius,
             });
         }
 
@@ -103,9 +121,39 @@ namespace DOL.GS.Tests.Rehearsal
             long now = _world.Now;
             foreach (RvrMezAttempt attempt in _mezzes)
                 if (attempt.Landed == null && now > attempt.At)
+                {
                     attempt.Landed = attempt.Target.IsMezzed;
+                    if (attempt.Landed == true && attempt.Radius > 0)
+                        attempt.Caught = _world.Livings.Count(l => l.IsAlive && l.IsMezzed && l.Realm != attempt.Caster.Realm &&
+                                                                   l.IsWithinRadius(attempt.Target, attempt.Radius));
+                }
             foreach (GameLiving living in _world.Livings)
             {
+                // #531 step 2f: a point blank bomb being cast, with the enemies it will reach; a bomber waiting by a pile
+                if (living.IsAlive && living.IsCasting && living.CurrentSpellHandler?.Spell is { IsPBAoE: true, Damage: > 0 } bomb)
+                {
+                    if (_bombing.Add(living))
+                    {
+                        var reached = _world.Livings.Where(l => l.IsAlive && l.Realm != living.Realm && l.IsWithinRadius(living, bomb.Radius)).ToList();
+                        _bombs.Add(new RvrBombCast(now, living, reached.Count(l => l.IsMezzed), reached.Count(l => !l.IsMezzed)));
+                    }
+                }
+                else
+                    _bombing.Remove(living);
+                if (living is GameBot { Brain: BotBrain bomberBrain } && bomberBrain.RvrBombState == RvrBombAction.Wait)
+                {
+                    if (_waiting.Add(living))
+                        _bombWaits.Add((now, living));
+                }
+                else
+                    _waiting.Remove(living);
+                if (living is GameBot { Brain: BotBrain holderBrain } && holderBrain.RvrBombHolding)
+                {
+                    if (_holding.Add(living))
+                        _bombHolds.Add((now, living));
+                }
+                else
+                    _holding.Remove(living);
                 bool controlled = living.IsAlive && (living.IsMezzed || living.IsStunned);
                 if (controlled && !_mezzedSince.ContainsKey(living))
                 {

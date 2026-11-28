@@ -161,9 +161,11 @@ namespace DOL.UnitTests
             string pull = Source("bots", "autonomous", "AutonomousDefensivePull.cs");
             int core = pull.IndexOf("private static bool TryBeginCore(");
             string body = pull[core..pull.IndexOf("public static bool TryFiringPoint(", core)];
-            int benchedCheck = body.IndexOf("state.Bench.IsBenched(target.ObjectID, GameLoop.GameLoopTime)) return false;");
+            int benchedCheck = body.IndexOf("state.Bench.IsBenched(target.ObjectID, GameLoop.GameLoopTime))");
             int retry = body.IndexOf("if (GameLoop.GameLoopTime < state.RetryAfter) return true;");
             Assert.That(benchedCheck, Is.GreaterThan(0).And.LessThan(retry), "a benched target is not waited on");
+            Assert.That(body.IndexOf("why = PartyPullStart.Benched;", benchedCheck), Is.GreaterThan(benchedCheck).And.LessThan(retry),
+                "the benched target returns (false, Benched) before any wait");
             Assert.That(body, Does.Contain("state.Bench.RecordUnreachable(target.ObjectID, GameLoop.GameLoopTime)"));
             Assert.That(body, Does.Contain("AUTONOMOUS_DEFENSIVE_PULL_BENCHED"));
 
@@ -171,7 +173,7 @@ namespace DOL.UnitTests
             int work = controller.IndexOf("private bool WorkCamp(");
             string camp = controller[work..controller.IndexOf("private GameNPC FindCampTarget(", work)];
             int giveUp = camp.IndexOf("AutonomousDefensivePull.ShouldGiveUpCamp(bot.Group, _camp.Id, out int benchedPulls)");
-            Assert.That(giveUp, Is.GreaterThan(0).And.LessThan(camp.IndexOf("AutonomousDefensivePull.TryBegin(bot, target)")));
+            Assert.That(giveUp, Is.GreaterThan(0).And.LessThan(camp.IndexOf("AutonomousDefensivePull.TryBegin(bot, target, out partyPullWhy)")));
             Assert.That(camp.IndexOf("AbandonCamp(bot, $\"{benchedPulls}", giveUp), Is.GreaterThan(giveUp),
                 "the party gives the camp up (a new camp), it does not stand");
         }

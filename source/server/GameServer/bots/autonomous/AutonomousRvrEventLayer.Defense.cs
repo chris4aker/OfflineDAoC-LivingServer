@@ -14,10 +14,24 @@ namespace DOL.GS
     {
         public const long DefenseResponseMilliseconds = 4 * 60 * 60_000L;
         public const long DefenseQuietMilliseconds = 3 * 60_000L;
-        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick, int ForceSize);
+        /// <summary>A player's attack on a keep, waiting for the coordinator pulse. <c>Sustained</c>: a door was hit or a
+        /// guard died in this attack (#523 (b), owner 2026-11-27, 45A), which raises a defense even for a lone attacker.</summary>
+        private sealed record Alarm(AbstractGameKeep Keep, GamePlayer Player, long Tick, bool Sustained = false);
+
+        /// <summary>What an enemy did to a keep (<see cref="ObserveKeepAttack"/>).</summary>
+        public enum KeepAttackKind { GuardHit, GuardKilled, DoorHit }
+
+        /// <summary>
+        /// #523 step 1 (b), owner 2026-11-27 (45A, war.md finding 2 fix 2): a lone guard pull raises no alarm. Guard damage
+        /// alone raises no defense below Standard scale (one attacker seen at the keep) until a guard dies or a door is hit.
+        /// Period: the owning guild was told when a guard died, with the enemy count (GuardSpam); a lone ganker who hit a
+        /// guard and left drew nothing (reference.md 5.1, 5.5-5.6).
+        /// </summary>
+        public static bool AlarmRaisesDefense(DefenseScale scale, bool sustained) => sustained || scale >= DefenseScale.Standard;
 
         // Goal 11 (owner 2026-10-07): the response is sized to the force that started the attack - a solo player, a
         // group (player + up to 7), a /raid 40 or a /raid 80 - and the announcement says how big a force was rallied.
+        // #523, owner 2026-11-24: sized "by the attackers actually seen" at the keep (SeenForceSize), not the roster.
         public enum DefenseScale { Small, Standard, Large, Massive }
 
         public static DefenseScale ScaleOf(int forceSize) => forceSize switch
@@ -28,8 +42,66 @@ namespace DOL.GS
             _ => DefenseScale.Small,
         };
 
-        /// <summary>The player plus everyone in their group or companion raid.</summary>
+        /// <summary>The player plus everyone in their group or companion raid, wherever they are (the roster).</summary>
         public static int ForceSize(GamePlayer player) => Math.Max(1, (int)(player?.Group?.MemberCount ?? 1));
+
+        /// <summary>
+        /// #523, owner 2026-11-24: a player-attack defense is "sized by the attackers actually seen". The attack itself
+        /// is seen, so never below one.
+        /// </summary>
+        public static int SeenForceSize(int seenAtKeep) => Math.Max(1, seenAtKeep);
+
+        /// <summary>
+        /// The attackers seen at the keep: the attacking player and the members of their group or companion raid
+        /// (companions count as group members, as <see cref="ForceSize"/> counted them), plus the attacking realm's
+        /// autonomous gamebots at the keep (owner, 2026-11-27, #788 answer 49A: sized by the player's group or raid at the
+        /// keep "plus the attacking realm's gamebots at the keep", in line with #784's 1B: "bots should be performing their
+        /// own sieges and defense without the player"). Each is counted once, only of the attacker's realm, and only if alive,
+        /// in play, in the keep's region and inside the fighting ring (<c>AttackerAtKeep</c>, the ring #784 counts the
+        /// attackers in: 9,500, Z within 2,000). Members or bots elsewhere, dead or of another realm are not counted; pets
+        /// and siege engines were never part of the force count and still are not.
+        /// Owner, 2026-11-27, #788 answer 56A: "this defense's own recruits don't count toward its size". The attacking
+        /// realm's gamebots this defense has recruited as its helpers (<paramref name="ownRecruit"/>) are left out of the
+        /// gamebots counted; the player's group or raid and the attacking realm's other gamebots at the keep still count.
+        /// </summary>
+        public static int SeenForceSize(GameLiving attacker, ushort keepRegion, int keepX, int keepY, int keepZ,
+            IEnumerable<GameLiving> realmBots = null, Func<GameLiving, bool> ownRecruit = null)
+        {
+            if (attacker == null) return SeenForceSize(0);
+            bool AtKeep(GameLiving living) => living != null && living.Realm == attacker.Realm &&
+                AttackerAtKeep(living.IsAlive, living.ObjectState == GameObject.eObjectState.Active, living.CurrentRegionID,
+                    keepRegion, living.X - keepX, living.Y - keepY, living.Z - keepZ);
+            var seen = new HashSet<GameLiving>(ReferenceEqualityComparer.Instance);
+            if (AtKeep(attacker)) seen.Add(attacker);
+            if (attacker.Group is { } group)
+                foreach (GameLiving member in group.GetMembersInTheGroup())
+                    if (AtKeep(member)) seen.Add(member);
+            if (realmBots != null)
+                foreach (GameLiving bot in realmBots)
+                    if (AtKeep(bot) && ownRecruit?.Invoke(bot) != true) seen.Add(bot);
+            return SeenForceSize(seen.Count);
+        }
+
+        /// <summary>The gamebots that can count as the attacking realm's at a keep: online autonomous world bots (the
+        /// registry's roster, which leaves out companions, hired companions, Special Forces and buffbots), not a player's
+        /// temporary helpers. Realm and ring are checked by <see cref="SeenForceSize(GameLiving, ushort, int, int, int, IEnumerable{GameLiving})"/>.
+        /// A field so a test can supply its own roster.</summary>
+        private static Func<IEnumerable<GameLiving>> AttackerRealmBotSource = () =>
+            AutonomousBotRegistry.Snapshot().Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper);
+
+        private static int SeenForceSize(GamePlayer player, AbstractGameKeep keep, IEnumerable<GameLiving> realmBots,
+            Func<GameLiving, bool> ownRecruit) =>
+            keep == null ? SeenForceSize(0) : SeenForceSize(player, keep.Region, keep.X, keep.Y, keep.Z, realmBots, ownRecruit);
+
+        /// <summary>Called under Sync. Whether a gamebot is one of this player-attack defense's own attacking-realm recruits:
+        /// its event force is among the defense's attacker-side forces (#788 answer 56A).</summary>
+        private static bool IsOwnRecruit(ActiveEvent defense, GameLiving living)
+        {
+            if (defense == null || defense.Attackers.Count == 0 || living == null) return false;
+            string force = living.TempProperties?.GetProperty<string>("RvrEventForce") ??
+                (living is GameBot bot ? $"rvr-{bot.DatabaseID}" : null);
+            return force != null && defense.Attackers.ContainsKey(force);
+        }
 
         public static string RallyLine(DefenseScale scale) => scale switch
         {
@@ -39,6 +111,7 @@ namespace DOL.GS
             _ => "A small defense force has been rallied!",
         };
 
+        // #523 (c), owner 2026-11-27 (46B): a player's attack keeps the horn and the size line (this replaces war.md fix 3).
         // A war horn, once to the attacking player when the defense is first raised and again only when the force grows
         // into a bigger tier; never repeated per hit. Client sound id (cc_sounds.csv). Default 219 (RelicTaken_Hibernia.wav,
         // a swelling low horn call); 0 turns it off.
@@ -54,9 +127,9 @@ namespace DOL.GS
 
         // Damage callbacks only replace a bounded, per-keep alarm. Recruitment,
         // chat and all population work run in the coordinator service phase.
-        public static void ObserveKeepAttack(AbstractGameKeep keep, GameObject source)
+        public static void ObserveKeepAttack(AbstractGameKeep keep, GameObject source, KeepAttackKind kind = KeepAttackKind.GuardHit)
         {
-            if (!AutonomousRvrKeepPolicy.IsSiegeObjective(keep)) return;
+            if (keep == null || !AutonomousRvrKeepPolicy.IsSiegeObjective(keep)) return;
             string id = $"rvr-keep-{keep.KeepID}";
             long now = GameLoop.GameLoopTime;
             if (source != null && source.Realm != eRealm.None && source.Realm != keep.Realm)
@@ -69,8 +142,15 @@ namespace DOL.GS
             if (player == null || player.Realm == eRealm.None || player.Realm == keep.Realm) return;
             // Goal 11: the player's raid fights this siege on its own, planned bot siege or not.
             CompanionRaidSiege.RequestAssault(player, keep);
-            if (DefenseAlarms.TryGetValue(id, out var previous) && now - previous.Tick < 1000) return;
-            DefenseAlarms[id] = new(keep, player, now, ForceSize(player));
+            bool sustained = kind != KeepAttackKind.GuardHit;
+            if (DefenseAlarms.TryGetValue(id, out var previous))
+            {
+                // A door hit or a guard death stays with the alarm while it lives (DefenseQuietMilliseconds).
+                sustained |= previous.Sustained && now - previous.Tick <= DefenseQuietMilliseconds;
+                // One alarm a second, but a door hit or a guard death is never dropped by that throttle.
+                if (now - previous.Tick < 1000 && (previous.Sustained || !sustained)) return;
+            }
+            DefenseAlarms[id] = new(keep, player, now, sustained);
         }
 
         // Battleground keeps have no planned siege event, so a siege "starts" when an enemy realm first damages the keep
@@ -137,7 +217,80 @@ namespace DOL.GS
             DefenseScale.Standard => defending ? 48 : 16,
             _ => defending ? 24 : 8,
         });
-        public static bool ResponseReserve(long id) => unchecked((ulong)id * 2654435761UL) % 100 < 30;
+        /// <summary>
+        /// #523 step 1 (a), owner 2026-11-24: a defense against a player's attack "ends about 10 minutes after the attackers
+        /// leave, like bot sieges do". True once nothing of the attack has been seen for <see cref="RepelMilliseconds"/>.
+        /// </summary>
+        public static bool PlayerAttackRepelled(long nowTick, long lastSeenTick) =>
+            lastSeenTick > 0 && nowTick - lastSeenTick >= RepelMilliseconds;
+
+        /// <summary>An attacker still counts as at the keep: alive, in play, in its region and inside the fighting ring
+        /// (<see cref="FightingAttendanceRadius"/>, Z within 2,000), the ring a bot siege counts its attackers in.</summary>
+        public static bool AttackerAtKeep(bool alive, bool active, ushort region, ushort keepRegion, float dx, float dy, float dz) =>
+            alive && active && region == keepRegion && Math.Abs(dz) <= 2000 &&
+            dx * dx + dy * dy <= (float)FightingAttendanceRadius * FightingAttendanceRadius;
+
+        private static bool AttackerAtKeep(GameLiving living, LiveObjective target) => living != null &&
+            AttackerAtKeep(living.IsAlive, living.ObjectState == GameObject.eObjectState.Active, living.CurrentRegionID,
+                target.RegionId, living.X - target.X, living.Y - target.Y, living.Z - target.Z);
+
+        /// <summary>
+        /// The last moment the attack on a player-defense keep was seen: a hit on its guards or doors by any enemy realm
+        /// (the player, their companions, pets and siege engines included), the attacking player or one of their group at
+        /// the keep, or a recruited bot of the attacking realm there. Updates <c>AttackersLastSeenTick</c>.
+        /// </summary>
+        private static long PlayerAttackLastSeen(ActiveEvent active, long nowTick)
+        {
+            GamePlayer player = active.AttackingPlayer;
+            bool forceThere = Attendance(active, active.AttackerRealm, nowTick) > 0 || AttackerAtKeep(player, active.Target) ||
+                player?.Group?.GetMembersInTheGroup().Any(member => member != player && member.Realm == active.AttackerRealm &&
+                    AttackerAtKeep(member, active.Target)) == true;
+            if (forceThere) active.AttackersLastSeenTick = nowTick;
+            long hit = KeepCombatPressure.GetValueOrDefault(active.TargetId);
+            return Math.Max(Math.Max(active.LastPressureTick, active.AttackersLastSeenTick), hit <= nowTick ? hit : 0);
+        }
+
+        /// <summary>
+        /// #523 step 1 (e), owner 2026-11-27 (48A): on the player path the third realm answers as it does a bot siege, through
+        /// <see cref="RealmEventPolicy.CanRespond"/>: only when its roll came up (<see cref="RealmEventPolicy.ThirdRealmChance"/>)
+        /// and <see cref="RealmEventPolicy.ThirdRealmDelayMilliseconds"/> after the alarm. Period: the third realm often
+        /// arrived late (reference.md 5.6).
+        /// </summary>
+        public static bool ThirdRealmJoinsDefense(bool intervenes, long sinceAlarmMilliseconds) =>
+            RealmEventPolicy.CanRespond(false, true, true, intervenes, sinceAlarmMilliseconds);
+
+        /// <summary>Share of whole warbands held back from each event (incidental nearby combat stays with normal AI).</summary>
+        public const int ResponseReservePercent = 30;
+
+        /// <summary>
+        /// Whether a warband (named by its lowest member id) sits out this event. #523 step 2: the draw was the id alone, so
+        /// the same 30% of warbands sat out every defense for as long as the roster lasted (defense.md finding 1). It is now
+        /// drawn per event: still 30% of the warbands each time, but different ones from event to event, and the same
+        /// event always holds back the same ones.
+        /// </summary>
+        public static bool ResponseReserve(long id, ulong eventSeed) =>
+            Mix(unchecked((ulong)id ^ Mix(eventSeed))) % 100 < ResponseReservePercent;
+
+        /// <summary>A warband held back from this event: in the reserve, unless it is of the guild that claims the keep.</summary>
+        public static bool HeldInReserve(long lowestMemberId, ulong eventSeed, int claimDefenseRank) =>
+            claimDefenseRank != 0 && ResponseReserve(lowestMemberId, eventSeed);
+
+        /// <summary>A stable seed for one event: its target and the tick it began (FNV-1a over the target id).</summary>
+        public static ulong ReserveSeed(string targetId, long createdTick)
+        {
+            ulong hash = 14695981039346656037UL;
+            foreach (char c in targetId ?? "")
+                hash = unchecked((hash ^ c) * 1099511628211UL);
+            return unchecked(hash ^ (ulong)createdTick);
+        }
+
+        private static ulong Mix(ulong z)
+        {
+            // splitmix64's finaliser: neighbouring ids and seeds land far apart.
+            z = unchecked((z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL);
+            z = unchecked((z ^ (z >> 27)) * 0x94D049BB133111EBUL);
+            return z ^ (z >> 31);
+        }
 
         public static bool CanRedirectDefense(eRealm previousDefender, eRealm nextDefender,
             string previousPlayer, string nextPlayer, long previousPressure, long nextPressure) =>
@@ -170,11 +323,11 @@ namespace DOL.GS
                 {
                     active = new ActiveEvent { TargetId = target.Id, Target = target, AttackerRealm = attacker,
                         DefenderRealm = target.OwningRealm, RelicKeep = target.IsRelicKeep, CreatedTick = now,
-                        ExpiresTick = now + DefenseResponseMilliseconds, BattleStarted = true, DefenseReaction = true,
-                        DefenseScale = scale };
+                        ExpiresTick = now + DefenseResponseMilliseconds, BattleStarted = true, BattleStartedTick = now,
+                        DefenseReaction = true, DefenseScale = scale };
                     Events[target.Id] = active;
                     RealmEventRecords.Begin(target.Id, target.Name, target.IsRelicKeep ? "Relic keep" : "Keep",
-                        GlobalConstants.RealmToName(attacker), "Player attack: immediate four-hour defense response");
+                        GlobalConstants.RealmToName(attacker), "Player attack: immediate defense response, until the attackers leave");
                     RealmEventRecords.Progress(target.Id, "Battle", "Defenders, friendly helpers and third-realm forces converging", 0, 0);
                 }
                 bool firstAlarm = active.LastPressureTick == 0;
@@ -193,6 +346,7 @@ namespace DOL.GS
             using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
             {
                 Expire(now);
+                GameLiving[] realmBots = null; // taken once per pulse, only when an alarm needs it
                 foreach (var pair in DefenseAlarms.ToArray())
                 {
                     if (now - pair.Value.Tick > DefenseQuietMilliseconds)
@@ -205,7 +359,15 @@ namespace DOL.GS
                     var keep = alarm.Keep;
                     var target = new LiveObjective(pair.Key, keep.Name, keep.IsRelic ? Intent.AssaultRelicKeep : Intent.AssaultKeep,
                         keep.Realm, keep.Region, keep.X, keep.Y, keep.Z, keep.IsRelic, 0, 0, 0, 0, UnderAttack: true);
-                    DefenseScale scale = ScaleOf(alarm.ForceSize);
+                    // Counted here, in the coordinator pulse, not in the damage callback (#523, owner 2026-11-24).
+                    // 56A: the helpers this defense has recruited are not counted toward its own size.
+                    ActiveEvent defense = Events.TryGetValue(pair.Key, out var running) && running.DefenseReaction ? running : null;
+                    int seen = SeenForceSize(alarm.Player, keep, realmBots ??= AttackerRealmBotSource().ToArray(),
+                        bot => IsOwnRecruit(defense, bot));
+                    DefenseScale scale = ScaleOf(seen);
+                    // #523 (b): a lone guard pull waits. The alarm is kept, so a door hit or a guard death in the next
+                    // quiet minutes still raises it; a planned siege at the keep is still marked as attacked below.
+                    if (!Events.ContainsKey(pair.Key) && !AlarmRaisesDefense(scale, alarm.Sustained)) continue;
                     DefenseScale before = Events.TryGetValue(pair.Key, out var existing) && existing.DefenseReaction ? existing.DefenseScale : scale;
                     bool firstAlarm = BeginDefenseResponse(target, alarm.Player.Realm,
                         alarm.Player.Client?.Account?.Name ?? alarm.Player.Name, alarm.Tick, scale);
@@ -215,6 +377,7 @@ namespace DOL.GS
                         DefenseAlarms.TryRemove(pair.Key, out _);
                         continue;
                     }
+                    active.AttackingPlayer = alarm.Player;
                     bool grew = !firstAlarm && active.DefenseScale > before;
                     if (firstAlarm || grew)
                     {
@@ -225,7 +388,8 @@ namespace DOL.GS
                         DefenseWarnings[pair.Key] = new(alarm.Player, text, now + 15_000, now);
                         if (DefenseHornSound > 0) alarm.Player.Out.SendSoundEffect((ushort)DefenseHornSound, 0, 0, 0, 0, 0);
                         DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer)).Info(
-                            $"PLAYER_KEEP_DEFENSE_SIZED event={pair.Key} keep=\"{alarm.Keep.Name}\" force={alarm.ForceSize} scale={active.DefenseScale} " +
+                            // The size of the bot defense against a player's keep attack, where force= counts the player's group and the attacking realm's gamebots at the keep (not this defense's own recruits) and roster= the whole group.
+                            $"PLAYER_KEEP_DEFENSE_SIZED event={pair.Key} keep=\"{alarm.Keep.Name}\" force={seen} roster={ForceSize(alarm.Player)} scale={active.DefenseScale} " +
                             $"defenders={ResponseCap(true, active.DefenseScale)} helpers={ResponseCap(false, active.DefenseScale)} first={firstAlarm}");
                     }
                     if (firstAlarm)
@@ -290,12 +454,15 @@ namespace DOL.GS
                         Force force = candidate.Force;
                         if (!active.BattleStarted && force.Realm != active.DefenderRealm) continue;
                         if (Participants(active, force.Realm).ContainsKey(force.GroupId)) continue;
+                        // #523 (e), owner 2026-11-27 (48A): the third realm joins a player's siege on its roll, after a delay.
+                        if (active.DefenseReaction && force.Realm == OtherRealm(active) &&
+                            !ThirdRealmJoinsDefense(active.ThirdRealmIntervenes, now - active.BattleStartedTick)) continue;
                         if (ReleasedForces.ContainsKey(force.GroupId) ||
                             CarrierEvents.Values.Any(c => c.Participants.Values.Any(r => r.ContainsKey(force.GroupId)))) continue;
-                        // Keep a deterministic 30% reserve of whole warbands;
+                        // Keep a 30% reserve of whole warbands, drawn afresh for each event (#523 step 2);
                         // incidental nearby combat remains handled by normal AI.
-                        if (ResponseReserve(candidate.Members.Min(b => b.DatabaseID)) &&
-                            AutonomousBotGuildKeeps.ClaimDefenseRank(claimGuildId, candidate.Members) != 0) continue;
+                        if (HeldInReserve(candidate.Members.Min(b => b.DatabaseID), ReserveSeed(active.TargetId, active.CreatedTick),
+                                AutonomousBotGuildKeeps.ClaimDefenseRank(claimGuildId, candidate.Members))) continue;
                         if (candidate.Members.Any(b => b.InCombat || b.IsAttacking || b.IsStunned || b.IsMezzed ||
                             (b.Brain as BotBrain)?.HasAggro == true || GameRelic.IsPlayerCarryingRelic(b))) continue;
                         // Missing/dead members may catch up. Only mixed-level,
@@ -309,6 +476,8 @@ namespace DOL.GS
                                 previous.PlayerAccount, active.PlayerAccount, previous.LastPressureTick, active.LastPressureTick))) continue;
                         int cap = active.DefenseReaction ? ResponseCap(force.Realm == active.DefenderRealm, active.DefenseScale) : SiegeRealmCap(active, force.Realm);
                         if (!TryJoin(Participants(active, force.Realm), force, cap)) continue;
+                        // #523 (h): a force holding a keep it took that joins this event drops its hold with no release.
+                        JoinedEventDropsClaimHold(force.GroupId);
                         if (previous != null)
                         {
                             Participants(previous, force.Realm).Remove(force.GroupId);

@@ -30,10 +30,11 @@ namespace DOL.GS
             _battlegroundStorming = false;
             _battlegroundStormLord = null;
             _battlegroundGatherStaging = null;
-            BattlegroundBrackets.Bracket bracket = BattlegroundBrackets.ForLevel(bot.Level);
+            // #572 51B: a bot that out-levels the battleground it is in stays and fights there until it dies.
+            BattlegroundBrackets.Bracket bracket = WorkingBattleground(bot);
             if (bracket == null)
             {
-                // Out-levelled: the tour ends here; leaving the battleground happens on the next goal's travel.
+                // Out-levelled (outside, or after its death): the tour ends here; leaving happens on the next goal's travel.
                 AutonomousObjectiveAssignments.EndBattlegroundTour(bot, $"Outgrew the battleground brackets at level {bot.Level}");
                 _nextPlanTick = 0;
                 return true;
@@ -68,13 +69,23 @@ namespace DOL.GS
             // Too few of the realm here for a wave: fight in the field instead of standing at the staging point or
             // feeding single bots to the keep's guards (Thidranki, 2026-10-17).
             bool tooFew = assault && AutonomousBattlegroundWave.TooFewForAssault(bot.Realm, bracket);
-            // #530: the battleground proposes its intent to the event layer, as a force of its own ("bg:" ids, so a frontier
-            // follower never reads it). No event here: not shared, and the TempProperties stay as they were.
-            ProposeRvrIntent(bot, new(AutonomousRvrEventLayer.IntentSource.Battleground,
-                assault && !tooFew ? AutonomousRvrEventLayer.Intent.AssaultKeep : AutonomousRvrEventLayer.Intent.Roam,
-                _rvrDestination?.Id, false, null, assault && !tooFew ? "bg.wave" : "bg.roam"),
-                mirrorIntent: false, mirrorKeep: false, forceId: "bg:" + RvrForceId(bot));
-            if (tooFew)
+            // A battleground trip's group takes its leader's part (defend or roam) together.
+            long partId = _groupDirective?.BattlegroundTrip == true && _groupDirective.Leader != null
+                ? _groupDirective.Leader.DatabaseID : bot.DatabaseID;
+            // #530 step 5a: the event layer decides the battleground order (the keep as its objective, the wave as its
+            // muster) and the bot proposes it, as a force of its own ("bg:" ids, so a frontier follower never reads it). No
+            // event here: not shared, and the TempProperties stay as they were. The muster is the wave's as it stands now
+            // (AutonomousBattlegroundWave.IsMustering, a read), decided before this first proposal: a siege crew, which
+            // returns below before the wave's turn, is recorded as the wave's muster while it gathers, and a gatherer's
+            // first turn logs one change, not an attack and then a muster. It follows ShouldGather's gates-down rule: with
+            // every gate down the wave record still gathers but nobody does, so the order is the attack and this turn
+            // writes once (not a muster and then an attack every turn). The intent is the keep's attack either way, so a
+            // siege crew works its job.
+            bool mustering = assault && !tooFew && AutonomousBattlegroundWave.IsMustering(bracket.RegionId, bot.Realm, central);
+            AutonomousRvrEventLayer.BattlegroundOrder order = AutonomousRvrEventLayer.DecideBattleground(
+                central?.KeepID, central != null && !assault, tooFew, mustering, partId);
+            ProposeBattlegroundOrder(bot, order);
+            if (assault && !order.Attacks)
                 return RoamBattleground(bot, bracket, central);
 
             if (assault)
@@ -87,8 +98,14 @@ namespace DOL.GS
                 // the gathering and went for the nearest keep guard up to 5,000 away on its own. On the owner's PC (build
                 // 3d67b6f, Thidranki 2026-11-15) 63 Midgard and Hibernian bots died to the keep's guards in 17 minutes,
                 // one at a time, while no wave ever went in.
-                if (central != null &&
-                    AutonomousBattlegroundWave.ShouldGather(bot, bracket, central, out Vector3 staging, out string gathered))
+                Vector3 staging = default;
+                string gathered = string.Empty;
+                bool gathering = central != null &&
+                    AutonomousBattlegroundWave.ShouldGather(bot, bracket, central, out staging, out gathered);
+                // The wave's turn moved the muster (it went in, or it is spent and gathers again): the order follows at once.
+                if (BattlegroundMusterMoved(mustering, gathering))
+                    ProposeBattlegroundOrder(bot, AutonomousRvrEventLayer.DecideBattleground(central.KeepID, false, false, gathering, partId));
+                if (gathering)
                 {
                     _battlegroundGatherStaging = staging;
                     if (Vector3.DistanceSquared(new(bot.X, bot.Y, bot.Z), staging) > 250 * 250)
@@ -345,11 +362,9 @@ namespace DOL.GS
                 return true;
             }
 
-            // Own (or no) central keep: a third of the realm's bots hold its walls, the rest roam the field.
-            // A battleground trip's group takes its leader's part (defend or roam) together.
-            long partId = _groupDirective?.BattlegroundTrip == true && _groupDirective.Leader != null
-                ? _groupDirective.Leader.DatabaseID : bot.DatabaseID;
-            if (central != null && partId % 3 == 0)
+            // Own (or no) central keep: a third of the realm's bots hold its walls, the rest roam the field (the event layer's
+            // order: AutonomousRvrEventLayer.DecideBattleground).
+            if (central != null && order.Step == AutonomousRvrEventLayer.BattlegroundStep.Hold)
             {
                 if (bot.GetDistanceTo(new Point3D(central.X, central.Y, central.Z)) > 3500)
                     return TravelToDefensivePost(bot, central, new(central.X, central.Y, central.Z));
@@ -695,6 +710,56 @@ namespace DOL.GS
         // Set while this bot gathers for its realm's wave (AutonomousBattlegroundWave): it fights only what comes at it.
         private Vector3? _battlegroundGatherStaging;
 
+        /// <summary>
+        /// Proposes the event layer's battleground order as the bot's intent (#530 step 5a): one writer, the event layer,
+        /// for the battleground's force record, as for every frontier intent. A battleground party (a trip, or a muster party
+        /// from step 5b) is one force, <c>bg:&lt;its id&gt;</c>, written by its leader; a solo bot is its own.
+        /// </summary>
+        private void ProposeBattlegroundOrder(GameBot bot, AutonomousRvrEventLayer.BattlegroundOrder order)
+        {
+            bool party = _groupDirective?.BattlegroundTrip == true && !string.IsNullOrEmpty(_groupDirective.GroupId);
+            ProposeRvrIntent(bot, order.Proposal, mirrorIntent: false, mirrorKeep: false,
+                forceId: "bg:" + (party ? _groupDirective.GroupId : RvrForceId(bot)),
+                writer: party ? _groupDirective.Leader == null || _groupDirective.Leader == bot : null);
+        }
+
+        /// <summary>
+        /// Whether the wave's own turn (ShouldGather) moved the muster from what this turn's first order said: the wave went
+        /// in (muster to attacker) or is spent and gathers again. Then the order is proposed again at once (#530 step 5a).
+        /// </summary>
+        public static bool BattlegroundMusterMoved(bool orderedMuster, bool waveGathers) => orderedMuster != waveGathers;
+
+        /// <summary>What holds this battleground attacker back from a fight now, and where its muster or rally stands.</summary>
+        private AutonomousRvrEventLayer.MusterHold BattlegroundMusterHold(GameBot bot, out Vector3 point)
+        {
+            if (BattlegroundGatherHold(bot, out point, out bool atRally))
+                return atRally ? AutonomousRvrEventLayer.MusterHold.Rally : AutonomousRvrEventLayer.MusterHold.Gather;
+            point = default;
+            return BattlegroundStormHold(bot) ? AutonomousRvrEventLayer.MusterHold.Storm : AutonomousRvrEventLayer.MusterHold.None;
+        }
+
+        /// <summary>
+        /// The one gather-hold rule (AutonomousRvrEventLayer.MusterAllowsFight) for this bot and target, used by the threat
+        /// scan and the combat drop (answering a fight: a lord that comes at the bot is fought back) and by the keep's guard
+        /// pick (<paramref name="picking"/>: a new target, never the lord). A rally's posted contact is looked up only when
+        /// the target does not come at the muster itself.
+        /// </summary>
+        private bool MusterAllowsFight(GameBot bot, AutonomousRvrEventLayer.MusterHold hold, Vector3 point, GameLiving target,
+            bool picking = false)
+        {
+            if (hold == AutonomousRvrEventLayer.MusterHold.None)
+                return true;
+            bool isLord = target is GuardLord;
+            if (hold == AutonomousRvrEventLayer.MusterHold.Storm)
+                return AutonomousRvrEventLayer.MusterAllowsFight(hold, isLord, false, false, StormerMayEngage(bot, target), picking);
+            if (isLord && picking)
+                return false;
+            bool comes = GathererMayEngage(bot, target, point);
+            bool posted = !comes &&
+                AutonomousBattlegroundRallyContact.Has(bot.CurrentRegionID, bot.Realm, point, target, GameLoop.GameLoopTime);
+            return AutonomousRvrEventLayer.MusterAllowsFight(hold, isLord, comes, posted, false, picking);
+        }
+
         /// <summary>This bot is gathering for its realm's battleground wave, at <paramref name="staging"/>.</summary>
         private bool BattlegroundGatherHold(GameBot bot, out Vector3 staging) => BattlegroundGatherHold(bot, out staging, out _);
 
@@ -824,20 +889,11 @@ namespace DOL.GS
         {
             if (bot.TargetObject is not GameLiving target || target is GameKeepDoor || !target.IsAlive || target.Realm == bot.Realm)
                 return false;
-            bool atRally;
-            if (BattlegroundGatherHold(bot, out Vector3 staging, out atRally))
-            {
-                if (GathererMayEngage(bot, target, staging)) return false;
-                // #617: a contact the rally posted is the whole rally's fight, wherever it was first seen.
-                if (AutonomousBattlegroundRallyContact.Has(bot.CurrentRegionID, bot.Realm, staging, target, GameLoop.GameLoopTime))
-                    return false;
-            }
-            else if (BattlegroundStormHold(bot))
-            {
-                if (StormerMayEngage(bot, target)) return false;
-                atRally = true;
-            }
-            else return false;
+            // The one gather-hold rule (#530 step 5a). #617: a contact the rally posted is the whole rally's fight, wherever
+            // it was first seen. A stormer counts with the rally.
+            AutonomousRvrEventLayer.MusterHold hold = BattlegroundMusterHold(bot, out Vector3 staging);
+            if (MusterAllowsFight(bot, hold, staging, target)) return false;
+            bool atRally = hold != AutonomousRvrEventLayer.MusterHold.Gather;
             brain.RemoveFromAggroList(target);
             bot.StopAttack();
             bot.TargetObject = null;
@@ -1073,6 +1129,16 @@ namespace DOL.GS
             if (BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID))
                 return LeaveBattleground(bot);
             if (!BattlegroundBrackets.Allows(bracket, bot.Level)) return false;
+            // #572 step 4: a gamebot forced out of a battleground stays out for 30 minutes (no entry/exit loop).
+            if (AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID))
+            {
+                if (AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground))
+                    AutonomousObjectiveAssignments.EndBattlegroundTour(bot, "Just taken out of the battlegrounds; not going back yet");
+                else if (_camp != null && BattlegroundBrackets.IsBattlegroundRegion(_camp.RegionId))
+                    AbandonCamp(bot, "Just taken out of the battlegrounds; not going back yet");
+                _nextPlanTick = 0;
+                return true;
+            }
             if (TryTownTeleport(bot, bracket.RegionId, goal, BattlegroundNoWalkSeconds)) return true;
 
             GameNPC porter = NearestRealmTeleporter(bot);
@@ -1117,20 +1183,30 @@ namespace DOL.GS
             GameLocation entry = BattlegroundBrackets.BotArrival(here, bot.Realm);
             // Walk to the mesh floor at the realm's arrival point (the exit portal is there).
             Vector3 exitSpot = AutonomousTownTeleporters.Arrival(new DbTeleport { RegionID = here.RegionId, X = entry.X, Y = entry.Y, Z = entry.Z }, 0);
-            if (Vector2.DistanceSquared(new(bot.X, bot.Y), new(exitSpot.X, exitSpot.Y)) > BattlegroundExitRadius * BattlegroundExitRadius)
+            // #572 step 4: finish a fight at the exit; a walk that fails for 4 minutes (or any leave past 10) takes the exit
+            // where the bot stands, so no gamebot walks at a battleground's exit forever.
+            long now = GameLoop.GameLoopTime;
+            _battlegroundLeavingSince = AutonomousBattlegroundExit.LeaveStarted(_battlegroundLeavingSince, _battlegroundLastLeaveCall, now);
+            _battlegroundLastLeaveCall = now;
+            eBattlegroundExitStep step = AutonomousBattlegroundExit.ExitStep(
+                Vector2.Distance(new(bot.X, bot.Y), new(exitSpot.X, exitSpot.Y)), BattlegroundExitRadius, bot.InCombat,
+                now - _battlegroundLeavingSince);
+            if (step == eBattlegroundExitStep.WalkToExit)
             {
                 IssuePath(bot, exitSpot);
                 SetStatus(bot, "Leaving the battleground", GoalText(), $"Walking to the {here.Name} exit portal");
                 return true;
             }
-            if (bot.InCombat) return false;
+            if (step == eBattlegroundExitStep.FinishFight) return false;
             Vector3 arrival = AutonomousTownTeleporters.Arrival(exit, 0);
             bot.StopMovingOnPath();
             bot.StopMoving();
             if (!bot.MoveTo((ushort)exit.RegionID, (int)arrival.X, (int)arrival.Y, (int)arrival.Z, (ushort)exit.Heading))
                 return false;
             Log.Info($"AUTONOMOUS_BATTLEGROUND_EXIT bot={bot.Name} id={bot.DatabaseID} realm={GlobalConstants.RealmToName(bot.Realm)} level={bot.Level} " +
-                     $"battleground={here.Name} destination=\"{exit.TeleportID}\"");
+                     $"battleground={here.Name} destination=\"{exit.TeleportID}\" fromHere={(step == eBattlegroundExitStep.ExitFromHere ? "true" : "false")} " +
+                     $"leavingSeconds={(now - _battlegroundLeavingSince) / 1000}");
+            _battlegroundLeavingSince = _battlegroundLastLeaveCall = 0;
             bot.ForcePathReplot();
             AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.Movement);
             AutonomousBotStatusPersistence.Queue(bot, true);
@@ -1171,7 +1247,7 @@ namespace DOL.GS
         /// </summary>
         private string CombatGoalText(GameBot bot) =>
             _groupDirective?.IsDynamic != true && AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground) &&
-            BattlegroundBrackets.ForLevel(bot.Level) is { } bracket
+            WorkingBattleground(bot) is { } bracket
                 ? BattlegroundGoal(bracket)
                 : GoalText();
     }
