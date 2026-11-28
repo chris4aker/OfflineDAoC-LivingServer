@@ -459,6 +459,65 @@ namespace DOL.GS.Tests
             Assert.That(ScaleOfEvent("rvr-keep-8"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Large), "three and eight bots at the keep: eleven");
         }
 
+        // #788 answer 56A (owner, 2026-11-27): this defense's own recruits don't count toward its size. A solo player keeps
+        // hitting the keep; eight attacking-realm helpers the defense recruited reach the ring between alarms. Counted, they
+        // would make nine seen (Large) and keep climbing; left out, the defense stays Small. Eight other attacking-realm
+        // gamebots at the keep (not recruits) still count: nine seen, Large.
+        [Test]
+        public void ASoloPlayerWhoKeepsAttackingDoesNotGrowTheDefenseThroughItsOwnRecruits()
+        {
+            long now = GameLoop.GameLoopTime + 100;
+            var keep = (DOL.GS.Keeps.GameKeep)RuntimeHelpers.GetUninitializedObject(typeof(DOL.GS.Keeps.GameKeep));
+            keep.DBKeep = new DOL.Database.DbKeep { KeepID = 9, Name = "Test keep", Realm = (byte)eRealm.Midgard, Region = 100,
+                X = 100000, Y = 100000, Z = 100, BaseLevel = 50 };
+            var player = (KeepPlayer)RuntimeHelpers.GetUninitializedObject(typeof(KeepPlayer));
+            player.TestX = 100000; player.TestY = 100000; player.TestZ = 100;
+
+            Alarms()["rvr-keep-9"] = NewAlarm(keep, player, now);
+            AutonomousRvrEventLayer.PulseDefense(now);
+            Assert.That(ScaleOfEvent("rvr-keep-9"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Small), "a solo player");
+
+            // The recruit pass put one helper warband of eight on the defense's attacking side; its members carry the force id.
+            object active = EventOf("rvr-keep-9");
+            ((Dictionary<string, int>)active.GetType().GetField("Attackers").GetValue(active)).Add("alb-helpers", 8);
+            var recruits = Enumerable.Range(0, 8).Select(i => (GameLiving)Recruit(At(100000 + i * 200), "alb-helpers")).ToArray();
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => recruits));
+            for (int hit = 1; hit <= 3; hit++)
+            {
+                Alarms()["rvr-keep-9"] = NewAlarm(keep, player, now + hit * 6_000);
+                AutonomousRvrEventLayer.PulseDefense(now + hit * 6_000);
+                Assert.That(ScaleOfEvent("rvr-keep-9"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Small),
+                    $"hit {hit}: the defense's own helpers at the keep don't count toward its size");
+            }
+
+            var others = Enumerable.Range(0, 8).Select(i => (GameLiving)Recruit(At(100000 + i * 200, y: 100500), "alb-own-siege")).ToArray();
+            BotSourceField.SetValue(null, (Func<IEnumerable<GameLiving>>)(() => recruits.Concat(others)));
+            Alarms()["rvr-keep-9"] = NewAlarm(keep, player, now + 24_000);
+            AutonomousRvrEventLayer.PulseDefense(now + 24_000);
+            Assert.That(ScaleOfEvent("rvr-keep-9"), Is.EqualTo(AutonomousRvrEventLayer.DefenseScale.Large),
+                "the player and eight other attacking-realm gamebots at the keep: nine seen");
+        }
+
+        private static Attacker Recruit(Attacker bot, string force)
+        {
+            typeof(GameLiving).GetField("<TempProperties>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance)
+                .SetValue(bot, new PropertyCollection());
+            bot.TempProperties.SetProperty("RvrEventForce", force);
+            return bot;
+        }
+
+        [Test]
+        public void TheDefensesOwnRecruitsAreLeftOutOfTheCount()
+        {
+            Attacker solo = At(100000);
+            var recruits = Enumerable.Range(0, 8).Select(i => (GameLiving)At(100000 + i * 200)).ToHashSet();
+            var other = At(100300);
+            var bots = recruits.Append(other).ToArray();
+            Assert.That(AutonomousRvrEventLayer.SeenForceSize(solo, 100, 100000, 100000, 100, bots), Is.EqualTo(10), "all counted");
+            Assert.That(AutonomousRvrEventLayer.SeenForceSize(solo, 100, 100000, 100000, 100, bots, recruits.Contains), Is.EqualTo(2),
+                "the player and the one bot that is not a recruit");
+        }
+
         private static AutonomousRvrEventLayer.DefenseScale ScaleOfEvent(string id)
         {
             object active = EventOf(id);
