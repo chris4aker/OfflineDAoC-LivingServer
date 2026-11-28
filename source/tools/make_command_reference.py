@@ -34,6 +34,7 @@ COMMON HELPER AND COMPANION COMMANDS
 /raid 40 or /raid 80 enables a level-50 helper raid (total includes you).
 There is no /spawn 40 or /spawn 80 raid-size command.
 /aggressive and /defensive control how your helpers and companions engage; /hold makes your group only defend itself.
+/order attack, assist, hold or regroup orders your group in a fight (or say the word alone in /group).
 /hire beside a healer of your realm hires and manages your companions; /hire help lists every /hire word.
 /grind, /tc and /disband are documented in their registrations below.
 Fresh accounts are normal players; the launcher GM option is OFF by default.

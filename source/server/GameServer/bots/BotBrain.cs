@@ -774,7 +774,7 @@ namespace DOL.AI.Brain
         /// The FSM state this brain had when it was last stopped. GameObject.MoveTo stops and restarts the brain, so every
         /// bot moved through a keep door or teleported came out with no state: FSM.Think did nothing and a bot in a
         /// player's group, a /spawn helper or a bot-led party stood frozen until it was attacked, ordered or invited
-        /// again. The next Think puts the bot back in a state. Port of DetShaft/OfflineDAoC-LivingServer a303aefaf.
+        /// again. The next Think puts the bot back in a state.
         /// </summary>
         private eFSMStateType? _stateBeforeStop;
 
@@ -1601,7 +1601,9 @@ namespace DOL.AI.Brain
             }
 
             // The player's mesmerize, stun or root joins the fight on another monster of the pack (owner 2026-10-29).
-            GameLiving leaderTarget = PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) ??
+            // #667: an attack order's target (or under assist the player's fight) comes first.
+            GameLiving leaderTarget = PlayerGroupOrders.FocusFor(BotBody, out _) ??
+                PlayerLedPullCoordinator.FindLeaderTarget(AssistedPlayer) ??
                 PlayerLedPullCoordinator.FindLeaderControlFight(AssistedPlayer, BotBody);
             if (leaderTarget != null && PlayerLedPullCoordinator.Available(BotBody, AssistedPlayer) &&
                 Body.IsWithinRadius(leaderTarget, GROUP_DEFENSE_ASSIST_RADIUS))
@@ -2611,7 +2613,7 @@ namespace DOL.AI.Brain
             if (immediateCombat && !minstrelAtRange)
             {
                 // A combat song (not the speed song) plays on through the fight; a grouped performer whose song needs
-                // its instrument keeps it in hand (port of True165 48b20439).
+                // its instrument keeps it in hand.
                 StopTwistedSong(preserveCombatSongs: true);
                 if (!HasActiveCombatSongInstrument())
                     SwitchToUsableMeleeWeapon();
@@ -2816,8 +2818,8 @@ namespace DOL.AI.Brain
             // End the maintained pulse, not the short-duration child buffs it
             // already applied. Scanning also adopts/corrects a song that was
             // started before this brain began tracking its rotation.
-            // preserveCombatSongs: a melee hit or the start of a fight keeps a combat song playing, as a player does
-            // (port of zomboden/OfflineDAoC-True165 48b20439); only the speed song and the rest stop.
+            // preserveCombatSongs: a melee hit or the start of a fight keeps a combat song playing, as a player does;
+            // only the speed song and the rest stop.
             _activeTwistedSongId = 0;
             foreach (ECSPulseEffect active in Body.effectListComponent.GetPulseEffects()
                          .Where(effect => effect?.SpellHandler?.Spell is Spell spell &&
@@ -3627,7 +3629,7 @@ namespace DOL.AI.Brain
                 if (Body.TargetObject is GameLiving ambushTarget && TryApproachAmbush(ambushTarget))
                     return;
                 // A damage-dealing gamebot steps behind (or beside) a monster fighting someone else, for its back and
-                // side styles (BotBrain.Flank, hand port from True165). Epic tactics above keep raids to themselves.
+                // side styles (BotBrain.Flank). Epic tactics above keep raids to themselves.
                 if (Body.TargetObject is GameLiving flankTarget && TryFlank(flankTarget))
                     return;
                 // Then, standing there and swinging, it circles a little now and then instead of standing like a post
@@ -4006,8 +4008,8 @@ namespace DOL.AI.Brain
             if (Body.IsCasting)
                 Body.StopCurrentSpellcast();
 
-            // A Paladin's or Warden's chant pulses on while it fights, and a performer's combat song survives a hit
-            // (port of True165 48b20439 and its v0.7 KeepsChantInMelee): they used to drop at every hit.
+            // A Paladin's or Warden's chant pulses on while it fights, and a performer's combat song survives a hit:
+            // they used to drop at every hit.
             if (!KeepsChantInMelee(BotBody))
                 StopTwistedSong(preserveCombatSongs: true);
             SwitchToUsableMeleeWeapon();
@@ -5541,7 +5543,7 @@ namespace DOL.AI.Brain
             if (pulseEffect != null)
                 return true;
 
-            // #567 A3 (port of OfflineDAoC-True165 BotHotPrecheck, 03dce76ee): a heal over time or a regeneration is held back
+            // #567 A3: a heal over time or a regeneration is held back
             // only by an effect the server would make it conflict with (SpellHandler.HasConflictingEffectWith), as DoTs are
             // below: a Skald's Song of Rest (effect group 72) no longer stops a Shaman's regeneration (71). Immunities as before.
             if (spellEffect is eEffect.HealOverTime or eEffect.HealthRegenBuff)
@@ -6080,7 +6082,7 @@ namespace DOL.AI.Brain
             // This does not extend PvE/companion triage to unrelated NPCs.
             if (BotBody.IsAutonomousWorldBot && AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR))
             {
-                // #572 (port of True165 16284ba): held 2 s, ranked before any line-of-sight raycast (BotBrain.RvrSupport.cs).
+                // #572: held 2 s, ranked before any line-of-sight raycast (BotBrain.RvrSupport.cs).
                 GameLiving support = RvrSupportTarget();
                 if (support != null && (spellTarget == null || spellTarget.HealthPercent >= 40 || support.HealthPercent < spellTarget.HealthPercent))
                 {

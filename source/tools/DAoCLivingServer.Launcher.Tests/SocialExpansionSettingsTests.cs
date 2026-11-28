@@ -402,6 +402,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void GroupOrdersIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #667 step 1: bot_group_orders, a player command for the player's group, on by default and in Setup; no checkbox,
+        // so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.GroupOrders && SocialExpansionSettings.Recommended.GroupOrders, Is.True);
+        Assert.That(d.AllOff().GroupOrders, Is.True);
+        (d with { GroupOrders = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_group_orders"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).GroupOrders, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void CompanionRvrEngageIsOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #664 step 1: bot_companion_rvr_engage, a bot combat rule like bot_leader_focus, on by default and in Setup; no

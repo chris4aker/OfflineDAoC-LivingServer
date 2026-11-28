@@ -471,6 +471,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         HuntingGrounds = _population.HuntingGrounds, // no checkbox: kept as read (#570)
         LeaderFocus = _population.LeaderFocus, // no checkbox: kept as read (#571)
         CompanionRvrEngage = _population.CompanionRvrEngage, // no checkbox: kept as read (#664)
+        GroupOrders = _population.GroupOrders, // no checkbox: kept as read (#667)
         PartyMainAssist = _population.PartyMainAssist, // no checkbox: kept as read (#569)
         CriticalShotOpener = _population.CriticalShotOpener, // no checkbox: kept as read (#569)
         PartyPullerCampTurn = _population.PartyPullerCampTurn, // no checkbox: kept as read (#569)

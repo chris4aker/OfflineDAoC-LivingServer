@@ -17,6 +17,8 @@ namespace DOL.GS
             mode.Pull = null;
             CompanionPvpEngagement.Reset(player);
             CompanionRvrEngage.Reset(player);
+            // #667: a stance command ends the player's fight order.
+            PlayerGroupOrders.Cancel(player);
         }
 
         /// <summary>
@@ -33,6 +35,19 @@ namespace DOL.GS
             mode.Pull = null;
             CompanionPvpEngagement.Reset(player);
             CompanionRvrEngage.Reset(player);
+            // #667: /hold ends the player's fight order (the hold order itself sets its state after this).
+            PlayerGroupOrders.Cancel(player);
+        }
+
+        /// <summary>
+        /// #667: a fight order other than hold ends /hold ("until the next order"); the /aggressive or /defensive stance the
+        /// player had before stays.
+        /// </summary>
+        public static void EndHold(GamePlayer player)
+        {
+            if (player == null || !Modes.TryGetValue(player, out Mode mode) || !mode.Hold) return;
+            mode.Hold = false;
+            CompanionRvrEngage.Reset(player);
         }
 
         /// <summary>The player chose /hold for his group.</summary>
@@ -44,7 +59,7 @@ namespace DOL.GS
         /// #663 place with bot_companion_rvr_engage on), so its brain drops what <see cref="Allows"/> refuses.
         /// </summary>
         public static bool Restricts(GameLiving actor) =>
-            DefensiveLeader(actor) != null || CompanionRvrEngage.Restricting(actor) != null;
+            DefensiveLeader(actor) != null || CompanionRvrEngage.Restricting(actor) != null || PlayerGroupOrders.Restricts(actor);
         public static GamePlayer DefensiveLeader(GameLiving actor)
         {
             // Include companion pets, never human pets or autonomous bots.
@@ -74,9 +89,12 @@ namespace DOL.GS
         {
             // #664 step 2: /hold (only self-defence) and the drop leash in the #663 places, for the player's whole group.
             if (!CompanionRvrEngage.MayFight(actor, target)) return false;
+            // #667: regroup fights nothing hostile on the way back to the player.
+            if (!PlayerGroupOrders.MayFight(actor, target)) return false;
             GamePlayer leader = DefensiveLeader(actor);
             return leader == null || target != null && target.CurrentRegionID == leader.CurrentRegionID &&
                 (leader.IsWithinRadius(target, DefensiveRadius) || CompanionPvpEngagement.Defending(actor, target) ||
+                 PlayerGroupOrders.LetsThrough(actor, target) ||
                  CompanionPvpEngagement.FrontierRoamerInRange(leader, target, true) ||
                  CompanionRvrEngage.Engaged(leader, target));
         }
