@@ -12,7 +12,7 @@ namespace DOL.GS.Tests.Rehearsal
     /// </summary>
     public static class RvrFightKits
     {
-        public const int HealId = 952_001, MezId = 952_002, BoltId = 952_003, AreaMezId = 952_004;
+        public const int HealId = 952_001, MezId = 952_002, BoltId = 952_003, AreaMezId = 952_004, BombId = 952_005;
 
         public static eRace Race(eRealm realm, eCharacterClass characterClass) => realm switch
         {
@@ -33,6 +33,22 @@ namespace DOL.GS.Tests.Rehearsal
 
         /// <summary>#531 step 2a: classes whose stand-in kit has an area mez (the Sorcerer opens the Albion eight's fights).</summary>
         public static bool AreaMezzes(eCharacterClass c) => c is eCharacterClass.Sorcerer;
+
+        /// <summary>#531 step 2f: classes given a stand-in point blank bomb in the open-field scenario (the Albion Wizard, the
+        /// Midgard Runemaster and Spiritmaster; Hibernia's Eldritch, Enchanter and Mentalist are not in the rehearsal's realms).</summary>
+        public static bool Bombs(eCharacterClass c) => c is eCharacterClass.Wizard or eCharacterClass.Runemaster or eCharacterClass.Spiritmaster;
+
+        /// <summary>#531 step 2f: the stand-in point blank bomb (radius 350, reference.md 3.2's area radius), added to a bot's kit.</summary>
+        public static void AddBomb(GameBot bot)
+        {
+            double scale = bot.Level / 50.0;
+            var spells = new List<Spell>(bot.Spells ?? new List<Spell>())
+            {
+                Make(BombId, "Stand-in Point Blank Blast", "DirectDamage", "Enemy", range: 0, power: 30, cast: 2.5, damage: 180 * scale,
+                    level: bot.Level, damageType: eDamageType.Heat, radius: 350),
+            };
+            bot.Spells = spells;
+        }
 
         /// <summary>The class's stand-in kit at <paramref name="level"/> (the values scale with level from the level-50 shape).</summary>
         public static List<Spell> For(eCharacterClass c, byte level)

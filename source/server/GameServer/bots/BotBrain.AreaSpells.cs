@@ -74,7 +74,9 @@ namespace DOL.AI.Brain
             // A boss this bot must not hit at all (Funus while his puzzle is on) vetoes the blast like a mesmerized monster,
             // and so does one the blast's damage type would heal (1.2: a cold area spell aimed at Kvasir's adds reaches him).
             _blastCandidates.Add(new(center.GetDistanceTo(living), IsEngagedEnemy(living),
-                IsBreakablyControlled(living) && (IsMezSpell(spell) || !RvrTacticsBlastIgnoresMez(living)) || EpicEncounterTactics.MustNotHit(BotBody, living) ||
+                // (#531 step 2f: and not while the plan bombs a mezzed pile, RvrBombLiftsMez.)
+                IsBreakablyControlled(living) && (IsMezSpell(spell) || !RvrTacticsBlastIgnoresMez(living) && !RvrBombLiftsMez(living)) ||
+                EpicEncounterTactics.MustNotHit(BotBody, living) ||
                 EpicEncounterTactics.ForbidsSpell(BotBody, living, spell)));
         }
 
@@ -211,7 +213,8 @@ namespace DOL.AI.Brain
         /// A caster's point blank spell with a cast time. Cast where it stands when two or more monsters already in the fight
         /// are around it; otherwise, while its group holds the monsters (none on the caster), walk up to 700 units to where it
         /// reaches two or more and cast there. A hit or an interrupted cast stops all of this for 15 s, and two failures end it
-        /// for the fight, so a caster never loops walking in, being hit and walking in again. Never a walk-in among enemy players.
+        /// for the fight, so a caster never loops walking in, being hit and walking in again. Never a walk-in among enemy players,
+        /// except an open-field gamebot's walk in on its group's mezzed pile (#531 step 2f, TryRvrBomb).
         /// </summary>
         private bool TryPointBlankArea()
         {
@@ -235,6 +238,10 @@ namespace DOL.AI.Brain
                 }
                 _pointBlankCast = null;
             }
+
+            // #531 step 2f: an open-field gamebot bomber walks in on its group's mezzed pile (RvrBombPlan)
+            if (_pointBlankSpell == null && TryRvrBomb(now))
+                return true;
 
             if (_pointBlankSpell != null)
             {

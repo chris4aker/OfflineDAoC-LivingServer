@@ -119,6 +119,9 @@ namespace DOL.AI.Brain
             long now = GameLoop.GameLoopTime;
             if (bot?.Group == null || bot.Group.MemberCount < 2 || !bot.IsAlive || bot.CurrentRegion == null)
                 return false;
+            // #531 step 2f: a bomber walking in on its group's mezzed pile, or waiting beside it, is not called back to its place.
+            if (_rvrBombSpell != null)
+                return false;
             // Bots as people 1.2 (WP5): a strafe or a back-off facing the enemy (BotBrain.MovementHabits) owns the turn.
             if (ContinueHabitLegs(bot, now))
                 return true;
