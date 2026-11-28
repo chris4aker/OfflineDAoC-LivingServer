@@ -393,7 +393,7 @@ public static class AutonomousBotGroupChatter
         string key = AutonomousChatThreads.GroupChannel(group);
         long now = GameLoop.GameLoopTime;
         floorBot = ChatConversations.Live.FloorHolder(player.Name, key, now);
-        return ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, key, now));
+        return ChatConversations.Resolve(message, ChatConversations.Live.In(player.Name, key, now), player.Level);
     }
 
     /// <summary>The pool with the bot that has the floor (the leader that named the place) first, when it is in it. Pure.</summary>

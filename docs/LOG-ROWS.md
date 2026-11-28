@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **779**; pending (#625, not on main yet): **0**; shipped by the pipeline: **747**.
+- Rows in code: **782**; pending (#625, not on main yet): **0**; shipped by the pipeline: **750**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -25,8 +25,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AI_PROFILE_BUDGET` | server.log | **ships** | `Managers/GameLoop/AiProfile.cs` | `over` | - | - | - |
 | `ANIMIST_SHROOMS` | server.log | **ships** | `bots/autonomous/BotAnimistPolicy.cs` | `ablative`, `bot`, `crowded`, `damage`, `group`, `kind`, `level`, `main`, `mana`, `next`, `preferred`, `spores`, `vents` | `bot` | - | - |
 | `AUTONOMOUS_BARD_HEALER_SLOT` | server.log | **ships** | `bots/BardHealerSlot.cs` | `bot`, `group`, `id`, `level`, `size` | `bot` | - | - |
-| `AUTONOMOUS_BATTLEGROUND_EXIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `battleground`, `bot`, `destination`, `fromHere`, `id`, `leavingSeconds`, `level`, `realm` | `bot` | - | - |
-| `AUTONOMOUS_BATTLEGROUND_FORCED_EXIT` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `blockMinutes`, `bot`, `destination`, `id`, `level`, `marker`, `realm`, `reason`, `region` | `bot` | - | - |
+| `AUTONOMOUS_BATTLEGROUND_EXIT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.Battleground.cs` | `battleground`, `bot`, `destination`, `id`, `level`, `realm` | `bot` | - | - |
 | `AUTONOMOUS_BETWEEN_TASK_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousObjectiveAssignments.cs` | `activity`, `assignment`, `bot`, `goal`, `id`, `level`, `region`, `x`, `y`, `z` | `bot` | - | - |
 | `AUTONOMOUS_BLOCKED_BACKPACK_CLEARED` | server.log | **ships** | `bots/autonomous/AutonomousBotEconomy.cs` | `bot`, `capacity`, `id`, `removed` | `bot` | - | - |
 | `AUTONOMOUS_BOT_DEATH` | server.log | **ships** | `bots/autonomous/AutonomousDeathDiagnostics.cs` | `activity`, `armorPieces`, `arrivedAtCamp`, `at`, `attackers`, `bot`, `class`, `con`, `goal`, `group`, `id`, `killer`, `killerKind`, `killerLevel`, `level`, `maxHealth`, `realm`, `region`, `zone` | `bot`, `killer` | - | - |
@@ -117,6 +116,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_LOGIN_MOVED_FROM_BOSS` | server.log | **ships** | `bots/autonomous/AutonomousPopulationController.cs` | `at`, `bot`, `region` | `bot` | - | Morning 2026-10-19: level 50s saved inside the Hall of the Corrupt logged in beside Aidon the Archwizard and his illusions and died within seconds, 41 times in 41 minutes. |
 | `AUTONOMOUS_LOOT_APPRAISAL_FAILED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `item`, `retainedInInventory` | `bot` | - | - |
 | `AUTONOMOUS_LOOT_REJECTED` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `dropRetained`, `id`, `item`, `level`, `reason` | `bot` | - | - |
+| `AUTONOMOUS_NEAR_MISS_DEAD_END` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `gap`, `id`, `position`, `region`, `target`, `zone` | `bot` | one when a gamebot first stalls at a new near-miss dead end (a partial path ending within 256 of its target; #570) | - |
+| `AUTONOMOUS_NEAR_MISS_ROAD_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `anchors`, `bot`, `id`, `position`, `region`, `target` | `bot` | one per first stall at a near-miss dead end whose zone roads have a way to the target (#570) | - |
 | `AUTONOMOUS_NECRO_PET_RELEASE` | server.log | **ships** | `spells/Necromancer/SummonNecromancerPet.cs` | `bot`, `distance`, `hp`, `id`, `level`, `pet`, `petLevel`, `petObjectId`, `reason`, `region`, `spellId` | `bot` | - | - |
 | `AUTONOMOUS_PARTY_KILL_TARGET` | server.log | **ships** | `bots/BotBrain.MainAssist.cs` | `bot`, `id`, `level`, `members`, `peel`, `region`, `replaced`, `target`, `targetLevel` | `bot`, `target` | once per new kill target per party (#569 step 6) | A tank set its party's kill target (once per new target, per party). |
 | `AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.PartyPull.cs` | `bot`, `camp`, `campDistance`, `leader`, `leaderCampDistance`, `toLeader` | `bot`, `leader` | - | - |
@@ -128,6 +129,8 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `AUTONOMOUS_RAID_STUCK_RECOVERY` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `class`, `from`, `id`, `instead`, `level`, `near`, `realm`, `reason`, `snapped`, `to`, `why` | `bot` | - | Inside its raid's dungeon with every regroup point by a resting boss: |
 | `AUTONOMOUS_RALLY_STUCK` | server.log | **ships** | `bots/autonomous/AutonomousStuckWatchdog.cs` | `activity`, `at`, `bot`, `event`, `id`, `minutes` | `bot` | one per open-world rally member that stood still off the staging ring for 15 minutes after the departure, then sent to its capital (#767) | An open-world rally member stood still off the staging ring for 15 minutes after the departure, so it is sent to its capital and keeps its raid place (issue #767). |
 | `AUTONOMOUS_RESURRECTION_BLOCKED` | server.log | **ships** | `bots/BotBrain.cs` | `bot`, `class`, `corpse`, `distance`, `inCombat`, `mana`, `reason`, `spell` | `bot`, `corpse` | - | - |
+| `AUTONOMOUS_ROUTE_BLOCK` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.RouteThreats.cs` | `at`, `bots`, `by`, `maxBotLevel`, `region`, `target`, `zone` | `by`, `target` | one when a spot turns into a shared route block (3 different solo gamebots gave a camp up there within 30 minutes; #570) | - |
+| `AUTONOMOUS_ROUTE_BLOCK_AVOID` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `id`, `kept`, `level`, `region`, `skipped` | `bot` | one per solo gamebot camp pick that skipped camps at or past a shared route block while another camp was left (#570) | - |
 | `AUTONOMOUS_ROUTE_FLOOR_CORRECTION` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `region`, `to` | `bot` | - | - |
 | `AUTONOMOUS_ROUTE_GOAL_FIX` | server.log | **ships** | `bots/autonomous/AutonomousRouteGoalFix.cs` | `campRepickBlocked`, `crossingFallback`, `crossingSteered`, `floorStepGated`, `floorStepHeld`, `foreignFailureSkipped`, `gatedSkipped`, `pocketEscapeSkipped`, `repickBlocked`, `snapDzRejected`, `snapFailed`, `snapRefailed`, `snapped`, `window_s` | - | - | - |
 | `AUTONOMOUS_ROUTE_ORDER_KEPT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `callers`, `total` | - | - | - |
@@ -653,7 +656,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RUMOUR_KEEP_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `guards`, `hearer`, `keep` | - | - | For in-game checks: how close a keep comes to "wide open" (2026-10-27: |
 | `RUMOUR_NAMED` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `forced`, `realm`, `target`, `zone` | `target` | - | - |
 | `RUMOUR_NAMED_CHECK` | server.log | **ships** | `bots/autonomous/AutonomousRumours.cs` | `caring_player`, `lands`, `level`, `target`, `zone` | `target` | - | For in-game checks (2026-10-27: |
-| `RVR_ASSIST_CALL` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `fight`, `group`, `hold`, `mainAssist`, `realm`, `region`, `rising`, `role`, `score`, `target`, `targetClass`, `targetRealm`, `tier` | `mainAssist`, `target` | - | - |
+| `RVR_ASSIST_CALL` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `fight`, `from`, `group`, `hold`, `mainAssist`, `realm`, `region`, `rising`, `role`, `score`, `target`, `targetClass`, `targetRealm`, `tier` | `mainAssist`, `target` | - | - |
 | `RVR_ASSIST_SWITCH` | server.log | **ships** | `bots/BotBrain.RvrTactics.cs` | `delay`, `fight`, `group`, `member`, `result`, `target`, `tier` | `member`, `target` | - | - |
 | `RVR_BACKLINE` | server.log | **ships** | `bots/BotBrain.RvrPositioning.cs` | `class`, `depth`, `group`, `member`, `moved`, `reason`, `region`, `skill` | `member` | - | - |
 | `RVR_BORDER_STAGING` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `from`, `id`, `keep`, `realm` | `bot` | - | - |

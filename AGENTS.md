@@ -131,6 +131,10 @@ In a playable folder:
     (encounter catalog, command reference, say-gate ratchet, lore lints, `source/tools/tests`, the versions job, the
     changelog fragments) so fast checks don't fail only in CI. A check added to the workflow must be added to
     `tools/check.py` (`source/tools/tests/test_check.py` fails otherwise).
+  - **Generated on main, not in pull requests** (owner decision 59A, #817): `docs/LOG-ROWS.md` and
+    `tools/grafana/alloy/config.alloy`. A pull request that adds a log row doesn't commit them (CI fails one that does;
+    `git checkout origin/main -- <file>` restores main's copy); the `generated-files` workflow regenerates them after
+    each merge in the `bot/generated-files` pull request. `kit.py --write` still writes the dashboards, which you commit.
   - **Changelog fragments, not changelog edits.** Each pull request adds `changelog.d/<issue-or-branch>.md` (front
     matter `version` and `section`; [changelog.d/README.md](changelog.d/README.md)) and leaves
     `CHANGELOG-LIVING-SERVER.md` alone. `source/tools/assemble_changelog.py` folds them in at release.
