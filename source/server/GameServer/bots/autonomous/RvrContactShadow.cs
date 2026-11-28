@@ -54,6 +54,17 @@ public sealed class RvrContactShadow
 
     private readonly Dictionary<int, Realm> _realms = new();
 
+    /// <summary>The board= value of a board that lists its group's contacts (#529 step 3, rvr_board_from_contacts on).</summary>
+    public const string FromContacts = "contacts";
+    /// <summary>The board= value of a board that lists the area search (the switch off, or before step 3).</summary>
+    public const string FromArea = "area";
+
+    /// <summary>
+    /// What the boards being shadowed list (board= on RVR_CONTACT_SHADOW): <see cref="FromContacts"/>, so the unknown
+    /// enemies are the ones the board left out, or <see cref="FromArea"/>, so they are on it unknown.
+    /// </summary>
+    public string BoardSource { get; set; } = FromArea;
+
     /// <summary>
     /// Whether <see cref="Totals(int)"/> keeps distinct pairs over the whole time (the rehearsal and tests). Off in the
     /// game, where the minute windows are the record and an hours-long set of pairs would only grow.
@@ -135,7 +146,7 @@ public sealed class RvrContactShadow
                 0, 0, 0);
             state.Current = null;
             if (totals.Listed > 0)
-                (lines ??= new List<string>()).Add(Describe(pair.Key, totals, window.Start, now));
+                (lines ??= new List<string>()).Add(Describe(pair.Key, totals, window.Start, now, BoardSource));
         }
         return lines;
     }
@@ -178,14 +189,14 @@ public sealed class RvrContactShadow
     }
 
     /// <summary>The RVR_CONTACT_SHADOW line of one closed window. Pure.</summary>
-    public static string Describe(int realm, in RvrShadowTotals totals, long start, long end)
+    public static string Describe(int realm, in RvrShadowTotals totals, long start, long end, string board = FromArea)
     {
         // One minute of one realm's fight-board shadow, counting board-listed enemies and group-enemy pairs no member knew of.
         return $"RVR_CONTACT_SHADOW realm={GlobalConstants.RealmToName((eRealm)realm)} windowS={(end - start) / 1000} " +
         $"listed={totals.Listed} known={totals.Known} stale={totals.Stale} unknown={totals.Unknown} " +
         $"unknownPlayers={totals.UnknownPlayers} unknownShare={totals.UnknownShare:0.###} pairs={totals.Pairs} " +
         $"pairsUnknown={totals.PairsUnknown} pairsUnknownPlayers={totals.PairsUnknownPlayers} " +
-        $"pairsUnknownShare={totals.PairsUnknownShare:0.###}";
+        $"pairsUnknownShare={totals.PairsUnknownShare:0.###} board={board}";
     }
 
     public void Clear()
