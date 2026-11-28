@@ -509,7 +509,7 @@ audit's tells 11 and 12; seen on 1.2.2 `868a82d`, the owner's game of 2026-11-23
   2026-11-24): bots look like players. On, /who tags every gamebot "[Playerbot]" and a refused invite says "gamebot" or
   "buffbot". A new key, so worlds from earlier builds take the hidden default without an upgrade line.
 - Not here: "brb"/"afk" said in chat with no break behind it (#486). `UT_InvitesLogouts485`. **Tests only.**
-**Songs, heal sub-spells, style procs, pulls and quicker bot reactions** **Tests only.**
+**Spell, combat, guild and bot fixes** (tests only)
 - **Two singers on one song no longer leave the group at 0 endurance.** A pulsing song or chant renewed by a second Bard,
   Minstrel, Skald or Paladin replaces the old copy in place; when the first singer's pulse later ended that stale copy, it
   took the bonus away a second time, so endurance regeneration (or any stat song) sat at 0 with the song up. A stale copy
