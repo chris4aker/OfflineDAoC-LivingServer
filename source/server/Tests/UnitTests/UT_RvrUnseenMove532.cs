@@ -137,7 +137,8 @@ namespace DOL.UnitTests
                 "!bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X");
             AssertGateBefore(controller,
                 @"if \(escapeRegion == bot\.CurrentRegionID &&\s+" +
-                @"AutonomousRvrUnseenMove\.Holds\(bot, escape, shortHop \? ""pocket_hop"" : ""pocket_escape""\)\)\s+\{\s+" +
+                @"AutonomousRvrUnseenMove\.Holds\(bot, escape,\s+" +
+                @"listedNudge \? ""listed_pocket_escape"" : shortHop \? ""pocket_hop"" : ""pocket_escape""\)\)\s+\{\s+" +
                 @"HoldPocketEscape\(bot, now, escapeName\);\s+return true;",
                 "? bot.MoveInRegion(escapeRegion");
         }
@@ -165,22 +166,49 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void A_held_listed_pocket_nudge_never_becomes_the_capital_move()
+        public void A_held_listed_pocket_nudge_takes_the_nudge_not_the_capital_once_the_player_has_left()
         {
             string controller = Controller("AutonomousWorldBotController.cs");
             string escape = Body(controller, "private bool TryEscapeTerminalRoutePocket(");
-            Match hold = Regex.Match(escape, @"if \(walledPocket && ListedPocketFloorHeld\(bot, current\)\)\s+\{\s+" +
-                                             @"HoldPocketEscape\(bot, now, [^;]+\);\s+return true;");
-            Assert.That(hold.Success, Is.True, "a walled pocket whose floor nudge waits holds too");
+            // The walled branch takes the listed pocket's own floor as a move within the region; the capital is only the
+            // other branch, so a bot with that floor never rides home, whether the player is still there or has left.
+            Match nudge = Regex.Match(escape,
+                @"if \(walledPocket && TryListedPocketFloor\(bot, current, out Vector3 pocketFloor\)\)\s+\{\s+" +
+                @"escapeRegion = bot\.CurrentRegionID;\s+escape = pocketFloor;\s+escapeName = [^\n]+\s+listedNudge = true;\s+\}\s+else\s+\{");
+            Assert.That(nudge.Success, Is.True, "a covered bot in a listed pocket takes the floor, in its own region");
             int capital = escape.IndexOf("AutonomousStuckWatchdog.SafeCapitalFor(bot.Realm)", StringComparison.Ordinal);
-            Assert.That(capital, Is.GreaterThan(hold.Index), "before the capital is even looked up");
-            string floor = Body(controller, "private static bool ListedPocketFloorHeld(");
+            Assert.That(capital, Is.GreaterThan(nudge.Index + nudge.Length), "the capital is looked up only in the else branch");
+            int gate = escape.IndexOf("listedNudge ? \"listed_pocket_escape\"", StringComparison.Ordinal);
+            Assert.That(gate, Is.GreaterThan(capital), "the shared gate asks about the nudge after the choice");
+            Assert.That(escape, Does.Not.Contain("ListedPocketFloorHeld"), "no separate hold that the pocket check can outrace");
+
+            string floor = Body(controller, "private static bool TryListedPocketFloor(");
             Assert.That(floor, Does.Contain("AutonomousRvrUnseenMove.Covers(bot) &&"), "only covered bots search for the floor");
             Assert.That(floor, Does.Contain("current, ListedPocketReach,"), "the same reach as the nudge");
             Assert.That(floor, Does.Contain("leavePocket: true"), "the same floor as the nudge");
-            Assert.That(floor, Does.Contain("AutonomousRvrUnseenMove.Holds(bot, floor, \"listed_pocket_escape\")"));
             Assert.That(Body(controller, "private static bool TryLeaveListedPocket("),
                 Does.Contain("new Vector3(bot.X, bot.Y, bot.Z), ListedPocketReach, out Vector3 floor, leavePocket: true"));
+
+            // The same nudge, asked of the gate's rule on two turns: held while the player stands by, taken once gone.
+            System.Numerics.Vector3 at = new(10_000, 20_000, 0), pocketExit = new(10_300, 20_000, 0);
+            int player = 2_000;
+            Func<int, int, int> lookup = (_, _) => player;
+            Assert.That(AutonomousRvrUnseenMove.Decide(at, pocketExit, lookup, out _, out _, out _), Is.True, "player in sight: held");
+            player = -1;
+            Assert.That(AutonomousRvrUnseenMove.Decide(at, pocketExit, lookup, out _, out _, out _), Is.False,
+                "player gone: the nudge goes");
+            player = 2_000;
+            Assert.That(AutonomousRvrUnseenMove.Decide(at, new(10_030, 20_000, 0), lookup, out _, out _, out _), Is.False,
+                "a floor under 64 units away is taken at once, player or not");
+        }
+
+        [Test]
+        public void Holds_waits_only_when_Decide_says_so()
+        {
+            string holds = Body(Controller("AutonomousRvrUnseenMove.cs"), "public static bool Holds(");
+            Assert.That(holds, Does.Match(@"if \(!Covers\(bot\)\)\s+return false;"));
+            Assert.That(holds, Does.Match(@"if \(!Decide\(new Vector3\(bot\.X, bot\.Y, bot\.Z\), to,[^;]*\)\)\s+return false;"),
+                "a move Decide lets go is never held");
         }
 
         [Test]
