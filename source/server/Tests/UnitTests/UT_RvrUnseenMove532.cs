@@ -74,41 +74,155 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Only_active_autonomous_gamebots_in_war_that_are_not_hired_are_covered()
+        {
+            Assert.That(AutonomousRvrUnseenMove.Covers(true, false, true, true), Is.True, "an autonomous gamebot in a war zone");
+            Assert.That(AutonomousRvrUnseenMove.Covers(false, false, true, true), Is.False, "a companion bot or a player: unchanged");
+            Assert.That(AutonomousRvrUnseenMove.Covers(true, true, true, true), Is.False, "a hired companion: unchanged");
+            Assert.That(AutonomousRvrUnseenMove.Covers(true, false, false, true), Is.False, "not in the world");
+            Assert.That(AutonomousRvrUnseenMove.Covers(true, false, true, false), Is.False, "PvE: unchanged");
+            string gate = Body(Controller("AutonomousRvrUnseenMove.cs"), "public static bool Covers(GameBot bot)");
+            Assert.That(gate, Does.Contain("Covers(bot.IsAutonomousWorldBot, bot.IsHiredCompanion, " +
+                                           "bot.ObjectState == GameObject.eObjectState.Active,"));
+            Assert.That(gate, Does.Contain("AutonomousRvrRecordScope.InWar(bot)"));
+            string holds = Body(Controller("AutonomousRvrUnseenMove.cs"), "public static bool Holds(GameBot bot");
+            Assert.That(holds, Does.Match(@"if \(!Covers\(bot\)\)\s+return false;"), "Holds asks Covers first");
+            Assert.That(holds, Does.Contain("RvrFights.PlayerDistance(region, x, y)"));
+        }
+
+        [Test]
+        public void The_gate_measures_the_move_and_asks_each_end_for_players()
+        {
+            var asked = new System.Collections.Generic.List<(int, int)>();
+            int Near(int x, int y)
+            {
+                asked.Add((x, y));
+                return x < 10_000 ? 900 : -1;
+            }
+
+            Assert.That(AutonomousRvrUnseenMove.Decide(new(1_000, 2_000, 0), new(1_000, 2_030, 0), Near, out int d, out int pf,
+                out int pt), Is.False, "a 30-unit shuffle never waits");
+            Assert.That(asked, Is.Empty, "and never looks for players");
+            Assert.That((d, pf, pt), Is.EqualTo((30, -1, -1)));
+
+            Assert.That(AutonomousRvrUnseenMove.Decide(new(1_000, 2_000, 0), new(1_000, 2_000, 64), Near, out d, out _, out _),
+                Is.True, "the distance is 3D: a 64-unit drop counts");
+            Assert.That(d, Is.EqualTo(64));
+
+            asked.Clear();
+            Assert.That(AutonomousRvrUnseenMove.Decide(new(20_000, 30_000, 0), new(1_000, 2_000, 0), Near, out _, out pf, out pt),
+                Is.True, "the player by the landing");
+            Assert.That(asked, Is.EqualTo(new[] { (20_000, 30_000), (1_000, 2_000) }), "the start, then the landing");
+            Assert.That((pf, pt), Is.EqualTo((-1, 900)));
+
+            Assert.That(AutonomousRvrUnseenMove.Decide(new(20_000, 30_000, 0), new(20_000, 33_000, 0), Near, out _, out _, out _),
+                Is.False, "nobody near either end");
+        }
+
+        [Test]
         public void The_non_urgent_moves_ask_the_gate_before_they_move()
         {
             string keep = Controller("AutonomousWorldBotController.KeepTravel.cs");
             string controller = Controller("AutonomousWorldBotController.cs");
-            // Each gate stands before that move's MoveInRegion.
-            AssertGateBefore(keep, "\"keep_route_restart\"", "bot.MoveInRegion(bot.CurrentRegionID, (int)Math.Round(floor.X)");
-            AssertGateBefore(controller, "\"floor_step\"", "bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X, (int)floor.Y");
-            AssertGateBefore(controller, "\"listed_pocket\"", "!bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X");
-            AssertGateBefore(controller, "\"pocket_hop\"", "? bot.MoveInRegion(escapeRegion");
+            // Each site's own gate (with what it does when held) stands before that site's move.
+            AssertGateBefore(keep, @"if \(AutonomousRvrUnseenMove\.Holds\(bot, floor, ""keep_route_restart""\)\)\s+return false;",
+                "bot.MoveInRegion(bot.CurrentRegionID, (int)Math.Round(floor.X)");
+            AssertGateBefore(controller,
+                @"if \(found && AutonomousRvrUnseenMove\.Holds\(bot, floor, ""floor_step""\)\)\s+\{\s+" +
+                @"_nextFloorStepTick = GameLoop\.GameLoopTime \+ AutonomousRvrUnseenMove\.HoldMilliseconds;\s+return false;",
+                "bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X, (int)floor.Y");
+            AssertGateBefore(controller,
+                @"ListedPocketReach, out Vector3 floor, leavePocket: true\) \|\|\s+(//[^\n]*\s+)?" +
+                @"AutonomousRvrUnseenMove\.Holds\(bot, floor, ""listed_pocket""\) \|\|\s+!bot\.MoveInRegion",
+                "!bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X");
+            AssertGateBefore(controller,
+                @"if \(escapeRegion == bot\.CurrentRegionID &&\s+" +
+                @"AutonomousRvrUnseenMove\.Holds\(bot, escape, shortHop \? ""pocket_hop"" : ""pocket_escape""\)\)\s+\{\s+" +
+                @"HoldPocketEscape\(bot, now, escapeName\);\s+return true;",
+                "? bot.MoveInRegion(escapeRegion");
         }
 
         [Test]
         public void A_waiting_pocket_escape_never_climbs_to_the_capital_move()
         {
             string controller = Controller("AutonomousWorldBotController.cs");
-            int gate = controller.IndexOf("\"pocket_hop\"", StringComparison.Ordinal);
-            Assert.That(gate, Is.GreaterThan(0));
-            string held = controller.Substring(gate, 600);
+            string held = Body(controller, "private void HoldPocketEscape(");
             Assert.That(held, Does.Contain("_terminalRouteFailuresInPocket = Math.Max(0, _terminalRouteFailuresInPocket - 1)"),
                 "the failure counted for this try is taken back");
             Assert.That(held, Does.Contain("_unseenMoveHoldUntilTick = now + AutonomousRvrUnseenMove.HoldMilliseconds"));
             Assert.That(Regex.IsMatch(controller, @"if \(HoldForUnseenMove\(bot, current, now, destinationChanged\)\)\s+return true;"),
                 Is.True, "a held bot stands out the hold instead of planning the failing route again");
-            Assert.That(controller, Does.Contain("_unseenMoveHoldUntilTick = 0;"), "a new route order ends the hold");
         }
 
-        private static void AssertGateBefore(string code, string how, string move)
+        [Test]
+        public void A_held_escape_is_not_counted_again_during_the_hold()
         {
-            int gate = code.IndexOf("AutonomousRvrUnseenMove.Holds(", StringComparison.Ordinal);
-            int named = code.IndexOf(how, StringComparison.Ordinal);
-            Assert.That(gate, Is.GreaterThanOrEqualTo(0));
-            Assert.That(named, Is.GreaterThan(0), how);
-            int moved = code.IndexOf(move, named, StringComparison.Ordinal);
-            Assert.That(moved, Is.GreaterThan(named), $"{how} is asked before {move}");
-            Assert.That(moved - named, Is.LessThan(1_500), $"{how} guards that move");
+            string escape = Body(Controller("AutonomousWorldBotController.cs"), "private bool TryEscapeTerminalRoutePocket(");
+            Match early = Regex.Match(escape, @"if \(now < _unseenMoveHoldUntilTick\)\s+return true;");
+            Assert.That(early.Success, Is.True, "the hold's early return");
+            int counted = escape.IndexOf("_terminalRouteFailuresInPocket = repeated", StringComparison.Ordinal);
+            Assert.That(counted, Is.GreaterThan(early.Index), "it comes before the failure is counted");
+        }
+
+        [Test]
+        public void A_held_listed_pocket_nudge_never_becomes_the_capital_move()
+        {
+            string controller = Controller("AutonomousWorldBotController.cs");
+            string escape = Body(controller, "private bool TryEscapeTerminalRoutePocket(");
+            Match hold = Regex.Match(escape, @"if \(walledPocket && ListedPocketFloorHeld\(bot, current\)\)\s+\{\s+" +
+                                             @"HoldPocketEscape\(bot, now, [^;]+\);\s+return true;");
+            Assert.That(hold.Success, Is.True, "a walled pocket whose floor nudge waits holds too");
+            int capital = escape.IndexOf("AutonomousStuckWatchdog.SafeCapitalFor(bot.Realm)", StringComparison.Ordinal);
+            Assert.That(capital, Is.GreaterThan(hold.Index), "before the capital is even looked up");
+            string floor = Body(controller, "private static bool ListedPocketFloorHeld(");
+            Assert.That(floor, Does.Contain("AutonomousRvrUnseenMove.Covers(bot) &&"), "only covered bots search for the floor");
+            Assert.That(floor, Does.Contain("current, ListedPocketReach,"), "the same reach as the nudge");
+            Assert.That(floor, Does.Contain("leavePocket: true"), "the same floor as the nudge");
+            Assert.That(floor, Does.Contain("AutonomousRvrUnseenMove.Holds(bot, floor, \"listed_pocket_escape\")"));
+            Assert.That(Body(controller, "private static bool TryLeaveListedPocket("),
+                Does.Contain("new Vector3(bot.X, bot.Y, bot.Z), ListedPocketReach, out Vector3 floor, leavePocket: true"));
+        }
+
+        [Test]
+        public void The_hold_ends_when_the_goal_moves_or_a_new_route_order_starts()
+        {
+            string controller = Controller("AutonomousWorldBotController.cs");
+            Assert.That(Body(controller, "private bool HoldForUnseenMove("),
+                Does.Match(@"if \(destinationChanged\)\s+\{\s+_unseenMoveHoldUntilTick = 0;\s+return false;"), "a moved goal");
+            Assert.That(Body(controller, "private void ResetRouteOrderState("), Does.Contain("_unseenMoveHoldUntilTick = 0;"),
+                "a new route order");
+        }
+
+        /// <summary>The text of the member whose declaration starts with <paramref name="signature"/>, up to its closing brace
+        /// (or the end of an expression body).</summary>
+        private static string Body(string code, string signature)
+        {
+            int start = code.IndexOf(signature, StringComparison.Ordinal);
+            Assert.That(start, Is.GreaterThanOrEqualTo(0), signature);
+            Assert.That(code.IndexOf(signature, start + 1, StringComparison.Ordinal), Is.LessThan(0), $"{signature} is unique");
+            int open = code.IndexOf('{', start);
+            int arrow = code.IndexOf("=>", start, StringComparison.Ordinal);
+            if (arrow >= 0 && arrow < open)
+                return code.Substring(start, code.IndexOf(";\n", arrow, StringComparison.Ordinal) - start + 1);
+            int depth = 0;
+            for (int i = open; i < code.Length; i++)
+            {
+                if (code[i] == '{') depth++;
+                else if (code[i] == '}' && --depth == 0)
+                    return code.Substring(start, i - start + 1);
+            }
+            Assert.Fail($"{signature} has no end");
+            return null;
+        }
+
+        private static void AssertGateBefore(string code, string gatePattern, string move)
+        {
+            MatchCollection gates = Regex.Matches(code, gatePattern);
+            Assert.That(gates.Count, Is.EqualTo(1), gatePattern);
+            int gateEnd = gates[0].Index + gates[0].Length;
+            int moved = code.IndexOf(move, gates[0].Index, StringComparison.Ordinal);
+            Assert.That(moved, Is.GreaterThanOrEqualTo(gates[0].Index), $"{gatePattern} is asked before {move}");
+            Assert.That(moved - gateEnd, Is.LessThan(600), $"{gatePattern} guards that move");
         }
     }
 }

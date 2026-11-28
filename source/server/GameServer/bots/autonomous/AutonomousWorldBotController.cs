@@ -354,6 +354,8 @@ namespace DOL.GS
         /// onto it, then every route from it failed (242 stable approaches to Ulufgar since 10/09, raid hub routes, ~600 ms
         /// of route recovery each) before a later escape moved them off.
         /// </summary>
+        private const float ListedPocketReach = 600;
+
         private static bool TryLeaveListedPocket(GameBot bot, out bool inPocket)
         {
             inPocket = false;
@@ -362,7 +364,7 @@ namespace DOL.GS
                 return false;
             inPocket = true;
             if (!AutonomousNavigationSurface.TryNearestWalkableFloor(PathfindingProvider.Instance, zone,
-                    new Vector3(bot.X, bot.Y, bot.Z), 600, out Vector3 floor, leavePocket: true) ||
+                    new Vector3(bot.X, bot.Y, bot.Z), ListedPocketReach, out Vector3 floor, leavePocket: true) ||
                 // #532 step 1a: not in sight of a player (the caller checks again in a minute).
                 AutonomousRvrUnseenMove.Holds(bot, floor, "listed_pocket") ||
                 !bot.MoveInRegion(bot.CurrentRegionID, (int)floor.X, (int)floor.Y, (int)floor.Z, bot.Heading, true))
@@ -6195,6 +6197,14 @@ namespace DOL.GS
                     AutonomousZonePockets.Contains(pocketZone.ID, current.X, current.Y, current.Z);
                 if (_terminalRouteFailuresInPocket < AutonomousRouteRecoveryPolicy.FailuresBeforeSafeRelocation && !walledPocket)
                     return false;
+                // #532 step 1a: while the listed pocket's own floor nudge (TryLeaveListedPocket) waits because a player could
+                // see it, the capital move must not stand in for it: the bot holds here too and the nudge goes once unseen.
+                // A pocket with no real floor within reach has no nudge to wait for and relocates as before.
+                if (walledPocket && ListedPocketFloorHeld(bot, current))
+                {
+                    HoldPocketEscape(bot, now, bot.CurrentZone?.Description ?? $"region {bot.CurrentRegionID}");
+                    return true;
+                }
                 // The bot stands on connected ground and the goal hangs off the mesh: the capital fixes nothing.
                 if (!walledPocket && goal.HasValue && !_issuedPreciseArrival && IsGoalTheFault(bot, current, goal.Value))
                 {
@@ -6236,13 +6246,7 @@ namespace DOL.GS
             if (escapeRegion == bot.CurrentRegionID &&
                 AutonomousRvrUnseenMove.Holds(bot, escape, shortHop ? "pocket_hop" : "pocket_escape"))
             {
-                _terminalRouteFailuresInPocket = Math.Max(0, _terminalRouteFailuresInPocket - 1);
-                _unseenMoveHoldUntilTick = now + AutonomousRvrUnseenMove.HoldMilliseconds;
-                bot.StopMovingOnPath();
-                bot.StopMoving();
-                SetStatus(bot, "Finding a way round", GoalText(),
-                    "No route from this spot; looking for another way while others are near",
-                    _camp?.MonsterName ?? string.Empty, _camp?.ZoneName ?? escapeName);
+                HoldPocketEscape(bot, now, escapeName);
                 return true;
             }
 
@@ -6283,6 +6287,31 @@ namespace DOL.GS
                 _camp?.MonsterName ?? string.Empty, _camp?.ZoneName ?? escapeName, true);
             return true;
         }
+
+        /// <summary>
+        /// #532 step 1a: a pocket escape waits for no player to see it. The failure just counted is taken back, so waiting
+        /// never climbs to the capital move, and the bot stands for the hold (HoldForUnseenMove) before it tries again.
+        /// </summary>
+        private void HoldPocketEscape(GameBot bot, long now, string placeName)
+        {
+            _terminalRouteFailuresInPocket = Math.Max(0, _terminalRouteFailuresInPocket - 1);
+            _unseenMoveHoldUntilTick = now + AutonomousRvrUnseenMove.HoldMilliseconds;
+            bot.StopMovingOnPath();
+            bot.StopMoving();
+            SetStatus(bot, "Finding a way round", GoalText(),
+                "No route from this spot; looking for another way while others are near",
+                _camp?.MonsterName ?? string.Empty, _camp?.ZoneName ?? placeName);
+        }
+
+        /// <summary>
+        /// #532 step 1a: whether a listed pocket's floor nudge would wait now (the same floor TryLeaveListedPocket takes,
+        /// asked of the gate). Only a bot the gate covers searches for the floor; every other bot is unchanged.
+        /// </summary>
+        private static bool ListedPocketFloorHeld(GameBot bot, Vector3 current) =>
+            AutonomousRvrUnseenMove.Covers(bot) && bot.CurrentZone is Zone zone &&
+            AutonomousNavigationSurface.TryNearestWalkableFloor(PathfindingProvider.Instance, zone, current, ListedPocketReach,
+                out Vector3 floor, leavePocket: true) &&
+            AutonomousRvrUnseenMove.Holds(bot, floor, "listed_pocket_escape");
 
         private static void ClearZonePointQuarantine(GameBot bot, ushort sourceRegion,
             ushort sourceZone, ushort targetRegion)

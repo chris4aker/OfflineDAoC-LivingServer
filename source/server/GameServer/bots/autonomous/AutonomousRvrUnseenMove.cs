@@ -34,26 +34,52 @@ public static class AutonomousRvrUnseenMove
         inWar && sameRegion && distance >= MinimumDistance && (Seen(playerFrom) || Seen(playerTo));
 
     /// <summary>
+    /// Which bots the gate covers: an active autonomous gamebot in a war zone. A hired companion is the player's own
+    /// (it follows the player's lead), so it is left as it was, as the RvR perception helpers do. Pure.
+    /// </summary>
+    public static bool Covers(bool autonomous, bool hiredCompanion, bool active, bool inWar) =>
+        autonomous && !hiredCompanion && active && inWar;
+
+    /// <summary>Whether this bot is one the gate covers (<see cref="Covers"/>).</summary>
+    public static bool Covers(GameBot bot) =>
+        bot != null && Covers(bot.IsAutonomousWorldBot, bot.IsHiredCompanion, bot.ObjectState == GameObject.eObjectState.Active,
+            AutonomousRvrRecordScope.InWar(bot));
+
+    /// <summary>
+    /// The move from <paramref name="from"/> to <paramref name="to"/> (same region) for a covered bot: its 3D distance and
+    /// the nearest player's 2D distance (<paramref name="playerDistance"/>, -1 when none) to each end, and whether it
+    /// waits. A move under <see cref="MinimumDistance"/> never asks for the players. Pure apart from the lookup.
+    /// </summary>
+    public static bool Decide(Vector3 from, Vector3 to, Func<int, int, int> playerDistance, out int distance,
+        out int playerFrom, out int playerTo)
+    {
+        double d = Math.Sqrt((double)(from.X - to.X) * (from.X - to.X) + (double)(from.Y - to.Y) * (from.Y - to.Y) +
+                             (double)(from.Z - to.Z) * (from.Z - to.Z));
+        distance = (int)d;
+        playerFrom = playerTo = -1;
+        if (d < MinimumDistance)
+            return false;
+        playerFrom = playerDistance((int)from.X, (int)from.Y);
+        playerTo = playerDistance((int)to.X, (int)to.Y);
+        return MustWait(true, true, d, playerFrom, playerTo);
+    }
+
+    /// <summary>
     /// True when this autonomous gamebot's move to <paramref name="to"/> (same region) must wait because a player could
     /// see it; logs RVR_TELEPORT_HELD. False (the move may go ahead) for every other bot, place and move.
     /// </summary>
     public static bool Holds(GameBot bot, Vector3 to, string how)
     {
-        if (bot == null || !bot.IsAutonomousWorldBot || bot.ObjectState != GameObject.eObjectState.Active ||
-            !AutonomousRvrRecordScope.InWar(bot))
+        if (!Covers(bot))
             return false;
-        double distance = Math.Sqrt((double)(bot.X - to.X) * (bot.X - to.X) + (double)(bot.Y - to.Y) * (bot.Y - to.Y) +
-                                    (double)(bot.Z - to.Z) * (bot.Z - to.Z));
-        if (distance < MinimumDistance)
-            return false;
-        int playerFrom = RvrFights.PlayerDistance(bot.CurrentRegionID, bot.X, bot.Y);
-        int playerTo = RvrFights.PlayerDistance(bot.CurrentRegionID, (int)to.X, (int)to.Y);
-        if (!MustWait(true, true, distance, playerFrom, playerTo))
+        ushort region = bot.CurrentRegionID;
+        if (!Decide(new Vector3(bot.X, bot.Y, bot.Z), to, (x, y) => RvrFights.PlayerDistance(region, x, y),
+                out int distance, out int playerFrom, out int playerTo))
             return false;
         long now = GameLoop.GameLoopTime;
         if (Log.IsInfoEnabled && RvrRecordBudget.Take("RVR_TELEPORT_HELD", now, LinesPerMinute))
-            Log.Info(Line(now, bot.Name, bot.DatabaseID, bot.Realm, how, bot.CurrentRegionID, bot.X, bot.Y, (int)to.X, (int)to.Y,
-                (int)distance, playerFrom, playerTo));
+            Log.Info(Line(now, bot.Name, bot.DatabaseID, bot.Realm, how, region, bot.X, bot.Y, (int)to.X, (int)to.Y,
+                distance, playerFrom, playerTo));
         return true;
     }
 
