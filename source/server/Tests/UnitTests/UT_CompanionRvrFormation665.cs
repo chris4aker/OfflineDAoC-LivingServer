@@ -225,7 +225,7 @@ namespace DOL.GS.Tests
             Assert.Multiple(() =>
             {
                 Assert.That(healers[0].GetDistanceTo(healers[1]), Is.GreaterThan((int)RvrPositioning.MezSpread - 60),
-                    "the two healers stand more than a mez apart");
+                    "the two healers stand more than a mez apart\n" + Picture(scene));
                 foreach (GameBot bot in backs)
                 {
                     Assert.That(bot.GetDistanceTo(scene.Player), Is.LessThanOrEqualTo(F.PlayerBound + (int)RvrPositioning.SlotTolerance),
@@ -233,6 +233,52 @@ namespace DOL.GS.Tests
                     Assert.That(bot.X, Is.LessThan(X + 1_200), $"{bot.Name} stands on the group's side of the enemy");
                 }
                 Assert.That(scene.World.ServiceErrors, Is.Zero, string.Join("\n", scene.World.Errors));
+            });
+        }
+
+        /// <summary>What the formation saw of each back member (for a failure message).</summary>
+        private static string Picture(Scene scene)
+        {
+            var fight = F.Read(scene.Player, GameLoop.GameLoopTime);
+            var lines = new List<string> { fight == null ? "no fight read" :
+                $"fight: enemies={fight.Enemies} incoming={fight.Incoming} line={fight.Line} enemy={fight.Enemy} backs={fight.Backs.Count}" };
+            foreach (GameBot bot in scene.Group)
+            {
+                RvrSlot slot = fight?.SlotOf(bot) ?? default;
+                lines.Add($"{bot.Name} {(eCharacterClass)bot.CharacterClass.ID} at=({bot.X},{bot.Y}) state={(bot.Brain as BotBrain)?.FSM?.GetCurrentState()?.StateType} " +
+                          $"applies={F.Applies(bot, scene.Player)} stand={slot.Stand} spot={slot.Spot} healer={slot.Healer} casting={bot.IsCasting} " +
+                          $"moving={bot.IsMoving} aggro={(bot.Brain as BotBrain)?.HasAggro} hp={bot.HealthPercent} autonomous={bot.IsAutonomousWorldBot}");
+            }
+            return string.Join("\n", lines);
+        }
+
+        [Test]
+        public void TheFormationTurnSpreadsTheHealersOnItsOwn()
+        {
+            // The formation turn alone (every brain stopped; the group pick through Observe, then each back member's turn),
+            // so the rule and the walk are tested apart from the FSM that calls them.
+            using Scene scene = Make(Thidranki);
+            foreach (GameBot bot in scene.Group)
+                bot.Brain?.Stop();
+            List<GameBot> healers = Healers(scene);
+            int ticks = 15 * RvrFightWorld.TicksPerSecond;
+            for (int i = 0; i < ticks; i++)
+            {
+                scene.World.Tick();
+                foreach (GameBot bot in scene.Group)
+                {
+                    CompanionPvpEngagement.Observe(bot);
+                    (bot.Brain as BotBrain)?.TryCompanionFormationSupport();
+                }
+            }
+            string picture = Picture(scene);
+            Assert.Multiple(() =>
+            {
+                Assert.That(healers[0].GetDistanceTo(healers[1]), Is.GreaterThan((int)RvrPositioning.MezSpread - 60),
+                    "the two healers stand more than a mez apart\n" + picture);
+                foreach (GameBot bot in healers)
+                    Assert.That(bot.GetDistanceTo(scene.Player), Is.LessThanOrEqualTo(F.PlayerBound + (int)RvrPositioning.SlotTolerance),
+                        $"{bot.Name} stays near the player\n" + picture);
             });
         }
 
