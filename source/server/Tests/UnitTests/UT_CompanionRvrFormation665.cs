@@ -335,15 +335,17 @@ namespace DOL.GS.Tests
                 }
             }
             Assert.That(walker, Is.Not.Null, "a healer set off for its place\n" + Picture(scene));
-            Assert.That(walker.IsMoving, Is.True, "it is walking");
+            var brain = (BotBrain)walker.Brain;
+            scene.World.Tick();
+            Assert.That(brain.TryCompanionFormationSupport(), Is.True, "its walk is under way and owns the turn");
             hurt.Health = hurt.MaxHealth / 2;
             Assert.That(hurt.HealthPercent, Is.LessThan(RvrPositioning.HealFirstPercent), "a groupmate needs a heal");
-            var brain = (BotBrain)walker.Brain;
             Assert.Multiple(() =>
             {
                 Assert.That(brain.TryCompanionFormationSupport(), Is.False, "the turn goes to the heal, not the walk");
                 Assert.That(walker.IsMoving, Is.False, "the healer stopped walking\n" + Picture(scene));
             });
+            var stoppedAt = new Vector2(walker.X, walker.Y);
             // While the groupmate stays hurt, no healer sets off again.
             for (int i = 0; i < 5 * RvrFightWorld.TicksPerSecond; i++)
             {
@@ -356,6 +358,8 @@ namespace DOL.GS.Tests
                         $"{healer.Name} stays to heal");
                 }
             }
+            Assert.That(Vector2.Distance(stoppedAt, new Vector2(walker.X, walker.Y)), Is.LessThan(RvrPositioning.SlotTolerance),
+                "it stayed where it stopped\n" + Picture(scene));
         }
 
         [Test]
