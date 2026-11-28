@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **797**; pending (#625, not on main yet): **0**; shipped by the pipeline: **765**.
+- Rows in code: **798**; pending (#625, not on main yet): **0**; shipped by the pipeline: **766**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -454,6 +454,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `GOLD_SPAMMER_BANNED` | server.log | **ships** | `bots/autonomous/AutonomousGoldSpammers.cs` | `ads`, `name`, `realm` | `name` | - | - |
 | `GOLD_SPAMMER_START` | server.log | **ships** | `bots/autonomous/AutonomousGoldSpammers.cs` | `name`, `realm`, `waited_s` | `name` | - | - |
 | `GROUP_ENDED` | server.log | **ships** | `bots/autonomous/LivingLog.cs` | `alive_end`, `camp`, `cause`, `dropped`, `dur_s`, `every`, `gc`, `gc_total`, `group`, `hosted`, `last_left`, `left`, `left_by`, `objective`, `open`, `phase`, `realm`, `reason`, `seq`, `size_end`, `size_start`, `task_started`, `wipes` | - | - | Row 7 (#544: 71-80% of group camp attempts end GroupChanged): |
+| `GROUP_ORDER` | server.log | **ships** | `bots/PlayerGroupOrders.World.cs` | `call`, `leader`, `obeying`, `order`, `region`, `size`, `target`, `via`, `warn`, `why` | `leader`, `target` | one per order the player gives his group (/order or a /group word) and one when it ends (next order, fight over, target gone, back, timeout): at most a few per fight (#667) | The player's order to his group, given or ended (#667). |
 | `HIRED_COMPANION` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `cost`, `level`, `owner` | `owner` | - | - |
 | `HIRED_COMPANION_DELETE_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousPopulationController.cs` | `bot` | - | - | - |
 | `HIRED_COMPANION_DISMISSED` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `keepWithOwner`, `owner`, `row` | `owner` | - | - |
