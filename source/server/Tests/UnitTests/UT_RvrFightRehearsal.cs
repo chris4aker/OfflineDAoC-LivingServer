@@ -106,6 +106,28 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Scenario7_MusterPartiesAtABattlegroundKeepActAsOneBattlegroup()
+        {
+            // #599 step 4: the realm's two muster parties at one keep share one roster (14) and one lead's call; the other
+            // realm's lone party is not linked. The fight's outcome is printed, not asserted.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.BattlegroundBattlegroupResult result = RvrFightRehearsal.BattlegroundBattlegroup(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.PartySizes, Is.EqualTo(new[] { 7, 7 }), "scenario 4's parties");
+                Assert.That(result.BattlegroupId, Is.EqualTo("bgbg-albion-250001"), "one battlegroup for the realm at the keep");
+                Assert.That(result.Parties, Is.EqualTo(2));
+                Assert.That(result.RosterSizes, Is.EqualTo(new[] { 14 }), "every Albion party bot shares one roster of 14");
+                Assert.That(result.MidgardInRosters, Is.Zero);
+                Assert.That(result.MidgardPartyLinked, Is.False, "a realm's lone party has no battlegroup");
+                Assert.That(result.ChangesWhenTheWaveWent, Is.Zero, "muster to attack: the same battlegroup");
+                Assert.That(result.BattlegroupCallSeconds, Is.GreaterThan(0), $"the follower party took the lead party's call: {result.Row}");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
+        }
+
+        [Test]
         public void Scenario5_TwoEightsLinkIntoABattlegroupAndMeetAnEight()
         {
             // #599 step 1: two nearby Albion eights link (16 heads, one support roster); a pair, a far eight and the other

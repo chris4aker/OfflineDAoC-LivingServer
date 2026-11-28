@@ -239,6 +239,9 @@ public static partial class AutonomousBotGroupCoordinator
                 NoLiferBuffBots.Pulse(now);
             using (AiProfile.Scope(AiSystem.PulseRvrDefense))
                 AutonomousRvrEventLayer.PulseDefense(now);
+            // #599 step 4: a realm's battleground parties at one keep form one battlegroup there, before the rosters below.
+            using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
+                PulseBattlegroundBattlegroups(now);
             using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
             {
                 // #599 step 1: nearby frontier warbands link into battlegroups first, so the rosters below include them.
