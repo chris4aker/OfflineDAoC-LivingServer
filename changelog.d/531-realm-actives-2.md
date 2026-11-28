@@ -9,10 +9,11 @@ section: RvR
     power. It raises a fallen healer first, then a caster, then the nearest mate within 1,500, and never one that
     someone is already raising.
   - An Albion Infiltrator that runs from a fight it is losing to an enemy realm uses **Vanish**. It hides at once, even
-    beside its attackers, and nobody sees it for 30 seconds. Hits don't uncover it; it ends when the Infiltrator unhides,
-    as it does before it attacks again.
+    beside its attackers. For 30 seconds no enemy sees it, except a player on True Sight (#840); a gamebot on True Sight
+    doesn't see it. Hits don't uncover it; it ends when the Infiltrator unhides, as it does before it attacks again.
   - A Scout, Hunter or Ranger whose group an enemy assassin strikes uses **True Sight**. For 60 seconds it sees every
-    hidden enemy in its line of sight, at any range, as a player on True Sight does. Vanish still hides from it.
+    hidden enemy in its line of sight, at any range, as a player on True Sight does, except a stealther under Vanish,
+    which stays hidden from it (#840).
   - A hidden gamebot is uncovered by the player's rule: any melee swing, a miss included, or a spell that does damage;
     a spell that does no damage leaves it hidden. Companions are unchanged.
   - Each works as it does for a player and then waits out its 30-minute timer, so it comes once a fight. The bots buy
