@@ -13,7 +13,7 @@ namespace DOL.GS
     /// #667 step 1, the world side of <see cref="PlayerGroupOrders"/>: one order per player, given by /order or a /group
     /// word (<see cref="Give"/>), ended by its rule (<see cref="Current"/> looks at most every
     /// <see cref="CheckIntervalMilliseconds"/>), and read by the gates the group already has:
-    /// CompanionEngagementMode.Allows / Restricts (regroup's "fight nothing", attack's and assist's way through /defensive and
+    /// CompanionEngagementMode.Allows / Restricts (regroup's break-off, attack's and assist's way through /defensive and
     /// the leash), CompanionPvpEngagement.Observe (no own pick under assist or regroup; attack's target as the group's
     /// focus) and BotBrain.LeaderFocusTarget (the ordered target before a bot's own attacker). Log: GROUP_ORDER.
     /// </summary>
@@ -25,7 +25,7 @@ namespace DOL.GS
             public GameLiving Target;
             public string Via;
             public long GivenAt, LastFight, NextCheck, LastAnswer;
-            public bool SawFight;
+            public bool SawFight, Warned;
         }
 
         private static readonly ConditionalWeakTable<GamePlayer, State> States = new();
@@ -50,7 +50,7 @@ namespace DOL.GS
             eFSMStateType? state = (bot.Brain as BotBrain)?.FSM?.GetCurrentState()?.StateType;
             bool botCompanion = !bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper;
             return Obeys(CompanionRvrEngage.GroupLeader(bot) == player, BotHumanBinding.Commands(player, bot, bot.Group),
-                bot.Stance == eBotStance.Passive, state == eFSMStateType.PASSIVE, botCompanion && state == eFSMStateType.IDLE);
+                HeldBack(bot.Stance, state, botCompanion), false, false);
         }
 
         /// <summary>
@@ -124,6 +124,7 @@ namespace DOL.GS
                     break;
             }
             given = true;
+            lock (state) state.Warned = warn;
             Note(player, "given", order, target, via, obeying.Count, warn, null);
             Answer(player, state, obeying, order, target, warn);
             return via == "command" ? $"Your group: {Word(order).ToUpperInvariant()}. {Does(order)}" : null;
@@ -134,7 +135,7 @@ namespace DOL.GS
             GroupOrder.Attack => "They go for your target now, until it falls, you give another order or the fight ends.",
             GroupOrder.Assist => "They fight only your fight and switch when you switch, until your next order or the fight ends.",
             GroupOrder.Hold => "They only defend themselves and healers keep healing, until your next order, /aggressive or /defensive.",
-            GroupOrder.Regroup => "They break off and come back to you.",
+            GroupOrder.Regroup => "They break off and come back to you, then defend you and the group; one that can't get back (rooted, or below half health) fights back.",
             _ => string.Empty,
         };
 
@@ -149,6 +150,13 @@ namespace DOL.GS
             if (order == GroupOrder.None) return false;
             Give(player, order, "chat", out bool given);
             return given;
+        }
+
+        /// <summary>The order running now was given with the warning (an attack into a fight #664 would back off from).</summary>
+        public static bool Warned(GamePlayer player)
+        {
+            if (Current(player) == GroupOrder.None || !States.TryGetValue(player, out State state)) return false;
+            lock (state) return state.Warned;
         }
 
         /// <summary>The player's order now (its end rule looked at first), or None.</summary>
@@ -186,7 +194,10 @@ namespace DOL.GS
             return order != GroupOrder.None && Obeys(bot, leader) ? leader : null;
         }
 
-        /// <summary>Regroup's gate: a bot of the group fights nothing hostile until it is back at the player.</summary>
+        /// <summary>
+        /// Regroup's gate (<see cref="MayFight(GroupOrder, bool, bool, bool, bool, int)"/>): a bot of the group opens nothing
+        /// on the way back and fights back only when it can't get away; once back it defends the player and the group.
+        /// </summary>
         public static bool MayFight(GameLiving actor, GameLiving target)
         {
             if (target == null) return true;
@@ -195,9 +206,9 @@ namespace DOL.GS
             GameBot bot = OwnerBot(actor);
             if (target.Realm != eRealm.None && target.Realm == bot.Realm) return true; // a heal target, a guard, a merchant
             bool back = bot.CurrentRegionID == leader.CurrentRegionID && bot.IsWithinRadius(leader, RegroupRadius);
-            bool hitsMe = target.TargetObject == actor && (target.IsAttacking || target.IsCasting) ||
-                actor.attackComponent?.AttackerTracker?.ContainsAttacker(target) == true;
-            return MayFight(order, back, hitsMe);
+            bool hitsMe = CompanionRvrEngage.HitsUs(bot, actor, target);
+            bool hitsGroup = back && !hitsMe && CompanionRvrEngage.HittingGroup(leader, target);
+            return MayFight(order, back, hitsMe, hitsGroup, actor.MaxSpeed <= 0, actor.HealthPercent);
         }
 
         /// <summary>Regroup governs this bot or pet, so its brain drops what <see cref="MayFight(GameLiving, GameLiving)"/> refuses.</summary>

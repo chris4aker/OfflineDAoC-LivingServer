@@ -10,7 +10,8 @@ section: Bots and companions
   - **assist**: they fight only your fight and switch when you switch. They pick nothing of their own, but each one
     still fights back what hits it, and tanks still protect a groupmate.
   - **hold**: the same as `/hold`.
-  - **regroup**: they break off and come back to you, and only fight again once they're beside you. Healers keep healing.
+  - **regroup**: they break off and come back to you. Once beside you they defend you and the group; one that can't get
+    back (rooted, or below half health) fights back what is hitting it. Healers keep healing.
   - An order lasts until your next order or the end of the fight. `/aggressive`, `/defensive` and `/hold` end it too.
   - Give it as a slash command or a macro (`/macro Atk /order attack`), or say the word alone in `/group` (`attack`,
     `assist me`, `hold`, `regroup`). `/order` alone lists the orders.

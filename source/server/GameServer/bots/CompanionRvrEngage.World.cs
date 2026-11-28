@@ -131,7 +131,7 @@ namespace DOL.GS
             target.CurrentRegionID == leader.CurrentRegionID && CompanionPvpEngagement.Enemy(leader, target);
 
         /// <summary>The bot, its pet and its owner bot: who "me" is for /hold's self-defence.</summary>
-        private static bool HitsUs(GameBot bot, GameLiving actor, GameLiving target)
+        internal static bool HitsUs(GameBot bot, GameLiving actor, GameLiving target)
         {
             if (target == null) return false;
             GameLiving pet = bot.ControlledBrain?.Body;

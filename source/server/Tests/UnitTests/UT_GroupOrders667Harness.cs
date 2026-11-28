@@ -46,10 +46,20 @@ namespace DOL.GS.Tests
             public StandInPlayer Player;
             public readonly List<GameBot> Group = new();
             public GameBot Enemy;
+            public readonly List<GameBot> Enemies = new();
             public void Dispose() => World.Dispose();
         }
 
-        private static Scene Make(int enemyDistance, bool defensive = false, bool switchOn = true, int companions = 3)
+        private static readonly eCharacterClass[] EnemyClasses =
+        [
+            eCharacterClass.Warrior, eCharacterClass.Runemaster, eCharacterClass.Berserker, eCharacterClass.Hunter,
+            eCharacterClass.Shaman, eCharacterClass.Thane, eCharacterClass.Spiritmaster,
+        ];
+
+        /// <param name="farCompanion">Above 0: the first companion stands this far from the player, toward the enemy.</param>
+        /// <param name="moreEnemies">Enemy gamebots standing beside <see cref="Scene.Enemy"/>.</param>
+        private static Scene Make(int enemyDistance, bool defensive = false, bool switchOn = true, int companions = 3,
+            int farCompanion = 0, int moreEnemies = 0)
         {
             var settings = switchOn ? null : new Dictionary<string, object> { [PlayerGroupOrders.PropertyKey] = false };
             var scene = new Scene { World = new RvrFightWorld(667, settings) };
@@ -66,7 +76,9 @@ namespace DOL.GS.Tests
             for (int i = 0; i < companions; i++)
             {
                 GameBot bot = world.NewBot(eRealm.Albion, Classes[i % Classes.Length], 22, $"Companion{i}", "GroupPve");
-                Assert.That(world.Place(bot, region, X - 100 - 40 * i, Y + 40 * i), Is.True, "companion placed");
+                bool far = i == 0 && farCompanion > 0;
+                Assert.That(world.Place(bot, region, far ? X + farCompanion : X - 100 - 40 * i, Y + 40 * i), Is.True,
+                    "companion placed");
                 members.Add(bot);
                 bot.Group = group;
                 Assert.That(bot.EnterPlayerLedGroup(scene.Player), Is.True, "the gamebot joins the player's group");
@@ -74,18 +86,26 @@ namespace DOL.GS.Tests
             }
             scene.Enemy = world.NewBot(eRealm.Midgard, eCharacterClass.Healer, 22, "Enemy", "RvR");
             Assert.That(world.Place(scene.Enemy, region, X + enemyDistance, Y), Is.True, "enemy placed");
+            for (int j = 0; j < moreEnemies; j++)
+            {
+                GameBot more = world.NewBot(eRealm.Midgard, EnemyClasses[j % EnemyClasses.Length], 22, $"Enemy{j + 1}", "RvR");
+                Assert.That(world.Place(more, region, X + enemyDistance, Y + 30 * (j + 1)), Is.True, "enemy placed");
+                scene.Enemies.Add(more);
+            }
             world.Tick();
             scene.Enemy.Brain?.Stop();
+            foreach (GameBot more in scene.Enemies)
+                more.Brain?.Stop();
             if (defensive)
                 CompanionEngagementMode.Set(scene.Player, true);
             return scene;
         }
 
         /// <summary>The companions think through Observe only (brains stopped): what the group's rules order, nothing else.</summary>
-        private static bool ObserveFor(Scene scene, double seconds)
+        private static bool ObserveFor(Scene scene, double seconds, bool stop = true)
         {
-            foreach (GameBot bot in scene.Group)
-                bot.Brain?.Stop();
+            if (stop)
+                StopBrains(scene);
             bool engaged = false;
             int ticks = (int)(seconds * RvrFightWorld.TicksPerSecond);
             for (int i = 0; i < ticks; i++)
@@ -98,7 +118,22 @@ namespace DOL.GS.Tests
             return engaged;
         }
 
-        private static bool Engaged(Scene scene) => scene.Group.Any(bot => bot.Brain is BotBrain { HasAggro: true });
+        private static bool Engaged(Scene scene) => scene.Group.Any(Engaged);
+
+        private static bool Engaged(GameBot bot) => bot.Brain is BotBrain { HasAggro: true };
+
+        private static void StopBrains(Scene scene)
+        {
+            foreach (GameBot bot in scene.Group)
+                bot.Brain?.Stop();
+        }
+
+        /// <summary>The enemy swings at <paramref name="victim"/> (its brain is stopped: only the attack state is set).</summary>
+        private static void Swings(GameBot enemy, GameLiving victim)
+        {
+            enemy.TargetObject = victim;
+            enemy.attackComponent.AttackState = true;
+        }
 
         [Test]
         public void AttackSendsADefensiveGroupOntoATargetItWouldNotTakeOnItsOwn()
@@ -216,6 +251,175 @@ namespace DOL.GS.Tests
                 Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "assist me"), Is.False, "ordinary chat");
                 Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None));
             });
+        }
+
+        [Test]
+        public void BackFromRegroupTheGroupDefendsThePlayerBeingHit()
+        {
+            // Review of #824, point 2: once back, a bot defends the player and the group, not only itself.
+            using Scene scene = Make(1_500);
+            StopBrains(scene);
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "regroup"), Is.True);
+            foreach (GameBot bot in scene.Group)
+                Assert.That(CompanionEngagementMode.Allows(bot, scene.Enemy), Is.False, $"{bot.Name}: opens nothing");
+            Swings(scene.Enemy, scene.Player);
+            Assert.Multiple(() =>
+            {
+                Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Regroup));
+                foreach (GameBot bot in scene.Group)
+                {
+                    Assert.That(bot.IsWithinRadius(scene.Player, PlayerGroupOrders.RegroupRadius), Is.True, $"{bot.Name}: back");
+                    Assert.That(CompanionEngagementMode.Restricts(bot), Is.True, $"{bot.Name}: regroup governs it");
+                    Assert.That(CompanionEngagementMode.Allows(bot, scene.Enemy), Is.True,
+                        $"{bot.Name}: defends the player who is being hit");
+                }
+            });
+        }
+
+        [Test]
+        public void OnTheWayBackABotFightsBackOnlyWhenRootedOrHurt()
+        {
+            // Review of #824, point 2: a bot not back yet breaks off, unless it can't get away.
+            using Scene scene = Make(1_500, farCompanion: 900);
+            StopBrains(scene);
+            GameBot away = scene.Group[0];
+            Assert.That(away.IsWithinRadius(scene.Player, PlayerGroupOrders.RegroupRadius), Is.False, "precondition: not back");
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "regroup"), Is.True);
+            Swings(scene.Enemy, away);
+            Assert.That(CompanionEngagementMode.Allows(away, scene.Enemy), Is.False, "full health and free to move: breaks off");
+            Assert.That(CompanionEngagementMode.Allows(scene.Group[1], scene.Enemy), Is.True,
+                "a back bot defends a groupmate still on its way");
+
+            short speed = away.MaxSpeedBase;
+            away.MaxSpeedBase = 0;
+            Assert.That(away.MaxSpeed, Is.LessThanOrEqualTo(0), "precondition: rooted");
+            Assert.That(CompanionEngagementMode.Allows(away, scene.Enemy), Is.True, "rooted: fights back");
+            Assert.That(CompanionEngagementMode.Allows(away, scene.Group[1]), Is.True, "a friend is never refused");
+            away.MaxSpeedBase = speed;
+            Assert.That(CompanionEngagementMode.Allows(away, scene.Enemy), Is.False, "free again: breaks off again");
+
+            away.Health = away.MaxHealth * (PlayerGroupOrders.RegroupFightBackHealthPercent - 10) / 100;
+            Assert.That(CompanionEngagementMode.Allows(away, scene.Enemy), Is.True, "below half health: fights back");
+            scene.Enemy.attackComponent.AttackState = false;
+            scene.Enemy.TargetObject = null;
+            Assert.That(CompanionEngagementMode.Allows(away, scene.Enemy), Is.False, "hurt, but nothing hits it: opens nothing");
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Regroup), "still regrouping");
+        }
+
+        [Test]
+        public void APerBotHoldWinsOverAPartyOrder()
+        {
+            // Review of #824, point 3: passive and /bot hold keep a bot out of the group's orders in the world.
+            using Scene scene = Make(1_500, companions: 4);
+            StopBrains(scene);
+            GameBot free = scene.Group[0], passive = scene.Group[2], suspended = scene.Group[3];
+            var brain = (BotBrain)suspended.Brain;
+            brain.FSM.SetCurrentState(eFSMStateType.PASSIVE); // /bot hold
+            passive.Stance = eBotStance.Passive;
+            Assert.That(brain.FSM.GetCurrentState()?.StateType, Is.EqualTo(eFSMStateType.PASSIVE), "precondition: /bot hold");
+            List<GameBot> obeying = PlayerGroupOrders.Obeying(scene.Player);
+            Assert.That(obeying, Does.Not.Contain(suspended).And.Not.Contain(passive).And.Contain(free));
+
+            scene.Player.TargetObject = scene.Enemy;
+            PlayerGroupOrders.Give(scene.Player, GroupOrder.Attack, "command", out bool given);
+            Assert.That(given, Is.True);
+            Assert.Multiple(() =>
+            {
+                foreach (GameBot held in new[] { suspended, passive })
+                {
+                    Assert.That(PlayerGroupOrders.Obeys(held, scene.Player), Is.False, $"{held.Name}: keeps to its own order");
+                    Assert.That(PlayerGroupOrders.LetsThrough(held, scene.Enemy), Is.False, $"{held.Name}: no way through");
+                    Assert.That(PlayerGroupOrders.FocusFor(held, out bool applies), Is.Null, $"{held.Name}: no focus");
+                    Assert.That(applies, Is.False, $"{held.Name}: the order doesn't set its target");
+                    Assert.That(Engaged(held), Is.False, $"{held.Name}: the attack didn't engage it");
+                }
+                Assert.That(PlayerGroupOrders.LetsThrough(free, scene.Enemy), Is.True, "control: the free bot is let through");
+                Assert.That(Engaged(free), Is.True, "control: the free bot took the target");
+            });
+            ObserveFor(scene, 2, stop: false);
+            Assert.That(Engaged(suspended) || Engaged(passive), Is.False, "and they stay out while the group fights");
+        }
+
+        [Test]
+        public void InAGamebotLedGroupTheOrderIsRefused()
+        {
+            // Review of #824, point 3: the same rule as /pull when a gamebot leads the player's group.
+            using Scene scene = Make(1_500);
+            Group group = scene.Player.Group;
+            BotLedGroups.SetHosted(group, new BotLedGroups.HostedView(scene.Player, "g-667"));
+            try
+            {
+                Assert.That(BotLedGroups.HostedPlayerOf(group), Is.SameAs(scene.Player), "precondition: a bot-led group");
+                scene.Player.TargetObject = scene.Enemy;
+                string reply = PlayerGroupOrders.Give(scene.Player, GroupOrder.Attack, "command", out bool given);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(given, Is.False);
+                    Assert.That(reply, Is.EqualTo(BotLedGroups.BotLeadsMessage(group.LivingLeader?.Name)));
+                    Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "attack"), Is.False, "the word stays talk");
+                    Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None));
+                    Assert.That(Engaged(scene), Is.False, "nobody was sent in");
+                });
+            }
+            finally
+            {
+                BotLedGroups.ClearHosted(group);
+            }
+        }
+
+        [Test]
+        public void AnAttackIntoALosingFightIsWarnedButCarriedOut()
+        {
+            // Review of #824, point 3 (owner answer 5): the player and one companion against eight: #664 would back off.
+            using (Scene even = Make(900, companions: 1))
+            {
+                even.Player.TargetObject = even.Enemy;
+                PlayerGroupOrders.Give(even.Player, GroupOrder.Attack, "command", out bool given);
+                Assert.That(given, Is.True);
+                Assert.That(PlayerGroupOrders.Warned(even.Player), Is.False, "control: two against one is no warning");
+            }
+            using Scene scene = Make(900, companions: 1, moreEnemies: 7);
+            Assert.That(CompanionRvrEngage.SizeUpAgainst(scene.Player, scene.Enemy).Call, Is.EqualTo(RvrSightCall.BackOff),
+                "precondition: #664's size-up calls it a losing fight");
+            scene.Player.TargetObject = scene.Enemy;
+            PlayerGroupOrders.Give(scene.Player, GroupOrder.Attack, "command", out bool warnedGiven);
+            Assert.Multiple(() =>
+            {
+                Assert.That(warnedGiven, Is.True, "the order is given");
+                Assert.That(PlayerGroupOrders.Warned(scene.Player), Is.True, "with the warning");
+                Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Attack));
+                Assert.That(Engaged(scene), Is.True, "and the group goes in anyway");
+            });
+        }
+
+        [Test]
+        public void AnOrderEndsFiveSecondsAfterTheFight()
+        {
+            // Review of #824, point 3: the issue's "an order ends 5 s after the fight", through GroupInCombat and Check.
+            using Scene scene = Make(4_000);
+            StopBrains(scene);
+            Assert.That(PlayerGroupOrders.FromGroupChat(scene.Player, "assist"), Is.True);
+            void Run(double seconds, bool fighting)
+            {
+                for (int i = 0; i < (int)(seconds * RvrFightWorld.TicksPerSecond); i++)
+                {
+                    scene.World.Tick();
+                    if (fighting)
+                        scene.Player.LastAttackTickPvP = GameLoop.GameLoopTime;
+                    PlayerGroupOrders.Current(scene.Player);
+                }
+            }
+            Run(2, fighting: true);
+            Assert.That(scene.Player.InCombat, Is.True, "precondition: the player is fighting");
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Assist), "in the fight");
+            long lastSwing = scene.Player.LastAttackTickPvP;
+            // In combat until IN_COMBAT_DURATION after the last swing, then 5 s of quiet.
+            Run((GameLiving.IN_COMBAT_DURATION + PlayerGroupOrders.FightOverQuietMilliseconds - 1_000) / 1000.0, fighting: false);
+            Assert.That(scene.Player.InCombat, Is.False, "precondition: the fight is over");
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.Assist),
+                $"under 5 s of quiet: goes on ({GameLoop.GameLoopTime - lastSwing} ms after the last swing)");
+            Run(2, fighting: false);
+            Assert.That(PlayerGroupOrders.Current(scene.Player), Is.EqualTo(GroupOrder.None), "5 s after the fight: ended");
         }
 
         [Test]

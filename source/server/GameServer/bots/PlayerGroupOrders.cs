@@ -141,12 +141,27 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>Regroup: a bot still on its way back fights back below this share of its health (in percent). A design value.</summary>
+        public const int RegroupFightBackHealthPercent = 50;
+
         /// <summary>
-        /// Regroup's gate for one bot of the group: it fights nothing hostile on the way back ("break off"), even what hits it;
-        /// once back at the player it defends itself again. Every other order leaves the gate to the stance rules. Pure.
+        /// Regroup's gate for one bot of the group (review of #824, point 2). Once back at the player it defends him and the
+        /// group: anything hitting it, the player or a groupmate (<paramref name="hitsGroup"/>). On the way back it breaks
+        /// off and opens nothing, but fights back what is hitting it when it can't get away: it can't move (rooted,
+        /// <paramref name="cannotMove"/>) or it is below <see cref="RegroupFightBackHealthPercent"/>% health. Every other
+        /// order leaves the gate to the stance rules. Pure.
         /// </summary>
-        public static bool MayFight(GroupOrder order, bool back, bool hitsMe) =>
-            order != GroupOrder.Regroup || back && hitsMe;
+        public static bool MayFight(GroupOrder order, bool back, bool hitsMe, bool hitsGroup, bool cannotMove, int healthPercent) =>
+            order != GroupOrder.Regroup ||
+            (back ? hitsMe || hitsGroup : hitsMe && (cannotMove || healthPercent < RegroupFightBackHealthPercent));
+
+        /// <summary>
+        /// The per-bot holds win over a party order (owner answer 4): the passive stance, /bot hold (the brain's PASSIVE
+        /// state) and, for a /bot companion, /bot stay (IDLE; other bots pass through IDLE in their own work). Pure.
+        /// </summary>
+        public static bool HeldBack(eBotStance stance, eFSMStateType? state, bool botCompanion) =>
+            stance == eBotStance.Passive || state == eFSMStateType.PASSIVE ||
+            botCompanion && state == eFSMStateType.IDLE;
 
         /// <summary>
         /// The order lets this target through /defensive's range and the RvR leash: attack's own target, or under assist the

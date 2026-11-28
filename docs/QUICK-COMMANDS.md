@@ -41,7 +41,7 @@ modifier, create one bot. Start small and increase population for your PC's capa
 | `/aggressive` | Helpers and companions automatically engage what you attack, while retaining defensive reactions. |
 | `/defensive` | Helpers and companions stay near you and engage nearby threats, letting you pull mobs back to the group; useful for harder content. |
 | `/hold` | Every bot in your group (helpers, companions and gamebots grouped with you) only fights back what attacks it: no new fights, no assisting, no pulls. Healers keep healing. For sneaking past a fight or waiting at a keep. `/aggressive` or `/defensive` ends it. |
-| `/order attack`, `/order assist`, `/order hold`, `/order regroup` | Order your group in a fight; a macro works too (`/macro Atk /order attack`), and so does the word alone in `/group`. **attack**: everyone goes for your selected target now. **assist**: they fight only your fight and switch when you switch. **hold**: as `/hold`. **regroup**: they break off and come back to you. An order lasts until your next order or the end of the fight. `/order` alone lists them. |
+| `/order attack`, `/order assist`, `/order hold`, `/order regroup` | Order your group in a fight; a macro works too (`/macro Atk /order attack`), and so does the word alone in `/group`. **attack**: everyone goes for your selected target now. **assist**: they fight only your fight and switch when you switch. **hold**: as `/hold`. **regroup**: they break off and come back to you, and defend you and the group once back. An order lasts until your next order or the end of the fight. `/order` alone lists them. |
 
 `/spawn 40` and `/spawn 80` are **not** the raid-size commands. Use `/raid` first.
 

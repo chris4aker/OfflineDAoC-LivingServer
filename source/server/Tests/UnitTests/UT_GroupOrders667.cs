@@ -124,15 +124,49 @@ public class UT_GroupOrders667
     }
 
     [Test]
-    public void RegroupFightsNothingOnTheWayBack()
+    public void RegroupOpensNothingOnTheWayBackAndDefendsTheGroupOnceBack()
+    {
+        const GroupOrder R = GroupOrder.Regroup;
+        int low = O.RegroupFightBackHealthPercent - 1, full = 100;
+        Assert.Multiple(() =>
+        {
+            // On the way back: break off, even what hits it, while it can still get away.
+            Assert.That(O.MayFight(R, back: false, hitsMe: true, hitsGroup: false, cannotMove: false, full), Is.False,
+                "break off while it can get away");
+            Assert.That(O.MayFight(R, back: false, hitsMe: false, hitsGroup: true, cannotMove: false, full), Is.False,
+                "on the way back it doesn't turn for a groupmate");
+            Assert.That(O.MayFight(R, back: false, hitsMe: true, hitsGroup: false, cannotMove: true, full), Is.True,
+                "rooted: fights back what is hitting it");
+            Assert.That(O.MayFight(R, back: false, hitsMe: true, hitsGroup: false, cannotMove: false, low), Is.True,
+                "below half health: fights back");
+            Assert.That(O.MayFight(R, back: false, hitsMe: true, hitsGroup: false, cannotMove: false,
+                O.RegroupFightBackHealthPercent), Is.False, "at exactly half it still breaks off");
+            Assert.That(O.MayFight(R, back: false, hitsMe: false, hitsGroup: false, cannotMove: true, low), Is.False,
+                "rooted and hurt, but nothing hits it: opens nothing");
+            // Back: defends itself, the player and the group, and opens nothing else.
+            Assert.That(O.MayFight(R, back: true, hitsMe: false, hitsGroup: false, cannotMove: false, full), Is.False,
+                "back, but opens nothing");
+            Assert.That(O.MayFight(R, back: true, hitsMe: true, hitsGroup: false, cannotMove: false, full), Is.True,
+                "back: defends itself");
+            Assert.That(O.MayFight(R, back: true, hitsMe: false, hitsGroup: true, cannotMove: false, full), Is.True,
+                "back: defends the player and the group");
+            foreach (GroupOrder order in new[] { GroupOrder.None, GroupOrder.Attack, GroupOrder.Assist, GroupOrder.Hold })
+                Assert.That(O.MayFight(order, false, false, false, false, full), Is.True, $"{order} leaves the gate to the stance rules");
+        });
+    }
+
+    [Test]
+    public void ThePerBotHoldsAreReadFromTheBot()
     {
         Assert.Multiple(() =>
         {
-            Assert.That(O.MayFight(GroupOrder.Regroup, back: false, hitsMe: true), Is.False, "break off, even what hits it");
-            Assert.That(O.MayFight(GroupOrder.Regroup, back: true, hitsMe: false), Is.False, "back, but opens nothing");
-            Assert.That(O.MayFight(GroupOrder.Regroup, back: true, hitsMe: true), Is.True, "back: defends itself");
-            foreach (GroupOrder order in new[] { GroupOrder.None, GroupOrder.Attack, GroupOrder.Assist, GroupOrder.Hold })
-                Assert.That(O.MayFight(order, false, false), Is.True, $"{order} leaves the gate to the stance rules");
+            Assert.That(O.HeldBack(eBotStance.Passive, null, botCompanion: false), Is.True, "the passive stance");
+            Assert.That(O.HeldBack(eBotStance.Auto, eFSMStateType.PASSIVE, botCompanion: false), Is.True, "/bot hold (PASSIVE)");
+            Assert.That(O.HeldBack(eBotStance.Auto, eFSMStateType.IDLE, botCompanion: true), Is.True, "/bot stay (a /bot companion in IDLE)");
+            Assert.That(O.HeldBack(eBotStance.Auto, eFSMStateType.IDLE, botCompanion: false), Is.False,
+                "a gamebot or helper passing through IDLE in its own work");
+            Assert.That(O.HeldBack(eBotStance.Auto, eFSMStateType.FOLLOW, botCompanion: true), Is.False, "following: obeys");
+            Assert.That(O.HeldBack(eBotStance.Auto, null, botCompanion: true), Is.False, "no state (a stopped brain): obeys");
         });
     }
 
