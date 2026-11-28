@@ -446,8 +446,8 @@ namespace DOL.GS.Tests
             }
         }
 
-        private static L.Force Eight(string id, int heads = 8) =>
-            new(id, eRealm.Albion, heads, 50, 1, MemberIds: Enumerable.Range(0, heads).Select(i => (long)(id.GetHashCode() & 0xFFFF) * 100 + i).ToArray());
+        private static L.Force Eight(string id, int heads = 8, int level = 50) =>
+            new(id, eRealm.Albion, heads, level, 1, MemberIds: Enumerable.Range(0, heads).Select(i => (long)(id.GetHashCode() & 0xFFFF) * 100 + i).ToArray());
 
         private static L.LiveObjective Keep(string id) =>
             new(id, "Zerg keep", L.Intent.AssaultKeep, eRealm.Hibernia, 200, 100, 100, 0, false, 0, 0, 5, 2);
@@ -542,6 +542,132 @@ namespace DOL.GS.Tests
                 Assert.That(L.RosterOf(id)?.Attackers, Is.EqualTo(0));
                 Assert.That(L.IsSiegeEvent(id, t0 + 1), Is.True);
                 Assert.That(L.IsSiegeEvent("rvr-relic-carrier-1", t0 + 1), Is.False, "a relic carrier's escort is not the zerg's attack");
+                return 0;
+            });
+
+        // ---- the follower left out (#816 review) ---------------------------------------------------------------------
+
+        private static L.LiveObjective Home(string id) =>
+            new(id, "Zerg home keep", L.Intent.AssaultKeep, eRealm.Albion, 1, 100, 100, 0, false, 0, 0, 5, 2);
+
+        /// <summary>One side of an event's roster (Attackers, Defenders or ThirdRealm), as the defence calls fill it.</summary>
+        private static Dictionary<string, int> Side(string id, string side)
+        {
+            var events = (System.Collections.IDictionary)typeof(L).GetField("Events",
+                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).GetValue(null);
+            object active = events[id];
+            return (Dictionary<string, int>)active.GetType().GetField(side).GetValue(active);
+        }
+
+        [Test]
+        public void A_follower_outcome_is_in_then_another_event_then_a_defence_then_the_level_then_the_cap()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(L.ZergFollowerOutcome(true, true, true, 1, false), Is.EqualTo(L.BattlegroupLeave.None), "already listed: in");
+                Assert.That(L.ZergFollowerOutcome(false, true, true, 1, false), Is.EqualTo(L.BattlegroupLeave.Event));
+                Assert.That(L.ZergFollowerOutcome(false, false, true, 1, false), Is.EqualTo(L.BattlegroupLeave.Defense));
+                Assert.That(L.ZergFollowerOutcome(false, false, false, ForceStrength.SiegeMinimumLevel - 1, false),
+                    Is.EqualTo(L.BattlegroupLeave.Level));
+                Assert.That(L.ZergFollowerOutcome(false, false, false, 50, false), Is.EqualTo(L.BattlegroupLeave.Cap));
+                Assert.That(L.ZergFollowerOutcome(false, false, false, 50, true), Is.EqualTo(L.BattlegroupLeave.None));
+                Assert.That(L.BattlegroupLeaveRests(L.BattlegroupLeave.Defense), Is.True);
+                Assert.That(L.BattlegroupLeaveRests(L.BattlegroupLeave.Level), Is.True);
+            });
+        }
+
+        [Test]
+        public void A_follower_a_defence_called_before_the_pulse_stays_in_that_defence_and_leaves_the_zerg_with_why_event() =>
+            WithSiegeEvents(() =>
+            {
+                string id = Guid.NewGuid().ToString();
+                long t0 = GameLoop.GameLoopTime;
+                L.LiveObjective[] objectives = [Keep(id)];
+                Assert.That(L.ForceStart(objectives[0], eRealm.Albion, t0, out _), Is.True);
+                Assert.That(L.ChooseOrJoin(Eight("a"), objectives, t0, 0)?.TargetId, Is.EqualTo(id));
+                L.PulseBattlegroups(new[] { C("a", 0), C("b", 100), C("c", 200) }, t0, Free(72), false);
+                L.ReportZergAttack("a", id, t0);
+                // In the seconds before the next pulse, a player's attack on an Albion keep calls b into its defence
+                // (PulseDefense: b goes on the defence's roster and its bots take the defence's duty lease).
+                string home = Guid.NewGuid().ToString();
+                Assert.That(L.BeginDefenseResponse(Home(home), eRealm.Midgard, "player", t0), Is.True);
+                Side(home, "Defenders")["b"] = 8;
+
+                var enrolled = L.EnrolZergFollowers(force => Eight(force), t0 + 1);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(enrolled.Select(e => (e.ForceId, e.Leave)),
+                        Is.EquivalentTo(new[] { ("b", L.BattlegroupLeave.Event), ("c", L.BattlegroupLeave.None) }));
+                    Assert.That(L.RosterOf(home).Value.DefenderForces, Does.Contain("b"), "the defence keeps b");
+                    Assert.That(L.RosterOf(id).Value.AttackerForces, Is.EquivalentTo(new[] { "a", "c" }), "b is not moved into the attack");
+                });
+                var changes = L.PulseBattlegroups(new[] { C("a", 0, eventTarget: id), C("b", 100, eventTarget: home), C("c", 200, eventTarget: id) },
+                    t0 + 10_000, Free(48), false, null, Free(72));
+                Assert.Multiple(() =>
+                {
+                    Assert.That(changes.Any(c => c.What == "left" && c.ForceId == "b" && c.Why == "event"), Is.True, string.Join("; ", changes));
+                    Assert.That(L.BattlegroupOf("a").Members, Is.EquivalentTo(new[] { "a", "c" }));
+                    Assert.That(L.BattlegroupResting("b", t0 + 10_001), Is.True, "it rests, as when a zerg ends by why=event");
+                });
+                return 0;
+            });
+
+        [Test]
+        public void When_the_zergs_event_is_a_player_attack_defence_its_followers_leave_with_why_defense_not_cap() =>
+            WithSiegeEvents(() =>
+            {
+                long t0 = GameLoop.GameLoopTime;
+                string home = Guid.NewGuid().ToString();
+                Assert.That(L.BeginDefenseResponse(Home(home), eRealm.Midgard, "player", t0), Is.True);
+                Side(home, "Defenders")["a"] = 8; // the lead answered the defence (the review does not take one up today)
+                L.PulseBattlegroups(new[] { C("a", 0), C("b", 100), C("c", 200) }, t0, Free(72), false);
+                L.ReportZergAttack("a", home, t0);
+
+                var enrolled = L.EnrolZergFollowers(force => Eight(force), t0 + 1);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(enrolled.Select(e => (e.ForceId, e.Leave)),
+                        Is.EquivalentTo(new[] { ("b", L.BattlegroupLeave.Defense), ("c", L.BattlegroupLeave.Defense) }));
+                    Assert.That(L.RosterOf(home).Value.DefenderForces, Is.EquivalentTo(new[] { "a" }), "the defence's calls are its own");
+                });
+                var changes = L.PulseBattlegroups(new[] { C("a", 0, eventTarget: home), C("b", 100), C("c", 200) },
+                    t0 + 10_000, Free(48), false, null, Free(72));
+                Assert.Multiple(() =>
+                {
+                    Assert.That(changes.Where(c => c.What == "left").Select(c => (c.ForceId, c.Why)),
+                        Is.EquivalentTo(new[] { ("b", "defense"), ("c", "defense") }), string.Join("; ", changes));
+                    Assert.That(L.BattlegroupResting("b", t0 + 10_001), Is.True);
+                });
+                return 0;
+            });
+
+        [Test]
+        public void A_follower_below_the_siege_level_is_not_enrolled_and_leaves_with_why_level() =>
+            WithSiegeEvents(() =>
+            {
+                string id = Guid.NewGuid().ToString();
+                long t0 = GameLoop.GameLoopTime;
+                L.LiveObjective[] objectives = [Keep(id)];
+                Assert.That(L.ForceStart(objectives[0], eRealm.Albion, t0, out _), Is.True);
+                Assert.That(L.ChooseOrJoin(Eight("a"), objectives, t0, 0)?.TargetId, Is.EqualTo(id));
+                L.PulseBattlegroups(new[] { C("a", 0), C("b", 100), C("c", 200) }, t0, Free(72), false);
+                L.ReportZergAttack("a", id, t0);
+
+                var enrolled = L.EnrolZergFollowers(force => Eight(force, level: force == "b" ? ForceStrength.SiegeMinimumLevel - 1 : 50), t0 + 1);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(enrolled.Select(e => (e.ForceId, e.Leave)),
+                        Is.EquivalentTo(new[] { ("b", L.BattlegroupLeave.Level), ("c", L.BattlegroupLeave.None) }));
+                    Assert.That(L.RosterOf(id).Value.AttackerForces, Is.EquivalentTo(new[] { "a", "c" }));
+                });
+                var changes = L.PulseBattlegroups(new[] { C("a", 0, eventTarget: id), C("b", 100), C("c", 200, eventTarget: id) },
+                    t0 + 10_000, Free(48), false, null, Free(72));
+                Assert.Multiple(() =>
+                {
+                    Assert.That(changes.Any(c => c.What == "left" && c.ForceId == "b" && c.Why == "level"), Is.True, string.Join("; ", changes));
+                    Assert.That(L.BattlegroupOf("a").Members, Is.EquivalentTo(new[] { "a", "c" }));
+                    Assert.That(L.BattlegroupResting("b", t0 + 10_001), Is.True);
+                });
                 return 0;
             });
 
