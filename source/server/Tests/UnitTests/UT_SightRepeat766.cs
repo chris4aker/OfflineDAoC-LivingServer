@@ -122,6 +122,80 @@ public class UT_SightRepeat766
     }
 
     [Test]
+    public void ABiggerGroupWalkingUpDuringAQuietHoldBacksOff()
+    {
+        var controller = new AutonomousWorldBotController();
+        var bot = MakeBot(430000, 320000);
+        Remember(controller, Contact, 3, FirstCall);
+        Field("_sightFreshTick").SetValue(controller, FirstCall);
+        long now = FirstCall + 200_000;
+        var three = new GameLiving[] { MakeBot(Contact.X, Contact.Y), MakeBot(Contact.X + 200, Contact.Y), MakeBot(Contact.X, Contact.Y + 200) };
+        StartBackOff(controller, bot, three, now);
+        Assert.That(Field("_sightHoldQuiet").GetValue(controller), Is.True, "a quiet repeat first");
+
+        // The same three again within the hold: a plain re-arm, still quiet.
+        StartBackOff(controller, bot, three, now + 5_000);
+        Assert.Multiple(() =>
+        {
+            Assert.That(Field("_sightHoldQuiet").GetValue(controller), Is.True);
+            Assert.That(Field("_sightRepeats").GetValue(controller), Is.EqualTo(1), "a re-arm is not another repeat");
+            Assert.That(Field("_sightHoldUntil").GetValue(controller), Is.EqualTo(now + 5_000 + RvrSightSizeUp.WaitMilliseconds));
+        });
+
+        // A fourth walks up within the 30 s hold: new sight, so a fresh back-off.
+        long later = now + 10_000;
+        var four = new GameLiving[] { three[0], three[1], three[2], MakeBot(Contact.X + 200, Contact.Y + 200) };
+        StartBackOff(controller, bot, four, later);
+        Assert.Multiple(() =>
+        {
+            Assert.That(Field("_sightHoldQuiet").GetValue(controller), Is.False, "no longer a quiet hold");
+            Assert.That(Field("_sightRepeats").GetValue(controller), Is.EqualTo(0));
+            Assert.That(Field("_sightContactEnemies").GetValue(controller), Is.EqualTo(4), "the memory moved to the bigger group");
+            Assert.That(Field("_sightContactTick").GetValue(controller), Is.EqualTo(later));
+            Assert.That(Field("_sightFreshTick").GetValue(controller), Is.EqualTo(later), "the chain restarts from this back-off");
+            Assert.That(Field("_sightHoldStarted").GetValue(controller), Is.EqualTo(later));
+            Assert.That(Field("_sightHoldUntil").GetValue(controller), Is.EqualTo(later + RvrSightSizeUp.WaitMilliseconds));
+        });
+    }
+
+    [Test]
+    public void AGroupElsewhereDuringAQuietHoldBacksOff()
+    {
+        var controller = new AutonomousWorldBotController();
+        var bot = MakeBot(430000, 320000);
+        Remember(controller, Contact, 3, FirstCall);
+        long now = FirstCall + 100_000;
+        StartBackOff(controller, bot, [MakeBot(Contact.X, Contact.Y)], now);
+        Assert.That(Field("_sightHoldQuiet").GetValue(controller), Is.True);
+        var elsewhere = new Vector2(Contact.X - 3_000, Contact.Y);
+        StartBackOff(controller, bot, [MakeBot(elsewhere.X, elsewhere.Y)], now + 8_000);
+        Assert.Multiple(() =>
+        {
+            Assert.That(Field("_sightHoldQuiet").GetValue(controller), Is.False);
+            Assert.That(Field("_sightContactCentre").GetValue(controller), Is.EqualTo((Vector2?)elsewhere));
+            Assert.That(Field("_sightContactEnemies").GetValue(controller), Is.EqualTo(1));
+        });
+    }
+
+    [Test]
+    public void SinceFreshCountsFromTheFirstFreshBackOffAcrossRepeats()
+    {
+        var controller = new AutonomousWorldBotController();
+        var bot = MakeBot(430000, 320000);
+        Remember(controller, Contact, 3, FirstCall);
+        Field("_sightFreshTick").SetValue(controller, FirstCall);
+        long now = FirstCall + 120_000;
+        StartBackOff(controller, bot, [MakeBot(Contact.X, Contact.Y)], now);
+        Assert.Multiple(() =>
+        {
+            Assert.That(Field("_sightHoldStarted").GetValue(controller), Is.EqualTo(now), "heldSeconds= is this hold's");
+            Assert.That(Field("_sightFreshTick").GetValue(controller), Is.EqualTo(FirstCall), "a repeat keeps the fresh back-off's time");
+        });
+        typeof(AutonomousWorldBotController).GetMethod("EndSightHold", Hidden)!.Invoke(controller, [bot, "waited", now + 30_000]);
+        Assert.That(Field("_sightFreshTick").GetValue(controller), Is.EqualTo(FirstCall), "it outlives the hold, for the next repeat");
+    }
+
+    [Test]
     public void TheFreshBackOffStillWalksAwayCallsFriendsAndLogs()
     {
         string sight = Source("AutonomousWorldBotController.SightSizeUp.cs");
@@ -131,10 +205,10 @@ public class UT_SightRepeat766
         int walk = sight.IndexOf("_sightBackOffPoint = SightBackOffPoint(bot, enemies, nearest);", StringComparison.Ordinal);
         int call = sight.IndexOf("int called = CallSightFriends(bot, enemies, now);", StringComparison.Ordinal);
         int row = sight.IndexOf("RVR_SIGHT_BACK_OFF bot=", StringComparison.Ordinal);
-        int fresh = sight.IndexOf("if (!fresh)\n            return;", StringComparison.Ordinal);
+        int fresh = sight.IndexOf("if (!fresh && !(_sightHoldQuiet &&", StringComparison.Ordinal);
         Assert.Multiple(() =>
         {
-            Assert.That(fresh, Is.GreaterThanOrEqualTo(0), "a re-arm while holding is unchanged");
+            Assert.That(fresh, Is.GreaterThanOrEqualTo(0), "a re-arm while holding is unchanged, unless a quiet hold sees new sight");
             Assert.That(repeat, Is.GreaterThan(fresh), "only a fresh call is checked for a repeat");
             Assert.That(remember, Is.GreaterThan(repeat), "a fresh call that isn't a repeat is remembered");
             Assert.That(walk, Is.GreaterThan(remember), "then walks away");
@@ -143,6 +217,9 @@ public class UT_SightRepeat766
             Assert.That(sight, Does.Contain("repeat={(_sightHoldQuiet ? \"true\" : \"false\")} repeats={_sightRepeats} "),
                 "the resume row tells a quiet hold from a fresh one");
             Assert.That(sight, Does.Contain("heldSeconds="), "and how long the hold ran");
+            Assert.That(sight, Does.Contain("sinceFreshSeconds={(_sightFreshTick == 0 ? 0 : Math.Max(0, now - _sightFreshTick) / 1000)}"),
+                "and how long since the first fresh back-off of the chain, for the owner's capped hold");
+            Assert.That(sight, Does.Contain("_sightFreshTick = now;"), "set on the fresh path only");
         });
     }
 
