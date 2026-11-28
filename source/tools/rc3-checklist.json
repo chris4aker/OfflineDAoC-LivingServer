@@ -1,0 +1,453 @@
+{
+  "title": "rc.3 PC checklists (owner decision 60A, 2026-11-28)",
+  "build": "1.2.3",
+  "sources": {
+    "503": "https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/503#issuecomment-7239425350",
+    "476": "https://github.com/chris4aker/OfflineDAoC-LivingServer/issues/476#issuecomment-7239425514"
+  },
+  "format": "rows: each must be seen (min, default 1) for PASS; {\"any\": [...]} passes on any one. count: shown, never judged. never: one line FAILs. rate: FAILs above max_per_hour. near: FAILs when a b line's point is within `within` of an earlier a line's point for the same join field. in_game: what only the screen can settle (no rows at all: IN GAME). also: the rest of the pass rule, for a reader. Field conditions: exact text, re:<regex> (searched), >n >=n <n <=n, a..b (inclusive).",
+  "issues": [
+    {
+      "issue": 766, "list": 503, "steps": "part 1 (#770)", "open": "Part 2 is not built.",
+      "checks": [
+        {
+          "id": "766-backoff",
+          "look": "RVR_SIGHT_BACK_OFF joined against AUTONOMOUS_ROUTE_RECOVERY failedDestination in region 200",
+          "rows": [{"tag": "RVR_SIGHT_BACK_OFF", "where": {"region": "200"}}],
+          "count": [{"tag": "AUTONOMOUS_ROUTE_RECOVERY", "where": {"region": "200"}}],
+          "near": [{"a": {"tag": "RVR_SIGHT_BACK_OFF", "where": {"region": "200"}}, "a_point": "to",
+                    "b": {"tag": "AUTONOMOUS_ROUTE_RECOVERY", "where": {"region": "200"}}, "b_point": "failedDestination",
+                    "join": "id", "within": 96}],
+          "also": "Region-200 route recoveries and keep-51 unreachables drop from rc.2's rates (compare with the rc.2 log)."
+        }
+      ]
+    },
+    {
+      "issue": 664, "list": 503, "steps": "steps 1-2 (#765 #814)", "bots": "your group: hired, /spawn, /bot companions and grouped gamebots",
+      "open": "Steps 3-4 (peel, #665 formation, #667 orders) are not built; #815 is open.",
+      "checks": [
+        {
+          "id": "664-engage",
+          "look": "COMPANION_RVR_ENGAGE when your group picks a target before you attack, and call=drop why=leash|sight|guards",
+          "rows": [{"tag": "COMPANION_RVR_ENGAGE", "where": {"call": "re:^(?!drop$)"}},
+                   {"tag": "COMPANION_RVR_ENGAGE", "where": {"call": "drop", "why": "re:^(leash|sight|guards)$"}}],
+          "in_game": ["In Thidranki your group engages on its own.", "With /hold it only fights back what hits it.",
+                      "An enemy that runs more than 2,250 from you is let go."]
+        }
+      ]
+    },
+    {
+      "issue": 599, "list": 503, "steps": "steps 1-3 (#789 #809 #816)", "open": "Step 4 (#821) and the #822 follow-up are open.",
+      "checks": [
+        {
+          "id": "599-battlegroup",
+          "look": "RVR_FORCE_BATTLEGROUP rows per hour (and why=stuck)",
+          "rows": [{"tag": "RVR_FORCE_BATTLEGROUP"}],
+          "count": [{"tag": "RVR_FORCE_BATTLEGROUP", "where": {"why": "stuck"}}]
+        },
+        {
+          "id": "599-assist",
+          "look": "RVR_ASSIST_CALL from=battlegroup and RVR_DECIDE pick=battlegroup",
+          "rows": [{"tag": "RVR_ASSIST_CALL", "where": {"from": "battlegroup"}},
+                   {"tag": "RVR_DECIDE", "where": {"pick": "battlegroup"}}]
+        },
+        {
+          "id": "599-zerg",
+          "look": "RVR_FORCE_ZERG what=formed, then joined|left|moved|ended",
+          "rows": [{"tag": "RVR_FORCE_ZERG", "where": {"what": "formed"}},
+                   {"tag": "RVR_FORCE_ZERG", "where": {"what": "re:^(joined|left|moved|ended)$"}}]
+        },
+        {
+          "id": "599-cluster",
+          "look": "RVR_FORCE_CLUSTER biggest= above 8, and 16-24 near a milegate outside events",
+          "rows": [{"tag": "RVR_FORCE_CLUSTER", "where": {"biggest": ">8"}}],
+          "count": [{"tag": "RVR_FORCE_CLUSTER", "where": {"biggest": "16..24"}},
+                    {"tag": "AUTONOMOUS_ROUTE_RECOVERY", "where": {"region": "200"}},
+                    {"tag": "AUTONOMOUS_STUCK_15M_RECOVERY", "where": {"region": "200"}}],
+          "also": "The 16-24 clusters are near a milegate; the region-200 route recovery and STUCK_15M rate for follower-group leaders doesn't rise from rc.2."
+        }
+      ]
+    },
+    {
+      "issue": 572, "list": 503, "steps": "steps 1, 2, 4 and 51B (#764 #781 #800 #807)", "open": "Step 5 (harness rows on #520) is not built.",
+      "checks": [
+        {
+          "id": "572-crew",
+          "look": "RVR_SIEGE action=crew_seat, and RVR_SIEGE_OUTPUT crew= near 12/12 on bot rams",
+          "rows": [{"tag": "RVR_SIEGE", "where": {"action": "crew_seat"}},
+                   {"tag": "RVR_SIEGE_OUTPUT", "where": {"kind": "ram", "crew": "re:^(9|1[0-2])/12$"}}],
+          "count": [{"tag": "RVR_SIEGE_OUTPUT", "where": {"kind": "ram"}}]
+        },
+        {
+          "id": "572-battleground",
+          "look": "AUTONOMOUS_BATTLEGROUND_FORCED_EXIT (to the border keep, then a 30-minute block) and AUTONOMOUS_BATTLEGROUND_OUTLEVEL_STAY",
+          "rows": [{"tag": "AUTONOMOUS_BATTLEGROUND_FORCED_EXIT"}, {"tag": "AUTONOMOUS_BATTLEGROUND_OUTLEVEL_STAY"}],
+          "also": "No gamebot loops between a battleground's entry and exit; an out-levelled gamebot leaves only after it dies."
+        },
+        {
+          "id": "572-healers",
+          "look": "Keep-fight healers keep healing guards and relic carriers with no SERVER_STALL during the fight",
+          "count": [{"tag": "SERVER_STALL"}],
+          "in_game": ["Keep-fight healers keep healing guards and relic carriers, with no SERVER_STALL during the fight."]
+        }
+      ]
+    },
+    {
+      "issue": 531, "list": 503, "steps": "steps 1, 2a, 2b, 2c-1 (#787 #801 #804 #806)", "open": "Steps 2d-2f (#811-#813) are open.",
+      "checks": [
+        {
+          "id": "531-scan",
+          "look": "RVR_DECIDE layer=scan what=engage ... pick=",
+          "rows": [{"tag": "RVR_DECIDE", "where": {"layer": "scan", "what": "engage", "pick": "re:."}}]
+        },
+        {
+          "id": "531-mez",
+          "look": "RVR_CC_ASSIGN for the area-mez opener at first contact",
+          "rows": [{"tag": "RVR_CC_ASSIGN"}],
+          "in_game": ["A 20-minute look at a bot-vs-bot fight: groups open on one target after an area mez."]
+        },
+        {
+          "id": "531-realm-abilities",
+          "look": "BOT_REALM_ABILITY_TRAINED never with AvoidanceOfMagic; BOT_REALM_ABILITY_USED ability=SpeedOfSound|MasteryOfConcentration|BunkerOfFaith",
+          "rows": [{"tag": "BOT_REALM_ABILITY_USED", "where": {"ability": "re:^(SpeedOfSound|MasteryOfConcentration|BunkerOfFaith)$"}}],
+          "count": [{"tag": "BOT_REALM_ABILITY_TRAINED"}],
+          "never": [{"tag": "BOT_REALM_ABILITY_TRAINED", "contains": "AvoidanceOfMagic"}]
+        }
+      ]
+    },
+    {
+      "issue": 530, "list": 503, "steps": "steps 1-4, 5a, 5b, 5d (#560 #779 #785 #816)", "open": "5c (the small strike) and 5e are not built.",
+      "checks": [
+        {
+          "id": "530-force",
+          "look": "RVR_DECIDE layer=event what=force with one writer per change (over=), and what=force with @bg-keep-",
+          "rows": [{"tag": "RVR_DECIDE", "where": {"layer": "event", "what": "force", "over": "re:."}},
+                   {"tag": "RVR_DECIDE", "where": {"what": "force"}, "contains": "@bg-keep-"}],
+          "also": "One writer per change."
+        },
+        {
+          "id": "530-muster",
+          "look": "One muster per BG_WAVE_ASSAULT per realm; BG_MUSTER_PARTY per wave",
+          "rows": [{"tag": "BG_WAVE_ASSAULT"}, {"tag": "BG_MUSTER_PARTY"}],
+          "also": "One muster per BG_WAVE_ASSAULT per realm."
+        },
+        {
+          "id": "530-keeps",
+          "look": "RVR_KEEP_TAKEN battleground=True per hour; battleground RVR_FIGHT_BOARDs with members>1",
+          "rows": [{"tag": "RVR_KEEP_TAKEN", "where": {"battleground": "True"}}],
+          "count": [{"tag": "RVR_FIGHT_BOARD"}, {"tag": "RVR_FIGHT_BOARD", "where": {"members": ">1"}}],
+          "also": "The share of battleground RVR_FIGHT_BOARDs with members>1 rises from 1.2.2's 1 in 619 (the counts here are every region's)."
+        }
+      ]
+    },
+    {
+      "issue": 529, "list": 503, "steps": "steps 1-3 (#741 #780)", "open": "Steps 4-6 are not built.",
+      "checks": [
+        {
+          "id": "529-shadow",
+          "look": "RVR_CONTACT_SHADOW once a minute per realm (unknownShare, pairsUnknownShare), and board=contacts",
+          "rows": [{"tag": "RVR_CONTACT_SHADOW", "where": {"unknownShare": "re:."}},
+                   {"tag": "RVR_CONTACT_SHADOW", "where": {"board": "contacts"}}],
+          "also": "The unknown share stays low."
+        },
+        {
+          "id": "529-budget",
+          "look": "RVR_SCAN_BUDGET combatRays per second; frontier.rvr_combat_refresh time in AI_PROFILE",
+          "rows": [{"tag": "RVR_SCAN_BUDGET", "contains": "combatRays"}],
+          "count": [{"tag": "AI_PROFILE", "contains": "frontier.rvr_combat_refresh"}],
+          "also": "Combat refresh isn't a hot spot in AI_PROFILE.",
+          "in_game": ["/faction \"inc\" calls name only enemies a bot has seen; none names an enemy behind a hill."]
+        }
+      ]
+    },
+    {
+      "issue": 528, "list": 503, "steps": "#740: steps 1-3 and the RVR_RANKS measure",
+      "open": "Field incs (2.3) wait on #529; the step 4 brake waits on the owner, using the RVR_RANKS histogram.",
+      "checks": [
+        {
+          "id": "528-move-on",
+          "look": "RVR_ROAM_MOVE_ON playerKills=1 after you die to a stealther at AMG and come back",
+          "rows": [{"tag": "RVR_ROAM_MOVE_ON", "where": {"playerKills": ">=1"}}],
+          "in_game": ["Die to a stealther at AMG and come back: the stealther has moved on."]
+        },
+        {
+          "id": "528-incs",
+          "look": "Inc calls compared with RVR_EVENT_OPENED over an hour",
+          "rows": [{"tag": "RVR_EVENT_OPENED"}],
+          "also": "Inc calls match the event's realm and rough size (read the chat beside the events)."
+        },
+        {
+          "id": "528-emotes-ranks",
+          "look": "BOT_BODY_LANGUAGE emotes over a corpse; an RVR_RANKS histogram",
+          "rows": [{"tag": "BOT_BODY_LANGUAGE", "where": {"killEmotes": ">0"}}, {"tag": "RVR_RANKS"}]
+        }
+      ]
+    },
+    {
+      "issue": 526, "list": 503, "steps": "item 1 (#551)", "open": "Items 2-6 (DF holder 40A, home circuits, Odin's Gate, lifts) are not built.",
+      "checks": [
+        {
+          "id": "526-keep-level",
+          "look": "KEEP_LEVEL_DEFAULT_RAISED on an older world",
+          "rows": [{"tag": "KEEP_LEVEL_DEFAULT_RAISED"}],
+          "also": "Only an older world writes it; a fresh rc.3 world doesn't.",
+          "in_game": ["/keep info at Dun nGed, Da Behnn, Ailinne and Crauchon on a fresh rc.3 world: level 5 and doors at 50,000."]
+        }
+      ]
+    },
+    {
+      "issue": 523, "list": 503, "steps": "step 1 (a), sizing, (f), (h), (i); step 2 (#784 #788 #794 #799)",
+      "open": "(b)-(e) are open (#802); (g) and the later steps are not built.",
+      "checks": [
+        {
+          "id": "523-repelled",
+          "look": "RVR_EVENT_ENDED reason=\"Siege defended: the attackers left the keep 10 minutes ago\" about 10 min after you leave",
+          "rows": [{"tag": "RVR_EVENT_ENDED", "contains": "Siege defended: the attackers left the keep"}]
+        },
+        {
+          "id": "523-sized",
+          "look": "PLAYER_KEEP_DEFENSE_SIZED, where a solo hit gives a small answer",
+          "rows": [{"tag": "PLAYER_KEEP_DEFENSE_SIZED"}],
+          "also": "A solo hit gives a small answer."
+        },
+        {
+          "id": "523-claim",
+          "look": "BOT_GUILD_CLAIM or BOT_GUILD_CLAIM_SKIPPED reason=, with RVR_CLAIM_HOLD, after a capture",
+          "rows": [{"any": [{"tag": "BOT_GUILD_CLAIM"}, {"tag": "BOT_GUILD_CLAIM_SKIPPED", "where": {"reason": "re:."}}]},
+                   {"tag": "RVR_CLAIM_HOLD"}]
+        },
+        {
+          "id": "523-relic",
+          "look": "RVR_EVENT_OPENED in another frontier while RVR_RELIC_CARRIER_EVENT is open, and none in the carrier's",
+          "rows": [{"tag": "RVR_RELIC_CARRIER_EVENT"}, {"tag": "RVR_EVENT_OPENED"}],
+          "also": "The events opened during a carrier event are in another frontier, none in the carrier's."
+        },
+        {
+          "id": "523-notice",
+          "look": "The siege notice naming the muster place",
+          "in_game": ["The siege notice names the muster place."]
+        },
+        {
+          "id": "523-balance",
+          "look": "SIEGE_DEFENSE_BALANCE_REALM ... applied=own|server",
+          "rows": [{"tag": "SIEGE_DEFENSE_BALANCE_REALM", "where": {"applied": "re:^(own|server)$"}}]
+        },
+        {
+          "id": "523-march",
+          "look": "RVR_SIEGE_MARCH with different warbands each fight",
+          "rows": [{"tag": "RVR_SIEGE_MARCH"}],
+          "also": "Different warbands each fight."
+        }
+      ]
+    },
+    {
+      "issue": 520, "list": 503, "steps": "#558, the CI fight rehearsal; no game change",
+      "checks": [
+        {
+          "id": "520-rehearsal",
+          "look": "A bot-vs-bot battleground fight in the rc.3 log (RVR_ASSIST_CALL, RVR_CC_ASSIGN, the deaths)",
+          "rows": [{"tag": "RVR_ASSIST_CALL"}, {"tag": "RVR_CC_ASSIGN"}, {"tag": "AUTONOMOUS_BOT_DEATH"}],
+          "also": "The played fight agrees with the rehearsal's report rows in the CI log."
+        }
+      ]
+    },
+    {
+      "issue": 768, "list": 476, "steps": "#773, raid scoring", "open": "#774 (head ledges) and #775 (blast margin) are not built.",
+      "checks": [
+        {
+          "id": "768-scoring",
+          "look": "RAID_ATTEMPT_END attempt=dungeon-hibernia-fomor. with outcome=reset or wipe; addsHealth= and addsLowest= on the REALM_EXPEDITION_* end rows",
+          "rows": [{"tag": "RAID_ATTEMPT_END", "where": {"attempt": "re:^dungeon-hibernia-fomor\\.", "outcome": "re:^(reset|wipe)$"}},
+                   {"tag": "REALM_EXPEDITION_ATTEMPT_ENDED", "where": {"addsHealth": "re:.", "addsLowest": "re:."}}],
+          "count": [{"tag": "RAID_ATTEMPT_END", "where": {"attempt": "re:^dungeon-hibernia-fomor\\.", "outcome": "broke-off"}}],
+          "also": "A head fight worn below 70% and back to full scores as a reset or wipe (not broke-off); the raid ends or calls the Special Forces after two tries instead of looping for 4 h."
+        }
+      ]
+    },
+    {
+      "issue": 540, "list": 476, "steps": "#554", "open": "The memory growth itself is #731, which stays open.",
+      "checks": [
+        {
+          "id": "540-memory",
+          "look": "A run of 6 h or more: SERVER_HANDLE_CENSUS every 10 min (byType, grew); SERVER_MEMORY memoryLoadPct= highLoadPct= lastBlockingGen2=; SERVER_GC_PAUSE last=; topAllocations; SERVER_STALL per hour",
+          "min_hours": 6,
+          "rows": [{"tag": "SERVER_HANDLE_CENSUS", "where": {"byType": "re:."}},
+                   {"tag": "SERVER_MEMORY", "where": {"memoryLoadPct": "re:.", "highLoadPct": "re:.", "lastBlockingGen2": "re:.", "topAllocations": "re:."}},
+                   {"tag": "SERVER_GC_PAUSE", "where": {"last": "re:."}}],
+          "never": [{"tag": "SERVER_MEMORY", "where": {"topAllocations": "re:^\\S*ValueTuple\\S*(Int32|int)\\S*\\[\\]"}}],
+          "rate": [{"tag": "SERVER_STALL", "max_per_hour": 9.8}],
+          "also": "SERVER_STALL well under 1.2.2's 49 in 5 h (FAIL here only at or above that rate), and the census names the handle type that grows."
+        }
+      ]
+    },
+    {
+      "issue": 544, "list": 476, "steps": "#553 #624 #753",
+      "checks": [
+        {
+          "id": "544-camps",
+          "look": "AUTONOMOUS_CAMP_CATALOG_DEDUPE with liveUncovered>0; campsPer5LevelBand at 5-19; AUTONOMOUS_KILL_XP",
+          "rows": [{"tag": "AUTONOMOUS_CAMP_CATALOG_DEDUPE", "where": {"liveUncovered": ">0"}, "contains": "campsPer5LevelBand"},
+                   {"tag": "AUTONOMOUS_KILL_XP"}],
+          "also": "Albion's 5-19 camp bands come near Hibernia's, and level-ups per bot per realm at 5-19 come closer over a few hours (read with kill_xp_report.py)."
+        }
+      ]
+    },
+    {
+      "issue": 569, "list": 476, "steps": "steps 1-4 and 6-9 (#754 #758 #762 #763 #783 #786 #790 #791)", "open": "Step 5 (service fallback) waits on the owner.",
+      "checks": [
+        {
+          "id": "569-stall",
+          "look": "AUTONOMOUS_GROUP_PULL_STALL at 6 min, then AUTONOMOUS_GROUP_PULL_STALL_END at 11; AUTONOMOUS_GROUP_DANGER_RETREAT",
+          "rows": [{"tag": "AUTONOMOUS_GROUP_PULL_STALL"}, {"tag": "AUTONOMOUS_GROUP_PULL_STALL_END"},
+                   {"tag": "AUTONOMOUS_GROUP_DANGER_RETREAT"}]
+        },
+        {
+          "id": "569-meetup",
+          "look": "AUTONOMOUS_GROUP_MEETUP_PLANNED, AUTONOMOUS_GROUP_CAMP_BUDGET, AUTONOMOUS_GROUP_MEETUP_CLEAR_OF_SERVICE, AUTONOMOUS_STABLE_LANDING_STEP",
+          "rows": [{"tag": "AUTONOMOUS_GROUP_MEETUP_PLANNED"}, {"tag": "AUTONOMOUS_GROUP_CAMP_BUDGET"},
+                   {"tag": "AUTONOMOUS_GROUP_MEETUP_CLEAR_OF_SERVICE"}, {"tag": "AUTONOMOUS_STABLE_LANDING_STEP"}]
+        },
+        {
+          "id": "569-party",
+          "look": "AUTONOMOUS_PARTY_KILL_TARGET; AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER, AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD, AUTONOMOUS_GROUP_CAMP_ADVANCED",
+          "rows": [{"tag": "AUTONOMOUS_PARTY_KILL_TARGET"}, {"tag": "AUTONOMOUS_PARTY_PULLER_ARRIVED_WITH_LEADER"},
+                   {"tag": "AUTONOMOUS_PARTY_PULLER_EMPTY_CAMP_HOLD"}, {"tag": "AUTONOMOUS_GROUP_CAMP_ADVANCED"}],
+          "in_game": ["No party stands on a stable master.", "A Guard tank fights with its shield, with no weapon flicker.",
+                      "Archers open with Critical Shot, and a Hunter's pet waits for it."]
+        }
+      ]
+    },
+    {
+      "issue": 570, "list": 476, "steps": "steps 1, 2a, 2b, 3 (#752 #792 #803 #808)", "open": "Step 4 (party corpse walk, #820) is open; reruns-owed stays.",
+      "checks": [
+        {
+          "id": "570-seam",
+          "look": "AUTONOMOUS_ZONE_SEAM_CYCLE (gives up at the second turn)",
+          "rows": [{"tag": "AUTONOMOUS_ZONE_SEAM_CYCLE"}]
+        },
+        {
+          "id": "570-services",
+          "look": "AUTONOMOUS_SERVICE_DANGER_SKIP, AUTONOMOUS_STABLE_LANDING_SKIP and AUTONOMOUS_STABLE_LANDING_DEADLY",
+          "rows": [{"tag": "AUTONOMOUS_SERVICE_DANGER_SKIP"}, {"tag": "AUTONOMOUS_STABLE_LANDING_SKIP"},
+                   {"tag": "AUTONOMOUS_STABLE_LANDING_DEADLY"}]
+        },
+        {
+          "id": "570-routes",
+          "look": "AUTONOMOUS_ROUTE_BLOCK, AUTONOMOUS_ROUTE_BLOCK_AVOID, AUTONOMOUS_NEAR_MISS_DEAD_END and AUTONOMOUS_NEAR_MISS_ROAD_RECOVERY",
+          "rows": [{"tag": "AUTONOMOUS_ROUTE_BLOCK"}, {"tag": "AUTONOMOUS_ROUTE_BLOCK_AVOID"},
+                   {"tag": "AUTONOMOUS_NEAR_MISS_DEAD_END"}, {"tag": "AUTONOMOUS_NEAR_MISS_ROAD_RECOVERY"}]
+        },
+        {
+          "id": "570-hunt",
+          "look": "AUTONOMOUS_AREA_HUNT (a Debug row: give detail.log too) and AUTONOMOUS_CAMP_MOVE_UP",
+          "rows": [{"tag": "AUTONOMOUS_AREA_HUNT"}, {"tag": "AUTONOMOUS_CAMP_MOVE_UP"}],
+          "also": "Solo gamebots stay in their zone or the next one between camps."
+        }
+      ]
+    },
+    {
+      "issue": 571, "list": 476, "steps": "steps 1-6, PvE leader focus, companion PvP XP (#751 #755 #760 #769 #776 #777 #778 #782)",
+      "bots": "companions and bots in your group", "open": "Steps 4b and 4c are not built.",
+      "checks": [
+        {
+          "id": "571-focus",
+          "look": "COMPANION_LEADER_FOCUS ... why=attacker in Thidranki and in a dungeon",
+          "rows": [{"tag": "COMPANION_LEADER_FOCUS", "where": {"why": "attacker"}}],
+          "also": "Seen both in Thidranki and in a dungeon."
+        },
+        {
+          "id": "571-df",
+          "look": "COMPANION_PATH_DF and no COMPANION_STUCK_165 on the DF entrance stairs; COMPANION_LEVEL_SYNC after a ding",
+          "rows": [{"tag": "COMPANION_PATH_DF"}, {"tag": "COMPANION_LEVEL_SYNC"}],
+          "never": [{"tag": "COMPANION_STUCK_165", "where": {"region": "249"}}],
+          "in_game": ["Heal while your hired companion kills an enemy, and you get RP and XP.",
+                      "The companion's XP bar moves on a PvP kill.", "Weapon buffs go to fighters only.",
+                      "A Reaver keeps swinging through its instant lifedrain."]
+        }
+      ]
+    },
+    {
+      "issue": 565, "list": 476, "steps": "steps 1, 2, 4a, 4b (#746 #748 #757 #761)", "bots": "players", "open": "Step 3 (gravestones) waits on the owner.",
+      "checks": [
+        {
+          "id": "565-quests",
+          "look": "In game (no new rows)",
+          "in_game": ["No doubled or lost quests in the journal.", "Daily quests come back after a midnight the server was off.",
+                      "A realmless keep's hastener wears its guards' model.",
+                      "The Amalgamate Parthanan rises at a Connacht, Lough Derg or Lough Gur farm after 60-120 parthanan kills."]
+        }
+      ]
+    },
+    {
+      "issue": 564, "list": 476, "steps": "step 1 (#750)", "bots": "players", "open": "Steps 2-5 are not built.",
+      "checks": [
+        {
+          "id": "564-client",
+          "look": "In game (no rows)",
+          "in_game": ["A frontier portal stone opens the war map.", "The keep hookpoint store shows its items and prices.",
+                      "Spell tooltips show your spell's level.", "Delves show cast times under 2 s.",
+                      "Quest reward items can be delved.", "Item charges show."]
+        }
+      ]
+    },
+    {
+      "issue": 562, "list": 476, "steps": "steps 1-2 (#743 #772)", "bots": "players", "open": "Step 3 (house rent service) is not built.",
+      "checks": [
+        {
+          "id": "562-housing",
+          "look": "In game (no rows)",
+          "in_game": ["A house vault and a consignment merchant (buy, withdraw).", "A /gc note that sticks.",
+                      "A new emblem on the merchant's cloak.",
+                      "/rent guild paying once, /rent personal max, and /bountyrent paying your own house."]
+        }
+      ]
+    },
+    {
+      "issue": 580, "list": 476, "steps": "step 1 (#759); a tool, not a log row", "open": "Step 3 (fixing gaps) is not built.",
+      "checks": [
+        {
+          "id": "580-recipes",
+          "look": "Run craft_extract on a copy of the original client's tdl.crf, then source/tools/client_recipe_check.py",
+          "in_game": ["The names-and-counts report is posted on #580, naming the client build."]
+        }
+      ]
+    },
+    {
+      "issue": 479, "list": 476, "steps": "step 1 (#742)", "open": "The later steps are not built.",
+      "checks": [
+        {
+          "id": "479-chat",
+          "look": "CHAT_LINE and CHAT_PLAYER_REPLY_PLAN for /say to a hired companion and for /group (read with session_transcript.py)",
+          "rows": [{"tag": "CHAT_LINE", "where": {"who": "player"}}, {"tag": "CHAT_PLAYER_REPLY_PLAN"}],
+          "in_game": ["\"where is the cleric trainer?\" in /say gets the real answer.",
+                      "\"omw\", \"oom\" and \"rdy\" in /group are answered.", "No answer takes longer than 12 s."]
+        }
+      ]
+    },
+    {
+      "issue": 480, "list": 476, "steps": "step 1 (#810)", "open": "The later steps are not built.",
+      "checks": [
+        {
+          "id": "480-followups",
+          "look": "CHAT_LINE after you name a place, class or item",
+          "rows": [{"tag": "CHAT_LINE", "where": {"who": "player"}}],
+          "in_game": ["\"what lvl is it?\" and \"who trains them?\" answer about that subject.",
+                      "\"anyone?\" asks your unanswered question again.", "\"i meant X\" corrects it."]
+        }
+      ]
+    },
+    {
+      "issue": 425, "list": 476, "steps": "1.2.1 (#398)", "bots": "original client, GM account",
+      "checks": [
+        {
+          "id": "425-handshake",
+          "look": "CLIENT_HANDSHAKE ... client=original (not new-or-unknown)",
+          "rows": [{"tag": "CLIENT_HANDSHAKE", "where": {"client": "original"}}],
+          "never": [{"tag": "CLIENT_HANDSHAKE", "where": {"client": "new-or-unknown"}}],
+          "in_game": ["/lstest deathanim makes a bot fall.", "raise makes it stand with no leftover body.",
+                      "release sends it to its bind with no second body.", "A rez with nothing selected goes to the dead bot."]
+        }
+      ]
+    }
+  ]
+}
