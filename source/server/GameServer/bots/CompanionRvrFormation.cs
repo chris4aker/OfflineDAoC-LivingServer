@@ -156,7 +156,7 @@ namespace DOL.GS
             foreach (GameLiving member in leader.Group.GetMembersInTheGroup())
                 if (member != null && member.IsAlive && member.ObjectState == GameObject.eObjectState.Active &&
                     member.CurrentRegionID == leader.CurrentRegionID && leader.IsWithinRadius(member, ReadRadius) &&
-                    (member == leader || member is GameBot bot && CompanionRvrEngage.GroupLeader(bot) == leader))
+                    (member == leader || member is GameBot groupBot && CompanionRvrEngage.GroupLeader(groupBot) == leader))
                     people.Add(member);
             if (people.Count < 2) return null;
 
@@ -193,14 +193,14 @@ namespace DOL.GS
             {
                 eCharacterClass characterClass = member switch
                 {
-                    GameBot { CharacterClass: not null } bot => (eCharacterClass)bot.CharacterClass.ID,
-                    GamePlayer { CharacterClass: not null } player => (eCharacterClass)player.CharacterClass.ID,
+                    GameBot { CharacterClass: not null } asBot => (eCharacterClass)asBot.CharacterClass.ID,
+                    GamePlayer { CharacterClass: not null } asPlayer => (eCharacterClass)asPlayer.CharacterClass.ID,
                     _ => eCharacterClass.Unknown,
                 };
                 RvrRole role = RvrRoles.For(characterClass);
                 RvrStand stand = RvrPositioning.StandFor(role, characterClass);
                 // A bot that stays out keeps its spot: it is not laid on the arc (it still counts for the tanks' line).
-                if (Places(stand) && (member is not GameBot bot || !CompanionRvrEngage.Joins(bot, leader)))
+                if (Places(stand) && (member is not GameBot placedBot || !CompanionRvrEngage.Joins(placedBot, leader)))
                     stand = RvrStand.None;
                 var combatant = new RvrCombatant
                 {
