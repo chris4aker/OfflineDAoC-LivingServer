@@ -35,9 +35,11 @@ public readonly record struct RvrFirstPickCandidate(RvrCombatant Enemy, bool Eng
 ///
 /// Sourced (reference.md 3.2, 3.4): one main assist's target for everyone (FH Nov 2003); the kill order (Jan 2003) and
 /// its realm variants; a mezzed enemy is left alone (any damage breaks the mez); the first death is a caster or healer
-/// most of the time. Our design values: the 2 per 100 units distance term (Felix's 8v8 scrim bots use 5 per 100 on a
-/// scale about 1.6 times ours) and the order of the classes (people, pets, engines; free, held; within the call radius,
-/// beyond it). Pure: no clock, no random number, no game access.
+/// most of the time. Our design values: the 2 per 100 units distance term (a design value: 500 units weigh about one
+/// 10-point step of the kill order, so a much nearer enemy can come before a slightly better target; checked against an
+/// 8v8 kill-target weighting, see #531) and the order of the classes (people, pets, engines; free, held; within the call
+/// radius, beyond it).
+/// Pure: no clock, no random number, no game access.
 /// </summary>
 public static class RvrFirstPick
 {
