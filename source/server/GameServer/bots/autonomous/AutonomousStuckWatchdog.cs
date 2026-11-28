@@ -105,7 +105,7 @@ public static class AutonomousStuckWatchdog
     /// </summary>
     public static bool RepairInvalidLoginPosition(GameBot bot)
     {
-        // a hired companion goes where its player takes it: the watchdog never moves it (True 1.65, owner 2026-10-30)
+        // a hired companion goes where its player takes it: the watchdog never moves it
         if (bot.IsHiredCompanion)
             return false;
         if (bot.IsAutonomousWorldBot && BotReleaseBindPoints.IsEnemyBindPosition(
@@ -210,6 +210,10 @@ public static class AutonomousStuckWatchdog
     /// answer from Observe. Null in the server.</summary>
     public static Func<GameBot, string, bool> StuckRallyRecoveryForTests;
 
+    /// <summary>Tests only: replaces the border-keep teleport of a gamebot the battleground backstop sends out (#572 step 4) and
+    /// returns its answer from Observe. Null in the server.</summary>
+    public static Func<GameBot, eBattlegroundForcedExit, bool> BattlegroundExitRecoveryForTests;
+
     /// <summary>A rally member off the staging ring after the hub departure (issue #767): the rally exempts it from the
     /// goal clock, never from the movement clock. Same bound and same exceptions as <see cref="ShouldRecoverMovement"/>.</summary>
     public static bool ShouldCatchStuckRally(DateTime lastMovementUtc, DateTime nowUtc, bool isAlive, bool inPlayerLedGroup) =>
@@ -224,6 +228,16 @@ public static class AutonomousStuckWatchdog
         bool isRvrRoaming = false) =>
         isAlive && !inPlayerLedGroup && !protectedStableTravel && !isRvrRoaming &&
         nowUtc - lastGoalProgressUtc >= GoalProgressThreshold;
+
+    /// <summary>
+    /// #572 step 4: exempt from the 45-minute goal clock (the movement clock still applies): frontier RvR
+    /// roaming, and a battleground tour inside a battleground. A roamer in a quiet battleground can meet no enemy for 45
+    /// minutes; it was sent to its capital and teleported straight back in. Inside, the battleground's own backstop
+    /// (AutonomousBattlegroundExit: 20 minutes without progress, or 3 deaths without a gain) takes a stuck one out.
+    /// On the way in, outside the battleground, the clock stays.
+    /// </summary>
+    public static bool RoamsLikeRvr(bool rvrGoal, bool battlegroundGoal, bool inBattleground) =>
+        rvrGoal || battlegroundGoal && inBattleground;
 
     public static bool CountsAsGoalProgress(eAutonomousProgressKind kind) => kind is
         eAutonomousProgressKind.SiegeParticipation or
@@ -301,6 +315,9 @@ public static class AutonomousStuckWatchdog
         // (Combat alone still does not count: it cannot hide a stuck bot.)
         else if (kind is eAutonomousProgressKind.Experience or eAutonomousProgressKind.RealmPoints or eAutonomousProgressKind.Money)
             observation.LastMovementUtc = now;
+        // #572 step 4: a protected hold (a siege, a rally) or a recovery restarts the battleground backstop's clock too.
+        if (kind is eAutonomousProgressKind.SiegeParticipation or eAutonomousProgressKind.Recovery)
+            AutonomousBattlegroundExit.Touch(bot.DatabaseID, AutonomousBattlegroundExit.NowMilliseconds(now));
         if (CountsAsGoalProgress(kind) || kind is eAutonomousProgressKind.Recovery)
         {
             GoalObservation goal = GoalObservations.GetOrAdd(bot.DatabaseID, _ => new GoalObservation());
@@ -427,7 +444,32 @@ public static class AutonomousStuckWatchdog
             previous.LastMovementUtc = now;
             CopyPositionSnapshot(previous, current);
             goalObservation.LastProgressUtc = now;
+            AutonomousBattlegroundExit.Touch(bot.DatabaseID, AutonomousBattlegroundExit.NowMilliseconds(now));
             return false;
+        }
+
+        // Order (#800 x #767): the battleground backstop runs before the rally block below. The two cases are exclusive in
+        // practice: an open-world rally's hub, staging ring and boss are all in realm zones (RealmRaidMuster.Hubs and
+        // RealmRaidOpenWorld.Raids: regions 1, 51, 100, 151, 181 and 200), dungeon raids never count as travelling in a rally,
+        // and the battlegrounds (250-253) are separate regions entered only by their portal. Should a rally member still end up
+        // inside one, it is off its route, so the battleground exit owns it; running first also keeps the battleground watch fed
+        // every sample, which the rally block's early return would skip.
+        // #572 step 4: the battleground backstop. Inside a battleground a gamebot with no XP or realm points gained (or, on
+        // a battleground tour, no real movement) for 20 minutes, or 3 deaths with no gain between, goes out to its border
+        // keep and stays out of every battleground for 30 minutes.
+        bool inBattleground = BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID);
+        bool battlegroundTour = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground);
+        eBattlegroundForcedExit forcedExit = AutonomousBattlegroundExit.Observe(bot.DatabaseID, bot.CurrentRegionID, inBattleground,
+            bot.Experience, bot.AutonomousRealmPoints, bot.X, bot.Y, battlegroundTour, AutonomousBattlegroundExit.NowMilliseconds(now));
+        if (forcedExit != eBattlegroundForcedExit.None && bot.IsAlive && !withHuman)
+        {
+            string why = forcedExit == eBattlegroundForcedExit.DeathStrikes
+                ? $"{AutonomousBattlegroundExit.DeathStrikeLimit} deaths in the battleground with nothing gained"
+                : "no progress in the battleground for twenty minutes";
+            // Tests: the border-keep teleport needs a live world.
+            if (BattlegroundExitRecoveryForTests != null)
+                return BattlegroundExitRecoveryForTests(bot, forcedExit);
+            return RelocateToSafeCapital(bot, now, why, true, "AUTONOMOUS_BATTLEGROUND_STUCK_RECOVERY");
         }
 
         // Issue #767 (owner's PC, rc.2): 75 Glacier Giant raiders stood off the staging ring for about 20 minutes, retrying
@@ -451,7 +493,8 @@ public static class AutonomousStuckWatchdog
                 "AUTONOMOUS_STUCK_15M_RECOVERY");
         }
 
-        bool isRvrRoaming = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR);
+        bool isRvrRoaming = RoamsLikeRvr(AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR), battlegroundTour,
+            inBattleground);
         if (ShouldRecoverGoal(goalObservation.LastProgressUtc, now, bot.IsAlive, withHuman, false, isRvrRoaming))
         {
             return RelocateToSafeCapital(bot, now,
@@ -524,6 +567,16 @@ public static class AutonomousStuckWatchdog
         if (moveLiveObject && logMarker == "AUTONOMOUS_STUCK_15M_RECOVERY" && TryRecoverInsideRaid(bot, now, reason))
             return true;
         CapitalLocation capital = SafeCapitalFor(bot.Realm);
+        // #572 step 4: a live gamebot inside a battleground goes out the way players do, to its border
+        // keep (never the capital vault), and may not go back into any battleground for 30 minutes (no entry/exit loop).
+        bool battlegroundExit = false;
+        if (moveLiveObject && BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) &&
+            AutonomousWorldBotController.TryBattlegroundExitSpot(bot.Realm, out string exitName, out ushort exitRegion,
+                out int exitX, out int exitY, out int exitZ, out ushort exitHeading))
+        {
+            battlegroundExit = true;
+            capital = new CapitalLocation(exitName, exitRegion, exitX, exitY, exitZ, exitHeading);
+        }
         if (capital.RegionId == 0)
             return false;
 
@@ -550,7 +603,7 @@ public static class AutonomousStuckWatchdog
             bot.StopFollowing();
             bot.StopMovingOnPath();
             bot.StopMoving();
-            // A stuck cast must not survive the recovery move (stefanrows fork, Minstrel mez).
+            // A stuck cast must not survive the recovery move (Minstrel mez).
             bot.StopCurrentSpellcast();
             if (bot.Brain is BotBrain brain)
             {
@@ -560,6 +613,14 @@ public static class AutonomousStuckWatchdog
 
             if (!bot.MoveTo(capital.RegionId, capital.X, capital.Y, capital.Z, capital.Heading))
                 return false;
+            if (battlegroundExit)
+            {
+                AutonomousBattlegroundExit.BlockReentry(bot.DatabaseID, AutonomousBattlegroundExit.NowMilliseconds(now));
+                Log.Warn($"AUTONOMOUS_BATTLEGROUND_FORCED_EXIT bot=\"{ForLog(bot.Name)}\" id={bot.DatabaseID} level={bot.Level} " +
+                         $"realm={GlobalConstants.RealmToName(bot.Realm)} marker={logMarker} reason=\"{ForLog(reason)}\" " +
+                         $"region={oldRegion} destination=\"{ForLog(capital.Name)}\" " +
+                         $"blockMinutes={AutonomousBattlegroundExit.ReentryBlockMilliseconds / 60_000}");
+            }
         }
         else
         {
@@ -572,7 +633,7 @@ public static class AutonomousStuckWatchdog
 
         AutonomousGoalDiagnostics.End(bot, logMarker switch
         {
-            "AUTONOMOUS_GOAL_STALL_45M_RECOVERY" => GoalAttemptEnd.NoProgress45m,
+            "AUTONOMOUS_GOAL_STALL_45M_RECOVERY" or "AUTONOMOUS_BATTLEGROUND_STUCK_RECOVERY" => GoalAttemptEnd.NoProgress45m,
             "AUTONOMOUS_STUCK_15M_RECOVERY" => GoalAttemptEnd.NoMovement15m,
             _ => GoalAttemptEnd.InvalidPosition
         }, reason, (oldRegion, oldX, oldY, oldZ));
@@ -580,7 +641,7 @@ public static class AutonomousStuckWatchdog
         record.RecoveryCount++;
         record.CurrentCampId = string.Empty;
         record.ItineraryJson = string.Empty;
-        record.Activity = "Recovered to safe capital spawn";
+        record.Activity = battlegroundExit ? "Taken out of the battleground" : "Recovered to safe capital spawn";
         record.CurrentGoal = expedition == null ? GenerateFreshGoal(bot.DatabaseID, record.RecoveryCount) : $"Rejoin {expedition.Camp.MonsterName}";
         record.TargetName = string.Empty;
         record.TravelDestination = string.Empty;
