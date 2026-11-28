@@ -84,6 +84,13 @@
     "text"
   ],
   "frequency": {
+    "AUTONOMOUS_ROUTE_BLOCK": "one when a spot turns into a shared route block (3 different solo gamebots gave a camp up there within 30 minutes; #570)",
+    "AUTONOMOUS_ROUTE_BLOCK_AVOID": "one per solo gamebot camp pick that skipped camps at or past a shared route block while another camp was left (#570)",
+    "AUTONOMOUS_NEAR_MISS_DEAD_END": "one when a gamebot first stalls at a new near-miss dead end (a partial path ending within 256 of its target; #570)",
+    "AUTONOMOUS_NEAR_MISS_ROAD_RECOVERY": "one per first stall at a near-miss dead end whose zone roads have a way to the target (#570)",
+    "RVR_FORCE_BATTLEGROUP": "one per battlegroup change (formed, joined, left, ended), at most one per group per 10 s pulse (#599)",
+    "BG_MUSTER_PARTY": "one per autonomous gamebot party formed or joined at a battleground wave's muster, at most every 10 s per realm and keep (#530 step 5b)",
+    "COMPANION_RVR_ENGAGE": "change-only: one per player's group each time its own pick in the frontier, battlegrounds or Darkness Falls changes call (engage or hold) or target",
     "DRAGON_RALLY_ROUTE_RETRY": "one per failed plan of a raider's safe route to an open-world boss rally: at most one per raider every 30 seconds while the plans fail (#767)",
     "DRAGON_RALLY_FALLBACK": "one per raider per spot after three failed rally plans from it: the walk past a neutral boss, or the keep-safe-route note for an aggressive one (#767)",
     "AUTONOMOUS_RALLY_STUCK": "one per open-world rally member that stood still off the staging ring for 15 minutes after the departure, then sent to its capital (#767)",

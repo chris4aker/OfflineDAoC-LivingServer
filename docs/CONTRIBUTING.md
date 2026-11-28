@@ -37,7 +37,8 @@ open pull request or a branch for it. Then two sessions never build the same iss
   owed.
 - Building and testing: [DEVELOPMENT.md](DEVELOPMENT.md).
 - Charting the log rows in Grafana (gcx, the local stack, the dashboards): [GRAFANA.md](GRAFANA.md); every row is in
-  [LOG-ROWS.md](LOG-ROWS.md). A pull request that adds or changes a row runs `python3 tools/grafana/kit.py --write`.
+  [LOG-ROWS.md](LOG-ROWS.md). A pull request that adds or changes a row doesn't commit LOG-ROWS.md or the Alloy
+  config: main regenerates them after each merge (#817).
 
 ## Merging
 
