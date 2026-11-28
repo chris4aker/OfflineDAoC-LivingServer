@@ -157,6 +157,59 @@ namespace DOL.UnitTests
             });
         }
 
+        [Test]
+        public void Cover_skips_a_place_inside_another_back_liners_spread()
+        {
+            Vector2 at = new(0, 0);
+            Assert.Multiple(() =>
+            {
+                Assert.That(RvrPositioning.CoverKeepsSpread(at, false, null), Is.True, "nobody else");
+                Assert.That(RvrPositioning.CoverKeepsSpread(at, false, [(new Vector2(400, 0), false)]), Is.True, "a caster 400 off");
+                Assert.That(RvrPositioning.CoverKeepsSpread(at, false, [(new Vector2(340, 0), false)]), Is.False, "a caster inside the mez spread");
+                Assert.That(RvrPositioning.CoverKeepsSpread(at, false, [(new Vector2(355, 0), true)]), Is.False, "a healer inside mez spread + 10");
+                Assert.That(RvrPositioning.CoverKeepsSpread(at, false, [(new Vector2(361, 0), true)]), Is.True, "a healer just outside");
+                Assert.That(RvrPositioning.CoverKeepsSpread(at, true, [(new Vector2(400, 0), false)]), Is.False, "incoming: the scatter spread");
+            });
+            // Whatever CoverKeepsSpread allows, NeedsMove does not send the healer off again for the spread.
+            var slot = new RvrSlot(null, RvrStand.Back, new Vector2(0, -200), true, RvrSlotError.None); // walking to it
+            Assert.That(RvrPositioning.NeedsMove(at, slot, null, 0, false, [(new Vector2(340, 0), true)]), Is.EqualTo(RvrMoveReason.Spread),
+                "the check below can fail");
+            foreach (bool incoming in new[] { false, true })
+                foreach (float d in new[] { 361f, 400f, 451f, 600f })
+                {
+                    (Vector2, bool)[] others = [(new Vector2(d, 0), true)];
+                    if (RvrPositioning.CoverKeepsSpread(at, incoming, others))
+                        Assert.That(RvrPositioning.NeedsMove(at, slot, null, 0, incoming, others), Is.EqualTo(RvrMoveReason.None),
+                            $"kept the spread at {d} (incoming {incoming})");
+                }
+        }
+
+        [Test]
+        public void Cover_pick_walks_to_the_first_hidden_place_beside_its_own()
+        {
+            Vector2 line = new(0, 0), spot = new(0, -900);
+            Vector3 caster = new(0, 1800, 0);
+            Vector2[] candidates = RvrPositioning.CoverCandidates(spot, line);
+            static bool Near(Vector3 a, Vector2 b) => Vector2.Distance(new Vector2(a.X, a.Y), b) < 1;
+            Vector2 Pick(Func<Vector3, Vector3, bool> blocked, IReadOnlyList<(Vector2, bool)> others) =>
+                BotBrain.RvrCoverPick(new DOL.GS.Tests.Rehearsal.FlatNavmesh(1) { SightBlocked = blocked }, null, caster, 0, spot, line,
+                    false, others);
+            // A rock hides the healer's first place beside its own from the caster; its own place is in the open.
+            bool HidesFirst(Vector3 from, Vector3 to) => Near(from, new Vector2(caster.X, caster.Y)) && Near(to, candidates[1]);
+            Assert.Multiple(() =>
+            {
+                Assert.That(Pick(null, []), Is.EqualTo(spot), "open field: its own place");
+                Assert.That(Pick(HidesFirst, []), Is.EqualTo(candidates[1]), "the first hidden place beside its own");
+                Assert.That(Pick((from, to) => Near(from, new Vector2(caster.X, caster.Y)) && !Near(to, spot), []), Is.EqualTo(candidates[1]),
+                    "everything beside it hidden: the nearest first");
+                Assert.That(Pick((from, to) => Near(from, new Vector2(caster.X, caster.Y)) && !Near(to, spot), [(candidates[1], true)]),
+                    Is.EqualTo(candidates[2]), "a healer stands on the first: the next one");
+                Assert.That(Pick(HidesFirst, [(candidates[1], false)]), Is.EqualTo(spot), "the only hidden place breaks the spread: its own");
+                Assert.That(Pick((from, to) => Near(from, candidates[1]) || Near(to, candidates[1]), []), Is.EqualTo(spot),
+                    "a place that can't see the tanks' line is no cover");
+            });
+        }
+
         private static void AssertHealersApart(ImmutableArray<RvrSlot> slots, float spread, string why)
         {
             RvrSlot[] healers = slots.Where(s => s.Stand == RvrStand.Back && s.Healer && s.Error == RvrSlotError.None).ToArray();

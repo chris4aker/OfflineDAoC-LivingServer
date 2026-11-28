@@ -393,6 +393,26 @@ public static class RvrPositioning
     }
 
     /// <summary>
+    /// #531 step 2e: whether a healer's cover place at <paramref name="at"/> keeps the spread from the other back-liners
+    /// <paramref name="others"/>: at least the spread (<see cref="ScatterSpread"/> on "incoming", else <see cref="MezSpread"/>)
+    /// from each, and <see cref="MezSpread"/> + 10 from another healer. That is wider than <see cref="NeedsMove"/>'s
+    /// "Spread" test, so a healer that took the place is not sent off it again. Pure.
+    /// </summary>
+    public static bool CoverKeepsSpread(Vector2 at, bool incoming, IReadOnlyList<(Vector2 Position, bool Healer)> others)
+    {
+        if (others == null)
+            return true;
+        float spread = incoming ? ScatterSpread : MezSpread;
+        foreach ((Vector2 position, bool healer) in others)
+        {
+            float distance = Vector2.Distance(at, position);
+            if (distance < spread || healer && distance < MezSpread + 10)
+                return false;
+        }
+        return true;
+    }
+
+    /// <summary>
     /// #531 step 2e: the first candidate that sees the tanks' line and is hidden from the nearest enemy caster (rocks and
     /// walls, reference.md 6), else 0 (its own place). Pure.
     /// </summary>

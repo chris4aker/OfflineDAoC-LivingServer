@@ -50,6 +50,10 @@ namespace DOL.UnitTests
             Assert.That(actives, Is.Not.Null, "the realm-ability row");
             // #531 step 2e: the row says how deep each side's casters and healers stood behind their tanks
             Assert.That(first.Row, Does.Contain(" depth=Alb:casters="), "the row has the back line's depth");
+            // ... and the casters stood at their spell reach, deeper than the old flat back-line depth (the reach fill is wired)
+            System.Collections.Generic.IReadOnlyList<float> casterDepth = first.Depth.Samples(eRealm.Albion, false);
+            Assert.That(casterDepth, Is.Not.Empty, "Albion's casters were sampled: " + first.Row);
+            Assert.That(casterDepth.Average(), Is.GreaterThan(RvrPositioning.MaxBackDepth), "Albion's casters at their reach: " + first.Row);
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);

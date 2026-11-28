@@ -52,7 +52,11 @@ namespace DOL.GS.Tests.Rehearsal
             return true;
         }
 
-        public bool HasLineOfSight(Zone zone, Vector3 position, Vector3 target, EDtPolyFlags[] filters) => true;
+        /// <summary>A variant for tests: a sight line this returns true for is blocked (a rock between the two). Null: all clear.</summary>
+        public Func<Vector3, Vector3, bool> SightBlocked { get; init; }
+
+        public bool HasLineOfSight(Zone zone, Vector3 position, Vector3 target, EDtPolyFlags[] filters) =>
+            SightBlocked?.Invoke(position, target) != true;
         public bool HasNavmesh(Zone zone) => zone != null;
         public bool IsAvailable => true;
         public EDtPolyFlags[] DefaultFilters { get; } = [EDtPolyFlags.All ^ EDtPolyFlags.Disabled, 0];

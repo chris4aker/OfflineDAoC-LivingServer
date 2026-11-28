@@ -230,7 +230,7 @@ namespace DOL.AI.Brain
             Vector2 spot = mine.Spot;
             // #531 step 2e: a healer takes a place near its own that the casters across the field can't see
             if (mine.Healer && line is Vector2 coverLine)
-                spot = RvrCoverSpot(bot, board, spot, coverLine);
+                spot = RvrCoverSpot(bot, board, spot, coverLine, incoming, others);
             if (!support && target != null && PrefersCurrentSpellRange())
                 spot = RvrPositioning.WithinRange(spot, Flat(target), Math.Max(300, OffensiveApproachRange(target) - 75));
             if (!StartRvrPlaceWalk(bot, spot, RvrPlaceWalk.Place, now))
@@ -261,11 +261,14 @@ namespace DOL.AI.Brain
         /// <summary>
         /// #531 step 2e, the cover pick (reference.md 6: casters "use rocks, walls and the milegate's edges to break line of
         /// sight"): of its place and four places beside it on its arc (RvrPositioning.CoverCandidates), a healer takes the
-        /// first that sees the tanks' line and that the nearest enemy caster can't see, by the zone's sight check. Its own
-        /// place when no enemy caster is near, there is no mesh, or none hides it. Runs only when the healer walks for its
-        /// place (at most once a second).
+        /// first that sees the tanks' line and that the nearest enemy caster can't see, by the zone's sight check. A place
+        /// beside its own that stands inside the spread of another back-liner is skipped (RvrPositioning.CoverKeepsSpread), or
+        /// NeedsMove would send it off again. Its own place when no enemy caster is near (measured from the healer's place, not
+        /// where it stands now), there is no mesh, or none hides it. Runs only when the healer walks for its place (at most
+        /// once a second).
         /// </summary>
-        private Vector2 RvrCoverSpot(GameBot bot, RvrFightBoard board, Vector2 spot, Vector2 line)
+        private Vector2 RvrCoverSpot(GameBot bot, RvrFightBoard board, Vector2 spot, Vector2 line, bool incoming,
+            IReadOnlyList<(Vector2 Position, bool Healer)> others)
         {
             RvrCombatant caster = null;
             float nearest = RvrCoverCasterRange;
@@ -284,12 +287,28 @@ namespace DOL.AI.Brain
             Zone zone = bot.CurrentZone;
             if (caster == null || nav == null || zone == null || !nav.HasNavmesh(zone))
                 return spot;
+            return RvrCoverPick(nav, zone, new Vector3(caster.X, caster.Y, caster.Z), bot.Z, spot, line, incoming, others);
+        }
+
+        /// <summary>
+        /// The cover pick's sight checks (a seam for its tests): of <see cref="RvrPositioning.CoverCandidates"/>, the first
+        /// that sees <paramref name="line"/> and that the caster at <paramref name="caster"/> can't see, skipping a place
+        /// beside the healer's own that is inside another back-liner's spread; else <paramref name="spot"/>. Eyes at +48.
+        /// </summary>
+        public static Vector2 RvrCoverPick(IPathfindingMgr nav, Zone zone, Vector3 caster, float z, Vector2 spot, Vector2 line,
+            bool incoming, IReadOnlyList<(Vector2 Position, bool Healer)> others)
+        {
             Vector2[] candidates = RvrPositioning.CoverCandidates(spot, line);
             var seen = new List<(bool SeesLine, bool SeenByCaster)>(candidates.Length);
-            Vector3 eye = new(caster.X, caster.Y, caster.Z + 48), lineAt = new(line.X, line.Y, bot.Z + 48);
-            foreach (Vector2 candidate in candidates)
+            Vector3 eye = new(caster.X, caster.Y, caster.Z + 48), lineAt = new(line.X, line.Y, z + 48);
+            for (int i = 0; i < candidates.Length; i++)
             {
-                Vector3 at = new(candidate.X, candidate.Y, bot.Z + 48);
+                if (i > 0 && !RvrPositioning.CoverKeepsSpread(candidates[i], incoming, others))
+                {
+                    seen.Add((false, true)); // no raycast: standing there would break the spread
+                    continue;
+                }
+                Vector3 at = new(candidates[i].X, candidates[i].Y, z + 48);
                 bool seesLine = nav.HasLineOfSight(zone, at, lineAt, nav.DefaultFilters);
                 bool seenByCaster = seesLine && nav.HasLineOfSight(zone, eye, at, nav.DefaultFilters);
                 seen.Add((seesLine, seenByCaster));
