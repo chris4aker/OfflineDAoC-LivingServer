@@ -523,7 +523,7 @@ namespace DOL.AI.Brain
                 // Damage is an event, so wake combat immediately without
                 // increasing the ordinary idle/travel AI cadence.
                 NextThinkTick = GameLoop.GameLoopTime;
-                WakeForAdd(ad.Attacker, Body);   // an add on this bot is looked at now, not at the next 1 s check (True165 8abbc61a8)
+                WakeForAdd(ad.Attacker, Body);   // an add on this bot is looked at now, not at the next 1 s check
             }
         }
 
@@ -588,7 +588,7 @@ namespace DOL.AI.Brain
             // Record the encounter synchronously so even a very short roadside
             // fight pauses autonomous travel for whole-party recovery afterward.
             AutonomousBotGroupCoordinator.MarkCombatObserved(group);
-            // A groupmate dropping low wakes the group's healers at once (True165 8abbc61a8).
+            // A groupmate dropping low wakes the group's healers at once.
             WakeHealersIfLow(group, victim, ad);
 
             foreach (GameLiving member in group.GetMembersInTheGroup())
@@ -603,7 +603,7 @@ namespace DOL.AI.Brain
                     continue;
 
                 brain.OnGroupMemberAttacked(victim, ad);
-                brain.WakeForAdd(attacker, victim);   // an add joined the fight (True165 8abbc61a8)
+                brain.WakeForAdd(attacker, victim);   // an add joined the fight
             }
             if (groupMember is GameBot raidVictim)
                 foreach (GameLiving member in AutonomousRealmRaid.ClaimNearbyDefenseBroadcast(raidVictim, GameLoop.GameLoopTime))
@@ -774,7 +774,7 @@ namespace DOL.AI.Brain
         /// The FSM state this brain had when it was last stopped. GameObject.MoveTo stops and restarts the brain, so every
         /// bot moved through a keep door or teleported came out with no state: FSM.Think did nothing and a bot in a
         /// player's group, a /spawn helper or a bot-led party stood frozen until it was attacked, ordered or invited
-        /// again. The next Think puts the bot back in a state. Port of DetShaft/OfflineDAoC-LivingServer a303aefaf.
+        /// again. The next Think puts the bot back in a state.
         /// </summary>
         private eFSMStateType? _stateBeforeStop;
 
@@ -1020,7 +1020,7 @@ namespace DOL.AI.Brain
         {
             if (candidate == null || Body.ControlledBrain is not ControlledMobBrain petBrain)
                 return candidate;
-            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt; an add instead, or back to its owner (BotBrain.RaidBoss)
+            // sh-bosses M2: never at a boss pets cannot hurt; an add instead, or back to its owner (BotBrain.RaidBoss)
             if (PetsDoNoDamageTo(candidate) && (candidate = PetTargetInsteadOfBoss(candidate, petBrain)) == null)
                 return null;
 
@@ -1503,7 +1503,7 @@ namespace DOL.AI.Brain
             if (TemporaryGroupStableTravel.SyncStowWithLeaderRide(BotBody) || Body.StowedForRide)
                 return;
 
-            // True 1.65 (veteran review M6): a party that called RUN, a solo bot bailing out, a hired healer surviving
+            // Veteran review M6: a party that called RUN, a solo bot bailing out, a hired healer surviving
             // to raise its player: run, fight nothing (BotBrain.Retreat)
             if (BotBody?.IsOnStableMasterRoute == false && TryHoldRetreat())
                 return;
@@ -1529,7 +1529,7 @@ namespace DOL.AI.Brain
             if (CompanionRaidSiege.Think(this))
                 return;
 
-            // A hired companion (HiredCompanions165, from True 1.65) never runs the world bots' goals: out of its player's
+            // A hired companion (HiredCompanions165) never runs the world bots' goals: out of its player's
             // group it rejoins them, with its player gone it waits. Inside the group it thinks as every companion does.
             if (HiredCompanions165.KeepWithOwner(BotBody))
                 return;
@@ -1580,7 +1580,7 @@ namespace DOL.AI.Brain
                 (BotBody.TryReturnTemporaryCompanionToLeader() || TryResurrectCompanionOwner()))
                 return;
             // A hired healer raises its dead player first, as a /spawn helper does; one left far behind or stuck comes back
-            // to its player (True 1.65, owner 2026-10-30 / 2026-10-31).
+            // to its player (owner 2026-10-30 / 2026-10-31).
             if (BotBody?.IsHiredCompanion == true &&
                 (TryResurrectCompanionOwner() || HiredCompanions165.TryRecallToOwner(BotBody) || HiredCompanions165.TryUnstick(BotBody)))
                 return;
@@ -2475,7 +2475,7 @@ namespace DOL.AI.Brain
         /// clear, skips offensive casters while they rest, and puts the shield
         /// behind every other long buff, so it came back long after the fight.
         /// </summary>
-        /// <param name="fight">#568 C8 (True165 19eef1d, TryNoAttackSpellsBladeturn): a hired caster set to "Attack spells:
+        /// <param name="fight">#568 C8: a hired caster set to "Attack spells:
         /// None" also puts it back up in the fight; aggro on the group is then no reason to wait (still never while hit in
         /// the last 3 s, swinging or busy).</param>
         private bool TryRestoreSelfBladeturn(bool fight = false)
@@ -2611,7 +2611,7 @@ namespace DOL.AI.Brain
             if (immediateCombat && !minstrelAtRange)
             {
                 // A combat song (not the speed song) plays on through the fight; a grouped performer whose song needs
-                // its instrument keeps it in hand (port of True165 48b20439).
+                // its instrument keeps it in hand.
                 StopTwistedSong(preserveCombatSongs: true);
                 if (!HasActiveCombatSongInstrument())
                     SwitchToUsableMeleeWeapon();
@@ -2816,8 +2816,8 @@ namespace DOL.AI.Brain
             // End the maintained pulse, not the short-duration child buffs it
             // already applied. Scanning also adopts/corrects a song that was
             // started before this brain began tracking its rotation.
-            // preserveCombatSongs: a melee hit or the start of a fight keeps a combat song playing, as a player does
-            // (port of zomboden/OfflineDAoC-True165 48b20439); only the speed song and the rest stop.
+            // preserveCombatSongs: a melee hit or the start of a fight keeps a combat song playing, as a player does;
+            // only the speed song and the rest stop.
             _activeTwistedSongId = 0;
             foreach (ECSPulseEffect active in Body.effectListComponent.GetPulseEffects()
                          .Where(effect => effect?.SpellHandler?.Spell is Spell spell &&
@@ -2842,7 +2842,7 @@ namespace DOL.AI.Brain
         /// <summary>
         /// A song that needs its instrument stops on the next pulse once the instrument is put away (SpellHandler pulse
         /// check). A grouped performer keeps it in hand and plays on; a solo one has nobody else to fight for it, so it
-        /// still draws its weapon (Living Server adaptation of True165 48b20439, which held the instrument solo too).
+        /// still draws its weapon.
         /// </summary>
         private bool KeepsCombatSongInstrument(Spell spell) =>
             spell?.NeedInstrument == true && PreserveCombatSong(spell) && BotBody?.Group?.MemberCount > 1 &&
@@ -2853,7 +2853,7 @@ namespace DOL.AI.Brain
             Body.effectListComponent.GetPulseEffects().Any(effect => !effect.IsEnding && !effect.IsEnded &&
                 KeepsCombatSongInstrument(effect.SpellHandler?.Spell));
 
-        /// <summary>Paladins and Wardens chant while they melee: a hit never stops the chant (True165 v0.7 f68cc75).</summary>
+        /// <summary>Paladins and Wardens chant while they melee: a hit never stops the chant.</summary>
         public static bool KeepsChantInMelee(GameBot bot) => bot?.CharacterClass != null &&
             (eCharacterClass)bot.CharacterClass.ID is eCharacterClass.Paladin or eCharacterClass.Warden;
 
@@ -2944,7 +2944,7 @@ namespace DOL.AI.Brain
                     !LivingHasEffect(target, spell) && !(claims?.IsReserved(target, family, now) ?? false) &&
                     BotBuffTargetPolicy.Benefits(BotBody, target, spell))
                 .ToList();
-            // #571 step 4 (True165 1ed3b24): a companion or a bot in a player's group buffs by job (tanks, melee, healers,
+            // #571 step 4: a companion or a bot in a player's group buffs by job (tanks, melee, healers,
             // casters; pets last), or by the hired companion's "Buff priority" AI option.
             if (BotBuffTargetPolicy.UsesPlayerGroupRules(BotBody))
             {
@@ -3096,7 +3096,6 @@ namespace DOL.AI.Brain
         /// <summary>
         /// Another living groupmate provides a faster speed: a bot that knows one
         /// (it will run it), or a real player who is running one right now.
-        /// From the stefanrows/OfflineDAoC fork (0.200.0).
         /// </summary>
         private bool GroupmateHasStrongerSpeed(Spell speed)
         {
@@ -3478,7 +3477,7 @@ namespace DOL.AI.Brain
                 return;
             NoteCastForStep();
 
-            // True 1.65 (veteran review M6): a solo caster steps straight back from a rooted or snared monster (once per 20 s)
+            // Veteran review M6: a solo caster steps straight back from a rooted or snared monster (once per 20 s)
             if (TryCasterStepBack())
                 return;
 
@@ -3627,7 +3626,7 @@ namespace DOL.AI.Brain
                 if (Body.TargetObject is GameLiving ambushTarget && TryApproachAmbush(ambushTarget))
                     return;
                 // A damage-dealing gamebot steps behind (or beside) a monster fighting someone else, for its back and
-                // side styles (BotBrain.Flank, hand port from True165). Epic tactics above keep raids to themselves.
+                // side styles (BotBrain.Flank). Epic tactics above keep raids to themselves.
                 if (Body.TargetObject is GameLiving flankTarget && TryFlank(flankTarget))
                     return;
                 // Then, standing there and swinging, it circles a little now and then instead of standing like a post
@@ -3739,7 +3738,7 @@ namespace DOL.AI.Brain
                 else
                 {
                     // The performer can still heal, control or shout above. A grouped performer's instrument song needs
-                    // the instrument in hand, so it doesn't take the weapon or unarmed fallback (True165 48b20439).
+                    // the instrument in hand, so it doesn't take the weapon or unarmed fallback.
                     if (HasActiveCombatSongInstrument())
                     {
                         Body.StopAttack();
@@ -3819,7 +3818,7 @@ namespace DOL.AI.Brain
                             if (Body.ActiveWeaponSlot != eActiveWeaponSlot.Distance)
                                 Body.SwitchWeapon(eActiveWeaponSlot.Distance);
 
-                            // df-bosses L2 (True 1.65): an archer stands where a raid boss takes damage (Legion: inside 1,400)
+                            // df-bosses L2: an archer stands where a raid boss takes damage (Legion: inside 1,400)
                             int rangedAttackRange = CapRangeForTarget(livingTarget, Body.attackComponent.AttackRange);
                             if (BotRangedCombat.ShouldCloseToRangedRange(
                                     true, distance, rangedAttackRange))
@@ -3907,7 +3906,7 @@ namespace DOL.AI.Brain
             // target (1,000), not at nuke range (1,500), so every shroom can be
             // planted beside the Animist instead of out by the enemy.
             int shroomRange = BotAnimistPolicy.ShroomStandoffRange(BotBody);
-            // df-bosses L2 (True 1.65): never beyond the range a raid boss can be damaged from (BotBrain.RaidBoss)
+            // df-bosses L2: never beyond the range a raid boss can be damaged from (BotBrain.RaidBoss)
             return CapRangeForTarget(target, shroomRange > 0 && range > 0 ? Math.Min(range, shroomRange) : range);
         }
 
@@ -4006,8 +4005,8 @@ namespace DOL.AI.Brain
             if (Body.IsCasting)
                 Body.StopCurrentSpellcast();
 
-            // A Paladin's or Warden's chant pulses on while it fights, and a performer's combat song survives a hit
-            // (port of True165 48b20439 and its v0.7 KeepsChantInMelee): they used to drop at every hit.
+            // A Paladin's or Warden's chant pulses on while it fights, and a performer's combat song survives a hit:
+            // they used to drop at every hit.
             if (!KeepsChantInMelee(BotBody))
                 StopTwistedSong(preserveCombatSongs: true);
             SwitchToUsableMeleeWeapon();
@@ -4260,7 +4259,7 @@ namespace DOL.AI.Brain
             // The Druid remains a support actor. Only its pet gets an attack
             // order, and an existing matching order is not restarted each tick.
             if (pet is ControlledMobBrain controlled && controlled.OrderedAttackTarget == target) return;
-            // sh-bosses M2 (True 1.65): never at a boss pets cannot hurt (Summoner Lossren); an add instead, or no order
+            // sh-bosses M2: never at a boss pets cannot hurt (Summoner Lossren); an add instead, or no order
             if (PetsDoNoDamageTo(target))
             {
                 if (pet is not ControlledMobBrain mob || (target = PetTargetInsteadOfBoss(target, mob)) == null ||
@@ -4523,7 +4522,7 @@ namespace DOL.AI.Brain
             }
             else if (!casted && type == eCheckSpellType.Offensive)
             {
-                // df-bosses L2 (True 1.65): from where the target takes no damage, no attack spell: the caller walks in to range
+                // df-bosses L2: from where the target takes no damage, no attack spell: the caller walks in to range
                 if (BeyondTargetDamageRange()) return false;
                 if (TryPvpCrowdControl()) return true;
                 // #568 C4: Life Transfer, Amnesia for the pet, shedding a monster to the tank, PvP utility (once a second)
@@ -4629,7 +4628,7 @@ namespace DOL.AI.Brain
                     }
                 }
 
-                // #568 C6 (True165 269870b; Prima: "forget bolts in large battles, since they'll often be blocked"): a bolt
+                // #568 C6 (Prima: "forget bolts in large battles, since they'll often be blocked"): a bolt
                 // is the opener, or for a target nobody else is meleeing; a Wizard or Theurgist bolts only as the opener, and
                 // no bolt goes into a monster meleeing the caster. Bolts and the other attack spells are offered together;
                 // the playbook puts the bolt first while it is the opener. A bolt held back is still cast when nothing
@@ -4744,7 +4743,7 @@ namespace DOL.AI.Brain
                         Body.StopAttack();
                         return true;
                     }
-                    // Bots never use Quickcast. Instants remain available above;
+                    // Only an open-field gamebot's key cast quickcasts (BotQuickCast, #531 step 2d). Instants remain available above;
                     // an interrupted ordinary cast waits for its legal window.
                 }
             }
@@ -5541,7 +5540,7 @@ namespace DOL.AI.Brain
             if (pulseEffect != null)
                 return true;
 
-            // #567 A3 (port of OfflineDAoC-True165 BotHotPrecheck, 03dce76ee): a heal over time or a regeneration is held back
+            // #567 A3: a heal over time or a regeneration is held back
             // only by an effect the server would make it conflict with (SpellHandler.HasConflictingEffectWith), as DoTs are
             // below: a Skald's Song of Rest (effect group 72) no longer stops a Shaman's regeneration (71). Immunities as before.
             if (spellEffect is eEffect.HealOverTime or eEffect.HealthRegenBuff)
@@ -6080,7 +6079,7 @@ namespace DOL.AI.Brain
             // This does not extend PvE/companion triage to unrelated NPCs.
             if (BotBody.IsAutonomousWorldBot && AutonomousObjectiveAssignments.Is(BotBody, eAutonomousObjectiveKind.RvR))
             {
-                // #572 (port of True165 16284ba): held 2 s, ranked before any line-of-sight raycast (BotBrain.RvrSupport.cs).
+                // #572: held 2 s, ranked before any line-of-sight raycast (BotBrain.RvrSupport.cs).
                 GameLiving support = RvrSupportTarget();
                 if (support != null && (spellTarget == null || spellTarget.HealthPercent >= 40 || support.HealthPercent < spellTarget.HealthPercent))
                 {
@@ -6127,7 +6126,7 @@ namespace DOL.AI.Brain
                 foreach (GameLiving m in AutonomousRealmRaid.SupportPets(BotBody, 1800))
                     if (m.HealthPercent < 80 && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
                         raidPatient = m;
-                // dragon-fight M1 (True 1.65): a real player of the realm fighting beside the raid, not in its parties, is healed too
+                // dragon-fight M1: a real player of the realm fighting beside the raid, not in its parties, is healed too
                 foreach (GameLiving m in BotGroupSupport.RaidGuests(BotBody))
                     if (m.IsAlive && m.CurrentRegionID == Body.CurrentRegionID && m.HealthPercent < 80 &&
                         Body.IsWithinRadius(m, 1800) && (raidPatient == null || m.HealthPercent < raidPatient.HealthPercent))
@@ -6355,7 +6354,6 @@ namespace DOL.AI.Brain
             {
                 // The same spell is already being cast (a cure mezz on a mate who is still mezzed is picked again on
                 // every turn): let it finish. Stopping it below and starting over made the healer recast without end.
-                // (From stefanrows/OfflineDAoC 714a9e20, via rambodolphin13/OfflineDAoC 88e7414.)
                 if (IsAlreadyCastingSpell(BotBody.IsCasting, BotBody.castingComponent?.SpellHandler?.Spell?.ID, spellToCast.ID,
                         BotBody.castingComponent?.SpellHandler?.Target, spellTarget))
                     return true;
