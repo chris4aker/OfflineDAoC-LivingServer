@@ -154,8 +154,7 @@ namespace DOL.UnitTests
             {
                 Assert.That(results.Sum(r => r.Errors), Is.Zero, "no service threw");
                 Assert.That(results.Select(r => BombOf(r.Row, "Alb").Bombers), Is.All.EqualTo(2), "Albion has two bombers: " + rows);
-                Assert.That(results.Select(r => BombOf(r.Row, "Alb").Waited), Is.All.EqualTo("no"),
-                    "two bombers never wait for the mez to wear off: " + rows);
+                // (no "never waits" assert: once one of the two has died the other is a lone bomber and waits, as seed 525 did)
                 Assert.That(piles, Is.GreaterThan(0), "Albion bombed a mezzed pile: " + why);
                 Assert.That(together, Is.EqualTo(piles),
                     "each first bomb on a mezzed pile came with the other bomber's, or after a hold for it: " + why);
