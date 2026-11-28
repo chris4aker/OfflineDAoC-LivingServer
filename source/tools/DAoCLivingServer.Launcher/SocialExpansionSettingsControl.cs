@@ -468,6 +468,9 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         HealerPeriodRules = _population.HealerPeriodRules, // no checkbox: kept as read
         WeaponSetRules = _population.WeaponSetRules, // no checkbox: kept as read (#569)
         LeaderFocus = _population.LeaderFocus, // no checkbox: kept as read (#571)
+        PartyMainAssist = _population.PartyMainAssist, // no checkbox: kept as read (#569)
+        CriticalShotOpener = _population.CriticalShotOpener, // no checkbox: kept as read (#569)
+        PartyPullerCampTurn = _population.PartyPullerCampTurn, // no checkbox: kept as read (#569)
         PopulationNewcomers = _population.PopulationNewcomers,
         NewcomerFloor = _population.NewcomerFloor,
         NewcomerPerHour = _population.NewcomerPerHour,
