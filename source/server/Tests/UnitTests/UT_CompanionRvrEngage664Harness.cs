@@ -253,5 +253,87 @@ namespace DOL.GS.Tests
                 Assert.That(scene.World.ServiceErrors, Is.Zero, string.Join("\n", scene.World.Errors));
             });
         }
+
+        // ---- #664 step 2: /hold and the drop leash -------------------------------------------------------------------------
+
+        [Test]
+        public void UnderHoldTheGroupLetsAnEnemyNearbyPassButOtherwiseGoesForIt()
+        {
+            // Owner answer 3 on #664: a hold mode for sneaking past or waiting at a keep. Brains running, every service.
+            using (Scene held = Make(Thidranki, 800, companions: 3))
+            {
+                CompanionEngagementMode.SetHold(held.Player);
+                bool onAnEnemy = false;
+                held.World.Run(10, _ => onAnEnemy |= OnAnEnemy(held));
+                Assert.Multiple(() =>
+                {
+                    Assert.That(CompanionEngagementMode.PlayerHolding(held.Player), Is.True);
+                    Assert.That(onAnEnemy, Is.False, "nobody opened on the enemy 800 away");
+                    Assert.That(CompanionRvrEngage.CurrentPick(held.Player), Is.Null, "the group made no pick");
+                    Assert.That(held.World.ServiceErrors, Is.Zero, string.Join("\n", held.World.Errors));
+                });
+            }
+            using (Scene free = Make(Thidranki, 800, companions: 3))
+            {
+                bool onAnEnemy = false;
+                free.World.Run(10, _ => onAnEnemy |= OnAnEnemy(free));
+                Assert.That(onAnEnemy, Is.True, "the same scene without /hold: the group goes for it");
+            }
+        }
+
+        [Test]
+        public void UnderHoldABotThatIsHitFightsBackAndTheOthersLeaveIt()
+        {
+            using Scene scene = Make(Thidranki, 250, companions: 3);
+            CompanionEngagementMode.SetHold(scene.Player);
+            GameBot victim = scene.Group[0], other = scene.Group[2];
+            GameBot enemy = scene.Enemies[0];
+            Assert.That(CompanionEngagementMode.Allows(victim, enemy), Is.False, "before it hits anyone: left alone");
+            victim.attackComponent.AddAttacker(new AttackData
+            {
+                Attacker = enemy, Target = victim, AttackType = AttackData.eAttackType.MeleeOneHand, Interval = 4_000,
+            });
+            Assert.Multiple(() =>
+            {
+                Assert.That(CompanionEngagementMode.Allows(victim, enemy), Is.True, "the bot it hits defends itself");
+                Assert.That(CompanionEngagementMode.Allows(other, enemy), Is.False, "a groupmate it isn't hitting stays out");
+                Assert.That(CompanionEngagementMode.Restricts(other), Is.True, "and its brain drops it");
+                Assert.That(CompanionEngagementMode.Allows(scene.Group[1], scene.Player), Is.True,
+                    "a friend is never refused: the healer keeps its heal target");
+            });
+            CompanionEngagementMode.Set(scene.Player, defensive: false);
+            Assert.That(CompanionEngagementMode.PlayerHolding(scene.Player), Is.False, "/aggressive ends /hold");
+            Assert.That(CompanionEngagementMode.Allows(other, enemy), Is.True, "and the group fights as one again");
+        }
+
+        [Test]
+        public void APickThatRunsPastTheLeashIsLetGoByEveryBotUnlessItIsHittingThem()
+        {
+            using Scene scene = Make(Thidranki, 1_500);
+            Assert.That(ObserveFor(scene, 6), Is.True, "engaged first");
+            GameBot enemy = scene.Enemies[0];
+            Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.SameAs(enemy));
+            enemy.X = X + CompanionRvrEngage.Leash(defensive: false) + 150; // it runs off, past the leash from the player
+            foreach (GameBot bot in scene.Group)
+                Assert.That(CompanionEngagementMode.Allows(bot, enemy), Is.False, $"{bot.Name}: let go");
+            foreach (GameBot bot in scene.Group)
+                (bot.Brain as BotBrain)?.EnforceCompanionEngagementRange();
+            ObserveFor(scene, 1.5);
+            Assert.Multiple(() =>
+            {
+                Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.Null, "the group's pick is let go");
+                foreach (GameBot bot in scene.Group)
+                {
+                    Assert.That(bot.TargetObject, Is.Not.SameAs(enemy), $"{bot.Name} no longer targets it");
+                    Assert.That((bot.Brain as BotBrain)?.HasAggro, Is.False, $"{bot.Name} has nothing on its aggro list");
+                }
+            });
+            // An enemy hitting the group is never let go, however far it stands.
+            scene.Group[1].attackComponent.AddAttacker(new AttackData
+            {
+                Attacker = enemy, Target = scene.Group[1], AttackType = AttackData.eAttackType.Spell, Interval = 4_000,
+            });
+            Assert.That(CompanionEngagementMode.Allows(scene.Group[0], enemy), Is.True, "it is hitting a groupmate: fought");
+        }
     }
 }

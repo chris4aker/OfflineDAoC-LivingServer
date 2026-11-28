@@ -31,10 +31,17 @@ namespace DOL.GS
     /// - on by default with a server switch.
     ///
     /// The pick (the period kill order, docs/rvr-audit-1.2.3/reference.md 3.4: "anything that wears a dress" first, tanks
-    /// last): never open on a held enemy, and never a held enemy mid-fight while a free one is there; then healers, then
-    /// casters, then fighters, then pets; then the lowest health; then the nearest the player. Never an enemy in a safe
-    /// or bind area or under its realm's tower or keep guards (<see cref="MayOpenOn"/>). Sticky: the group stays on its pick until a better-ranked enemy appears. The player's own target (leader
-    /// focus, #571) and an enemy hitting the group (CompanionPvpEngagement.RecordThreat) come before it.
+    /// last): when the group opens a fight (<see cref="Opening"/>: no pick and nobody fighting an enemy-realm foe) it never
+    /// takes a held enemy and sizes the fight up first; mid-fight it takes a held enemy only when that is the last one
+    /// left; then healers, then casters, then fighters, then pets; then the lowest health; then the nearest the player.
+    /// Never an enemy in a safe or bind area or under its realm's tower or keep guards (<see cref="MayOpenOn"/>). Sticky:
+    /// the group stays on its pick until a better-ranked enemy appears, and through a short spell out of sight
+    /// (<see cref="KeepsOutOfSight"/>). The player's own target (leader focus, #571) and an enemy hitting the group
+    /// (CompanionPvpEngagement.RecordThreat) come before it.
+    ///
+    /// #664 step 2: <c>/hold</c> (owner answer 3, 2026-11-26 22:23: "companions only defend themselves") and the drop
+    /// leash (<see cref="MayFight(bool, bool, bool, bool, int, int, bool, bool)"/>): no bot of the player's group keeps an enemy-realm target past
+    /// <see cref="Leash"/> from the player unless the player is attacking it or it is hitting the group.
     /// Pure rules here; the world read is CompanionRvrEngage.World.cs. Tests only until seen in a PC log.
     /// </summary>
     public static partial class CompanionRvrEngage
@@ -64,6 +71,46 @@ namespace DOL.GS
 
         /// <summary>The bound around the player, by stance. Pure.</summary>
         public static int Bound(bool defensive) => defensive ? DefensiveBound : AggressiveBound;
+
+        /// <summary>
+        /// How much farther than the bound an enemy the group is already on may go before it is let go (step 2): a pick at
+        /// the edge does not flip between picked and dropped each look. A design value.
+        /// </summary>
+        public const int LeashMargin = 250;
+
+        /// <summary>The drop leash around the player, by stance: the bound plus <see cref="LeashMargin"/>. Pure.</summary>
+        public static int Leash(bool defensive) => Bound(defensive) + LeashMargin;
+
+        /// <summary>
+        /// How long the group keeps its pick after it was last seen (step 2, review of #765: one look without line of sight
+        /// dropped it, and the group opened again). A design value: a few looks, long enough for a ridge or a pillar.
+        /// </summary>
+        public const long SightMemoryMilliseconds = 6_000;
+
+        /// <summary>The pick is kept though this look did not see it: it was seen within <see cref="SightMemoryMilliseconds"/>
+        /// (<paramref name="lastSeen"/> 0 or less: never seen). Pure.</summary>
+        public static bool KeepsOutOfSight(bool seenNow, long now, long lastSeen) =>
+            seenNow || lastSeen > 0 && now - lastSeen < SightMemoryMilliseconds;
+
+        /// <summary>
+        /// The group opens a fight: it has no pick and nobody in it is fighting an enemy-realm foe (review of #765: "no pick"
+        /// alone meant every new pick after a kill was an opening). Only an opening is sized up, and only an opening never
+        /// takes a held enemy. Pure.
+        /// </summary>
+        public static bool Opening(bool hasPick, bool groupFighting) => !hasPick && !groupFighting;
+
+        /// <summary>
+        /// Whether a bot of the player's group may fight <paramref name="target"/> (step 2). Under <c>/hold</c> only what is
+        /// hitting the bot itself or its pet. Otherwise, in a #663 place, an enemy-realm target farther than the leash from
+        /// the player is let go unless the player is attacking it or it is hitting someone in the group; everything else is
+        /// unchanged (PvE, monsters, the leash's own exceptions). Pure.
+        /// </summary>
+        public static bool MayFight(bool holding, bool hitsMe, bool warZone, bool enemyRealm, int fromPlayer, int leash,
+            bool playersTarget, bool hitsGroup)
+        {
+            if (holding) return hitsMe;
+            return !warZone || !enemyRealm || fromPlayer <= leash || playersTarget || hitsGroup || hitsMe;
+        }
 
         /// <summary>The group pick runs: the switch is on and the player is in a #663 place. Pure.</summary>
         public static bool Applies(bool on, bool warZone) => on && warZone;
@@ -116,19 +163,25 @@ namespace DOL.GS
         /// <summary>
         /// The group's pick: the index of the candidate to engage, or -1. <paramref name="current"/> is the index of the
         /// group's pick from before (-1 when none or gone); it is kept while it is eligible, not held by a groupmate while a
-        /// free one is there, and no eligible candidate outranks it. <paramref name="opening"/>: the group has no pick yet
-        /// and would open the fight, so a held enemy is never taken (mez and run: the group does not break the hold); mid-fight
-        /// a held enemy is taken only when it is the last one left. Pure.
+        /// free one is there, and no eligible candidate outranks it. <paramref name="opening"/> (<see cref="Opening"/>): the
+        /// group would open a fight, so a held enemy is never taken (mez and run: the group does not break the hold);
+        /// mid-fight (the group is already fighting) a held enemy is taken only when it is the last one left. Pure.
         /// </summary>
-        public static int Pick(IReadOnlyList<CompanionRvrCandidate> candidates, int bound, int current = -1, bool opening = false)
+        /// <param name="leash">How far from the player the pick from before is kept (step 2: <see cref="Leash"/>); a new
+        /// pick is always within <paramref name="bound"/>. Below zero: the bound.</param>
+        public static int Pick(IReadOnlyList<CompanionRvrCandidate> candidates, int bound, int current = -1, bool opening = false,
+            int leash = -1)
         {
             int best = -1;
             for (int i = 0; i < candidates.Count; i++)
                 if (Eligible(candidates[i], bound) && !(opening && candidates[i].Controlled) &&
                     (best < 0 || Before(candidates[i], candidates[best])))
                     best = i;
-            if (best < 0 || current < 0 || current >= candidates.Count || !Eligible(candidates[current], bound))
+            if (current < 0 || current >= candidates.Count || !Eligible(candidates[current], Math.Max(bound, leash)) ||
+                opening && candidates[current].Controlled)
                 return best;
+            if (best < 0)
+                return current;
             CompanionRvrCandidate kept = candidates[current], better = candidates[best];
             bool keep = (!kept.Controlled || better.Controlled) && kept.Rank <= better.Rank;
             return keep ? current : best;

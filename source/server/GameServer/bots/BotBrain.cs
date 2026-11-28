@@ -1157,7 +1157,8 @@ namespace DOL.AI.Brain
 
         public void EnforceCompanionEngagementRange()
         {
-            if (CompanionEngagementMode.DefensiveLeader(Body) == null) return;
+            // /defensive's range, and (#664 step 2) /hold and the drop leash for the player's whole group.
+            if (!CompanionEngagementMode.Restricts(Body)) return;
             foreach (GameLiving target in AggroList.Keys)
                 if (!CompanionEngagementMode.Allows(Body, target)) RemoveFromAggroList(target);
             if (ActiveOrderedPullTarget is GameLiving order && !CompanionEngagementMode.Allows(Body, order))
