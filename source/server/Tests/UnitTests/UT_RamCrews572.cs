@@ -544,6 +544,119 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void TheCrewWaitsForTheArmy() => Assert.Multiple(() =>
+        {
+            Assert.That(AutonomousRamCrews.WaitsForArmy(true, true, false), Is.True, "a battleground wave that gathers holds its crew");
+            Assert.That(AutonomousRamCrews.WaitsForArmy(true, false, false), Is.False, "the wave goes in: the crew takes its seats");
+            Assert.That(AutonomousRamCrews.WaitsForArmy(false, false, true), Is.True, "a frontier siege rally holds its crew");
+            Assert.That(AutonomousRamCrews.WaitsForArmy(false, false, false), Is.False, "the battle is on: the crew takes its seats");
+            Assert.That(AutonomousRamCrews.WaitsForArmy(false, true, false), Is.False, "a battleground wave never holds a frontier crew");
+        });
+
+        /// <summary>The battleground wave of a realm in a region, as AutonomousBattlegroundWave keeps it (gathering at a
+        /// staging point, or going). Removed again by <see cref="NoWave"/>.</summary>
+        private static object SetWave(ushort region, eRealm realm, Vector3 staging, bool going)
+        {
+            Type waves = typeof(AutonomousBattlegroundWave);
+            var all = (System.Collections.IDictionary)waves.GetField("Waves", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null);
+            Type waveType = waves.GetNestedType("Wave", BindingFlags.NonPublic);
+            Assert.That(waveType, Is.Not.Null, "AutonomousBattlegroundWave.Wave");
+            object wave = all[(region, realm)] ?? Activator.CreateInstance(waveType, true);
+            waveType.GetField("Staging")!.SetValue(wave, (Vector3?)staging);
+            waveType.GetField("GatherSince")!.SetValue(wave, GameLoop.GameLoopTime);
+            waveType.GetField("Going")!.SetValue(wave, going);
+            all[(region, realm)] = wave;
+            return wave;
+        }
+
+        private static void NoWave(ushort region, eRealm realm) =>
+            ((System.Collections.IDictionary)typeof(AutonomousBattlegroundWave)
+                .GetField("Waves", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)).Remove((region, realm));
+
+        [Test]
+        public void ARamAtAClosedGateSeatsNoCrewWhileTheWaveGathersAndTheCrewOnceItGoes()
+        {
+            using var world = new RvrFightWorld(572, RvrFightRehearsal.Repeatable);
+            Region region = world.AddRegion(RvrFightRehearsal.FrontierRegion, RvrFightRehearsal.FrontierZone, "#572 ram crews (rehearsal)");
+            ushort regionId = region.ID;
+            string keep = "rvr-keep-572-" + Guid.NewGuid();
+            StandInDoor door = Door(region, X - 300, Y);
+            GameBot op = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "Op");
+            Assert.That(world.Place(op, region, X, Y), Is.True);
+            GameSiegeRam ram = Ram(world, region, X + 50, Y, op);
+            Assert.That(OperatorTurn(Assaulting(keep, region, door), op, ram, door, keep), Is.True, "the operator works its ram meanwhile");
+            Assert.That(AutonomousRamCrews.RegisteredRams(keep, eRealm.Albion), Is.EqualTo(1), "a working ram at a closed gate");
+            Assert.That(AutonomousRamCrews.AimedAtClosedDoor(ram), Is.True);
+
+            // the realm's battleground gamebots muster 3,500 out (the staging point); one already stood at its seat
+            Vector2 seat0 = AutonomousRamCrews.CrewSpot(new(ram.X, ram.Y), new(door.X, door.Y), 0);
+            GameBot seated = CrewBot(world, region, "Seated", (int)seat0.X, (int)seat0.Y, "Battleground", 30);
+            var musterers = new List<GameBot>();
+            for (int i = 0; i < 6; i++)
+                musterers.Add(CrewBot(world, region, $"Muster{i:00}", X + 3_500 + i * 40, Y, "Battleground", 30));
+            Assert.That(AutonomousObjectiveAssignments.Is(seated, eAutonomousObjectiveKind.Battleground), Is.True, "battleground gamebots");
+            var turns = musterers.ToDictionary(b => b, _ => Assaulting(keep, region, door));
+            AutonomousWorldBotController seatedTurn = Assaulting(keep, region, door);
+            Assert.That(AutonomousRamCrews.TryTakeSeat(seated, keep, out _, out _), Is.True, "seated before the wave gathered again");
+            try
+            {
+                SetWave(regionId, eRealm.Albion, new Vector3(X + 3_500, Y, 0), going: false);
+                Assert.That(AutonomousBattlegroundWave.IsGathering(regionId, eRealm.Albion, out _), Is.True, "the wave gathers");
+                for (int look = 0; look < 3; look++)
+                {
+                    foreach (GameBot bot in musterers)
+                        Assert.That(SiegeTurn(turns[bot], bot), Is.False, $"look {look}, {bot.Name}: the wave's turn goes on");
+                    Assert.That(SiegeTurn(seatedTurn, seated), Is.False, $"look {look}: the seated one goes back to the muster");
+                    Later(AutonomousRamCrews.LookMilliseconds);
+                }
+                Assert.Multiple(() =>
+                {
+                    Assert.That(musterers.Concat(new[] { seated }).All(b => AutonomousRamCrews.KeepSeat(b, out _) == null), Is.True,
+                        "no crew seated during the muster");
+                    Assert.That(AutonomousRamCrews.SeatsTaken(ram), Is.EqualTo(0));
+                    Assert.That(musterers.All(b => b.PersistentRecord.ObjectivePhase != "Joining the ram crew"), Is.True,
+                        "nobody walks to the gate");
+                });
+
+                // the wave goes in: the same ram takes its crew
+                SetWave(regionId, eRealm.Albion, new Vector3(X + 3_500, Y, 0), going: true);
+                Assert.That(AutonomousBattlegroundWave.IsGathering(regionId, eRealm.Albion, out _), Is.False, "the wave goes");
+                foreach (GameBot bot in musterers)
+                    Assert.That(SiegeTurn(turns[bot], bot), Is.True, $"{bot.Name}: the crew turn owns the turn");
+                Assert.Multiple(() =>
+                {
+                    Assert.That(musterers.All(b => AutonomousRamCrews.KeepSeat(b, out _) == ram), Is.True, "every musterer crews the ram");
+                    Assert.That(AutonomousRamCrews.SeatsTaken(ram), Is.EqualTo(musterers.Count));
+                    Assert.That(musterers.All(b => b.PersistentRecord.ObjectivePhase == "Joining the ram crew"), Is.True, "and walks to it");
+                });
+            }
+            finally
+            {
+                NoWave(regionId, eRealm.Albion);
+                foreach (GameBot bot in musterers.Append(seated)) AutonomousRamCrews.Leave(bot);
+            }
+        }
+
+        [Test]
+        public void TheCrewTurnAsksTheArmyBeforeAnySeat()
+        {
+            string siege = System.Text.RegularExpressions.Regex.Replace(
+                Source("bots", "autonomous", "AutonomousWorldBotController.Siege.cs"), @"\s+", " ");
+            int crew = siege.IndexOf("private bool TryCrewRam(GameBot bot, long now)", StringComparison.Ordinal);
+            int wait = siege.IndexOf("if (RamCrewWaitsForArmy(bot, now)) {", crew, StringComparison.Ordinal);
+            int seat = siege.IndexOf("GameSiegeRam ram = AutonomousRamCrews.KeepSeat(bot, out int seat);", crew, StringComparison.Ordinal);
+            Assert.Multiple(() =>
+            {
+                Assert.That(crew, Is.GreaterThan(0));
+                Assert.That(wait, Is.GreaterThan(crew), "TryCrewRam asks whether the army holds");
+                Assert.That(seat, Is.GreaterThan(wait), "before it keeps or takes a seat");
+                Assert.That(siege, Does.Contain("LeaveRamCrew(bot); return false; }"), "a held crew leaves its seat and gives the turn back");
+                Assert.That(siege, Does.Contain("battleground && AutonomousBattlegroundWave.IsGathering(bot.CurrentRegionID, bot.Realm, out _)"));
+                Assert.That(siege, Does.Contain("!battleground && AutonomousRvrEventLayer.GetRallyOrder(RvrForceId(bot), bot.Realm, now) is { } rally && bot.Realm == rally.Attacker"));
+            });
+        }
+
+        [Test]
         public void TheAiTurnHoldsTheSeatBeforeTheOrdinaryFightInTheFrontierAndTheBattleground()
         {
             string controller = Source("bots", "autonomous", "AutonomousWorldBotController.cs");

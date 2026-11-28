@@ -39,6 +39,16 @@ namespace DOL.GS
         /// healers (support classes and shamans) keep the crew alive.</summary>
         public static bool IsCrewCandidate(bool rangedOrCaster, bool mainHealer) => !rangedOrCaster && !mainHealer;
 
+        /// <summary>
+        /// Pure rule: the crew waits for the army. A seat is taken (and held) only once the army goes in: in a battleground
+        /// not while the realm's wave gathers at its staging point (AutonomousBattlegroundWave.IsGathering), in the frontier
+        /// not while the attackers' siege rally holds (AutonomousRvrEventLayer.GetRallyOrder, before the battle starts).
+        /// Siege armies move as full groups (owner 2026-10-07): a crew that left the muster for the gate would meet the
+        /// keep's guards a few at a time and thin the wave that has to go. The ram's operator keeps working meanwhile.
+        /// </summary>
+        public static bool WaitsForArmy(bool battleground, bool waveGathering, bool rallyHolds) =>
+            battleground ? waveGathering : rallyHolds;
+
         /// <summary>Pure rule: the ram a new crew member takes: the most empty places, the nearest on a tie; none when every
         /// ram is full. Index into <paramref name="rams"/>, or -1.</summary>
         public static int ChooseRam(IReadOnlyList<(int Free, long Distance)> rams)

@@ -647,6 +647,12 @@ namespace DOL.GS
                 LeaveRamCrew(bot);
                 return false;
             }
+            if (RamCrewWaitsForArmy(bot, now))
+            {
+                if (AutonomousRamCrews.KeepSeat(bot, out _) is { } held) CrewLog(bot, "crew_left", held, "reason=army_holds");
+                LeaveRamCrew(bot);
+                return false;
+            }
             GameSiegeRam ram = AutonomousRamCrews.KeepSeat(bot, out int seat);
             if (ram != null && (!AutonomousRamCrews.Working(ram, bot.Realm) || !AutonomousRamCrews.AimedAtClosedDoor(ram)))
             {
@@ -689,6 +695,18 @@ namespace DOL.GS
             AutonomousStuckWatchdog.MarkProgress(bot, eAutonomousProgressKind.SiegeParticipation);
             SiegeStatus(bot, $"Crewing the ram: {ram.Crew} of {ram.MAX_PASSENGERS} places", ram);
             return true;
+        }
+
+        /// <summary>Whether the crew waits for the army (AutonomousRamCrews.WaitsForArmy): a battleground gamebot while its
+        /// realm's wave gathers, a frontier attacker while its force's siege rally holds. The crew then goes on with the
+        /// wave's or the rally's turn, and takes its seat once the army goes in.</summary>
+        private bool RamCrewWaitsForArmy(GameBot bot, long now)
+        {
+            bool battleground = AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.Battleground);
+            return AutonomousRamCrews.WaitsForArmy(battleground,
+                battleground && AutonomousBattlegroundWave.IsGathering(bot.CurrentRegionID, bot.Realm, out _),
+                !battleground && AutonomousRvrEventLayer.GetRallyOrder(RvrForceId(bot), bot.Realm, now) is { } rally &&
+                bot.Realm == rally.Attacker);
         }
 
         /// <summary>Who crews a ram: melee fighters (AutonomousRamCrews.IsCrewCandidate).</summary>
