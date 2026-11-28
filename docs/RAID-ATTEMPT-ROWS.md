@@ -72,6 +72,21 @@ RAID_ATTEMPT_END attempt= outcome= secs= engaged= fallen= died= left= deaths= he
 
 `-` is an unknown count (an attempt ended by the raid's end has no fallen count for a dragon).
 
+**Bosses whose adds die first, in order (#768, owner 2026-11-27; tests only).** For a boss whose catalog row has
+`AddsInOrder` (Myrddraxis's heads, Aroon's Scaiths, Xaga's Beatha and Tine, Scurceol Hyrde's orbs), `EndAttempt` judges
+the attempt on the adds as well as the boss, with the same 70% / 95% rule: the encounter's lowest is the lower of the
+boss's and the adds' (a dead add is 0), and its health now is the lower of the boss's and the live adds' (0 while fewer
+adds are alive than at the pull: an add killed and not back means the encounter has not reset). So a lost head fight
+with the boss untouched is a `reset` (the encounter's two free resets) or a `wipe` (one of the raid's two tries, which
+calls the Special Forces), where it was `broke-off` before (rc.2 overnight, build 4f5a2aa, 11.08 h: Myrddraxis, 15 of 15
+broke off, 872 deaths). `health` and `lowest` in this row stay the boss's own; the four `REALM_EXPEDITION_*` end rows
+carry `addsHealth=` and `addsLowest=` after `attempt=` (`-` for a boss without ordered adds). Every other boss is judged
+as before (`RealmRaidDungeonRoute.Judge`, `RaidOrderedAddProgress`, `UT_RequiredAddScoring768`). The cause is code
+analysis: rc.2's rows carry only the body's health, so no log shows the heads' lowest yet. If the heads never fall below
+70%, those attempts stay `broke-off` under this rule too; whether rc.2's outcome changes is unknown until `addsLowest=`
+shows up in a PC log. Known limit: a head killed and not yet back when the attempt ends leaves its progress standing, so
+an attempt that killed a head and then lost with fewer than half fallen is still no wipe.
+
 ### `RAID_DEATH`: each raider death in a live attempt
 
 ```

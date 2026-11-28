@@ -59,7 +59,11 @@ public readonly record struct ForceStrength(int Members, int AverageLevel, int M
 /// </summary>
 public static partial class AutonomousRvrEventLayer
 {
-    public enum ForceRole { Roamer, Hunter, Attacker, Defender, ThirdRealm, Escort }
+    /// <summary>
+    /// A force's part at its objective. <see cref="ForceRole.Muster"/> (#530 step 5a): gathering at the objective's muster
+    /// before the attack goes in (a battleground wave that has not gone yet).
+    /// </summary>
+    public enum ForceRole { Roamer, Hunter, Attacker, Defender, ThirdRealm, Escort, Muster }
 
     /// <summary>Who proposed an intent.</summary>
     public enum IntentSource { Plan, Committed, Released, RoamOverride, ChatPromise, Battleground }
@@ -68,7 +72,12 @@ public static partial class AutonomousRvrEventLayer
     public sealed record ForceIntent(string ForceId, Intent Intent, string ObjectiveId, ForceRole Role, string Slot,
         long SinceTick, IntentSource Source, string Rule, string Why, bool Shared, int DefendingKeep)
     {
-        public string Summary => $"{Intent}@{ObjectiveId ?? "-"}{(Shared ? "+event" : string.Empty)}";
+        /// <summary>
+        /// "AssaultKeep@rvr-keep-5+event". A battleground order whose role is not the intent's own (a muster, a wall
+        /// holder) adds it ("AssaultKeep@bg-keep-5/muster"), so the change to the attack logs as a change (#530 step 5a).
+        /// </summary>
+        public string Summary => $"{Intent}@{ObjectiveId ?? "-"}{(Shared ? "+event" : string.Empty)}" +
+            (Source == IntentSource.Battleground && Role != RoleFor(Intent, Shared) ? "/" + Role.ToString().ToLowerInvariant() : string.Empty);
 
         /// <summary>The same decision (the role, slot and times aside).</summary>
         public bool SameAs(ForceIntent other) => other != null && other.Intent == Intent && other.Shared == Shared &&
@@ -78,10 +87,11 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>
     /// A proposal. <paramref name="Shared"/> null keeps the current value (a chat promise does not touch it); so does
     /// <paramref name="DefendingKeep"/> null. <paramref name="OverrideObjective"/>: the roam override's destination,
-    /// proposed with the plan it would replace (one proposal, one write).
+    /// proposed with the plan it would replace (one proposal, one write). <paramref name="Role"/>: the part the proposer
+    /// already knows (a battleground order's muster or wall hold); null takes the intent's own.
     /// </summary>
     public sealed record IntentProposal(IntentSource Source, Intent Intent, string ObjectiveId, bool? Shared, int? DefendingKeep,
-        string Rule, string Why = null, string OverrideObjective = null, string OverrideRule = null);
+        string Rule, string Why = null, string OverrideObjective = null, string OverrideRule = null, ForceRole? Role = null);
 
     /// <summary>What the bot holds now, the context a proposal is judged against.</summary>
     public readonly record struct IntentView(Intent Intent, bool Shared);
@@ -119,7 +129,7 @@ public static partial class AutonomousRvrEventLayer
             rule = proposal.OverrideRule ?? "roam.override";
         }
         int keep = proposal.DefendingKeep ?? previous?.DefendingKeep ?? -1;
-        var decided = new ForceIntent(forceId, proposal.Intent, objective, RoleFor(proposal.Intent, shared), "-",
+        var decided = new ForceIntent(forceId, proposal.Intent, objective, proposal.Role ?? RoleFor(proposal.Intent, shared), "-",
             nowTick, source, rule, proposal.Why, shared, keep);
         return previous != null && previous.SameAs(decided) ? decided with { SinceTick = previous.SinceTick } : decided;
     }

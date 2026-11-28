@@ -1611,6 +1611,39 @@ namespace DOL.GS
             }
         }
 
+        /// <summary>A rally member the watchdog may still catch (issue #767): an open-world or dragon raid (not a dungeon
+        /// expedition, whose walk has boats, portals and door waits) that has left its hub and has not begun its battle. A member standing at the staging ring is protected before this (Protects); one at the hub, or waiting for
+        /// the departure, is not asked. The event id is for the log row.</summary>
+        public static bool IsTravellingInRally(GameBot bot, out string eventId)
+        {
+            eventId = null;
+            Group group = bot?.Group;
+            if (group == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Membership.TryGetValue(group, out Raid raid) || raid.Definition.IsDungeon || raid.Started || !raid.HubDeparted ||
+                    !raid.Parties.ContainsKey(group))
+                    return false;
+                eventId = raid.Definition.Id;
+                return true;
+            }
+        }
+
+        /// <summary>The raid's staging posts and whether its boss leaves a raider who walks past alone (DragonRallyFallback,
+        /// issue #767). False when the bot is in no open-world rally.</summary>
+        public static bool TryDragonRallyFallback(GameBot bot, out Vector3[] posts, out bool neutralBoss)
+        {
+            posts = []; neutralBoss = false;
+            if (bot?.Group == null) return false;
+            using (AiProfile.Lock(Sync, AiSystem.LockRaid))
+            {
+                if (!Membership.TryGetValue(bot.Group, out var raid) || raid.Definition.IsDungeon) return false;
+                posts = raid.StagingPosts.Values.ToArray();
+                neutralBoss = raid.Boss?.Brain is IOldAggressiveBrain brain && DragonRallyFallback.IsNeutral(brain.AggroLevel, brain.AggroRange);
+                return true;
+            }
+        }
+
         /// <summary>The raid's dragon while the raid is not going in: nobody pulls it alone (also during a regroup).</summary>
         public static bool IsPendingDragonTarget(GameBot bot, GameLiving target)
         {
@@ -3010,6 +3043,10 @@ namespace DOL.GS
         /// every ending but a player stop, a supersede or a sweep cap.</summary>
         public static bool SetsCooldown(string reason) => StopOutcome(reason) == null;
 
+        /// <summary>A scored wipe calls the Epic Special Forces while the raid has a try left (pure): the first of its
+        /// <see cref="RealmRaidDungeonRoute.MaximumFailedAttempts"/> tries; the last one ends the raid instead.</summary>
+        public static bool WipeCallsSpecialForces(int failures) => failures < RealmRaidDungeonRoute.MaximumFailedAttempts;
+
         /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
         /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         private static void OnWipe(Raid raid, string boss, int failures, long now, int engaged = -1, int fallen = -1)
@@ -3017,7 +3054,7 @@ namespace DOL.GS
             raid.Wipes++;
             Log.Info(WipeLine(raid.Definition.Id, boss, failures, raid.Support.Length, raid.Support.Count(b => b.IsAlive), engaged, fallen,
                 (now - raid.Created) / 60_000));
-            if (failures >= RealmRaidDungeonRoute.MaximumFailedAttempts) return;
+            if (!WipeCallsSpecialForces(failures)) return;
             AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, boss, false);
             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidWipe(raid.Definition.Name, boss),
                 "raid_wiped", RaidSlots(raid.Definition.Name, boss));

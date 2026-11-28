@@ -11,6 +11,13 @@ namespace DOL.GS.Tests.Rehearsal
         string Factors, bool FromCall);
 
     /// <summary>
+    /// #531: one bot's engage at the end of a scan: whom it took, by which rule (the plan's <c>called</c>, <c>mates</c>,
+    /// <c>order</c>, or <c>spread</c> when the plan does not apply), and whom the spread pick of before 1.2.3
+    /// (AutonomousRvrStaging.TargetIndex over the nearest) would have taken from the same targets.
+    /// </summary>
+    public sealed record RvrFirstPickEvent(long At, GameBot Bot, GameLiving Target, string Rule, GameLiving SpreadTarget);
+
+    /// <summary>
     /// The frontier scan for the rehearsal (#520). The controller's own scan (AutonomousWorldBotController.TryEngageFrontierThreat
     /// and PerceiveRvrTargets) is private, returns at once without a navmesh and rolls Random.Shared, so it cannot run in
     /// CI or repeat by seed. This one reads the world the same way and calls the same public rules: the lookers
@@ -19,10 +26,12 @@ namespace DOL.GS.Tests.Rehearsal
     /// (<see cref="AutonomousRvrPerception.CallRecipients"/>), each bot on its own scan cadence
     /// (<see cref="AutonomousFrontierThreatPolicy.IntervalMilliseconds"/>). The rolls come from the world's seed. A bot that
     /// may engage does what the controller does at the end of its scan: target, aggro, the AGGRO state. Stood in: target
-    /// choice is the nearest engageable enemy (the controller's SelectDistributedRvrTarget and its stance gates are private).
+    /// choice is the controller's own: the plan's first pick (<see cref="AutonomousWorldBotController.PlanFirstPick"/>, #531)
+    /// where the field tactics apply, else the spread pick; the controller's stance gates are private and not stood in.
     /// Line of sight is the world's navmesh ray, as the controller's (clear everywhere unless a scenario stands a wall).
     /// #529 step 3: a fighting bot does not scan; it looks around by the controller's in-combat refresh instead
     /// (<see cref="RvrCombatRefresh"/>: every 2 s, within 2,500, at most four rays, the same notice rule, contacts only).
+    /// Both the scan and the refresh run the notice rule in <c>Perceive</c>; only the scan engages, with the first pick.
     /// </summary>
     public sealed class RvrFightScan
     {
@@ -32,6 +41,7 @@ namespace DOL.GS.Tests.Rehearsal
         private readonly Dictionary<long, long> _lastScan = new();
         private readonly Random _rolls;
         private readonly List<RvrNoticeEvent> _notices = new();
+        private readonly List<RvrFirstPickEvent> _picks = new();
         private readonly HashSet<GameBot> _bots = new();
         private readonly Dictionary<long, long> _nextRefresh = new();
         private readonly Dictionary<long, int> _refreshTurn = new();
@@ -48,6 +58,8 @@ namespace DOL.GS.Tests.Rehearsal
         /// <summary>When false, a noticed enemy is logged but the bot does not engage (scenario 3 measures noticing only).</summary>
         public bool Engage { get; set; } = true;
         public IReadOnlyList<RvrNoticeEvent> Notices => _notices;
+        /// <summary>Every engage the scan made, in order (#531).</summary>
+        public IReadOnlyList<RvrFirstPickEvent> Picks => _picks;
         public RvrAwarenessProfile Profile { get; } = AutonomousRvrPerception.Profile(AutonomousRvrPerception.ParseAwareness(Properties.RVR_BOT_AWARENESS));
 
         public RvrFightScan(int seed)
@@ -127,7 +139,23 @@ namespace DOL.GS.Tests.Rehearsal
             List<GameLiving> engage = Perceive(bot, visible, now, interval);
             if (!Engage || engage.Count == 0)
                 return;
-            GameLiving enemy = engage.OrderBy(bot.GetDistanceTo).ThenBy(t => t.ObjectID).First();
+            // as the controller orders its scan (nearest first), then picks: the plan in the field, else the spread
+            GameLiving[] ordered = engage.OrderBy(bot.GetDistanceTo).ThenBy(t => t.ObjectID).ToArray();
+            GameLiving spread = Spread(bot, ordered);
+            GameLiving enemy = null;
+            string rule = "spread";
+            if (AutonomousWorldBotController.FirstPickApplies(bot))
+            {
+                enemy = AutonomousWorldBotController.PlanFirstPick(bot, ordered, t => t.TargetObject is GameLiving victim &&
+                    victim.Realm == bot.Realm && (t.IsAttacking || t.IsCasting), now, out RvrFirstPickReason reason);
+                rule = RvrFirstPick.Label(reason);
+            }
+            if (enemy == null)
+            {
+                enemy = spread;
+                rule = "spread";
+            }
+            _picks.Add(new RvrFirstPickEvent(now, bot, enemy, rule, spread));
             bot.StopMoving();
             bot.TargetObject = enemy;
             brain.AddToAggroList(enemy, Math.Max(100, enemy.EffectiveLevel * 12));
@@ -238,6 +266,15 @@ namespace DOL.GS.Tests.Rehearsal
                     foreach (GameLiving target in targets)
                         Note(mates[callee.Id], target, RvrContactSource.Called, now);
             }
+        }
+
+        /// <summary>The spread pick of before 1.2.3 (SelectDistributedRvrTarget without the relic carrier): the bot's id
+        /// modulo its party size over the nearest targets.</summary>
+        public static GameLiving Spread(GameBot bot, IReadOnlyList<GameLiving> nearestFirst)
+        {
+            int warband = bot.Group?.GetMembersInTheGroup().OfType<GameBot>().Count() ?? 1;
+            long key = bot.DatabaseID > 0 ? bot.DatabaseID : bot.ObjectID;
+            return nearestFirst[AutonomousRvrStaging.TargetIndex(key, nearestFirst.Count, warband)];
         }
 
         private int Reaction(GameBot bot) => AutonomousRvrPerception.ReactionDelayMilliseconds(bot.Level,

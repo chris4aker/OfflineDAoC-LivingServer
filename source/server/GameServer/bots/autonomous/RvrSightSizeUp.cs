@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 namespace DOL.GS;
 
@@ -85,6 +86,19 @@ public static class RvrSightSizeUp
     /// <summary>A back-off decision while holding or not: the new end of the hold, and whether it is a fresh back-off (only a
     /// fresh one walks away and calls friends; a repeat while waiting just extends the wait). Pure.</summary>
     public static (long Until, bool Fresh) Rearm(long now, long holdUntil) => (now + WaitMilliseconds, holdUntil <= now);
+
+    /// <summary>#766: a failed order whose destination lies this close to the back-off point is the back-off's own (as
+    /// AutonomousForeignRouteFailure.RouteRadius: the mover may move the point onto its floor).</summary>
+    public const float BackOffOrderRadius = 96f;
+
+    /// <summary>
+    /// #766: whether a pending mover failure belongs to the hold's back-off walk, not to the route the hold paused. The
+    /// back-off is a plain PathTo outside the route's own orders, so its NoPathFound used to be charged to the travel goal
+    /// when the route resumed (three of them dropped the goal: AUTONOMOUS_ROUTE_RECOVERY). Null: no back-off walk was
+    /// ordered, so a failure is the route's. Pure.
+    /// </summary>
+    public static bool FailureIsBackOffs(Vector3? backOffOrder, Vector3 failed) =>
+        backOffOrder is Vector3 order && Vector3.DistanceSquared(order, failed) <= BackOffOrderRadius * BackOffOrderRadius;
 
     /// <summary>The line the odds must reach, by boldness (0 to 1; 0.5 when the bot has no personality). Bolder: lower;
     /// never above even odds.</summary>
