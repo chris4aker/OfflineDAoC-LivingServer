@@ -2362,6 +2362,37 @@ namespace DOL.GS
             Flags &= ~eFlags.STEALTH;
             OnMaxSpeedChange();
             StopStealthUncoverAction();
+            // Unhiding ends Vanish, as a player's unhide does (StealthECSEffect; #531 step 2c-2).
+            EffectListService.GetEffectOnTarget(this, eEffect.Vanish)?.End();
+        }
+
+        /// <summary>
+        /// #531 step 2c-2: Vanish hides the bot at once, "regardless of action state or in-combat timer" (AtlasOF_Vanish),
+        /// so even beside an enemy, which <see cref="Stealth"/> refuses. A relic carrier still cannot hide, and a running
+        /// song still prevents it. True when the bot is hidden.
+        /// </summary>
+        public bool VanishHide()
+        {
+            if (IsStealthed)
+                return true;
+            if (GameRelic.IsPlayerCarryingRelic(this) || effectListComponent.ContainsEffectForEffectType(eEffect.Pulse))
+                return false;
+            if (attackComponent.AttackState)
+                attackComponent.StopAttack();
+            if (IsCasting)
+                StopCurrentSpellcast();
+            if (IsOnHorse)
+                IsOnHorse = false;
+            Flags |= eFlags.STEALTH;
+            OnMaxSpeedChange();
+            // Gone from every enemy player at once: under Vanish only True Sight sees it (GamePlayer.CanDetect). The Vanish
+            // effect starts right after this, so the rule is written out here rather than asked of CanDetect.
+            foreach (GamePlayer viewer in GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
+                if (viewer.Realm != Realm && !(Group != null && viewer.Group == Group) && (viewer.Client?.Account?.PrivLevel ?? 1) <= 1 &&
+                    !viewer.effectListComponent.ContainsEffectForEffectType(eEffect.TrueSight))
+                    viewer.Out.SendObjectRemove(this);
+            StartStealthUncoverAction();
+            return true;
         }
 
         private ECSGameTimer _stealthUncoverTimer;

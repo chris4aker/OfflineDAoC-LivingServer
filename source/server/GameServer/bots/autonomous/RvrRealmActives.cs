@@ -16,15 +16,17 @@ namespace DOL.GS;
 /// bot what the ability's own handler does for a player (the handlers are written for GamePlayer only): the same
 /// effect, duration, range and animation, and the handler's own reuse timer (30 minutes), so each fires at most once a
 /// fight. Only bots the open-field tactics apply to (<see cref="BotBrain.RvrTacticsApplyTo"/>) use them: no companion,
-/// no bot in a player's group, no keep fight or raid.
+/// no bot in a player's group, no keep fight or raid. Step 2c-2 adds the Healer's Perfect Recovery after a death (an
+/// instant rez at full health and power) and the Infiltrator's Vanish when it runs from a fight it is losing to an enemy
+/// realm (reference.md 3.8, 3.9, 4.4; roam.md 8).
 /// </summary>
 public static class RvrRealmActives
 {
     public const string SpeedOfSound = "AtlasOF_SpeedOfSound", MasteryOfConcentration = "AtlasOF_MasteryOfConcentration",
-        BunkerOfFaith = "AtlasOF_BunkerOfFaith";
+        BunkerOfFaith = "AtlasOF_BunkerOfFaith", PerfectRecovery = "AtlasOF_PerfectRecovery", Vanish = "AtlasOF_Vanish";
 
     /// <summary>The actives this class handles.</summary>
-    public static readonly string[] Keys = { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith };
+    public static readonly string[] Keys = { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith, PerfectRecovery, Vanish };
 
     public static bool Handles(string key) => Array.IndexOf(Keys, key) >= 0;
 
@@ -45,6 +47,12 @@ public static class RvrRealmActives
     public const int MocInterrupts = 2;
     /// <summary>A fight's interrupt count starts again after this long out of combat.</summary>
     public const long FightGapMilliseconds = 20_000;
+    /// <summary>Perfect Recovery's range (the handler's rez spell).</summary>
+    public const int PerfectRecoveryRange = 1_500;
+    /// <summary>Vanish lasts this long (the handler's).</summary>
+    public const int VanishMilliseconds = 30_000;
+    /// <summary>Vanish is for a fight against an enemy realm: one of its hits landed this recently.</summary>
+    public const long VanishHitWindowMilliseconds = 5_000;
 
     /// <summary>
     /// Speed of Sound on the engage: the group runs the fight plan (stance Engage), has an enemy targeted, and the enemy
@@ -67,6 +75,46 @@ public static class RvrRealmActives
     /// </summary>
     public static bool BunkerOfFaithWanted(bool inContact, int deadMatesNear, int livingMatesNear) =>
         inContact && deadMatesNear >= 1 && livingMatesNear >= 2;
+
+    /// <summary>A dead group mate as Perfect Recovery sees it (plain values).</summary>
+    public readonly record struct Fallen(RvrRole Role, double Distance, bool InSight, bool BeingRaised);
+
+    /// <summary>
+    /// Perfect Recovery after a death: in a fight (the group in contact, or the healer itself in combat), not already
+    /// casting, and a mate to raise (<see cref="PerfectRecoveryPick"/>). Out of the fight the ordinary rez does it, and the
+    /// 30-minute timer is kept for the next one. Pure.
+    /// </summary>
+    public static bool PerfectRecoveryWanted(bool inFight, bool casting, IReadOnlyList<Fallen> fallen) =>
+        inFight && !casting && PerfectRecoveryPick(fallen) >= 0;
+
+    /// <summary>
+    /// The mate Perfect Recovery raises: within its 1,500, in sight and with no rez already on the way; a healer first, then
+    /// a caster, then anyone, the nearest first within each. -1 when there is none. Pure.
+    /// </summary>
+    public static int PerfectRecoveryPick(IReadOnlyList<Fallen> fallen)
+    {
+        int best = -1;
+        for (int i = 0; i < (fallen?.Count ?? 0); i++)
+        {
+            Fallen f = fallen[i];
+            if (!f.InSight || f.BeingRaised || f.Distance > PerfectRecoveryRange)
+                continue;
+            if (best < 0 || RaiseRank(f.Role) < RaiseRank(fallen[best].Role) ||
+                RaiseRank(f.Role) == RaiseRank(fallen[best].Role) && f.Distance < fallen[best].Distance)
+                best = i;
+        }
+        return best;
+    }
+
+    private static int RaiseRank(RvrRole role) => role switch { RvrRole.Healer => 0, RvrRole.Caster => 1, _ => 2 };
+
+    /// <summary>
+    /// Vanish when the bot runs from a fight it is losing (roam.md 8, "assassin, losing"; reference.md 4.4): a retreat has
+    /// just begun, an enemy realm's hit landed in the last 5 s (losing to monsters does not count), and the bot is not
+    /// already hidden. Pure.
+    /// </summary>
+    public static bool VanishWanted(bool retreatStarting, long sinceEnemyRealmHitMilliseconds, bool stealthed) =>
+        retreatStarting && !stealthed && sinceEnemyRealmHitMilliseconds >= 0 && sinceEnemyRealmHitMilliseconds <= VanishHitWindowMilliseconds;
 
     /// <summary>
     /// The fight's interrupt count after one look. A new interrupt (an enemy's interrupt running now that was not at the last
@@ -141,9 +189,65 @@ public static class RvrRealmActives
                 var near = Mates(bot).Where(m => bot.IsWithinRadius(m, BunkerRange)).ToList();
                 return BunkerOfFaithWanted(board.InContact, near.Count(m => !m.IsAlive), near.Count(m => m.IsAlive) + 1);
             }
+            case PerfectRecovery:
+            {
+                List<GameLiving> corpses = Corpses(bot);
+                return corpses.Count > 0 &&
+                       PerfectRecoveryWanted(board?.InContact == true || bot.InCombat, bot.IsCasting, corpses.Select(c => FallenOf(bot, c)).ToList());
+            }
+            // Vanish is fired when a retreat begins (TryVanishOnRetreat), never from the once-a-second look
             default:
                 return false;
         }
+    }
+
+    /// <summary>Dead group mates in the bot's region that are still lying where they fell (not released).</summary>
+    private static List<GameLiving> Corpses(GameBot bot) =>
+        Mates(bot).Where(m => !m.IsAlive && m.ObjectState == GameObject.eObjectState.Active && bot.IsWithinRadius(m, PerfectRecoveryRange + 500)).ToList();
+
+    private static Fallen FallenOf(GameBot bot, GameLiving corpse) => new(
+        RvrRoles.For(corpse switch
+        {
+            GameBot b when b.CharacterClass != null => (eCharacterClass)b.CharacterClass.ID,
+            GamePlayer p when p.CharacterClass != null => (eCharacterClass)p.CharacterClass.ID,
+            _ => eCharacterClass.Unknown,
+        }),
+        bot.GetDistanceTo(corpse),
+        BotGroupSupport.HasCorpseLineOfSight(bot, corpse),
+        BeingRaised(bot, corpse));
+
+    /// <summary>A rez already on the way: a rez offer is open on the corpse, or a mate is casting a rez at it.</summary>
+    private static bool BeingRaised(GameBot bot, GameLiving corpse) =>
+        corpse.TempProperties.GetProperty<GameLiving>("RESURRECT_CASTER") != null ||
+        Mates(bot).Any(m => m != corpse && m.IsAlive && m.IsCasting && m.castingComponent?.SpellHandler is { } cast &&
+                            cast.Spell?.SpellType == eSpellType.Resurrect && cast.Target == corpse);
+
+    /// <summary>The mate Perfect Recovery would raise now, or null.</summary>
+    public static GameLiving PerfectRecoveryTarget(GameBot bot)
+    {
+        List<GameLiving> corpses = Corpses(bot);
+        int pick = PerfectRecoveryPick(corpses.Select(c => FallenOf(bot, c)).ToList());
+        return pick >= 0 ? corpses[pick] : null;
+    }
+
+    /// <summary>Whether the bot is hidden under Vanish now.</summary>
+    public static bool Vanished(GameLiving living) =>
+        living is { IsStealthed: true } && living.effectListComponent.ContainsEffectForEffectType(eEffect.Vanish);
+
+    /// <summary>
+    /// A retreat has begun (BotBrain.BeginRetreat): the bot uses Vanish if it bought it, it is ready and
+    /// <see cref="VanishWanted"/> holds. Only bots the open-field tactics apply to. True when it vanished.
+    /// </summary>
+    public static bool TryVanishOnRetreat(GameBot bot)
+    {
+        if (bot == null || !bot.IsAlive || bot.IsMezzed || bot.IsStunned || bot.IsSitting || !BotBrain.RvrTacticsApplyTo(bot) ||
+            bot.GetAbility(Vanish) is not TimedRealmAbility vanish || bot.GetSkillDisabledDuration(vanish) > 0)
+            return false;
+        long since = bot.LastAttackedByEnemyTickPvP > 0 ? GameLoop.GameLoopTime - bot.LastAttackedByEnemyTickPvP : -1;
+        if (!VanishWanted(true, since, bot.IsStealthed) || !Execute(bot, vanish))
+            return false;
+        AutonomousBotRealmAbilities.LogUse(bot, vanish);
+        return true;
     }
 
     // ---- doing it ------------------------------------------------------------------------------------------------------
@@ -186,8 +290,41 @@ public static class RvrRealmActives
                 }
                 ability.DisableSkill(bot);
                 return true;
+            case PerfectRecovery:
+            {
+                // The handler's own rez spell (AtlasOF_PerfectRecovery.CreateRezSpell), cast with the ability as its handler,
+                // so the spell code starts the 30-minute timer when the cast ends, as for a player.
+                if (bot.IsCasting || PerfectRecoveryTarget(bot) is not { } corpse)
+                    return false;
+                Spell rez = PerfectRecoverySpell(bot.Level, ability.GetReUseDelay(ability.Level));
+                if (ability is not ISpellCastingAbilityHandler handler)
+                    return false;
+                GameObject previous = bot.TargetObject;
+                bot.TargetObject = corpse;
+                bool started = bot.CastSpell(rez, GlobalSpellsLines.RealmSpellsSpellLine, handler, false);
+                bot.TargetObject = previous;
+                return started;
+            }
+            case Vanish:
+                if (!bot.VanishHide())
+                    return false;
+                ability.DisableSkill(bot);
+                ECSGameEffectFactory.Create(new(bot, VanishMilliseconds, 1), static (in ECSGameEffectInitParams i) => new AtlasOF_VanishECSEffect(i));
+                return true;
             default:
                 return false;
         }
+    }
+
+    /// <summary>The Perfect Recovery rez, as the handler builds it: instant, range 1,500, 100% health and power, free.</summary>
+    public static Spell PerfectRecoverySpell(int casterLevel, int reuseSeconds)
+    {
+        var db = new DOL.Database.DbSpell
+        {
+            Name = "Perfect Recovery Rez", Icon = 0, ClientEffect = 7019, Damage = 0, Target = eSpellTarget.CORPSE.ToString(), Radius = 0,
+            Type = eSpellType.Resurrect.ToString(), Value = 0, Duration = 0, Pulse = 0, PulsePower = 0, Power = 0, CastTime = 0,
+            EffectGroup = 0, Range = PerfectRecoveryRange, RecastDelay = reuseSeconds, ResurrectHealth = 100, ResurrectMana = 100,
+        };
+        return new Spell(db, casterLevel);
     }
 }

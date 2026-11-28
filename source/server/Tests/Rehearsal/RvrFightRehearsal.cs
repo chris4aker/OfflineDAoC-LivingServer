@@ -788,6 +788,98 @@ namespace DOL.GS.Tests.Rehearsal
             return new BoardCaseResult(row, detail, world.ServiceErrors, listed, scan.Refreshes, scan.RefreshRays, scan.MaxRaysPerRefresh, 0);
         }
 
+        // ---------------------------------------------------------------------------------------------------------
+        // #531 step 2c-2: Perfect Recovery and Vanish through the server's own spell, effect and stealth code. Every brain is
+        // stopped, so only the abilities act: the rows show the bot-side executors work on live GameBots (the handlers are
+        // written for players only).
+
+        /// <summary>What the escape-and-rez case saw (each a yes/no the test asserts) and its row.</summary>
+        public sealed record EscapeAndRezResult(string Row, IReadOnlyList<string> Detail, int Errors,
+            bool Raised, int RaisedHealthPercent, long PrTimerMs, bool SecondRaisedByPr,
+            bool Vanished, int EnemySeeRange, bool HiddenAfterHit, bool VanishEndedOnUnhide);
+
+        private static void Hit(GameLiving attacker, GameLiving victim, int damage) => victim.OnAttackedByEnemy(new AttackData
+        {
+            Attacker = attacker, Target = victim, AttackType = AttackData.eAttackType.MeleeOneHand,
+            AttackResult = eAttackResult.HitUnstyled, Damage = damage, Interval = 3_000,
+        });
+
+        /// <summary>
+        /// Scenario 7: (a) a Midgard Healer, Warrior and Savage in a fight with an Albion Armsman; the Warrior falls, and the
+        /// Healer's Perfect Recovery (through its own realm-ability turn) raises it at once at full health and goes on its
+        /// 30-minute timer; then the Savage falls, and the timer keeps it down. (b) An Albion Infiltrator hit by two Midgard
+        /// bots starts a run: its Vanish hides it beside them, no enemy's stealth rule sees it, a hit leaves it hidden, and
+        /// its own unhide ends Vanish.
+        /// </summary>
+        public static EscapeAndRezResult EscapeAndRez(int seed)
+        {
+            using var world = new RvrFightWorld(seed);
+            Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+            var detail = new List<string>();
+
+            // (a) Perfect Recovery
+            GameBot healer = world.NewBot(eRealm.Midgard, eCharacterClass.Healer, 50, "RHealer");
+            GameBot warrior = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "RWarrior");
+            GameBot savage = world.NewBot(eRealm.Midgard, eCharacterClass.Savage, 50, "RSavage");
+            GameBot armsman = world.NewBot(eRealm.Albion, eCharacterClass.Armsman, 50, "RArmsman");
+            world.Place(healer, region, 40_000, 40_000, 0, 1024);
+            world.Place(warrior, region, 40_400, 40_000, 0, 1024);
+            world.Place(savage, region, 40_400, 40_200, 0, 1024);
+            world.Place(armsman, region, 40_550, 40_100, 0, 3072);
+            world.Form(new List<GameLiving> { healer, warrior, savage });
+            foreach (GameBot bot in new[] { healer, warrior, savage, armsman })
+                bot.Brain?.Stop();
+            new RvrFightActives().Grant(new[] { healer });
+            var pr = healer.GetAbility(RvrRealmActives.PerfectRecovery) as DOL.GS.RealmAbilities.TimedRealmAbility;
+            Hit(armsman, healer, 1);
+            warrior.TakeDamage(armsman, eDamageType.Slash, warrior.Health + 10, 0);
+            world.Run(0.3);
+            bool warriorDown = !warrior.IsAlive;
+            AutonomousBotRealmAbilities.UseActives(healer);
+            world.Run(1.5);
+            bool raised = warriorDown && warrior.IsAlive;
+            long timer = pr != null ? healer.GetSkillDisabledDuration(pr) : 0;
+            detail.Add($"pr: healer has it={pr != null} warrior down={warriorDown} raised={raised} health={warrior.HealthPercent}% timer={timer / 1000}s");
+            savage.TakeDamage(armsman, eDamageType.Slash, savage.Health + 10, 0);
+            world.Run(1.2);
+            Hit(armsman, healer, 1);
+            AutonomousBotRealmAbilities.UseActives(healer);
+            world.Run(1.5);
+            bool secondRaised = savage.IsAlive;
+            detail.Add($"pr: savage down, raised by Perfect Recovery again={secondRaised}");
+
+            // (b) Vanish
+            GameBot infiltrator = world.NewBot(eRealm.Albion, eCharacterClass.Infiltrator, 50, "VInfiltrator");
+            GameBot hunterA = world.NewBot(eRealm.Midgard, eCharacterClass.Berserker, 50, "VBerserker");
+            GameBot hunterB = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "VWarrior");
+            world.Place(infiltrator, region, 50_000, 50_000, 0, 1024);
+            world.Place(hunterA, region, 50_100, 50_000, 0, 3072);
+            world.Place(hunterB, region, 50_000, 50_100, 0, 0);
+            foreach (GameBot bot in new[] { infiltrator, hunterA, hunterB })
+                bot.Brain?.Stop();
+            new RvrFightActives().Grant(new[] { infiltrator });
+            Hit(hunterA, infiltrator, 100);
+            Hit(hunterB, infiltrator, 100);
+            bool fired = RvrRealmActives.TryVanishOnRetreat(infiltrator);
+            world.Run(0.5);
+            bool vanished = fired && RvrRealmActives.Vanished(infiltrator);
+            int seeRange = DOL.GS.ServerRules.StealthRules.SeeRange(DOL.GS.ServerRules.StealthRules.LookOf(hunterA, infiltrator));
+            Hit(hunterA, infiltrator, 100);
+            world.Run(0.2);
+            bool hiddenAfterHit = infiltrator.IsStealthed;
+            infiltrator.Stealth(false);
+            world.Run(0.5);
+            bool endedOnUnhide = !infiltrator.effectListComponent.ContainsEffectForEffectType(eEffect.Vanish);
+            detail.Add($"vanish: fired={fired} hidden={vanished} enemy see range={seeRange} hidden after a hit={hiddenAfterHit} " +
+                       $"ended on unhide={endedOnUnhide}");
+            detail.AddRange(world.Errors.Take(5).Select(e => "error: " + e));
+            string row = $"RVR_REHEARSAL realm_abilities_escape_rez seed={seed} pr_raised={raised}:{warrior.HealthPercent}% " +
+                         $"pr_timer={timer / 60_000}min pr_second={secondRaised} vanish={vanished} see={seeRange} " +
+                         $"hidden_after_hit={hiddenAfterHit} vanish_ends_on_unhide={endedOnUnhide}";
+            return new EscapeAndRezResult(row, detail, world.ServiceErrors, raised, warrior.HealthPercent, timer, secondRaised,
+                vanished, seeRange, hiddenAfterHit, endedOnUnhide);
+        }
+
         private static string Outcome(RvrMezAttempt attempt) => attempt?.Landed switch { true => "landed", false => "refused", _ => "no-cast" };
 
         /// <summary>The mezzer casts its mez on the target at 70% health through the bot's own CastSpell; null if no cast finished.</summary>

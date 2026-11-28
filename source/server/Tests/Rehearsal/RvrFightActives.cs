@@ -9,7 +9,8 @@ namespace DOL.GS.Tests.Rehearsal
     /// #531 step 2c-1: the fight plan's realm abilities in the RvR fight rehearsal (#520). CI has no world database, so the
     /// bots would buy nothing at a trainer; each eight is given what its classes' builds buy (Speed of Sound for the
     /// Minstrel, Mastery of Concentration for casters and healers, Bunker of Faith for the Cleric), and the bots' own brains
-    /// use them; casters and healers also get the Quickcast ability (#531 step 2d). The row says, per side, when each first started and on how many of the side.
+    /// use them; casters and healers also get the Quickcast ability (#531 step 2d), the Healer Perfect Recovery and the
+    /// Infiltrator Vanish (#531 step 2c-2). The row says, per side, when each first started and on how many of the side.
     /// </summary>
     public sealed class RvrFightActives
     {
@@ -22,6 +23,9 @@ namespace DOL.GS.Tests.Rehearsal
             (RvrRealmActives.BunkerOfFaith, eEffect.BunkerOfFaith, "bof"),
             // #531 step 2d: Quickcast on a key cast under interrupt (an ability, not a realm ability)
             (Abilities.Quickcast, eEffect.QuickCast, "qc"),
+            // #531 step 2c-2: Perfect Recovery leaves no effect on the healer, so it is seen by its timer (eEffect.Unknown)
+            (RvrRealmActives.PerfectRecovery, eEffect.Unknown, "pr"),
+            (RvrRealmActives.Vanish, eEffect.Vanish, "vanish"),
         };
 
         private readonly Dictionary<(eRealm Realm, string Label), Start> _first = new();
@@ -34,6 +38,8 @@ namespace DOL.GS.Tests.Rehearsal
         {
             RvrRealmActives.SpeedOfSound => c == eCharacterClass.Minstrel,
             RvrRealmActives.BunkerOfFaith => c == eCharacterClass.Cleric,
+            RvrRealmActives.PerfectRecovery => c == eCharacterClass.Healer,
+            RvrRealmActives.Vanish => c == eCharacterClass.Infiltrator,
             RvrRealmActives.MasteryOfConcentration or Abilities.Quickcast => c is eCharacterClass.Cleric or eCharacterClass.Friar or eCharacterClass.Sorcerer
                 or eCharacterClass.Theurgist or eCharacterClass.Wizard or eCharacterClass.Cabalist or eCharacterClass.Necromancer
                 or eCharacterClass.Healer or eCharacterClass.Shaman or eCharacterClass.Runemaster or eCharacterClass.Spiritmaster
@@ -48,6 +54,8 @@ namespace DOL.GS.Tests.Rehearsal
             RvrRealmActives.MasteryOfConcentration => new AtlasOF_MasteryofConcentration(new DbAbility { KeyName = key, Name = "Mastery of Concentration" }, 1),
             RvrRealmActives.BunkerOfFaith => new AtlasOF_BunkerOfFaith(new DbAbility { KeyName = key, Name = "Bunker of Faith" }, 1),
             Abilities.Quickcast => new Ability(new DbAbility { KeyName = key, Name = "Quick Cast" }, 1),
+            RvrRealmActives.PerfectRecovery => new AtlasOF_PerfectRecovery(new DbAbility { KeyName = key, Name = "Perfect Recovery" }, 1),
+            RvrRealmActives.Vanish => new AtlasOF_Vanish(new DbAbility { KeyName = key, Name = "Vanish" }, 1),
             _ => null,
         };
 
@@ -66,9 +74,13 @@ namespace DOL.GS.Tests.Rehearsal
         }
 
         // Bunker of Faith is a stat buff whose effect type comes from its spell, so it is found by its class.
-        private static bool Has(GameBot bot, eEffect effect) => effect == eEffect.BunkerOfFaith
-            ? bot.effectListComponent.GetEffects().Any(e => e is DOL.GS.Effects.BunkerOfFaithECSEffect)
-            : bot.effectListComponent.ContainsEffectForEffectType(effect);
+        private static bool Has(GameBot bot, eEffect effect) => effect switch
+        {
+            eEffect.BunkerOfFaith => bot.effectListComponent.GetEffects().Any(e => e is DOL.GS.Effects.BunkerOfFaithECSEffect),
+            // Perfect Recovery: its timer is running (the rez landed)
+            eEffect.Unknown => bot.GetAbility(RvrRealmActives.PerfectRecovery) is TimedRealmAbility pr && bot.GetSkillDisabledDuration(pr) > 0,
+            _ => bot.effectListComponent.ContainsEffectForEffectType(effect),
+        };
 
         /// <summary>One look per tick: the first start of each ability on each side, and how many times each started.</summary>
         public void Tick(long now)

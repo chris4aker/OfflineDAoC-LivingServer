@@ -50,6 +50,8 @@ namespace DOL.UnitTests
             Assert.That(actives, Is.Not.Null, "the realm-ability row");
             // #531 step 2d: the row also says when each side's casters first quickcast a key cast, and how often
             Assert.That(actives, Does.Contain(" qc="), "the row has Quickcast");
+            // #531 step 2c-2: and Perfect Recovery and Vanish
+            Assert.That(actives, Does.Contain(" pr=").And.Contain(" vanish="), "the row has Perfect Recovery and Vanish");
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
@@ -73,6 +75,27 @@ namespace DOL.UnitTests
                 }
             });
             TestContext.Progress.WriteLine($"  #531 opening: Albion {first.Albion} / Midgard {first.Midgard}");
+        }
+
+        [Test]
+        public void Scenario7_PerfectRecoveryAndVanishWorkOnLiveGamebots()
+        {
+            // #531 step 2c-2: the bot-side executors on live GameBots, through the server's own spell, effect and stealth code
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.EscapeAndRezResult result = RvrFightRehearsal.EscapeAndRez(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Raised, Is.True, $"Perfect Recovery raised the fallen Warrior: {result.Row}");
+                Assert.That(result.RaisedHealthPercent, Is.GreaterThanOrEqualTo(99), "at full health");
+                Assert.That(result.PrTimerMs, Is.GreaterThan(29 * 60_000L), "and went on its 30-minute timer");
+                Assert.That(result.SecondRaisedByPr, Is.False, "once a fight: the second death waits for an ordinary rez");
+                Assert.That(result.Vanished, Is.True, $"the Infiltrator vanished beside two enemies: {result.Row}");
+                Assert.That(result.EnemySeeRange, Is.Zero, "no enemy's stealth rule sees it");
+                Assert.That(result.HiddenAfterHit, Is.True, "a hit leaves it hidden");
+                Assert.That(result.VanishEndedOnUnhide, Is.True, "its own unhide ends Vanish");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
         }
 
         [Test]

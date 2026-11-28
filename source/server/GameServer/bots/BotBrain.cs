@@ -3875,7 +3875,9 @@ namespace DOL.AI.Brain
             // the approach to a legal enemy player/bot, not random PvE pauses,
             // or to a companion hidden with its hidden player (CompanionStealth).
             // A gamebot stealther travelling hidden (BotStealthTravel, #522) is not idling in stealth either.
-            if (Body.IsStealthed && !CompanionStealth.HoldsStealth(BotBody) && !BotStealthTravel.HoldsStealth(BotBody))
+            // #531 step 2c-2: a bot hidden by Vanish stays hidden for it (the escape), idle or not
+            if (Body.IsStealthed && !CompanionStealth.HoldsStealth(BotBody) && !BotStealthTravel.HoldsStealth(BotBody) &&
+                !RvrRealmActives.Vanished(Body))
                 Body.Stealth(false);
         }
 

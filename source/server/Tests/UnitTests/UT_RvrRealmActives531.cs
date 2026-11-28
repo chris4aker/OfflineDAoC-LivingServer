@@ -10,8 +10,8 @@ namespace DOL.UnitTests
 {
     /// <summary>
     /// #531 step 2c-1: Speed of Sound on the engage, Mastery of Concentration when interrupted twice, Bunker of Faith after
-    /// a death, for autonomous gamebots in the open field. The rules and the builds; the wiring is shown by the #520
-    /// rehearsal row. Tests only.
+    /// a death, for autonomous gamebots in the open field. Step 2c-2: Perfect Recovery after a death and Vanish on a run
+    /// from a lost fight. The rules and the builds; the wiring is shown by the #520 rehearsal rows. Tests only.
     /// </summary>
     [TestFixture]
     public class UT_RvrRealmActives531
@@ -47,6 +47,72 @@ namespace DOL.UnitTests
         [TestCase(false, 1, 6, ExpectedResult = false, TestName = "BoF: not in contact")]
         public bool BunkerOfFaithFiresAfterADeath(bool contact, int dead, int living) => BunkerOfFaithWanted(contact, dead, living);
 
+        // ---- 2c-2: Perfect Recovery ----
+
+        private static Fallen Dead(RvrRole role, double distance, bool sight = true, bool raised = false) => new(role, distance, sight, raised);
+
+        [Test]
+        public void PerfectRecoveryRaisesAHealerFirstThenACasterThenTheNearest()
+        {
+            var fallen = new List<Fallen> { Dead(RvrRole.Tank, 200), Dead(RvrRole.Caster, 900), Dead(RvrRole.Healer, 1_400), Dead(RvrRole.Melee, 100) };
+            Assert.That(PerfectRecoveryPick(fallen), Is.EqualTo(2), "the healer, though farthest");
+            fallen.RemoveAt(2);
+            Assert.That(PerfectRecoveryPick(fallen), Is.EqualTo(1), "then the caster");
+            fallen.RemoveAt(1);
+            Assert.That(PerfectRecoveryPick(fallen), Is.EqualTo(1), "then the nearest");
+            Assert.That(PerfectRecoveryPick(new[] { Dead(RvrRole.Healer, 1_200), Dead(RvrRole.Healer, 300) }), Is.EqualTo(1), "the nearer of two healers");
+        }
+
+        [Test]
+        public void PerfectRecoverySkipsACorpseOutOfReachOutOfSightOrAlreadyBeingRaised()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(PerfectRecoveryPick(new[] { Dead(RvrRole.Healer, PerfectRecoveryRange + 1) }), Is.EqualTo(-1), "beyond 1,500");
+                Assert.That(PerfectRecoveryPick(new[] { Dead(RvrRole.Healer, PerfectRecoveryRange) }), Is.Zero, "at 1,500");
+                Assert.That(PerfectRecoveryPick(new[] { Dead(RvrRole.Healer, 500, sight: false) }), Is.EqualTo(-1), "out of sight");
+                Assert.That(PerfectRecoveryPick(new[] { Dead(RvrRole.Healer, 500, raised: true) }), Is.EqualTo(-1), "a rez already on the way");
+                Assert.That(PerfectRecoveryPick(new[] { Dead(RvrRole.Healer, 500, raised: true), Dead(RvrRole.Tank, 800) }), Is.EqualTo(1),
+                    "the next corpse instead");
+                Assert.That(PerfectRecoveryPick(new List<Fallen>()), Is.EqualTo(-1), "nobody dead");
+                Assert.That(PerfectRecoveryPick(null), Is.EqualTo(-1));
+            });
+        }
+
+        [TestCase(true, false, true, ExpectedResult = true, TestName = "PR: in the fight, a mate down")]
+        [TestCase(false, false, true, ExpectedResult = false, TestName = "PR: the fight is over (the ordinary rez does it)")]
+        [TestCase(true, true, true, ExpectedResult = false, TestName = "PR: casting something else")]
+        [TestCase(true, false, false, ExpectedResult = false, TestName = "PR: nobody to raise")]
+        public bool PerfectRecoveryFiresAfterADeathInTheFight(bool inFight, bool casting, bool someoneDown) =>
+            PerfectRecoveryWanted(inFight, casting, someoneDown ? new[] { Dead(RvrRole.Tank, 600) } : new Fallen[0]);
+
+        [Test]
+        public void ThePerfectRecoveryRezIsTheHandlers()
+        {
+            Spell rez = PerfectRecoverySpell(50, 1800);
+            Assert.Multiple(() =>
+            {
+                Assert.That(rez.SpellType, Is.EqualTo(eSpellType.Resurrect));
+                Assert.That(rez.Target, Is.EqualTo(eSpellTarget.CORPSE));
+                Assert.That(rez.CastTime, Is.Zero, "instant");
+                Assert.That(rez.Range, Is.EqualTo(PerfectRecoveryRange));
+                Assert.That(rez.ResurrectHealth, Is.EqualTo(100));
+                Assert.That(rez.ResurrectMana, Is.EqualTo(100));
+                Assert.That(rez.Power, Is.Zero, "free");
+                Assert.That(rez.RecastDelay, Is.EqualTo(1_800_000), "the spell code disables Perfect Recovery for 30 minutes");
+            });
+        }
+
+        // ---- 2c-2: Vanish ----
+
+        [TestCase(true, 1_000L, false, ExpectedResult = true, TestName = "Vanish: running, an enemy realm's hit a second ago")]
+        [TestCase(true, VanishHitWindowMilliseconds, false, ExpectedResult = true, TestName = "Vanish: the hit at the window's edge")]
+        [TestCase(true, VanishHitWindowMilliseconds + 1, false, ExpectedResult = false, TestName = "Vanish: no enemy realm's hit lately (monsters)")]
+        [TestCase(true, -1L, false, ExpectedResult = false, TestName = "Vanish: never hit by an enemy realm")]
+        [TestCase(false, 1_000L, false, ExpectedResult = false, TestName = "Vanish: not running")]
+        [TestCase(true, 1_000L, true, ExpectedResult = false, TestName = "Vanish: already hidden")]
+        public bool VanishFiresOnARunFromALostFight(bool retreat, long since, bool stealthed) => VanishWanted(retreat, since, stealthed);
+
         [Test]
         public void AnInterruptCountsOnceAndTheCountStartsAgainAfterTheFight()
         {
@@ -69,9 +135,9 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheExecutorHandlesExactlyTheThreeAndBotsMayUseThem()
+        public void TheExecutorHandlesExactlyItsFiveAndBotsMayUseThem()
         {
-            Assert.That(Keys, Is.EquivalentTo(new[] { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith }));
+            Assert.That(Keys, Is.EquivalentTo(new[] { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith, PerfectRecovery, Vanish }));
             foreach (string key in Keys)
             {
                 Assert.That(Handles(key), Is.True, key);
@@ -89,6 +155,10 @@ namespace DOL.UnitTests
             Assert.That(new AtlasOF_MasteryofConcentration(dba, 1).GetReUseDelay(1), Is.EqualTo(1800));
             dba = new DOL.Database.DbAbility { KeyName = BunkerOfFaith, Name = "Bunker of Faith" };
             Assert.That(new AtlasOF_BunkerOfFaith(dba, 1).GetReUseDelay(1), Is.EqualTo(1800));
+            dba = new DOL.Database.DbAbility { KeyName = PerfectRecovery, Name = "Perfect Recovery" };
+            Assert.That(new AtlasOF_PerfectRecovery(dba, 1).GetReUseDelay(1), Is.EqualTo(1800));
+            dba = new DOL.Database.DbAbility { KeyName = Vanish, Name = "Vanish" };
+            Assert.That(new AtlasOF_Vanish(dba, 1).GetReUseDelay(1), Is.EqualTo(1800));
         }
 
         // ---- the builds ----
@@ -96,16 +166,17 @@ namespace DOL.UnitTests
         private static Dictionary<string, int> Catalog(params string[] keys) =>
             keys.Select(k => k.StartsWith("AtlasOF_") ? k : "AtlasOF_" + k).ToDictionary(k => k, k => k switch
             {
-                Purge or PurgeReduced or SecondWind or IgnorePain or IgnorePainTank or SpeedOfSound or MasteryOfConcentration or BunkerOfFaith => 1,
+                Purge or PurgeReduced or SecondWind or IgnorePain or IgnorePainTank or SpeedOfSound or MasteryOfConcentration or BunkerOfFaith or
+                    PerfectRecovery or Vanish => 1,
                 FirstAid => 3,
                 _ => 5,
             });
 
         private static int Cost(string key, int level) => key switch
         {
-            Purge or SecondWind or SpeedOfSound or BunkerOfFaith => 10,
+            Purge or SecondWind or SpeedOfSound or BunkerOfFaith or Vanish => 10,
             PurgeReduced => 4,
-            IgnorePain or MasteryOfConcentration => 14,
+            IgnorePain or MasteryOfConcentration or PerfectRecovery => 14,
             IgnorePainTank => 8,
             FirstAid => AtlasRAHelpers.GetCommonUpgradeCostFor3LevelsRA(level),
             _ => AtlasRAHelpers.GetCommonUpgradeCostFor5LevelsRA(level),
@@ -155,6 +226,43 @@ namespace DOL.UnitTests
             int moc = FirstPointsBuying(cleric, Archetype.Healer, (int)eCharacterClass.Cleric, MasteryOfConcentration);
             Assert.That(bunker, Is.InRange(1, 60));
             Assert.That(moc, Is.GreaterThan(bunker).And.LessThanOrEqualTo(100));
+        }
+
+        [Test]
+        public void AHealerBuysPerfectRecoveryAfterPurge()
+        {
+            var healer = Catalog("AugAcuity", "AugCon", "AugDex", "MasteryOfHealing", "WildHealing", "Serenity", "Toughness", PurgeReduced,
+                FirstAid, MasteryOfConcentration, PerfectRecovery);
+            Assert.That(ArchetypeOf(healer.Keys), Is.EqualTo(Archetype.Healer));
+            int purge = FirstPointsBuying(healer, Archetype.Healer, (int)eCharacterClass.Healer, PurgeReduced);
+            int pr = FirstPointsBuying(healer, Archetype.Healer, (int)eCharacterClass.Healer, PerfectRecovery);
+            Assert.That(pr, Is.GreaterThan(purge).And.LessThanOrEqualTo(70), $"purge at {purge}, Perfect Recovery at {pr}");
+        }
+
+        [Test]
+        public void AnInfiltratorBuysVanishAfterPurge()
+        {
+            var infiltrator = Catalog("AugStr", "AugCon", "AugDex", "AugQui", "MasteryOfPain", "Dodger", "Toughness", Purge, SecondWind,
+                FirstAid, IgnorePain, Vanish, "SeeHidden");
+            Assert.That(ArchetypeOf(infiltrator.Keys), Is.EqualTo(Archetype.Melee));
+            int purge = FirstPointsBuying(infiltrator, Archetype.Melee, (int)eCharacterClass.Infiltrator, Purge);
+            int vanish = FirstPointsBuying(infiltrator, Archetype.Melee, (int)eCharacterClass.Infiltrator, Vanish);
+            Assert.That(vanish, Is.GreaterThan(purge).And.LessThanOrEqualTo(60), $"purge at {purge}, Vanish at {vanish}");
+        }
+
+        [Test]
+        public void TheClericAndTheMinstrelBuyNeitherPerfectRecoveryNorVanish()
+        {
+            var cleric = Catalog("AugAcuity", "AugCon", "AugDex", "MasteryOfHealing", "WildHealing", "Serenity", "Toughness", PurgeReduced,
+                FirstAid, MasteryOfConcentration, BunkerOfFaith);
+            var minstrel = Catalog("AugStr", "AugCon", "AugDex", "AugQui", "AugAcuity", "MasteryOfPain", "MasteryOfBlocking", "MasteryOfArms",
+                "Toughness", "Serenity", Purge, SecondWind, FirstAid, IgnorePain, SpeedOfSound);
+            var clericPlan = Plan(cleric, Archetype.Healer, (int)eCharacterClass.Cleric, 300, Cost);
+            var minstrelPlan = Plan(minstrel, Archetype.Melee, (int)eCharacterClass.Minstrel, 300, Cost);
+            Assert.That(clericPlan.ContainsKey(PerfectRecovery) || clericPlan.ContainsKey(Vanish), Is.False);
+            Assert.That(minstrelPlan.ContainsKey(PerfectRecovery) || minstrelPlan.ContainsKey(Vanish), Is.False);
+            Assert.That(clericPlan.ContainsKey(BunkerOfFaith), Is.True, "the Cleric keeps its Bunker");
+            Assert.That(minstrelPlan.ContainsKey(SpeedOfSound), Is.True, "the Minstrel keeps its Speed of Sound");
         }
 
         [Test]
