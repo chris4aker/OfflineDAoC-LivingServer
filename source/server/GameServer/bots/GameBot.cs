@@ -3872,6 +3872,7 @@ namespace DOL.GS
 
         public override void OnAttackedByEnemy(AttackData ad)
         {
+            CompanionRvrEngage.NoteHit(this, ad); // #664: /hold's self-defence sees the attacker before the brain decides
             // Notify BotBrain of the attack so it can add aggro and transition to combat state
             if (Brain is BotBrain botBrain)
                 botBrain.OnAttackedByEnemy(ad);

@@ -82,6 +82,16 @@ namespace DOL.GS
             lock (state) return state.Threats.TryGetValue(target, out long until) && GameLoop.GameLoopTime < until;
         }
 
+        /// <summary>
+        /// <paramref name="target"/> hit someone of <paramref name="leader"/>'s group lately (RecordThreat's memory), whoever
+        /// asks (#664 step 2: the drop leash never lets go of an enemy that is hitting the group).
+        /// </summary>
+        public static bool Threatens(GamePlayer leader, GameLiving target)
+        {
+            if (leader == null || target == null || !States.TryGetValue(leader, out State state)) return false;
+            lock (state) return state.Threats.TryGetValue(target, out long until) && GameLoop.GameLoopTime < until;
+        }
+
         public static bool RecordThreat(GameBot helper, GameLiving victim, AttackData attack)
         {
             GamePlayer leader = Leader(helper);
@@ -117,6 +127,9 @@ namespace DOL.GS
             if (leader == null && CompanionRvrEngage.GroupLeader(helper) is GamePlayer groupLeader && CompanionRvrEngage.Applies(groupLeader))
                 leader = groupLeader;
             if (leader?.IsAlive != true || !PlayerLedPullCoordinator.Available(helper, leader)) return;
+            // #664 step 2: under /hold the group opens nothing and assists nobody; each bot only defends itself (in its brain,
+            // through CompanionEngagementMode.Allows).
+            if (CompanionEngagementMode.PlayerHolding(leader)) return;
             State state = States.GetOrCreateValue(leader);
             GameLiving focus;
             lock (state)
