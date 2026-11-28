@@ -73,6 +73,7 @@ Run the three binaries with the repository's configs:
   folder;
 - Grafana with the `tools/grafana/local/provisioning` files;
 - `alloy run tools/grafana/alloy/config.alloy`, with `OFFLINEDAOC_LOGS` set to the logs folder.
+  main's copy can lag the code by one merge (#817); `python3 tools/grafana/kit.py --write --generated` brings yours up to date.
 
 The Windows setup below does all of this for you.
 
@@ -178,8 +179,12 @@ so the filter is `answered="1"`, not `"true"`.
 
 ## When a row changes
 
-A pull request that adds, renames or changes a row runs `python3 tools/grafana/kit.py --write`. That regenerates
-LOG-ROWS.md, the allowlist and the dashboards; `tools/check.sh` fails until it does.
+A pull request that adds, renames or changes a row doesn't commit LOG-ROWS.md or the allowlist
+(`tools/grafana/alloy/config.alloy`): main regenerates both after each merge (#817, the `generated-files` workflow and
+its `bot/generated-files` pull request), and `generated_guard.py` fails a pull request that commits them. If a
+dashboard reads the row, run `python3 tools/grafana/kit.py --write` and commit the dashboards; `tools/check.sh` fails
+until you do. `--write --generated` also writes the two files locally, to read them or to run Alloy on your branch:
+restore them before you commit (`git checkout origin/main -- docs/LOG-ROWS.md tools/grafana/alloy/config.alloy`).
 - If the new row writes a name in a way the rules miss, add it to `extra_drop` in `row-policy.json`, with the reason.
 - If a field is wrongly dropped, add it to `keep`, with the reason.
 - Once a pending row is on main, remove its `pending-rows.json` entry; `--check` prints a note until you do.

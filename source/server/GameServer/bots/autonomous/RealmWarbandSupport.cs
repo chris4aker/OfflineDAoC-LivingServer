@@ -13,11 +13,20 @@ namespace DOL.GS
     {
         public sealed record Roster(object Scope, GameLiving[] Members);
         private static Dictionary<Group, Roster> _groups = new();
+        private static Dictionary<Group, Group> _leads = new();
         private static Dictionary<string, object> _scopes = new();
         private static long _next;
         public static Roster Get(GameBot bot) => bot?.Group != null &&
             Volatile.Read(ref _groups).TryGetValue(bot.Group, out var roster) &&
             AutonomousObjectiveAssignments.Is(bot, eAutonomousObjectiveKind.RvR) ? roster : null;
+
+        /// <summary>
+        /// #599 step 2: the lead group of a battlegroup's follower group, as of the last pulse; null for a lead group, a
+        /// group in no battlegroup, or a group whose roster is an event's. Lock-free (the fight-board builder reads it).
+        /// Only autonomous gamebot warbands are ever in a battlegroup: a group that hosts a player never links.
+        /// </summary>
+        public static Group BattlegroupLeadOf(Group group) =>
+            group != null && Volatile.Read(ref _leads).TryGetValue(group, out Group lead) ? lead : null;
 
         /// <summary>Rebuilds the rosters every ten seconds; <paramref name="immediately"/>: now (the RvR fight rehearsal, #520).</summary>
         public static void Pulse(long now, bool immediately = false)
@@ -36,6 +45,7 @@ namespace DOL.GS
                 members.Add(bot);
             }
             var groups = new Dictionary<Group, Roster>();
+            var leads = new Dictionary<Group, Group>();
             var scopes = new Dictionary<string, object>();
             foreach (var pair in grouped)
             {
@@ -57,8 +67,14 @@ namespace DOL.GS
                 scopes[key] = scope;
                 var roster = new Roster(scope, members);
                 foreach (Group group in linked) groups[group] = roster;
+                // #599 step 2: each follower group's lead, for the battlegroup's one target call.
+                Group lead = AutonomousBotGroupCoordinator.BattlegroupGroup(battlegroup.LeadForceId);
+                if (lead != null && System.Array.IndexOf(linked, lead) >= 0)
+                    foreach (Group group in linked)
+                        if (group != lead) leads[group] = lead;
             }
             _scopes = scopes;
+            Volatile.Write(ref _leads, leads);
             Volatile.Write(ref _groups, groups);
         }
     }

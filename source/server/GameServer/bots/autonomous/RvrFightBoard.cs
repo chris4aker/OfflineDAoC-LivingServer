@@ -148,6 +148,12 @@ public sealed record RvrFightBoard
     public bool FromContacts { get; init; }
     /// <summary>The group's stored facts when the board was built.</summary>
     public RvrGroupState State { get; init; } = RvrGroupState.Empty;
+    /// <summary>
+    /// #599 step 2: when the group follows a battlegroup's lead group, the lead group's called target on its own published
+    /// board for this region (at most two seconds old); null otherwise. The plan's assist step takes it when it is on this
+    /// board (<see cref="RvrAssist.BattlegroupCandidate"/>).
+    /// </summary>
+    public GameLiving BattlegroupCall { get; init; }
     /// <summary>The group's plan, made from this board and the plan before it, and published with it.</summary>
     public RvrFightPlan Plan { get; init; } = RvrFightPlan.None;
 
