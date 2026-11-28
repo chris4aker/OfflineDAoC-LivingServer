@@ -70,8 +70,18 @@ public sealed partial class AutonomousWorldBotController
         : null;
 
     /// <summary>What one frontier scan knows about the rules that apply to it (see RvrFieldRules).</summary>
+    /// <param name="CombatLook">#529 step 3: the in-combat refresh's look (RVR_NOTICE look=combat), not the scan's.</param>
     private readonly record struct RvrScanContext(bool AtObjective, RvrFieldRules Rules, RvrBotAwareness Awareness,
-        RvrAwarenessProfile Profile, bool StealthNotice = false);
+        RvrAwarenessProfile Profile, bool StealthNotice = false, bool CombatLook = false);
+
+    /// <summary>
+    /// The scan's line of sight (the siege fighter's Visible in TryEngageFrontierThreat, and the in-combat refresh): eye
+    /// height to eye height, and a closed keep door blocks it (BlockingDoorAvoidanceFilters; DefaultFilters walk door
+    /// polygons, so a ray through a closed door passed).
+    /// </summary>
+    private static bool RvrSightRay(IPathfindingMgr nav, GameBot bot, GameLiving target) => nav.HasLineOfSight(bot.CurrentZone,
+        new(bot.X, bot.Y, bot.Z + RvrCombatRefresh.EyeHeight), new(target.X, target.Y, target.Z + RvrCombatRefresh.EyeHeight),
+        nav.BlockingDoorAvoidanceFilters);
 
     private static RvrScanContext RvrContext(BotBrain brain, GameBot bot, bool committed)
     {
@@ -194,12 +204,12 @@ public sealed partial class AutonomousWorldBotController
     /// attacking the bot, its realm-mates near it or its group, as before. A bot at its objective (holding a keep or
     /// working a siege there) keeps the old rules.
     /// </summary>
-    private GameLiving[] PerceiveRvrTargets(GameBot bot, GameLiving[] visible, in RvrScanContext context)
+    private GameLiving[] PerceiveRvrTargets(GameBot bot, GameLiving[] visible, in RvrScanContext context, double? scanInterval = null)
     {
         if (visible.Length == 0)
             return visible;
         long now = GameLoop.GameLoopTime;
-        double interval = _frontierThreat.LastIntervalMilliseconds;
+        double interval = scanInterval ?? _frontierThreat.LastIntervalMilliseconds;
         if (!Properties.RVR_BOT_PERCEPTION || context.AtObjective)
         {
             // #522: at an objective (or with the perception rule off) visible targets are engaged as before, and a stealthed
@@ -304,7 +314,7 @@ public sealed partial class AutonomousWorldBotController
                          $"kind={PerceivedKind(spotted)} party={RvrPartyKey.Label(party)} partyNoticed={noticed} partyVisible={targets.Count} " +
                          $"distance={(int)members[primary].Sighting.Distance} reasonFactors={AutonomousRvrPerception.Describe(seen.Factors)} " +
                          $"chance={seen.Chance:0.###} time_since_first_los_ms={seen.SinceFirstSightMilliseconds} delayMs={seen.DelayMilliseconds} " +
-                         $"awareness={Properties.RVR_BOT_AWARENESS} region={bot.CurrentRegionID}");
+                         $"awareness={Properties.RVR_BOT_AWARENESS} region={bot.CurrentRegionID} look={RvrCombatRefresh.Look(context.CombatLook)}");
             // #505: the player (or his pet) noticed by this group: RVR_PLAYER_NOTICED once per contact.
             RvrPlayerRecord.Noticed(bot, spotted, (int)members[primary].Sighting.Distance, seen.SinceFirstSightMilliseconds, called: false);
             if (Properties.RVR_BOT_SPOTTERS)
@@ -323,8 +333,84 @@ public sealed partial class AutonomousWorldBotController
         return engage.ToArray();
     }
 
+    private long _nextCombatRefresh;
+    private int _combatRefreshTurn;
+
+    /// <summary>
+    /// #529 step 3 (RvrCombatRefresh): a fighting autonomous gamebot skips its frontier scan, so every 2 s it looks around
+    /// once instead, to keep its contacts (and so its group's fight board) up to date: the enemy players, bots and their
+    /// pets within 2,500, at most four rays, through the scan's own notice rule (PerceiveRvrTargets: the reaction delay,
+    /// the observer cap, the stealth rule, the call to its mates). It never picks a target, but a notice does what the
+    /// scan's does: it calls the bot's mates (AlertRvrMates: they get the enemy as a Called contact, and an idle mate
+    /// wakes for it), and its observers count against the same per-second observer cap as the out-of-combat scans.
+    /// Only for a bot whose fight board reads contacts (BotBrain.RvrTacticsApplyTo: no siege fighter, committed
+    /// defender, battleground assault or raid, whose boards never read them). Off with rvr_board_from_contacts. Never a
+    /// companion, a helper or a bot in a player's group. Its notices log RVR_NOTICE look=combat.
+    /// </summary>
+    private void RefreshRvrContactsInCombat(BotBrain brain, GameBot bot)
+    {
+        if (!Properties.RVR_BOARD_FROM_CONTACTS || bot.IsHiredCompanion || bot.DatabaseID <= 0)
+            return;
+        long now = GameLoop.GameLoopTime;
+        if (now < _nextCombatRefresh)
+            return;
+        _nextCombatRefresh = RvrCombatRefresh.NextDue(now, bot.DatabaseID);
+        if (brain.FSM.GetCurrentState()?.StateType == eFSMStateType.PASSIVE)
+            return;
+        // Review of b5effa87: the cost goes only to bots whose board reads the contacts (the tactics' scope).
+        if (!BotBrain.RvrTacticsApplyTo(bot))
+            return;
+        var nav = PathfindingProvider.Instance;
+        if (!nav.IsAvailable || !nav.HasNavmesh(bot.CurrentZone))
+            return;
+        // AI_PROFILE: the look itself (two area lookups, at most MaxRays rays, the notice rule).
+        using var aiProfile = AiProfile.Scope(RvrCombatRefresh.ProfileName);
+        bool committed = AutonomousRvrDefense.IsCommittedDefender(bot) || AutonomousRvrDefense.IsCommittedSiegeFighter(bot);
+        RvrScanContext rvr = RvrContext(brain, bot, committed) with { CombatLook = true };
+        RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.CombatRefreshes);
+        bool Candidate(GameLiving target) => target != bot && target.IsAlive && target.ObjectState == GameObject.eObjectState.Active &&
+            target.Realm != bot.Realm && target.Realm != eRealm.None && target.CurrentRegionID == bot.CurrentRegionID &&
+            (!target.IsStealthed || rvr.StealthNotice && bot.IsWithinRadius(target, RvrStealthNotice.MaxRange)) &&
+            !IsIgnoredPvpTarget(target) && PerceivedKind(target) != RvrPerceivedKind.Other;
+        var targets = new List<GameLiving>();
+        foreach (GamePlayer player in bot.GetPlayersInRadius((ushort)RvrCombatRefresh.Radius))
+            if (Candidate(player))
+                targets.Add(player);
+        foreach (GameNPC npc in bot.GetNPCsInRadius((ushort)RvrCombatRefresh.Radius))
+            if ((npc is GameBot || npc.Brain is IControlledBrain) && Candidate(npc))
+                targets.Add(npc);
+        if (targets.Count == 0)
+            return;
+        var candidates = new List<RvrRefreshCandidate>(targets.Count);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            GameLiving target = targets[i];
+            bool free = FiringOnRealm(bot, target) && !target.IsStealthed;
+            // As the scan: no ray for an enemy this look could not notice anyway (observer cap, range).
+            if (!free && RvrSkipsLineOfSight(bot, target, rvr, now))
+                continue;
+            candidates.Add(new RvrRefreshCandidate(i, bot.GetDistanceTo(target), free));
+        }
+        var seen = new List<GameLiving>();
+        foreach (int index in RvrCombatRefresh.Pick(candidates, _combatRefreshTurn++))
+        {
+            GameLiving target = targets[index];
+            if (FiringOnRealm(bot, target) && !target.IsStealthed)
+            {
+                seen.Add(target);
+                continue;
+            }
+            RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.CombatRays);
+            // The scan's own ray (RvrSightRay): eye height, and a closed keep door blocks it.
+            if (RvrSightRay(nav, bot, target))
+                seen.Add(target);
+        }
+        // The notice rule writes the contacts; what it would engage is dropped (the brain is already fighting).
+        PerceiveRvrTargets(bot, seen.ToArray(), rvr, RvrCombatRefresh.IntervalMilliseconds);
+    }
+
     /// <summary>The stealth rule's facts for this bot looking at this stealthed enemy (reads the game).</summary>
-    private static RvrStealthSighting StealthSighting(GameBot bot, GameLiving target, bool lineOfSight) => new(
+    internal static RvrStealthSighting StealthSighting(GameBot bot, GameLiving target, bool lineOfSight) => new(
         bot.GetDistanceTo(target), bot.Level, target.GetModifiedSpecLevel(Specs.Stealth),
         ObserverDetectHidden: bot.HasAbility(Abilities.DetectHidden),
         TargetDetectHidden: target.HasAbility(Abilities.DetectHidden),
@@ -369,7 +455,7 @@ public sealed partial class AutonomousWorldBotController
                      $"distance={(int)sighting.Distance} reasonFactors={AutonomousRvrPerception.Describe(outcome.Factors)} " +
                      $"chance={outcome.Chance:0.###} stealthLimit={RvrStealthNotice.Limit(sighting)} " +
                      $"time_since_first_los_ms={outcome.SinceFirstSightMilliseconds} delayMs={outcome.DelayMilliseconds} " +
-                     $"awareness={Properties.RVR_BOT_AWARENESS} region={bot.CurrentRegionID}");
+                     $"awareness={Properties.RVR_BOT_AWARENESS} region={bot.CurrentRegionID} look={RvrCombatRefresh.Look(context.CombatLook)}");
         RvrPlayerRecord.Noticed(bot, target, (int)sighting.Distance, outcome.SinceFirstSightMilliseconds, called: false);
         return outcome.DelayMilliseconds <= 0;
     }

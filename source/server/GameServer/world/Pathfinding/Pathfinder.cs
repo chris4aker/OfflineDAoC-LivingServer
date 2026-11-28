@@ -216,7 +216,19 @@ namespace DOL.GS
                 pathBuffer.Clear();
                 pathBuffer.Origin = position;
 
-                if (Owner is GameBot { IsAutonomousWorldBot: true } &&
+                // #571 step 3: the certified-corridor gate is for gamebots no player leads. A hired
+                // companion or a gamebot in a player's group follows on the ordinary Detour path, as /spawn companions do.
+                if (Owner is GameBot ledBot && ledBot.IsAutonomousWorldBot &&
+                    zone.ZoneRegion?.ID == AutonomousDarknessFallsPolicy.RegionId &&
+                    !CompanionDarknessFallsPaths.UsesGamebotRules(ledBot) &&
+                    CompanionDarknessFallsPaths.ShouldCheckOldGate(ledBot) &&
+                    !AutonomousDarknessFallsNavigation.MayQueueRuntimePath(pathfindingResult, rentedNodeBuffer, position, target) &&
+                    !AutonomousDarknessFallsNavigation.MayQueueOwnExitGroundPath(Owner.Realm, pathfindingResult,
+                        rentedNodeBuffer, position, target))
+                    CompanionDarknessFallsPaths.NoteUngatedPath(ledBot, pathfindingResult.Status, pathfindingResult.NodeCount,
+                        position, target);
+
+                if (Owner is GameBot dfBot && CompanionDarknessFallsPaths.UsesGamebotRules(dfBot) &&
                     zone.ZoneRegion?.ID == AutonomousDarknessFallsPolicy.RegionId &&
                     !AutonomousDarknessFallsNavigation.MayQueueRuntimePath(pathfindingResult,
                         rentedNodeBuffer, position, target) &&
