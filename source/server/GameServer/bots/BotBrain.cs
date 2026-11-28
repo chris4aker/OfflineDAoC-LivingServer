@@ -3289,6 +3289,12 @@ namespace DOL.AI.Brain
                     // If owner is in combat but we don't have a valid target, check recent attackers
                 }
 
+                // #665: in an RvR fight a caster or healer of the player's group (one that isn't on the attack, a healer
+                // above all) walks for its attack-formation place first; heals still come first (it walks only while
+                // nobody needs one) and it never walks out of a cast.
+                if (_brain.TryCompanionFormationSupport())
+                    return;
+
                 // No combat — heal/buff
                 if (_brain.CheckHeals())
                 {

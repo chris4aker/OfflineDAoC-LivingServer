@@ -127,6 +127,7 @@ namespace DOL.GS.Tests
             {
                 Assert.That(brain, Does.Contain("TryCompanionFormationMove(formationTarget)) return;"), "the attack turn");
                 Assert.That(brain, Does.Contain("if (TryCompanionFormationSupport()) return;"), "the support turn");
+                Assert.That(brain, Does.Contain("if (_brain.TryCompanionFormationSupport())"), "the follow state (a healer not on the attack)");
                 Assert.That(brain, Does.Contain("CompanionHealerCombatHold.Holds(BotBody, leader) || CompanionFormationHolds()"),
                     "the travel formation doesn't pull a placed member back mid-fight");
             });
