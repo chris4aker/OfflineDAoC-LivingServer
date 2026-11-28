@@ -233,6 +233,32 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Cover_skips_a_lone_hidden_24_degree_place_past_the_hold_limit()
+        {
+            // The live case: no other healers near, the 12-degree places in the caster's sight, and only one 24-degree
+            // place hidden behind a rock. Past 340 from its own place the pick must keep the healer's own spot; at 800 the
+            // place is within the limit and is taken, so the skip turns on at the limit, not everywhere.
+            Vector2 line = new(0, 0);
+            Vector3 caster = new(0, 2000, 0);
+            foreach (int hidden in new[] { 3, 4 })
+                foreach (float depth in new[] { 800f, 900f, 960f, 1020f })
+                {
+                    Vector2 spot = new(0, -depth);
+                    Vector2[] candidates = RvrPositioning.CoverCandidates(spot, line);
+                    Vector2 rock = candidates[hidden];
+                    Vector2 picked = BotBrain.RvrCoverPick(
+                        new DOL.GS.Tests.Rehearsal.FlatNavmesh(1)
+                        {
+                            SightBlocked = (from, to) => Vector2.Distance(new Vector2(from.X, from.Y), new Vector2(caster.X, caster.Y)) < 1
+                                && Vector2.Distance(new Vector2(to.X, to.Y), rock) < 1
+                        },
+                        null, caster, 0, spot, line, false, []);
+                    Assert.That(picked, Is.EqualTo(depth >= 900f ? spot : rock),
+                        $"depth {depth}, only candidate {hidden} hidden: {(depth >= 900f ? "too far to hold, keeps its own spot" : "within the limit, takes the rock")}");
+                }
+        }
+
+        [Test]
         public void Cover_pick_walks_to_the_first_hidden_place_beside_its_own()
         {
             Vector2 line = new(0, 0), spot = new(0, -900);
