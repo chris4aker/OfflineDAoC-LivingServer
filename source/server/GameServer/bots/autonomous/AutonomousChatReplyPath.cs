@@ -249,6 +249,49 @@ public static class AutonomousChatReplyPath
         return voiced();
     }
 
+    // ------------------------------------------------------------------------------------- a party: /group and a companion's /say
+
+    /// <summary>
+    /// The first answer of a groupmate to the player's /group line, or of a hired companion to its player's /say line (Realism 2b,
+    /// #479, step 1: one reply path for both, run by the live handlers and the question bench alike). In order: the meet-up step
+    /// (where the player says they are, or that they are coming: <see cref="AutonomousChatMeetup.PartyReply"/>), a pause or ready
+    /// line ("oom", "med break", "rdy": <see cref="AutonomousChatMeetup.PauseReply"/>), the knowledge lookup (not for short talk that
+    /// asks nothing: <see cref="PartyAsksKnowledge"/>), a warning ("adds!", "inc"), "come
+    /// here", else the voiced reply through the reply budget. Each step is a port the
+    /// caller fills (null: the step is skipped); <paramref name="voiced"/> null means the line draws no voiced answer here (the
+    /// channel's reply count was 0). <paramref name="addressed"/>: the line named the bot (or, for a companion, was its to take).
+    /// The texts of the steps come unstyled and are styled here; the voiced reply comes as the corpus styled it.
+    /// </summary>
+    public static ReplyChoice Party(Ports ports, string message, eAutonomousChatIntent intent, bool addressed, string channel,
+        Func<string> knowledge, Func<string> alarm, Func<string> come, Func<string> meetup, Func<string> pause, Func<ReplyChoice> voiced)
+    {
+        message ??= string.Empty;
+        // Where the player is, that they are coming, a pause and "rdy" are statements of the moment (the readers take no question),
+        // so no lookup reads them as a question about the word ("oom" is not asking what oom means).
+        if (ports.Voices && meetup?.Invoke() is { } meet)
+            return new ReplyChoice(ports.Styled(meet), "live meetup");
+        if (ports.Voices && pause?.Invoke() is { } paused)
+            return new ReplyChoice(ports.Styled(paused), "live pause");
+        if (PartyAsksKnowledge(message, intent) && knowledge?.Invoke() is { } known)
+            return new ReplyChoice(ports.Styled(known), "knowledge");
+        // A warning's call from the situation ("where?", "on it"); else the voiced reply answers it as a warning.
+        if (AutonomousChatReplyBudget.IsAlarm(message, intent) && alarm?.Invoke() is { } call)
+            return new ReplyChoice(ports.Styled(call), "context alarm");
+        if (AutonomousBotGroupChatter.AsksToCome(message) && come?.Invoke() is { } coming)
+            return new ReplyChoice(ports.Styled(coming), "context come");
+        if (voiced == null)
+            return new ReplyChoice(null, "none count");
+        return Budget(ports, voiced(), message, addressed, channel);
+    }
+
+    /// <summary>
+    /// Whether a party line goes to the knowledge lookup: anything but short talk that asks nothing ("ty", "lol", "hi all"), so
+    /// "hi all, quick q, how do i get to jordheim" still asks. As /group had it before #479, a question to the bot named goes to the
+    /// lookup too ("sc or drops at 25?" is advice, not the bot's own gear). Pure.
+    /// </summary>
+    public static bool PartyAsksKnowledge(string message, eAutonomousChatIntent intent) =>
+        !IsShortTalk(message, intent) || AsksWhatNext(message) || AutonomousChatReplyBudget.AsksSomething(message);
+
     // -------------------------------------------------------------------------------------------------------- the voiced reply
 
     /// <summary>
