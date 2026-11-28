@@ -332,6 +332,20 @@ public class SocialExpansionSettingsTests
         Assert.That(problems, Is.Empty);
     }
 
+    [Test] public void PartyMainAssistIsOnByDefaultSavedReadAndLeftAloneByAllOff()
+    {
+        // #569 step 6: bot_party_main_assist, a bot combat rule like bot_leader_focus, on by default and in Setup; no
+        // checkbox, so the tab keeps what it read, and ALL OFF leaves it as it is.
+        var d = SocialExpansionSettings.Defaults;
+        Assert.That(d.PartyMainAssist && SocialExpansionSettings.Recommended.PartyMainAssist, Is.True);
+        Assert.That(d.AllOff().PartyMainAssist, Is.True);
+        (d with { PartyMainAssist = false }).Save(_database, d, () => _stopped);
+        Assert.That(Rows()["bot_party_main_assist"], Is.EqualTo("False"));
+        var problems = new List<string>();
+        Assert.That(SocialExpansionSettings.Load(_database, problems).PartyMainAssist, Is.False);
+        Assert.That(problems, Is.Empty);
+    }
+
     [Test] public void WeaponSetRulesAreOnByDefaultSavedReadAndLeftAloneByAllOff()
     {
         // #569 step 7: bot_weapon_set_rules, a bot combat rule like bot_healer_period_rules, on by default and in Setup;
