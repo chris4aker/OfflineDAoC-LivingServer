@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **794**; pending (#625, not on main yet): **0**; shipped by the pipeline: **762**.
+- Rows in code: **795**; pending (#625, not on main yet): **0**; shipped by the pipeline: **763**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -327,6 +327,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `COMPANION_RIDE_BACK` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
 | `COMPANION_RIDE_STOWED` | server.log | **ships** | `bots/TemporaryGroupStableTravel.cs` | `bot`, `id`, `player` | `bot`, `player` | - | - |
 | `COMPANION_RVR_ENGAGE` | server.log | **ships** | `bots/CompanionRvrEngage.World.cs` | `bar`, `call`, `fromPlayer`, `kind`, `known`, `leader`, `odds`, `rank`, `region`, `size`, `stance`, `target`, `why` | `leader`, `target` | change-only: one per player's group each time its own pick in the frontier, battlegrounds or Darkness Falls changes call (engage, hold or drop) or target | The player's group engaged an enemy on its own in RvR, held off a fight it would clearly lose, or let its pick go (#664). |
+| `COMPANION_RVR_FORMATION` | server.log | **ships** | `bots/BotBrain.CompanionFormation.cs` | `class`, `depth`, `enemies`, `fromPlayer`, `incoming`, `leader`, `member`, `moved`, `reason`, `region` | `leader`, `member` | at most one per player's group per 10 s while its casters and healers walk for their places in an RvR fight in the frontier, battlegrounds or Darkness Falls (#665) | The player's group spread into its attack formation in an RvR fight: |
 | `COMPANION_SKILLS_165` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `specs`, `spells`, `styles` | `bot` | - | - |
 | `COMPANION_STALE_COPY_165` | server.log | **ships** | `mode165/HiredCompanions165.cs` | `bot`, `grouped`, `id`, `player`, `state` | `bot`, `player` | - | - |
 | `COMPANION_STATS_165` | server.log | **ships** | `mode165/CompanionWindows165.cs` | `player`, `row`, `slot40`, `summoned` | `player` | - | diagnostics for the original client's STATS button (2026-10-30): |
