@@ -137,6 +137,39 @@ namespace DOL.GS
             DefenseScale.Standard => defending ? 48 : 16,
             _ => defending ? 24 : 8,
         });
+        /// <summary>
+        /// #523 step 1 (a), owner 2026-11-24: a defense against a player's attack "ends about 10 minutes after the attackers
+        /// leave, like bot sieges do". True once nothing of the attack has been seen for <see cref="RepelMilliseconds"/>.
+        /// </summary>
+        public static bool PlayerAttackRepelled(long nowTick, long lastSeenTick) =>
+            lastSeenTick > 0 && nowTick - lastSeenTick >= RepelMilliseconds;
+
+        /// <summary>An attacker still counts as at the keep: alive, in play, in its region and inside the fighting ring
+        /// (<see cref="FightingAttendanceRadius"/>, Z within 2,000), the ring a bot siege counts its attackers in.</summary>
+        public static bool AttackerAtKeep(bool alive, bool active, ushort region, ushort keepRegion, float dx, float dy, float dz) =>
+            alive && active && region == keepRegion && Math.Abs(dz) <= 2000 &&
+            dx * dx + dy * dy <= (float)FightingAttendanceRadius * FightingAttendanceRadius;
+
+        private static bool AttackerAtKeep(GameLiving living, LiveObjective target) => living != null &&
+            AttackerAtKeep(living.IsAlive, living.ObjectState == GameObject.eObjectState.Active, living.CurrentRegionID,
+                target.RegionId, living.X - target.X, living.Y - target.Y, living.Z - target.Z);
+
+        /// <summary>
+        /// The last moment the attack on a player-defense keep was seen: a hit on its guards or doors by any enemy realm
+        /// (the player, their companions, pets and siege engines included), the attacking player or one of their group at
+        /// the keep, or a recruited bot of the attacking realm there. Updates <c>AttackersLastSeenTick</c>.
+        /// </summary>
+        private static long PlayerAttackLastSeen(ActiveEvent active, long nowTick)
+        {
+            GamePlayer player = active.AttackingPlayer;
+            bool forceThere = Attendance(active, active.AttackerRealm, nowTick) > 0 || AttackerAtKeep(player, active.Target) ||
+                player?.Group?.GetMembersInTheGroup().Any(member => member != player && member.Realm == active.AttackerRealm &&
+                    AttackerAtKeep(member, active.Target)) == true;
+            if (forceThere) active.AttackersLastSeenTick = nowTick;
+            long hit = KeepCombatPressure.GetValueOrDefault(active.TargetId);
+            return Math.Max(Math.Max(active.LastPressureTick, active.AttackersLastSeenTick), hit <= nowTick ? hit : 0);
+        }
+
         public static bool ResponseReserve(long id) => unchecked((ulong)id * 2654435761UL) % 100 < 30;
 
         public static bool CanRedirectDefense(eRealm previousDefender, eRealm nextDefender,
@@ -174,7 +207,7 @@ namespace DOL.GS
                         DefenseScale = scale };
                     Events[target.Id] = active;
                     RealmEventRecords.Begin(target.Id, target.Name, target.IsRelicKeep ? "Relic keep" : "Keep",
-                        GlobalConstants.RealmToName(attacker), "Player attack: immediate four-hour defense response");
+                        GlobalConstants.RealmToName(attacker), "Player attack: immediate defense response, until the attackers leave");
                     RealmEventRecords.Progress(target.Id, "Battle", "Defenders, friendly helpers and third-realm forces converging", 0, 0);
                 }
                 bool firstAlarm = active.LastPressureTick == 0;
@@ -215,6 +248,7 @@ namespace DOL.GS
                         DefenseAlarms.TryRemove(pair.Key, out _);
                         continue;
                     }
+                    active.AttackingPlayer = alarm.Player;
                     bool grew = !firstAlarm && active.DefenseScale > before;
                     if (firstAlarm || grew)
                     {

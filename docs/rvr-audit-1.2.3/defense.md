@@ -334,7 +334,7 @@ What is fought: the battle itself, guards, the lord, the doors, the walk in.
 2. **Finding 4:** grep `RVR_SIEGE` for an operator whose realm is the keep's; any `action=hit` by a defender's engine?
 3. **Finding 2:** with one character, hit one guard at a front keep, then run away. Note `PLAYER_KEEP_DEFENSE_SIZED`,
    the `RVR_DEFENSE_MUSTER` cap, the time of the first defender inside, and whether `RVR_EVENT_ENDED` comes before the
-   four hours.
+   four hours (since #784 expected about ten minutes after the last attacker, player or attacker-realm bot, leaves).
 4. **Finding 5:** after a defended siege, note the gate's health (`/examine` or target) and again an hour later.
 5. **Finding 1:** count `SIEGE_DEFENSE_BALANCE` lines per night and compare `RVR_EVENT_ENDED defenders=` to `attackers=`.
 6. **Finding 7:** stealth to a defended wall with an infiltrator; at what range do defenders or guards attack?
