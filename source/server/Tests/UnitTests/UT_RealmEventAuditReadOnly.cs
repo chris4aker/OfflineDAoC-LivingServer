@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Data.SQLite;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using DOL.GS;
 using NUnit.Framework;
 
@@ -28,14 +27,24 @@ public class UT_RealmEventAuditReadOnly
                 region.Zones.Add(z);LocalPathfindingMgr.LoadNavMesh(z);
             }
             var nav=PathfindingProvider.LocalPathfindingMgr;var h=DragonLairPlacement.Home(eRealm.Hibernia);var goal=new Vector3(h.X,h.Y,h.Z);
-            foreach(var p in new[]{new Vector3(352160,680000,7224),new Vector3(352160,679872,7315),new Vector3(334820,719979,4296)})
+            Vector3 hub=new(334820,719979,4296);
+            Assert.Multiple(()=>
             {
-                var zone=region.GetZone((int)p.X,(int)p.Y);var floor=nav.GetClosestPoint(zone,p,64,64,128,nav.DefaultFilters);
-                bool direct=RealmRaidMuster.TryRoute(region,nav,eRealm.Hibernia,p,goal,out var directSteps);
-                Assert.That(direct, Is.True, "Ordinary Sheeroe travel must find the road without an expedition-only via hint");
-                bool via=RealmRaidMuster.TryRoute(region,nav,eRealm.Hibernia,p,goal,out var viaSteps,new Vector3(361354,750434,4944));
-                TestContext.Progress.WriteLine($"Captured {p} zone={zone.Description} floor={floor}: direct={direct} [{string.Join(";",directSteps)}] validated-via={via} [{string.Join(";",viaSteps)}]");
-            }
+                foreach(var p in new[]{new Vector3(352160,680000,7224),new Vector3(352160,679872,7315),hub})
+                {
+                    var zone=region.GetZone((int)p.X,(int)p.Y);
+                    Vector3 start=InstalledBotRoute.Start(nav,zone,p);
+                    var ground=InstalledBotRoute.Ground(200,zone,start);
+                    bool direct=RealmRaidMuster.TryRoute(region,nav,eRealm.Hibernia,start,goal,out var directSteps);
+                    bool via=RealmRaidMuster.TryRoute(region,nav,eRealm.Hibernia,start,goal,out var viaSteps,new Vector3(361354,750434,4944));
+                    bool walk=InstalledBotRoute.Itinerary(region,nav,start,goal,out string walkTrace);
+                    bool toHub=p==hub||InstalledBotRoute.Itinerary(region,nav,start,hub,out _);
+                    bool fromHub=p==hub||InstalledBotRoute.Itinerary(region,nav,hub,start,out _);
+                    TestContext.Progress.WriteLine($"Captured {p} zone={zone.ID} start={start} area={ground.Area} main={ground.Main} localExit={AutonomousRendezvousNavigation.HasLocalExit(nav,zone,start)} " +
+                        $"direct={direct} [{string.Join(";",directSteps)}] validated-via={via} [{string.Join(";",viaSteps)}] walk={walk} toHub={toHub} fromHub={fromHub}: {walkTrace}");
+                    Assert.That(direct, Is.True, $"Ordinary Sheeroe travel from {p} must find the road without an expedition-only via hint");
+                }
+            });
         }
         finally{foreach(var z in region.Zones)LocalPathfindingMgr.UnloadNavMesh(z);Environment.CurrentDirectory=previous;}
     }

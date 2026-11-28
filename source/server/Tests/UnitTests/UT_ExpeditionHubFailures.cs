@@ -25,6 +25,9 @@ public class UT_ExpeditionHubFailures
             Environment.CurrentDirectory = root;
             using var db = new SQLiteConnection($"Data Source={Path.GetFullPath("../data/opendaoc.sqlite3.db")};Read Only=True;Pooling=False;");
             db.Open();
+            // #704: every capture is checked and a red run lists them all.
+            Assert.Multiple(() =>
+            {
             foreach (var s in new[] {
                 (10, 9, new Vector3(32543,26691,7831)),
                 (10, 9, new Vector3(32323,26409,8363)),
@@ -48,6 +51,18 @@ public class UT_ExpeditionHubFailures
                 Vector3 target = new(r.GetInt32(0),r.GetInt32(1),r.GetInt32(2));
                 var zone=region.GetZone((int)s.Item3.X,(int)s.Item3.Y);
                 var nav=PathfindingProvider.LocalPathfindingMgr;
+                if (s.Item1 == 200)
+                {
+                    Vector3? near=nav.GetClosestPoint(zone,s.Item3,64,64,128,nav.DefaultFilters);
+                    Vector3 floorStart=near ?? s.Item3;
+                    var ground=InstalledBotRoute.Ground(200,zone,floorStart);
+                    bool walk=InstalledBotRoute.Itinerary(region,nav,floorStart,target,out string trace);
+                    TestContext.Progress.WriteLine($"SHELF {s} floor={near} area={ground.Area} main={ground.Main} localExit={near.HasValue && AutonomousRendezvousNavigation.HasLocalExit(nav,zone,floorStart)} walk={walk}: {trace}");
+                    using var arrivals=db.CreateCommand();
+                    arrivals.CommandText=$"SELECT Id,SourceRegion,TargetX,TargetY,TargetZ FROM ZonePoint WHERE TargetRegion=200 AND abs(TargetX-{(int)s.Item3.X})<3000 AND abs(TargetY-{(int)s.Item3.Y})<3000";
+                    using var arrival=arrivals.ExecuteReader();
+                    while(arrival.Read()) TestContext.Progress.WriteLine($"SHELF_ARRIVAL edge={arrival.GetInt32(0)} from={arrival.GetInt32(1)} at=({arrival.GetInt32(2)},{arrival.GetInt32(3)},{arrival.GetInt32(4)})");
+                }
                 bool success=AutonomousZonePointApproach.TryResolve(nav,zone,s.Item3,target,112,out var approach);
                 var edge = new DOL.Database.DbZonePoint { Id=(ushort)s.Item2, SourceRegion=(ushort)s.Item1, SourceX=(int)target.X, SourceY=(int)target.Y, SourceZ=(int)target.Z };
                 bool repaired=AutonomousRouteHotspotRepair.TryResolveAuditedCrossingSource(nav,region,edge,s.Item3,out var corrected);
@@ -71,6 +86,7 @@ public class UT_ExpeditionHubFailures
                         TestContext.Progress.WriteLine($"CONNECTED radius={radius} point={floor} delta={floor.Value-s.Item3}");
                 }
             }
+            });
         }
         finally { foreach(var z in loaded) LocalPathfindingMgr.UnloadNavMesh(z); Environment.CurrentDirectory=previous; }
     }

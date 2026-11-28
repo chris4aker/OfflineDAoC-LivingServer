@@ -34,6 +34,9 @@ namespace DOL.UnitTests
                     return zone;
                 }
                 var nav = PathfindingProvider.LocalPathfindingMgr;
+                // #704: every check runs and a red run lists them all.
+                Assert.Multiple(() =>
+                {
                 Zone vale = Add(100, 753664, 671744);
                 Zone east = Add(101, 720896, 737280);
                 Zone gotar = Add(103, 720896, 802816);
@@ -164,6 +167,7 @@ namespace DOL.UnitTests
                             // at the broken island's last node hid the gate pileup.
                             Probe("city exit19 to SI portal", goalZone, new(332733, 485215, 5215), goal);
                             Assert.That(transit, Is.Not.Null, "Reachable cross-capital travel uses both real gates");
+                            if (transit == null) break;
                             Assert.That(transit.Entry.Id, Is.EqualTo(14));
                             Assert.That(transit.Exit.Id, Is.EqualTo(19));
                             cursor = new(transit.Exit.TargetX, transit.Exit.TargetY, transit.Exit.TargetZ);
@@ -172,6 +176,7 @@ namespace DOL.UnitTests
                             continue;
                         }
                         Assert.That(found, Is.True, $"Named region {regionId} route must reach a connected seam");
+                        if (!found) break;
                         cursor = step.Outside;
                         currentZone = region.GetZone((int)cursor.X, (int)cursor.Y);
                     }
@@ -260,16 +265,26 @@ namespace DOL.UnitTests
                     "Connacht exit must connect to its outside road");
                 var returnTransit = AutonomousCapitalTransit.Choose(hibernia, regions[201], magMell, connachtRoad, 200, 201, gates, nav);
                 Assert.That(returnTransit, Is.Not.Null, "Cross-capital travel works in both directions");
-                Assert.That(returnTransit.Entry.Id, Is.EqualTo(13));
-                Assert.That(returnTransit.Exit.Id, Is.EqualTo(26));
+                Assert.That(returnTransit?.Entry.Id, Is.EqualTo(13));
+                Assert.That(returnTransit?.Exit.Id, Is.EqualTo(26));
                 // The three audited DF stalls oscillated at this exact
                 // Lough Derg/Valley seam. A real ticket can instead land on
                 // the Connacht component with a connected portal approach.
                 Vector3 dfPortal = new(325269, 433985, 6297);
                 Vector3 magMellTicket = new(345398, 492987, 5183);
                 Zone dfPortalZone = hibernia.GetZone((int)dfPortal.X, (int)dfPortal.Y);
-                Assert.That(AutonomousCapitalTransit.Choose(hibernia, regions[201],
-                    magMellTicket, dfPortal, 200, 201, gates, nav), Is.Null,
+                var dfTransit = AutonomousCapitalTransit.Choose(hibernia, regions[201], magMellTicket, dfPortal, 200, 201, gates, nav);
+                TestContext.WriteLine($"DF_TRANSIT entry={dfTransit?.Entry.Id} exit={dfTransit?.Exit.Id} " +
+                    $"exitTarget=({dfTransit?.Exit.TargetX},{dfTransit?.Exit.TargetY},{dfTransit?.Exit.TargetZ})");
+                if (dfTransit != null)
+                {
+                    Vector3 landed = new(dfTransit.Exit.TargetX, dfTransit.Exit.TargetY, dfTransit.Exit.TargetZ);
+                    bool onward = InstalledBotRoute.Itinerary(hibernia, nav, landed, dfPortal, out string onwardTrace);
+                    TestContext.WriteLine($"DF_TRANSIT_ONWARD {onward}: {onwardTrace}");
+                }
+                bool walked = InstalledBotRoute.Itinerary(hibernia, nav, magMellTicket, dfPortal, out string walkTrace);
+                TestContext.WriteLine($"DF_WALK {walked}: {walkTrace}");
+                Assert.That(dfTransit, Is.Null,
                     "The real Connacht capital gate does not lead to the DF portal component");
                 Assert.That(AutonomousZoneItinerary.TryNextStep(hibernia, lough, dfPortalZone,
                     magMellTicket, dfPortal, nav, out var outbound), Is.True);
@@ -317,7 +332,7 @@ namespace DOL.UnitTests
                     }
                     Assert.That(cursorZone, Is.EqualTo(to), $"First boarding walk from {startPoint} reaches the horse's zone");
                     Assert.That(snapped, Is.Not.Null, $"Horse origin {horseOrigin} has walkable terrain");
-                    Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, to, cursor, snapped.Value),
+                    Assert.That(snapped.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, to, cursor, snapped.Value),
                         Is.True, $"First boarding walk from {startPoint} reaches horse {horseOrigin}");
                 }
                 Zone blackMountains = regions[1].GetZone(515616, 494274);
@@ -354,6 +369,7 @@ namespace DOL.UnitTests
                     File.WriteAllText(rescuePlan, JsonSerializer.Serialize(repairs, new JsonSerializerOptions { WriteIndented = true }));
                     TestContext.WriteLine($"Read-only native-verified rescue plan: {repairs.Count} stranded bots; legitimate formation waits excluded");
                 }
+                });
             }
             finally
             {

@@ -35,6 +35,9 @@ public class UT_RealmRepairNavigation
                 }
             }
             var nav=PathfindingProvider.LocalPathfindingMgr;
+            // #704: every check runs and a red run lists them all.
+            Assert.Multiple(()=>
+            {
             foreach(var (rid,p) in new (ushort,Vector3)[]{
                 (151,new(382872,333782,6389)),(151,new(377328,286268,7593)),
                 (151,new(348195,302918,5526)),(151,new(376591,288264,7446)),
@@ -55,21 +58,30 @@ public class UT_RealmRepairNavigation
             Assert.That(success, Is.True);
             var dragonHome = DragonLairPlacement.Home(eRealm.Hibernia);
             var dragonGoal = new Vector3(dragonHome.X,dragonHome.Y,dragonHome.Z);
-            Assert.That(RealmRaidMuster.TryRoute(regions[200],nav,eRealm.Hibernia,
-                new(352160,680000,7224),dragonGoal,out var hibSeams,new(361354,750434,4944)), Is.True);
-            TestContext.Progress.WriteLine($"CUULDURACH CAPTURE CORRIDOR [{string.Join(";",hibSeams)}]");
-            Vector3 surface = nav.GetClosestPoint(regions[151].GetZone(382872,333782),
-                new(382872,333782,7709),64,64,128,nav.DefaultFilters).Value;
+            Vector3 glacier=new(352160,680000,7224);
+            Zone glacierZone=regions[200].GetZone((int)glacier.X,(int)glacier.Y);
+            Vector3 glacierStart=InstalledBotRoute.Start(nav,glacierZone,glacier);
+            var glacierGround=InstalledBotRoute.Ground(200,glacierZone,glacierStart);
+            bool hib=RealmRaidMuster.TryRoute(regions[200],nav,eRealm.Hibernia,glacierStart,dragonGoal,out var hibSeams,new(361354,750434,4944));
+            TestContext.Progress.WriteLine($"CUULDURACH CAPTURE CORRIDOR {hib} start={glacierStart} area={glacierGround.Area} main={glacierGround.Main} [{string.Join(";",hibSeams)}] {RealmRaidMuster.LastRouteFailure}");
+            Assert.That(hib, Is.True, "Cuuldurach route from the glacier capture");
+            Vector3? surfaceFloor = nav.GetClosestPoint(regions[151].GetZone(382872,333782),
+                new(382872,333782,7709),64,64,128,nav.DefaultFilters);
+            Assert.That(surfaceFloor.HasValue, Is.True, "Hagall glacier surface floor");
+            if (!surfaceFloor.HasValue) return;
+            Vector3 surface = surfaceFloor.Value;
             Zone surfaceZone = regions[151].GetZone((int)surface.X,(int)surface.Y);
             foreach (var delta in new[]{new Vector3(150,0,0),new Vector3(0,150,0),new Vector3(-150,0,0)})
             {
                 var grounded = nav.GetMoveAlongSurfaceGrounded(surfaceZone,surface,surface+delta,nav.DefaultFilters);
                 Assert.That(grounded.HasValue, Is.True);
+                if (!grounded.HasValue) continue;
                 var floor = nav.GetClosestPoint(surfaceZone,grounded.Value,2,2,4,nav.DefaultFilters);
                 Assert.That(floor.HasValue, Is.True);
-                Assert.That(Math.Abs(floor.Value.Z-grounded.Value.Z), Is.LessThan(2));
+                if (floor.HasValue) Assert.That(Math.Abs(floor.Value.Z-grounded.Value.Z), Is.LessThan(2));
                 TestContext.Progress.WriteLine($"GLACIER APPROACH GROUND start={surface} legacy={nav.GetMoveAlongSurface(surfaceZone,surface,surface+delta,nav.DefaultFilters)} grounded={grounded}");
             }
+            });
         }
         finally
         {

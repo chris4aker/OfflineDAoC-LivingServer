@@ -4,103 +4,167 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using DOL.GS;
 using NUnit.Framework;
 
 namespace DOL.UnitTests
 {
+    /// <summary>
+    /// The September 13 installed route samples, asserted as a bot walks them (#704): from the floor-step start, by the
+    /// direct corridor or the zone road route, every leg complete. Every sample is checked in one run (Assert.Multiple).
+    /// The known cut in the direct mesh query (region 1 frontier) is pinned on its own in <see cref="FrontierDirectQueryCut"/>.
+    /// </summary>
     [TestFixture, NonParallelizable, Explicit("Read-only installed route probes")]
     public class UT_SeptemberThirteenInstalledRoutes
     {
+        private static readonly Vector3 FrontierStart = new(655198, 292757, 4859);
+        private static readonly Vector3 FrontierTarget = new(605390, 293864, 4839);
+        /// <summary>Where the single direct query from <see cref="FrontierStart"/> stops on navmesh-v1 (#704, 2026-11-27).</summary>
+        private static readonly Vector3 FrontierCut = new(635744, 298086, 4307);
+
+        private static readonly (int Region, Vector3 From, Vector3 To, string Name, InstalledBotRoute.Walk Walk)[] Samples =
+        [
+            (200, new(378702, 497483, 5434), new(377976, 495314, 5198), "dergan", InstalledBotRoute.Walk.Direct),
+            (181, new(400589, 420259, 4598), new(403982, 421754, 4406), "sporite", InstalledBotRoute.Walk.Direct),
+            (100, new(707427, 773530, 4624), new(708401, 772052, 4553), "blodfelag", InstalledBotRoute.Walk.Direct),
+            (1, new(535933, 608077, 2962), new(533198, 611484, 2272), "spider", InstalledBotRoute.Walk.Direct),
+            // About 49,800 apart: a bot goes by the zone roads (the direct query stops at the cut, pinned below).
+            (1, FrontierStart, FrontierTarget, "frontier", InstalledBotRoute.Walk.Road),
+            (200, new(474010, 318918, 5786), new(476053, 343166, 4105), "frontier", InstalledBotRoute.Walk.None),
+            (128, new(31644, 32996, 16015), Vector3.Zero, "cave spider", InstalledBotRoute.Walk.None),
+            (222, new(32450, 32804, 14962), Vector3.Zero, "spraggonix", InstalledBotRoute.Walk.None),
+            (223, new(27280, 32217, 17271), Vector3.Zero, "pelagian crab", InstalledBotRoute.Walk.None),
+        ];
+
         [Test]
         public void Probe()
         {
+            WithRegions((db, regions, nav) => Assert.Multiple(() =>
+            {
+                foreach (var sample in Samples)
+                {
+                    Region region = regions(sample.Region);
+                    Zone zone = region.GetZone((int)sample.From.X, (int)sample.From.Y);
+                    if (sample.Region == 200 && sample.Name == "frontier")
+                    {
+                        // The Emain hotspot: unchanged since September. The immediate escape is close and connected.
+                        bool escaped = AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, region, 200, sample.From, out var escape);
+                        Assert.That(escaped, Is.True, "Emain frontier: immediate escape");
+                        if (escaped)
+                        {
+                            Assert.That(Vector3.Distance(escape, sample.From), Is.LessThan(100), "Emain frontier: escape distance");
+                            Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, zone, escape, sample.To), Is.True,
+                                "Emain frontier: corridor from the escape");
+                        }
+                        Assert.That(AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav, region, 200, sample.From + new Vector3(0, 0, 200), out _),
+                            Is.False, "Emain frontier: no escape 200 above");
+                        continue;
+                    }
+                    foreach (Vector3 target in Targets(db, sample))
+                    {
+                        // Plan from where the floor step puts the bot (blodfelag's capture is 3 units off the 1.2 mesh edge).
+                        Vector3 start = PlanningStart(nav, zone, sample.From);
+                        bool approach = AutonomousZonePointApproach.TryResolve(nav, zone, start, target, 112, out var ap);
+                        Assert.That(approach, Is.True, $"Approach {sample.Name} {target}");
+                        if (sample.To == Vector3.Zero)
+                        {
+                            TestContext.WriteLine($"AUDIT {sample.Region} {sample.Name} from={start} target={target} approach={approach}:{ap}");
+                            continue;
+                        }
+                        var walk = InstalledBotRoute.SameZone(nav, zone, start, target, out string detail);
+                        Assert.That(walk, Is.EqualTo(sample.Walk), $"{sample.Name} {target}: the bot's walk ({detail})");
+                        if (sample.Walk == InstalledBotRoute.Walk.Direct)
+                        {
+                            var nodes = new WrappedPathfindingNode[256];
+                            var path = nav.GetPathStraight(zone, start, target, nav.DefaultFilters, nodes);
+                            Assert.That(path.Status, Is.EqualTo(PathfindingStatus.PathFound), $"{sample.Name} {target}: direct path");
+                        }
+                        bool recovery = AutonomousCorridorRecovery.TryNextCorner(nav, zone, start, target, out var corner);
+                        Assert.That(recovery, Is.True, $"Corner {sample.Name}");
+                        TestContext.WriteLine($"AUDIT {sample.Region} {sample.Name} from={start} target={target} walk={walk} ({detail}) " +
+                            $"approach={approach}:{ap} corner={recovery}:{corner}");
+                    }
+                }
+            }));
+        }
+
+        /// <summary>
+        /// The known cut (#704): the single direct query from the region 1 frontier start stops at 635744,298086, about
+        /// 30,650 short, and nothing nearer the target is reachable from there. Bots take the road route (<see cref="Probe"/>).
+        /// Pinned so the cut stays visible: when a mesh change joins it, this fails and the pin is updated.
+        /// </summary>
+        [Test]
+        public void FrontierDirectQueryCut()
+        {
+            WithRegions((db, regions, nav) =>
+            {
+                Zone zone = regions(1).GetZone((int)FrontierStart.X, (int)FrontierStart.Y);
+                var nodes = new WrappedPathfindingNode[1024];
+                var path = nav.GetPathStraight(zone, FrontierStart, FrontierTarget, nav.DefaultFilters, nodes);
+                Vector3 end = path.NodeCount > 0 ? nodes[Math.Min(path.NodeCount, nodes.Length) - 1].Position : FrontierStart;
+                TestContext.WriteLine($"FRONTIER_CUT status={path.Status} nodes={path.NodeCount} end={end}");
+                Assert.Multiple(() =>
+                {
+                    Assert.That(path.Status, Is.EqualTo(PathfindingStatus.PartialPathFound), "the direct query is partial");
+                    Assert.That(Vector3.Distance(end, FrontierCut), Is.LessThan(64), $"the direct query stops at the cut (ends at {end})");
+                    Assert.That(AutonomousZoneItinerary.HasDirectCorridor(nav, zone, FrontierStart, FrontierTarget), Is.False,
+                        "no direct corridor across the cut");
+                    var onward = nav.GetPathStraight(zone, end, FrontierTarget, nav.DefaultFilters, nodes);
+                    Vector3 onwardEnd = onward.NodeCount > 0 ? nodes[Math.Min(onward.NodeCount, nodes.Length) - 1].Position : end;
+                    Assert.That(Vector3.Distance(onwardEnd, FrontierTarget), Is.GreaterThan(Vector3.Distance(end, FrontierTarget) - 64),
+                        $"nothing nearer the target is reachable from the cut (a second query ends at {onwardEnd})");
+                });
+            });
+        }
+
+        private static IEnumerable<Vector3> Targets(SQLiteConnection db, (int Region, Vector3 From, Vector3 To, string Name, InstalledBotRoute.Walk Walk) sample)
+        {
+            if (sample.To != Vector3.Zero)
+                return [sample.To];
+            var raw = new List<Vector3>();
+            using (var cmd = db.CreateCommand())
+            {
+                cmd.CommandText = "select X,Y,Z from Mob where Region=@r and Name=@n";
+                cmd.Parameters.AddWithValue("@r", sample.Region);
+                cmd.Parameters.AddWithValue("@n", sample.Name);
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read()) raw.Add(new(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2)));
+            }
+            // Test installed bot goals, not legacy inaccessible NPC rows which are already excluded from the goal catalog.
+            var verified = AutonomousDungeonGoalCatalog.VerifiedPointsForRegion((ushort)sample.Region);
+            var targets = raw.Select(r => verified.FirstOrDefault(p => p.Name == sample.Name &&
+                    Vector3.DistanceSquared(r, new(p.Spawn[0], p.Spawn[1], p.Spawn[2])) <= 4))
+                .Where(p => p != null).Select(p => p.Position).ToList();
+            Assert.That(targets, Is.Not.Empty, $"{sample.Name}: verified goal points in region {sample.Region}");
+            return targets;
+        }
+
+        private static void WithRegions(Action<SQLiteConnection, Func<int, Region>, IPathfindingMgr> body)
+        {
             string root = Environment.GetEnvironmentVariable("OFFLINE_DAOC_NAV_ROOT");
+            Assert.That(root, Is.Not.Null.And.Not.Empty);
             string previous = Environment.CurrentDirectory;
             var loaded = new List<Zone>();
+            var regions = new Dictionary<int, Region>();
             try
             {
-                DOL.UnitTests.InstalledDetour.Use(root);
+                InstalledDetour.Use(root);
                 Environment.CurrentDirectory = root;
                 using var db = new SQLiteConnection($"Data Source={Path.GetFullPath(Path.Combine(root, "..", "data", "opendaoc.sqlite3.db"))};Read Only=True;Pooling=False;");
                 db.Open();
-                foreach (var sample in new[] {
-                    (200, new Vector3(378702,497483,5434), new Vector3(377976,495314,5198), "dergan"),
-                    (181, new Vector3(400589,420259,4598), new Vector3(403982,421754,4406), "sporite"),
-                    (100, new Vector3(707427,773530,4624), new Vector3(708401,772052,4553), "blodfelag"),
-                    (1, new Vector3(535933,608077,2962), new Vector3(533198,611484,2272), "spider"),
-                    (1, new Vector3(655198,292757,4859), new Vector3(605390,293864,4839), "frontier"),
-                    (200, new Vector3(474010,318918,5786), new Vector3(476053,343166,4105), "frontier"),
-                    (128, new Vector3(31644,32996,16015), Vector3.Zero, "cave spider"),
-                    (222, new Vector3(32450,32804,14962), Vector3.Zero, "spraggonix"),
-                    (223, new Vector3(27280,32217,17271), Vector3.Zero, "pelagian crab") })
+                Region Get(int id)
                 {
-                    var region = (Region)typeof(UT_AuditedDungeonInstalledMesh).GetMethod("BuildRegion", BindingFlags.NonPublic | BindingFlags.Static)
-                        .Invoke(null, new object[] { db, sample.Item1, loaded });
-                    var zone = region.GetZone((int)sample.Item2.X,(int)sample.Item2.Y);
-                    var nav = PathfindingProvider.LocalPathfindingMgr;
-                    if (sample.Item1 == 200 && sample.Item4 == "frontier")
-                    {
-                        Assert.That(AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav,region,200,sample.Item2,out var escape),Is.True);
-                        Assert.That(Vector3.Distance(escape,sample.Item2),Is.LessThan(100));
-                        Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav,zone,escape,sample.Item3),Is.True);
-                        Assert.That(AutonomousRouteHotspotRepair.TryGetImmediateEscape(nav,region,200,sample.Item2+new Vector3(0,0,200),out _),Is.False);
-                        foreach(int radius in new[] { 48, 96, 192, 384 })
-                        for(int angle=0;angle<360;angle+=45)
-                        {
-                            float radians=angle*MathF.PI/180;
-                            Vector3 raw=sample.Item2+new Vector3(MathF.Cos(radians)*radius,MathF.Sin(radians)*radius,0);
-                            var p=nav.GetClosestPoint(zone,raw,16,16,128,nav.DefaultFilters);
-                            if(p.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav,zone,p.Value,sample.Item3))
-                                TestContext.WriteLine($"EMAINCONNECTED {p.Value} los={nav.HasLineOfSight(zone,sample.Item2,p.Value,nav.DefaultFilters)} ground={AutonomousNavigationSurface.MoveAlongGround(nav,zone,sample.Item2,p.Value)}");
-                        }
-                    }
-                    var targets = new List<Vector3>();
-                    if(sample.Item3 != Vector3.Zero) targets.Add(sample.Item3);
-                    else
-                    {
-                        using var cmd=db.CreateCommand();
-                        cmd.CommandText="select X,Y,Z from Mob where Region=@r and Name=@n";
-                        cmd.Parameters.AddWithValue("@r",sample.Item1);cmd.Parameters.AddWithValue("@n",sample.Item4);
-                        using var reader=cmd.ExecuteReader();
-                        while(reader.Read()) targets.Add(new(reader.GetInt32(0),reader.GetInt32(1),reader.GetInt32(2)));
-                        // Test installed bot goals, not legacy inaccessible NPC
-                        // rows which are already excluded from the goal catalog.
-                        var verified=AutonomousDungeonGoalCatalog.VerifiedPointsForRegion((ushort)sample.Item1);
-                        targets=targets.Select(raw=>verified.FirstOrDefault(p=>p.Name==sample.Item4 &&
-                            Vector3.DistanceSquared(raw,new(p.Spawn[0],p.Spawn[1],p.Spawn[2]))<=4))
-                            .Where(p=>p!=null).Select(p=>p.Position).ToList();
-                        Assert.That(targets,Is.Not.Empty);
-                    }
-                    foreach(var target in targets)
-                    {
-                        Span<WrappedPathfindingNode> nodes=stackalloc WrappedPathfindingNode[256];
-                        var path=nav.GetPathStraight(zone,sample.Item2,target,nav.DefaultFilters,nodes);
-                        var sf=nav.GetClosestPoint(zone,sample.Item2,96,96,512,nav.DefaultFilters);
-                        var tf=nav.GetClosestPoint(zone,target,96,96,512,nav.DefaultFilters);
-                        // blodfelag's capture is now 3 units off the 1.2 mesh edge (#704): plan from where the floor step puts the bot.
-                        // Both the approach finder and the corner recovery need floor under the start (TryPlanningFloor, TryFloor).
-                        Vector3 planningStart=PlanningStart(nav,zone,sample.Item2);
-                        bool approach=AutonomousZonePointApproach.TryResolve(nav,zone,planningStart,target,112,out var ap);
-                        bool recovery=AutonomousCorridorRecovery.TryNextCorner(nav,zone,planningStart,target,out var corner);
-                        if(sample.Item4 != "frontier" || sample.Item1 == 1)
-                        {
-                            if(sample.Item3 != Vector3.Zero)
-                                Assert.That(path.Status,Is.EqualTo(PathfindingStatus.PathFound),$"{sample.Item4} {target}");
-                            Assert.That(approach,Is.True,$"Approach {sample.Item4} {target}");
-                            if(sample.Item3 != Vector3.Zero) Assert.That(recovery,Is.True,$"Corner {sample.Item4}");
-                        }
-                        TestContext.WriteLine($"AUDIT {sample.Item1} {sample.Item4} from={sample.Item2} target={target} status={path.Status} nodes={path.NodeCount} startFloor={sf} targetFloor={tf} approach={approach}:{ap}");
-                        if(sample.Item3 != Vector3.Zero) TestContext.WriteLine($"CORNER {sample.Item4} {sample.Item1} success={recovery} point={corner}");
-                        if(sample.Item3 != Vector3.Zero && !recovery && sample.Item4 != "frontier")
-                            for(int i=0;i<Math.Min(4,path.NodeCount);i++)
-                                TestContext.WriteLine($"NODE {sample.Item4} {nodes[i].Position} ground={AutonomousNavigationSurface.MoveAlongGround(nav,zone,sample.Item2,nodes[i].Position)} los={nav.HasLineOfSight(zone,sample.Item2,nodes[i].Position,nav.DefaultFilters)}");
-                    }
+                    if (!regions.TryGetValue(id, out Region region))
+                        regions[id] = region = UT_AuditedDungeonInstalledMesh.BuildRegion(db, id, loaded);
+                    return region;
                 }
+                body(db, Get, PathfindingProvider.LocalPathfindingMgr);
             }
-            finally { foreach(var zone in loaded) LocalPathfindingMgr.UnloadNavMesh(zone);Environment.CurrentDirectory=previous; }
+            finally
+            {
+                foreach (var zone in loaded) LocalPathfindingMgr.UnloadNavMesh(zone);
+                Environment.CurrentDirectory = previous;
+            }
         }
 
         /// <summary>
