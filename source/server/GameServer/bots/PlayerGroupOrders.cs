@@ -185,7 +185,7 @@ namespace DOL.GS
             GroupOrder.Attack => $"On {target}.",
             GroupOrder.Assist => "Assisting you.",
             GroupOrder.Hold => "Holding.",
-            GroupOrder.Regroup => "Coming back to you.",
+            GroupOrder.Regroup => "Coming back to you.", // promise: true (regroup drops the fight and the bot walks back)
             _ => null,
         };
     }

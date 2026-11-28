@@ -207,7 +207,7 @@ namespace DOL.GS.Tests
         [Test]
         public void WithTheSwitchOffNothingIsAnOrder()
         {
-            using Scene scene = Make(800);
+            using Scene scene = Make(800, switchOn: false);
             string reply = PlayerGroupOrders.Give(scene.Player, GroupOrder.Assist, "command", out bool given);
             Assert.Multiple(() =>
             {
