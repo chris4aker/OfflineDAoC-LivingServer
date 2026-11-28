@@ -51,12 +51,18 @@ namespace DOL.GS
             "Bot defenders a siege may draw, as a share of its attacker cap (128 keep / 240 relic); walls, doors and keep guards are extra. Recent results move it up or down by up to 0.25 (SiegeDefenseBalance).", 0.75)]
         public static double DefenseRatio = 0.75;
 
-        /// <summary>The ratio in use: the setting, steered by the last sieges' results.</summary>
-        public static double EffectiveDefenseRatio => SiegeDefenseBalance.Ratio(DefenseRatio);
+        /// <summary>The ratio in use with no known defending realm: the setting, steered by the server-wide record.</summary>
+        public static double EffectiveDefenseRatio => EffectiveDefenseRatioFor(eRealm.None);
+
+        /// <summary>The ratio in use for a siege on this realm's keep: the setting, steered by that realm's own last sieges
+        /// once it has three, by the server-wide record before that (#523, owner's answer to question 52).</summary>
+        public static double EffectiveDefenseRatioFor(eRealm defender) => SiegeDefenseBalance.Ratio(DefenseRatio, defender);
 
         public static int AttackerCap(bool relic) => relic ? RelicAttackers : KeepAttackers;
-        /// <summary>The attackers' cap in use: the full cap, trimmed by the siege balance once the defenders' share is at its limit.</summary>
-        public static int EffectiveAttackerCap(bool relic) => SiegeDefenseBalance.AttackerCap(AttackerCap(relic));
+        /// <summary>The attackers' cap in use against this defending realm: the full cap, trimmed by that realm's siege balance
+        /// once its defenders' share is at its limit.</summary>
+        public static int EffectiveAttackerCap(bool relic, eRealm defender = eRealm.None) =>
+            SiegeDefenseBalance.AttackerCap(AttackerCap(relic), defender);
         /// <summary>
         /// Defenders a siege takes: the defense share of the attacking army, measured on its larger size, when it marched or
         /// now, at least 8 and at most the cap. 2026-10-19/20: the share was taken of the army that marched (10-60) while
@@ -85,7 +91,8 @@ namespace DOL.GS
         public static int DefendersFor(int marchedAttackers, int currentAttackers, double ratio, int cap) =>
             Math.Clamp((int)Math.Round(Math.Max(marchedAttackers, currentAttackers) * Math.Clamp(ratio, 0.25, 2.0)), 8, Math.Max(8, cap));
 
-        public static int DefenderCap(bool relic) => Math.Max(8, (int)Math.Round(AttackerCap(relic) * Math.Clamp(EffectiveDefenseRatio, 0.25, 2.0)));
+        public static int DefenderCap(bool relic, eRealm defender = eRealm.None) =>
+            Math.Max(8, (int)Math.Round(AttackerCap(relic) * Math.Clamp(EffectiveDefenseRatioFor(defender), 0.25, 2.0)));
         public static int ThirdRealmCap(bool relic) => AttackerCap(relic) / 2;
 
         /// <summary>Attackers needed to start the battle: 85% of the cap at the posts, half of it on a strike or at the deadline.</summary>

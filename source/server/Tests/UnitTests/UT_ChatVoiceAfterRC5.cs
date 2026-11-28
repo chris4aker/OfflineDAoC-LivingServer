@@ -112,6 +112,7 @@ namespace DOL.GS.Tests
             _ when expression.Contains("CarrierTargets") || expression == "name" => "Scabbard of Excalibur",
             _ when Regex.IsMatch(expression, "present|joined|Sum|RecruitCap|Required") => "93",
             _ when expression.Contains("boss") => "Orylle",
+            _ when expression.Contains("musterPlace") => "the portal outpost in Hadrian's Wall",
             _ => "Caer Benowyc",
         };
 
@@ -164,6 +165,7 @@ namespace DOL.GS.Tests
         [TestCase("The Krondon expedition is advancing with 200 staged level-50 adventurers.", "raid_advance", "Krondon")]
         [TestCase("Fighting has broken out at Dun Crimthain. There is an opportunity to intervene.", "keep_others_fighting", null)]
         [TestCase("Warbands are gathering to assault Nottmoor Faste. Join them at the siege camp", "siege_gather", null)]
+        [TestCase("Warbands are gathering at the portal outpost in Hadrian's Wall to assault Nottmoor Faste. Join them there!", "siege_gather", null)]
         [TestCase("93 adventurers present at Caer Diogel; departing together for Krondon. Late arrivals will join the expedition directly.", "raid_depart", "Krondon")]
         public void ThePcNoticesAreReadForWhatTheyAre(string notice, string kind, string raid)
         {

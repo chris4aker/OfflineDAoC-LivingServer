@@ -152,6 +152,29 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Scenario6_ThreeEightsFormTheRealmsZergAndMeetAnEight()
+        {
+            // #599 step 3: with 72 free Albion gamebots (a third is 24), three eights form one zerg, the far one (12,000 off,
+            // beyond the battlegroup's link) included, with one support roster of 24; the Midgard eight does not join. With 26
+            // free (a third is 8, under the floor) a battlegroup forms instead. The fight's outcome is printed, not asserted.
+            var clock = Stopwatch.StartNew();
+            RvrFightRehearsal.ZergResult result = RvrFightRehearsal.Zerg(Seed);
+            Print(result.Row, result.Detail, clock);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ZergId, Does.StartWith("zerg-albion-"), result.Row);
+                Assert.That(result.Members, Has.Count.EqualTo(3), "three groups");
+                Assert.That(result.LeadForce, Is.EqualTo(result.Members[0]));
+                Assert.That(result.FarJoined, Is.True, "recruited beyond the battlegroup's 3,000 link");
+                Assert.That(result.MidgardJoined, Is.False, "the lone Midgard eight (8 free) has no zerg and no battlegroup");
+                Assert.That(result.RosterSizes, Is.EqualTo(new[] { 24 }), "every Albion bot of the three eights shares one roster of 24");
+                Assert.That(result.MidgardInRosters, Is.Zero);
+                Assert.That(result.FewerId, Does.StartWith("bgrp-albion-"), "26 free: no zerg, the two near eights make a battlegroup");
+                Assert.That(result.Errors, Is.Zero, "no service threw");
+            });
+        }
+
+        [Test]
         public void Scenario3_APlayerInRangeOfABotGroup()
         {
             var clock = Stopwatch.StartNew();

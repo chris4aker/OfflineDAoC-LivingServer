@@ -52,6 +52,35 @@ public static partial class AutonomousRvrEventLayer
         }
     }
 
+    /// <summary>
+    /// #523 (f): whether a relic in motion keeps a new siege off this target. Only a target in a carrier's frontier is held:
+    /// <paramref name="carrierFrontiers"/> are the regions where the carriers are and where their relic keeps stand; null
+    /// (a carrier whose whereabouts are unknown) holds every target, as before. Pure.
+    /// </summary>
+    public static bool CarrierBlocksSiege(ushort targetRegion, IReadOnlyCollection<ushort> carrierFrontiers) =>
+        carrierFrontiers == null || carrierFrontiers.Contains(targetRegion);
+
+    /// <summary>
+    /// Called under Sync. The frontiers the open relic carrier events hold: each carrier's region now (its live objective,
+    /// else its last anchor) and the region of the relic keep it left. Empty with no carrier event; null when a carrier's
+    /// region is unknown.
+    /// </summary>
+    private static IReadOnlyCollection<ushort> CarrierFrontiers(IReadOnlyCollection<LiveObjective> objectives)
+    {
+        if (CarrierEvents.Count == 0) return Array.Empty<ushort>();
+        var regions = new HashSet<ushort>();
+        foreach (string id in CarrierEvents.Keys)
+        {
+            LiveObjective at = objectives?.FirstOrDefault(o => o.Id == id) ?? CarrierTargets.GetValueOrDefault(id);
+            if (at == null || at.RegionId == 0) return null;
+            regions.Add(at.RegionId);
+            if (CarrierOrigins.TryGetValue(id, out var origin) &&
+                objectives?.FirstOrDefault(o => o.Id == origin.KeepId) is { RegionId: > 0 } keep)
+                regions.Add(keep.RegionId);
+        }
+        return regions;
+    }
+
     private static void LogCarrierEnded(string carrierId, string outcome, eRealm winner)
     {
         CarrierMountedSeen.Remove(carrierId);
