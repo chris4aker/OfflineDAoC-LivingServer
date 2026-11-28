@@ -509,7 +509,7 @@ public static partial class AutonomousRvrEventLayer
                 }
                 foreach (var entry in CarrierEvents.Where(entry => entry.Key != plan?.TargetId || plan?.IsSharedEvent != true))
                     foreach (var realm in entry.Value.Participants.Values) realm.Remove(force.GroupId);
-                LeaveClaimHold(force.GroupId, plan?.IsSharedEvent == true ? plan.TargetId : null);
+                LeaveClaimHold(force.GroupId, plan?.IsSharedEvent == true ? plan.TargetId : null, nowTick);
             }
             return plan;
         }
