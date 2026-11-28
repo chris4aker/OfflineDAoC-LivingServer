@@ -234,11 +234,138 @@ public class UT_CompanionRvrEngage664
         string world = File.ReadAllText(Path.Combine(root, "source", "server", "GameServer", "bots", "CompanionRvrEngage.World.cs"));
         Assert.Multiple(() =>
         {
-            Assert.That(world, Does.Contain("int chosen = Pick(candidates, bound, current, opening: party.Pick == null);"),
-                "no pick yet means the group is opening a fight");
+            // Step 2 (review of #765): opening is "no pick and nobody fighting", not "no pick" alone.
+            Assert.That(world, Does.Contain("bool opening = Opening(party.Pick != null, InEnemyFight(leader));"),
+                "no pick and no fight means the group is opening one");
+            Assert.That(world, Does.Contain("int chosen = Pick(candidates, bound, current, opening: opening, leash: leash);"),
+                "the pick is told whether it opens, and keeps its pick out to the leash");
+            Assert.That(world, Does.Contain("bool sized = opening;"), "only an opening is sized up");
             Assert.That(world.Split("opening:").Length - 1, Is.EqualTo(1), "one call passes the flag");
             Assert.That(world, Does.Contain("new CompanionRvrCandidate(Rank(role), ready, BotBrain.IsBreakablyControlled(target),"),
                 "a candidate is held when a breakable mez or root is on it");
+        });
+    }
+
+    // ---- #664 step 2: /hold, the drop leash, what opening means, the sight memory --------------------------------------
+
+    [Test]
+    public void TheLeashIsTheBoundPlusAMargin()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(E.Leash(defensive: false), Is.EqualTo(E.AggressiveBound + E.LeashMargin));
+            Assert.That(E.Leash(defensive: true), Is.EqualTo(E.DefensiveBound + E.LeashMargin));
+            Assert.That(E.Leash(true), Is.LessThan(E.Leash(false)), "/defensive is tighter");
+        });
+    }
+
+    [Test]
+    public void UnderHoldABotOnlyDefendsItself()
+    {
+        // Owner answer 3 on #664 (2026-11-26 22:23): "Besides /defensive, companions only defend themselves".
+        Assert.Multiple(() =>
+        {
+            Assert.That(E.MayFight(holding: true, hitsMe: true, warZone: true, enemyRealm: true, fromPlayer: 300, leash: 2_250,
+                playersTarget: false, hitsGroup: true), Is.True, "what hits the bot (or its pet) is fought");
+            Assert.That(E.MayFight(true, false, true, true, 300, 2_250, playersTarget: false, hitsGroup: true), Is.False,
+                "an enemy on a groupmate is not");
+            Assert.That(E.MayFight(true, false, true, true, 300, 2_250, playersTarget: true, hitsGroup: false), Is.False,
+                "nor the player's own target");
+            Assert.That(E.MayFight(true, false, warZone: false, enemyRealm: false, 100, 0, false, false), Is.False,
+                "anywhere: a monster that isn't hitting the bot is left alone too");
+        });
+    }
+
+    [Test]
+    public void TheDropLeashLetsGoPastTheLeashUnlessItIsTheirFight()
+    {
+        int leash = E.Leash(false);
+        Assert.Multiple(() =>
+        {
+            Assert.That(E.MayFight(false, false, true, true, leash, leash, false, false), Is.True, "at the leash: kept");
+            Assert.That(E.MayFight(false, false, true, true, leash + 1, leash, false, false), Is.False, "past it: let go");
+            Assert.That(E.MayFight(false, false, true, true, 9_000, leash, playersTarget: true, hitsGroup: false), Is.True,
+                "the player's own target is never let go");
+            Assert.That(E.MayFight(false, false, true, true, 9_000, leash, playersTarget: false, hitsGroup: true), Is.True,
+                "nor an enemy hitting the group");
+            Assert.That(E.MayFight(false, hitsMe: true, true, true, 9_000, leash, false, false), Is.True, "nor one hitting the bot");
+            Assert.That(E.MayFight(false, false, warZone: false, enemyRealm: true, 9_000, leash, false, false), Is.True,
+                "PvE: unchanged");
+            Assert.That(E.MayFight(false, false, true, enemyRealm: false, 9_000, leash, false, false), Is.True,
+                "a monster in the frontier: unchanged");
+        });
+    }
+
+    [Test]
+    public void APickIsKeptOutToTheLeashButANewOneOnlyWithinTheBound()
+    {
+        int bound = E.AggressiveBound, leash = E.Leash(false);
+        var field = new[] { C(RvrRole.Healer, bound + 100) };
+        Assert.Multiple(() =>
+        {
+            Assert.That(E.Pick(field, bound, current: -1, leash: leash), Is.EqualTo(-1), "a new pick: within the bound");
+            Assert.That(E.Pick(field, bound, current: 0, leash: leash), Is.EqualTo(0), "the pick from before: kept to the leash");
+            Assert.That(E.Pick(new[] { C(RvrRole.Healer, leash + 1) }, bound, current: 0, leash: leash), Is.EqualTo(-1),
+                "past the leash: let go");
+            Assert.That(E.Pick(new[] { C(RvrRole.Melee, bound + 100), C(RvrRole.Healer, 900) }, bound, current: 0, leash: leash),
+                Is.EqualTo(1), "a better role within the bound still wins");
+        });
+    }
+
+    [Test]
+    public void OpeningMeansNoPickAndNobodyFighting()
+    {
+        // Review of #765: when the pick died the next one counted as an opening, so it was sized up afresh and the "last one
+        // left" rule for a held enemy could not happen. Now a group already fighting goes on.
+        Assert.Multiple(() =>
+        {
+            Assert.That(E.Opening(hasPick: false, groupFighting: false), Is.True);
+            Assert.That(E.Opening(hasPick: false, groupFighting: true), Is.False, "the pick died, the fight goes on");
+            Assert.That(E.Opening(hasPick: true, groupFighting: false), Is.False);
+            var alone = new[] { C(RvrRole.Healer, 300, controlled: true) };
+            Assert.That(E.Pick(alone, E.AggressiveBound, opening: E.Opening(false, groupFighting: true)), Is.EqualTo(0),
+                "mid-fight the last enemy left is fought even though a groupmate holds it");
+            Assert.That(E.Pick(alone, E.AggressiveBound, opening: E.Opening(false, groupFighting: false)), Is.EqualTo(-1),
+                "opening: never on a held enemy");
+        });
+    }
+
+    [Test]
+    public void ThePickSurvivesAShortSpellOutOfSight()
+    {
+        // Review of #765: one look without line of sight dropped the pick and the group opened again.
+        const long seen = 10_000;
+        Assert.Multiple(() =>
+        {
+            Assert.That(E.KeepsOutOfSight(seenNow: true, now: seen + 60_000, lastSeen: 0), Is.True, "seen now");
+            Assert.That(E.KeepsOutOfSight(false, seen + 1_100, seen), Is.True, "one look later");
+            Assert.That(E.KeepsOutOfSight(false, seen + E.SightMemoryMilliseconds - 1, seen), Is.True);
+            Assert.That(E.KeepsOutOfSight(false, seen + E.SightMemoryMilliseconds, seen), Is.False, "then it is let go");
+            Assert.That(E.KeepsOutOfSight(false, seen, lastSeen: 0), Is.False, "never seen");
+        });
+    }
+
+    [Test]
+    public void HoldAndTheLeashAreWiredIntoTheOneGate()
+    {
+        string root = TestContext.CurrentContext.TestDirectory;
+        while (root != null && !Directory.Exists(Path.Combine(root, "source", "server", "GameServer", "bots")))
+            root = Path.GetDirectoryName(root);
+        Assume.That(root, Is.Not.Null, "the repository's server source");
+        string bots = Path.Combine(root, "source", "server", "GameServer", "bots");
+        string mode = File.ReadAllText(Path.Combine(bots, "CompanionEngagementMode.cs"));
+        string brain = File.ReadAllText(Path.Combine(bots, "BotBrain.cs"));
+        string pet = File.ReadAllText(Path.Combine(root, "source", "server", "GameServer", "ai", "brain", "ControlledMob", "ControlledMobBrain.cs"));
+        string observe = File.ReadAllText(Path.Combine(bots, "CompanionPvpEngagement.cs"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(mode, Does.Contain("if (!CompanionRvrEngage.MayFight(actor, target)) return false;"),
+                "Allows (every pick, assist, defence and pet path) asks /hold and the leash first");
+            Assert.That(brain, Does.Contain("if (!CompanionEngagementMode.Restricts(Body)) return;"),
+                "the bot drops what the gate refuses");
+            Assert.That(pet, Does.Contain("if (CompanionEngagementMode.Restricts(Body))"), "and so does its pet");
+            Assert.That(observe, Does.Contain("if (CompanionEngagementMode.PlayerHolding(leader)) return;"),
+                "under /hold the group opens nothing");
         });
     }
 }

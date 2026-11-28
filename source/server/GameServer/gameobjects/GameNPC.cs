@@ -3302,6 +3302,8 @@ namespace DOL.GS
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
 			Flags &= ~eFlags.STEALTH;
+			if (this is not GameBot && Brain is IControlledBrain)
+				CompanionRvrEngage.NoteHit(this, ad); // #664: a bot's pet under /hold answers the first spell hit
 
 			if (this is not GameBot && Brain is ControlledMobBrain)
 				BotBrain.NotifyNearbyGroupBots(this, ad);

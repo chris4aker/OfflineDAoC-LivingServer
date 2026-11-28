@@ -6,16 +6,45 @@ namespace DOL.GS
     public static class CompanionEngagementMode
     {
         public const int DefensiveRadius = 350;
-        private sealed class Mode { public bool Defensive; public GameLiving Pull; }
+        private sealed class Mode { public bool Defensive; public bool Hold; public GameLiving Pull; }
         private static readonly ConditionalWeakTable<GamePlayer, Mode> Modes = new();
+        /// <summary>/aggressive or /defensive (either ends /hold).</summary>
         public static void Set(GamePlayer player, bool defensive)
         {
             Mode mode = Modes.GetOrCreateValue(player);
             mode.Defensive = defensive;
+            mode.Hold = false;
             mode.Pull = null;
             CompanionPvpEngagement.Reset(player);
             CompanionRvrEngage.Reset(player);
         }
+
+        /// <summary>
+        /// #664 step 2, /hold (owner answer 3, 2026-11-26 22:23: "Besides /defensive, companions only defend themselves (for
+        /// sneaking past or waiting at a keep)"): every bot of the player's group fights only what is hitting it or its pet,
+        /// until /aggressive or /defensive. Heals and buffs go on.
+        /// </summary>
+        public static void SetHold(GamePlayer player)
+        {
+            if (player == null) return;
+            Mode mode = Modes.GetOrCreateValue(player);
+            mode.Defensive = false;
+            mode.Hold = true;
+            mode.Pull = null;
+            CompanionPvpEngagement.Reset(player);
+            CompanionRvrEngage.Reset(player);
+        }
+
+        /// <summary>The player chose /hold for his group.</summary>
+        public static bool PlayerHolding(GamePlayer player) =>
+            player != null && Modes.TryGetValue(player, out Mode mode) && mode.Hold;
+
+        /// <summary>
+        /// /hold or the #664 drop leash governs this bot or pet (a bot of a player's group: under /hold anywhere, or in a
+        /// #663 place with bot_companion_rvr_engage on), so its brain drops what <see cref="Allows"/> refuses.
+        /// </summary>
+        public static bool Restricts(GameLiving actor) =>
+            DefensiveLeader(actor) != null || CompanionRvrEngage.Restricting(actor) != null;
         public static GamePlayer DefensiveLeader(GameLiving actor)
         {
             // Include companion pets, never human pets or autonomous bots.
@@ -43,6 +72,8 @@ namespace DOL.GS
         }
         public static bool Allows(GameLiving actor, GameLiving target)
         {
+            // #664 step 2: /hold (only self-defence) and the drop leash in the #663 places, for the player's whole group.
+            if (!CompanionRvrEngage.MayFight(actor, target)) return false;
             GamePlayer leader = DefensiveLeader(actor);
             return leader == null || target != null && target.CurrentRegionID == leader.CurrentRegionID &&
                 (leader.IsWithinRadius(target, DefensiveRadius) || CompanionPvpEngagement.Defending(actor, target) ||

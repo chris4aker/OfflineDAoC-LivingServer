@@ -1,6 +1,6 @@
 OFFLINE DAOC - SERVER COMMAND REFERENCE
 
-304 command registrations read from the server source (source/tools/make_command_reference.py).
+305 command registrations read from the server source (source/tools/make_command_reference.py).
 Normal commands can still have level, realm, cooldown or state requirements.
 GM/admin commands can change or delete game data. Back up before using them.
 Descriptions containing a localization key have no matching shipped English text.
@@ -10,7 +10,7 @@ COMMON HELPER AND COMPANION COMMANDS
 /spawn specs opens the class and build picker; /spawn <class> <spec> creates that build (for macros).
 /raid 40 or /raid 80 enables a level-50 helper raid (total includes you).
 There is no /spawn 40 or /spawn 80 raid-size command.
-/aggressive and /defensive control how your helpers and companions engage.
+/aggressive and /defensive control how your helpers and companions engage; /hold makes your group only defend itself.
 /hire beside a healer of your realm hires and manages your companions; /hire help lists every /hire word.
 /grind, /tc and /disband are documented in their registrations below.
 Fresh accounts are normal players; the launcher GM option is OFF by default.
@@ -471,6 +471,11 @@ NORMAL PLAYER COMMANDS
   /hire option <n> <row> <choice> - set an AI option from /hire options
   /hire help - every /hire word
   Handler: DOL.GS.Commands.HireCommand165Handler
+
+/hold
+  Your helpers, companions and the bots in your group only defend themselves
+  /hold
+  Handler: DOL.GS.Commands.CompanionHoldCommand
 
 /hood
   Toggles the hood on and off when wearing a hooded cloak.
