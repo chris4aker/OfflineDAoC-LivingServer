@@ -441,18 +441,25 @@ public static partial class AutonomousRvrEventLayer
 
     // ---- the zerg's followers on the event's roster (#599 step 3 review) ---------------------------------------------
 
-    /// <summary>One zerg follower put on the roster of the zerg's event, or left out of it (<see cref="Joined"/> false).</summary>
-    public readonly record struct ZergEnrolment(string ZergId, string Attack, string ForceId, bool Joined);
+    /// <summary>
+    /// One zerg follower put on the roster of the zerg's event (<see cref="Leave"/> None), or left out of it: the reason it
+    /// leaves the zerg at the next pulse (<see cref="BattlegroupLeave.Cap"/>, <see cref="BattlegroupLeave.Event"/>,
+    /// <see cref="BattlegroupLeave.Defense"/> or <see cref="BattlegroupLeave.Level"/>).
+    /// </summary>
+    public readonly record struct ZergEnrolment(string ZergId, string Attack, string ForceId, BattlegroupLeave Leave)
+    {
+        public bool Joined => Leave == BattlegroupLeave.None;
+    }
 
     /// <summary>
     /// Puts each follower group of a zerg in an attack (or a defence its lead's review took up) on that event's roster, on
     /// the lead's side, through the event's own join under that side's cap (<see cref="TryJoin"/>: AttackerCapFor,
     /// DefenderCapFor, the third realm's cap). The followers then count toward the attacker cap and toward the defence
     /// the keep gets (DefenderCapFor sizes it from the attackers on the roster), and go through the muster, the march, the
-    /// siege jobs and the regrouping like any warband in the event. A follower that does not fit leaves the zerg at the next
-    /// pulse (why=cap) and rests. <paramref name="forceOf"/> gives a follower's force (null: it is gone; the leave rules
-    /// handle it). Runs from the coordinator's pulse before the candidates are read, with neither lock held around the
-    /// callback; the battlegroup lock and the event lock are never held together.
+    /// siege jobs and the regrouping like any warband in the event. A follower left out (<see cref="ZergFollowerOutcome"/>)
+    /// leaves the zerg at the next pulse with that reason and rests. <paramref name="forceOf"/> gives a follower's force
+    /// (null: it is gone; the leave rules handle it). Runs from the coordinator's pulse before the candidates are read, with
+    /// neither lock held around the callback; the battlegroup lock and the event lock are never held together.
     /// </summary>
     public static List<ZergEnrolment> EnrolZergFollowers(Func<string, Force> forceOf, long now)
     {
@@ -465,26 +472,54 @@ public static partial class AutonomousRvrEventLayer
         foreach (var zerg in pending)
         {
             Force[] forces = zerg.Followers.Select(id => forceOf?.Invoke(id)).Where(force => force is { MemberCount: > 0 }).ToArray();
-            foreach ((string forceId, bool joined) in JoinZergAttack(zerg.Attack, zerg.Lead, forces, now))
-                result.Add(new ZergEnrolment(zerg.ZergId, zerg.Attack, forceId, joined));
+            foreach ((string forceId, BattlegroupLeave leave) in JoinZergAttack(zerg.Attack, zerg.Lead, forces, now))
+                result.Add(new ZergEnrolment(zerg.ZergId, zerg.Attack, forceId, leave));
         }
         lock (BattlegroupSync)
             foreach (ZergEnrolment enrolment in result.Where(enrolment => !enrolment.Joined))
                 if (BattlegroupOfForce.TryGetValue(enrolment.ForceId, out BattlegroupRecord record) && record.Zerg &&
                     record.Id == enrolment.ZergId && record.Lead != enrolment.ForceId)
-                    ZergCapReports.Add(enrolment.ForceId);
+                    ZergEnrolmentLeaves[enrolment.ForceId] = enrolment.Leave;
         return result;
     }
 
     /// <summary>
-    /// The event part of <see cref="EnrolZergFollowers"/>: the lead's side of <paramref name="targetId"/> and its cap, then
-    /// each follower in order. Nothing is done while the event does not list the lead (the grace after the review). A
-    /// player-attack defence response (its calls are sized per warband) takes no follower.
+    /// Whether a zerg follower goes on the zerg's event's roster (None), or why it leaves the zerg instead. Pure; checked in
+    /// this order:
+    /// <list type="bullet">
+    /// <item>already on this event's roster: None (it is in);</item>
+    /// <item>on another event's roster (#816 review: a defence call or a bot siege's call at the march took it in the
+    /// seconds between the lead's report and the pulse): <see cref="BattlegroupLeave.Event"/>, so that event and its duty
+    /// lease keep it;</item>
+    /// <item>the event is a player-attack defence (its calls are sized per warband): <see cref="BattlegroupLeave.Defense"/>;</item>
+    /// <item>below <see cref="ForceStrength.SiegeMinimumLevel"/> on average, the level <see cref="ChooseOrJoin"/> asks:
+    /// <see cref="BattlegroupLeave.Level"/>;</item>
+    /// <item>no room under the side's cap: <see cref="BattlegroupLeave.Cap"/>.</item>
+    /// </list>
     /// </summary>
-    private static List<(string ForceId, bool Joined)> JoinZergAttack(string targetId, string leadForceId, IReadOnlyList<Force> followers,
-        long now)
+    public static BattlegroupLeave ZergFollowerOutcome(bool onThisRoster, bool onAnotherRoster, bool defenseReaction, int averageLevel,
+        bool fits)
     {
-        var result = new List<(string ForceId, bool Joined)>();
+        if (onThisRoster)
+            return BattlegroupLeave.None;
+        if (onAnotherRoster)
+            return BattlegroupLeave.Event;
+        if (defenseReaction)
+            return BattlegroupLeave.Defense;
+        if (averageLevel < ForceStrength.SiegeMinimumLevel)
+            return BattlegroupLeave.Level;
+        return fits ? BattlegroupLeave.None : BattlegroupLeave.Cap;
+    }
+
+    /// <summary>
+    /// The event part of <see cref="EnrolZergFollowers"/>: the lead's side of <paramref name="targetId"/> and its cap, then
+    /// each follower in order, by <see cref="ZergFollowerOutcome"/>. Nothing is done while the event does not list the lead
+    /// (the grace after the review). A follower on another event's roster is never moved off it.
+    /// </summary>
+    private static List<(string ForceId, BattlegroupLeave Leave)> JoinZergAttack(string targetId, string leadForceId,
+        IReadOnlyList<Force> followers, long now)
+    {
+        var result = new List<(string ForceId, BattlegroupLeave Leave)>();
         if (targetId == null || leadForceId == null || followers.Count == 0) return result;
         using (AiProfile.Lock(Sync, AiSystem.LockRvrEvents))
         {
@@ -495,25 +530,27 @@ public static partial class AutonomousRvrEventLayer
             if (side == null) return result;
             foreach (Force force in followers)
             {
-                int cap = side == active.Attackers ? AttackerCapFor(active) : side == active.Defenders ? DefenderCapFor(active)
-                    : SiegeRealmCap(active, OtherRealm(active));
-                bool joined = !active.DefenseReaction && (TryJoin(side, force, cap) || side.ContainsKey(force.GroupId));
-                if (joined)
+                string id = force.GroupId;
+                bool onAnother = Events.Values.Any(other => other != active &&
+                                     (other.Attackers.ContainsKey(id) || other.Defenders.ContainsKey(id) || other.ThirdRealm.ContainsKey(id))) ||
+                                 CarrierEvents.Values.Any(carrier => carrier.Participants.Values.Any(realm => realm.ContainsKey(id)));
+                bool listed = side.ContainsKey(id);
+                BattlegroupLeave leave = ZergFollowerOutcome(listed, onAnother, active.DefenseReaction, force.AverageLevel, fits: true);
+                if (leave == BattlegroupLeave.None && !listed)
+                {
+                    int cap = side == active.Attackers ? AttackerCapFor(active) : side == active.Defenders ? DefenderCapFor(active)
+                        : SiegeRealmCap(active, OtherRealm(active));
+                    if (!TryJoin(side, force, cap)) leave = BattlegroupLeave.Cap;
+                }
+                if (leave == BattlegroupLeave.None)
                 {
                     // A warband holds one event reservation (as ChooseOrJoin keeps it), and its bots are on their way.
                     foreach (ActiveEvent other in Events.Values.Where(other => other != active))
-                    {
-                        other.Attackers.Remove(force.GroupId);
-                        other.Defenders.Remove(force.GroupId);
-                        other.ThirdRealm.Remove(force.GroupId);
-                        other.Slots.Remove(force.GroupId);
-                    }
-                    foreach (var carrier in CarrierEvents.Values)
-                        foreach (var realm in carrier.Participants.Values) realm.Remove(force.GroupId);
-                    foreach (long id in force.MemberIds ?? Array.Empty<long>())
-                        active.Travel.TryAdd(id, (force.GroupId, now, double.PositiveInfinity, default, 0));
+                        other.Slots.Remove(id);
+                    foreach (long member in force.MemberIds ?? Array.Empty<long>())
+                        active.Travel.TryAdd(member, (id, now, double.PositiveInfinity, default, 0));
                 }
-                result.Add((force.GroupId, joined));
+                result.Add((id, leave));
             }
         }
         return result;

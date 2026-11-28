@@ -35,7 +35,7 @@ public static partial class AutonomousBotGroupCoordinator
                     session.Group != null && !string.IsNullOrEmpty(session.Id))
                     warbands.Add((session.Id, session.Group, session.Leader, session.HostedPlayer != null));
         // #599 step 3 review: the zerg's followers go on the roster of the event its lead took it to, under the cap, before
-        // the candidates are read (a follower that did not fit leaves the zerg in this pulse, why=cap).
+        // the candidates are read (a follower left out leaves the zerg in this pulse: why=cap, event, defense or level).
         var warbandGroups = new Dictionary<string, Group>(warbands.Count);
         foreach (var warband in warbands)
             warbandGroups.TryAdd(warband.Id, warband.Group);
