@@ -50,10 +50,14 @@ namespace DOL.UnitTests
             Assert.That(actives, Is.Not.Null, "the realm-ability row");
             // #531 step 2e: the row says how deep each side's casters and healers stood behind their tanks
             Assert.That(first.Row, Does.Contain(" depth=Alb:casters="), "the row has the back line's depth");
-            // ... and the casters stood at their spell reach, deeper than the old flat back-line depth (the reach fill is wired)
-            System.Collections.Generic.IReadOnlyList<float> casterDepth = first.Depth.Samples(eRealm.Albion, false);
-            Assert.That(casterDepth, Is.Not.Empty, "Albion's casters were sampled: " + first.Row);
-            Assert.That(casterDepth.Average(), Is.GreaterThan(RvrPositioning.MaxBackDepth), "Albion's casters at their reach: " + first.Row);
+            // ... and the layout placed Albion's casters (the Sorcerer and the Theurgist) by their spell reach, deeper than the old
+            // flat back-line depth (the reach fill is wired). Their sampled depth is not asserted: a caster walks in to cast
+            // (seed 520: mean 151, deepest 1311), kites and peels.
+            System.Collections.Generic.IReadOnlyList<float> casterReach = first.Depth.Reaches(eRealm.Albion, false);
+            Assert.That(casterReach, Is.Not.Empty, "Albion's casters were sampled: " + first.Row);
+            Assert.That(casterReach.Min(), Is.GreaterThan(0), "every sample had a reach: " + first.Row);
+            Assert.That(RvrPositioning.DepthFor(false, casterReach.Average(), 0, RvrPositioning.MezSpread),
+                Is.GreaterThan(RvrPositioning.MaxBackDepth), "at that reach a caster stands deeper than the old 700: " + first.Row);
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);

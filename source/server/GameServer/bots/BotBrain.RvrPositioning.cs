@@ -170,10 +170,7 @@ namespace DOL.AI.Brain
                     stand = RvrStand.Escort;
                     charge = sticksTo;
                 }
-                // #531 step 2e: a back-line bot's spell reach sets its depth (a caster's spells, a healer's heals)
-                float reach = stand == RvrStand.Back && member.Living is GameBot { Brain: BotBrain memberBrain }
-                    ? memberBrain.RvrReach(RvrPositioning.CountsAsHealer(member.Role, member.Class)) : 0;
-                placed.Add(new RvrPositioning.Placed(member, stand, charge, reach));
+                placed.Add(new RvrPositioning.Placed(member, stand, charge, RvrPlacedReach(member, stand)));
                 positions.Add((RvrPeelPlan.At(member), stand));
                 centre += RvrPeelPlan.At(member);
             }
@@ -239,6 +236,14 @@ namespace DOL.AI.Brain
             LogRvrBackline(reason, line is Vector2 anchor ? -RvrPositioning.Ahead(spot, anchor, front) : 0, tier, now);
             return true;
         }
+
+        /// <summary>
+        /// #531 step 2e: the reach the layout gives a board member: a back-line gamebot's spell reach sets its depth (a
+        /// caster's spells, a healer's heals); 0 for anyone else (today's depth).
+        /// </summary>
+        public static float RvrPlacedReach(RvrCombatant member, RvrStand stand) =>
+            stand == RvrStand.Back && member?.Living is GameBot { Brain: BotBrain memberBrain }
+                ? memberBrain.RvrReach(RvrPositioning.CountsAsHealer(member.Role, member.Class)) : 0;
 
         /// <summary>
         /// #531 step 2e: the reach a back-line bot keeps from the enemy: a healer's longest heal, anyone else's longest
