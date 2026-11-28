@@ -47,9 +47,12 @@ namespace DOL.GS
         /// in play, in the keep's region and inside the fighting ring (<c>AttackerAtKeep</c>, the ring #784 counts the
         /// attackers in: 9,500, Z within 2,000). Members or bots elsewhere, dead or of another realm are not counted; pets
         /// and siege engines were never part of the force count and still are not.
+        /// Owner, 2026-11-27, #788 answer 56A: "this defense's own recruits don't count toward its size". The attacking
+        /// realm's gamebots this defense has recruited as its helpers (<paramref name="ownRecruit"/>) are left out of the
+        /// gamebots counted; the player's group or raid and the attacking realm's other gamebots at the keep still count.
         /// </summary>
         public static int SeenForceSize(GameLiving attacker, ushort keepRegion, int keepX, int keepY, int keepZ,
-            IEnumerable<GameLiving> realmBots = null)
+            IEnumerable<GameLiving> realmBots = null, Func<GameLiving, bool> ownRecruit = null)
         {
             if (attacker == null) return SeenForceSize(0);
             bool AtKeep(GameLiving living) => living != null && living.Realm == attacker.Realm &&
@@ -62,7 +65,7 @@ namespace DOL.GS
                     if (AtKeep(member)) seen.Add(member);
             if (realmBots != null)
                 foreach (GameLiving bot in realmBots)
-                    if (AtKeep(bot)) seen.Add(bot);
+                    if (AtKeep(bot) && ownRecruit?.Invoke(bot) != true) seen.Add(bot);
             return SeenForceSize(seen.Count);
         }
 
@@ -73,8 +76,19 @@ namespace DOL.GS
         private static Func<IEnumerable<GameLiving>> AttackerRealmBotSource = () =>
             AutonomousBotRegistry.Snapshot().Where(bot => bot.IsAutonomousWorldBot && !bot.IsTemporaryGroupHelper);
 
-        private static int SeenForceSize(GamePlayer player, AbstractGameKeep keep, IEnumerable<GameLiving> realmBots) =>
-            keep == null ? SeenForceSize(0) : SeenForceSize(player, keep.Region, keep.X, keep.Y, keep.Z, realmBots);
+        private static int SeenForceSize(GamePlayer player, AbstractGameKeep keep, IEnumerable<GameLiving> realmBots,
+            Func<GameLiving, bool> ownRecruit) =>
+            keep == null ? SeenForceSize(0) : SeenForceSize(player, keep.Region, keep.X, keep.Y, keep.Z, realmBots, ownRecruit);
+
+        /// <summary>Called under Sync. Whether a gamebot is one of this player-attack defense's own attacking-realm recruits:
+        /// its event force is among the defense's attacker-side forces (#788 answer 56A).</summary>
+        private static bool IsOwnRecruit(ActiveEvent defense, GameLiving living)
+        {
+            if (defense == null || defense.Attackers.Count == 0 || living == null) return false;
+            string force = living.TempProperties?.GetProperty<string>("RvrEventForce") ??
+                (living is GameBot bot ? $"rvr-{bot.DatabaseID}" : null);
+            return force != null && defense.Attackers.ContainsKey(force);
+        }
 
         public static string RallyLine(DefenseScale scale) => scale switch
         {
@@ -316,7 +330,10 @@ namespace DOL.GS
                     var target = new LiveObjective(pair.Key, keep.Name, keep.IsRelic ? Intent.AssaultRelicKeep : Intent.AssaultKeep,
                         keep.Realm, keep.Region, keep.X, keep.Y, keep.Z, keep.IsRelic, 0, 0, 0, 0, UnderAttack: true);
                     // Counted here, in the coordinator pulse, not in the damage callback (#523, owner 2026-11-24).
-                    int seen = SeenForceSize(alarm.Player, keep, realmBots ??= AttackerRealmBotSource().ToArray());
+                    // 56A: the helpers this defense has recruited are not counted toward its own size.
+                    ActiveEvent defense = Events.TryGetValue(pair.Key, out var running) && running.DefenseReaction ? running : null;
+                    int seen = SeenForceSize(alarm.Player, keep, realmBots ??= AttackerRealmBotSource().ToArray(),
+                        bot => IsOwnRecruit(defense, bot));
                     DefenseScale scale = ScaleOf(seen);
                     DefenseScale before = Events.TryGetValue(pair.Key, out var existing) && existing.DefenseReaction ? existing.DefenseScale : scale;
                     bool firstAlarm = BeginDefenseResponse(target, alarm.Player.Realm,
@@ -338,7 +355,7 @@ namespace DOL.GS
                         DefenseWarnings[pair.Key] = new(alarm.Player, text, now + 15_000, now);
                         if (DefenseHornSound > 0) alarm.Player.Out.SendSoundEffect((ushort)DefenseHornSound, 0, 0, 0, 0, 0);
                         DOL.Logging.LoggerManager.Create(typeof(AutonomousRvrEventLayer)).Info(
-                            // The size of the bot defense against a player's keep attack, where force= counts the player's group and the attacking realm's gamebots at the keep and roster= the whole group.
+                            // The size of the bot defense against a player's keep attack, where force= counts the player's group and the attacking realm's gamebots at the keep (not this defense's own recruits) and roster= the whole group.
                             $"PLAYER_KEEP_DEFENSE_SIZED event={pair.Key} keep=\"{alarm.Keep.Name}\" force={seen} roster={ForceSize(alarm.Player)} scale={active.DefenseScale} " +
                             $"defenders={ResponseCap(true, active.DefenseScale)} helpers={ResponseCap(false, active.DefenseScale)} first={firstAlarm}");
                     }

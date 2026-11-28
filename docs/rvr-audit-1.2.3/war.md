@@ -446,7 +446,7 @@ Each is a place, an action and a log tag.
 2. **Where sieges go.** Count `RVR_EVENT_OPENED target=` by keep over a day. Expected today: about even over the 21 keeps
    (finding 4). Then count `RVR_KEEP_TAKEN` per realm per hour. Do Hib keeps fall first (finding 8)?
 3. **The player's keep alarm.** Hit one guard at Bledmeer with a level 50, then ride away. Look for
-   `PLAYER_KEEP_DEFENSE_SIZED` (since #788 `force=` counts who is at the keep, your realm's gamebots included). Then look for the event's end line (`RVR_EVENT_ENDED`; since #784 the reason is "Siege
+   `PLAYER_KEEP_DEFENSE_SIZED` (since #788 `force=` counts who is at the keep, your realm's gamebots included, not the defense's own recruits). Then look for the event's end line (`RVR_EVENT_ENDED`; since #784 the reason is "Siege
    defended: the attackers left the keep 10 minutes ago", or the four-hour cap if attackers stay), and see how long
    defenders stand at Bledmeer (finding 2).
 4. **Joining a group.** In Emain, `/lfg` and send a tell to a bot leader of an RvR party. Expect no answer and the
