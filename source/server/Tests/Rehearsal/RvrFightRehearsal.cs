@@ -835,9 +835,15 @@ namespace DOL.GS.Tests.Rehearsal
             warrior.TakeDamage(armsman, eDamageType.Slash, warrior.Health + 10, 0);
             world.Run(0.3);
             bool warriorDown = !warrior.IsAlive;
+            detail.Add($"pr before: tactics={BotBrain.RvrTacticsApplyTo(healer)} wanted={RvrRealmActives.Wanted(healer, RvrRealmActives.PerfectRecovery)} " +
+                       $"target={RvrRealmActives.PerfectRecoveryTarget(healer)?.Name ?? "-"} warriorState={warrior.ObjectState} " +
+                       $"warriorInGroup={healer.Group?.IsInTheGroup(warrior)} healerInCombat={healer.InCombat} casting={healer.IsCasting} " +
+                       $"scope={RvrTacticsScope.Refusal(RvrTacticsScope.FactsOf(healer))}");
             AutonomousBotRealmAbilities.UseActives(healer);
             world.Run(1.5);
+            world.Run(0.1);
             bool raised = warriorDown && warrior.IsAlive;
+            detail.Add($"pr after: casting={healer.IsCasting} pending={healer.castingComponent.HasPendingSkillRequests} target={healer.TargetObject?.Name ?? "-"}");
             long timer = pr != null ? healer.GetSkillDisabledDuration(pr) : 0;
             detail.Add($"pr: healer has it={pr != null} warrior down={warriorDown} raised={raised} health={warrior.HealthPercent}% timer={timer / 1000}s");
             savage.TakeDamage(armsman, eDamageType.Slash, savage.Health + 10, 0);

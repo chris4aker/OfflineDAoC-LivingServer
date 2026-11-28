@@ -3301,7 +3301,10 @@ namespace DOL.GS
 
 		public override void OnAttackedByEnemy(AttackData ad)
 		{
-			Flags &= ~eFlags.STEALTH;
+			// A gamebot is uncovered by the player's rule instead (GameLiving.OnAttackedByEnemy: a hit, never under Vanish; #531
+			// step 2c-2). Clearing the flag here skipped Stealth(false), so Vanish and the uncover timer outlived the stealth.
+			if (this is not GameBot)
+				Flags &= ~eFlags.STEALTH;
 			if (this is not GameBot && Brain is IControlledBrain)
 				CompanionRvrEngage.NoteHit(this, ad); // #664: a bot's pet under /hold answers the first spell hit
 
