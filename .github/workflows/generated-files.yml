@@ -75,6 +75,10 @@ jobs:
           else
             git checkout -q -B "$BRANCH" origin/main
           fi
+          # Fail closed before any of the branch's code runs with this job's write token: after merging main, the branch
+          # may differ from main only in the two files (checked again below, after the commit).
+          other=$(git diff --name-only origin/main HEAD | grep -vxF -e docs/LOG-ROWS.md -e tools/grafana/alloy/config.alloy || true)
+          [ -z "$other" ] || { echo "::error::$BRANCH differs from main in more than the two generated files: $other"; exit 1; }
           python3 tools/grafana/kit.py --write --generated
           python3 tools/grafana/kit.py --check --generated
           git add -- $FILES

@@ -2,8 +2,9 @@
 
     python3 -m unittest discover -s tools/grafana/tests -v
 
-Every line here is made up. The filter is read from tools/grafana/alloy/config.alloy as it ships (alloy.Filter), so
-these tests fail if the committed config stops dropping what it must.
+Every line here is made up. The filter is the Alloy config the kit builds from this checkout's code (kit.Kit.alloy_config,
+read with alloy.Filter), so these tests fail if the config main ships from this code stops dropping what it must. The
+committed tools/grafana/alloy/config.alloy can lag one merge behind (main regenerates it, #817).
 """
 import sys
 import tempfile

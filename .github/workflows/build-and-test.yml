@@ -38,7 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2   # a pull request's merge commit and main before it (the generated-file guard, #817)
+          # The generated-file guard (#817) needs history: on a pull request run, its merge commit and main before it;
+          # on a push run, the whole history, so origin/main and the merge base with it are there.
+          fetch-depth: ${{ github.event_name == 'push' && '0' || '2' }}
       - name: Check the epic encounter catalog is up to date
         run: |
           python3 source/tools/epic_encounter_catalog.py --check
@@ -50,9 +52,17 @@ jobs:
       # Issue #628: the Grafana dashboards are what the server code makes them (tools/grafana/kit.py), every row the kit
       # reads builds, and the privacy filter drops what it must on synthetic lines. #817: docs/LOG-ROWS.md and the Alloy
       # allowlist are built here but not compared: main regenerates them after each merge (generated-files.yml).
+      # Both runs of a branch carry the guard, so the push run's same-named check can't stand green beside a red one.
+      # Only this repository's own bot/generated-files branch is exempt (a fork's branch of that name is not); --strict
+      # fails if git can't read the range.
       - name: The pull request doesn't commit the files main generates
-        if: github.event_name == 'pull_request' && github.head_ref != 'bot/generated-files'
-        run: python3 tools/grafana/generated_guard.py --base HEAD^1
+        if: >-
+          github.event_name == 'pull_request' && !(github.head_ref == 'bot/generated-files' &&
+          github.event.pull_request.head.repo.full_name == github.repository)
+        run: python3 tools/grafana/generated_guard.py --base HEAD^1 --strict
+      - name: The branch doesn't commit the files main generates
+        if: github.event_name == 'push' && github.ref_name != 'main' && github.ref_name != 'bot/generated-files'
+        run: python3 tools/grafana/generated_guard.py --base origin/main --strict
       - name: Check the Grafana kit
         run: |
           python3 tools/grafana/kit.py --check

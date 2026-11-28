@@ -28,11 +28,14 @@ def commit(repo: Path, files: dict[str, str], message: str):
     git(repo, "commit", "-q", "-m", message)
 
 
-def guard(repo: Path, base: str) -> tuple[int, str]:
+def guard(repo: Path, base: str, *extra: str) -> tuple[int, str]:
     out = io.StringIO()
     with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
-        code = generated_guard.main(["--base", base, "--repo", str(repo)])
+        code = generated_guard.main(["--base", base, "--repo", str(repo), *extra])
     return code, out.getvalue()
+
+
+WORKFLOW = HERE.parents[2] / ".github" / "workflows" / "build-and-test.yml"
 
 
 class GuardTests(unittest.TestCase):
@@ -102,3 +105,59 @@ class GuardTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StrictTests(unittest.TestCase):
+    """--strict (CI): a range git can't read fails instead of skipping the guard."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.repo = Path(self.tmp.name)
+        git(self.repo, "init", "-q", "-b", "main")
+        git(self.repo, "config", "user.email", "t@example.invalid")
+        git(self.repo, "config", "user.name", "t")
+        commit(self.repo, {"src/a.cs": "a\n"}, "base")
+
+    def test_an_unknown_base_is_a_note_without_strict(self):
+        code, out = guard(self.repo, "origin/main")
+        self.assertEqual(code, 0, out)
+        self.assertIn("note:", out)
+
+    def test_an_unknown_base_fails_with_strict(self):
+        code, out = guard(self.repo, "origin/main", "--strict")
+        self.assertEqual(code, 1, out)
+        self.assertIn("error:", out)
+
+    def test_a_shallow_merge_commit_without_its_parent_fails_with_strict(self):
+        # A depth-1 checkout: HEAD^1 isn't there.
+        code, out = guard(self.repo, "HEAD^1", "--strict")
+        self.assertEqual(code, 1, out)
+
+    def test_strict_still_passes_a_clean_range(self):
+        commit(self.repo, {"src/a.cs": "a2\n"}, "next")
+        code, out = guard(self.repo, "HEAD^1", "--strict")
+        self.assertEqual(code, 0, out)
+
+
+class WorkflowTests(unittest.TestCase):
+    """build-and-test.yml keeps the guard on both runs of a branch, strict (review of #818)."""
+
+    def setUp(self):
+        self.text = WORKFLOW.read_text(encoding="utf-8")
+        job = self.text.split("\n  encounter-catalog:", 1)[1]
+        self.job = job.split("\n  new-client:", 1)[0]
+
+    def test_the_pull_request_run_guards_its_merge_commit_strictly(self):
+        self.assertIn("run: python3 tools/grafana/generated_guard.py --base HEAD^1 --strict", self.job)
+        self.assertIn("github.event_name == 'pull_request'", self.job)
+        # The bot branch is exempt only from this repository, not from a fork's branch of the same name.
+        self.assertIn("github.event.pull_request.head.repo.full_name == github.repository", self.job)
+
+    def test_the_push_run_guards_the_branch_against_main_strictly(self):
+        self.assertIn("run: python3 tools/grafana/generated_guard.py --base origin/main --strict", self.job)
+        self.assertIn("github.event_name == 'push' && github.ref_name != 'main' && github.ref_name != 'bot/generated-files'",
+                      self.job)
+
+    def test_the_checkout_has_the_history_the_guard_reads(self):
+        self.assertIn("fetch-depth: ${{ github.event_name == 'push' && '0' || '2' }}", self.job)
