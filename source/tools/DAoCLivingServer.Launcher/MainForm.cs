@@ -426,7 +426,8 @@ internal sealed partial class MainForm : Form
             Text = VersionLabel(),
             Font = new Font("Georgia", 12f, FontStyle.Bold),
             ForeColor = DaocTheme.GoldLight,
-            Location = new Point(97, 79),
+            // 77, not 79: the update status row under it (issue #795) then fits the 120 px title panel.
+            Location = new Point(97, 77),
         };
         titlePanel.Controls.Add(versionLabel);
         // Living Server: its build, "Check for updates" and update news (MainForm.Updates.cs).
