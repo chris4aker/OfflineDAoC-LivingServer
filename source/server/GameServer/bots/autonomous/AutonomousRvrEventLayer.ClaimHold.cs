@@ -39,17 +39,31 @@ public static partial class AutonomousRvrEventLayer
                      $"forces={active.Attackers.Count} bots={active.Attackers.Values.Sum()} minutes={ClaimHoldMilliseconds / 60_000}");
     }
 
-    /// <summary>Called under Sync from Expire: a hold that ran out releases its force as the siege's end would have.</summary>
+    /// <summary>
+    /// Called under Sync from Expire: a hold that ran out releases its force as the siege's end would have. A force that has
+    /// joined a live event since (for example the defense of the keep it holds, when the losing realm's player strikes back
+    /// within the hold) leaves its hold without a release: the event owns its duty lease now.
+    /// </summary>
     private static void ExpireClaimHolds(long nowTick)
     {
         if (ClaimHolds.Count == 0) return;
         foreach (var entry in ClaimHolds.Where(pair => pair.Value.UntilTick <= nowTick).ToArray())
         {
             ClaimHolds.Remove(entry.Key);
+            if (InLiveEvent(entry.Key, nowTick)) continue;
             ReleasedForces[entry.Key] = entry.Value.Reason;
             BotDutyLeases.ReleaseOwner(eDutyLeaseKind.RvrEvent, entry.Key);
         }
     }
+
+    /// <summary>Called under Sync: a force that joined an event drops its hold with no release (the event holds its lease).</summary>
+    private static void JoinedEventDropsClaimHold(string forceId) => ClaimHolds.Remove(forceId);
+
+    /// <summary>Called under Sync: whether the force is a participant of a siege, a defense or a relic carrier event that is still live.</summary>
+    private static bool InLiveEvent(string forceId, long nowTick) =>
+        Events.Values.Any(active => active.ExpiresTick > nowTick &&
+            (active.Attackers.ContainsKey(forceId) || active.Defenders.ContainsKey(forceId) || active.ThirdRealm.ContainsKey(forceId))) ||
+        CarrierEvents.Values.Any(active => active.ExpiresTick > nowTick && active.Participants.Values.Any(realm => realm.ContainsKey(forceId)));
 
     /// <summary>Called under Sync. The plan of a force holding a keep it took, or null.</summary>
     private static Plan ClaimHoldPlan(string forceId, IReadOnlyCollection<LiveObjective> objectives, long nowTick)
@@ -63,11 +77,19 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>
     /// Called under Sync. A force that took another plan (a home-defense call, a new event) leaves its hold. One that took a
     /// plan outside any event (<paramref name="planTargetId"/> null) is released as <see cref="ExpireClaimHolds"/> would
-    /// release it: the release is recorded and its duty lease freed. One that joined another event keeps its lease for it.
+    /// release it: the release is recorded and its duty lease freed. One that joined an event (another keep's, or a defense of the keep it holds) keeps its lease for it, with no release.
     /// </summary>
-    private static void LeaveClaimHold(string forceId, string planTargetId)
+    private static void LeaveClaimHold(string forceId, string planTargetId, long nowTick)
     {
-        if (!ClaimHolds.TryGetValue(forceId, out var hold) || hold.Target.Id == planTargetId)
+        if (!ClaimHolds.TryGetValue(forceId, out var hold))
+            return;
+        // A force that is now in a live event (a defense of the same keep included) leaves the hold with no release.
+        if (InLiveEvent(forceId, nowTick))
+        {
+            JoinedEventDropsClaimHold(forceId);
+            return;
+        }
+        if (hold.Target.Id == planTargetId)
             return;
         ClaimHolds.Remove(forceId);
         if (planTargetId != null)

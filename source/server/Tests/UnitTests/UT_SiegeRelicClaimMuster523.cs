@@ -144,6 +144,80 @@ public sealed class UT_SiegeRelicClaimMuster523
         });
     }
 
+    /// <summary>The defenders of a live event, as <c>PulseDefense</c>'s recruit pass fills them.</summary>
+    private static Dictionary<string, int> DefendersOf(string targetId)
+    {
+        var events = (IDictionary)typeof(L).GetField("Events", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+        object active = events[targetId];
+        return active == null ? null : (Dictionary<string, int>)active.GetType().GetField("Defenders").GetValue(active);
+    }
+
+    /// <summary>
+    /// A bot capture, then the losing realm's player strikes back within the hold: a player-attack defense opens on the same
+    /// keep and the holding army (now the keep's realm) is recruited as a defender. The hold must not release it at three
+    /// minutes. The recruit is installed as the recruit pass installs it (the pass itself needs live warbands); the pass also
+    /// drops the hold at the join (JoinedEventDropsClaimHold), and the expiry skips any force in a live event.
+    /// </summary>
+    [Test]
+    public void AHoldingArmyRecruitedToDefendTheKeepIsNotReleasedWhenTheHoldEnds()
+    {
+        var keep = AlbKeep();
+        Assert.That(L.ChooseOrJoin(Mids("mid-army"), new[] { keep }, 1_000, 0)?.TargetId, Is.EqualTo(keep.Id));
+        const long taken = 10_000;
+        L.EndTarget(keep.Id, taken, eRealm.Midgard);
+        Assume.That(L.TryConsumeRelease("mid-army", taken + 1, out _), Is.False, "the army holds the keep it took");
+
+        var midKeep = keep with { OwningRealm = eRealm.Midgard };
+        Assert.That(L.BeginDefenseResponse(midKeep, eRealm.Albion, "offline", taken + 30_000), Is.True, "the player's attack opens a defense");
+        DefendersOf(keep.Id).Add("mid-army", 8);
+
+        long end = taken + L.ClaimHoldMilliseconds;
+        Assert.Multiple(() =>
+        {
+            Assert.That(L.TryConsumeRelease("mid-army", end, out string why), Is.False, why);
+            Assert.That(DefendersOf(keep.Id)?.ContainsKey("mid-army"), Is.True, "the army is still in the defense");
+            Assert.That(L.IsForceCommitted("mid-army", end), Is.True);
+            Assert.That(L.KeepPlan("mid-army", eRealm.Midgard, end)?.Intent, Is.EqualTo(L.Intent.DefendEvent));
+        });
+    }
+
+    [Test]
+    public void AHoldingArmyThatChoosesTheDefenseOfItsKeepLeavesTheHoldWithNoRelease()
+    {
+        var keep = AlbKeep();
+        L.ChooseOrJoin(Mids("mid-army"), new[] { keep }, 1_000, 0);
+        const long taken = 10_000;
+        L.EndTarget(keep.Id, taken, eRealm.Midgard);
+        var midKeep = keep with { OwningRealm = eRealm.Midgard };
+        L.BeginDefenseResponse(midKeep, eRealm.Albion, "offline", taken + 30_000);
+        DefendersOf(keep.Id).Add("mid-army", 8);
+
+        L.Plan plan = L.ChooseOrJoin(Mids("mid-army"), new[] { midKeep }, taken + 31_000, 0);
+        Assert.That(plan?.Intent, Is.EqualTo(L.Intent.DefendEvent), plan?.Reason);
+        Assert.That(plan?.TargetId, Is.EqualTo(keep.Id));
+
+        // The defense ends early: the army goes with the defense's own release, and no second "Keep captured" one follows.
+        DefendersOf(keep.Id).Remove("mid-army");
+        Assert.That(L.TryConsumeRelease("mid-army", taken + L.ClaimHoldMilliseconds, out string why), Is.False,
+            $"the hold was left at the join, so its end releases nothing ({why})");
+    }
+
+    [Test]
+    public void AHoldingArmyGivenAPlanOutsideAnyEventIsReleasedAtOnce()
+    {
+        var keep = AlbKeep();
+        L.ChooseOrJoin(Mids("mid-army"), new[] { keep }, 1_000, 0);
+        const long taken = 10_000;
+        L.EndTarget(keep.Id, taken, eRealm.Midgard);
+
+        // Below siege level the force gets a roaming reserve plan, which is no event: it leaves the hold and is released.
+        L.Plan plan = L.ChooseOrJoin(new L.Force("mid-army", eRealm.Midgard, 8, 40, 2), new[] { Roam() }, taken + 2, 0);
+        Assume.That(plan?.IsSharedEvent, Is.Not.True, plan?.Reason);
+        Assert.That(L.TryConsumeRelease("mid-army", taken + 3, out string why), Is.True);
+        Assert.That(why, Does.StartWith("Keep captured"));
+        Assert.That(L.IsForceCommitted("mid-army", taken + 3), Is.False);
+    }
+
     [Test]
     public void AKeepTakenByTheThirdRealmHoldsNobody()
     {
