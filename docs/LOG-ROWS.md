@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **799**; pending (#625, not on main yet): **0**; shipped by the pipeline: **767**.
+- Rows in code: **800**; pending (#625, not on main yet): **0**; shipped by the pipeline: **768**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -780,6 +780,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `SAVAGE_MELEE_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `region`, `target`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `SCREEN_BURST` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `key`, `n`, `realm`, `seq`, `t`, `text`, `to`, `type`, `window` | - | - | - |
 | `SERVER_BOT_FIELD_CENSUS` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `bots`, `grew`, `largest`, `sampled` | - | - | Leak-hunting censuses (2026-10-15) only with runtime\server\memory-census.on present: |
+| `SERVER_COLLECTION_CENSUS` | server.log | **ships** | `Managers/GameLoop/ServerCollectionCensus.cs`<br>`Managers/GameLoop/ServerMemoryDiagnostics.cs` | `collections`, `counts`, `gen0MB`, `gen1MB`, `gen2Collections`, `gen2MB`, `lohMB`, `ms`, `part`, `pohMB`, `poolPending`, `poolThreads`, `threads`, `timers`, `unresolved`, `weakMs` | - | one row in numbered parts (part=1/N, each line at most 4,000 characters; 4 or 5 parts) every 30 minutes, on the first SERVER_MEMORY report and every sixth after it (#731) | One row every 30 minutes, in numbered parts, of the sizes of the server's long-lived static collections and caches with its thread, timer and GC generation figures (#731). |
 | `SERVER_DEPARTED_SWEEP` | server.log | **ships** | `Managers/GameLoop/DepartedReferenceSweep.cs` | `failures`, `livings`, `sweeps`, `totalMs` | - | - | - |
 | `SERVER_GC_PAUSE` | server.log | **ships** | `Managers/GameLoop/ServerMemoryDiagnostics.cs` | `gc`, `gen`, `kind`, `last`, `lastHeapMB`, `ms`, `reason`, `totalMemoryMB` | - | - | - |
 | `SERVER_HANDLE_CENSUS` | server.log | **ships** | `Managers/GameLoop/ServerHandleCensus.cs`<br>`Managers/GameLoop/ServerMemoryDiagnostics.cs` | `byType`, `grew`, `ms`, `status`, `total` | - | - | Handles by type (issue #540), every ten minutes on a background thread: |
