@@ -208,9 +208,9 @@ namespace DOL.GS
             try
             {
                 PathfindingResult pathfindingResult = PathfindingProvider.Instance.GetPathStraight(zone, position, target, filters, rentedNodeBuffer);
-                if (useRoads && Owner is GameBot &&
+                if (useRoads && Owner is GameBot roadWalker &&
                     TryRoadPath(PathfindingProvider.Instance, zone, position, target, filters, pathfindingResult, rentedNodeBuffer, MAX_PATH_NODES,
-                        out PathfindingResult road))
+                        out PathfindingResult road, nearMissMemory: roadWalker.IsAutonomousWorldBot && !roadWalker.IsHiredCompanion))
                     pathfindingResult = road;
 
                 pathBuffer.Clear();
@@ -306,16 +306,24 @@ namespace DOL.GS
         /// a long walk that first leads away from the goal) is replaced by the zone road route: the
         /// Detour paths of its proven legs, joined, as far as the node buffer holds (then partial, and
         /// the usual continuation replots from there). Short walks, DF and zones without roads are unchanged.
+        /// A partial path ending within 256 of its target is kept, unless <paramref name="nearMissMemory"/> (autonomous
+        /// gamebots) and a gamebot already stalled there (<see cref="AutonomousNearMissDeadEnds"/>, #570: a cliff edge
+        /// above the target); then the zone roads are asked with no minimum distance.
         /// </summary>
         public static bool TryRoadPath(IPathfindingMgr nav, Zone zone, Vector3 position, Vector3 target, EDtPolyFlags[] filters,
-            PathfindingResult direct, WrappedPathfindingNode[] nodes, int capacity, out PathfindingResult result)
+            PathfindingResult direct, WrappedPathfindingNode[] nodes, int capacity, out PathfindingResult result,
+            bool nearMissMemory = false)
         {
             result = direct;
             if (direct.Status != PathfindingStatus.PartialPathFound || direct.NodeCount < 1 || direct.NodeCount > capacity ||
-                zone.ZoneRegion?.ID == AutonomousDarknessFallsPolicy.RegionId ||
-                Vector3.DistanceSquared(nodes[direct.NodeCount - 1].Position, target) <= 256 * 256)
+                zone.ZoneRegion?.ID == AutonomousDarknessFallsPolicy.RegionId)
                 return false;
-            if (!AutonomousZoneRoads.TryRoute(nav, zone, position, target, out Vector3[] via))
+            bool nearMiss = Vector3.DistanceSquared(nodes[direct.NodeCount - 1].Position, target) <=
+                AutonomousNearMissDeadEnds.NearMissDistance * AutonomousNearMissDeadEnds.NearMissDistance;
+            if (AutonomousNearMissDeadEnds.KeepsNearMiss(nearMiss, nearMissMemory, zone.ID, target, GameLoop.GameLoopTime))
+                return false;
+            if (!AutonomousZoneRoads.TryRoute(nav, zone, position, target, out Vector3[] via,
+                    nearMiss ? 0f : AutonomousZoneRoads.MinimumDistance))
                 return false;
             WrappedPathfindingNode[] leg = ArrayPool<WrappedPathfindingNode>.Shared.Rent(capacity);
             try
