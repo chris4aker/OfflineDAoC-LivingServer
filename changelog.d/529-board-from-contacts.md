@@ -3,14 +3,15 @@ version: 1.2.3
 section: RvR
 ---
 - **Gamebot groups fight only the enemies they know are there** (#529, RvR plan #506, piece B step 3). This applies to
-  autonomous gamebots in the frontier, the battlegrounds and the raid dungeons. Groups you are in, companions and
+  autonomous gamebots in the frontier and the battlegrounds. Groups you are in, companions and
   temporary helpers are unchanged.
   - A gamebot group's fight board (its called target, crowd control, size-up and retreat read it) now lists only the
     enemies one of its members noticed, was told of by a mate, or was hit by in the last 15 seconds. Before, it listed
     every enemy within 3,500 units, behind hills and walls and before anyone had seen them, so a group could call a
     target, hold or size up on an enemy nobody in it had seen.
   - A gamebot in a fight now looks around every 2 seconds: the enemies within 2,500 units, a few line-of-sight checks
-    (from eye height, and a closed keep door blocks them, as in the usual scan), the usual notice rule. A new enemy
+    (from eye height, and a closed keep door blocks them, as in the siege fighter's scan; the ordinary scan out of a fight
+    still casts from foot height), the usual notice rule. A new enemy
     joining the fight is seen without having to hit first. As on any sighting, it is called to the bot's mates (they
     take it as a called contact, and an idle mate wakes for it), and these looks share the per-second notice cap with
     the bots that are not fighting. Only bots whose fight board reads contacts look around: siege fighters, committed
