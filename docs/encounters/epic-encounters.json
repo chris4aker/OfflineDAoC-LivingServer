@@ -848,7 +848,7 @@
    "finals": [
     "OFGreenKnight"
    ],
-   "line": 3202
+   "line": 3206
   },
   {
    "id": "openworld-albion-coliath",
@@ -860,7 +860,7 @@
    "finals": [
     "Colialt"
    ],
-   "line": 3204
+   "line": 3208
   },
   {
    "id": "openworld-albion-emthoro",
@@ -872,7 +872,7 @@
    "finals": [
     "SpiritOfLordEmthoro"
    ],
-   "line": 3206
+   "line": 3210
   },
   {
    "id": "openworld-midgard-glaciergiant",
@@ -884,7 +884,7 @@
    "finals": [
     "GlacierGiant"
    ],
-   "line": 3209
+   "line": 3213
   },
   {
    "id": "openworld-midgard-wreth-jotun",
@@ -896,7 +896,7 @@
    "finals": [
     "WrethOfWinterJotun"
    ],
-   "line": 3211
+   "line": 3215
   },
   {
    "id": "openworld-midgard-wreth-arachite",
@@ -908,7 +908,7 @@
    "finals": [
     "WrethOfWinterArachite"
    ],
-   "line": 3213
+   "line": 3217
   },
   {
    "id": "openworld-midgard-wreth-spider",
@@ -920,7 +920,7 @@
    "finals": [
     "WrethOfWinterSpider"
    ],
-   "line": 3215
+   "line": 3219
   },
   {
    "id": "openworld-midgard-wreth-crab",
@@ -932,7 +932,7 @@
    "finals": [
     "WrethOfWinterCrab"
    ],
-   "line": 3217
+   "line": 3221
   },
   {
    "id": "openworld-midgard-wreth-scorpion",
@@ -944,7 +944,7 @@
    "finals": [
     "WrethOfWinterScorp"
    ],
-   "line": 3219
+   "line": 3223
   },
   {
    "id": "openworld-midgard-revenant",
@@ -956,7 +956,7 @@
    "finals": [
     "RaumarikRevenant"
    ],
-   "line": 3221
+   "line": 3225
   },
   {
    "id": "openworld-midgard-mortufoghus",
@@ -968,7 +968,7 @@
    "finals": [
     "Mortufoghus"
    ],
-   "line": 3223
+   "line": 3227
   },
   {
    "id": "openworld-hibernia-evern",
@@ -980,7 +980,7 @@
    "finals": [
     "Evern"
    ],
-   "line": 3226
+   "line": 3230
   },
   {
    "id": "openworld-hibernia-juggernaut",
@@ -992,7 +992,7 @@
    "finals": [
     "EpicJuggernaut"
    ],
-   "line": 3228
+   "line": 3232
   },
   {
    "id": "openworld-hibernia-curengkur",
@@ -1004,7 +1004,7 @@
    "finals": [
     "Curengkur"
    ],
-   "line": 3230
+   "line": 3234
   },
   {
    "id": "openworld-hibernia-marfoirwort",
@@ -1016,7 +1016,7 @@
    "finals": [
     "Marfoirwort"
    ],
-   "line": 3232
+   "line": 3236
   },
   {
    "id": "openworld-hibernia-mollunero",
@@ -1028,7 +1028,7 @@
    "finals": [
     "Mollunero"
    ],
-   "line": 3234
+   "line": 3238
   }
  ],
  "neutralObjectives": {

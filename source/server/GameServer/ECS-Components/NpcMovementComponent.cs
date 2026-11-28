@@ -150,7 +150,8 @@ namespace DOL.GS
             if (speed <= 0 || Owner is not GameBot bot || zone?.ID != AutonomousDarknessFallsPolicy.RegionId ||
                 !bot.IsAlive || bot.IsOnStableMasterRoute)
                 return false;
-            IReadOnlyList<AutonomousDarknessFallsNavigation.TraversalLink> links = bot.IsAutonomousWorldBot
+            // #571 step 3: a player-led gamebot (hired, in a player's group) climbs on the installed links, as companions do.
+            IReadOnlyList<AutonomousDarknessFallsNavigation.TraversalLink> links = CompanionDarknessFallsPaths.UsesGamebotRules(bot)
                 ? AutonomousDarknessFallsNavigation.CertifiedFallLinks
                 : AutonomousDarknessFallsNavigation.InstalledFallLinks;
             if (!AutonomousDarknessFallsNavigation.TryPlanStairClimb(_ownerPosition, destination, links,
@@ -185,7 +186,7 @@ namespace DOL.GS
             WalkToInternal(climb.Air, speed);
             if (Interlocked.Increment(ref _stairClimbLogs) <= 200)
                 BotPetStuckRecovery.Log.Info($"DF_STAIR_CLIMB bot=\"{bot.Name}\" " +
-                    $"kind={(bot.IsAutonomousWorldBot ? "gamebot" : "companion")} region={Owner.CurrentRegionID} " +
+                    $"kind={CompanionDarknessFallsPaths.KindOf(bot)} region={Owner.CurrentRegionID} " +
                     $"from={(int) _ownerPosition.X},{(int) _ownerPosition.Y},{(int) _ownerPosition.Z} " +
                     $"lip={(int) climb.Lip.X},{(int) climb.Lip.Y},{(int) climb.Lip.Z} steps={climb.Steps} " +
                     $"to={(int) destination.X},{(int) destination.Y},{(int) destination.Z}");
@@ -418,14 +419,16 @@ namespace DOL.GS
                 Owner is GameBot fallingBot &&
                 Owner.CurrentRegionID == fall.Region)
             {
-                if (fallingBot.IsAutonomousWorldBot && Vector3.DistanceSquared(destination, fall.Final) <= 64 * 64)
+                // #571 step 3: the gamebot rule is for gamebots no player leads; a player-led one keeps the companion rule.
+                bool gamebotRules = CompanionDarknessFallsPaths.UsesGamebotRules(fallingBot);
+                if (gamebotRules && Vector3.DistanceSquared(destination, fall.Final) <= 64 * 64)
                     return;
                 // #438: a companion re-orders its formation slot every think while its player walks on. Restarting
                 // the path between the lip and the landing replotted from inside the drop, where the navmesh has no
                 // polygon in the pick box, and the companion stood there for good ("stuck on one of the steps").
                 // It finishes the fall and then walks to the newest slot. Only while the fall is under way: a fall
                 // whose walk was stopped is dropped, so it can never swallow a companion's orders.
-                if (!fallingBot.IsAutonomousWorldBot && IsFlagSet(MovementState.WalkTo))
+                if (!gamebotRules && IsFlagSet(MovementState.WalkTo))
                 {
                     _fallContinuation = fall with { Final = destination, Speed = speed > 0 ? speed : fall.Speed };
                     return;
@@ -958,9 +961,10 @@ namespace DOL.GS
                 // then down), not only autonomous gamebots. A companion used to slide diagonally from the lip into the
                 // lower landing and could be left inside the drop (see the DF_STAIR_LANDING case below).
                 Vector3 air = default, landing = default;
+                // #571 step 3: a player-led gamebot (hired, in a player's group) takes the companions' stair falls.
                 if (Owner is GameBot bot &&
                     zone.ID == AutonomousDarknessFallsPolicy.RegionId &&
-                    (bot.IsAutonomousWorldBot
+                    (CompanionDarknessFallsPaths.UsesGamebotRules(bot)
                         ? _pathfinder.PathfindingStatus == PathfindingStatus.PathFound &&
                           AutonomousDarknessFallsNavigation.TryGetCertifiedFall(_ownerPosition, _nextNode.Value, out air, out landing)
                         : _pathfinder.PathfindingStatus is PathfindingStatus.PathFound or PathfindingStatus.PartialPathFound &&

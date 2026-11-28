@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DOL.GS;
 using DOL.GS.ServerProperties;
 using DOL.GS.Styles;
@@ -245,6 +246,9 @@ namespace DOL.AI.Brain
             if (plan == null)
                 return null;
             long now = GameLoop.GameLoopTime;
+            // #531 step 2a: the opener (the group's area mez on the pile) is the first action on the charge.
+            if (Properties.RVR_BOT_CC_PLAN && TryRvrOpener(plan, now))
+                return true;
             if (Properties.RVR_BOT_INTERRUPTS && TryRvrInterruptSpell(plan, now))
                 return true;
             if (!Properties.RVR_BOT_CC_PLAN || plan.CalledTarget == null && plan.CrowdControl.IsEmpty)
@@ -264,6 +268,47 @@ namespace DOL.AI.Brain
                 return false;
             LogRvrCrowdControl(subject, kind, ++_rvrCcCasts == 1 ? "open" : "recast", plan.CalledTarget, tier, now);
             return true;
+        }
+
+        /// <summary>
+        /// #531 step 2a: the plan's opener (<see cref="RvrOpener"/>). When this bot is the plan's opener, it casts its best
+        /// targeted area mez on the opener's centre. Native levels, power, timers, range, sight, interruption and the
+        /// server's mez immunity decide as for the planned crowd control. The opener may catch the kill target: the
+        /// train's first blow wakes only the one it hits. The 60 s area mez hold of the older path is set as after any
+        /// area mez.
+        /// </summary>
+        private bool TryRvrOpener(RvrFightPlan plan, long now)
+        {
+            GameLiving centre = plan.OpenerCentre;
+            if (centre == null || !ReferenceEquals(plan.OpenerMember, Body) || BotBody?.CrowdControlSpells == null ||
+                Body.IsCasting || Body.IsIncapacitated || Body.castingComponent?.HasPendingSkillRequests == true ||
+                !centre.IsAlive || centre.IsMezzed || centre.IsStealthed || !BotSiegeRuntime.LegalEnemy(Body, centre))
+                return false;
+            foreach (Spell spell in BotBody.CrowdControlSpells.Where(s => s.SpellType == eSpellType.Mesmerize && s.Radius > 0 &&
+                         s.Target != eSpellTarget.SELF && s.Range > 0).OrderByDescending(s => s.Level))
+            {
+                if (spell.Level > Body.Level || Body.GetSkillDisabledDuration(spell) > 0 || Body.Mana < BotBody.PowerCost(spell) ||
+                    BotInterruptPolicy.CastWouldBeLost(Body, spell) || RvrCrowdControlPlan.MezImmune(centre, spell.Duration, Body) ||
+                    !Body.IsWithinRadius(centre, spell.CalculateEffectiveRange(Body)) || LivingHasEffect(centre, spell) ||
+                    !NeedsOffensiveSpellApplication(centre, spell) || !BotSiegeRuntime.Visible(Body, centre) ||
+                    !BotPvpCrowdControl.Reserve(BotBody, centre, spell.CastTime + 2000, spell))
+                    continue;
+                GameObject previous = Body.TargetObject;
+                Body.TargetObject = centre;
+                if (spell.CastTime > 0) { Body.StopMovingOnPath(); Body.StopMoving(); }
+                if (!CheckOffensiveSpells(spell))
+                {
+                    BotPvpCrowdControl.Release(BotBody, centre);
+                    Body.TargetObject = previous;
+                    continue;
+                }
+                _pvpControlSpellId = spell.ID;
+                _pvpControlCastUntil = now + spell.CastTime + 2000;
+                _nextPvpAreaMez = now + PvpAreaMezHoldMilliseconds;
+                LogRvrCrowdControl(centre, RvrControlKind.Mez, "opener", plan.CalledTarget, RvrTier(plan), now);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -357,9 +402,9 @@ namespace DOL.AI.Brain
         private void LogRvrCrowdControl(GameLiving subject, RvrControlKind kind, string action, GameLiving killTarget,
             RvrSkillTier tier, long now)
         {
-            if (action is "assign" or "open")
+            if (action is "assign" or "open" or "opener")
                 RvrFights.CrowdControl(Body);   // #505: the fight's first crowd control (logging only)
-            if (!log.IsInfoEnabled || action != "assign" && now - _rvrLastCcLogAt < 3_000)
+            if (!log.IsInfoEnabled || action is not ("assign" or "opener") && now - _rvrLastCcLogAt < 3_000)
                 return;
             _rvrLastCcLogAt = now;
             log.Info($"RVR_CC_ASSIGN group={RvrGroupLogId()} member=\"{Body.Name}\" subject=\"{subject.Name}\" " +
