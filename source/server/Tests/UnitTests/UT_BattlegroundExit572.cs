@@ -45,7 +45,10 @@ namespace DOL.GS.Tests
         {
             Assert.That(AutonomousBattlegroundExit.LeaveStarted(0, 0, 50_000), Is.EqualTo(50_000));
             Assert.That(AutonomousBattlegroundExit.LeaveStarted(10_000, 45_000, 50_000), Is.EqualTo(10_000));
-            Assert.That(AutonomousBattlegroundExit.LeaveStarted(10_000, 15_000, 50_000), Is.EqualTo(50_000), "more than 30 s since the last call");
+            Assert.That(AutonomousBattlegroundExit.LeaveStarted(10_000, 15_000, 15_000 + 4 * 60_000), Is.EqualTo(10_000),
+                "a 4-minute fight on the way out keeps the leave clock running");
+            Assert.That(AutonomousBattlegroundExit.LeaveStarted(10_000, 15_000, 15_000 + 5 * 60_000 + 1), Is.EqualTo(15_000 + 5 * 60_000 + 1),
+                "more than 5 minutes since the last call");
         }
 
         [Test]

@@ -48,8 +48,11 @@ namespace DOL.GS
         public const long ReentryBlockMilliseconds = 30 * 60_000;
         /// <summary>This many deaths inside with no XP or realm points gained in between force the bot out.</summary>
         public const int DeathStrikeLimit = 3;
-        /// <summary>A leave that has not been asked for in this long has ended; the next one starts a fresh clock.</summary>
-        public const long LeaveGapMilliseconds = 30_000;
+        /// <summary>
+        /// A leave that has not been asked for in this long has ended; the next one starts a fresh clock. Long enough that a
+        /// fight on the way out (which keeps the controller away from the leave) does not restart the 4 and 10 minute limits.
+        /// </summary>
+        public const long LeaveGapMilliseconds = 5 * 60_000;
 
         /// <summary>Pure: the next step out, from the distance to the exit spot, combat and how long the bot has been leaving.</summary>
         public static eBattlegroundExitStep ExitStep(float distanceToExit, int exitRadius, bool inCombat, long leavingMilliseconds)
