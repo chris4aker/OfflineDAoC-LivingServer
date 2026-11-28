@@ -123,6 +123,9 @@ namespace DOL.GS.Tests.Rehearsal
             // #531 step 2c-1: the realm abilities the eights' builds buy
             var actives = new RvrFightActives();
             actives.Grant(albion.Concat(midgard));
+            // #531 step 2f: the eights' bombers get a stand-in point blank bomb
+            foreach (GameBot bot in albion.Concat(midgard).Where(b => RvrFightKits.Bombs((eCharacterClass)b.CharacterClass.ID)))
+                RvrFightKits.AddBomb(bot);
             // the boards are built from the live bots by the server's own code, as a brain asks for one
             int boardsBefore = (int)RvrFightBoards.Builds;
             RvrFightBoard firstAlbionBoard = null, firstMidgardBoard = null;
@@ -203,6 +206,19 @@ namespace DOL.GS.Tests.Rehearsal
                 string when = firstHit == null || first.At <= firstHit.At ? "before_first_hit" : "after_first_hit";
                 return $"{S(first.At)}:{Short(first.Caster)}x{first.Caught}:{when}";
             }
+            // #531 step 2f: each side's bombers, its first bomb (when, who, the mezzed and free enemies in reach), when a
+            // lone bomber first waited by a pile, and how many bombs it cast
+            string Bomb(List<GameBot> side)
+            {
+                int bombers = side.Count(b => RvrFightKits.Bombs((eCharacterClass)b.CharacterClass.ID));
+                if (bombers == 0)
+                    return "bombers=0";
+                var bombs = r.Bombs.Where(b => side.Contains(b.Caster as GameBot)).ToList();
+                var wait = r.BombWaits.FirstOrDefault(w => side.Contains(w.Bomber as GameBot));
+                string first = bombs.Count == 0 ? "none" : $"{S(bombs[0].At)}:{Short(bombs[0].Caster)}x{bombs[0].Mezzed}m{bombs[0].Free}f";
+                return $"bombers={bombers} first={first} waited={(wait.Bomber == null ? "no" : S(wait.At))} bombs={bombs.Count} " +
+                       $"on_mezzed={bombs.Count(b => b.Mezzed >= RvrBombPlan.MinimumMezzed)}";
+            }
             int albAlive = albion.Count(b => b.IsAlive), midAlive = midgard.Count(b => b.IsAlive);
             string held = albAlive == midAlive ? $"none ({albAlive}-{midAlive})" : albAlive > midAlive ? $"Albion ({albAlive}-{midAlive})" : $"Midgard ({midAlive}-{albAlive})";
             long firstHit = r.Hits.Count > 0 ? r.Hits[0].At : 0;
@@ -211,7 +227,8 @@ namespace DOL.GS.Tests.Rehearsal
             return $"RVR_REHEARSAL open_field seed={world.Seed} sides=Alb8 vs Mid8 noticed=Alb:{Notice(albion)} Mid:{Notice(midgard)} " +
                    $"first_cc={cc} opener=Alb:{Opener(albion)} Mid:{Opener(midgard)} mez_refused={refused} (bot<75%={refusedHurtBot}) " +
                    $"first_deaths={deaths} first_pick=Alb:{OpeningText(Opening(scan, albion))} Mid:{OpeningText(Opening(scan, midgard))} " +
-                   $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} held={held} duration={duration}";
+                   $"called_share=Alb:{Share(albion)} Mid:{Share(midgard)} bomb=Alb:[{Bomb(albion)}] Mid:[{Bomb(midgard)}] " +
+                   $"held={held} duration={duration}";
         }
 
         // ---------------------------------------------------------------------------------------------------------

@@ -48,6 +48,8 @@ namespace DOL.UnitTests
             // #531 step 2c-1: the realm-ability row (Speed of Sound, MoC, Bunker of Faith per side) is printed
             string actives = first.Detail.FirstOrDefault(l => l.StartsWith("RVR_REHEARSAL open_field_realm_abilities", System.StringComparison.Ordinal));
             Assert.That(actives, Is.Not.Null, "the realm-ability row");
+            // #531 step 2f: the row says what each side's bombers did with a mezzed pile
+            Assert.That(first.Row, Does.Contain(" bomb=Alb:["), "the row has the bombers");
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
