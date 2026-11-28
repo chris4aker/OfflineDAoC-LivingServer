@@ -66,12 +66,15 @@ public static class AutonomousZoneRoads
     /// <summary>
     /// The road anchors to walk through from start to end inside one zone (each consecutive leg,
     /// including start to the first anchor and the last anchor to end, is a proven corridor).
-    /// False when the zone has no road data, the points are close, or no proven route joins them.
+    /// False when the zone has no road data, the points are closer than <paramref name="minimumDistance"/>, or no proven
+    /// route joins them. A remembered near-miss dead end (<see cref="AutonomousNearMissDeadEnds"/>, #570) asks with no
+    /// minimum distance: the bot stands on a cliff edge just above its target and the way down is the long one.
     /// </summary>
-    public static bool TryRoute(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end, out Vector3[] via)
+    public static bool TryRoute(IPathfindingMgr nav, Zone zone, Vector3 start, Vector3 end, out Vector3[] via,
+        float minimumDistance = MinimumDistance)
     {
         via = null;
-        if (nav == null || zone == null || Vector3.DistanceSquared(start, end) < MinimumDistance * MinimumDistance ||
+        if (nav == null || zone == null || Vector3.DistanceSquared(start, end) < minimumDistance * minimumDistance ||
             !Data.Value.TryGetValue(zone.ID, out ZoneRoads roads))
             return false;
         long now = GameLoop.GameLoopTime;

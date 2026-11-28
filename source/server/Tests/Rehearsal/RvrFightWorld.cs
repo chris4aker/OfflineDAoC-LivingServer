@@ -93,6 +93,8 @@ namespace DOL.GS.Tests.Rehearsal
         private long _nextBotId;
 
         public int Seed { get; }
+        /// <summary>The flat stand-in navmesh (a scenario may stand walls on it that block line of sight).</summary>
+        public FlatNavmesh Nav { get; private set; }
         public Region Region { get; private set; }
         public IReadOnlyList<GameLiving> Livings => _livings;
         public RvrFightRecorder Recorder { get; }
@@ -139,6 +141,12 @@ namespace DOL.GS.Tests.Rehearsal
                 Properties.SERV_LANGUAGE = _previousLanguage;
             });
 
+            // AutonomousBeggars chooses its beggars once per run from the world database and keeps the set: under this
+            // world's empty stand-in database that is an empty set, which outlived the world and made every later test
+            // that asks who begs see no beggar (UT_BotCrafterRoster, #664's CI). Put back what was there.
+            FieldInfo beggars = typeof(AutonomousBeggars).GetField("_chosen", HiddenStatic);
+            object previousBeggars = beggars?.GetValue(null);
+            _undo.Add(() => beggars?.SetValue(null, previousBeggars));
             ShippedSettings(settings);
             Properties.SERV_LANGUAGE ??= "EN";
 
@@ -156,7 +164,7 @@ namespace DOL.GS.Tests.Rehearsal
             ThreadPoolField.SetValue(null, pool);
 
             _previousNav = PathfindingProvider.Instance;
-            PathfindingProvider.SetPathfindingMgr(new FlatNavmesh(seed));
+            PathfindingProvider.SetPathfindingMgr(Nav = new FlatNavmesh(seed));
             _random = Util.SeededScope(seed);
             _errors = new ErrorCapture();
             Recorder = new RvrFightRecorder(this);
