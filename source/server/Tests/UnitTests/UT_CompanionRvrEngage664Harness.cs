@@ -313,7 +313,15 @@ namespace DOL.GS.Tests
             Assert.That(ObserveFor(scene, 6), Is.True, "engaged first");
             GameBot enemy = scene.Enemies[0];
             Assert.That(CompanionRvrEngage.CurrentPick(scene.Player), Is.SameAs(enemy));
-            enemy.X = X + CompanionRvrEngage.Leash(defensive: false) + 150; // it runs off, past the leash from the player
+            // It breaks off (once hit it may swing back, and that would make it "hitting the group", which is never let go)
+            // and runs off, past the leash from the player.
+            enemy.StopAttack();
+            enemy.TargetObject = null;
+            foreach (GameLiving member in scene.Player.Group.GetMembersInTheGroup())
+                member.attackComponent?.AttackerTracker?.Clear();
+            CompanionPvpEngagement.Reset(scene.Player);
+            enemy.X = X + CompanionRvrEngage.Leash(defensive: false) + 150;
+            Assert.That(CompanionRvrEngage.HittingGroup(scene.Player, enemy), Is.False, "it is hitting nobody now");
             foreach (GameBot bot in scene.Group)
                 Assert.That(CompanionEngagementMode.Allows(bot, enemy), Is.False, $"{bot.Name}: let go");
             foreach (GameBot bot in scene.Group)
