@@ -95,6 +95,8 @@ namespace DOL.GS
             {
                 AutonomousBattlegroundWave.NoteDeath(bot.CurrentRegionID, bot.Realm, killer is DOL.GS.Keeps.GameKeepGuard);
                 AutonomousBattlegroundKeepRally.NoteDeath(bot, killer);
+                // #572 step 4: three deaths inside with nothing gained between take the bot out (the watchdog acts).
+                AutonomousBattlegroundExit.NoteDeath(bot.DatabaseID, bot.CurrentRegionID);
             }
             if (!Log.IsInfoEnabled)
                 return;

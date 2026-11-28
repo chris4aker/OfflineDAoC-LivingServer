@@ -180,7 +180,8 @@ namespace DOL.GS
         public static string KindOfMarker(string logMarker) => logMarker switch
         {
             "AUTONOMOUS_STUCK_15M_RECOVERY" => "stuck15m",
-            "AUTONOMOUS_GOAL_STALL_45M_RECOVERY" => "stall45m",
+            // #572 step 4: the battleground backstop is a no-progress stall too (20 minutes inside a battleground).
+            "AUTONOMOUS_GOAL_STALL_45M_RECOVERY" or "AUTONOMOUS_BATTLEGROUND_STUCK_RECOVERY" => "stall45m",
             _ => "position",
         };
 

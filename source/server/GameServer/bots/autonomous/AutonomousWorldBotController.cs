@@ -23,7 +23,7 @@ namespace DOL.GS
     {
         /// <summary>
         /// The executor seam of the task-break activities (Crafting 2.0 WP0, DOL.GS.CraftingEconomy.IBotBreakActivity). WP4
-        /// implements it in its own partial file with DividedRealms' craft trip (HandleCraftTrip): set
+        /// implements it in its own partial file with the craft trip (HandleCraftTrip): set
         /// <paramref name="handled"/> when the activity used this turn. Unimplemented, every call compiles away.
         /// </summary>
         partial void RunBreakActivities(GameBot bot, ref bool handled);
@@ -790,7 +790,7 @@ namespace DOL.GS
                             AutonomousObjectiveAssignments.TryCompleteBetweenTaskServicesIfSatisfied(bot);
                             return true;
                         }
-                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (DividedRealms' craft trip,
+                        // A seam (Crafting 2.0 WP0): a registered break activity's executor (the craft trip,
                         // WP4's partial file). With no implementation the compiler removes the call.
                         bool breakActivityHandled = false;
                         RunBreakActivities(bot, ref breakActivityHandled);
@@ -3921,7 +3921,9 @@ namespace DOL.GS
             // and add the battleground of the bot's bracket when the whole party fits it (level only).
             HashSet<ushort> reachableRegions = ReachableRegions(bot.Realm,
                 BattlegroundBrackets.IsBattlegroundRegion(bot.CurrentRegionID) ? RealmRaidNeutralEvents.HomeRegion(bot.Realm) : bot.CurrentRegionID);
-            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled ? BattlegroundBrackets.ForLevel(bot.Level) : null;
+            // #572 step 4: no battleground camps for a bot just forced out of one (30 minutes).
+            BattlegroundBrackets.Bracket campBattleground = AutonomousTownTeleporters.IsEnabled &&
+                !AutonomousBattlegroundExit.ReentryBlocked(bot.DatabaseID) ? BattlegroundBrackets.ForLevel(bot.Level) : null;
             if (campBattleground != null && (!sharedGroup || bot.Group == null ||
                     bot.Group.GetMembersInTheGroup().All(member => BattlegroundBrackets.Allows(campBattleground, member.Level))))
                 reachableRegions.Add(campBattleground.RegionId);
