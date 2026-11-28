@@ -93,6 +93,8 @@ namespace DOL.GS.Tests.Rehearsal
         private long _nextBotId;
 
         public int Seed { get; }
+        /// <summary>The flat stand-in navmesh (a scenario may stand walls on it that block line of sight).</summary>
+        public FlatNavmesh Nav { get; private set; }
         public Region Region { get; private set; }
         public IReadOnlyList<GameLiving> Livings => _livings;
         public RvrFightRecorder Recorder { get; }
@@ -162,7 +164,7 @@ namespace DOL.GS.Tests.Rehearsal
             ThreadPoolField.SetValue(null, pool);
 
             _previousNav = PathfindingProvider.Instance;
-            PathfindingProvider.SetPathfindingMgr(new FlatNavmesh(seed));
+            PathfindingProvider.SetPathfindingMgr(Nav = new FlatNavmesh(seed));
             _random = Util.SeededScope(seed);
             _errors = new ErrorCapture();
             Recorder = new RvrFightRecorder(this);
