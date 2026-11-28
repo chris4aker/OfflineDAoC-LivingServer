@@ -2,8 +2,7 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **Gamebot parties meet where everyone can get to, and pick camps they can reach in time** (#569; port of
-  OfflineDAoC-True165 14dcaa5).
+- **Gamebot parties meet where everyone can get to, and pick camps they can reach in time** (#569).
   - A forming party moves its meetup next to its planned camp only when every member can get to that town in time: the
     farthest one within 3 minutes, or no more than 2 minutes worse than the current town. Otherwise it keeps the town it
     has.

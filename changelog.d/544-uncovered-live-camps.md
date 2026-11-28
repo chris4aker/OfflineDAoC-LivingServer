@@ -2,8 +2,8 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **Albion and Midgard gamebots find as many hunting camps as Hibernia's** (#544; from True 1.65's
-  `AddUncoveredLiveCamps`, upstream 8d0dfdda). In a zone the CapnBry bestiary covers, a monster spawn had a camp only
+- **Albion and Midgard gamebots find as many hunting camps as Hibernia's** (#544).
+  In a zone the CapnBry bestiary covers, a monster spawn had a camp only
   near a sighting of its name, while the source-empty zones (13 of Hibernia's outdoor zones, 7 of Albion's, none of
   Midgard's) made a camp of every live cluster. So Hibernia had about twice Albion's camps per level band, and its
   gamebots levelled about twice as fast. Now, in every realm alike, three or more outdoor spawns of one name and level

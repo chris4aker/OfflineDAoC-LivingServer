@@ -1,9 +1,9 @@
 ---
 version: 1.2.3
-section: From OpenDAoC upstream: housing, guild and market
+section: Houses, guilds and the market
 ---
-- **Houses, guilds and the market** (#562, port package X1 step 1; GPL-3.0 code by Baptiste Marie of OpenDAoC-Core,
-  ported by hand onto our tree; `UT_HousingGuildMarketPorts`). **Tests only.** Players only: gamebots and companions
+- **Houses, guilds and the market** (#562, package X1 step 1;
+  `UT_HousingGuildMarketPorts`). **Tests only.** Players only: gamebots and companions
   don't use houses, vaults or consignment merchants.
   - **House vaults** (`2ff1aaec3`, `42fd3c4f8`): a vault placed this session is removed with its house instead of
     staying in the world; a vault's contents are read again when its owner changes (house made a guild house, another
