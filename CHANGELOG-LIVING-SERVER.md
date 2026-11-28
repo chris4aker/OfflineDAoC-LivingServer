@@ -2307,8 +2307,9 @@ seam's default is today's code, and the new tables are created empty.
   bots only.
 - **The `CRAFT_*` / `ECON_*` log format**, five AI_PROFILE scopes, and the voice registry's new kinds, flags, slots and
   the `crafting` intent (no lines yet; `corpus.json` unchanged).
-- Formats kept unchanged: the crafting-skill storage format, the craft-order table's columns, the coin-flow kinds and the
-  `crafting_skill_rate` key.
+- Adopted formats: the crafting-skill storage format (its gain step now takes a points count and a cap), the craft-order
+  table's columns (with columns of our own added), the coin-flow kinds (with kinds of our own added) and the
+  `crafting_skill_rate` key (which replaces `crafting_player_pace`).
 
 ### WP1 Crafting core and the M0 fixes
 
@@ -4650,7 +4651,7 @@ keyboard, overnight or in CI:
 
 **New client (0.37c): skills on the quickbar, Stealth and the merchant's SELL button** (GitHub issue #34). These are
 fixes taken from the new client's 1.2 scripts, installed as patches over the released 0.37c scripts (only where the
-script is the released 0.37c one; ROLLBACK.cmd puts it back).
+script is unchanged; ROLLBACK.cmd puts it back).
 - **Skills onto the quickbar.**
   - **Before:** an ability dragged from the skills window (Sprint, Stealth, Safe Fall, a realm ability ...) showed a
     no-entry sign over the quickbar and wouldn't go on it. Spells and styles already did.
