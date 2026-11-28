@@ -185,7 +185,7 @@ namespace DOL.GS.Tests
             Assert.Multiple(() =>
             {
                 // The first order reads the wave as it stands, before the siege crew's early return.
-                int first = squashed.IndexOf("bool mustering = assault && !tooFew && AutonomousBattlegroundWave.IsGathering(bracket.RegionId, bot.Realm, out _);", StringComparison.Ordinal);
+                int first = squashed.IndexOf("bool mustering = assault && !tooFew && AutonomousBattlegroundWave.IsMustering(bracket.RegionId, bot.Realm, central);", StringComparison.Ordinal);
                 int firstProposal = squashed.IndexOf("ProposeBattlegroundOrder(bot, order);", StringComparison.Ordinal);
                 int siege = squashed.IndexOf("if (TryRunSiegeJob(bot)) return true;", StringComparison.Ordinal);
                 Assert.That(first, Is.GreaterThan(0), "the muster is read before the first order");
@@ -197,6 +197,43 @@ namespace DOL.GS.Tests
                 Assert.That(squashed, Does.Not.Contain("false &&"));
                 Assert.That(squashed, Does.Not.Contain("musteredLastTurn"));
             });
+        }
+
+        [Test]
+        public void Gates_down_no_muster_and_one_write()
+        {
+            // The muster stands only while the wave gathers at a keep with a gate standing (ShouldGather's rule).
+            Assert.Multiple(() =>
+            {
+                Assert.That(AutonomousBattlegroundWave.MusterStands(true, true, false), Is.True, "gathering, a gate stands");
+                Assert.That(AutonomousBattlegroundWave.MusterStands(true, true, true), Is.False, "gates down: everyone goes");
+                Assert.That(AutonomousBattlegroundWave.MusterStands(false, true, false), Is.False, "the wave is going");
+                Assert.That(AutonomousBattlegroundWave.MusterStands(true, false, false), Is.False, "no keep");
+                Assert.That(AutonomousBattlegroundWave.GatesDown(null), Is.False);
+            });
+
+            // Gates down for three turns: the wave record still gathers (IsGathering), ShouldGather answers "go". The first
+            // order is the attack, the wave's turn does not move it, and the record is written once in all.
+            const string force = "bg:gates-down";
+            var turn = new L.ForceTurn();
+            for (int i = 0; i < 3; i++)
+            {
+                long now = 100 + i * 100;
+                bool mustering = AutonomousBattlegroundWave.MusterStands(waveGathering: true, hasKeep: true, gatesDown: true);
+                const bool gathering = false; // ShouldGather with every gate down
+                turn.Begin(force, writer: true);
+                L.ForceIntent first = turn.Propose(new(L.Intent.AssaultKeep, false), L.DecideBattleground(8, false, false, mustering, 1).Proposal, now);
+                Assert.That(first.Summary, Is.EqualTo("AssaultKeep@bg-keep-8"), "no /muster while the gates are down");
+                Assert.That(AutonomousWorldBotController.BattlegroundMusterMoved(mustering, gathering), Is.False, "no second proposal");
+                Assert.That(turn.End(null, now), Is.EqualTo(i == 0));
+            }
+            Assert.That(L.ForceIntentWrites(force), Is.EqualTo(1));
+            Assert.That(L.IntentOf(force).Role, Is.EqualTo(L.ForceRole.Attacker));
+
+            // The controller's read and ShouldGather share the one gates-down rule.
+            string wave = Regex.Replace(Code("bots", "autonomous", "AutonomousBattlegroundWave.cs"), @"\s+", " ");
+            Assert.That(wave, Does.Contain("bool gatesDown = GatesDown(central);"));
+            Assert.That(wave, Does.Contain("MusterStands(IsGathering(regionId, realm, out _), central != null, GatesDown(central));"));
         }
 
         [Test]
