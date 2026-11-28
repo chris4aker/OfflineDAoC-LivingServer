@@ -55,9 +55,11 @@ public static partial class AutonomousRvrEventLayer
     /// Why a group left (or a battlegroup ended). <see cref="BattlegroupLeave.Late"/> and <see cref="BattlegroupLeave.Zerg"/>
     /// (#599 step 3): a zerg recruit that never reached the zerg, and a group the realm's zerg took from its battlegroup.
     /// <see cref="BattlegroupLeave.Cap"/>: a zerg follower that did not fit under the cap of the event the zerg's lead took
-    /// it to (<see cref="EnrolZergFollowers"/>).
+    /// it to (<see cref="EnrolZergFollowers"/>). <see cref="BattlegroupLeave.Defense"/> and <see cref="BattlegroupLeave.Level"/>
+    /// (#816 review): a zerg follower left out because that event is a player-attack defence, or because the group is below
+    /// the siege level.
     /// </summary>
-    public enum BattlegroupLeave { None, Gone, LeadGone, Event, Player, Region, Leash, Stay, TooSmall, Stuck, Late, Zerg, Cap }
+    public enum BattlegroupLeave { None, Gone, LeadGone, Event, Player, Region, Leash, Stay, TooSmall, Stuck, Late, Zerg, Cap, Defense, Level }
 
     /// <summary>One change of the record, as logged (RVR_FORCE_BATTLEGROUP): formed, joined, left or ended.</summary>
     public readonly record struct BattlegroupChange(string What, string Id, string ForceId, string Why);
@@ -216,13 +218,17 @@ public static partial class AutonomousRvrEventLayer
     private static readonly Dictionary<string, BattlegroupRecord> BattlegroupOfForce = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, long> BattlegroupRelinkAfter = new(StringComparer.Ordinal);
     private static readonly HashSet<string> BattlegroupStuckReports = new(StringComparer.Ordinal);
-    /// <summary>#599 step 3 review: zerg followers that did not fit under the cap of the zerg's event (they leave, why=cap).</summary>
-    private static readonly HashSet<string> ZergCapReports = new(StringComparer.Ordinal);
+    /// <summary>
+    /// #599 step 3 review: zerg followers the zerg's event left out, with the reason they leave by at the next pulse
+    /// (<see cref="ZergFollowerOutcome"/>: cap, event, defense or level). Each of them rests.
+    /// </summary>
+    private static readonly Dictionary<string, BattlegroupLeave> ZergEnrolmentLeaves = new(StringComparer.Ordinal);
     private static int _nextBattlegroupNumber;
 
     /// <summary>Whether a group that left by <paramref name="reason"/> rests before it may link again. Pure.</summary>
     public static bool BattlegroupLeaveRests(BattlegroupLeave reason) =>
-        reason is BattlegroupLeave.Stay or BattlegroupLeave.Stuck or BattlegroupLeave.Late or BattlegroupLeave.Cap;
+        reason is BattlegroupLeave.Stay or BattlegroupLeave.Stuck or BattlegroupLeave.Late or BattlegroupLeave.Cap or
+            BattlegroupLeave.Defense or BattlegroupLeave.Level;
 
     /// <summary>
     /// A follower group's leader made no progress on the trail (the controller's <c>BattlegroupTrailStuck</c>): the group
@@ -297,8 +303,10 @@ public static partial class AutonomousRvrEventLayer
                     if (member.Arrived && self is { } here && lead is { } leader && here.Region == leader.Region)
                         member.FarSince = NextFarSince(member.FarSince, DistanceBetween(leader, here), now);
                     bool stuck = BattlegroupStuckReports.Contains(member.ForceId);
-                    // #599 step 3 review: a follower the zerg's event had no room for leaves first, whatever else holds.
-                    BattlegroupLeave reason = record.Zerg && ZergCapReports.Contains(member.ForceId) ? BattlegroupLeave.Cap
+                    // #599 step 3 review: a follower the zerg's event left out leaves first, whatever else holds, and rests.
+                    BattlegroupLeave enrolLeave = BattlegroupLeave.None;
+                    bool leftOut = record.Zerg && ZergEnrolmentLeaves.TryGetValue(member.ForceId, out enrolLeave);
+                    BattlegroupLeave reason = leftOut ? enrolLeave
                         : member.Arrived
                         ? BattlegroupLeaveReason(self, lead, false, member.FarSince, member.StayUntil, now, stuck)
                         : ZergRecruitLeaveReason(self, lead, member.JoinedTick, member.StayUntil, now, stuck);
@@ -307,8 +315,9 @@ public static partial class AutonomousRvrEventLayer
                     record.Members.Remove(member);
                     BattlegroupOfForce.Remove(member.ForceId);
                     BattlegroupStuckReports.Remove(member.ForceId);
-                    // #599 review: a group whose stay ran out still stands near the lead; it goes its own way for a while.
-                    if (BattlegroupLeaveRests(reason))
+                    // #599 review: a group whose stay ran out still stands near the lead; it goes its own way for a while. A
+                    // follower the zerg's event left out rests too (#816 review: why=event included, as when a zerg ends).
+                    if (leftOut || BattlegroupLeaveRests(reason))
                         BattlegroupRelinkAfter[member.ForceId] = now + BattlegroupRelinkCooldownMilliseconds;
                     changes.Add(new BattlegroupChange("left", record.Id, member.ForceId, Why(reason)));
                     LogBattlegroup("left", record, byId, member.ForceId, Why(reason), now);
@@ -320,7 +329,7 @@ public static partial class AutonomousRvrEventLayer
             if (freeFrontierBots != null)
                 PulseZergs(byId, now, freeFrontierBots, scheduleOn, frontierRegions, changes, onlineFrontierBots);
             BattlegroupStuckReports.Clear();
-            ZergCapReports.Clear();
+            ZergEnrolmentLeaves.Clear();
             // The groups a zerg holds are not free to link; the zergs are not battlegroups to top up.
             var unavailable = new List<string>(BattlegroupRelinkAfter.Keys);
             unavailable.AddRange(Battlegroups.Values.Where(r => r.Zerg).SelectMany(r => r.Members.Select(member => member.ForceId)));
@@ -431,7 +440,7 @@ public static partial class AutonomousRvrEventLayer
             BattlegroupOfForce.Clear();
             BattlegroupRelinkAfter.Clear();
             BattlegroupStuckReports.Clear();
-            ZergCapReports.Clear();
+            ZergEnrolmentLeaves.Clear();
             _nextBattlegroupNumber = 0;
             _nextZergNumber = 0;
         }

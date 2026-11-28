@@ -727,6 +727,42 @@ namespace DOL.UnitTests
             }
         }
 
+        [TestCase("Mesmerize", TestName = "an armed mez quickcasts: 2 s, double power")]
+        [TestCase("Heal", TestName = "an armed heal quickcasts: 2 s, double power")]
+        public void ArmedKeyCastQuickcastsAndOtherSpellsDoNot(string keyType)
+        {
+            // #531 step 2d: the bot's Quickcast effect is on, and BotQuickCast armed only the key cast.
+            Bot bot = MakeBot(typeof(ClassSpiritmaster), 50);
+            var line = new SpellLine("test", "test", "", true);
+            Spell key = S(30, 3, 1, keyType, keyType == "Heal" ? "Realm" : "Enemy", id: 99982);
+            Spell other = S(30, 3, id: 99983);
+            var effect = new QuickCastECSGameEffect(new(bot, 3000, 1));
+            SpellHandler Handler(Spell spell)
+            {
+                var handler = new SpellHandler(bot, spell, line);
+                Field(typeof(SpellHandler), handler, "_quickcast", effect);
+                return handler;
+            }
+
+            SpellHandler unarmed = Handler(key);
+            int unarmedCost = unarmed.PowerCost(bot), unarmedTime = unarmed.CalculateCastingTime();
+            Assert.That(unarmed.IsQuickCasting, Is.False, "not armed yet: no Quickcast");
+            Assert.That(unarmedTime, Is.Not.EqualTo(2000), "a 3 s spell takes its own time");
+
+            BotQuickCast.ArmForTest(bot, key);
+            SpellHandler armed = Handler(key), notArmed = Handler(other);
+            Assert.Multiple(() =>
+            {
+                Assert.That(armed.IsQuickCasting, Is.True, "the armed key cast quickcasts");
+                Assert.That(armed.CalculateCastingTime(), Is.EqualTo(2000), "a flat 2 s");
+                Assert.That(armed.PowerCost(bot), Is.EqualTo(2 * unarmedCost), "double power");
+                Assert.That(unarmedCost, Is.GreaterThan(0));
+                Assert.That(notArmed.IsQuickCasting, Is.False, "another spell on the same bot does not");
+                Assert.That(notArmed.CalculateCastingTime(), Is.EqualTo(unarmedTime), "its own cast time");
+                Assert.That(notArmed.PowerCost(bot), Is.EqualTo(unarmedCost), "its own power");
+            });
+        }
+
         private Bot MakeBot(Type cls, byte level, bool temporary = false)
         {
             Bot bot = Actor<Bot>(); bot.Class = (ICharacterClass)Activator.CreateInstance(cls); bot.Level = level;
@@ -760,8 +796,8 @@ namespace DOL.UnitTests
             _actors.Add(actor);
             return actor;
         }
-        private static Spell S(int power, double cast, int level = 1, string type = "DirectDamage", string target = "Enemy") =>
-            new(new DbSpell { SpellID = 99981, Name = "Power test", Type = type, Target = target,
+        private static Spell S(int power, double cast, int level = 1, string type = "DirectDamage", string target = "Enemy", int id = 99981) =>
+            new(new DbSpell { SpellID = id, Name = "Power test", Type = type, Target = target,
                 Power = power, CastTime = cast, Damage = 10, Range = 1500 }, level);
         private static void Field(Type type, object owner, string name, object value) => type.GetField(name, Hidden).SetValue(owner, value);
         private static void SetRecovery(GameBot bot, bool value) => Field(typeof(GameBot), bot, "_recoveryRestLocked", value);

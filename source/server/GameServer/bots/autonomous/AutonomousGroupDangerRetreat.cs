@@ -5,12 +5,12 @@ using System.Collections.Generic;
 namespace DOL.GS
 {
     /// <summary>
-    /// 1.2.3 (#569 step 2). Port of zomboden/OfflineDAoC-True165 fb7487a (GPL-3.0, shadowofze; its item 16). Living Server's
+    /// 1.2.3 (#569 step 2). Living Server's
     /// own death memory (AutonomousDeathBlame #537, AutonomousPveBossDanger, AutonomousRepeatDeathSpots) is solo-only:
     /// party camp planning skips it on purpose, and a party death only ever started a regroup or, after a wipe, the wipe
     /// penalty. This adds the party's counterpart.
     ///
-    /// True165, 2026-11-11 overnight run: bot parties kept going back to places they could not win. Level 43-49 glimmer
+    /// Evidence (a 2026-11-11 overnight run): bot parties kept going back to places they could not win. Level 43-49 glimmer
     /// ardents and wards beside the Silvermine bindstone killed 331 members of level 12-19 parties in one night: the party
     /// regrouped at the bindstone, its regroup leader walked into the glimmers, died, released beside the same stone and the
     /// next leader tried again (one party 31 resurrection timeouts in 75 minutes). A party death only ever started a regroup;
@@ -20,8 +20,8 @@ namespace DOL.GS
     /// plans to fight) near the same spot - <see cref="DistinctMembersToRetreat"/> different members or
     /// <see cref="DeathsToRetreat"/> deaths in <see cref="WindowMilliseconds"/>, or a wipe with such a death in it - ends
     /// its task there. Its camp (when the deaths were at or near it) is benched for parties of that level band and below,
-    /// and the death spot is remembered for the same band: party camp planning avoids both (True165 also keeps corpse walks off it;
-    /// Living Server has no party corpse walk). Parties above
+    /// and the death spot is remembered for the same band: party camp planning avoids both, and so does the party corpse walk
+    /// (#570 step 4, AutonomousBotGroupCoordinator.CorpseWalk). Parties above
     /// the band are never blocked. Monsters, levels and rewards are unchanged.
     ///
     /// Cost: a list of at most a few deaths per party, touched only when a member dies; one dictionary read per camp

@@ -2,8 +2,7 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **Casters choose their spells like veterans** (#568; owner decision 2026-11-26; ported from OfflineDAoC-True165, with
-  rules from DetShaft's and DividedRealms' Living Server forks). For gamebots and companions alike:
+- **Casters choose their spells like veterans** (#568; owner decision 2026-11-26). For gamebots and companions alike:
   - **A fixed rotation instead of a random pick.** A lifetap when hurt or when the pet is hit, the bolt as the opener
     (Wizards and Theurgists bolt only to open, and nobody bolts into a melee scrum), a snare nuke on a runner, the DoT on
     a fight that lasts, then the best nuke (the cheapest per point of power when low). Up to two debuffs open a fresh,

@@ -868,10 +868,15 @@ public static partial class AutonomousRvrEventLayer
     private static bool MarchedArmy(ActiveEvent active) =>
         active.Marching && active.MusterDeadlineTick != 0 && !active.DefenseReaction;
 
+    /// <summary>The retake roll after a player capture (<see cref="RealmEventPolicy.RetakeFollowsPlayerCapture"/>). A field so
+    /// a test can fix it.</summary>
+    private static Func<double> RetakeRoll = () => Random.Shared.NextDouble();
+
     /// <summary>
     /// The realm that lost a keep to a player's attack makes one organised attempt to take it back: a short muster at
     /// its outpost, a march, then the strike on arrival, sized like the defense that failed. It ends when the keep is
-    /// retaken or after 30 minutes of battle; it never repeats (a retake is not a player defense).
+    /// retaken or after 30 minutes of battle; it never repeats (a retake is not a player defense). It comes only when the
+    /// retake roll does (#523 (d), RealmEventPolicy.RetakeFollowsPlayerCapture).
     /// </summary>
     private static void StartRetake(ActiveEvent lost, eRealm newOwner, long nowTick)
     {
@@ -2158,8 +2163,10 @@ public static partial class AutonomousRvrEventLayer
             if (Events.TryGetValue(targetId, out var active))
             {
                 EndEvent(active, nowTick, "Keep captured: siege ended", winner);
-                // Owner 2026-10-07: when a player takes the keep, the realm that lost it comes back once to retake it.
-                if (active.DefenseReaction && winner != eRealm.None && winner == active.AttackerRealm)
+                // Owner 2026-10-07: when a player takes the keep, the realm that lost it comes back once to retake it;
+                // #523 (d), owner 2026-11-27 (47A): on a roll, not every time.
+                if (active.DefenseReaction && winner != eRealm.None && winner == active.AttackerRealm &&
+                    RealmEventPolicy.RetakeFollowsPlayerCapture(RetakeRoll()))
                     StartRetake(active, winner, nowTick);
             }
             if (CarrierEvents.TryGetValue(targetId, out var escort))

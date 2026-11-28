@@ -239,6 +239,9 @@ public static partial class AutonomousBotGroupCoordinator
                 NoLiferBuffBots.Pulse(now);
             using (AiProfile.Scope(AiSystem.PulseRvrDefense))
                 AutonomousRvrEventLayer.PulseDefense(now);
+            // #599 step 4: a realm's battleground parties at one keep form one battlegroup there, before the rosters below.
+            using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
+                PulseBattlegroundBattlegroups(now);
             using (AiProfile.Scope(AiSystem.PulseWarbandSupport))
             {
                 // #599 step 1: nearby frontier warbands link into battlegroups first, so the rosters below include them.
@@ -3120,7 +3123,11 @@ public static partial class AutonomousBotGroupCoordinator
             bool potentialResurrection = rescuers.Any(member =>
                 member.IsAlive && member.ResurrectionSpell != null);
             // #485: with no healer standing, each member waits its own 15-45 s (a wiped party releases one by one, not in one beat).
-            long waitMilliseconds = potentialResurrection ? 60_000 : BotReleaseTiming.WipeReleaseMs(deadBot.DatabaseID, deaths);
+            // #570 step 4: every corpse of the party waits longer while a resurrector walks to one of them or raises one.
+            bool corpseWalk = CorpseWalkUnderWay(session, GameLoop.GameLoopTime);
+            bool raiseUnderWay = corpseWalk || rescuers.Any(member => member.IsAlive && member.ResurrectionSpell != null &&
+                member.IsCasting && member.castingComponent.SpellHandler?.Spell?.SpellType == eSpellType.Resurrect);
+            long waitMilliseconds = potentialResurrection ? CorpseReleaseWait(raiseUnderWay) : BotReleaseTiming.WipeReleaseMs(deadBot.DatabaseID, deaths);
             if (GameLoop.GameLoopTime - wait.SinceTick < waitMilliseconds)
                 return PveCorpseDisposition.HoldForResurrection;
             long deadline = wait.SinceTick + waitMilliseconds;
@@ -3134,6 +3141,7 @@ public static partial class AutonomousBotGroupCoordinator
                 ? BotPartyRoles.GroupRoleLabel(role) : "unknown";
             Log.Warn($"AUTONOMOUS_GROUP_RESURRECTION_TIMEOUT group={session.Id} bot=\"{deadBot.Name}\" " +
                      $"role=\"{roleName}\" combatClearSeconds={waitMilliseconds / 1000} action=release-and-rejoin " +
+                     $"regrouping={session.Recovery.IsRegrouping} walk={corpseWalk} " +
                      $"corpse={deadBot.CurrentRegionID}:{deadBot.X},{deadBot.Y},{deadBot.Z} " +
                      $"resurrectors=\"{string.Join(";", members.Where(m => m.ResurrectionSpell != null).Select(m =>
                          $"{m.Name}:alive={m.IsAlive}:region={m.CurrentRegionID}:distance={m.GetDistanceTo(deadBot)}:mana={m.ManaPercent}:casting={m.IsCasting}:interrupted={m.IsBeingInterruptedByOther}"))}\"");

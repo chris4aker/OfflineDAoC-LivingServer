@@ -2,8 +2,8 @@
 version: 1.2.3
 section: Bots and companions
 ---
-- **A player who heals while his companion does the damage now gets his share of the kill** (#571 step 2; idea from
-  OfflineDAoC-True165 `74334692` and `de83551a`). When your group kills an enemy player or gamebot, a hired companion or a
+- **A player who heals while his companion does the damage now gets his share of the kill** (#571 step 2).
+  When your group kills an enemy player or gamebot, a hired companion or a
   befriended gamebot in your group can now raise your share of the realm points, experience, bounty points and coins, the
   way a groupmate's damage does in a group of players. It never lowers it: your reward is worked out as before, and the
   group share with your companions counted is used only when it pays you more. Who gains: a player who dealt little or no
