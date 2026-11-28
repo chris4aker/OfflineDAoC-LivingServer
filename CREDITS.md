@@ -1,7 +1,8 @@
 # Credits
 
 **DAoC - Living Server** is a free, non-commercial, single-player server for Dark Age of Camelot. It is maintained by
-[chris4aker](https://github.com/chris4aker) and built on the open-source work below. The launcher's **About** shows the
+[chris4aker](https://github.com/chris4aker) and built first of all on **OpenDAoC** and **Dawn of Light (DOL)**, whose
+open-source server code it runs on, and on the other work below. The launcher's **About** shows the
 same list.
 
 > Dark Age of Camelot is the intellectual property of Electronic Arts and Broadsword Online Games. DAoC - Living Server
