@@ -759,32 +759,52 @@ public class UpdateDownloadTests
 public class UpdateCheckNoticeTests
 {
     [Test]
-    public void UpToDateNamesTheInstalledBuild()
+    public void NothingNewerNamesTheInstalledBuild()
     {
         var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3")!, problem: null, offerTestBuilds: false);
         Assert.That(notice.IsProblem, Is.False);
         Assert.That(notice.Caption, Is.EqualTo("Living Server update"));
-        Assert.That(notice.Text, Is.EqualTo("You're up to date: Living Server 1.2.3 is the newest version."));
-        Assert.That(notice.StatusLine, Is.EqualTo("You have the newest Living Server (1.2.3)."));
+        Assert.That(notice.Text, Is.EqualTo("No newer version was found: you have Living Server 1.2.3."));
+        Assert.That(notice.StatusLine, Is.EqualTo("No newer Living Server was found (you have 1.2.3)."));
     }
 
     [Test]
-    public void UpToDateWithTestBuildsSaysNoTestBuildEither()
+    public void NothingNewerNeverClaimsTheNewestVersion()
+    {
+        // A newer final with no package yet, or a failed /releases/latest beside a working list, also ends here.
+        var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3")!, problem: null, offerTestBuilds: true);
+        Assert.That(notice.Text, Does.Not.Contain("newest version"));
+        Assert.That(notice.Text, Does.Not.Contain("up to date"));
+    }
+
+    [Test]
+    public void NothingNewerWithTestBuildsSaysNoTestBuildEither()
     {
         var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3-rc.1")!, problem: null, offerTestBuilds: true);
         Assert.That(notice.IsProblem, Is.False);
-        Assert.That(notice.Text, Does.StartWith("You're up to date: Living Server 1.2.3 test build 1 is the newest version."));
-        Assert.That(notice.Text, Does.Contain("No newer test build is out either."));
+        Assert.That(notice.Text, Does.StartWith("No newer version was found: you have Living Server 1.2.3 test build 1."));
+        Assert.That(notice.Text, Does.Contain("No newer test build was found either."));
     }
 
     [Test]
-    public void ProblemSaysItCouldNotCheck()
+    public void NoAnswerFromGitHubSaysItCouldNotCheck()
     {
-        var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3")!, problem: "no network", offerTestBuilds: false);
+        var notice = UpdateCheckNotice.NothingOffered(BuildVersion.Parse("1.2.3")!, problem: "403 rate limit exceeded", offerTestBuilds: false);
         Assert.That(notice.IsProblem, Is.True);
-        Assert.That(notice.Text, Does.StartWith("Couldn't check for updates: no network"));
+        Assert.That(notice.Text, Does.StartWith("Couldn't get an answer from GitHub: 403 rate limit exceeded"));
         Assert.That(notice.Text, Does.Contain("You have Living Server 1.2.3."));
-        Assert.That(notice.Text, Does.Not.Contain("up to date"));
-        Assert.That(notice.StatusLine, Is.EqualTo("Couldn't reach GitHub (no network). Try again later."));
+        Assert.That(notice.Text, Does.Not.Contain("internet connection"), "a rate limit is not a network failure");
+        Assert.That(notice.Text, Does.Not.Contain("No newer version"));
+        Assert.That(notice.StatusLine, Is.EqualTo("Couldn't reach GitHub (403 rate limit exceeded). Try again later."));
+    }
+
+    [Test]
+    public void ALauncherErrorSaysTheCheckFailed()
+    {
+        var notice = UpdateCheckNotice.CheckFailed(BuildVersion.Parse("1.2.3")!, "Object reference not set");
+        Assert.That(notice.IsProblem, Is.True);
+        Assert.That(notice.Text, Does.StartWith("Couldn't check for updates: Object reference not set"));
+        Assert.That(notice.Text, Does.Not.Contain("GitHub"));
+        Assert.That(notice.StatusLine, Is.EqualTo("Couldn't check for updates: Object reference not set"));
     }
 }

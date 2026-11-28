@@ -88,9 +88,12 @@ internal sealed partial class MainForm
             // Issue #795: the status used to take the strip's height (100 px, see _updateStrip) with its text centred
             // below the title panel's visible area, and only the width left of the strip, so its messages showed only as
             // a hover tooltip. It now has a row of its own under the version label, with the header's width from the
-            // label on (the header row in the constructor is 152 px for it).
+            // label on (the header row in the constructor is 152 px for it). It never ends below the title panel: with
+            // some fonts the row under the strip is a pixel or two short, and the status then moves up over the strip's
+            // empty bottom edge rather than being cut off (the strip stays in front, so its controls still take clicks).
             int left = versionLabel.Left;
-            int top = Math.Max(versionLabel.Bottom, _updateStrip.Bottom);
+            int below = Math.Max(versionLabel.Bottom, _updateStrip.Bottom);
+            int top = Math.Max(versionLabel.Bottom, Math.Min(below, titlePanel.ClientSize.Height - _updateStatus.PreferredHeight));
             _updateStatus.SetBounds(left, top, Math.Max(0, titlePanel.ClientSize.Width - left - UiScale.Px(titlePanel, 4)),
                 _updateStatus.PreferredHeight);
         };
@@ -174,7 +177,7 @@ internal sealed partial class MainForm
         {
             Updater.Log.Write("Update check failed: " + e.Message);
             if (asked)
-                ShowNothingOffered(UpdateCheckNotice.NothingOffered(installed, e.Message, Updater.Settings.OfferTestBuilds));
+                ShowNothingOffered(UpdateCheckNotice.CheckFailed(installed, e.Message));
         }
         finally
         {

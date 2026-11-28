@@ -9,18 +9,32 @@ public sealed record UpdateCheckNotice(string Caption, string Text, string Statu
 {
     public const string DialogCaption = "Living Server update";
 
-    /// <summary>The notice for an asked check that offered nothing: up to date, or the reason it couldn't check.</summary>
+    /// <summary>
+    /// The notice for an asked check that offered nothing: nothing newer was found, or GitHub gave no answer (problem,
+    /// from ReleaseFeed: a network error, a timeout or an HTTP error such as a 403 rate limit).
+    /// </summary>
+    /// <remarks>
+    /// "No newer version was found", not "this is the newest version": a newer final with no package attached yet, or
+    /// (with test builds on) a failed /releases/latest call beside a working list call, also end here.
+    /// </remarks>
     public static UpdateCheckNotice NothingOffered(BuildVersion installed, string? problem, bool offerTestBuilds)
     {
         string name = installed.DisplayName;
         if (problem != null)
             return new UpdateCheckNotice(DialogCaption,
-                $"Couldn't check for updates: {problem}{Environment.NewLine}{Environment.NewLine}" +
-                $"You have Living Server {name}. Check your internet connection and try again later.",
+                $"Couldn't get an answer from GitHub: {problem}{Environment.NewLine}{Environment.NewLine}" +
+                $"You have Living Server {name}. Try again later.",
                 $"Couldn't reach GitHub ({problem}). Try again later.", IsProblem: true);
-        string testBuilds = offerTestBuilds ? " No newer test build is out either." : "";
+        string testBuilds = offerTestBuilds ? " No newer test build was found either." : "";
         return new UpdateCheckNotice(DialogCaption,
-            $"You're up to date: Living Server {name} is the newest version.{testBuilds}",
-            $"You have the newest Living Server ({name}).", IsProblem: false);
+            $"No newer version was found: you have Living Server {name}.{testBuilds}",
+            $"No newer Living Server was found (you have {name}).", IsProblem: false);
     }
+
+    /// <summary>The notice for an asked check that failed in the launcher itself (an exception, not GitHub's answer).</summary>
+    public static UpdateCheckNotice CheckFailed(BuildVersion installed, string error) =>
+        new(DialogCaption,
+            $"Couldn't check for updates: {error}{Environment.NewLine}{Environment.NewLine}" +
+            $"You have Living Server {installed.DisplayName}. Try again later.",
+            "Couldn't check for updates: " + error, IsProblem: true);
 }
