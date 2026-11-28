@@ -110,9 +110,13 @@ public static class RvrScanBudget
         Rays,
         Notices,
         StealthRolls,
+        /// <summary>#529 step 3: looks by fighting bots (RvrCombatRefresh).</summary>
+        CombatRefreshes,
+        /// <summary>#529 step 3: the line-of-sight rays those looks cast (not in Rays).</summary>
+        CombatRays,
     }
 
-    private const int Counters = (int)Counter.StealthRolls + 1;
+    private const int Counters = (int)Counter.CombatRays + 1;
     private const int Realms = 4;
     private static readonly long[] Values = new long[Realms * Counters];
     private static long _nextLog;
@@ -156,7 +160,7 @@ public static class RvrScanBudget
             var counts = new long[Counters];
             for (int i = 0; i < Counters; i++)
                 counts[i] = Interlocked.Exchange(ref Values[Index(realm) * Counters + i], 0);
-            if (counts[(int)Counter.Scans] == 0 && counts[(int)Counter.Idle] == 0)
+            if (counts[(int)Counter.Scans] == 0 && counts[(int)Counter.Idle] == 0 && counts[(int)Counter.CombatRefreshes] == 0)
                 continue;
             lines.Add(Format(GlobalConstants.RealmToName(realm), seconds, counts));
         }
@@ -170,7 +174,9 @@ public static class RvrScanBudget
         $"solo={c[(int)Counter.Solo]} woken={c[(int)Counter.Woken]} everyone={c[(int)Counter.Everyone]} " +
         $"idle={c[(int)Counter.Idle]} rolls={c[(int)Counter.Rolls]} capped={c[(int)Counter.Capped]} " +
         $"rays={c[(int)Counter.Rays]} raysPerSecond={c[(int)Counter.Rays] / (double)Math.Max(1, seconds):0.#} " +
-        $"notices={c[(int)Counter.Notices]} stealthRolls={c[(int)Counter.StealthRolls]}";
+        $"notices={c[(int)Counter.Notices]} stealthRolls={c[(int)Counter.StealthRolls]} " +
+        $"combatRefreshes={c[(int)Counter.CombatRefreshes]} combatRays={c[(int)Counter.CombatRays]} " +
+        $"combatRaysPerSecond={c[(int)Counter.CombatRays] / (double)Math.Max(1, seconds):0.#}";
 
     /// <summary>Zeroes every count and restarts the minute (tests).</summary>
     public static void Reset()

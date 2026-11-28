@@ -711,10 +711,16 @@ namespace DOL.GS
 
         /// <summary>
         /// Proposes the event layer's battleground order as the bot's intent (#530 step 5a): one writer, the event layer,
-        /// for the battleground's force record, as for every frontier intent.
+        /// for the battleground's force record, as for every frontier intent. A battleground party (a trip, or a muster party
+        /// from step 5b) is one force, <c>bg:&lt;its id&gt;</c>, written by its leader; a solo bot is its own.
         /// </summary>
-        private void ProposeBattlegroundOrder(GameBot bot, AutonomousRvrEventLayer.BattlegroundOrder order) =>
-            ProposeRvrIntent(bot, order.Proposal, mirrorIntent: false, mirrorKeep: false, forceId: "bg:" + RvrForceId(bot));
+        private void ProposeBattlegroundOrder(GameBot bot, AutonomousRvrEventLayer.BattlegroundOrder order)
+        {
+            bool party = _groupDirective?.BattlegroundTrip == true && !string.IsNullOrEmpty(_groupDirective.GroupId);
+            ProposeRvrIntent(bot, order.Proposal, mirrorIntent: false, mirrorKeep: false,
+                forceId: "bg:" + (party ? _groupDirective.GroupId : RvrForceId(bot)),
+                writer: party ? _groupDirective.Leader == null || _groupDirective.Leader == bot : null);
+        }
 
         /// <summary>
         /// Whether the wave's own turn (ShouldGather) moved the muster from what this turn's first order said: the wave went

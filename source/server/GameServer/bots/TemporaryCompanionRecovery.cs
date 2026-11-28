@@ -27,8 +27,10 @@ namespace DOL.GS
         // The frontier raid aggro leash: a raid bot chasing an enemy gamebot far from the player (its own part of the
         // raid still busy) is recalled anyway once nothing is fighting near the player, so roamer chases never drag the
         // raid away. PvE fights keep the normal recall rules.
+        // #664: the group pick (bot_companion_rvr_engage) gives every /spawn party the same leash in the #663 places.
         public static bool FrontierChaseLeash(GameBot companion) =>
-            CompanionRaid.IsMember(companion) && CompanionPvpEngagement.FrontierRaidAggro(companion.Owner) &&
+            (CompanionRaid.IsMember(companion) && CompanionPvpEngagement.FrontierRaidAggro(companion.Owner) ||
+             CompanionRvrEngage.Applies(companion?.Owner)) &&
             CompanionPvpEngagement.Enemy(companion.Owner, companion.TargetObject as GameLiving) &&
             !HasCombatNearOwner(companion.Owner);
 

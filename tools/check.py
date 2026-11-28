@@ -38,6 +38,7 @@ CHECKS: list[tuple[str, str]] = [
     ("versions", "-m unittest discover -s tools/installer/tests"),
     ("encounter-catalog", "source/tools/epic_encounter_catalog.py --check"),
     ("encounter-catalog", "source/tools/assemble_changelog.py --check"),
+    ("encounter-catalog", "tools/grafana/generated_guard.py --base origin/main"),
     ("encounter-catalog", "tools/grafana/kit.py --check"),
     ("encounter-catalog", "-m unittest discover -s tools/grafana/tests"),
     ("encounter-catalog", "-m unittest discover -s source/tools/tests"),
@@ -67,6 +68,8 @@ CHECKS: list[tuple[str, str]] = [
 
 # Workflow Python commands that do not run here, by script, with the reason.
 NOT_LOCAL: dict[str, str] = {
+    # Its local line (CHECKS, --base origin/main) runs here; CI's reads the pull request's merge commit.
+    "tools/grafana/generated_guard.py --base": "CI compares the pull request's merge commit with HEAD^1 (#817)",
     "tools/newclient-compat/installed_check.py": "needs Godot and the 0.37 release commit (new-client job)",
     "source/tools/chat_audit.py": "reads the transcripts the server tests write (dotnet; the report: chat audit job)",
     # Its own tests (source/tools/tests/test_ci_test_results.py) run here; the CI lines read what dotnet test wrote.

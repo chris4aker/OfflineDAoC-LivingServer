@@ -293,48 +293,48 @@
  },
  "followups": {
   "faction": {
-   "ok": 1,
+   "ok": 15,
    "total": 54,
-   "ok_share": 0.0185,
+   "ok_share": 0.2778,
    "counts": {
-    "WRONG": 2,
+    "WRONG": 0,
     "NON_ANSWER": 0,
     "OFF_TOPIC": 3,
     "FLUFF": 0,
-    "SILENT": 35,
-    "STUB": 13,
+    "SILENT": 17,
+    "STUB": 19,
     "CLUNKY": 0,
     "ECHO": 0,
     "PADDED": 0
    }
   },
   "group": {
-   "ok": 2,
+   "ok": 16,
    "total": 54,
-   "ok_share": 0.037,
+   "ok_share": 0.2963,
    "counts": {
-    "WRONG": 2,
+    "WRONG": 0,
     "NON_ANSWER": 0,
     "OFF_TOPIC": 3,
     "FLUFF": 0,
-    "SILENT": 34,
-    "STUB": 13,
+    "SILENT": 16,
+    "STUB": 19,
     "CLUNKY": 0,
     "ECHO": 0,
     "PADDED": 0
    }
   },
   "tell": {
-   "ok": 2,
+   "ok": 16,
    "total": 54,
-   "ok_share": 0.037,
+   "ok_share": 0.2963,
    "counts": {
-    "WRONG": 2,
+    "WRONG": 0,
     "NON_ANSWER": 0,
-    "OFF_TOPIC": 4,
+    "OFF_TOPIC": 3,
     "FLUFF": 0,
-    "SILENT": 32,
-    "STUB": 14,
+    "SILENT": 15,
+    "STUB": 20,
     "CLUNKY": 0,
     "ECHO": 0,
     "PADDED": 0
