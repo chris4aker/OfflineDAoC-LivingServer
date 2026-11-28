@@ -276,7 +276,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `BOT_PLACE_LEARNED` | server.log | **ships** | `bots/autonomous/BotPlaceKnowledge.cs` | `at`, `bot`, `how`, `id`, `level`, `place`, `places`, `realm`, `zone` | `bot` | - | - |
 | `BOT_REALM_ABILITY_FAILED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmAbilities.cs` | `bot`, `class`, `restoring` | `bot` | - | - |
 | `BOT_REALM_ABILITY_TRAINED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmAbilities.cs` | `archetype`, `bot`, `class`, `gained`, `points`, `realmLevel` | `bot` | - | - |
-| `BOT_REALM_ABILITY_USED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmAbilities.cs` | `ability`, `bot`, `endurance`, `health`, `region` | `bot` | - | A purge that removed nothing only blocks itself for 5 ms; |
+| `BOT_REALM_ABILITY_USED` | server.log | **ships** | `bots/autonomous/AutonomousBotRealmAbilities.cs`<br>`bots/autonomous/BotQuickCast.cs` | `ability`, `bot`, `endurance`, `health`, `region` | `bot` | - | A purge that removed nothing only blocks itself for 5 ms; |
 | `BOT_RELEASE_RETRY` | server.log | **ships** | `bots/GameBot.cs` | `bot`, `id`, `region` | `bot` | - | - |
 | `BOT_RETREAT_ENDED` | server.log | **ships** | `bots/BotBrain.Retreat.cs` | `alive`, `bot`, `health`, `kind` | `bot` | - | - |
 | `BOT_SKILL_BUDGET` | server.log | **ships** | `bots/autonomous/BotSkillGrowth.cs` | `alb`, `credits`, `hib`, `mid`, `minutes`, `online`, `profile_lines`, `promotions`, `seconds`, `shares`, `start`, `suppressed` | - | - | - |
