@@ -11,7 +11,8 @@ namespace DOL.UnitTests
     /// <summary>
     /// #531 step 2c-1: Speed of Sound on the engage, Mastery of Concentration when interrupted twice, Bunker of Faith after
     /// a death, for autonomous gamebots in the open field. Step 2c-2: Perfect Recovery after a death and Vanish on a run
-    /// from a lost fight. The rules and the builds; the wiring is shown by the #520 rehearsal rows. Tests only.
+    /// from a lost fight, and the archers' True Sight once an enemy assassin strikes the group (owner answer 71A). The rules
+    /// and the builds; the wiring is shown by the #520 rehearsal rows. Tests only.
     /// </summary>
     [TestFixture]
     public class UT_RvrRealmActives531
@@ -113,6 +114,41 @@ namespace DOL.UnitTests
         [TestCase(true, 1_000L, true, ExpectedResult = false, TestName = "Vanish: already hidden")]
         public bool VanishFiresOnARunFromALostFight(bool retreat, long since, bool stealthed) => VanishWanted(retreat, since, stealthed);
 
+        // ---- 2c-2: True Sight ----
+
+        [TestCase(1, false, ExpectedResult = true, TestName = "TS: an enemy assassin struck the group")]
+        [TestCase(2, false, ExpectedResult = true, TestName = "TS: two assassins")]
+        [TestCase(0, false, ExpectedResult = false, TestName = "TS: no assassin (other enemies only)")]
+        [TestCase(1, true, ExpectedResult = false, TestName = "TS: already running")]
+        public bool TrueSightFiresOnceAnAssassinStrikes(int assassins, bool running) => TrueSightWanted(assassins, running);
+
+        private static RvrStealthSighting Sight(double distance, bool trueSight, bool vanish = false, bool los = true, bool fighting = false) =>
+            new(distance, 50, 40, Vanish: vanish, LineOfSight: los, ObserverInCombatWithOther: fighting, ObserverTrueSight: trueSight);
+
+        [Test]
+        public void OnTrueSightABotSeesEveryStealtherInItsSightAtOncePastTheBotCap()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(RvrStealthNotice.ChancePerSecond(Sight(1_500, trueSight: false), RvrBotAwareness.Normal), Is.Zero,
+                    "without True Sight: never beyond 350");
+                Assert.That(RvrStealthNotice.ChancePerSecond(Sight(1_500, trueSight: true), RvrBotAwareness.Normal), Is.EqualTo(1),
+                    "on True Sight: at once at 1,500 (owner answer 71A)");
+                Assert.That(RvrStealthNotice.ChancePerSecond(Sight(3_500, trueSight: true), RvrBotAwareness.Easy), Is.EqualTo(1),
+                    "at any range in sight, whatever the awareness");
+                Assert.That(RvrStealthNotice.ChancePerSecond(Sight(800, trueSight: true, fighting: true), RvrBotAwareness.Normal), Is.EqualTo(1),
+                    "even while fighting someone else, as a player on True Sight");
+                Assert.That(RvrStealthNotice.ChancePerSecond(Sight(800, trueSight: true, los: false), RvrBotAwareness.Normal), Is.Zero,
+                    "line of sight is still needed");
+                Assert.That(RvrStealthNotice.ChancePerSecond(Sight(100, trueSight: true, vanish: true), RvrBotAwareness.Normal), Is.Zero,
+                    "Vanish still hides");
+                Assert.That(RvrStealthNotice.Limit(Sight(1_500, trueSight: true)), Is.EqualTo(RvrStealthNotice.TrueSightReach));
+                Assert.That(RvrStealthNotice.Limit(Sight(1_500, trueSight: false)), Is.LessThanOrEqualTo(RvrStealthNotice.MaxRange));
+                Assert.That(RvrStealthNotice.CandidateRange(true), Is.EqualTo(RvrStealthNotice.TrueSightReach));
+                Assert.That(RvrStealthNotice.CandidateRange(false), Is.EqualTo(RvrStealthNotice.MaxRange));
+            });
+        }
+
         [Test]
         public void AnInterruptCountsOnceAndTheCountStartsAgainAfterTheFight()
         {
@@ -135,9 +171,9 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void TheExecutorHandlesExactlyItsFiveAndBotsMayUseThem()
+        public void TheExecutorHandlesExactlyItsSixAndBotsMayUseThem()
         {
-            Assert.That(Keys, Is.EquivalentTo(new[] { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith, PerfectRecovery, Vanish }));
+            Assert.That(Keys, Is.EquivalentTo(new[] { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith, PerfectRecovery, Vanish, TrueSight }));
             foreach (string key in Keys)
             {
                 Assert.That(Handles(key), Is.True, key);
@@ -159,6 +195,8 @@ namespace DOL.UnitTests
             Assert.That(new AtlasOF_PerfectRecovery(dba, 1).GetReUseDelay(1), Is.EqualTo(1800));
             dba = new DOL.Database.DbAbility { KeyName = Vanish, Name = "Vanish" };
             Assert.That(new AtlasOF_Vanish(dba, 1).GetReUseDelay(1), Is.EqualTo(1800));
+            dba = new DOL.Database.DbAbility { KeyName = TrueSight, Name = "True Sight" };
+            Assert.That(new AtlasOF_TrueSight(dba, 1).GetReUseDelay(1), Is.EqualTo(1800));
         }
 
         // ---- the builds ----
@@ -167,14 +205,14 @@ namespace DOL.UnitTests
             keys.Select(k => k.StartsWith("AtlasOF_") ? k : "AtlasOF_" + k).ToDictionary(k => k, k => k switch
             {
                 Purge or PurgeReduced or SecondWind or IgnorePain or IgnorePainTank or SpeedOfSound or MasteryOfConcentration or BunkerOfFaith or
-                    PerfectRecovery or Vanish => 1,
+                    PerfectRecovery or Vanish or TrueSight => 1,
                 FirstAid => 3,
                 _ => 5,
             });
 
         private static int Cost(string key, int level) => key switch
         {
-            Purge or SecondWind or SpeedOfSound or BunkerOfFaith or Vanish => 10,
+            Purge or SecondWind or SpeedOfSound or BunkerOfFaith or Vanish or TrueSight => 10,
             PurgeReduced => 4,
             IgnorePain or MasteryOfConcentration or PerfectRecovery => 14,
             IgnorePainTank => 8,
@@ -250,6 +288,19 @@ namespace DOL.UnitTests
             Assert.That(vanish, Is.GreaterThan(purge).And.LessThanOrEqualTo(60), $"purge at {purge}, Vanish at {vanish}");
         }
 
+        [TestCase(eCharacterClass.Scout)]
+        [TestCase(eCharacterClass.Hunter)]
+        [TestCase(eCharacterClass.Ranger)]
+        public void AnArcherBuysTrueSightAfterPurge(eCharacterClass archer)
+        {
+            var catalog = Catalog("AugStr", "AugCon", "AugDex", "AugQui", "MasteryOfArchery", "FalconsEye", "Dodger", "Toughness",
+                PurgeReduced, SecondWind, FirstAid, TrueSight, "MasteryOfPain", "Determination");
+            Assert.That(ArchetypeOf(catalog.Keys), Is.EqualTo(Archetype.Archer));
+            int purge = FirstPointsBuying(catalog, Archetype.Archer, (int)archer, PurgeReduced);
+            int ts = FirstPointsBuying(catalog, Archetype.Archer, (int)archer, TrueSight);
+            Assert.That(ts, Is.GreaterThan(purge).And.LessThanOrEqualTo(70), $"purge at {purge}, True Sight at {ts}");
+        }
+
         [Test]
         public void TheClericAndTheMinstrelBuyNeitherPerfectRecoveryNorVanish()
         {
@@ -259,8 +310,8 @@ namespace DOL.UnitTests
                 "Toughness", "Serenity", Purge, SecondWind, FirstAid, IgnorePain, SpeedOfSound);
             var clericPlan = Plan(cleric, Archetype.Healer, (int)eCharacterClass.Cleric, 300, Cost);
             var minstrelPlan = Plan(minstrel, Archetype.Melee, (int)eCharacterClass.Minstrel, 300, Cost);
-            Assert.That(clericPlan.ContainsKey(PerfectRecovery) || clericPlan.ContainsKey(Vanish), Is.False);
-            Assert.That(minstrelPlan.ContainsKey(PerfectRecovery) || minstrelPlan.ContainsKey(Vanish), Is.False);
+            Assert.That(clericPlan.ContainsKey(PerfectRecovery) || clericPlan.ContainsKey(Vanish) || clericPlan.ContainsKey(TrueSight), Is.False);
+            Assert.That(minstrelPlan.ContainsKey(PerfectRecovery) || minstrelPlan.ContainsKey(Vanish) || minstrelPlan.ContainsKey(TrueSight), Is.False);
             Assert.That(clericPlan.ContainsKey(BunkerOfFaith), Is.True, "the Cleric keeps its Bunker");
             Assert.That(minstrelPlan.ContainsKey(SpeedOfSound), Is.True, "the Minstrel keeps its Speed of Sound");
         }

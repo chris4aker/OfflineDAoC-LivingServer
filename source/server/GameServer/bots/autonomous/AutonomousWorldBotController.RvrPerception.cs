@@ -370,7 +370,7 @@ public sealed partial class AutonomousWorldBotController
         RvrScanBudget.Add(bot.Realm, RvrScanBudget.Counter.CombatRefreshes);
         bool Candidate(GameLiving target) => target != bot && target.IsAlive && target.ObjectState == GameObject.eObjectState.Active &&
             target.Realm != bot.Realm && target.Realm != eRealm.None && target.CurrentRegionID == bot.CurrentRegionID &&
-            (!target.IsStealthed || rvr.StealthNotice && bot.IsWithinRadius(target, RvrStealthNotice.MaxRange)) &&
+            (!target.IsStealthed || rvr.StealthNotice && bot.IsWithinRadius(target, StealthCandidateRange(bot))) &&
             !IsIgnoredPvpTarget(target) && PerceivedKind(target) != RvrPerceivedKind.Other;
         var targets = new List<GameLiving>();
         foreach (GamePlayer player in bot.GetPlayersInRadius((ushort)RvrCombatRefresh.Radius))
@@ -409,8 +409,12 @@ public sealed partial class AutonomousWorldBotController
         PerceiveRvrTargets(bot, seen.ToArray(), rvr, RvrCombatRefresh.IntervalMilliseconds);
     }
 
+    /// <summary>How close a stealthed enemy must be to be looked at: 350, or True Sight's reach while it runs (#531 step 2c-2).</summary>
+    public static int StealthCandidateRange(GameBot bot) =>
+        RvrStealthNotice.CandidateRange(bot.effectListComponent.ContainsEffectForEffectType(eEffect.TrueSight));
+
     /// <summary>The stealth rule's facts for this bot looking at this stealthed enemy (reads the game).</summary>
-    internal static RvrStealthSighting StealthSighting(GameBot bot, GameLiving target, bool lineOfSight) => new(
+    public static RvrStealthSighting StealthSighting(GameBot bot, GameLiving target, bool lineOfSight) => new(
         bot.GetDistanceTo(target), bot.Level, target.GetModifiedSpecLevel(Specs.Stealth),
         ObserverDetectHidden: bot.HasAbility(Abilities.DetectHidden),
         TargetDetectHidden: target.HasAbility(Abilities.DetectHidden),
@@ -427,7 +431,8 @@ public sealed partial class AutonomousWorldBotController
         ObserverStealthBonus: bot.BaseBuffBonusCategory[eProperty.Skill_Stealth],
         ObserverInCombatWithOther: bot.InCombat && bot.TargetObject != target,
         LineOfSight: lineOfSight,
-        TargetArcher: DOL.GS.ServerRules.StealthRules.IsArcher(target));
+        TargetArcher: DOL.GS.ServerRules.StealthRules.IsArcher(target),
+        ObserverTrueSight: bot.effectListComponent.ContainsEffectForEffectType(eEffect.TrueSight));
 
     /// <summary>
     /// A stealthed enemy in line of sight (the scan cast the ray): engaged once noticed by the close-range stealth rule

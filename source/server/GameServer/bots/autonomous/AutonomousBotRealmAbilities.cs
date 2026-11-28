@@ -14,7 +14,7 @@ namespace DOL.GS;
 /// grows with points, so only the points spent are saved; the abilities are rebuilt from them on load. Passive abilities apply
 /// through the normal ability bonuses; the few actives bots can use (Purge, Ignore Pain, Second
 /// Wind, First Aid, and for the open-field fight plan Speed of Sound, Mastery of Concentration, Bunker of Faith, Perfect
-/// Recovery and Vanish, #531)
+/// Recovery, Vanish and True Sight, #531)
 /// are fired from the brain by <see cref="UseActives"/>.
 /// </summary>
 public static class AutonomousBotRealmAbilities
@@ -57,7 +57,7 @@ public static class AutonomousBotRealmAbilities
     /// <summary>The actives a bot knows how to use; every other active is never bought.</summary>
     public static readonly string[] UsableActives = { Purge, PurgeReduced, IgnorePainTank, IgnorePain, SecondWind, FirstAid,
         RvrRealmActives.SpeedOfSound, RvrRealmActives.MasteryOfConcentration, RvrRealmActives.BunkerOfFaith,
-        RvrRealmActives.PerfectRecovery, RvrRealmActives.Vanish };
+        RvrRealmActives.PerfectRecovery, RvrRealmActives.Vanish, RvrRealmActives.TrueSight };
 
     // Passives with little use to a bot; bought only after everything else.
     private static readonly HashSet<string> LowValue = new(StringComparer.OrdinalIgnoreCase)
@@ -88,7 +88,7 @@ public static class AutonomousBotRealmAbilities
         ("AugAcuity", 4), ("WildPower", 1), ("MasteryOfMagery", 1));
 
     private static readonly Step[] ArcherBuild = Build(("AugDex", 3), ("MasteryOfArchery", 1), ("FalconsEye", 1),
-        ("AugQui", 2), ("Dodger", 1), ("AugCon", 1), (PurgeReduced, 1), (Purge, 1), ("AugStr", 1),
+        ("AugQui", 2), ("Dodger", 1), ("AugCon", 1), (PurgeReduced, 1), (Purge, 1), (RvrRealmActives.TrueSight, 1), ("AugStr", 1),
         ("MasteryOfArchery", 2), ("Toughness", 1), ("FalconsEye", 2), ("AugCon", 3), (SecondWind, 1),
         ("MasteryOfPain", 1), ("MasteryOfArchery", 3), ("Determination", 1));
 
@@ -167,6 +167,8 @@ public static class AutonomousBotRealmAbilities
         public bool HasPurchase;
         public TimedRealmAbility[] Actives = Array.Empty<TimedRealmAbility>();
         public long NextUse;
+        /// <summary>A Perfect Recovery cast started at the last look: logged once its timer runs (the rez landed).</summary>
+        public TimedRealmAbility PendingLog;
     }
 
     private sealed record Catalog(Dictionary<string, RealmAbility> ByKey, Dictionary<string, int> Available, Archetype Archetype);
@@ -294,6 +296,14 @@ public static class AutonomousBotRealmAbilities
         long now = GameLoop.GameLoopTime;
         if (now < state.NextUse) return;
         state.NextUse = now + 1_000;
+        // #531 step 2c-2: Perfect Recovery's timer starts when its rez lands (the spell code), so its use is logged at the next
+        // look, and only if the timer runs: a cast that failed at cast time (sight, range) is not logged, nor repeated in the log
+        if (state.PendingLog is { } pending)
+        {
+            state.PendingLog = null;
+            if (bot.GetSkillDisabledDuration(pending) > 1_000)
+                LogUse(bot, pending);
+        }
         RvrRealmActives.ObserveInterrupts(bot, now);
         foreach (TimedRealmAbility ability in state.Actives)
         {
@@ -305,9 +315,10 @@ public static class AutonomousBotRealmAbilities
             }
             else
                 ability.Execute(bot);
-            // A purge that removed nothing only blocks itself for 5 ms; log real uses (long reuse timers). Perfect Recovery's
-            // timer starts when its rez lands (the spell code), so it is logged when the cast starts.
-            if ((bot.GetSkillDisabledDuration(ability) > 1_000 || ability.KeyName == RvrRealmActives.PerfectRecovery) && ability.KeyName != FirstAid)
+            // A purge that removed nothing only blocks itself for 5 ms; log real uses (long reuse timers).
+            if (ability.KeyName == RvrRealmActives.PerfectRecovery)
+                state.PendingLog = ability;
+            else if (bot.GetSkillDisabledDuration(ability) > 1_000 && ability.KeyName != FirstAid)
                 LogUse(bot, ability);
             return;
         }

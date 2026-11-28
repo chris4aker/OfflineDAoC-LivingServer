@@ -10,7 +10,7 @@ namespace DOL.GS.Tests.Rehearsal
     /// bots would buy nothing at a trainer; each eight is given what its classes' builds buy (Speed of Sound for the
     /// Minstrel, Mastery of Concentration for casters and healers, Bunker of Faith for the Cleric), and the bots' own brains
     /// use them; casters and healers also get the Quickcast ability (#531 step 2d), the Healer Perfect Recovery and the
-    /// Infiltrator Vanish (#531 step 2c-2). The row says, per side, when each first started and on how many of the side.
+    /// Infiltrator Vanish and the archers True Sight (#531 step 2c-2). The row says, per side, when each first started and on how many of the side.
     /// </summary>
     public sealed class RvrFightActives
     {
@@ -26,6 +26,7 @@ namespace DOL.GS.Tests.Rehearsal
             // #531 step 2c-2: Perfect Recovery leaves no effect on the healer, so it is seen by its timer (eEffect.Unknown)
             (RvrRealmActives.PerfectRecovery, eEffect.Unknown, "pr"),
             (RvrRealmActives.Vanish, eEffect.Vanish, "vanish"),
+            (RvrRealmActives.TrueSight, eEffect.TrueSight, "ts"),
         };
 
         private readonly Dictionary<(eRealm Realm, string Label), Start> _first = new();
@@ -40,6 +41,7 @@ namespace DOL.GS.Tests.Rehearsal
             RvrRealmActives.BunkerOfFaith => c == eCharacterClass.Cleric,
             RvrRealmActives.PerfectRecovery => c == eCharacterClass.Healer,
             RvrRealmActives.Vanish => c == eCharacterClass.Infiltrator,
+            RvrRealmActives.TrueSight => c is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger,
             RvrRealmActives.MasteryOfConcentration or Abilities.Quickcast => c is eCharacterClass.Cleric or eCharacterClass.Friar or eCharacterClass.Sorcerer
                 or eCharacterClass.Theurgist or eCharacterClass.Wizard or eCharacterClass.Cabalist or eCharacterClass.Necromancer
                 or eCharacterClass.Healer or eCharacterClass.Shaman or eCharacterClass.Runemaster or eCharacterClass.Spiritmaster
@@ -56,6 +58,7 @@ namespace DOL.GS.Tests.Rehearsal
             Abilities.Quickcast => new Ability(new DbAbility { KeyName = key, Name = "Quick Cast" }, 1),
             RvrRealmActives.PerfectRecovery => new AtlasOF_PerfectRecovery(new DbAbility { KeyName = key, Name = "Perfect Recovery" }, 1),
             RvrRealmActives.Vanish => new AtlasOF_Vanish(new DbAbility { KeyName = key, Name = "Vanish" }, 1),
+            RvrRealmActives.TrueSight => new AtlasOF_TrueSight(new DbAbility { KeyName = key, Name = "True Sight" }, 1),
             _ => null,
         };
 

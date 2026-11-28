@@ -51,7 +51,7 @@ namespace DOL.UnitTests
             // #531 step 2d: the row also says when each side's casters first quickcast a key cast, and how often
             Assert.That(actives, Does.Contain(" qc="), "the row has Quickcast");
             // #531 step 2c-2: and Perfect Recovery and Vanish
-            Assert.That(actives, Does.Contain(" pr=").And.Contain(" vanish="), "the row has Perfect Recovery and Vanish");
+            Assert.That(actives, Does.Contain(" pr=").And.Contain(" vanish=").And.Contain(" ts="), "the row has Perfect Recovery, Vanish and True Sight");
             TestContext.Progress.WriteLine(actives);
             RvrFightRehearsal.OpenFieldResult again = RvrFightRehearsal.OpenField(Seed);
             Repeat(first.Row, again.Row);
@@ -94,6 +94,21 @@ namespace DOL.UnitTests
                 Assert.That(result.EnemySeeRange, Is.Zero, "no enemy's stealth rule sees it");
                 Assert.That(result.HiddenAfterHit, Is.True, "a hit leaves it hidden");
                 Assert.That(result.VanishEndedOnUnhide, Is.True, "its own unhide ends Vanish");
+                // the brain's wiring (fails if BeginRetreat stops calling TryVanishOnRetreat, or the idle unhide forgets Vanish)
+                Assert.That(result.RetreatVanished, Is.True, "a retreat's start fires Vanish (BotBrain.BeginRetreat)");
+                Assert.That(result.IdleUnhidesWithoutVanish, Is.True, "control: the idle unhide unhides a bot without Vanish");
+                Assert.That(result.IdleKeptVanishHidden, Is.True, "the idle unhide leaves a vanished bot hidden");
+                // the uncover rule: autonomous gamebots by the player's rule, companions as before (#521)
+                Assert.That(result.GamebotHiddenAfterMiss, Is.True, "a miss leaves a stealthed autonomous gamebot hidden");
+                Assert.That(result.GamebotUncoveredByHit, Is.True, "a hit uncovers it");
+                Assert.That(result.CompanionIsCompanion, Is.True, "the companion case is a companion");
+                Assert.That(result.CompanionUncoveredByMiss, Is.True, "a miss still uncovers a stealthed companion");
+                // True Sight (owner answer 71A)
+                Assert.That(result.TrueSightOn, Is.True, $"the Hunter put True Sight on once an assassin struck its mate: {result.Row}");
+                Assert.That(result.TrueSightTimerMs, Is.GreaterThan(29 * 60_000L), "and went on its 30-minute timer");
+                Assert.That(result.TrueSightChanceAt1200, Is.EqualTo(1), "on True Sight it sees the hidden Infiltrator at 1,200 at once");
+                Assert.That(result.NoTrueSightChanceAt1200, Is.Zero, "its mate without True Sight doesn't (the 350 cap)");
+                Assert.That(result.TrueSightCandidateRange, Is.EqualTo(RvrStealthNotice.TrueSightReach), "the scan looks past 350 on True Sight");
                 Assert.That(result.Errors, Is.Zero, "no service threw");
             });
         }

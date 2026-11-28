@@ -18,15 +18,18 @@ namespace DOL.GS;
 /// fight. Only bots the open-field tactics apply to (<see cref="BotBrain.RvrTacticsApplyTo"/>) use them: no companion,
 /// no bot in a player's group, no keep fight or raid. Step 2c-2 adds the Healer's Perfect Recovery after a death (an
 /// instant rez at full health and power) and the Infiltrator's Vanish when it runs from a fight it is losing to an enemy
-/// realm (reference.md 3.8, 3.9, 4.4; roam.md 8).
+/// realm (reference.md 3.8, 3.9, 4.4; roam.md 8), and the archers' True Sight once an enemy assassin strikes the group: for
+/// its 60 s the archer sees every stealthed enemy in its line of sight, as a player on True Sight does (owner answer 71A,
+/// 2026-11-28; RvrStealthNotice; reference.md 4.1-4.2).
 /// </summary>
 public static class RvrRealmActives
 {
     public const string SpeedOfSound = "AtlasOF_SpeedOfSound", MasteryOfConcentration = "AtlasOF_MasteryOfConcentration",
-        BunkerOfFaith = "AtlasOF_BunkerOfFaith", PerfectRecovery = "AtlasOF_PerfectRecovery", Vanish = "AtlasOF_Vanish";
+        BunkerOfFaith = "AtlasOF_BunkerOfFaith", PerfectRecovery = "AtlasOF_PerfectRecovery", Vanish = "AtlasOF_Vanish",
+        TrueSight = "AtlasOF_TrueSight";
 
     /// <summary>The actives this class handles.</summary>
-    public static readonly string[] Keys = { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith, PerfectRecovery, Vanish };
+    public static readonly string[] Keys = { SpeedOfSound, MasteryOfConcentration, BunkerOfFaith, PerfectRecovery, Vanish, TrueSight };
 
     public static bool Handles(string key) => Array.IndexOf(Keys, key) >= 0;
 
@@ -53,6 +56,10 @@ public static class RvrRealmActives
     public const int VanishMilliseconds = 30_000;
     /// <summary>Vanish is for a fight against an enemy realm: one of its hits landed this recently.</summary>
     public const long VanishHitWindowMilliseconds = 5_000;
+    /// <summary>True Sight lasts this long (the handler's).</summary>
+    public const int TrueSightMilliseconds = 60_000;
+    /// <summary>True Sight answers an enemy assassin on the archer or a group mate within this range.</summary>
+    public const int TrueSightGuardRange = 2_000;
 
     /// <summary>
     /// Speed of Sound on the engage: the group runs the fight plan (stance Engage), has an enemy targeted, and the enemy
@@ -115,6 +122,14 @@ public static class RvrRealmActives
     /// </summary>
     public static bool VanishWanted(bool retreatStarting, long sinceEnemyRealmHitMilliseconds, bool stealthed) =>
         retreatStarting && !stealthed && sinceEnemyRealmHitMilliseconds >= 0 && sinceEnemyRealmHitMilliseconds <= VanishHitWindowMilliseconds;
+
+    /// <summary>
+    /// True Sight once an enemy assassin strikes the group (reference.md 4.2: a stealther "is found by another stealther, by an
+    /// archer on True Sight"): an enemy Infiltrator, Shadowblade or Nightshade is among the recent attackers of the archer or
+    /// of a group mate within 2,000, so the archer can find it when it hides again. Not while True Sight already runs. Pure.
+    /// </summary>
+    public static bool TrueSightWanted(int enemyAssassinsOnGroup, bool trueSightRunning) =>
+        enemyAssassinsOnGroup >= 1 && !trueSightRunning;
 
     /// <summary>
     /// The fight's interrupt count after one look. A new interrupt (an enemy's interrupt running now that was not at the last
@@ -195,6 +210,8 @@ public static class RvrRealmActives
                 return corpses.Count > 0 &&
                        PerfectRecoveryWanted(board?.InContact == true || bot.InCombat, bot.IsCasting, corpses.Select(c => FallenOf(bot, c)).ToList());
             }
+            case TrueSight:
+                return TrueSightWanted(EnemyAssassinsOnGroup(bot), bot.effectListComponent.ContainsEffectForEffectType(eEffect.TrueSight));
             // Vanish is fired when a retreat begins (TryVanishOnRetreat), never from the once-a-second look
             default:
                 return false;
@@ -228,6 +245,25 @@ public static class RvrRealmActives
         List<GameLiving> corpses = Corpses(bot);
         int pick = PerfectRecoveryPick(corpses.Select(c => FallenOf(bot, c)).ToList());
         return pick >= 0 ? corpses[pick] : null;
+    }
+
+    private static eCharacterClass ClassOf(GameLiving living) => living switch
+    {
+        GameBot b when b.CharacterClass != null => (eCharacterClass)b.CharacterClass.ID,
+        GamePlayer p when p.CharacterClass != null => (eCharacterClass)p.CharacterClass.ID,
+        _ => eCharacterClass.Unknown,
+    };
+
+    /// <summary>Enemy assassins among the recent attackers of the bot and of its group mates within 2,000.</summary>
+    private static int EnemyAssassinsOnGroup(GameBot bot)
+    {
+        var seen = new HashSet<GameLiving>();
+        foreach (GameLiving member in Mates(bot).Where(m => m.IsAlive && bot.IsWithinRadius(m, TrueSightGuardRange)).Prepend(bot))
+            foreach (GameLiving attacker in member.attackComponent?.AttackerTracker?.Attackers ?? (ICollection<GameLiving>)Array.Empty<GameLiving>())
+                if (attacker != null && attacker.IsAlive && attacker.Realm != bot.Realm && attacker.Realm != eRealm.None &&
+                    RvrRoles.For(ClassOf(attacker)) == RvrRole.Stealther)
+                    seen.Add(attacker);
+        return seen.Count;
     }
 
     /// <summary>Whether the bot is hidden under Vanish now.</summary>
@@ -305,6 +341,11 @@ public static class RvrRealmActives
                 bot.TargetObject = previous;
                 return started;
             }
+            case TrueSight:
+                // the handler's effect (AtlasOF_TrueSight): 60 s, then its 30-minute timer
+                ability.DisableSkill(bot);
+                ECSGameEffectFactory.Create(new(bot, TrueSightMilliseconds, 1), static (in ECSGameEffectInitParams i) => new AtlasOF_TrueSightECSEffect(i));
+                return true;
             case Vanish:
                 if (!bot.VanishHide())
                     return false;
