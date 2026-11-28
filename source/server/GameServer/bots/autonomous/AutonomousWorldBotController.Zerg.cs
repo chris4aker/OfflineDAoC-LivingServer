@@ -9,7 +9,9 @@ namespace DOL.GS
     /// zergs were ("Zergs move slow and rarely venture too far from their spawn point", reference.md §2.1). A recruit whose
     /// group stands in another region travels to the zerg's gate first; in the lead's region it trails the lead (the step 1
     /// trail). Enemies seen or called are fought first, earlier in the turn, as by every warband; a committed event plan, a
-    /// rally, a relic carry and a shared event come before this. Autonomous gamebots only.
+    /// rally, a relic carry and a shared event come before this. The lead's own warband review still runs on its timer
+    /// (<see cref="ZergLeadReview"/>): when it opens or joins a keep or relic event, the whole zerg goes (its followers trail
+    /// the lead in), as period zergs went "at a milegate or keep" (reference.md §2.3, §5.5). Autonomous gamebots only.
     /// </summary>
     public sealed partial class AutonomousWorldBotController
     {
@@ -24,9 +26,37 @@ namespace DOL.GS
         public static bool ZergTurnApplies(bool isLead, bool hasAnchor, ushort botRegion, ushort zergRegion) =>
             hasAnchor && (isLead || botRegion != zergRegion);
 
+        /// <summary>Whether the zerg's lead reviews its objective now: its warband's review timer is due and it works no siege engine. Pure.</summary>
+        public static bool ZergLeadReviewDue(bool isLead, long now, long nextReview, bool siegeAssigned) =>
+            isLead && now >= nextReview && !siegeAssigned;
+
+        /// <summary>
+        /// The zerg lead's warband review (ChooseRvrDestination, the only path that opens or joins an attack). When it takes a
+        /// keep or relic event (<see cref="AutonomousRvrEventLayer.ZergReviewJoins"/>), the destination is the event's, the
+        /// event layer is told (the zerg is not ended by its lead being in it), and the warband's own turn goes on with it:
+        /// true. Anything else (a roam, a hunt) leaves the zerg at its gates: false.
+        /// </summary>
+        private bool ZergLeadReview(GameBot bot, string forceId, ushort zergRegion, long now)
+        {
+            _nextRvrPlanReview = now + 45_000 + bot.ObjectID % 15_000;
+            CampDestination reviewed = ChooseRvrDestination(bot);
+            if (reviewed == null || !AutonomousRvrEventLayer.ZergReviewJoins(_rvrIntent, _rvrSharedEvent, reviewed.RegionId, zergRegion))
+                return false;
+            _rvrDestination = reviewed;
+            _rvrApproachDestination = null;
+            _patrolDestination = null;
+            _campStartedTick = now;
+            AutonomousRvrEventLayer.ReportZergAttack(forceId, reviewed.Id, now);
+            return true;
+        }
+
         private bool TakeZergTurn(GameBot bot, string forceId, AutonomousRvrEventLayer.ZergOrder zerg)
         {
             if (!ZergTurnApplies(zerg.IsLead, zerg.Anchor != null, bot.CurrentRegionID, zerg.Region))
+                return false;
+            // The lead's review: a keep or relic event takes the whole zerg (the warband's own turn goes on with it).
+            if (ZergLeadReviewDue(zerg.IsLead, GameLoop.GameLoopTime, _nextRvrPlanReview, BotSiegeRuntime.Assigned(bot)) &&
+                ZergLeadReview(bot, forceId, zerg.Region, GameLoop.GameLoopTime))
                 return false;
             AutonomousRvrEventLayer.ZergAnchor anchor = zerg.Anchor;
             string rule = zerg.IsLead ? "zerg.anchor" : "zerg.join";
@@ -43,8 +73,9 @@ namespace DOL.GS
                 _patrolDestination = null;
                 _campStartedTick = now;
             }
-            // When the zerg ends, the warband's own review picks its next objective soon after.
-            _nextRvrPlanReview = now + 45_000;
+            // A recruit on its way does not review (the zerg is its objective); the lead's review runs above, on its timer.
+            if (!zerg.IsLead)
+                _nextRvrPlanReview = now + 45_000;
             if (bot.CurrentRegionID != anchor.Region)
             {
                 SetRvrStatus(bot, "Joining the realm's zerg", "Travel to the zerg at the gates", $"The zerg holds {anchor.Label}",

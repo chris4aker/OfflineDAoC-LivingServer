@@ -510,7 +510,7 @@ namespace DOL.GS.Tests.Rehearsal
 
         /// <summary>
         /// Three Albion eights on the Hadrian's Wall stand-in: two 1,800 apart and a third 12,000 west, beyond the battlegroup's
-        /// 3,000 link. A Midgard eight stands 2,600 east of the first. The realm's free frontier gamebots are stood in at 72 (the
+        /// 3,000 link. A Midgard eight stands 2,600 east of the first. The realm's online and free frontier gamebots are stood in at 72 (the
         /// rehearsal places no full roster), so the zerg's target is 24. The coordinator's battlegroup pulse and the support
         /// rosters run once (AutonomousBotGroupCoordinator.PulseBattlegroups, RealmWarbandSupport.Pulse); then the fight runs.
         /// A second pulse from scratch with the stand-in at 26 (a third is 8, under the floor of 16, the schedule off) shows

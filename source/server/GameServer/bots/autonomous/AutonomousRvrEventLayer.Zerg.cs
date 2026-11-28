@@ -17,7 +17,10 @@ namespace DOL.GS;
 /// realm's warbands from the whole frontier, pairs included, not only those within the link radius
 /// (<see cref="PlanZerg"/>); a recruit coming from afar is held to the leash only once it arrives
 /// (<see cref="ZergRecruitLeaveReason"/>); and its lead holds the region's gates in turn
-/// (<see cref="ZergAnchors"/>, the controller's ZergLeadTurn). At most one zerg per realm. Autonomous gamebots only: a
+/// (<see cref="ZergAnchors"/>, the controller's ZergLeadTurn). Its lead's own warband review still runs, so the zerg opens
+/// or joins a keep or relic attack in its frontier as a whole (<see cref="ZergReviewJoins"/>), and it dissolves after
+/// 45-60 minutes (<see cref="ZergLifetime"/>); a zerg whose lead is called away, or whose time is up, rests its groups
+/// (<see cref="ZergEndRests"/>). At most one zerg per realm. Autonomous gamebots only: a
 /// group that hosts a player never joins, and companions are never in a warband.</para>
 /// </summary>
 public static partial class AutonomousRvrEventLayer
@@ -31,19 +34,36 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>A pair may join a zerg ("invisible or join a zerg", §2.1); a lone bot does not.</summary>
     public const int ZergMinimumGroup = 2;
     /// <summary>
-    /// The share of the realm's free frontier gamebots the zerg takes (owner 50A: a fixed share) [E: §2.3, prime time "half
-    /// or more in zergs and warbands"; the zerg takes a third, the warbands and battlegroups keep the rest].
+    /// The share of the realm's online frontier gamebots the zerg takes, those in events included (owner 50A: a fixed share
+    /// of the realm's online frontier bots) [E: §2.3, prime time "half or more in zergs and warbands"; the zerg takes a
+    /// third, the warbands and battlegroups keep the rest].
     /// </summary>
     public const double ZergShare = 1.0 / 3.0;
-    /// <summary>How long the zerg's lead holds a gate before it rolls on to the next [E: §1.4 "for tens of minutes"].</summary>
-    public const long ZergHoldMilliseconds = 8 * 60_000L;
+    /// <summary>
+    /// How long the zerg's lead holds a gate before it rolls on to the next [E: milegate fights ran "for tens of minutes",
+    /// docs/rvr-audit-1.2.3/reference.md §1.4; "milegate ping-pong: tens of minutes"].
+    /// </summary>
+    public const long ZergHoldMilliseconds = 15 * 60_000L;
+    /// <summary>A lead that has not reached its gate within this gives it up and goes on to the next [E: a long walk].</summary>
+    public const long ZergAnchorGiveUpMilliseconds = 20 * 60_000L;
+    /// <summary>
+    /// The zerg's lifetime, rolled when it forms: after it the zerg dissolves (why=stay) and its groups go on as warbands
+    /// [E: no source; a prime-time push at the gates, longer than a battlegroup's shortest stay].
+    /// </summary>
+    public const long ZergLifetimeMinimumMilliseconds = 45 * 60_000L, ZergLifetimeMaximumMilliseconds = 60 * 60_000L;
+    /// <summary>
+    /// After the lead's review sends the zerg to an attack, the zerg keeps it this long while the event layer has not yet
+    /// listed the lead in it (the coordinator's counts are read just before the pulse).
+    /// </summary>
+    public const long ZergAttackGraceMilliseconds = 60_000L;
     /// <summary>A recruit that has not reached the zerg within this leaves (why=late) and rests [E: a cross-frontier trip].</summary>
     public const long ZergJoinMilliseconds = 15 * 60_000L;
     /// <summary>
-    /// A gate's road: the nearest other chokepoint within this of a milegate [E: the catalog's spacing; the nearest road to
-    /// Hadrian's Wall's gates is about 30,000 off, Odin's Gate's 28,000, Emain's 8,600 and 22,000].
+    /// A gate's road: the nearest other chokepoint within this of a milegate. Zergs "rarely venture too far from their spawn
+    /// point" (reference.md §2.1), so a road farther off is not the gate's [E: the catalog's spacing; Emain's AMG road is
+    /// about 8,600 off; the nearest roads to Hadrian's Wall's and Odin's Gate's gates, 28,000-30,000 off, are left out].
     /// </summary>
-    public const float ZergRoadReach = 35_000f;
+    public const float ZergRoadReach = 12_000f;
 
     /// <summary>One gate the zerg holds: a check spot of the catalog (a milegate or a road chokepoint by one) and its stand.</summary>
     public sealed record ZergAnchor(string SpotId, string Label, ushort Region, float X, float Y, float Z);
@@ -55,18 +75,79 @@ public static partial class AutonomousRvrEventLayer
     public sealed record ZergOrder(string ZergId, ZergAnchor Anchor, bool IsLead, ushort Region);
 
     /// <summary>
-    /// The zerg's size for a realm with <paramref name="freeFrontierBots"/> free frontier gamebots online (owner 50A): a third,
-    /// at most 24. With <paramref name="scheduleOn"/> (bot_schedule_mode on) it is never under 16 while at least 16 are free.
-    /// Under 16: 0, no zerg (battlegroups of 2-3 groups still form). Pure.
+    /// The zerg's size for a realm with <paramref name="onlineFrontierBots"/> frontier gamebots online, those in events
+    /// included (owner 50A): a third, at most 24. With <paramref name="scheduleOn"/> (bot_schedule_mode on) it is never under
+    /// 16 while at least 16 are free (<paramref name="freeFrontierBots"/>: in no event, with no player). Under 16: 0, no zerg
+    /// (battlegroups of 2-3 groups still form). The zerg recruits free groups only (<see cref="PlanZerg"/>). Pure.
     /// </summary>
-    public static int ZergTargetHeads(int freeFrontierBots, bool scheduleOn)
+    public static int ZergTargetHeads(int onlineFrontierBots, int freeFrontierBots, bool scheduleOn)
     {
-        int free = Math.Max(0, freeFrontierBots);
-        int target = Math.Min(ZergMaximumHeads, (int)Math.Floor(free * ZergShare));
+        int online = Math.Max(0, onlineFrontierBots), free = Math.Max(0, freeFrontierBots);
+        int target = Math.Min(ZergMaximumHeads, (int)Math.Floor(online * ZergShare));
         if (scheduleOn && free >= ZergMinimumHeads)
             target = Math.Max(target, ZergMinimumHeads);
         return target >= ZergMinimumHeads ? target : 0;
     }
+
+    /// <summary>The zerg's lifetime, 45-60 minutes, the same for the same zerg and moment (a stable hash). Pure.</summary>
+    public static long ZergLifetime(string zergId, long now)
+    {
+        uint hash = 2166136261;
+        foreach (char c in "zerg/" + (zergId ?? string.Empty) + "/" + now.ToString(System.Globalization.CultureInfo.InvariantCulture))
+            hash = unchecked((hash ^ c) * 16777619u);
+        long range = ZergLifetimeMaximumMilliseconds - ZergLifetimeMinimumMilliseconds;
+        return ZergLifetimeMinimumMilliseconds + hash % (range + 1);
+    }
+
+    /// <summary>
+    /// Why a zerg ends by its lead, or None. Its lead in an event ends it (why=event: the lead was called), except the attack
+    /// the lead's own review took the zerg to (<paramref name="attack"/>): the zerg goes in whole, its followers trailing the
+    /// lead. When <paramref name="endsTick"/> has passed it dissolves (why=stay), but not in the middle of its own attack.
+    /// Pure.
+    /// </summary>
+    public static BattlegroupLeave ZergLeadLeaveReason(BattlegroupCandidate? lead, string attack, long endsTick, long now)
+    {
+        if (lead is not { } self)
+            return BattlegroupLeave.LeadGone;
+        bool ownAttack = attack != null && self.InEvent && self.EventTarget == attack;
+        if (self.InEvent && !ownAttack)
+            return BattlegroupLeave.Event;
+        if (self.HostsPlayer)
+            return BattlegroupLeave.Player;
+        if (self.Heads < 2)
+            return BattlegroupLeave.TooSmall;
+        if (now >= endsTick && !ownAttack)
+            return BattlegroupLeave.Stay;
+        return BattlegroupLeave.None;
+    }
+
+    /// <summary>
+    /// Whether the zerg is still in the attack its lead's review took it to: the lead is listed in that event, or the review
+    /// was under <see cref="ZergAttackGraceMilliseconds"/> ago and the lead is in no other event yet. Pure.
+    /// </summary>
+    public static bool ZergAttackHolds(BattlegroupCandidate? lead, string attack, long attackTick, long now)
+    {
+        if (attack == null || lead is not { } self) return false;
+        if (self.InEvent) return self.EventTarget == attack;
+        return now - attackTick < ZergAttackGraceMilliseconds;
+    }
+
+    /// <summary>Whether the groups of a zerg that ended by <paramref name="reason"/> rest (called away, or its time up). Pure.</summary>
+    public static bool ZergEndRests(BattlegroupLeave reason) => reason is BattlegroupLeave.Event or BattlegroupLeave.Stay;
+
+    /// <summary>
+    /// Whether the lead's review may take the whole zerg to what it chose: a keep or relic event it opened or joined, or a
+    /// defence it took up on its own review, in the zerg's own frontier (zergs stay near their gates, §2.1). An event in
+    /// another frontier, or a defence call that reaches the lead outside its zerg turn, ends the zerg instead (why=event):
+    /// its groups go on as warbands. Pure.
+    /// </summary>
+    public static bool ZergReviewJoins(Intent intent, bool shared, ushort targetRegion, ushort zergRegion) =>
+        shared && targetRegion == zergRegion && intent is Intent.AssaultKeep or Intent.AssaultRelicKeep or Intent.DefendEvent;
+
+    /// <summary>A zerg follower in the zerg's own attack is not "in an event" for its leave rules: it came in with the zerg.</summary>
+    private static BattlegroupCandidate? InZergAttack(BattlegroupCandidate? member, BattlegroupRecord record) =>
+        record.Zerg && record.Attack != null && member is { InEvent: true } self && self.EventTarget == record.Attack
+            ? self with { InEvent = false } : member;
 
     /// <summary>Whether a warband may join a zerg: two or more, in no event, hosting no player. Pure.</summary>
     public static bool CanJoinZerg(BattlegroupCandidate candidate) =>
@@ -224,6 +305,13 @@ public static partial class AutonomousRvrEventLayer
     /// <summary>Whether the lead, at its gate since <paramref name="since"/> (0: not there yet), rolls on now. Pure.</summary>
     public static bool ZergAnchorDue(long since, long now) => since > 0 && now - since >= ZergHoldMilliseconds;
 
+    /// <summary>
+    /// The same, and a lead sent to its gate at <paramref name="setTick"/> that never reached it gives it up after
+    /// <see cref="ZergAnchorGiveUpMilliseconds"/>. Pure.
+    /// </summary>
+    public static bool ZergAnchorDue(long since, long setTick, long now) =>
+        ZergAnchorDue(since, now) || since == 0 && setTick > 0 && now - setTick >= ZergAnchorGiveUpMilliseconds;
+
     // ---- the record ---------------------------------------------------------------------------------------------------
 
     private static int _nextZergNumber;
@@ -243,26 +331,31 @@ public static partial class AutonomousRvrEventLayer
     /// lead or is down to one group ends.
     /// </summary>
     private static void PulseZergs(Dictionary<string, BattlegroupCandidate> byId, long now, IReadOnlyDictionary<eRealm, int> freeFrontierBots,
-        bool scheduleOn, IReadOnlyCollection<ushort> frontierRegions, List<BattlegroupChange> changes)
+        bool scheduleOn, IReadOnlyCollection<ushort> frontierRegions, List<BattlegroupChange> changes,
+        IReadOnlyDictionary<eRealm, int> onlineFrontierBots)
     {
         foreach (BattlegroupRecord zerg in Battlegroups.Values.Where(r => r.Zerg).OrderBy(r => r.Id, StringComparer.Ordinal).ToList())
         {
-            if (zerg.Anchors.Length == 0 || !ZergAnchorDue(zerg.AnchorSince, now)) continue;
+            if (zerg.Anchors.Length == 0 || zerg.Attack != null || !ZergAnchorDue(zerg.AnchorSince, zerg.AnchorSetTick, now)) continue;
+            string why = zerg.AnchorSince > 0 ? "hold" : "giveup";
             zerg.AnchorIndex = (zerg.AnchorIndex + 1) % zerg.Anchors.Length;
             zerg.AnchorSince = 0;
-            changes.Add(new BattlegroupChange("moved", zerg.Id, zerg.Lead, "hold"));
-            LogBattlegroup("moved", zerg, byId, zerg.Lead, "hold", now);
+            zerg.AnchorSetTick = now;
+            changes.Add(new BattlegroupChange("moved", zerg.Id, zerg.Lead, why));
+            LogBattlegroup("moved", zerg, byId, zerg.Lead, why, now);
         }
 
         foreach (eRealm realm in byId.Values.Select(candidate => candidate.Realm).Distinct().OrderBy(r => r).ToList())
         {
             int free = freeFrontierBots.TryGetValue(realm, out int count) ? count : 0;
-            int target = ZergTargetHeads(free, scheduleOn);
+            int online = onlineFrontierBots != null && onlineFrontierBots.TryGetValue(realm, out int all) ? all : free;
+            int target = ZergTargetHeads(online, free, scheduleOn);
             BattlegroupRecord existing = Battlegroups.Values.FirstOrDefault(r => r.Zerg && r.Realm == realm);
             if (existing != null)
             {
                 existing.Target = target;
                 existing.Free = free;
+                existing.Online = online;
                 existing.ScheduleOn = scheduleOn;
             }
             var unavailable = new List<string>(BattlegroupRelinkAfter.Keys);
@@ -281,9 +374,10 @@ public static partial class AutonomousRvrEventLayer
                 record = new BattlegroupRecord
                 {
                     Id = $"zerg-{GlobalConstants.RealmToName(realm).ToLowerInvariant()}-{++_nextZergNumber:000}",
-                    Realm = realm, Region = plan.Region, FormedTick = now, Zerg = true, Target = target, Free = free,
-                    ScheduleOn = scheduleOn, Anchors = AnchorsFor(realm, plan.Region),
+                    Realm = realm, Region = plan.Region, FormedTick = now, Zerg = true, Target = target, Free = free, Online = online,
+                    ScheduleOn = scheduleOn, Anchors = AnchorsFor(realm, plan.Region), AnchorSetTick = Math.Max(1, now),
                 };
+                record.EndsTick = now + ZergLifetime(record.Id, now);
                 record.Members.Add(new BattlegroupMember { ForceId = plan.LeadForceId, StayUntil = long.MaxValue, JoinedTick = now });
                 Battlegroups[record.Id] = record;
                 BattlegroupOfForce[plan.LeadForceId] = record;
@@ -295,7 +389,8 @@ public static partial class AutonomousRvrEventLayer
                 BattlegroupCandidate? self = byId.TryGetValue(id, out BattlegroupCandidate found) ? found : null;
                 record.Members.Add(new BattlegroupMember
                 {
-                    ForceId = id, StayUntil = now + BattlegroupStay(id, now), JoinedTick = now, Arrived = ZergArrived(self, lead),
+                    // A recruit stays for the zerg's lifetime (it dissolves whole); the leash, region, event and late rules still apply.
+                    ForceId = id, StayUntil = long.MaxValue, JoinedTick = now, Arrived = ZergArrived(self, lead),
                 });
                 BattlegroupOfForce[id] = record;
             }
@@ -337,7 +432,8 @@ public static partial class AutonomousRvrEventLayer
         // One change of a realm's zerg (formed, joined, left, moved or ended), with its groups, heads, size target and gate.
         Log.Info($"RVR_FORCE_ZERG what={what} id={record.Id} realm={GlobalConstants.RealmToName(record.Realm)} " +
                  $"region={record.Region} lead={record.Lead ?? "-"} groups={record.Members.Count} arrived={arrived} heads={heads} " +
-                 $"target={record.Target} free={record.Free} schedule={(record.ScheduleOn ? "on" : "off")} " +
+                 $"target={record.Target} online={record.Online} free={record.Free} schedule={(record.ScheduleOn ? "on" : "off")} " +
+                 $"attack={record.Attack ?? "-"} " +
                  $"anchor={record.Anchor?.SpotId ?? "-"} force={force ?? "-"} why={why} minutes={Math.Max(0, (now - record.FormedTick) / 60_000)}");
     }
 
@@ -350,6 +446,21 @@ public static partial class AutonomousRvrEventLayer
         lock (BattlegroupSync)
             return BattlegroupOfForce.TryGetValue(forceId, out BattlegroupRecord record) && record.Zerg
                 ? new ZergOrder(record.Id, record.Anchor, record.Lead == forceId, record.Region) : null;
+    }
+
+    /// <summary>
+    /// The zerg's lead's review took it to <paramref name="targetId"/>, a keep or relic event (<see cref="ZergReviewJoins"/>):
+    /// the zerg goes in whole and is not ended by its lead being in that event. Ignored for a force that does not lead a zerg.
+    /// </summary>
+    public static void ReportZergAttack(string forceId, string targetId, long now)
+    {
+        if (forceId == null || targetId == null) return;
+        lock (BattlegroupSync)
+            if (BattlegroupOfForce.TryGetValue(forceId, out BattlegroupRecord record) && record.Zerg && record.Lead == forceId)
+            {
+                record.Attack = targetId;
+                record.AttackTick = Math.Max(1, now);
+            }
     }
 
     /// <summary>
