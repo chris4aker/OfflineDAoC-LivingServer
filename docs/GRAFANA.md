@@ -177,6 +177,30 @@ gcx logs metrics 'max(max_over_time({row="SERVER_STALL"} | logfmt | unwrap worst
 Add `-d offlinedaoc-loki` when your context has no default Loki data source. The rows write booleans as `1` and `0`,
 so the filter is `answered="1"`, not `"true"`.
 
+## Game-side meters (OTLP, off by default)
+
+Issue #653. Besides the log rows, the server can push OpenTelemetry meters to an OTLP endpoint. This is diagnostics, so it
+is **off by default** and no launcher switch turns it on. Turn it on by hand in `runtime/server/config/serverconfig.xml`:
+
+```xml
+<MetricsEnabled>true</MetricsEnabled>
+<MetricsInterval>60s</MetricsInterval>            <!-- 10s, 2m, 1h; MetricsExportInterval is read too -->
+<OtlpEndpoint>http://localhost:4317</OtlpEndpoint>
+```
+
+- **Interval:** `MetricsInterval` (the shipped key) wins; `MetricsExportInterval`, the key the code used to read, is
+  still accepted. Missing, unreadable or under one second gives 60 s.
+- **`daoc.online.bot.count`:** bots online, numbers only, with two attributes:
+  - `type`: `gamebot` (autonomous gamebots, the Epic Special Forces and the No Lifers' buffbots) or `companion`
+    (hired companions, `/bot` companions, and the `/spawn` and `/raid` helpers);
+  - `realm`: `Albion`, `Midgard`, `Hibernia` (always sent, zero included), or `other` for a bot with no realm.
+
+  Real players are never counted in it; they keep `daoc.online.player.count.total` and `.by.class`. Unlike the
+  `BOT_SKILL_BUDGET` gauge (every 5 minutes, gamebots only), it is read from the bot registries on each export.
+- **Getting it into Grafana:** the kit's Alloy configs (`tools/grafana/alloy/`, `tools/grafana/cloud/alloy/`) have no
+  OTLP receiver yet, so no kit dashboard charts these meters. Point `OtlpEndpoint` at your own OpenTelemetry collector
+  or Alloy `otelcol.receiver.otlp` until the kit gets one (#651).
+
 ## When a row changes
 
 A pull request that adds, renames or changes a row doesn't commit LOG-ROWS.md or the allowlist
