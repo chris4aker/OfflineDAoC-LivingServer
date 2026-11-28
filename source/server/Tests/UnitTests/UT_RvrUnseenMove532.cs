@@ -194,7 +194,7 @@ namespace DOL.UnitTests
         }
 
         /// <summary>The text of the member whose declaration starts with <paramref name="signature"/>, up to its closing brace
-        /// (or the end of an expression body).</summary>
+        /// (or the end of an expression body; any line endings).</summary>
         private static string Body(string code, string signature)
         {
             int start = code.IndexOf(signature, StringComparison.Ordinal);
@@ -203,7 +203,7 @@ namespace DOL.UnitTests
             int open = code.IndexOf('{', start);
             int arrow = code.IndexOf("=>", start, StringComparison.Ordinal);
             if (arrow >= 0 && arrow < open)
-                return code.Substring(start, code.IndexOf(";\n", arrow, StringComparison.Ordinal) - start + 1);
+                return code.Substring(start, code.IndexOf(';', arrow) - start + 1);
             int depth = 0;
             for (int i = open; i < code.Length; i++)
             {
