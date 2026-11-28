@@ -306,6 +306,9 @@ public static class AutonomousBotRealmPointRewards
                 : pair.Value;
         }
 
+        // #528: the kill event (the roam rules' move-on and an emote over the corpse), for every death, worth points or not.
+        RvrAfterTheKill.Killed(killedBot, hostileContributors, now);
+
         double totalDamage = hostileContributors.Sum(pair => pair.Value);
         if (totalDamage <= 0)
             return;
@@ -555,8 +558,6 @@ public static class AutonomousBotRealmPointRewards
     public static void PayGamebotsForPlayerKill(GamePlayer killedPlayer)
     {
         if (killedPlayer == null) return;
-        if (!DOL.GS.ServerRules.PvpRules.WorthRealmPoints(killedPlayer.DeathTime, killedPlayer.PlayedTime, Properties.RP_WORTH_SECONDS))
-            return;
         KeyValuePair<GameLiving, double>[] raw;
         lock (killedPlayer.XpGainersLock)
             raw = killedPlayer.XPGainers.ToArray();
@@ -567,6 +568,12 @@ public static class AutonomousBotRealmPointRewards
             if (credited == null || credited.Realm == eRealm.None || credited.Realm == killedPlayer.Realm) continue;
             hostile[credited] = hostile.GetValueOrDefault(credited) + pair.Value;
         }
+        // #528: the kill event for the player's death too (the roam move-on counts him; an emote over his corpse), worth
+        // realm points or not: the move-on is about the corpse, not the points.
+        if (hostile.Count > 0)
+            RvrAfterTheKill.Killed(killedPlayer, hostile, GameLoop.GameLoopTime);
+        if (!DOL.GS.ServerRules.PvpRules.WorthRealmPoints(killedPlayer.DeathTime, killedPlayer.PlayedTime, Properties.RP_WORTH_SECONDS))
+            return;
         double total = hostile.Sum(pair => pair.Value);
         PayGamebots(killedPlayer, killedPlayer.RealmPointsValue, killedPlayer.RealmLevel, hostile, total);
         PayHiredCompanionExperience(killedPlayer, killedPlayer.ExperienceValue, hostile, total);

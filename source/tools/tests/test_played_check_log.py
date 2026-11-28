@@ -799,6 +799,21 @@ class RvrMeasures(unittest.TestCase):
         self.assertIn("0-1000: 21, median", row["detail"])
         self.assertIn("(sure radius, a tally)", row["detail"])
 
+    def test_in_combat_look_notices_stay_out_of_the_table(self):
+        # #529 step 3: the in-combat refresh writes RVR_NOTICE look=combat every 2 s; only look=scan (or no look=, as
+        # before the field) goes into the notice-time table and its cadence.
+        log = self.notice_log(2500)
+        for i in range(30):
+            log.add(at(2, i), self.NOTICE.format(i=100 + i, d=2000, f="distance", ms=20000, delay=1000) + " look=combat")
+        row = check(only(log.run()[1]), "notice")
+        self.assertEqual(row["status"], pcl.SEEN, "thirty slow combat looks do not spoil the scan's table")
+        self.assertIn("1500-2500: 21, median", row["detail"])
+        self.assertIn("30 more from the in-combat look", row["detail"])
+        log = Log().start(at(0))
+        for i in range(21):
+            log.add(at(1, i), self.NOTICE.format(i=i, d=2000, f="distance", ms=2400 + 10 * i, delay=1000) + " look=scan")
+        self.assertEqual(check(only(log.run()[1]), "notice")["status"], pcl.SEEN, "look=scan is read")
+
     def test_siege_outcomes_per_night_by_kind_and_thin(self):
         log = Log().start(at(0))   # 06:00 on 11/17: the night of 11/16
         log.add(at(10), self.ENDED.format(k=1, kind="keep-siege", thin="false", reason="Keep captured: siege ended"))

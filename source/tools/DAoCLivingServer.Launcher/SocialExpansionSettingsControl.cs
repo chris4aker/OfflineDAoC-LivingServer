@@ -418,6 +418,7 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         LivingBreaks = _breaks.Checked,
         LivingBodyLanguage = _body.Checked,
         SightSizeUp = _population.SightSizeUp, // no checkbox: kept as read (#662)
+        BoardFromContacts = _population.BoardFromContacts, // no checkbox: kept as read (#529)
         LivingBeggars = _beggars.Checked,
         LivingBuffBots = _buffBots.Checked,
         LivingDeeds = _deeds.Checked,
@@ -468,6 +469,9 @@ internal sealed class SocialExpansionSettingsControl : UserControl
         HealerPeriodRules = _population.HealerPeriodRules, // no checkbox: kept as read
         WeaponSetRules = _population.WeaponSetRules, // no checkbox: kept as read (#569)
         LeaderFocus = _population.LeaderFocus, // no checkbox: kept as read (#571)
+        CompanionRvrEngage = _population.CompanionRvrEngage, // no checkbox: kept as read (#664)
+        PartyMainAssist = _population.PartyMainAssist, // no checkbox: kept as read (#569)
+        CriticalShotOpener = _population.CriticalShotOpener, // no checkbox: kept as read (#569)
         PartyPullerCampTurn = _population.PartyPullerCampTurn, // no checkbox: kept as read (#569)
         PopulationNewcomers = _population.PopulationNewcomers,
         NewcomerFloor = _population.NewcomerFloor,
