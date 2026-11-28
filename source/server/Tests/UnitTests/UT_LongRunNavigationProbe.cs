@@ -34,6 +34,9 @@ namespace DOL.UnitTests
                     return zone;
                 }
                 var nav = PathfindingProvider.LocalPathfindingMgr;
+                // #704: every check runs and a red run lists them all.
+                Assert.Multiple(() =>
+                {
                 Zone vale = Add(100, 753664, 671744);
                 Zone east = Add(101, 720896, 737280);
                 Zone gotar = Add(103, 720896, 802816);
@@ -164,6 +167,7 @@ namespace DOL.UnitTests
                             // at the broken island's last node hid the gate pileup.
                             Probe("city exit19 to SI portal", goalZone, new(332733, 485215, 5215), goal);
                             Assert.That(transit, Is.Not.Null, "Reachable cross-capital travel uses both real gates");
+                            if (transit == null) break;
                             Assert.That(transit.Entry.Id, Is.EqualTo(14));
                             Assert.That(transit.Exit.Id, Is.EqualTo(19));
                             cursor = new(transit.Exit.TargetX, transit.Exit.TargetY, transit.Exit.TargetZ);
@@ -172,6 +176,7 @@ namespace DOL.UnitTests
                             continue;
                         }
                         Assert.That(found, Is.True, $"Named region {regionId} route must reach a connected seam");
+                        if (!found) break;
                         cursor = step.Outside;
                         currentZone = region.GetZone((int)cursor.X, (int)cursor.Y);
                     }
@@ -260,26 +265,38 @@ namespace DOL.UnitTests
                     "Connacht exit must connect to its outside road");
                 var returnTransit = AutonomousCapitalTransit.Choose(hibernia, regions[201], magMell, connachtRoad, 200, 201, gates, nav);
                 Assert.That(returnTransit, Is.Not.Null, "Cross-capital travel works in both directions");
-                Assert.That(returnTransit.Entry.Id, Is.EqualTo(13));
-                Assert.That(returnTransit.Exit.Id, Is.EqualTo(26));
+                Assert.That(returnTransit?.Entry.Id, Is.EqualTo(13));
+                Assert.That(returnTransit?.Exit.Id, Is.EqualTo(26));
                 // The three audited DF stalls oscillated at this exact
                 // Lough Derg/Valley seam. A real ticket can instead land on
                 // the Connacht component with a connected portal approach.
                 Vector3 dfPortal = new(325269, 433985, 6297);
                 Vector3 magMellTicket = new(345398, 492987, 5183);
                 Zone dfPortalZone = hibernia.GetZone((int)dfPortal.X, (int)dfPortal.Y);
-                Assert.That(AutonomousCapitalTransit.Choose(hibernia, regions[201],
-                    magMellTicket, dfPortal, 200, 201, gates, nav), Is.Null,
-                    "The real Connacht capital gate does not lead to the DF portal component");
-                Assert.That(AutonomousZoneItinerary.TryNextStep(hibernia, lough, dfPortalZone,
-                    magMellTicket, dfPortal, nav, out var outbound), Is.True);
-                Assert.That(Vector3.Distance(outbound.Outside, new(385088, 483424, 7262)),
-                    Is.LessThan(3), "The installed route selects the audited Valley seam");
-                Zone valley = hibernia.GetZone(385088, 483424);
-                Assert.That(AutonomousZoneItinerary.TryNextStep(hibernia, valley, dfPortalZone,
-                    outbound.Outside, dfPortal, nav, out var reverse), Is.True);
-                Assert.That(hibernia.GetZone((int)reverse.Outside.X, (int)reverse.Outside.Y),
-                    Is.EqualTo(lough), "The next route step reverses across that seam");
+                var dfTransit = AutonomousCapitalTransit.Choose(hibernia, regions[201], magMellTicket, dfPortal, 200, 201, gates, nav);
+                TestContext.WriteLine($"DF_TRANSIT entry={dfTransit?.Entry.Id} exit={dfTransit?.Exit.Id} " +
+                    $"exitTarget=({dfTransit?.Exit.TargetX},{dfTransit?.Exit.TargetY},{dfTransit?.Exit.TargetZ})");
+                if (dfTransit != null)
+                {
+                    Vector3 landed = new(dfTransit.Exit.TargetX, dfTransit.Exit.TargetY, dfTransit.Exit.TargetZ);
+                    bool onward = InstalledBotRoute.Itinerary(hibernia, nav, landed, dfPortal, out string onwardTrace);
+                    TestContext.WriteLine($"DF_TRANSIT_ONWARD {onward}: {onwardTrace}");
+                }
+                bool walked = InstalledBotRoute.Itinerary(hibernia, nav, magMellTicket, dfPortal, out string walkTrace);
+                TestContext.WriteLine($"DF_WALK {walked}: {walkTrace}");
+                // #704: in September the Connacht gate led to a component without the DF portal, and the outdoor itinerary
+                // stepped into the Valley at 385088,483424 and straight back (pinned then as the bot's route). On the 1.2
+                // meshes the bot's route reaches the portal both ways: the capital transit (gates 13 -> 26) and the outdoor
+                // walk (Lough Derg -> Connacht), every leg complete and no zone entered twice.
+                Assert.That(dfTransit, Is.Not.Null, "Cross-capital travel to the DF portal uses the real Connacht gate");
+                if (dfTransit != null)
+                {
+                    Assert.That((dfTransit.Entry.Id, dfTransit.Exit.Id), Is.EqualTo(((ushort)13, (ushort)26)), "the DF transit's gates");
+                    Vector3 landed = new(dfTransit.Exit.TargetX, dfTransit.Exit.TargetY, dfTransit.Exit.TargetZ);
+                    Assert.That(InstalledBotRoute.Itinerary(hibernia, nav, landed, dfPortal, out string onward), Is.True,
+                        $"From the Connacht gate the bot's route reaches the DF portal: {onward}");
+                }
+                Assert.That(walked, Is.True, $"The outdoor route from the Mag Mell ticket reaches the DF portal without turning back: {walkTrace}");
                 foreach (Vector3 landing in new[]
                 {
                     new Vector3(335660, 422602, 5219), // Tir na mBeo ticket
@@ -299,7 +316,9 @@ namespace DOL.UnitTests
                     (magMellTicket, new Vector3(343430, 526748, 5448)),
                     (new Vector3(332555, 485333, 5215), new Vector3(343430, 526748, 5448)),
                     (new Vector3(403458, 441679, 3111), new Vector3(421892, 488015, 1824)),
-                    (new Vector3(385088, 483424, 7262), new Vector3(421892, 488015, 1824)),
+                    // #704: the September sample here started at 385088,483424, the Valley seam the itinerary chose then
+                    // (pinned below as a cut). Today's route into the Valley from the Mag Mell ticket is the sample instead.
+                    (magMellTicket, new Vector3(421892, 488015, 1824)),
                 })
                 {
                     Zone from = hibernia.GetZone((int)startPoint.X, (int)startPoint.Y);
@@ -317,17 +336,51 @@ namespace DOL.UnitTests
                     }
                     Assert.That(cursorZone, Is.EqualTo(to), $"First boarding walk from {startPoint} reaches the horse's zone");
                     Assert.That(snapped, Is.Not.Null, $"Horse origin {horseOrigin} has walkable terrain");
-                    Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, to, cursor, snapped.Value),
+                    Assert.That(snapped.HasValue && AutonomousZoneItinerary.HasCompleteCorridor(nav, to, cursor, snapped.Value),
                         Is.True, $"First boarding walk from {startPoint} reaches horse {horseOrigin}");
+                    if (snapped.HasValue)
+                    {
+                        // The bot's route itself: from the floor-step start, every leg complete, no zone entered twice.
+                        Vector3 floorStart = UT_SeptemberThirteenInstalledRoutes.PlanningStart(nav, from, startPoint);
+                        bool boardingWalk = InstalledBotRoute.Itinerary(hibernia, nav, floorStart, snapped.Value, out string boardingTrace);
+                        TestContext.WriteLine($"BOARDING {startPoint} -> {horseOrigin}: walk={boardingWalk}: {boardingTrace}");
+                        Assert.That(boardingWalk, Is.True, $"The bot's boarding route from {startPoint} to horse {horseOrigin}: {boardingTrace}");
+                    }
+                }
+                {
+                    // The cut (#704): September's Valley seam point (the #421 seam-cycle spot) stands on side ground in zone
+                    // 206 (not its main ground) with no walk to the Druim Cain horse. The DF walk above no longer steps there.
+                    Vector3 oldSeam = new(385088, 483424, 7262), horse = new(421892, 488015, 1824);
+                    Zone valleyZone = hibernia.GetZone((int)oldSeam.X, (int)oldSeam.Y);
+                    var oldGround = InstalledBotRoute.Ground(200, valleyZone, oldSeam);
+                    Vector3? horseFloor = nav.GetClosestPoint(valleyZone, horse, 48, 48, 256, nav.DefaultFilters);
+                    Assert.That(oldGround.Area.HasValue && oldGround.Main.HasValue && oldGround.Area != oldGround.Main, Is.True,
+                        $"The cut: the September Valley seam point is side ground (area {oldGround.Area}, main {oldGround.Main})");
+                    Assert.That(horseFloor.HasValue && InstalledBotRoute.SameZone(nav, valleyZone, oldSeam, horseFloor.Value, out _) == InstalledBotRoute.Walk.None,
+                        Is.True, "The cut: no walk from the September Valley seam point to the Druim Cain horse");
                 }
                 Zone blackMountains = regions[1].GetZone(515616, 494274);
-                Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains,
-                    new(515616, 494274, 3397), out _), Is.True,
-                    "The repaired prop-top now has a real short step onto connected ground");
+                // #704: in September the prop-top's floor had a short step onto connected ground. On the 1.2 meshes its scrap
+                // of floor has no way on (pinned below), and a bot there takes the floor step at its first failed route
+                // (TryNearestWalkableFloor, 300, as TryFloorStep): onto connected ground that leads on and reaches the bombard.
+                Vector3 propTop = new(515616, 494274, 3397);
+                Vector3? propFloor = nav.GetClosestPoint(blackMountains, propTop, 48, 48, 96, nav.DefaultFilters);
+                Assert.That(propFloor.HasValue && !AutonomousRendezvousNavigation.HasLocalExit(nav, blackMountains, propFloor.Value), Is.True,
+                    "The cut: the prop-top's floor has no way on");
+                Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, propTop, out _), Is.False,
+                    "The cut: no rendezvous point on the prop-top itself");
+                bool propStep = AutonomousNavigationSurface.TryNearestWalkableFloor(nav, blackMountains, propTop, 300, out Vector3 propStepFloor);
+                Assert.That(propStep, Is.True, "The prop-top's floor step finds connected ground");
+                Assert.That(Vector2.Distance(new(propStepFloor.X, propStepFloor.Y), new(propTop.X, propTop.Y)), Is.LessThanOrEqualTo(100),
+                    $"The prop-top's floor step is short (lands at {propStepFloor})");
+                Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, propStepFloor, out _), Is.True,
+                    "The floor step's ground has a real rendezvous point");
                 Vector3 bombard = new(515649, 496745, 3352);
                 Assert.That(AutonomousRendezvousNavigation.TryChoosePoint(nav, blackMountains, bombard, out Vector3 assembly), Is.True,
                     "A real connected nearby town/stable anchor remains usable");
                 Assert.That(AutonomousZoneItinerary.HasCompleteCorridor(nav, blackMountains, assembly, bombard), Is.True);
+                Assert.That(InstalledBotRoute.SameZone(nav, blackMountains, propStepFloor, bombard, out string propWalk), Is.Not.EqualTo(InstalledBotRoute.Walk.None),
+                    $"From the prop-top's floor step the bot walks to the bombard ({propWalk})");
                 // Optional, offline one-time repair PLAN only. The fixture never
                 // writes the live DB. Only already-stranded non-waiting actors
                 // in the evidenced prop footprint qualify, after native proof.
@@ -354,6 +407,7 @@ namespace DOL.UnitTests
                     File.WriteAllText(rescuePlan, JsonSerializer.Serialize(repairs, new JsonSerializerOptions { WriteIndented = true }));
                     TestContext.WriteLine($"Read-only native-verified rescue plan: {repairs.Count} stranded bots; legitimate formation waits excluded");
                 }
+                });
             }
             finally
             {
