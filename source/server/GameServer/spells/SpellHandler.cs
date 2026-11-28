@@ -61,8 +61,8 @@ namespace DOL.GS.Spells
 		private long _calculatedCastTime;
 		private long _puslingSpellLastEndOfCastMessage;
 
-		// A gamebot quickcasts only a cast its open-field plan armed (BotQuickCast, #531 step 2d); _quickcast stays null otherwise.
-		public bool IsQuickCasting => _quickcast != null;
+		// A gamebot quickcasts only a cast its open-field plan armed (BotQuickCast, #531 step 2d).
+		public bool IsQuickCasting => _quickcast != null && (Caster is not GameBot quickBot || BotQuickCast.IsArmed(quickBot, Spell));
 		public long CastStartTick => _castStartTick;
 		public bool StartReuseTimer => m_startReuseTimer;
 

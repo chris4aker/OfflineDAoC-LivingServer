@@ -35,7 +35,7 @@ public static class BotQuickCast
     private static readonly ConditionalWeakTable<GameBot, Armed> ArmedFor = new();
 
     private static bool MayQuickCast(GameBot bot) =>
-        bot != null && bot.IsAlive && bot.HasAbility(Abilities.Quickcast) && BotBrain.RvrTacticsApplyTo(bot) &&
+        bot != null && bot.IsAlive && BotBrain.RvrTacticsApplyTo(bot) && bot.HasAbility(Abilities.Quickcast) &&
         RvrFightBoards.Peek(bot) != null;
 
     private static bool IsKeyCast(GameBot bot, Spell spell) =>
