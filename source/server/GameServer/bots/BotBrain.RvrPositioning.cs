@@ -298,7 +298,8 @@ namespace DOL.AI.Brain
         /// <summary>
         /// The cover pick's sight checks (a seam for its tests): of <see cref="RvrPositioning.CoverCandidates"/>, the first
         /// that sees <paramref name="line"/> and that the caster at <paramref name="caster"/> can't see, skipping a place
-        /// beside the healer's own that is inside another back-liner's spread; else <paramref name="spot"/>. Eyes at +48.
+        /// beside the healer's own that is inside another back-liner's spread or too far from its own to hold
+        /// (<see cref="RvrPositioning.CoverNearSlot"/>); else <paramref name="spot"/>. Eyes at +48.
         /// </summary>
         public static Vector2 RvrCoverPick(IPathfindingMgr nav, Zone zone, Vector3 caster, float z, Vector2 spot, Vector2 line,
             bool incoming, IReadOnlyList<(Vector2 Position, bool Healer)> others)
@@ -308,9 +309,10 @@ namespace DOL.AI.Brain
             Vector3 eye = new(caster.X, caster.Y, caster.Z + 48), lineAt = new(line.X, line.Y, z + 48);
             for (int i = 0; i < candidates.Length; i++)
             {
-                if (i > 0 && !RvrPositioning.CoverKeepsSpread(candidates[i], incoming, others))
+                if (i > 0 && (!RvrPositioning.CoverKeepsSpread(candidates[i], incoming, others)
+                    || !RvrPositioning.CoverNearSlot(candidates[i], spot)))
                 {
-                    seen.Add((false, true)); // no raycast: standing there would break the spread
+                    seen.Add((false, true)); // no raycast: standing there would break the spread or send it back (Far)
                     continue;
                 }
                 Vector3 at = new(candidates[i].X, candidates[i].Y, z + 48);

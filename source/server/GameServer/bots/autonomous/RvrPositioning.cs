@@ -413,6 +413,13 @@ public static class RvrPositioning
     }
 
     /// <summary>
+    /// #531 step 2e: whether a healer's cover place at <paramref name="at"/> is near enough its own place
+    /// <paramref name="spot"/> (at most <see cref="FarFromSlot"/> less <see cref="SlotTolerance"/>) that a healer standing
+    /// anywhere within <see cref="SlotTolerance"/> of it is not sent back by <see cref="NeedsMove"/>'s "Far" test. Pure.
+    /// </summary>
+    public static bool CoverNearSlot(Vector2 at, Vector2 spot) => Vector2.Distance(at, spot) <= FarFromSlot - SlotTolerance;
+
+    /// <summary>
     /// #531 step 2e: the first candidate that sees the tanks' line and is hidden from the nearest enemy caster (rocks and
     /// walls, reference.md 6), else 0 (its own place). Pure.
     /// </summary>

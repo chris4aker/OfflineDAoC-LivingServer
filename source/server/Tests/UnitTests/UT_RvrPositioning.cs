@@ -185,6 +185,54 @@ namespace DOL.UnitTests
         }
 
         [Test]
+        public void Cover_never_picks_a_place_that_NeedsMove_calls_Far()
+        {
+            // A contact healer at 900 plus Casual's depth jitter (up to +120): the 24-degree places are a chord of about
+            // 0.416 x depth from its own, past FarFromSlot less SlotTolerance, so the pick must skip them.
+            Vector2 line = new(0, 0);
+            Vector3 caster = new(0, 2000, 0);
+            double front = Math.PI / 2; // the enemy is toward +Y
+            float hold = RvrPositioning.FarFromSlot - RvrPositioning.SlotTolerance;
+            Vector2[] offsets = [Vector2.Zero, new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(0.7071f, 0.7071f), new(-0.7071f, 0.7071f)];
+            foreach (float depth in new[] { 600f, 800f, 900f, 960f, 1020f })
+            {
+                Vector2 spot = new(0, -depth);
+                Vector2[] candidates = RvrPositioning.CoverCandidates(spot, line);
+                var slot = new RvrSlot(null, RvrStand.Back, spot, true, RvrSlotError.None);
+                // Every place beside its own is hidden from the caster, so the pick returns whichever it may take first,
+                // and with the earlier ones held by other healers, each later one in turn.
+                for (int skip = 0; skip < candidates.Length; skip++)
+                {
+                    (Vector2, bool)[] others = candidates.Skip(1).Take(skip).Select(c => (c, true)).ToArray();
+                    Vector2 picked = BotBrain.RvrCoverPick(
+                        new DOL.GS.Tests.Rehearsal.FlatNavmesh(1)
+                        {
+                            SightBlocked = (from, to) => Vector2.Distance(new Vector2(from.X, from.Y), new Vector2(caster.X, caster.Y)) < 1
+                                && Vector2.Distance(new Vector2(to.X, to.Y), spot) >= 1
+                        },
+                        null, caster, 0, spot, line, false, others);
+                    Assert.That(RvrPositioning.CoverNearSlot(picked, spot), Is.True, $"depth {depth}, skip {skip}: near its own place");
+                    foreach (Vector2 off in offsets)
+                    {
+                        Vector2 standing = picked + off * RvrPositioning.SlotTolerance;
+                        Assert.That(RvrPositioning.NeedsMove(standing, slot, line, front, false, null), Is.Not.EqualTo(RvrMoveReason.Far),
+                            $"depth {depth}, skip {skip}: stopped {off} x SlotTolerance off its cover place");
+                    }
+                }
+                Assert.That(Vector2.Distance(candidates[3], spot) > hold, Is.EqualTo(depth >= 900f),
+                    $"depth {depth}: the 24-degree place is skipped exactly when it is too far");
+            }
+            Assert.That(RvrPositioning.CoverNearSlot(new Vector2(hold, 0), Vector2.Zero), Is.True, "the limit itself");
+            Assert.That(RvrPositioning.CoverNearSlot(new Vector2(hold + 1, 0), Vector2.Zero), Is.False, "just past it");
+            // The check can fail: a 24-degree place at 1,020 stood on is Far.
+            Vector2 farSpot = new(0, -1020);
+            Vector2 farCandidate = RvrPositioning.CoverCandidates(farSpot, line)[3];
+            Vector2 overshoot = farCandidate + Vector2.Normalize(farCandidate - farSpot) * RvrPositioning.SlotTolerance;
+            Assert.That(RvrPositioning.NeedsMove(overshoot, new RvrSlot(null, RvrStand.Back, farSpot, true, RvrSlotError.None), line, front,
+                false, null), Is.EqualTo(RvrMoveReason.Far), "without the skip the healer would be sent back");
+        }
+
+        [Test]
         public void Cover_pick_walks_to_the_first_hidden_place_beside_its_own()
         {
             Vector2 line = new(0, 0), spot = new(0, -900);
