@@ -10,7 +10,7 @@ rows marked **ships**, and removes the fields listed under *Dropped* (they could
 bot's, a guild's or an account's name, or free text). How a field is judged: `tools/grafana/privacy.py`;
 the reviewed exceptions: `tools/grafana/row-policy.json`.
 
-- Rows in code: **798**; pending (#625, not on main yet): **0**; shipped by the pipeline: **766**.
+- Rows in code: **799**; pending (#625, not on main yet): **0**; shipped by the pipeline: **767**.
 - *Frequency* is filled where the code or the policy states it; `-` means per event, not stated.
 - *Written in* names the files (search them for the marker); *Meaning* is the comment above the first writing site,
   cut to its first sentence.
@@ -775,6 +775,7 @@ the reviewed exceptions: `tools/grafana/row-policy.json`.
 | `RVR_STEALTH_TRAVEL` | server.log | **ships** | `bots/autonomous/RvrRecord.Stealth.cs` | `bot`, `id`, `nearestPlayer`, `realm`, `reason`, `region`, `state`, `t` | `bot` | - | - |
 | `RVR_STEALTH_UNCOVER` | server.log | **ships** | `bots/autonomous/RvrRecord.Stealth.cs` | `atKeep`, `by`, `byKind`, `byLevel`, `distance`, `hider`, `realm`, `region`, `sense`, `t` | - | - | - |
 | `RVR_TELEPORT` | server.log | **ships** | `bots/autonomous/RvrRecord.World.cs` | `alive`, `bot`, `by`, `distance`, `from`, `how`, `id`, `inCombat`, `playerFrom`, `playerSaw`, `playerTo`, `realm`, `t`, `to` | `bot`, `by` | - | - |
+| `RVR_TELEPORT_HELD` | server.log | **ships** | `bots/autonomous/AutonomousRvrUnseenMove.cs` | `bot`, `distance`, `from`, `holdMs`, `how`, `id`, `playerFrom`, `playerSaw`, `playerTo`, `realm`, `t`, `to` | `bot` | - | - |
 | `RVR_WATCH` | server.log | **ships** | `bots/autonomous/RvrEngagementRuntime.cs` | `distance`, `enemies`, `group`, `odds`, `patience`, `realm`, `region`, `skill`, `thirdParty`, `watchMs` | - | - | - |
 | `SAVAGE_MELEE_PULL_TIMEOUT` | server.log | **ships** | `bots/autonomous/AutonomousWorldBotController.cs` | `bot`, `region`, `target`, `x`, `y`, `z` | `bot`, `target` | - | - |
 | `SCREEN_BURST` | session-chat.log | no: written to session-chat.log, which is not tailed | `bots/autonomous/BotSayGate.cs` | `key`, `n`, `realm`, `seq`, `t`, `text`, `to`, `type`, `window` | - | - | - |
