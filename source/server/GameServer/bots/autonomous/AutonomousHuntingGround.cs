@@ -19,7 +19,8 @@ namespace DOL.GS
     /// the empty-camp wait: any monster that cons green up to the bot's solo ceiling and passes every other filter;</item>
     /// <item>a solo bot pulls the monster standing apart from the others first, as parties already do (the 2002 Prima
     /// guide's monster tables mark which monsters are social and which call for help: a soloer picked the lone ones);</item>
-    /// <item>healers, bards and minstrels, and the archers, prefer blue targets to yellow; the con ceiling is unchanged;</item>
+    /// <item>the stealth assassins prefer blue targets to yellow (the Prima guide's rogue line); the healers, bards and
+    /// archers prefer blue too, which is our own choice; the con ceiling is unchanged;</item>
     /// <item>once 6 of its last 8 kills at a camp conned green it moves up a spot: the next plan takes a camp of blue or
     /// harder typical con when one exists, which the zone weights keep near.</item>
     /// </list>
@@ -320,15 +321,19 @@ namespace DOL.GS
         // ---------------------------------------------------------------- con preference by class
 
         /// <summary>
-        /// Pure rule: the con a solo bot of this class prefers among targets it may pull. The 2002 Prima guide: "All
-        /// classes are supposed to have an 'ideal' yellow", "for a Rogue (lower STR and DEX), yellow is death", and greens
-        /// kill faster with no rest between. The classes that solo most slowly or most fragile (the support casters Shaman, Healer and
-        /// Druid, the Bard and Minstrel, and the archers Scout, Hunter and Ranger) prefer blue; everyone else, Clerics and
-        /// Friars included, keeps yellow first. The con ceiling itself is unchanged: no class fights anything harder.
+        /// Pure rule: the con a solo bot of this class prefers among targets it may pull. The 2002 Prima guide says the
+        /// best con depends on the class ("All classes are supposed to have an 'ideal' yellow") and, for the rogue line,
+        /// "for a Rogue (lower STR and DEX), yellow is death": that line backs blue for the stealth assassins
+        /// (Infiltrator, Shadowblade, Nightshade) only. The other blue picks are our own choice, not a quoted source: the
+        /// support casters Shaman, Healer and Druid, the Bard and Minstrel, and the archers Scout, Hunter and Ranger, the
+        /// classes that solo most slowly or most fragile. Everyone else, Clerics and Friars included, keeps yellow first.
+        /// Preferring blue only moves easier targets forward; the con ceiling itself is unchanged, so no class fights
+        /// anything harder.
         /// </summary>
         public static ConColor PreferredSoloCon(eCharacterClass characterClass) => characterClass switch
         {
-            eCharacterClass.Shaman or eCharacterClass.Healer or eCharacterClass.Druid or eCharacterClass.Bard or
+            eCharacterClass.Infiltrator or eCharacterClass.Shadowblade or eCharacterClass.Nightshade or
+                eCharacterClass.Shaman or eCharacterClass.Healer or eCharacterClass.Druid or eCharacterClass.Bard or
                 eCharacterClass.Minstrel or eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger
                 => ConColor.BLUE,
             _ => ConColor.YELLOW,

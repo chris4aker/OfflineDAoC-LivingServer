@@ -8,7 +8,8 @@ section: Bots and companions
   - When its camp's own monster is gone, it hunts the other monsters around the camp that suit its level instead of
     leaving.
   - It pulls the monster standing apart from the others first, as parties already do.
-  - Healers, Shamans, Druids, Bards, Minstrels and the archers prefer blue monsters to yellow ones; everyone else keeps
+  - Infiltrators, Shadowblades and Nightshades prefer blue monsters to yellow ones, as period guides advised rogues.
+    Healers, Shamans, Druids, Bards, Minstrels and the archers prefer blue too, by our own choice. Everyone else keeps
     yellow first. No class fights anything harder than before.
   - Once most of its kills con green, it moves up to a harder spot nearby.
   - Groups, realm raids, dungeons and Darkness Falls are unchanged, and companions are not touched. Switch:

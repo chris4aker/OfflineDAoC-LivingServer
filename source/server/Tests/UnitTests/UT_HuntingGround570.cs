@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -198,9 +199,10 @@ namespace DOL.UnitTests
         }
 
         [Test]
-        public void HealersBardsAndArchersPreferBlueEveryoneElseYellow()
+        public void AssassinsHealersBardsAndArchersPreferBlueEveryoneElseYellow()
         {
-            foreach (eCharacterClass c in new[] { eCharacterClass.Shaman, eCharacterClass.Healer, eCharacterClass.Druid,
+            foreach (eCharacterClass c in new[] { eCharacterClass.Infiltrator, eCharacterClass.Shadowblade,
+                         eCharacterClass.Nightshade, eCharacterClass.Shaman, eCharacterClass.Healer, eCharacterClass.Druid,
                          eCharacterClass.Bard, eCharacterClass.Minstrel, eCharacterClass.Scout, eCharacterClass.Hunter,
                          eCharacterClass.Ranger })
                 Assert.That(AutonomousHuntingGround.PreferredSoloCon(c), Is.EqualTo(ConColor.BLUE), c.ToString());
@@ -219,6 +221,45 @@ namespace DOL.UnitTests
             Assert.That(AutonomousHuntingGround.ConSortPenalty(ConColor.GREEN, ConColor.BLUE), Is.EqualTo(220));
             Assert.That(AutonomousHuntingGround.ConSortPenalty(ConColor.UNKNOWN, ConColor.YELLOW),
                 Is.EqualTo(AutonomousHuntingGround.UnknownConPenalty), "an unknown con sorts last and never overflows");
+        }
+
+        [Test]
+        public void NoPreferredConPutsAHarderTargetAheadOfAnEasierOneComparedWithTheOldSort()
+        {
+            // The owner rule: no class fights anything harder than before. At equal distance, for every pair of cons
+            // easier < harder, the harder one's lead over the easier one (old sort: yellow preferred) never grows, so a
+            // harder target never moves ahead of an easier one it used to sort behind or level with.
+            ConColor[] known = { ConColor.GREY, ConColor.GREEN, ConColor.BLUE, ConColor.YELLOW, ConColor.ORANGE,
+                ConColor.RED, ConColor.PURPLE };
+            var preferred = new HashSet<ConColor>();
+            foreach (eCharacterClass c in Enum.GetValues(typeof(eCharacterClass)))
+                preferred.Add(AutonomousHuntingGround.PreferredSoloCon(c));
+            Assert.That(preferred, Is.SubsetOf(new[] { ConColor.BLUE, ConColor.YELLOW }));
+            Assert.Multiple(() =>
+            {
+                foreach (ConColor p in preferred)
+                    for (int i = 0; i < known.Length; i++)
+                        for (int j = i + 1; j < known.Length; j++)
+                        {
+                            ConColor easier = known[i], harder = known[j];
+                            int gap = AutonomousHuntingGround.ConSortPenalty(harder, p) -
+                                      AutonomousHuntingGround.ConSortPenalty(easier, p);
+                            int oldGap = AutonomousHuntingGround.ConSortPenalty(harder, ConColor.YELLOW) -
+                                         AutonomousHuntingGround.ConSortPenalty(easier, ConColor.YELLOW);
+                            Assert.That(gap, Is.GreaterThanOrEqualTo(oldGap), $"{p}: {easier} vs {harder}");
+                            if (oldGap >= 0)
+                                Assert.That(gap, Is.GreaterThanOrEqualTo(0), $"{p}: {harder} never ahead of {easier}");
+                        }
+            });
+        }
+
+        [Test]
+        public void AreaHuntingHonoursTheWideSearchPause()
+        {
+            string controller = Source("bots", "autonomous", "AutonomousWorldBotController.cs");
+            Assert.That(controller, Does.Contain(
+                    "found = FindAmong(wide ?? (wideAllowed ? bot.GetNPCsInRadius(TargetSearchRadius) : immediate), area: true);"),
+                "during the pause after a far pull give-up the area hunt reuses the near scan");
         }
 
         [Test]

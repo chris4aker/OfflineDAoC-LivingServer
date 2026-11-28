@@ -3663,12 +3663,11 @@ namespace DOL.GS
             eCharacterClass searchClass = (eCharacterClass)(bot.CharacterClass?.ID ?? 0);
             bool canPullFromRange = BotSpellPower.IsOffensiveCaster(bot) ||
                 searchClass is eCharacterClass.Scout or eCharacterClass.Hunter or eCharacterClass.Ranger;
-            // #570 step 3 (AutonomousHuntingGround): a solo bot pulls the monster standing apart first, a healer, bard or
-            // archer prefers blue to yellow, and with the camp's own monster gone it hunts the area around the camp
+            // #570 step 3 (AutonomousHuntingGround): a solo bot pulls the monster standing apart first, an assassin,
+            // healer, bard or archer prefers blue to yellow, and with the camp's own monster gone it hunts the area around the camp
             bool huntingRules = AutonomousHuntingGround.Enabled && IsSoloHunter(bot);
             ConColor preferredCon = huntingRules
                 ? AutonomousHuntingGround.PreferredSoloCon(searchClass) : ConColor.YELLOW;
-            GameNPC FindWithin(ushort radius, bool area = false) => FindAmong(bot.GetNPCsInRadius(radius), area);
             GameNPC FindAmong(List<GameNPC> nearby, bool area) => PreferIsolatedWhenSolo(nearby
                 .Where(npc => IsExperienceMonster(npc) && npc.IsAlive && npc.CurrentRegionID == _camp.RegionId &&
                     !AutonomousAuditedCampPolicy.IsBotExcludedNpc(npc) &&
@@ -3770,15 +3769,17 @@ namespace DOL.GS
             // Preserve the old cheap local lookup for ordinary pulls. Only an
             // empty local ring pays for the requested 5,000-unit expansion.
             List<GameNPC> wide = null;
-            GameNPC found = FindWithin(ImmediateTargetSearchRadius) ??
-                   (GameLoop.GameLoopTime >= _wideTargetSearchAfterTick
-                       ? FindAmong(wide = bot.GetNPCsInRadius(TargetSearchRadius), area: false) : null);
+            List<GameNPC> immediate = bot.GetNPCsInRadius(ImmediateTargetSearchRadius);
+            bool wideAllowed = GameLoop.GameLoopTime >= _wideTargetSearchAfterTick;
+            GameNPC found = FindAmong(immediate, area: false) ??
+                   (wideAllowed ? FindAmong(wide = bot.GetNPCsInRadius(TargetSearchRadius), area: false) : null);
             // #570 step 3: the camp's own monster is gone, so a solo bot hunts the area around the camp before the
             // empty-camp wait sends it elsewhere. A grey pick of the camp's own monster still means "outleveled".
-            // The wide scan above is reused when it ran (one scan per search).
+            // The wide scan above is reused when it ran (one scan per search). While the wide-search pause after a far
+            // pull give-up is in force, the area hunt looks only at the near scan, so it never sends the bot back out far.
             if (found == null && AreaHuntingApplies(bot))
             {
-                found = FindAmong(wide ?? bot.GetNPCsInRadius(TargetSearchRadius), area: true);
+                found = FindAmong(wide ?? (wideAllowed ? bot.GetNPCsInRadius(TargetSearchRadius) : immediate), area: true);
                 LogAreaHunt(bot, found);
             }
             return found;
