@@ -3010,6 +3010,10 @@ namespace DOL.GS
         /// every ending but a player stop, a supersede or a sweep cap.</summary>
         public static bool SetsCooldown(string reason) => StopOutcome(reason) == null;
 
+        /// <summary>A scored wipe calls the Epic Special Forces while the raid has a try left (pure): the first of its
+        /// <see cref="RealmRaidDungeonRoute.MaximumFailedAttempts"/> tries; the last one ends the raid instead.</summary>
+        public static bool WipeCallsSpecialForces(int failures) => failures < RealmRaidDungeonRoute.MaximumFailedAttempts;
+
         /// <summary>A named encounter (or the dragon, since 2026-10-30) wiped the raid: the realm hears it, the raid regroups
         /// for one more attempt, and the Epic Special Forces are asked for, sized by this raid's own record.</summary>
         private static void OnWipe(Raid raid, string boss, int failures, long now, int engaged = -1, int fallen = -1)
@@ -3017,7 +3021,7 @@ namespace DOL.GS
             raid.Wipes++;
             Log.Info(WipeLine(raid.Definition.Id, boss, failures, raid.Support.Length, raid.Support.Count(b => b.IsAlive), engaged, fallen,
                 (now - raid.Created) / 60_000));
-            if (failures >= RealmRaidDungeonRoute.MaximumFailedAttempts) return;
+            if (!WipeCallsSpecialForces(failures)) return;
             AutonomousChatNews.RaidOutcome(raid.Definition.Realm, raid.Definition.Name, boss, false);
             RealmEventNotices.Queue(raid.Definition.Id, raid.Definition.Realm, RealmEventBanter.RaidWipe(raid.Definition.Name, boss),
                 "raid_wiped", RaidSlots(raid.Definition.Name, boss));
