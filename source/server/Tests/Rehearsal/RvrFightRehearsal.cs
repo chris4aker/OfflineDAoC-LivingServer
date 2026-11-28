@@ -840,10 +840,26 @@ namespace DOL.GS.Tests.Rehearsal
                        $"warriorInGroup={healer.Group?.IsInTheGroup(warrior)} healerInCombat={healer.InCombat} casting={healer.IsCasting} " +
                        $"scope={RvrTacticsScope.Refusal(RvrTacticsScope.FactsOf(healer))}");
             AutonomousBotRealmAbilities.UseActives(healer);
+            bool queued = healer.castingComponent.HasPendingSkillRequests;
+            world.Run(0.05);
+            string handlerSeen = $"{healer.castingComponent.SpellHandler?.Spell?.Name ?? "-"}/{healer.castingComponent.SpellHandler?.CastState}";
             world.Run(1.5);
-            world.Run(0.1);
             bool raised = warriorDown && warrior.IsAlive;
-            detail.Add($"pr after: casting={healer.IsCasting} pending={healer.castingComponent.HasPendingSkillRequests} target={healer.TargetObject?.Name ?? "-"}");
+            detail.Add($"pr after: queued={queued} handler={handlerSeen} casting={healer.IsCasting} warriorAlive={warrior.IsAlive} " +
+                       $"warriorState={warrior.ObjectState} disabled={(pr != null ? healer.GetSkillDisabledDuration(pr) : -1)}");
+            if (!raised && pr != null && !warrior.IsAlive)
+            {
+                // diagnostics only: the same cast made directly, to tell the turn from the cast
+                healer.TargetObject = warrior;
+                bool direct = healer.CastSpell(RvrRealmActives.PerfectRecoverySpell(healer.Level, 1800), GlobalSpellsLines.RealmSpellsSpellLine,
+                    pr as ISpellCastingAbilityHandler, false);
+                bool directQueued = healer.castingComponent.HasPendingSkillRequests;
+                world.Run(0.05);
+                string directHandler = $"{healer.castingComponent.SpellHandler?.Spell?.Name ?? "-"}/{healer.castingComponent.SpellHandler?.CastState}";
+                world.Run(1);
+                detail.Add($"pr direct: started={direct} queued={directQueued} handler={directHandler} warriorAlive={warrior.IsAlive}");
+                healer.TargetObject = null;
+            }
             long timer = pr != null ? healer.GetSkillDisabledDuration(pr) : 0;
             detail.Add($"pr: healer has it={pr != null} warrior down={warriorDown} raised={raised} health={warrior.HealthPercent}% timer={timer / 1000}s");
             savage.TakeDamage(armsman, eDamageType.Slash, savage.Health + 10, 0);
