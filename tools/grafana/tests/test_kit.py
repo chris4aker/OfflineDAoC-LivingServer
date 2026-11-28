@@ -24,11 +24,16 @@ import rows  # noqa: E402
 REPO = HERE.parents[2]
 
 
-def run_check(repo: Path) -> tuple[int, str]:
+def run_check(repo: Path, *extra: str) -> tuple[int, str]:
     out = io.StringIO()
     with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
-        code = kit.main(["--check", "--repo", str(repo)])
+        code = kit.main(["--check", "--repo", str(repo), *extra])
     return code, out.getvalue()
+
+
+def run_write(repo: Path, *extra: str) -> int:
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        return kit.main(["--write", "--repo", str(repo), *extra])
 
 
 class CheckTests(unittest.TestCase):
@@ -51,21 +56,51 @@ class CheckTests(unittest.TestCase):
         code, out = run_check(REPO)
         self.assertEqual(code, 0, out)
 
-    def test_a_clean_copy_passes_and_a_stale_catalog_fails(self):
-        code, out = run_check(self.root)
+    def test_a_clean_copy_passes_and_a_stale_catalog_fails_with_generated(self):
+        self.assertEqual(run_write(self.root, "--generated"), 0)
+        code, out = run_check(self.root, "--generated")
         self.assertEqual(code, 0, out)
         md = self.root / "docs/LOG-ROWS.md"
         md.write_text(md.read_text(encoding="utf-8") + "\nA hand edit.\n", encoding="utf-8")
-        code, out = run_check(self.root)
+        code, out = run_check(self.root, "--generated")
         self.assertEqual(code, 1)
-        self.assertIn("docs/LOG-ROWS.md is stale", out)
+        self.assertIn("docs/LOG-ROWS.md is stale: run python3 tools/grafana/kit.py --write --generated", out)
 
-    def test_a_hand_edited_alloy_config_fails(self):
+    def test_a_hand_edited_alloy_config_fails_with_generated(self):
+        self.assertEqual(run_write(self.root, "--generated"), 0)
         cfg = self.root / "tools/grafana/alloy/config.alloy"
         cfg.write_text(cfg.read_text(encoding="utf-8").replace("CHAT_LINE|", "", 1), encoding="utf-8")
-        code, out = run_check(self.root)
+        code, out = run_check(self.root, "--generated")
         self.assertEqual(code, 1)
         self.assertIn("config.alloy is stale", out)
+
+    def test_a_pull_request_check_ignores_the_files_main_generates(self):
+        # #817: a branch's copies of LOG-ROWS.md and config.alloy lag its code; main regenerates them after the merge.
+        for rel in kit.GENERATED_ON_MAIN:
+            path = self.root / rel
+            path.write_text(path.read_text(encoding="utf-8") + "\nbehind the code\n", encoding="utf-8")
+        code, out = run_check(self.root)
+        self.assertEqual(code, 0, out)
+        self.assertIn("note: docs/LOG-ROWS.md differs", out)
+        self.assertIn("note: tools/grafana/alloy/config.alloy differs", out)
+
+    def test_write_leaves_the_files_main_generates_alone_without_generated(self):
+        before = {rel: (self.root / rel).read_bytes() + b"x" for rel in kit.GENERATED_ON_MAIN}
+        for rel, data in before.items():
+            (self.root / rel).write_bytes(data)
+        self.assertEqual(run_write(self.root), 0)
+        for rel, data in before.items():
+            self.assertEqual((self.root / rel).read_bytes(), data, rel)
+        self.assertEqual(run_write(self.root, "--generated"), 0)
+        for rel, data in before.items():
+            self.assertNotEqual((self.root / rel).read_bytes(), data, rel)
+
+    def test_a_stale_dashboard_still_fails_a_pull_request(self):
+        board = next((self.root / "tools/grafana/resources/dashboards").glob("*.json"))
+        board.write_text(board.read_text(encoding="utf-8") + " ", encoding="utf-8")
+        code, out = run_check(self.root)
+        self.assertEqual(code, 1)
+        self.assertIn(f"{board.name} is stale", out)
 
     def test_a_stray_dashboard_fails(self):
         (self.root / "tools/grafana/resources/dashboards/extra.json").write_text("{}", encoding="utf-8")
