@@ -534,6 +534,12 @@ did in 2003. The observer cap, the calibration, duty and the pet caps follow the
 - **Difficulty (`rvr_bot_awareness`):** `easy` (always within 700, never beyond 2,500, the easy column, 30% slower
   reactions, calls heard within 2,000), `normal` or `veteran` (always within 1,300, never beyond 4,500, the veteran
   column, 30% faster reactions, calls heard within 3,000).
+- **What a group fights (`rvr_board_from_contacts`, on; #529):** a gamebot group's fight board, which its called
+  target, crowd control, size-up and retreat read, lists only the enemies one of its members noticed, was told of or
+  was hit by in the last 15 seconds, not everyone within 3,500 units. A gamebot in a fight looks around every 2 seconds
+  (enemies within 2,500, at most four line-of-sight checks, the same notice rule; it never changes its target), so an
+  enemy joining the fight is seen without hitting first. Groups with you in them keep the area search. Off: the board
+  searches the area as before 1.2.3 and fighting bots don't look around.
 - **Pet caps (`rvr_group_pet_cap`, 2):** when gamebots form an RvR group (a roaming warband of 2-8 or a siege party),
   at most 2 pet classes (Cabalist, Theurgist, Necromancer, Spiritmaster, Bonedancer, Enchanter, Animist,
   Sluaghbinder) join a group of five or more and 1 a group of four or fewer; the others wait for the next group.

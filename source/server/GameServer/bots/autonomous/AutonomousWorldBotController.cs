@@ -6642,7 +6642,8 @@ namespace DOL.GS
         private static bool IsInFrontier(GamePlayer player) =>
             player?.CurrentZone != null && IsFrontierZone(player.CurrentRegionID, player.CurrentZone.ID);
 
-        private static bool IsSafeArea(GameObject obj)
+        /// <summary>The object stands in a safe or bind area (also read by the player's group pick, CompanionRvrEngage).</summary>
+        public static bool IsSafeArea(GameObject obj)
         {
             List<IArea> areas = obj?.CurrentZone?.GetAreasOfSpot(obj);
             if (areas == null) return false;

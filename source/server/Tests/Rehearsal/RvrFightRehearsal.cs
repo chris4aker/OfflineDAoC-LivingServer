@@ -614,6 +614,106 @@ namespace DOL.GS.Tests.Rehearsal
             return (onBot, onPlayer, world.ServiceErrors);
         }
 
+        // ---------------------------------------------------------------------------------------------------------
+        // #529 step 3: the fight board from contacts. Every brain is stopped, so only the rehearsal's scan (seeded) looks
+        // and what the board lists is the contacts' doing alone.
+
+        /// <summary>One board case: whether the board listed each named enemy, the refresh's cost, the row and its detail.</summary>
+        public sealed record BoardCaseResult(string Row, IReadOnlyList<string> Detail, int Errors, IReadOnlyDictionary<string, bool> Listed,
+            int Refreshes, int RefreshRays, int MaxRaysPerRefresh, int HitsBy);
+
+        private static List<GameBot> AlbionTrio(RvrFightWorld world, Region region, string tag)
+        {
+            eCharacterClass[] classes = [eCharacterClass.Armsman, eCharacterClass.Cleric, eCharacterClass.Wizard];
+            var trio = new List<GameBot>();
+            for (int i = 0; i < classes.Length; i++)
+            {
+                GameBot bot = world.NewBot(eRealm.Albion, classes[i], 50, $"{tag}{i + 1:00}{classes[i]}");
+                world.Place(bot, region, 30_000, 30_000 + i * 100, 0, 3072);
+                trio.Add(bot);
+            }
+            world.Form(trio.Cast<GameLiving>().ToList());
+            return trio;
+        }
+
+        private static bool Lists(RvrFightBoard board, GameLiving enemy) => board != null && board.Enemies.Any(e => e.Living == enemy);
+
+        private static string BoardEnemies(RvrFightBoard board) => board == null ? "none" :
+            $"from={(board.FromContacts ? "contacts" : "area")} enemies=[{string.Join(",", board.Enemies.Select(e => e.Living?.Name ?? "?"))}]";
+
+        /// <summary>
+        /// Scenario 4: an Albion trio is fighting a Midgard warrior (each holds it on its aggro list, so no member scans),
+        /// and a Midgard healer walks up 800 away mid-fight and never hits anyone. With the in-combat refresh
+        /// (<paramref name="combatRefresh"/>) the trio notices both and its board lists them; without it neither is anyone's
+        /// contact (no hit, no call), so a board from contacts would refuse both: the step-3 caveat of #529.
+        /// </summary>
+        public static BoardCaseResult MidFightWatcher(int seed, bool combatRefresh, double seconds = 5)
+        {
+            using var world = new RvrFightWorld(seed);
+            Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+            List<GameBot> trio = AlbionTrio(world, region, "W");
+            GameBot fighter = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "WFighterWarrior");
+            world.Place(fighter, region, 30_150, 30_100, 0, 1024);
+            foreach (GameBot bot in trio.Append(fighter))
+                bot.Brain?.Stop();
+            foreach (GameBot bot in trio)
+                ((BotBrain)bot.Brain).AddToAggroList(fighter, 100);
+            var scan = new RvrFightScan(seed) { CombatRefresh = combatRefresh };
+            scan.Add(trio);
+            world.Run(1, w => scan.Tick(w.Now));
+            GameBot watcher = world.NewBot(eRealm.Midgard, eCharacterClass.Healer, 50, "WWatcherHealer");
+            world.Place(watcher, region, 30_800, 30_100, 0, 1024);
+            watcher.Brain?.Stop();
+            world.Run(seconds, w => scan.Tick(w.Now));
+            RvrFightBoard board = RvrFightBoards.Get(trio[0]);
+            bool fighting = trio.All(b => ((BotBrain)b.Brain).HasAggro);
+            int hitsBy = world.Recorder.Hits.Count(h => h.Attacker == watcher);
+            var listed = new Dictionary<string, bool> { ["watcher"] = Lists(board, watcher), ["fighter"] = Lists(board, fighter) };
+            var detail = new List<string>
+            {
+                $"board: {BoardEnemies(board)}; trio still fighting (no member scanned): {fighting}",
+                $"in-combat refresh {(combatRefresh ? "on" : "off")}: looks {scan.Refreshes}, rays {scan.RefreshRays}, most rays in one look {scan.MaxRaysPerRefresh}",
+            };
+            detail.AddRange(world.Errors.Take(5).Select(e => "error: " + e));
+            string row = $"RVR_REHEARSAL board_mid_fight seed={seed} refresh={(combatRefresh ? "on" : "off")} watcher_listed={listed["watcher"]} " +
+                         $"fighter_listed={listed["fighter"]} watcher_hits={hitsBy} looks={scan.Refreshes} rays={scan.RefreshRays}";
+            return new BoardCaseResult(row, detail, world.ServiceErrors, listed, scan.Refreshes, scan.RefreshRays, scan.MaxRaysPerRefresh, hitsBy);
+        }
+
+        /// <summary>
+        /// Scenario 5: an Albion trio stands in the open; a Midgard warrior stands 1,200 east behind a wall nobody can see
+        /// through, and a Midgard savage 800 west in the open. With the board from contacts
+        /// (<paramref name="boardFromContacts"/>) the board lists the savage (noticed) and not the warrior (never seen);
+        /// with the switch off the area search lists both, as before 1.2.3.
+        /// </summary>
+        public static BoardCaseResult BehindAWall(int seed, bool boardFromContacts, double seconds = 6)
+        {
+            using var world = new RvrFightWorld(seed, new Dictionary<string, object> { ["rvr_board_from_contacts"] = boardFromContacts });
+            Region region = world.AddRegion(FrontierRegion, FrontierZone, "Hadrian's Wall flat stand-in (rehearsal)");
+            world.Nav.Walls.Add(new FlatNavmesh.Wall(30_600, 28_000, 30_600, 32_000));
+            List<GameBot> trio = AlbionTrio(world, region, "B");
+            GameBot hidden = world.NewBot(eRealm.Midgard, eCharacterClass.Warrior, 50, "BHiddenWarrior");
+            world.Place(hidden, region, 31_200, 30_100, 0, 1024);
+            GameBot open = world.NewBot(eRealm.Midgard, eCharacterClass.Savage, 50, "BOpenSavage");
+            world.Place(open, region, 29_200, 30_100, 0, 3072);
+            foreach (GameBot bot in trio.Append(hidden).Append(open))
+                bot.Brain?.Stop();
+            var scan = new RvrFightScan(seed) { Engage = false };
+            scan.Add(trio);
+            world.Run(seconds, w => scan.Tick(w.Now));
+            RvrFightBoard board = RvrFightBoards.Get(trio[0]);
+            var listed = new Dictionary<string, bool> { ["hidden"] = Lists(board, hidden), ["open"] = Lists(board, open) };
+            bool hiddenKnown = trio.Any(b => AutonomousWorldBotController.RvrContactTable.Knows(b.DatabaseID, RvrPartyKey.TargetKey(hidden), world.Now));
+            var detail = new List<string>
+            {
+                $"board: {BoardEnemies(board)}; behind the wall a contact of anyone: {hiddenKnown}; notices {scan.Notices.Count}",
+            };
+            detail.AddRange(world.Errors.Take(5).Select(e => "error: " + e));
+            string row = $"RVR_REHEARSAL board_behind_wall seed={seed} from={(boardFromContacts ? "contacts" : "area")} " +
+                         $"hidden_listed={listed["hidden"]} open_listed={listed["open"]}";
+            return new BoardCaseResult(row, detail, world.ServiceErrors, listed, scan.Refreshes, scan.RefreshRays, scan.MaxRaysPerRefresh, 0);
+        }
+
         private static string Outcome(RvrMezAttempt attempt) => attempt?.Landed switch { true => "landed", false => "refused", _ => "no-cast" };
 
         /// <summary>The mezzer casts its mez on the target at 70% health through the bot's own CastSpell; null if no cast finished.</summary>
