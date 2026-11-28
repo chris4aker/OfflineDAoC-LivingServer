@@ -222,7 +222,7 @@
       "id": 5,
       "type": "timeseries",
       "title": "Census rows",
-      "description": "Rows: SERVER_NPC_CENSUS, SERVER_HANDLE_CENSUS, SERVER_STATIC_CENSUS, SERVER_HOLDER_CENSUS, SERVER_BOT_FIELD_CENSUS.",
+      "description": "Rows: SERVER_NPC_CENSUS, SERVER_HANDLE_CENSUS, SERVER_STATIC_CENSUS, SERVER_HOLDER_CENSUS, SERVER_BOT_FIELD_CENSUS, SERVER_COLLECTION_CENSUS.",
       "datasource": {
         "type": "loki",
         "uid": "${datasource}"
@@ -257,7 +257,7 @@
             "type": "loki",
             "uid": "${datasource}"
           },
-          "expr": "sum by (row) (count_over_time({job=\"offlinedaoc\", row=~\"SERVER_NPC_CENSUS|SERVER_HANDLE_CENSUS|SERVER_STATIC_CENSUS|SERVER_HOLDER_CENSUS|SERVER_BOT_FIELD_CENSUS\"} [$__auto]))",
+          "expr": "sum by (row) (count_over_time({job=\"offlinedaoc\", row=~\"SERVER_NPC_CENSUS|SERVER_HANDLE_CENSUS|SERVER_STATIC_CENSUS|SERVER_HOLDER_CENSUS|SERVER_BOT_FIELD_CENSUS|SERVER_COLLECTION_CENSUS\"} [$__auto]))",
           "legendFormat": "{{row}}",
           "queryType": "range",
           "editorMode": "code"

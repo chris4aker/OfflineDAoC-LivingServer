@@ -19,7 +19,8 @@
     "CC_BREAK": "#625 rule: target=, breaker= and caster= are kinds (LivingRows.Kind)",
     "BG_TARGET_PICK": "#625 rule: target= is a pick kind (LivingRows.PickKind)",
     "BG_RALLY_RESPONSE": "#625 rule: contact= is a kind",
-    "PLAYER_LINE_OUTCOME": "#625 rule: channel, intent and counts; never the line's text or a name"
+    "PLAYER_LINE_OUTCOME": "#625 rule: channel, intent and counts; never the line's text or a name",
+    "SERVER_COLLECTION_CENSUS": "#731: counts only; counts= holds code names of static collections (type.field from ServerCollectionCensus.Registry), never a player, bot or guild name"
   },
   "extra_drop": {
     "CHAT_LINE": {
@@ -123,6 +124,7 @@
     "RVR_CONTACT_UNKNOWN": "at most 20 a minute per realm: the first listed-but-unknown listing of a group-enemy pair in the shadow's minute (#529)",
     "RVR_CONTACT_SHADOW_FAILED": "the shadow's first failure, then every 1,000th (warn; the board is still built) (#529)",
     "CHAT_LINE": "every chat line a player can see from bots, and every line the player says",
-    "FORK_BUILD": "once at server start"
+    "FORK_BUILD": "once at server start",
+    "SERVER_COLLECTION_CENSUS": "one row in numbered parts (part=1/N, each line at most 4,000 characters; 4 or 5 parts) every 30 minutes, on the first SERVER_MEMORY report and every sixth after it (#731)"
   }
 }
