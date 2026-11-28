@@ -62,10 +62,12 @@ public readonly record struct RvrContactCount(int Heads, int Players, int Partie
 /// (BotBrain.OnAttackedByEnemy) and, from #523 on, alarms; never by an area search. A realm's strategic view is the
 /// union of its bots' contacts: what its people have seen, which is also what makes the player a contact like any other.
 ///
-/// Step 1-2 (this build): a facade and a shadow. Nothing decides from it yet except the /faction alarm head count; the
-/// fight board compares its area search with it and logs the difference (RvrContactShadow). Steps 3-6 on #529.
+/// Steps 1-2: a facade and a shadow (the /faction alarm head count; the board's area search compared with it,
+/// RvrContactShadow). Step 3: the fight board lists the group's contacts (<see cref="Group"/>, rvr_board_from_contacts),
+/// so a group calls, holds or sizes up only enemies one of its members knows of; a fighting bot keeps its contacts fresh
+/// with a light look around (RvrCombatRefresh). Steps 4-6 on #529.
 ///
-/// Readers to come: the board's switch to the called target (step 3: <see cref="KnownByAny"/>), hunts and roam weights
+/// Readers to come: hunts and roam weights
 /// (step 4, #524: <see cref="Realm"/>), the plan's first pick (#531: <see cref="Proposals"/>), the defense sized by what
 /// is seen near a keep (#523: <see cref="Near"/>). Pure apart from its own state; thread-safe.
 /// </summary>
@@ -242,6 +244,31 @@ public sealed class RvrContacts
                 found = true;
             }
         return found;
+    }
+
+    /// <summary>
+    /// #529 step 3: how fresh a contact must be for the fight board to list it, as long as the perception memory holds a
+    /// noticed enemy (AutonomousRvrPerception.ForgetAfterMilliseconds). Past it the enemy is a "stale" contact: remembered,
+    /// not in the fight.
+    /// </summary>
+    public const long BoardMaxAgeMilliseconds = AutonomousRvrPerception.ForgetAfterMilliseconds;
+
+    /// <summary>
+    /// #529 step 3, what the fight board lists: one row per enemy that any of <paramref name="owners"/> knows of, at most
+    /// <paramref name="maxAge"/> old, the freshest member's row when several know it, ordered by enemy key so the board is
+    /// the same whoever asks.
+    /// </summary>
+    public List<RvrContact> Group(IReadOnlyList<long> owners, long now, long maxAge = BoardMaxAgeMilliseconds)
+    {
+        var best = new Dictionary<long, RvrContact>();
+        if (owners != null)
+            foreach (long owner in owners)
+                foreach (RvrContact contact in Of(owner, now, maxAge))
+                    if (!best.TryGetValue(contact.Target, out RvrContact known) || contact.LastSeen > known.LastSeen)
+                        best[contact.Target] = contact;
+        var list = new List<RvrContact>(best.Values);
+        list.Sort((a, b) => a.Target.CompareTo(b.Target));
+        return list;
     }
 
     /// <summary>The bot's live contacts, at most <paramref name="maxAge"/> old, in no order.</summary>

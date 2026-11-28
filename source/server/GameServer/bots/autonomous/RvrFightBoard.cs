@@ -144,6 +144,8 @@ public sealed record RvrFightBoard
     /// RvrEngagement.MainBody). Only such a board has a stance and moves the group's stance runtime; true for a solo bot.
     /// </summary>
     public bool MainBody { get; init; } = true;
+    /// <summary>#529 step 3: the enemies are the group's contacts (rvr_board_from_contacts), not the area search's.</summary>
+    public bool FromContacts { get; init; }
     /// <summary>The group's stored facts when the board was built.</summary>
     public RvrGroupState State { get; init; } = RvrGroupState.Empty;
     /// <summary>The group's plan, made from this board and the plan before it, and published with it.</summary>
